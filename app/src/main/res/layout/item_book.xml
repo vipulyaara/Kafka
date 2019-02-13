@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="book"
+            type="com.airtel.data.data.db.entities.Book" />
+
+        <variable
+            name="itemClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="resource"
+            type="Integer" />
+
+        <variable
+            name="transitionName"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/coverCard"
+            android:layout_width="108dp"
+            android:layout_height="160dp"
+            android:outlineAmbientShadowColor="@color/app_blue_dark"
+            android:outlineSpotShadowColor="@color/app_blue_dark"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:transitionName="@{transitionName}"
+                android:onClickListener="@{itemClickListener}"
+                android:src="@{resource}"
+                tools:src="@drawable/img_cover_5" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
