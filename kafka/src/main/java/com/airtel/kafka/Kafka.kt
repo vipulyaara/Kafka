@@ -1,8 +1,8 @@
 package com.airtel.kafka
 
 import android.app.Application
-import com.airtel.data.config.initializers.AppInitializers
-import com.airtel.data.config.kodeinInstance
+import com.airtel.data.data.config.initializers.AppInitializers
+import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.data.sharedPrefs.KEY_USER_TOKEN
 import com.airtel.data.data.sharedPrefs.KEY_USER_UID
 import com.airtel.data.data.sharedPrefs.UserPreferenceManager
@@ -34,7 +34,7 @@ object Kafka {
         }
     }
 
-    fun getBookDetail(contentId: String) = BookService.getBookDetail(contentId)
+    fun getItemDetail(itemId: String) = BookService.getItemDetail(itemId)
 
-    fun getSuggestedContent(authorLastName: String) = BookService.getBooksByAuthor(authorLastName)
+    fun getSuggestedContent(author: String) = BookService.getBooksByAuthor(author)
 }

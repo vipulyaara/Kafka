@@ -9,5 +9,5 @@ object NetworkConstants {
 
     const val baseUrl = "https://archive.org/"
 
-    const val contentId = "contentId"
+    const val contentId = "itemId"
 }

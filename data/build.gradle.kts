@@ -39,7 +39,7 @@ dependencies {
     implementation(Gson.dependency)
 
     implementation(Retrofit.runtime)
-    implementation(Retrofit.gson)
+    implementation(Retrofit.moshi)
     implementation(Retrofit.rxjava)
 
     implementation(OkHttp.core)

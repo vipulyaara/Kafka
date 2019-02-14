@@ -6,7 +6,7 @@
 //import android.view.View
 //import androidx.core.app.SharedElementCallback
 //import androidx.transition.TransitionInflater
-//import com.airtel.data.data.db.entities.BookDetail
+//import com.airtel.data.entities.BookDetail
 //import com.airtel.data.model.data.Resource
 //import com.airtel.kafka.ServiceRequest
 //import com.airtel.kafka.observe
@@ -26,7 +26,7 @@
 //    DataBindingFragment<FragmentBookDetailBinding>(
 //        R.layout.fragment_book_detail
 //    ) {
-//    private val viewModel: BookDetailViewModel by viewModel()
+//    private val viewModel: ItemDetailViewModel by viewModel()
 //    private val controller = BookDetailController(
 //        object : BookDetailController.Callbacks {
 //            override fun onReviewsClicked() {
@@ -45,7 +45,7 @@
 //        }
 //    }
 //
-//    private val contentId by lazy { arguments?.getString("contentId") }
+//    private val itemId by lazy { arguments?.getString("itemId") }
 //    private lateinit var request: ServiceRequest<Resource<BookDetail>>
 //
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@
 //            setController(controller)
 //        }
 //
-//        request = viewModel.contentDetailRequest(contentId).apply {
+//        request = viewModel.itemDetailRequest(itemId).apply {
 //            observe(this@BookDetailFragmentAlt, ::onContentDetailFetched)
 ////            execute()
 //        }

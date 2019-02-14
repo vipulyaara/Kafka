@@ -1,9 +1,9 @@
 package com.airtel.kafkapp
 
 import android.app.Application
-import com.airtel.data.config.di.appModule
-import com.airtel.data.config.di.bookDetailModule
-import com.airtel.data.config.kodeinInstance
+import com.airtel.data.data.config.di.appModule
+import com.airtel.data.data.config.di.bookDetailModule
+import com.airtel.data.data.config.kodeinInstance
 import com.airtel.kafka.Kafka
 import com.airtel.kafka.config.di.visionModule
 import com.airtel.kafkapp.config.EpoxyInitializer

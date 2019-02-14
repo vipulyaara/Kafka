@@ -1,7 +1,8 @@
 package com.airtel.data.data.api
 
 import com.airtel.data.model.book.BookListResponse
-import com.airtel.data.model.book.BookResponse
+import com.airtel.data.model.item.ItemDetailResponse
+import com.airtel.data.model.item.SearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,9 +21,13 @@ interface ArchiveService {
         @Query("format") format: String?
     ): Call<BookListResponse>
 
-    @GET("")
-    fun getBookDetail(
-        @Url url: String,
-        @Query("format") format: String?
-    ): Call<BookListResponse>
+    @GET("advancedsearch.php")
+    fun search(
+        @Query("q", encoded = true) query: String?
+    ): Call<SearchResponse>
+
+    @GET("/metadata/{id}")
+    fun getItemDetail(
+        @Path("id") id: String?
+    ): Call<ItemDetailResponse>
 }

@@ -1,6 +1,6 @@
 package com.airtel.kafkapp.feature.home
 
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import com.airtel.kafkapp.feature.common.BaseViewState
 
 /**

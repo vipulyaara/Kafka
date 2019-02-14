@@ -1,8 +1,8 @@
 package com.airtel.kafka.feature.common
 
 import androidx.lifecycle.ViewModel
-import com.airtel.data.config.kodeinInstance
-import com.airtel.data.config.logging.Logger
+import com.airtel.data.data.config.kodeinInstance
+import com.airtel.data.data.config.logging.Logger
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign

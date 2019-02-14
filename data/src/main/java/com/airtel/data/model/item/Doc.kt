@@ -17,16 +17,16 @@ data class Doc(
     val creator: String,
     @Json(name = "date")
     val date: String,
-    @Json(name = "description")
-    val description: String,
+//    @Json(name = "description")
+//    val description: String,
     @Json(name = "downloads")
     val downloads: Int,
     @Json(name = "external-identifier")
     val externalIdentifier: String,
     @Json(name = "foldoutcount")
     val foldoutcount: Int,
-    @Json(name = "format")
-    val format: List<String>,
+//    @Json(name = "format")
+//    val format: List<String>,
     @Json(name = "identifier")
     val identifier: String,
     @Json(name = "imagecount")
@@ -35,22 +35,22 @@ data class Doc(
     val indexflag: List<String>,
     @Json(name = "item_size")
     val itemSize: Int,
-    @Json(name = "language")
-    val language: String,
+//    @Json(name = "language")
+//    val language: String,
     @Json(name = "mediatype")
     val mediatype: String,
     @Json(name = "month")
     val month: Int,
     @Json(name = "oai_updatedate")
     val oaiUpdatedate: List<String>,
-    @Json(name = "publicdate")
-    val publicdate: String,
-    @Json(name = "publisher")
-    val publisher: String,
+//    @Json(name = "publicdate")
+//    val publicdate: String,
+//    @Json(name = "publisher")
+//    val publisher: String,
     @Json(name = "stripped_tags")
     val strippedTags: String,
-    @Json(name = "subject")
-    val subject: List<String>,
+//    @Json(name = "subject")
+//    val subject: String,
     @Json(name = "title")
     val title: String,
     @Json(name = "week")

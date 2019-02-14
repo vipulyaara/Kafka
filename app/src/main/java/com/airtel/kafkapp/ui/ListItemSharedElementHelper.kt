@@ -2,7 +2,7 @@ package com.airtel.kafkapp.ui
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 
 class ListItemSharedElementHelper(
     private val recyclerView: RecyclerView,

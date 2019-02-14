@@ -2,7 +2,8 @@ package com.airtel.kafkapp.feature.home
 
 import android.os.Bundle
 import android.view.View
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
+import com.airtel.data.entities.Item
 import com.airtel.data.model.data.Resource
 import com.airtel.kafka.ServiceRequest
 import com.airtel.kafka.observe
@@ -21,13 +22,13 @@ class HomeFragment : DataBindingFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {
     private val viewModel: BooksViewModel by viewModel()
-    private lateinit var request: ServiceRequest<Resource<List<Book>>>
+    private lateinit var request: ServiceRequest<Resource<List<Item>>>
 
     private lateinit var listSharedElementHelper: ListItemSharedElementHelper
 
     private val controller = HomeController(
         object : HomeController.Callbacks {
-            override fun onBookClicked(viewHolderId: View, item: Book) {
+            override fun onBookClicked(viewHolderId: View, item: Item) {
                 (activity as MainActivity).launchDetailFragment()
             }
         }
@@ -41,13 +42,15 @@ class HomeFragment : DataBindingFragment<FragmentHomeBinding>(
             listSharedElementHelper = ListItemSharedElementHelper(this)
         }
 
-        request = viewModel.suggestedContent("kafka").apply {
-            observe(this@HomeFragment, ::onBooksFetched)
-            execute()
-        }
+        controller.setData(arrayListOf())
+
+//        request = viewModel.suggestedContent("kafka").apply {
+//            observe(this@HomeFragment, ::onBooksFetched)
+//            execute()
+//        }
     }
 
-    private fun onBooksFetched(it: Resource<List<Book>>?) {
+    private fun onBooksFetched(it: Resource<List<Item>>?) {
         it?.let {
             logger.d("Books status ${it.status} error ${it.error} data ${it.data}")
             controller.setData(it.data)

@@ -1,8 +1,7 @@
 package com.airtel.kafkapp.feature.reviews
 
-import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import com.airtel.kafkapp.itemReview
 import com.airtel.kafkapp.itemRowHeader
 

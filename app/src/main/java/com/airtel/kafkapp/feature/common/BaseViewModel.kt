@@ -2,8 +2,9 @@ package com.airtel.kafkapp.feature.common
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.airtel.data.config.kodeinInstance
-import com.airtel.data.config.logging.Logger
+import com.airtel.data.data.config.kodeinInstance
+import com.airtel.data.data.config.logging.Logger
+import com.airtel.data.model.data.Resource
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

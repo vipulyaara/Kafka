@@ -1,6 +1,6 @@
 package com.airtel.data.feature.book
 
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import com.airtel.data.feature.Repository
 import com.airtel.data.model.data.Result
 import com.airtel.data.model.data.Success

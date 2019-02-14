@@ -2,16 +2,12 @@ package com.airtel.kafkapp.feature
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.transaction
-import com.airtel.data.data.db.entities.Book
 import com.airtel.kafkapp.R
-import com.airtel.kafkapp.feature.detail.BookDetailFragment
+import com.airtel.kafkapp.feature.detail.ItemDetailFragment
 import com.airtel.kafkapp.feature.home.HomeFragment
 import com.airtel.kafkapp.feature.search.SearchFragment
-import com.airtel.kafkapp.ui.SharedElementHelper
 import com.airtel.kafkapp.ui.widget.TabItem
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -59,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             addToBackStack("")
             replace(
                 R.id.fragmentContainer,
-                BookDetailFragment().apply { arguments = Bundle().apply { putString("contentId", "52") } })
+                ItemDetailFragment().apply { arguments = Bundle().apply { putString("itemId", "metamorphosis_librivox") } })
         }
     }
 }

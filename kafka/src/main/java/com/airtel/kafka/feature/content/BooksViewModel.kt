@@ -1,9 +1,9 @@
 package com.airtel.kafka.feature.content
 
 import androidx.lifecycle.LiveData
-import com.airtel.data.annotations.UseInjection
-import com.airtel.data.config.kodeinInstance
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.data.annotations.UseInjection
+import com.airtel.data.data.config.kodeinInstance
+import com.airtel.data.entities.Book
 import com.airtel.data.feature.book.GetBook
 import com.airtel.data.model.data.Resource
 import com.airtel.data.util.AppRxSchedulers

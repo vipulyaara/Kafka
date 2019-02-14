@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="book"
-            type="com.airtel.data.data.db.entities.Book" />
+            name="item"
+            type="com.airtel.data.entities.Item" />
 
         <variable
             name="itemClickListener"

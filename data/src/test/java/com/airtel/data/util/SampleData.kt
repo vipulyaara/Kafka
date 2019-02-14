@@ -1,7 +1,7 @@
 package com.airtel.data.util
 
 import com.airtel.data.data.db.MiddlewareDb
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import java.time.OffsetDateTime
 
 const val book1Id = 1L

@@ -1,6 +1,6 @@
 package com.airtel.data.feature.common
 
-import com.airtel.data.config.kodeinInstance
+import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.data.api.ArchiveService
 import com.airtel.data.data.api.RetrofitRunner
 import org.kodein.di.generic.instance

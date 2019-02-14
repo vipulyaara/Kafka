@@ -5,7 +5,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyController
-import com.airtel.data.config.initializers.AppInitializer
+import com.airtel.data.data.config.initializers.AppInitializer
 
 class EpoxyInitializer : AppInitializer {
     override fun init(application: Application) {

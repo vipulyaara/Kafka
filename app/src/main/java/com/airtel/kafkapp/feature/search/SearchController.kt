@@ -2,7 +2,7 @@ package com.airtel.kafkapp.feature.search
 
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import com.airtel.kafkapp.ItemBookBindingModel_
 import com.airtel.kafkapp.ItemSearchHistoryBindingModel_
 import com.airtel.kafkapp.R

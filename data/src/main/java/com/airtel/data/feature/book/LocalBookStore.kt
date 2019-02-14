@@ -2,7 +2,7 @@ package com.airtel.data.feature.book
 
 import com.airtel.data.data.db.DatabaseTransactionRunner
 import com.airtel.data.data.db.dao.BookDao
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import io.reactivex.Flowable
 
 /**

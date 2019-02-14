@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.airtel.data.config.kodeinInstance
-import com.airtel.data.config.logging.Logger
+import com.airtel.data.data.config.kodeinInstance
+import com.airtel.data.data.config.logging.Logger
 import org.kodein.di.generic.instance
 
 /**

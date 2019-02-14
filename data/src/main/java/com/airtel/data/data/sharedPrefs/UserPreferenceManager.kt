@@ -2,8 +2,8 @@ package com.airtel.data.data.sharedPrefs
 
 import android.app.Application
 import android.content.Context
-import com.airtel.data.annotations.UseInjection
-import com.airtel.data.annotations.UseSingleton
+import com.airtel.data.data.annotations.UseInjection
+import com.airtel.data.data.annotations.UseSingleton
 
 /**
  * Created by Aditya Mehta on 26/03/18.

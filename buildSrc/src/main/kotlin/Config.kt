@@ -110,6 +110,7 @@ object Retrofit {
     const val version = "2.3.0"
     const val runtime = "com.squareup.retrofit2:retrofit:$version"
     const val gson = "com.squareup.retrofit2:converter-gson:$version"
+    const val moshi = "com.squareup.retrofit2:converter-moshi:$version"
     const val rxjava = "com.squareup.retrofit2:adapter-rxjava2:$version"
 }
 

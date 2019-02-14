@@ -1,7 +1,7 @@
 package com.airtel.data.feature.book
 
-import com.airtel.data.data.db.entities.Book
-import com.airtel.data.data.db.entities.toBook
+import com.airtel.data.entities.Book
+import com.airtel.data.entities.toBook
 import com.airtel.data.data.mapper.Mapper
 import com.airtel.data.extensions.executeWithRetry
 import com.airtel.data.feature.common.DataSource

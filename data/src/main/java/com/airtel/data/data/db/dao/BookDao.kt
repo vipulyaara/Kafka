@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
 import io.reactivex.Flowable
 
 /**

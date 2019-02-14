@@ -3,7 +3,8 @@ package com.airtel.kafkapp.feature.home
 import android.view.View
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.entities.Book
+import com.airtel.data.entities.Item
 import com.airtel.kafkapp.ItemAuthorBindingModel_
 import com.airtel.kafkapp.ItemBannerBindingModel_
 import com.airtel.kafkapp.ItemBookBindingModel_
@@ -18,8 +19,8 @@ import com.airtel.kafkapp.ui.epoxy.withModelsFrom
  */
 class HomeController(
     private val callbacks: Callbacks
-) : TypedEpoxyController<List<Book>>() {
-    override fun buildModels(data: List<Book>?) {
+) : TypedEpoxyController<List<Item>>() {
+    override fun buildModels(data: List<Item>?) {
 
         carousel {
             id("banner")
@@ -65,7 +66,7 @@ class HomeController(
                     .id(it.id)
                     .transitionName("poster")
                     .itemClickListener { v, _, clickedView, _ ->
-                        callbacks.onBookClicked(clickedView, it)
+                        callbacks.onBookClicked(clickedView, Item())
                     }
                     .resource(getRandomCoverResource())
             }
@@ -88,6 +89,6 @@ class HomeController(
     }
 
     interface Callbacks {
-        fun onBookClicked(viewHolderId: View, item: Book)
+        fun onBookClicked(viewHolderId: View, item: Item)
     }
 }

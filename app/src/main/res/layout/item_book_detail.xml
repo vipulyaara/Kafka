@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="book"
-            type="com.airtel.data.data.db.entities.Book"/>
+            name="item"
+            type="com.airtel.data.entities.ItemDetail"/>
 
         <variable
             name="clickListener"
@@ -45,6 +45,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                srcUrl="@{item.coverImage}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_cover_2" />
         </com.google.android.material.card.MaterialCardView>
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_mini"
             android:fontFamily="sans-serif-medium"
-            android:text="@{book.title}"
+            android:text="@{item.title}"
             android:textColor="@color/text_heading"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/tvAuthorName"
@@ -68,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_xlarge"
             android:fontFamily="@font/alegreya_bold"
-            android:text="by Franz kafka"
+            android:text="@{`by ` + item.creator}"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@id/ratingWidget"
@@ -92,7 +93,7 @@
             android:ellipsize="end"
             android:lineSpacingExtra="@dimen/spacing_mini"
             android:maxLines="4"
-            android:text="@{book.description}"
+            htmlText="@{item.description}"
             android:layout_marginBottom="@dimen/spacing_xxlarge"
             app:layout_constraintBottom_toTopOf="@id/btnSeeReviews"
             app:layout_constraintEnd_toEndOf="parent"

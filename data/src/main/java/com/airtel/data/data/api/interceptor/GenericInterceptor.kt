@@ -1,6 +1,5 @@
 package com.airtel.data.data.api.interceptor
 
-import com.airtel.data.util.NetworkConstants
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -12,6 +11,8 @@ internal class GenericInterceptor : Interceptor {
         var request = chain.request()
         val url = request.url().newBuilder()
             .addQueryParameter("output", "json")
+            .addQueryParameter("rows", "10")
+            .addQueryParameter("page", "1")
             .build()
         request = request.newBuilder().url(url).method(request.method(), request.body()).build()
         return chain.proceed(request)!!

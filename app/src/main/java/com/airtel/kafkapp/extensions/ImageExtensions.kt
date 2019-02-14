@@ -6,6 +6,8 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.migration.Migration
 
 /**
  * Created by VipulKumar on 21/09/18.
@@ -23,12 +25,12 @@ inline fun ImageView.loadImage(
     }
 }
 
-@BindingAdapter(value = ["imageUrl"])
-fun imageUrl(
+@BindingAdapter(value = ["srcUrl"])
+fun srcUrl(
     view: ImageView,
-    imageUrl: String?
+    srcUrl: String?
 ) {
-    imageUrl?.let {
-        view.loadImage { load(imageUrl) }
+    srcUrl?.let {
+        view.loadImage { load(srcUrl) }
     }
 }

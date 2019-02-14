@@ -4,9 +4,9 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
-import com.airtel.data.config.kodeinInstance
-import com.airtel.data.config.logging.Logger
-import com.airtel.data.data.db.entities.Book
+import com.airtel.data.data.config.kodeinInstance
+import com.airtel.data.data.config.logging.Logger
+import com.airtel.data.entities.Book
 import com.airtel.kafkapp.R
 import org.kodein.di.generic.instance
 import java.util.Random
