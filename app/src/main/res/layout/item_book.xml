@@ -33,8 +33,7 @@
             android:outlineAmbientShadowColor="@color/app_blue_dark"
             android:outlineSpotShadowColor="@color/app_blue_dark"
             app:cardCornerRadius="3dp"
-            app:cardElevation="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,12 +41,29 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:transitionName="@{transitionName}"
                 android:onClickListener="@{itemClickListener}"
-                android:src="@{resource}"
+                android:transitionName="@{transitionName}"
+                app:srcUrl="@{item.coverImage}"
                 tools:src="@drawable/img_cover_5" />
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvBookName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:fontFamily="sans-serif-medium"
+            android:lines="2"
+            android:maxLines="2"
+            android:text="@{item.title}"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/text_heading"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coverCard"
+            tools:text="@tools:sample/lorem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

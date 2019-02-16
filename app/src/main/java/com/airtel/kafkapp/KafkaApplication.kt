@@ -2,11 +2,10 @@ package com.airtel.kafkapp
 
 import android.app.Application
 import com.airtel.data.data.config.di.appModule
-import com.airtel.data.data.config.di.bookDetailModule
+import com.airtel.data.data.config.di.dataModule
 import com.airtel.data.data.config.kodeinInstance
-import com.airtel.kafka.Kafka
-import com.airtel.kafka.config.di.visionModule
 import com.airtel.kafkapp.config.EpoxyInitializer
+import com.airtel.kafkapp.config.StethoInitializer
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.androidModule
@@ -18,22 +17,13 @@ class KafkaApplication : Application(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         import(androidModule(this@KafkaApplication))
         import(appModule)
-        import(bookDetailModule)
-        import(visionModule)
+        import(dataModule)
     }
 
     override fun onCreate() {
         super.onCreate()
         kodeinInstance = kodein
-        initVision()
         EpoxyInitializer().init(this)
-    }
-
-    private fun initVision() {
-        val configuration = Kafka.configuration {
-            appId = "my_app_id"
-            debuggable = true
-        }
-        Kafka.init(this, configuration)
+        StethoInitializer().init(this)
     }
 }

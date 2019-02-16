@@ -12,9 +12,10 @@ import androidx.collection.arrayMapOf
 const val _mediaType = "mediaType"
 const val _mediaTypeText = "texts"
 const val _books = "texts"
-const val _mediaTypeAudio = "audio"
+const val _audio = "audio"
 const val _image = "image"
 const val _video = "video"
+const val _collection = "collection"
 
 const val _creator = "creator"
 const val _genre = "genre"
@@ -24,14 +25,26 @@ data class ArchiveQuery(
     val queries: ArrayMap<String, String> = arrayMapOf()
 )
 
-fun ArchiveQuery.booksByAuthor(author: String): ArchiveQuery {
-    queries[_mediaType] = _books
+fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
+    queries[_mediaType] = _audio
+    queries[_collection] = collection
+    return this
+}
+
+fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
+    queries[_mediaType] = _audio
+    queries[_searchTerm] = keyword
+    return this
+}
+
+fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
+    queries[_mediaType] = _audio
     queries[_creator] = author
     return this
 }
 
-fun ArchiveQuery.booksByGenre(genre: String): ArchiveQuery {
-    queries[_mediaType] = _books
+fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
+    queries[_mediaType] = _audio
     queries[_genre] = genre
     return this
 }

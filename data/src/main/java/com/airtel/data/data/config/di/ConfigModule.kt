@@ -26,7 +26,7 @@ import org.kodein.di.generic.singleton
  * @author Vipul Kumar; dated 21/10/18.
  */
 
-val bookDetailModule = Kodein.Module("bookDetailModule") {
+val dataModule = Kodein.Module("dataModule") {
 
     bind<BookRepository>() with provider {
         BookRepository(instance(), instance())

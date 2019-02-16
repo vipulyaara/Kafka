@@ -16,8 +16,8 @@
     <!--<color name="background_light">#EAEDF3</color>-->
     <color name="separator">#f3f3f3</color>
 
-    <color name="icon_tint">#7B8994</color>
-    <color name="icon_tint_light">#E1E4E6</color>
+    <color name="icon_tint">#6E7B8C</color>
+    <color name="icon_tint_light">#E1E4E9</color>
 
     <color name="app_red">#ff006a</color>
     <color name="app_red_dark">#BA0550</color>

@@ -1,5 +1,6 @@
 package com.airtel.data.model.item
 
+import com.airtel.data.model.SingleToArray
 import com.squareup.moshi.Json
 
 data class Doc(
@@ -9,24 +10,29 @@ data class Doc(
     val btih: String,
     @Json(name = "call_number")
     val callNumber: String,
+    @SingleToArray
     @Json(name = "collection")
     val collection: List<String>,
+    @SingleToArray
     @Json(name = "contributor")
-    val contributor: String,
+    val contributor: List<String>,
+    @SingleToArray
     @Json(name = "creator")
-    val creator: String,
+    val creator: List<String>?,
     @Json(name = "date")
     val date: String,
-//    @Json(name = "description")
-//    val description: String,
+    @SingleToArray
+    @Json(name = "description")
+    val description: List<String>?,
     @Json(name = "downloads")
     val downloads: Int,
     @Json(name = "external-identifier")
     val externalIdentifier: String,
     @Json(name = "foldoutcount")
     val foldoutcount: Int,
-//    @Json(name = "format")
-//    val format: List<String>,
+    @SingleToArray
+    @Json(name = "format")
+    val format: List<String>,
     @Json(name = "identifier")
     val identifier: String,
     @Json(name = "imagecount")
@@ -35,8 +41,9 @@ data class Doc(
     val indexflag: List<String>,
     @Json(name = "item_size")
     val itemSize: Int,
-//    @Json(name = "language")
-//    val language: String,
+    @SingleToArray
+    @Json(name = "language")
+    val language: List<String>,
     @Json(name = "mediatype")
     val mediatype: String,
     @Json(name = "month")
@@ -49,8 +56,9 @@ data class Doc(
 //    val publisher: String,
     @Json(name = "stripped_tags")
     val strippedTags: String,
-//    @Json(name = "subject")
-//    val subject: String,
+    @SingleToArray
+    @Json(name = "subject")
+    val subject: List<String>,
     @Json(name = "title")
     val title: String,
     @Json(name = "week")

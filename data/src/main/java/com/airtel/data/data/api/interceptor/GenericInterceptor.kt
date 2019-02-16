@@ -11,7 +11,7 @@ internal class GenericInterceptor : Interceptor {
         var request = chain.request()
         val url = request.url().newBuilder()
             .addQueryParameter("output", "json")
-            .addQueryParameter("rows", "10")
+            .addQueryParameter("rows", "40")
             .addQueryParameter("page", "1")
             .build()
         request = request.newBuilder().url(url).method(request.method(), request.body()).build()

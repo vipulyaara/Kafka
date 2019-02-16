@@ -4,6 +4,7 @@ import com.dicedmelon.gradle.jacoco.android.JacocoAndroidUnitTestReportExtension
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import org.jmailen.gradle.kotlinter.support.ReporterType
 import org.gradle.api.publish.maven.MavenPom
+import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
@@ -24,6 +25,7 @@ allprojects {
         mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         jcenter()
+        maven(url = "https://kotlin.bintray.com/kotlinx")
     }
 }
 
@@ -86,6 +88,7 @@ subprojects {
             plugin(Kotlin.androidExtensionsPlugin)
             plugin(Jacoco.Android.plugin)
         }
+
 
         configure<BaseExtension> {
             compileSdkVersion(Kafka.compileSdkVersion)

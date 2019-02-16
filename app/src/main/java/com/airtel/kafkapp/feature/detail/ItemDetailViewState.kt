@@ -1,15 +1,17 @@
 package com.airtel.kafkapp.feature.detail
 
-import com.airtel.data.entities.Book
+import com.airbnb.mvrx.MvRxState
 import com.airtel.data.entities.Item
 import com.airtel.data.entities.ItemDetail
-import com.airtel.kafkapp.feature.common.BaseViewState
 
 /**
  * @author Vipul Kumar; dated 27/12/18.
  */
 data class ItemDetailViewState(
-    var itemDetail: ItemDetail = ItemDetail(),
-    var itemsByCreator: List<Item> = arrayListOf(),
-    var isLoading: Boolean = false
-) : BaseViewState()
+    val itemId: String,
+    val itemDetail: ItemDetail? = null,
+    val itemsByCreator: List<Item>? = null,
+    val isLoading: Boolean = false
+) : MvRxState {
+    constructor(args: ItemDetailFragment.Arguments) : this(args.id)
+}

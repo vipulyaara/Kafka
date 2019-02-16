@@ -2,9 +2,12 @@ package com.airtel.kafkapp.feature.common
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.airbnb.mvrx.BaseMvRxViewModel
+import com.airbnb.mvrx.MvRxState
 import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.data.config.logging.Logger
 import com.airtel.data.model.data.Resource
+import com.airtel.kafkapp.BuildConfig
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -25,32 +28,24 @@ import org.kodein.di.generic.instance
  * .subscribeOn(schedulers.io)
  * .execute { state }
  *
- * the fragments can then flowable [observableState] and listen to any changes.
  */
-open class BaseViewModel<S : BaseViewState>(
-    var state: S
-) : ViewModel(), IBaseViewModel {
+open class BaseViewModel<S : MvRxState>(
+    initialState: S
+) : BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG), IBaseViewModel {
+
+    init {
+        logStateChanges()
+    }
+
     private val job = Job()
 
     protected val logger: Logger by kodeinInstance.instance()
     override val disposables = CompositeDisposable()
     override val scope = CoroutineScope(Dispatchers.Main + job)
-    var observableState = MediatorLiveData<S>()
 
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
         job.cancel()
-    }
-
-    /** posts a new state value to [observableState] which is usually observed by the fragment. */
-    fun <T> Observable<T>.execute(
-        stateReducer: S.(T) -> S
-    ): Disposable {
-        return map { stateReducer.invoke(state, it) }
-            .subscribe {
-                state = it
-                observableState.postValue(it)
-            }
     }
 }

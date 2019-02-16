@@ -2,36 +2,49 @@ package com.airtel.kafkapp.feature.detail
 
 import android.view.View
 import com.airbnb.epoxy.Carousel
-import com.airbnb.epoxy.TypedEpoxyController
+import com.airtel.data.entities.Item
 import com.airtel.kafkapp.ItemBookBindingModel_
+import com.airtel.kafkapp.extensions.carousel
 import com.airtel.kafkapp.extensions.getRandomCoverResource
+import com.airtel.kafkapp.extensions.withModelsFrom
+import com.airtel.kafkapp.feature.common.BaseEpoxyController
 import com.airtel.kafkapp.itemBookDetail
+import com.airtel.kafkapp.itemLoader
 import com.airtel.kafkapp.itemRowHeader
-import com.airtel.kafkapp.ui.epoxy.carousel
-import com.airtel.kafkapp.ui.epoxy.withModelsFrom
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
  */
-class ItemDetailController(
-    private val callbacks: Callbacks
-) : TypedEpoxyController<ItemDetailViewState>() {
-    override fun buildModels(viewState: ItemDetailViewState?) {
 
-        viewState?.itemDetail?.let {
-            itemBookDetail {
-                id(it.id)
-                item(it)
-                clickListener { _, _, clickedView, _ ->
-                    clickedView.animateBookOpen()
-                }
-                reviewsClickListener { _, _, _, _ ->
-                    callbacks.onReviewsClicked()
-                }
+class ItemDetailController constructor(private val callbacks: Callbacks) :
+    BaseEpoxyController<ItemDetailViewState>() {
+
+    override fun buildModels(viewState: ItemDetailViewState) {
+        if (viewState.isLoading) {
+            buildLoadingState()
+        } else {
+            buildDetailModels(viewState)
+        }
+    }
+
+    private fun buildLoadingState() {
+        itemLoader { id("loader") }
+    }
+
+    private fun buildDetailModels(viewState: ItemDetailViewState) {
+
+        itemBookDetail {
+            id(viewState.itemDetail?.itemId)
+            item(viewState.itemDetail)
+            clickListener { _, _, clickedView, _ ->
+                clickedView.animateBookOpen()
+            }
+            reviewsClickListener { _, _, _, _ ->
+                callbacks.onReviewsClicked()
             }
         }
 
-        viewState?.itemsByCreator?.let { list ->
+        viewState.itemsByCreator?.let { list ->
             itemRowHeader {
                 id("row header")
                 text("Books by Franz Kafka")
@@ -42,8 +55,11 @@ class ItemDetailController(
                 padding(Carousel.Padding.dp(12, 12))
                 withModelsFrom(list) {
                     ItemBookBindingModel_()
-                        .id(it.contentId)
+                        .id(it.itemId)
                         .item(it)
+                        .itemClickListener { model, parentView, clickedView, position ->
+                            callbacks.onItemClicked(it)
+                        }
                         .resource(getRandomCoverResource())
                 }
             }
@@ -62,5 +78,6 @@ class ItemDetailController(
 
     interface Callbacks {
         fun onReviewsClicked()
+        fun onItemClicked(item: Item)
     }
 }

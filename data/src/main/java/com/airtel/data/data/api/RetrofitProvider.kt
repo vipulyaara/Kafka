@@ -2,7 +2,9 @@ package com.airtel.data.data.api
 
 import android.app.Application
 import com.airtel.data.data.api.interceptor.GenericInterceptor
+import com.airtel.data.model.SingleToArrayAdapter
 import com.airtel.data.util.NetworkConstants.baseUrl
+import com.squareup.moshi.Moshi
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,7 +23,13 @@ internal object RetrofitProvider {
 
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder().add(
+                        SingleToArrayAdapter.INSTANCE
+                    ).build()
+                )
+            )
             .client(provideOkHttpClient(context))
             .build()
     }

@@ -128,6 +128,11 @@ object Epoxy {
     const val paging = "com.airbnb.android:epoxy-paging:$version"
 }
 
+object MvRx {
+    const val version = "0.7.2"
+    const val core = "com.airbnb.android:mvrx:$version"
+}
+
 // Modules dependencies
 object Forge {
     const val version = "0.3.0"

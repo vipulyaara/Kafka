@@ -20,7 +20,6 @@ class BookReviewFragment : BottomSheetDialogFragment() {
     private val controller = BookReviewController(
         object : BookReviewController.Callbacks {
             override fun onReviewsClicked() {
-                (activity as MainActivity).launchSearchFragment()
             }
         }
     )

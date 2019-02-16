@@ -2,34 +2,30 @@ package com.airtel.kafkapp.feature
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.fragment.app.transaction
 import com.airtel.kafkapp.R
 import com.airtel.kafkapp.feature.detail.ItemDetailFragment
-import com.airtel.kafkapp.feature.home.HomeFragment
 import com.airtel.kafkapp.feature.search.SearchFragment
 import com.airtel.kafkapp.ui.widget.TabItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        launchHomeFragment()
+        launchMainFragment()
 
-        toolbar.setNavigationOnClickListener { launchSearchFragment() }
+        toolbar.apply {
+            inflateMenu(R.menu.menu_book_detail)
+            setOnMenuItemClickListener(this@MainActivity::onMenuItemClicked)
+        }
 
         setSupportActionBar(toolbar).also { title = "" }
-
-        val icons = arrayOf(
-            R.drawable.ic_home,
-            R.drawable.ic_explore,
-            R.drawable.ic_library,
-            R.drawable.ic_library,
-            R.drawable.ic_library
-        )
-        repeat(5) { bottomBar.addItem(TabItem(icons[it])) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,25 +33,34 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    fun launchSearchFragment() {
+    private fun launchMainFragment() {
         supportFragmentManager.transaction {
-            add(R.id.fragmentContainer, SearchFragment())
-            addToBackStack("")
+            replace(R.id.fragmentContainer, MainFragment())
         }
     }
 
-    fun launchHomeFragment() {
+    fun launchSearchFragment() {
         supportFragmentManager.transaction {
-            replace(R.id.fragmentContainer, HomeFragment())
+            replace(R.id.fragmentContainer, SearchFragment())
+            addToBackStack("")
         }
     }
 
     fun launchDetailFragment() {
         supportFragmentManager.transaction {
             addToBackStack("")
-            replace(
+            add(
                 R.id.fragmentContainer,
-                ItemDetailFragment().apply { arguments = Bundle().apply { putString("itemId", "metamorphosis_librivox") } })
+                ItemDetailFragment.create("metamorphosis_librivox")
+            )
         }
+    }
+
+    private fun onMenuItemClicked(item: MenuItem) = when (item.itemId) {
+        R.id.menu_share -> {
+            launchSearchFragment()
+            true
+        }
+        else -> false
     }
 }

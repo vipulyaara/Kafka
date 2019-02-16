@@ -9,8 +9,8 @@ data class Metadata(
     val backupLocation: String,
     @Json(name = "boxid")
     val boxid: String,
-    @Json(name = "collection")
-    val collection: List<String>,
+//    @Json(name = "collection")
+//    val collection: List<String>,
     @Json(name = "creator")
     val creator: String,
     @Json(name = "curation")
@@ -31,18 +31,18 @@ data class Metadata(
     val runtime: String,
     @Json(name = "source")
     val source: String,
-    @Json(name = "subject")
-    val subject: String,
+//    @Json(name = "subject")
+//    val subject: String,
     @Json(name = "taper")
     val taper: String,
     @Json(name = "title")
     val title: String,
-    @Json(name = "updatedate")
-    val updatedate: List<String>,
-    @Json(name = "updater")
-    val updater: List<String>,
-    @Json(name = "uploader")
-    val uploader: String,
+//    @Json(name = "updatedate")
+//    val updatedate: List<String>,
+//    @Json(name = "updater")
+//    val updater: List<String>,
+//    @Json(name = "uploader")
+//    val uploader: String,
     @Json(name = "year")
     val year: String
 )

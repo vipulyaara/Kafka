@@ -4,6 +4,7 @@ pluginManagement {
         mavenCentral()
         jcenter()
         maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://kotlin.bintray.com/kotlinx")
     }
     resolutionStrategy {
         eachPlugin {
@@ -22,4 +23,3 @@ pluginManagement {
 
 include(":app")
 include(":data")
-include(":kafka")

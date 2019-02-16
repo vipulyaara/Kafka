@@ -6,7 +6,6 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.data.config.logging.Logger
-import com.airtel.data.entities.Book
 import com.airtel.kafkapp.R
 import org.kodein.di.generic.instance
 import java.util.Random
@@ -14,6 +13,13 @@ import java.util.Random
 /**
  * @author Vipul Kumar; dated 22/01/19.
  */
+
+/**
+ * "let"s when the collection is non-null and non-empty
+ * */
+fun <T : Collection<*>> T?.letEmpty(f: (it: T) -> Unit) {
+    if (this != null && this.isNotEmpty()) f(this)
+}
 
 internal val logger: Logger by kodeinInstance.instance()
 
@@ -34,18 +40,16 @@ fun getRandomCoverResource(): Int {
     return covers[Random().nextInt(covers.size - 1)]
 }
 
-fun getBooks() = arrayListOf<Book>()
-    .apply {
-        repeat(20) {
-            this.add(Book(bookId = "$it"))
-        }
-    }
-
 fun TextView.spanColor(textToBold: String, fullText: String, targetColor: Int) =
     SpannableStringBuilder(fullText).apply {
         setSpan(
             ForegroundColorSpan(targetColor),
             fullText.indexOf(textToBold),
             (fullText.indexOf(textToBold) + textToBold.length),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
+
+fun illegalArgumentException(msg: String): Nothing = throw RuntimeException(msg)
+
+

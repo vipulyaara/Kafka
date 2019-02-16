@@ -1,6 +1,7 @@
 import com.android.build.gradle.BaseExtension
 import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 
 plugins {
     id(Android.appPlugin)
@@ -9,8 +10,14 @@ plugins {
     id(Kotlin.androidExtensionsPlugin)
 }
 
+androidExtensions {
+    configure(delegateClosureOf<AndroidExtensionsExtension> {
+        isExperimental = true
+    })
+}
+
 dependencies {
-    implementation((project(":kafka")))
+    implementation((project(":data")))
 
     implementation(Kotlin.stdlib)
 
@@ -43,6 +50,7 @@ dependencies {
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Coroutines.rx)
+    implementation(KotlinX.Serialization.dependency)
 
     implementation(RxJava.rxJava2)
     implementation(RxJava.rxAndroid)
@@ -52,6 +60,10 @@ dependencies {
     implementation(Epoxy.dataBinding)
     kapt(Epoxy.processor)
     implementation(Epoxy.paging)
+
+    implementation(MvRx.core)
+
+    implementation(Lottie.core)
 
     implementation(Kodein.runtime)
     implementation(Kodein.androidX)

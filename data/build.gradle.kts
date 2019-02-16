@@ -27,6 +27,7 @@ dependencies {
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Coroutines.rx)
+    implementation(KotlinX.Serialization.dependency)
 
     implementation(RxJava.rxJava2)
     implementation(RxJava.rxAndroid)

@@ -17,6 +17,9 @@ abstract class SearchDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertItems(items: List<Item>)
 
+//    @Query("select * from Item where collection like  '%' || :creator || '%'")
+//    abstract fun searchItemsFlowable(creator: String): Flowable<List<Item>>
+
     @Query("select * from Item where creator = :creator")
     abstract fun searchItemsFlowable(creator: String): Flowable<List<Item>>
 }

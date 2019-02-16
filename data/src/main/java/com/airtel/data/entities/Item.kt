@@ -10,27 +10,30 @@ import com.airtel.data.model.item.Doc
  */
 @Entity
 data class Item(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val contentId: String? = null,
+    @PrimaryKey val itemId: String = "",
     val language: String? = null,
     val title: String? = null,
     val description: String? = null,
     val creator: String? = null,
-    val mediaType: String? = null
+    val mediaType: String? = null,
+    val coverImage: String? = null,
+    val collection: List<String>? = null
 ) {
 
-    fun generateStableId(): Long {
-        return id
+    fun generateStableId(): String {
+        return itemId
     }
 }
 
 fun Doc.toArchiveItem() = Item(
-    contentId = this.identifier,
+    itemId = this.identifier,
     language = "",
     title = this.title,
     description = "",
-    creator = this.creator,
-    mediaType = this.mediatype
+    creator = this.creator?.get(0),
+    mediaType = this.mediatype,
+    coverImage = "https://archive.org/services/img/$identifier",
+    collection = this.collection
 )
 
 fun Item.mediaType() = mediaType(mediaType)
