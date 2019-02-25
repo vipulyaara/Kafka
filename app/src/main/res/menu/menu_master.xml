@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_share"
-        android:icon="@drawable/ic_drafts_black_24dp"
-        android:title="Share"
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
         app:showAsAction="always" />
 </menu>

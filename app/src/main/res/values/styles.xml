@@ -19,6 +19,11 @@
         <item name="android:textColorHint">@color/text_body_2</item>
     </style>
 
+    <style name="FrameTheme.ThemeTransitionAnimation">
+        <item name="android:windowEnterAnimation">@anim/window_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/window_fade_out</item>
+    </style>
+
     <style name="Headline5" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">bold</item>
@@ -36,14 +41,14 @@
     <style name="Headline2" parent="TextAppearance.MaterialComponents.Headline2">
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -59,6 +64,6 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingExtra">4dp</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
     </style>
 </resources>

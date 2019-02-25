@@ -7,5 +7,5 @@ import com.airtel.data.entities.Item
  */
 data class ItemRail(
     val title: String = "",
-    val items: List<Item>
+    val items: List<Item>?
 )

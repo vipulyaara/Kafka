@@ -4,6 +4,7 @@ import android.view.View
 import com.airbnb.epoxy.Carousel
 import com.airtel.data.entities.Item
 import com.airtel.kafkapp.ItemBookBindingModel_
+import com.airtel.kafkapp.databinding.ItemBookDetailBinding
 import com.airtel.kafkapp.extensions.carousel
 import com.airtel.kafkapp.extensions.getRandomCoverResource
 import com.airtel.kafkapp.extensions.withModelsFrom
@@ -11,6 +12,7 @@ import com.airtel.kafkapp.feature.common.BaseEpoxyController
 import com.airtel.kafkapp.itemBookDetail
 import com.airtel.kafkapp.itemLoader
 import com.airtel.kafkapp.itemRowHeader
+import com.airtel.kafkapp.ui.SharedElementHelper
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
@@ -20,7 +22,7 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
     BaseEpoxyController<ItemDetailViewState>() {
 
     override fun buildModels(viewState: ItemDetailViewState) {
-        if (viewState.isLoading) {
+        if (viewState.isLoading && viewState.itemDetail == null) {
             buildLoadingState()
         } else {
             buildDetailModels(viewState)
@@ -36,8 +38,9 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
         itemBookDetail {
             id(viewState.itemDetail?.itemId)
             item(viewState.itemDetail)
-            clickListener { _, _, clickedView, _ ->
+            clickListener { _, parentView, clickedView, _ ->
                 clickedView.animateBookOpen()
+                (parentView.dataBinding as ItemBookDetailBinding).coverCard2.animateScale()
             }
             reviewsClickListener { _, _, _, _ ->
                 callbacks.onReviewsClicked()
@@ -58,7 +61,9 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
                         .id(it.itemId)
                         .item(it)
                         .itemClickListener { model, parentView, clickedView, position ->
-                            callbacks.onItemClicked(it)
+                            callbacks.onItemClicked(it, SharedElementHelper().apply {
+                                addSharedElement(clickedView, "poster")
+                            })
                         }
                         .resource(getRandomCoverResource())
                 }
@@ -68,16 +73,25 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
 
     private fun View.animateBookOpen() {
         this.animate()
-            .scaleX(2.5f)
-            .scaleY(2.5f)
-            .rotationY(-80f)
-            .translationXBy(-100f)
-            .setDuration(700)
+            .scaleX(2f)
+            .scaleY(2f)
+            .rotationY(-90f)
+            .translationX(-500f)
+            .setDuration(500)
+            .start()
+    }
+
+    private fun View.animateScale() {
+        this.animate()
+            .scaleX(4f)
+            .scaleY(4f)
+            .translationX(-500f)
+            .setDuration(500)
             .start()
     }
 
     interface Callbacks {
         fun onReviewsClicked()
-        fun onItemClicked(item: Item)
+        fun onItemClicked(item: Item, sharedElements: SharedElementHelper)
     }
 }

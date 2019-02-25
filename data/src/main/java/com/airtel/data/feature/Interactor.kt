@@ -76,8 +76,6 @@ abstract class SubjectInteractor<P : Any, EP, T> : Interactor<EP> {
         disposable = null
     }
 
-    fun flowable(): Flowable<T> = subject.toFlowable()
-
     fun observable(): Observable<T> = subject.toFlowable().toObservable()
 
     private fun setSource(source: Flowable<T>) {

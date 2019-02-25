@@ -5,6 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background_light"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -18,7 +19,7 @@
             android:outlineAmbientShadowColor="@color/shadow"
             android:outlineSpotShadowColor="@color/shadow"
             app:cardCornerRadius="2dp"
-            app:cardElevation="24dp"
+            app:cardElevation="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvCancel"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,9 @@
 package com.airtel.kafkapp.feature.home
 
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
+import androidx.core.view.ViewCompat
 import com.airbnb.epoxy.Carousel
 import com.airtel.data.entities.Item
 import com.airtel.kafkapp.ItemAuthorBindingModel_
@@ -32,32 +35,36 @@ class HomepageController constructor(private val callbacks: Callbacks) :
         itemLoader { id("loader") }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun buildHomepageModels(viewState: HomepageViewState) {
 
         carousel {
             id("banner")
-            padding(Carousel.Padding.dp(2, 2))
+            padding(Carousel.Padding.dp(0, 0))
             withModelsFrom(arrayListOf(1, 2, 3, 4, 5, 6, 78, 9, 10, 11, 12, 13, 14, 15)) {
                 ItemBannerBindingModel_()
+                    .itemClickListener { model, parentView, clickedView, position ->
+                        callbacks.onBannerClicked()
+                    }
                     .id(it)
             }
         }
 
-        viewState.items?.let { items ->
+        viewState.items?.forEach {
             itemRowHeader {
                 id("row headers")
-                text("Books by Kafka")
+                text(it.title)
             }
 
             carousel {
-                id("items by kafka")
+                id(it.title)
                 padding(Carousel.Padding.dp(12, 12))
-                withModelsFrom(items) {
+                withModelsFrom(it.items ?: arrayListOf()) {
                     ItemBookBindingModel_()
                         .id(it.itemId)
                         .item(it)
-                        .transitionName("poster")
                         .itemClickListener { v, _, clickedView, _ ->
+                            clickedView.transitionName = it.itemId
                             callbacks.onBookClicked(clickedView, it)
                         }
                 }
@@ -81,6 +88,7 @@ class HomepageController constructor(private val callbacks: Callbacks) :
     }
 
     interface Callbacks {
-        fun onBookClicked(viewHolderId: View, item: Item)
+        fun onBookClicked(view: View, item: Item)
+        fun onBannerClicked()
     }
 }

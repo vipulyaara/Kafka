@@ -6,6 +6,7 @@ import com.airtel.data.data.annotations.UseInjection
 import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.feature.item.SearchItems
 import com.airtel.data.feature.launchInteractor
+import com.airtel.data.model.ItemRail
 import com.airtel.data.query.ArchiveQuery
 import com.airtel.data.query.booksByAuthor
 import com.airtel.data.query.booksByCollection
@@ -35,13 +36,16 @@ class HomepageViewModel : BaseViewModel<HomepageViewState>(
             .toObservable()
             .subscribeOn(schedulers.io)
             .doOnError(logger::e)
-            .execute { copy(items = it()) }
+            .execute {
+                copy(items = arrayListOf(ItemRail("Suggested Books", it())))
+            }
 
         refresh("Franz Kafka")
+//        refresh("librivoxaudio")
     }
 
-    private fun refresh(collection: String) {
-        booksByAuthor.setParams(SearchItems.Params(ArchiveQuery().booksByAuthor(collection)))
+    private fun refresh(author: String) {
+        booksByAuthor.setParams(SearchItems.Params(ArchiveQuery().booksByAuthor(author)))
         scope.launchInteractor(booksByAuthor, SearchItems.ExecuteParams())
     }
 

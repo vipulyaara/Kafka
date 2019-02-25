@@ -21,7 +21,7 @@
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/motionContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingStart="@dimen/spacing_large"
@@ -30,27 +30,39 @@
         android:paddingBottom="@dimen/spacing_large">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/coverCard2"
+            android:layout_width="196dp"
+            android:layout_margin="@dimen/spacing_xlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="258dp"/>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverCard"
             android:layout_width="196dp"
             android:layout_height="258dp"
             android:layout_margin="@dimen/spacing_xlarge"
             android:onClickListener="@{clickListener}"
-            android:outlineAmbientShadowColor="@color/app_blue_dark"
-            android:outlineSpotShadowColor="@color/app_blue_dark"
+            android:outlineAmbientShadowColor="@color/shadow_dark"
+            android:outlineSpotShadowColor="@color/shadow_dark"
             app:cardCornerRadius="5dp"
             app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/background_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="p">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/ivImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:src="@drawable/img_cover_2"
                 app:srcUrl="@{item.coverImage}"
+                android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
         </com.google.android.material.card.MaterialCardView>
+
 
         <TextView
             android:id="@+id/tvBookName"
@@ -106,55 +118,61 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ratingWidget" />
 
-        <com.google.android.material.button.MaterialButton
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnSeeReviews"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxlarge"
             android:layout_marginEnd="@dimen/spacing_regular"
-            android:backgroundTint="@color/theme_active"
-            android:elevation="10dp"
             android:onClickListener="@{reviewsClickListener}"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
-            android:paddingTop="@dimen/spacing_medium"
-            android:paddingBottom="@dimen/spacing_medium"
-            android:text="@string/see_reviews"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:textColor="@color/text_heading"
-            app:cornerRadius="1dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDesc"
             app:layout_constraintEnd_toStartOf="@+id/materialCardView"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDesc"
-            android:visibility="gone"
-            app:rippleColor="@color/background_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:targetApi="p" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/theme_active"
+                android:onClickListener="@{reviewsClickListener}"
+                android:elevation="0dp"
+                android:text="See Reviews"
+                android:textColor="@color/text_heading"
+                app:cornerRadius="1dp"
+                app:rippleColor="@color/background_light" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_regular"
             android:layout_marginTop="@dimen/spacing_xxlarge"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:backgroundTint="@color/theme_active"
-            android:elevation="10dp"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
-            android:paddingTop="@dimen/spacing_medium"
-            android:paddingBottom="@dimen/spacing_medium"
-            android:text="@string/read_now"
-            android:textColor="@color/colorPrimary"
-            app:cornerRadius="1dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDesc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnSeeReviews"
-            app:layout_constraintTop_toBottomOf="@id/tvDesc"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:rippleColor="@color/background_light"
-            tools:targetApi="p" />
+            app:layout_constraintStart_toEndOf="@+id/btnSeeReviews">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/theme_active"
+                android:elevation="0dp"
+                android:text="Read Now"
+                android:textColor="@color/colorPrimary"
+                app:cornerRadius="1dp"
+                app:rippleColor="@color/background_light" />
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

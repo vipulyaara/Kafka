@@ -73,6 +73,6 @@ class SearchController constructor(private val callbacks: SearchController.Callb
     }
 
     interface Callbacks {
-        fun onBookClicked(viewHolderId: View, item: Item)
+        fun onBookClicked(view: View, item: Item)
     }
 }

@@ -31,7 +31,7 @@ fun srcUrl(
     srcUrl: String?
 ) {
     srcUrl?.let {
-        logger.d("Image $srcUrl")
+//        logger.d("Image $srcUrl")
         view.loadImage {
             load(srcUrl).apply(
                 RequestOptions().placeholder(R.drawable.ic_linked_camera_black_24dp)

@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <variable
-            name="itemClickListener"
-            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:onClickListener="@{itemClickListener}">
+        android:padding="@dimen/spacing_large">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverCard"
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_width="108dp"
+            android:layout_height="160dp"
             android:outlineAmbientShadowColor="@color/app_blue_dark"
             android:outlineSpotShadowColor="@color/app_blue_dark"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_banner_2" />
+                tools:src="@drawable/img_cover_5" />
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:text="MIT Open Course"
+            android:textAppearance="@style/Headline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coverCard"
+            app:layout_constraintTop_toTopOf="@id/coverCard" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
