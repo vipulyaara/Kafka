@@ -1,10 +1,9 @@
-package com.airtel.data.feature.item
+package com.airtel.data.feature.search
 
 import com.airtel.data.data.db.DatabaseTransactionRunner
 import com.airtel.data.data.db.dao.SearchDao
 import com.airtel.data.entities.Item
 import com.airtel.data.query.ArchiveQuery
-import com.airtel.data.query._collection
 import com.airtel.data.query._creator
 import io.reactivex.Flowable
 

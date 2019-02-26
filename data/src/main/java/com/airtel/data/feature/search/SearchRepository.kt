@@ -1,4 +1,4 @@
-package com.airtel.data.feature.item
+package com.airtel.data.feature.search
 
 import com.airtel.data.entities.Item
 import com.airtel.data.feature.Repository

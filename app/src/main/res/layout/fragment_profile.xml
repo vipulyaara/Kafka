@@ -12,12 +12,10 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_large">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.airtel.kafkapp.ui.widget.KafkaCardView
             android:id="@+id/coverCard"
             android:layout_width="108dp"
             android:layout_height="160dp"
-            android:outlineAmbientShadowColor="@color/app_blue_dark"
-            android:outlineSpotShadowColor="@color/app_blue_dark"
             app:cardCornerRadius="3dp"
             app:cardElevation="4dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:src="@drawable/img_cover_5" />
-        </com.google.android.material.card.MaterialCardView>
+        </com.airtel.kafkapp.ui.widget.KafkaCardView>
 
         <TextView
             android:id="@+id/tvName"

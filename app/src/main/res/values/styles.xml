@@ -9,6 +9,8 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBarOverlay">true</item>
 
+        <item name="android:fontFamily">@font/open_sans</item>
+
         <item name="textAppearanceHeadline1">@style/Headline5</item>
         <item name="textAppearanceHeadline2">@style/Headline4</item>
         <item name="textAppearanceBody1">@style/Body1</item>

@@ -12,10 +12,10 @@ import com.airtel.data.feature.detail.GetItemDetail
 import com.airtel.data.feature.detail.ItemDetailDataSource
 import com.airtel.data.feature.detail.ItemDetailRepository
 import com.airtel.data.feature.detail.LocalItemDetailStore
-import com.airtel.data.feature.item.SearchItems
-import com.airtel.data.feature.item.SearchLocalSource
-import com.airtel.data.feature.item.SearchRemoteSource
-import com.airtel.data.feature.item.SearchRepository
+import com.airtel.data.feature.search.SearchItems
+import com.airtel.data.feature.search.SearchLocalSource
+import com.airtel.data.feature.search.SearchRemoteSource
+import com.airtel.data.feature.search.SearchRepository
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance

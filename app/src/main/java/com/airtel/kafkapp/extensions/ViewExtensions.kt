@@ -2,12 +2,15 @@ package com.airtel.kafkapp.extensions
 
 import android.view.View
 import android.view.ViewPropertyAnimator
+import androidx.core.content.ContextCompat
 import com.daasuu.ei.Ease
 import com.daasuu.ei.EasingInterpolator
 
 /**
  * @author Vipul Kumar; dated 27/01/19.
  */
+
+fun View.getColor(colorRes: Int) = ContextCompat.getColor(context, colorRes)
 
 fun View.animScaleAlphaIn(duration: Long): ViewPropertyAnimator? {
     scaleX = 1.2f

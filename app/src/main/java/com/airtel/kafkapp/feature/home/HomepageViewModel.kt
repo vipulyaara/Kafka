@@ -4,12 +4,11 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.airtel.data.data.annotations.UseInjection
 import com.airtel.data.data.config.kodeinInstance
-import com.airtel.data.feature.item.SearchItems
+import com.airtel.data.feature.search.SearchItems
 import com.airtel.data.feature.launchInteractor
 import com.airtel.data.model.ItemRail
 import com.airtel.data.query.ArchiveQuery
 import com.airtel.data.query.booksByAuthor
-import com.airtel.data.query.booksByCollection
 import com.airtel.data.util.AppRxSchedulers
 import com.airtel.kafkapp.feature.common.BaseViewModel
 import com.airtel.kafkapp.ui.RxLoadingCounter

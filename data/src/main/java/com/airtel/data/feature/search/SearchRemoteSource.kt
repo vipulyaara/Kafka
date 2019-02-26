@@ -1,11 +1,10 @@
-package com.airtel.data.feature.item
+package com.airtel.data.feature.search
 
 import com.airtel.data.data.mapper.Mapper
 import com.airtel.data.entities.Item
 import com.airtel.data.entities.toArchiveItem
 import com.airtel.data.extensions.executeWithRetry
 import com.airtel.data.feature.common.DataSource
-import com.airtel.data.model.ItemRail
 import com.airtel.data.model.data.Result
 import com.airtel.data.model.item.SearchResponse
 import com.airtel.data.query.ArchiveQuery

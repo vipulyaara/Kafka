@@ -1,8 +1,7 @@
-package com.airtel.data.feature.item
+package com.airtel.data.feature.search
 
 import com.airtel.data.entities.Item
 import com.airtel.data.feature.SubjectInteractor
-import com.airtel.data.model.ItemRail
 import com.airtel.data.model.data.Result
 import com.airtel.data.query.ArchiveQuery
 import com.airtel.data.util.AppCoroutineDispatchers

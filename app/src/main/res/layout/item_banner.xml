@@ -16,13 +16,12 @@
         android:clipToPadding="false"
         android:onClickListener="@{itemClickListener}">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.airtel.kafkapp.ui.widget.KafkaCardView
             android:id="@+id/coverCard"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
-            android:outlineAmbientShadowColor="@color/app_blue_dark"
-            android:outlineSpotShadowColor="@color/app_blue_dark"
-            app:cardCornerRadius="0dp"
+            android:layout_height="190dp"
+            android:layout_margin="@dimen/spacing_medium_2"
+            app:cardCornerRadius="12dp"
             app:cardElevation="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +33,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_banner_2" />
-        </com.google.android.material.card.MaterialCardView>
+        </com.airtel.kafkapp.ui.widget.KafkaCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
