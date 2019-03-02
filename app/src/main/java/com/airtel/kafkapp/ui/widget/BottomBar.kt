@@ -48,7 +48,7 @@ class BottomBar @JvmOverloads constructor(
         items.forEach {
             if (it.isSelected) {
                 it.view?.findViewById<ImageView>(R.id.ivIcon)
-                    ?.setColorFilter(ContextCompat.getColor(context, R.color.icon_tint))
+                    ?.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent))
             } else {
                 it.view?.findViewById<ImageView>(R.id.ivIcon)
                     ?.setColorFilter(ContextCompat.getColor(context, R.color.icon_tint_light))

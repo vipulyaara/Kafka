@@ -1,3 +1,5 @@
+import com.android.tools.r8.kotlin.Kotlin
+
 plugins {
     id(Android.libPlugin)
     id(Kotlin.androidPlugin)
@@ -58,4 +60,7 @@ dependencies {
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
     testImplementation(RoboElectric.dependency)
+
+    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
+    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
 }

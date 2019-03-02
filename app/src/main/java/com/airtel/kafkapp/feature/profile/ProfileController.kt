@@ -1,4 +1,4 @@
-package com.airtel.kafkapp.feature.home
+package com.airtel.kafkapp.feature.profile
 
 import android.os.Build
 import android.view.View
@@ -13,19 +13,19 @@ import com.airtel.kafkapp.extensions.getRandomCoverResource
 import com.airtel.kafkapp.extensions.logger
 import com.airtel.kafkapp.extensions.withModelsFrom
 import com.airtel.kafkapp.feature.common.BaseEpoxyController
+import com.airtel.kafkapp.feature.home.HomepageViewState
 import com.airtel.kafkapp.itemLoader
-import com.airtel.kafkapp.itemPageHeader
 import com.airtel.kafkapp.itemRowHeader
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
  */
 
-class HomepageController constructor(private val callbacks: Callbacks) :
-    BaseEpoxyController<HomepageViewState>() {
+class ProfileController constructor(private val callbacks: Callbacks) :
+    BaseEpoxyController<ProfileViewState>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun buildModels(viewState: HomepageViewState) {
+    override fun buildModels(viewState: ProfileViewState) {
         if (viewState.isLoading) {
             buildLoadingState()
         } else {
@@ -38,10 +38,7 @@ class HomepageController constructor(private val callbacks: Callbacks) :
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun buildHomepageModels(viewState: HomepageViewState) {
-        itemPageHeader {
-            id("headers")
-        }
+    private fun buildHomepageModels(viewState: ProfileViewState) {
 
         carousel {
             id("banner")
@@ -52,30 +49,6 @@ class HomepageController constructor(private val callbacks: Callbacks) :
                         callbacks.onBannerClicked()
                     }
                     .id(it)
-            }
-        }
-
-        viewState.items?.forEach {
-            if (it.items?.isNotEmpty() == true) {
-                itemRowHeader {
-                    id("header ${it.title}")
-                    logger.d("ID ${it.title + it.items.hashCode()}")
-                    text(it.title)
-                }
-
-                carousel {
-                    id(it.title)
-                    padding(Carousel.Padding.dp(12, 12))
-                    withModelsFrom(it.items ?: arrayListOf()) {
-                        ItemBookBindingModel_()
-                            .id(it.itemId)
-                            .item(it)
-                            .itemClickListener { _, _, clickedView, _ ->
-                                clickedView.transitionName = it.itemId
-                                callbacks.onBookClicked(clickedView, it)
-                            }
-                    }
-                }
             }
         }
 

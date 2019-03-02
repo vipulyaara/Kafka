@@ -3,6 +3,7 @@ package com.airtel.data.data.config.di
 import com.airtel.data.data.db.MiddlewareDb
 import com.airtel.data.data.db.dao.BookDao
 import com.airtel.data.data.db.dao.ItemDetailDao
+import com.airtel.data.data.db.dao.QueryDao
 import com.airtel.data.data.db.dao.SearchDao
 import com.airtel.data.feature.book.BookDataSource
 import com.airtel.data.feature.book.BookRepository
@@ -12,6 +13,10 @@ import com.airtel.data.feature.detail.GetItemDetail
 import com.airtel.data.feature.detail.ItemDetailDataSource
 import com.airtel.data.feature.detail.ItemDetailRepository
 import com.airtel.data.feature.detail.LocalItemDetailStore
+import com.airtel.data.feature.query.QueryItems
+import com.airtel.data.feature.query.QueryLocalSource
+import com.airtel.data.feature.query.QueryRemoteSource
+import com.airtel.data.feature.query.QueryRepository
 import com.airtel.data.feature.search.SearchItems
 import com.airtel.data.feature.search.SearchLocalSource
 import com.airtel.data.feature.search.SearchRemoteSource
@@ -74,6 +79,26 @@ val dataModule = Kodein.Module("dataModule") {
 
     bind<SearchItems>() with provider {
         SearchItems(instance(), instance())
+    }
+
+    bind<QueryRepository>() with provider {
+        QueryRepository(instance(), instance())
+    }
+
+    bind<QueryRemoteSource>() with provider {
+        QueryRemoteSource()
+    }
+
+    bind<QueryDao>() with provider {
+        instance<MiddlewareDb>().queryDao()
+    }
+
+    bind<QueryLocalSource>() with provider {
+        QueryLocalSource(instance(), instance())
+    }
+
+    bind<QueryItems>() with provider {
+        QueryItems(instance())
     }
 
     bind<SearchLocalSource>() with provider {

@@ -22,8 +22,8 @@ class GetItemDetail constructor(
     override suspend fun execute(
         params: Params,
         executeParams: ExecuteParams
-    ): Result<ItemDetail> {
-        return repository.updateItemDetail(params.itemId)
+    ) {
+        repository.updateItemDetail(params.itemId)
     }
 
     override fun createObservable(params: Params): Flowable<ItemDetail> {

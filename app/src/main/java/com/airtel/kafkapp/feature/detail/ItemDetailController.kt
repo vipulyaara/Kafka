@@ -34,7 +34,6 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
     }
 
     private fun buildDetailModels(viewState: ItemDetailViewState) {
-
         itemBookDetail {
             id(viewState.itemDetail?.itemId)
             item(viewState.itemDetail)
@@ -50,13 +49,13 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
         viewState.itemsByCreator?.let { list ->
             itemRowHeader {
                 id("row header")
-                text("Books by Franz Kafka")
+                text(list.title)
             }
 
             carousel {
                 id("suggestions")
                 padding(Carousel.Padding.dp(12, 12))
-                withModelsFrom(list) {
+                withModelsFrom(list.items ?: arrayListOf()) {
                     ItemBookBindingModel_()
                         .id(it.itemId)
                         .item(it)

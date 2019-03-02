@@ -38,14 +38,13 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_height="258dp"/>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.airtel.kafkapp.ui.widget.KafkaCardView
             android:id="@+id/coverCard"
             android:layout_width="196dp"
             android:layout_height="258dp"
             android:layout_margin="@dimen/spacing_xlarge"
+            android:outlineProvider="background"
             android:onClickListener="@{clickListener}"
-            android:outlineAmbientShadowColor="@color/shadow_dark"
-            android:outlineSpotShadowColor="@color/shadow_dark"
             app:cardCornerRadius="5dp"
             app:cardElevation="12dp"
             app:cardBackgroundColor="@color/background_light"
@@ -59,9 +58,8 @@
                 android:layout_height="match_parent"
                 tools:src="@drawable/img_cover_2"
                 app:srcUrl="@{item.coverImage}"
-                android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
-        </com.google.android.material.card.MaterialCardView>
+        </com.airtel.kafkapp.ui.widget.KafkaCardView>
 
 
         <TextView
@@ -143,6 +141,7 @@
                 android:onClickListener="@{reviewsClickListener}"
                 android:elevation="0dp"
                 android:text="See Reviews"
+                android:fontFamily="@font/source_sans_pro_semibold"
                 android:textColor="@color/text_heading"
                 app:cornerRadius="1dp"
                 app:rippleColor="@color/background_light" />
@@ -153,9 +152,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_regular"
-            android:layout_marginTop="@dimen/spacing_xxlarge"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
             app:cardCornerRadius="2dp"
             app:cardElevation="10dp"
             app:layout_constraintTop_toBottomOf="@id/tvDesc"
@@ -168,6 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/theme_active"
+                android:fontFamily="@font/source_sans_pro_semibold"
                 android:elevation="0dp"
                 android:text="Read Now"
                 android:textColor="@color/colorPrimary"

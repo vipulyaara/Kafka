@@ -13,7 +13,7 @@ data class File(
     val btih: String,
     @Json(name = "crc32")
     val crc32: String,
-    @Json(name = "creator")
+    @Json(name = "genre")
     val creator: String,
     @Json(name = "format")
     val format: String,

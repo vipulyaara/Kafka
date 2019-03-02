@@ -21,8 +21,8 @@ class SearchItems constructor(
     override suspend fun execute(
         params: Params,
         executeParams: ExecuteParams
-    ): Result<List<Item>> {
-        return repository.updateItemsByCreator(params.archiveQuery)
+    ) {
+        repository.updateItemsByCreator(params.archiveQuery)
     }
 
     override fun createObservable(params: Params): Flowable<List<Item>> {

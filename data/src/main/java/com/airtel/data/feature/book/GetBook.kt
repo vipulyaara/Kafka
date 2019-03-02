@@ -20,8 +20,8 @@ class GetBook constructor(
     override suspend fun execute(
         params: Params,
         executeParams: ExecuteParams
-    ): Result<List<Book>> {
-        return repository.updateBooks(params.path, params.searchKeyword)
+    ) {
+        repository.updateBooks(params.path, params.searchKeyword)
     }
 
     override fun createObservable(params: Params): Flowable<List<Book>> {

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#69A4FD</color>
-    <color name="colorPrimaryDark">#100F1C</color>
-    <color name="colorAccent">#FF9B7C</color>
-
     <color name="theme_active">#ffffff</color>
     <color name="onAccent">#ffffff</color>
 

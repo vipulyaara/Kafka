@@ -37,17 +37,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/coverCard"
             app:layout_constraintTop_toTopOf="@id/coverCard" />
-
-        <com.airbnb.epoxy.EpoxyRecyclerView
-            android:id="@+id/rvHome"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingBottom="68dp"
-            android:clipChildren="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

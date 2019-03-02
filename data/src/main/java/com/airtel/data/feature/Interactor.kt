@@ -63,11 +63,11 @@ abstract class SubjectInteractor<P : Any, EP, T> : Interactor<EP> {
     final override suspend fun invoke(executeParams: EP) {
         loading.onNext(true)
         val result = execute(params, executeParams)
-        if (result is ErrorResult) throwError(result.exception)
+//        if (result is ErrorResult) throwError(result.exception)
         loading.onNext(false)
     }
 
-    protected abstract suspend fun execute(params: P, executeParams: EP): Result<*>
+    protected abstract suspend fun execute(params: P, executeParams: EP)
 
     protected abstract fun createObservable(params: P): Flowable<T>
 

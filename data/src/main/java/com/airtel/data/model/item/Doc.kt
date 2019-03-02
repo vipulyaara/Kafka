@@ -11,13 +11,13 @@ data class Doc(
     @Json(name = "call_number")
     val callNumber: String,
     @SingleToArray
-    @Json(name = "collection")
+    @Json(name = "genre")
     val collection: List<String>,
     @SingleToArray
     @Json(name = "contributor")
     val contributor: List<String>,
     @SingleToArray
-    @Json(name = "creator")
+    @Json(name = "genre")
     val creator: List<String>?,
     @Json(name = "date")
     val date: String,

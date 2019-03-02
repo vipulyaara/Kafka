@@ -1,4 +1,4 @@
-package com.airtel.kafkapp.feature.home
+package com.airtel.kafkapp.feature.profile
 
 import android.annotation.TargetApi
 import android.os.Build
@@ -17,6 +17,11 @@ import com.airtel.kafkapp.config.NightModeManager
 import com.airtel.kafkapp.databinding.FragmentHomeBinding
 import com.airtel.kafkapp.feature.MainActivity
 import com.airtel.kafkapp.feature.common.DataBindingMvRxFragment
+import com.airtel.kafkapp.feature.home.HomepageController
+import com.airtel.kafkapp.feature.home.HomepageViewModel
+import com.airtel.kafkapp.feature.home.detailId
+import com.airtel.kafkapp.feature.home.detailName
+import com.airtel.kafkapp.feature.home.detailUrl
 import com.airtel.kafkapp.ui.SharedElementHelper
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -24,26 +29,15 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @author Vipul Kumar; dated 02/02/19.
  */
 
-var detailId = ""
-var detailName = ""
-var detailUrl = ""
-
-class HomepageFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
-    R.layout.fragment_home
+class ProfileFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
+    R.layout.fragment_profile
 ) {
 
-    private val viewModel: HomepageViewModel by fragmentViewModel()
+    private val viewModel: ProfileViewModel by fragmentViewModel()
 
-    private val controller = HomepageController(object : HomepageController.Callbacks {
+    private val controller = ProfileController(object : ProfileController.Callbacks {
         override fun onBookClicked(view: View, item: Item) {
-            detailId = item.itemId
-            detailName = item.itemId
-            detailUrl = item.coverImage ?: ""
-            (activity as MainActivity).launchDetailFragment(
-                this@HomepageFragment,
-                SharedElementHelper().apply {
-                    addSharedElement(view, view.transitionName)
-                })
+
         }
 
         override fun onBannerClicked() {

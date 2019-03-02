@@ -7,10 +7,9 @@ import com.airbnb.mvrx.ViewModelContext
 import com.airtel.data.data.annotations.UseInjection
 import com.airtel.data.data.config.kodeinInstance
 import com.airtel.data.feature.detail.GetItemDetail
-import com.airtel.data.feature.search.SearchItems
 import com.airtel.data.feature.launchInteractor
-import com.airtel.data.query.ArchiveQuery
-import com.airtel.data.query.booksByAuthor
+import com.airtel.data.feature.query.QueryItems
+import com.airtel.data.model.RailItem
 import com.airtel.kafkapp.feature.common.BaseViewModel
 import com.airtel.kafkapp.feature.home.detailId
 import com.airtel.kafkapp.ui.RxLoadingCounter
@@ -26,7 +25,7 @@ internal class ItemDetailViewModel(itemId: String) : BaseViewModel<ItemDetailVie
     ItemDetailViewState(itemId)
 ) {
     private val getItemDetail: GetItemDetail by kodeinInstance.instance()
-    private val searchItems: SearchItems by kodeinInstance.instance()
+    private val queryItems: QueryItems by kodeinInstance.instance()
     private val loadingState = RxLoadingCounter()
 
     init {
@@ -36,15 +35,17 @@ internal class ItemDetailViewModel(itemId: String) : BaseViewModel<ItemDetailVie
         getItemDetail.observe()
             .toObservable()
             .execute {
-                searchItems.setParams(SearchItems.Params(ArchiveQuery().booksByAuthor(it()?.creator)))
-                scope.launchInteractor(searchItems, SearchItems.ExecuteParams())
+                itemDetail?.creator?.let {
+                    queryItems.setParams(QueryItems.Params.ByCreator(it))
+                    scope.launchInteractor(queryItems, QueryItems.ExecuteParams())
+                }
 
                 copy(itemDetail = it())
             }
 
-        searchItems.observe()
+        queryItems.observe()
             .toObservable()
-            .execute { copy(itemsByCreator = it()) }
+            .execute { copy(itemsByCreator = RailItem(queryItems.query.title ?: "", it())) }
 
         withState {
             getItemDetail.setParams(GetItemDetail.Params(detailId))

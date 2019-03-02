@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#69A4FD</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF9B7C</color>
+    <color name="colorAccent">#ffaf20</color>
 
     <color name="theme_active">#ffffff</color>
     <color name="onAccent">#ffffff</color>
@@ -11,7 +11,7 @@
     <color name="text_body_1">#6C788A</color>
     <color name="text_heading">#6D7A8B</color>
 
-    <color name="background">#feffffff</color>
+    <color name="background">#ffffff</color>
     <color name="background_light">#F5F7FA</color>
     <!--<color name="background_light">#EAEDF3</color>-->
     <color name="separator">#f3f3f3</color>

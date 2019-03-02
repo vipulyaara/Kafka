@@ -6,5 +6,10 @@
         <item>@font/biryani_bold</item>
         <item>@font/copse</item>
         <item>@font/open_sans</item>
+        <item>@font/raleway</item>
+        <item>@font/raleway_bold</item>
+        <item>@font/raleway_semibold</item>
+        <item>@font/source_sans_pro</item>
+        <item>@font/source_sans_pro_semibold</item>
     </array>
 </resources>

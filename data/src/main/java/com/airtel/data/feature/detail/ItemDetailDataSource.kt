@@ -1,6 +1,5 @@
 package com.airtel.data.feature.detail
 
-import com.airtel.data.entities.Book
 import com.airtel.data.data.mapper.Mapper
 import com.airtel.data.entities.ItemDetail
 import com.airtel.data.entities.toItemDetail
@@ -8,14 +7,13 @@ import com.airtel.data.extensions.executeWithRetry
 import com.airtel.data.feature.common.DataSource
 import com.airtel.data.model.data.Result
 import com.airtel.data.model.item.ItemDetailResponse
-import com.airtel.data.util.NetworkConstants.bookDetailUrl
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
  */
 class ItemDetailDataSource : DataSource() {
     private val mapper = object : Mapper<ItemDetailResponse, ItemDetail> {
-        override fun map(from: ItemDetailResponse):ItemDetail {
+        override fun map(from: ItemDetailResponse): ItemDetail {
             return from.toItemDetail()
         }
     }

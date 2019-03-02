@@ -16,6 +16,8 @@ import com.airtel.kafkapp.extensions.show
 import com.airtel.kafkapp.feature.MainActivity
 import com.airtel.kafkapp.feature.common.DataBindingMvRxFragment
 import com.airtel.kafkapp.feature.home.detailId
+import com.airtel.kafkapp.feature.home.detailName
+import com.airtel.kafkapp.feature.home.detailUrl
 import com.airtel.kafkapp.feature.reviews.BookReviewFragment
 import com.airtel.kafkapp.ui.SharedElementHelper
 import kotlinx.android.parcel.Parcelize
@@ -42,7 +44,11 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
     private val controller = ItemDetailController(object : ItemDetailController.Callbacks {
         override fun onItemClicked(item: Item, sharedElements: SharedElementHelper) {
             detailId = item.itemId
-            (activity as MainActivity).launchDetailFragment(sharedElements)
+            detailName = item.itemId
+            detailUrl = item.coverImage ?: ""
+            (activity as MainActivity).launchDetailFragment(
+                this@ItemDetailFragment,
+                null)
         }
 
         override fun onReviewsClicked() {

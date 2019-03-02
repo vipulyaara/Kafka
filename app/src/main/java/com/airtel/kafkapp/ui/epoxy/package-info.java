@@ -9,6 +9,8 @@
         R.layout.item_search,
         R.layout.item_search_history,
         R.layout.item_banner,
+        R.layout.item_profile,
+        R.layout.item_page_header,
         R.layout.item_loader})
 package com.airtel.kafkapp.ui.epoxy;
 

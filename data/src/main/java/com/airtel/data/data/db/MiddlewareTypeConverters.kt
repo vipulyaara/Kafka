@@ -2,7 +2,6 @@ package com.airtel.data.data.db
 
 import androidx.room.TypeConverter
 import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.list
 import kotlinx.serialization.serializer
@@ -12,14 +11,18 @@ import kotlinx.serialization.serializer
  */
 class MiddlewareTypeConverters {
     @TypeConverter
-    @ImplicitReflectionSerializer fun stringToList(input: String) = Json.parse<List<String>>(
-        String.serializer().list,
-        input
-    )
+    @ImplicitReflectionSerializer fun stringToList(input: String?): List<String>? {
+        return if (input == null) null else Json.parse(
+            String.serializer().list,
+            input
+        )
+    }
 
     @TypeConverter
-    @ImplicitReflectionSerializer fun listToString(input: List<String>) = Json.stringify(
-        String.serializer().list,
-        input
-    )
+    @ImplicitReflectionSerializer fun listToString(input: List<String>?): String? {
+        return if (input == null) null else Json.stringify(
+            String.serializer().list,
+            input
+        )
+    }
 }

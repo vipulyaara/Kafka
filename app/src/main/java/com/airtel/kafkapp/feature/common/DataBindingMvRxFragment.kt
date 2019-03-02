@@ -19,7 +19,7 @@ import org.kodein.di.generic.instance
  * Removes a lot of boilerplate when working with dataBinding.
  */
 abstract class DataBindingMvRxFragment<Binding : ViewDataBinding>(
-    private val layoutRes: Int
+    layoutRes: Int
 ) : DataBindingFragment<Binding>(layoutRes), MvRxView {
     override val mvrxViewModelStore by lazy { MvRxViewModelStore(viewModelStore) }
 

@@ -22,19 +22,17 @@
             type="String" />
     </data>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical">-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverCard"
-            android:layout_width="108dp"
-            android:layout_height="160dp"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
             android:layout_margin="4dp"
-            android:outlineProvider="bounds"
-            android:outlineAmbientShadowColor="@color/app_black"
-            android:outlineSpotShadowColor="@color/app_black"
+            android:outlineAmbientShadowColor="@color/shadow"
+            android:outlineSpotShadowColor="@color/shadow"
             app:cardCornerRadius="3dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,25 +47,33 @@
                 tools:src="@drawable/img_cover_5" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!--<TextView-->
-            <!--android:id="@+id/tvBookName"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="6dp"-->
-            <!--android:ellipsize="end"-->
-            <!--android:fontFamily="sans-serif-medium"-->
-            <!--android:lineSpacingExtra="2dp"-->
-            <!--android:lines="2"-->
-            <!--android:maxLines="2"-->
-            <!--android:text="@{item.title}"-->
-            <!--android:textColor="@color/text_heading"-->
-            <!--android:textSize="12sp"-->
-            <!--android:visibility="gone"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@id/coverCard"-->
-            <!--app:layout_goneMarginTop="@dimen/spacing_medium_2"-->
-            <!--tools:text="@tools:sample/lorem" />-->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_regular"
+            android:ellipsize="end"
+            android:fontFamily="@font/source_sans_pro_semibold"
+            android:maxLines="1"
+            android:text="@{item.title}"
+            android:textAppearance="@style/Body1"
+            android:textColor="@color/app_black"
+            app:layout_constraintEnd_toEndOf="@id/coverCard"
+            app:layout_constraintStart_toStartOf="@id/coverCard"
+            app:layout_constraintTop_toBottomOf="@id/coverCard" />
 
-    <!--</LinearLayout>-->
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.creator}"
+            android:textAppearance="@style/Body1"
+            android:maxLines="1"
+            android:textSize="@dimen/text_mini"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

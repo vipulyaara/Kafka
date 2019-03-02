@@ -9,9 +9,9 @@ data class Metadata(
     val backupLocation: String,
     @Json(name = "boxid")
     val boxid: String,
-//    @Json(name = "collection")
-//    val collection: List<String>,
-    @Json(name = "creator")
+//    @Json(name = "genre")
+//    val genre: List<String>,
+    @Json(name = "genre")
     val creator: String,
     @Json(name = "curation")
     val curation: String,

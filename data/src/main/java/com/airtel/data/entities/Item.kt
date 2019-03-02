@@ -17,7 +17,8 @@ data class Item(
     val creator: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
-    val collection: List<String>? = null
+    val collection: List<String>? = null,
+    val genre: List<String>? = null
 ) {
 
     fun generateStableId(): String {
@@ -33,7 +34,8 @@ fun Doc.toArchiveItem() = Item(
     creator = this.creator?.get(0),
     mediaType = this.mediatype,
     coverImage = "https://archive.org/services/img/$identifier",
-    collection = this.collection
+    collection = this.collection,
+    genre = this.subject
 )
 
 fun Item.mediaType() = mediaType(mediaType)

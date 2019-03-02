@@ -15,7 +15,7 @@ import java.util.Random
  */
 
 /**
- * "let"s when the collection is non-null and non-empty
+ * "let"s when the genre is non-null and non-empty
  * */
 fun <T : Collection<*>> T?.letEmpty(f: (it: T) -> Unit) {
     if (this != null && this.isNotEmpty()) f(this)

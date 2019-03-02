@@ -9,7 +9,7 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBarOverlay">true</item>
 
-        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/source_sans_pro</item>
 
         <item name="textAppearanceHeadline1">@style/Headline5</item>
         <item name="textAppearanceHeadline2">@style/Headline4</item>
@@ -29,14 +29,14 @@
     <style name="Headline5" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">32sp</item>
     </style>
 
     <style name="Headline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">24sp</item>
     </style>
 
