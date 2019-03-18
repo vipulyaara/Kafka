@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.airtel.kafkapp">
+    package="com.kafka.user">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".KafkaApplication"
+        android:name="com.kafka.user.KafkaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,14 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/FrameTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".feature.MainActivity">
+        <activity android:name="com.kafka.user.feature.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity"/>
+        <activity android:name="com.kafka.user.DetailActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

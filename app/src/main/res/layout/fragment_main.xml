@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.airtel.kafkapp.ui.widget.BottomBar
+            <com.kafka.user.ui.widget.BottomBar
                 android:id="@+id/bottomBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 // Library version
 object Kafka {
     const val publishVersion = "0.0.1"
-    const val groupId = "com.airtel.kafka"
+    const val groupId = "com.kafka.user"
 
     const val compileSdkVersion = 28
     const val minSdkVersion = 19
@@ -101,9 +101,24 @@ object AndroidX {
 }
 
 object PlayServices {
-    const val version = "16.0.0"
+    const val version = "16.0.7"
     const val base = "com.google.android.gms:play-services-base:$version"
     const val location = "com.google.android.gms:play-services-location:$version"
+
+
+    const val pluginVersion = "4.2.0"
+    const val plugin = "google-services"
+}
+
+object Firebase {
+    const val version = "16.0.7"
+    const val core = "com.google.firebase:firebase-core:$version"
+    const val firestore = "com.google.firebase:firebase-firestore:18.0.1"
+}
+
+object ExoPlayer {
+    const val version = "2.9.6"
+    const val player = "com.google.android.exoplayer:exoplayer:$version"
 }
 
 object Retrofit {

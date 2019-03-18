@@ -10,6 +10,7 @@
     <color name="text_body_2">#B3BBC4</color>
     <color name="text_body_1">#6C788A</color>
     <color name="text_heading">#6D7A8B</color>
+    <color name="text_subheading">#6D7A8B</color>
 
     <color name="background">#ffffff</color>
     <color name="background_light">#F5F7FA</color>

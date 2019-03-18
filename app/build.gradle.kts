@@ -17,7 +17,8 @@ androidExtensions {
 }
 
 dependencies {
-    implementation((project(":data")))
+    implementation(project(":data"))
+//    implementation(project(":player"))
 
     implementation(Kotlin.stdlib)
 
@@ -96,13 +97,15 @@ dependencies {
     testImplementation(Testing.PowerMock.core)
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
+
+    implementation("com.github.zomato:androidphotofilters:1.0.2")
 }
 
 configure<BaseExtension> {
     compileSdkVersion(Kafka.compileSdkVersion)
 
     defaultConfig {
-        applicationId = "com.airtel.kafka"
+        applicationId = "com.kafka.user"
         minSdkVersion(Kafka.minSdkVersion)
         targetSdkVersion(Kafka.compileSdkVersion)
         multiDexEnabled = true
@@ -132,3 +135,4 @@ configure<BaseExtension> {
         exclude("META-INF/NOTICE.txt")
     }
 }
+apply(plugin = "com.google.gms.google-services")

@@ -11,6 +11,9 @@ dependencies {
     implementation(AndroidX.Room.rx)
     kapt(AndroidX.Room.compiler)
 
+    implementation(Firebase.core)
+    implementation(Firebase.firestore)
+
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
@@ -60,6 +63,8 @@ dependencies {
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
     testImplementation(RoboElectric.dependency)
+
+    implementation("com.github.FrangSierra:RxFirebase:1.5.6")
 
     debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
     debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")

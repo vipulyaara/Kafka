@@ -13,7 +13,6 @@
         android:layout_height="@dimen/toolbar_height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_data_usage_black_24dp"
         app:title="" />
 
     <FrameLayout

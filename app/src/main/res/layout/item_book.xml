@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.airtel.data.entities.Item" />
+            type="com.kafka.data.entities.Item" />
 
         <variable
             name="itemClickListener"
@@ -24,17 +24,23 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:onClickListener="@{itemClickListener}"
+        android:stateListAnimator="@animator/anim_elevation"
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverCard"
-            android:layout_width="136dp"
-            android:layout_height="136dp"
-            android:layout_margin="4dp"
-            android:outlineAmbientShadowColor="@color/shadow"
-            android:outlineSpotShadowColor="@color/shadow"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="8dp"
+            android:layout_width="156dp"
+            android:layout_height="156dp"
+            android:layout_marginTop="4dp"
+            android:outlineAmbientShadowColor="@color/shadow_light"
+            android:outlineSpotShadowColor="@color/shadow_light"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/background_light"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,31 +48,31 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClickListener="@{itemClickListener}"
-                app:srcUrl="@{item.coverImage}"
-                tools:src="@drawable/img_cover_5" />
+                android:src="@{resource}" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_regular"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center"
             android:ellipsize="end"
-            android:fontFamily="@font/source_sans_pro_semibold"
+            android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:text="@{item.title}"
-            android:textAppearance="@style/Body1"
-            android:textColor="@color/app_black"
+            android:textAppearance="@style/Headline1"
             app:layout_constraintEnd_toEndOf="@id/coverCard"
             app:layout_constraintStart_toStartOf="@id/coverCard"
             app:layout_constraintTop_toBottomOf="@id/coverCard" />
 
         <TextView
             android:id="@+id/tvAuthor"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{item.creator}"
+            android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/Body1"
             android:maxLines="1"
             android:textSize="@dimen/text_mini"

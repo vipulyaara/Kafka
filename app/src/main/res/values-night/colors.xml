@@ -3,12 +3,13 @@
     <color name="theme_active">#ffffff</color>
     <color name="onAccent">#ffffff</color>
 
-    <color name="text_body_2">#6D7A8B</color>
-    <color name="text_body_1">#6C788A</color>
-    <color name="text_heading">#B3BBC4</color>
+    <color name="text_body_2">#88888c</color>
+    <color name="text_body_1">#b7b7b7</color>
+    <color name="text_heading">#eeeeee</color>
+    <color name="text_subheading">#fefefe</color>
 
-    <color name="background">#100F1C</color>
-    <color name="background_light">#292733</color>
+    <color name="background">#121212</color>
+    <color name="background_light">#100F1C</color>
     <!--<color name="background_light">#EAEDF3</color>-->
     <color name="separator">#f3f3f3</color>
 
