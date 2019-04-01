@@ -5,20 +5,23 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
+import com.kafka.data.data.db.MiddlewareTypeConverters
 import com.kafka.data.entities.Item
+import com.kafka.data.model.item.File
 import com.kafka.user.R
 import com.kafka.user.databinding.FragmentItemDetailBinding
 import com.kafka.user.extensions.show
-import com.kafka.user.feature.MainActivity
 import com.kafka.user.feature.common.DataBindingMvRxFragment
+import com.kafka.user.feature.downloads.BookDownloadFragment
+import com.kafka.user.feature.home.NavigationViewModel
 import com.kafka.user.feature.home.detailId
 import com.kafka.user.feature.home.detailName
 import com.kafka.user.feature.home.detailUrl
-import com.kafka.user.feature.reviews.BookReviewFragment
 import com.kafka.user.ui.SharedElementHelper
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_item_detail.*
@@ -40,19 +43,33 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
         }
     }
 
+    private val navigator by lazy {
+        ViewModelProviders.of(activity!!).get(NavigationViewModel::class.java)
+    }
+
     private val viewModel: ItemDetailViewModel by fragmentViewModel()
+    private var files: List<File>? = listOf()
     private val controller = ItemDetailController(object : ItemDetailController.Callbacks {
         override fun onItemClicked(item: Item, sharedElements: SharedElementHelper) {
             detailId = item.itemId
             detailName = item.itemId
             detailUrl = item.coverImage ?: ""
-            (activity as MainActivity).launchDetailFragment(
-                this@ItemDetailFragment,
-                null)
+            navigator.showItemDetail(
+                item,
+                null
+            )
         }
 
-        override fun onReviewsClicked() {
-            BookReviewFragment().show(this@ItemDetailFragment)
+        override fun onDownloadClicked() {
+            navigator.showDownloads()
+        }
+
+        override fun onProfileClicked() {
+            navigator.showProfile()
+        }
+
+        override fun onReviewClicked() {
+            navigator.showReviews()
         }
     })
 
@@ -75,6 +92,7 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
     override fun invalidate() {
         withState(viewModel) {
             controller.setData(it)
+            files = it.itemDetail?.files
         }
     }
 

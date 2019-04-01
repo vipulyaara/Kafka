@@ -18,7 +18,7 @@ androidExtensions {
 
 dependencies {
     implementation(project(":data"))
-//    implementation(project(":player"))
+    implementation(project(":player"))
 
     implementation(Kotlin.stdlib)
 
@@ -112,6 +112,11 @@ configure<BaseExtension> {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
 
     dataBinding {

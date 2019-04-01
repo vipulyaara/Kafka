@@ -17,13 +17,18 @@
             app:layout_constraintBottom_toTopOf="@id/bottomBarCard"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.kafka.user.ui.widget.PlayerView
+            android:id="@+id/miniPlayer"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/bottomBarCard"/>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bottomBarCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineAmbientShadowColor="@color/app_blue_dark"
-            android:outlineSpotShadowColor="@color/app_blue_dark"
-            app:cardElevation="18dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -34,5 +39,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background" />
         </com.google.android.material.card.MaterialCardView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

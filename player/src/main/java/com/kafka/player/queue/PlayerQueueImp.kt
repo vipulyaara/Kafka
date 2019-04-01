@@ -1,7 +1,7 @@
 //package com.kafka.player.queue
 //
 //import com.kafka.data.data.annotations.UseSingleton
-//import com.kafka.player.model.PlaybackItem
+//import com.kafka.player.com.kafka.player.model.PlaybackItem
 //import com.kafka.player.model.PlayerHead
 //import com.kafka.player.model.Playlist
 //import com.kafka.player.service.PlayerServiceBridge

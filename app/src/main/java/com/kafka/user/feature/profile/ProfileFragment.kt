@@ -8,6 +8,7 @@ import com.kafka.data.entities.Item
 import com.kafka.user.R
 import com.kafka.user.config.NightModeManager
 import com.kafka.user.databinding.FragmentHomeBinding
+import com.kafka.user.databinding.FragmentProfileBinding
 import com.kafka.user.feature.common.DataBindingMvRxFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * @author Vipul Kumar; dated 02/02/19.
  */
 
-class ProfileFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
+class ProfileFragment : DataBindingMvRxFragment<FragmentProfileBinding>(
     R.layout.fragment_profile
 ) {
 

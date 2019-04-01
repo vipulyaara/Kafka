@@ -32,9 +32,7 @@ fun getRandomCoverResource(): Int {
         R.drawable.img_cover_5,
         R.drawable.img_cover_6,
         R.drawable.img_cover_7,
-        R.drawable.img_cover_8,
-        R.drawable.img_cover_9,
-        R.drawable.img_cover_10
+        R.drawable.img_cover_8
     )
 
     return covers[Random().nextInt(covers.size - 1)]
@@ -85,16 +83,6 @@ fun getRandomAuthorResource(): Int {
 
     return covers[Random().nextInt(covers.size - 1)]
 }
-
-fun TextView.spanColor(textToBold: String, fullText: String, targetColor: Int) =
-    SpannableStringBuilder(fullText).apply {
-        setSpan(
-            ForegroundColorSpan(targetColor),
-            fullText.indexOf(textToBold),
-            (fullText.indexOf(textToBold) + textToBold.length),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
 
 fun illegalArgumentException(msg: String): Nothing = throw RuntimeException(msg)
 

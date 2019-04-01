@@ -7,7 +7,6 @@ import com.kafka.user.ItemBookBindingModel_
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
 import com.kafka.user.extensions.getRandomAuthorResource
-import com.kafka.user.extensions.getRandomCoverResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
 import com.kafka.user.itemBookDetail
@@ -44,7 +43,13 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
                 (parentView.dataBinding as ItemBookDetailBinding).coverCard2.animateScale()
             }
             reviewsClickListener { _, _, _, _ ->
-                callbacks.onReviewsClicked()
+                callbacks.onReviewClicked()
+            }
+            downloadClickListener { _, _, _, _ ->
+                callbacks.onDownloadClicked()
+            }
+            profileClickListener { _, _, _, _ ->
+                callbacks.onProfileClicked()
             }
         }
 
@@ -92,7 +97,9 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
     }
 
     interface Callbacks {
-        fun onReviewsClicked()
+        fun onDownloadClicked()
+        fun onReviewClicked()
+        fun onProfileClicked()
         fun onItemClicked(item: Item, sharedElements: SharedElementHelper)
     }
 }

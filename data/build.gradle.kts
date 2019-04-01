@@ -51,7 +51,8 @@ dependencies {
     implementation(OkHttp.core)
     implementation(OkHttp.loggingInterceptor)
 
-    implementation(Moshi.dependency)
+    implementation(Moshi.kotlin)
+    kapt(Moshi.compiler)
 
     testImplementation(AndroidX.Test.core)
     testImplementation(AndroidX.Test.junit)

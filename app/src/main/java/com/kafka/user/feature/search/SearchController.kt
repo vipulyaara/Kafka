@@ -6,6 +6,7 @@ import com.kafka.data.entities.Item
 import com.kafka.user.ItemAuthorBindingModel_
 import com.kafka.user.ItemBookBindingModel_
 import com.kafka.user.extensions.carousel
+import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.extensions.getRandomCoverResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
@@ -52,7 +53,7 @@ class SearchController constructor(private val callbacks: SearchController.Callb
                     .transitionName("poster")
                     .itemClickListener { v, _, clickedView, _ ->
                     }
-                    .resource(getRandomCoverResource())
+                    .resource(getRandomAuthorResource())
             }
         }
 
@@ -67,7 +68,7 @@ class SearchController constructor(private val callbacks: SearchController.Callb
             withModelsFrom(arrayListOf(1, 2, 3, 4, 5, 6, 78, 9, 10, 11, 12, 13, 14, 15)) {
                 ItemAuthorBindingModel_()
                     .id(it)
-                    .resource(getRandomCoverResource())
+                    .resource(getRandomAuthorResource())
             }
         }
     }

@@ -34,6 +34,7 @@ internal class ItemDetailViewModel(itemId: String) : BaseViewModel<ItemDetailVie
 
         getItemDetail.observe()
             .toObservable()
+            .doOnError(logger::e)
             .execute {
                 itemDetail?.creator?.let {
                     queryItems.setParams(QueryItems.Params.ByCreator(it))

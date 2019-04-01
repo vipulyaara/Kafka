@@ -9,6 +9,8 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBarOverlay">true</item>
 
+        <item name="android:fontFamily">sans-serif</item>
+
         <!--<item name="android:fontFamily">@font/open_sans</item>-->
 
         <item name="textAppearanceHeadline1">@style/Headline5</item>
@@ -27,30 +29,27 @@
     </style>
 
     <style name="Headline5" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textColor">@color/text_subheading</item>
+        <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">32sp</item>
     </style>
 
     <style name="Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:textColor">@color/text_subheading</item>
+        <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="android:textColor">@color/text_subheading</item>
+        <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textColor">@color/text_subheading</item>
+        <item name="android:textColor">@color/text_heading</item>
         <item name="android:textStyle">normal</item>
-        <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">14sp</item>
     </style>
 

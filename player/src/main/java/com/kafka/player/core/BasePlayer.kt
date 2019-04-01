@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.CallSuper
+import com.bumptech.glide.Glide.init
 import com.kafka.player.model.PlaybackItem
 import com.kafka.player.model.PlayerConfig
 import com.kafka.player.model.PlayerException
@@ -15,20 +16,24 @@ import io.reactivex.subjects.PublishSubject
 /**
  * @author Vipul Kumar; dated 05/03/19.
  */
-abstract class BasePlayer @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), Player {
+abstract class BasePlayer : Player {
 
-    private val basePlayerHelper = BasePlayerHelper()
+    protected val basePlayerHelper = BasePlayerHelper()
     protected val seekUpdateInterval: Long = 1000
     private lateinit var playerExceptionHandler: PlayerExceptionHandler
     private var lastPlayerState: PlayerState? = null
-    private val playerStateObservable = PublishSubject.create<PlayerState>()
-    private val playerSeekInfoObservable = PublishSubject.create<PlayerSeekInfo>()
+    val playerStateObservable = PublishSubject.create<PlayerState>()
+    val playerSeekInfoObservable = PublishSubject.create<PlayerSeekInfo>()
 
     init {
         updatePlayerState(PlayerState.Stopped(false))
     }
+
+    protected fun isActionValid(
+        playerAction: PlayerAction,
+        playerState: PlayerState
+    ) =
+        basePlayerHelper.isActionValid(playerAction, playerState)
 
     protected fun updatePlayerState(playerState: PlayerState) {
         lastPlayerState = playerState

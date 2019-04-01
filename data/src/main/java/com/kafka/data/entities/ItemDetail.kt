@@ -3,6 +3,7 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
 
 /**
@@ -20,7 +21,8 @@ data class ItemDetail(
     val description: String? = null,
     val creator: String? = null,
     val mediaType: String? = null,
-    val coverImage: String? = null
+    val coverImage: String? = null,
+    val files: List<File>? = null
 ) {
 
     fun generateStableId(): String {
@@ -34,12 +36,12 @@ fun ItemDetailResponse.toItemDetail() = ItemDetail(
     title = this.metadata.title,
     description = this.metadata.description,
     creator = this.metadata.creator,
-    mediaType = this.metadata.mediatype,
-    coverImage = "https:/" + this.server + this.dir + "/" + this.files.firstOrNull {
-        it.format == "JPEG" || it.format.contains(
-            "Tile"
-        )
-    }?.name
+    mediaType = this.metadata.mediatype
+//    coverImage = "https:/" + this.server + this.dir + "/" + this.files.firstOrNull {
+//        it.format == "JPEG" || it.format.contains(
+//            "Tile"
+//        )
+//    }?.name
 )
 
 fun ItemDetail.mediaType() = mediaType(mediaType)

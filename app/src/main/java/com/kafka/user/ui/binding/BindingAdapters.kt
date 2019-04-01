@@ -1,10 +1,13 @@
 package com.kafka.user.ui.binding
 
+import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.kafka.user.ui.GlideApp
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.card.MaterialCardView
+import com.kafka.user.ui.GradientGenerator
 
 /**
  * @author Vipul Kumar; dated 22/01/19.
@@ -34,4 +37,11 @@ fun setImageResourceRounded(imageView: ImageView, resource: Int) {
 @BindingAdapter("focusListener")
 fun setFocusListener(view: View, focusChangeListener: View.OnFocusChangeListener) {
     view.onFocusChangeListener = focusChangeListener
+}
+
+@BindingAdapter("gradientBackground")
+fun gradientBackground(view: View, enable: Boolean) {
+    if (enable) {
+        view.setBackgroundColor(Color.parseColor("#000000"))
+    }
 }

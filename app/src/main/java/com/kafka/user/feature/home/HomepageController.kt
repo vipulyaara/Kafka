@@ -13,8 +13,11 @@ import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.extensions.getRandomCoverResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
+import com.kafka.user.itemCollectionDetail
+import com.kafka.user.itemFooter
 import com.kafka.user.itemLoader
 import com.kafka.user.itemRowHeader
+import com.kafka.user.ui.epoxy.contentCarousel
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
@@ -55,10 +58,10 @@ class HomepageController constructor(private val callbacks: Callbacks) :
             if (railItem.items?.isNotEmpty() == true) {
                 itemRowHeader {
                     id("header ${railItem.title}")
-                    text(railItem.title)
+                    text(railItem.title.substring(2,railItem.title.length))
                 }
 
-                carousel {
+                contentCarousel {
                     id(railItem.title)
                     padding(Carousel.Padding.dp(8, 16))
                     withModelsFrom(railItem.items ?: arrayListOf()) {
@@ -86,9 +89,11 @@ class HomepageController constructor(private val callbacks: Callbacks) :
             withModelsFrom(arrayListOf(1, 2, 3, 4, 5, 6, 78, 9, 10, 11, 12, 13, 14, 15)) {
                 ItemAuthorBindingModel_()
                     .id(it)
-                    .resource(getRandomCoverResource())
+                    .resource(getRandomAuthorResource())
             }
         }
+
+        itemFooter { id("footer") }
     }
 
     interface Callbacks {

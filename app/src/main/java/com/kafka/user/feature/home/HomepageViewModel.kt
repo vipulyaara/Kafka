@@ -51,7 +51,7 @@ class HomepageViewModel : BaseViewModel<HomepageViewState>(
 
     private fun HomepageViewState.onItemsFetched(it: Async<List<Item>>): HomepageViewState {
         val list =
-            items?.toMutableSet().also { it?.add(RailItem(it.size.toString(), it())) }
+            items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", it())) }
         logger.d("Items ${it() ?: 0}")
         return copy(items = list)
     }

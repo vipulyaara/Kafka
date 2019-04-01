@@ -1,7 +1,11 @@
 package com.kafka.user.extensions
 
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewPropertyAnimator
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.daasuu.ei.Ease
 import com.daasuu.ei.EasingInterpolator

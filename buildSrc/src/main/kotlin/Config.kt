@@ -239,6 +239,8 @@ object Kodein {
 object Moshi {
     const val version = "1.8.0"
     const val dependency = "com.squareup.moshi:moshi:$version"
+    const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
+    const val compiler = "com.squareup.moshi:moshi-kotlin-codegen:$version"
 }
 
 object Reactor {

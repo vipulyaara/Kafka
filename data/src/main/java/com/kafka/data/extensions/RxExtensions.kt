@@ -1,11 +1,16 @@
 package com.kafka.data.extensions
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import io.reactivex.internal.functions.Functions
 
 internal fun <T> Maybe<T>.emptySubscribe() =
@@ -26,3 +31,14 @@ internal fun Completable.emptySubscribe() =
 fun <T> Observable<T>.toFlowable() = toFlowable(BackpressureStrategy.LATEST)!!
 
 internal fun <T> emptyFlowableList() = Flowable.just(emptyList<T>())
+
+fun Disposable.disposeOnDestroy(lifecycleOwner: LifecycleOwner) {
+    lifecycleOwner.lifecycle.addObserver(DisposingLifecycleObserver(this))
+}
+
+class DisposingLifecycleObserver(private val disposable: Disposable) : LifecycleObserver {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestory() {
+        disposable.dispose()
+    }
+}

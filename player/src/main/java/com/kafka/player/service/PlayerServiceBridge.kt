@@ -8,7 +8,7 @@
 //import androidx.lifecycle.LiveData
 //import androidx.lifecycle.MutableLiveData
 //import com.kafka.data.data.annotations.UseSingleton
-//import com.kafka.player.model.PlaybackItem
+//import com.kafka.player.com.kafka.player.model.PlaybackItem
 //import timber.log.Timber
 //
 ///**

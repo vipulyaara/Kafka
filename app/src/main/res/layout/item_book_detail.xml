@@ -20,6 +20,14 @@
         <variable
             name="reviewsClickListener"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="profileClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="downloadClickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -84,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_mini"
             android:fontFamily="@font/alegreya_bold"
+            android:onClickListener="@{profileClickListener}"
             android:gravity="center"
             android:text="@{`by ` + item.creator}"
             android:textColor="@color/colorPrimary"
@@ -97,6 +106,7 @@
             layout="@layout/item_rating_widget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:reviewsClickListener="@{reviewsClickListener}"
             android:layout_margin="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xxlarge"
             android:layout_marginEnd="@dimen/spacing_regular"
-            android:onClickListener="@{reviewsClickListener}"
+            android:onClickListener="@{downloadClickListener}"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
             app:cardCornerRadius="2dp"
@@ -140,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/theme_active"
-                android:onClickListener="@{reviewsClickListener}"
+                android:onClickListener="@{downloadClickListener}"
                 android:elevation="0dp"
                 android:text="download"
                 android:fontFamily="@font/source_sans_pro_semibold"

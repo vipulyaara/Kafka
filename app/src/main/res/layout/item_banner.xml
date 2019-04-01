@@ -22,7 +22,7 @@
             android:layout_height="190dp"
             android:layout_margin="@dimen/spacing_medium_2"
             app:cardCornerRadius="8dp"
-            app:cardElevation="12dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

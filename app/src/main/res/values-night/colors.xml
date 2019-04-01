@@ -16,6 +16,8 @@
     <color name="icon_tint">#7F7F8D</color>
     <color name="icon_tint_light">#2C2F3C</color>
 
+    <color name="colorSeekBar">#ffffff</color>
+
     <color name="app_red">#ff006a</color>
     <color name="app_red_dark">#BA0550</color>
     <color name="app_blue_retro">#5533ff</color>
