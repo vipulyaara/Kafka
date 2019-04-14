@@ -1,6 +1,4 @@
 # Kafka
-An app for browsing and listening to classic and modern literature in more than 100 languages.
-
 
 Currently in process of content curation in order to build our own CMS with Firebase. We have more than 5 million audio content (about 20% is popular/usable) available in more than 100 languages, all free.
 
