@@ -11,3 +11,5 @@ An app for browsing and listening to classic and modern literature in more than 
 
 ## Dark mode
 <img src="https://user-images.githubusercontent.com/6247940/56096855-d6d36280-5f0a-11e9-8b2d-ca60869a5dd2.png">
+
+<img src="https://user-images.githubusercontent.com/6247940/56096915-97594600-5f0b-11e9-9524-190d5d925d82.png">
