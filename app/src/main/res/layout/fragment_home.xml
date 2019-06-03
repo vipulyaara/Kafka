@@ -2,8 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="state"
+            type="String"/>
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/background_light"
         android:layout_height="match_parent">
 
         <com.airbnb.epoxy.EpoxyRecyclerView
@@ -11,22 +18,20 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingTop="@dimen/toolbar_height"
-            android:paddingBottom="68dp"
+            android:clipChildren="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="20dp"
-            android:layout_height="40dp"
-            android:layout_margin="@dimen/spacing_xxlarge"
-            android:src="@drawable/ic_launcher_background"
-            android:transitionName="poster"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!--<ImageView-->
+            <!--android:id="@+id/ivImage"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:transitionName="poster"-->
+            <!--android:layout_margin="@dimen/spacing_xxlarge"-->
+            <!--android:src="@sDrawable/ic_launcher_background"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

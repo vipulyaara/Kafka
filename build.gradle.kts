@@ -1,9 +1,12 @@
+import Kafka.compileSdkVersion
 import Kafka.groupId
+import Kafka.minSdkVersion
 import com.android.build.gradle.BaseExtension
 import com.dicedmelon.gradle.jacoco.android.JacocoAndroidUnitTestReportExtension
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import org.jmailen.gradle.kotlinter.support.ReporterType
 import org.gradle.api.publish.maven.MavenPom
+import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
@@ -13,6 +16,7 @@ plugins {
     id(Jacoco.Android.plugin) version Jacoco.Android.version apply false
     id(KotlinX.Serialization.plugin) version Kotlin.version apply false
     id(Ktlint.plugin) version Ktlint.version apply false
+    id(PlayServices.plugin) version PlayServices.pluginVersion apply false
 
     `maven-publish`
     id(Release.Bintray.plugin) version Release.Bintray.version
@@ -24,10 +28,12 @@ allprojects {
         mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         jcenter()
+        maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://jitpack.io")
     }
 }
 
-val androidModules = listOf("data", "kafka")
+val androidModules = listOf("data", "player")
 val androidSampleModules = listOf("app")
 
 subprojects {
@@ -51,8 +57,8 @@ subprojects {
         }
 
         configure<JavaPluginConvention> {
-            sourceCompatibility = JavaVersion.VERSION_1_7
-            targetCompatibility = JavaVersion.VERSION_1_7
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
 
             sourceSets {
                 getByName("main").java.srcDirs("src/main/kotlin")
@@ -87,6 +93,7 @@ subprojects {
             plugin(Jacoco.Android.plugin)
         }
 
+
         configure<BaseExtension> {
             compileSdkVersion(Kafka.compileSdkVersion)
 
@@ -103,8 +110,8 @@ subprojects {
             }
 
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_1_7
-                setTargetCompatibility(JavaVersion.VERSION_1_7)
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                setTargetCompatibility(JavaVersion.VERSION_1_8)
             }
 
             buildTypes {

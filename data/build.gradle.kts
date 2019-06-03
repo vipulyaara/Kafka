@@ -1,3 +1,5 @@
+import com.android.tools.r8.kotlin.Kotlin
+
 plugins {
     id(Android.libPlugin)
     id(Kotlin.androidPlugin)
@@ -8,6 +10,9 @@ dependencies {
     implementation(AndroidX.Room.runtime)
     implementation(AndroidX.Room.rx)
     kapt(AndroidX.Room.compiler)
+
+    implementation(Firebase.core)
+    implementation(Firebase.firestore)
 
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
@@ -27,6 +32,7 @@ dependencies {
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Coroutines.rx)
+    implementation(KotlinX.Serialization.dependency)
 
     implementation(RxJava.rxJava2)
     implementation(RxJava.rxAndroid)
@@ -39,13 +45,14 @@ dependencies {
     implementation(Gson.dependency)
 
     implementation(Retrofit.runtime)
-    implementation(Retrofit.gson)
+    implementation(Retrofit.moshi)
     implementation(Retrofit.rxjava)
 
     implementation(OkHttp.core)
     implementation(OkHttp.loggingInterceptor)
 
-    implementation(Moshi.dependency)
+    implementation(Moshi.kotlin)
+    kapt(Moshi.compiler)
 
     testImplementation(AndroidX.Test.core)
     testImplementation(AndroidX.Test.junit)
@@ -57,4 +64,9 @@ dependencies {
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
     testImplementation(RoboElectric.dependency)
+
+    implementation("com.github.FrangSierra:RxFirebase:1.5.6")
+
+    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
+    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
 }

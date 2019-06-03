@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#69A4FD</color>
+    <color name="colorPrimary">#2b92e4</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF9B7C</color>
+    <color name="colorAccent">#ffaf20</color>
+
+    <color name="app_blue">#58d8f6</color>
 
     <color name="theme_active">#ffffff</color>
     <color name="onAccent">#ffffff</color>
+    <color name="onPrimary">#ffffff</color>
+    <color name="onDark">#ffffff</color>
 
-    <color name="text_body_2">#B3BBC4</color>
+    <color name="text_body_2">#886C788A</color>
     <color name="text_body_1">#6C788A</color>
-    <color name="text_heading">#6D7A8B</color>
+    <color name="text_heading">#000000</color>
+    <color name="text_subheading">#6D7A8B</color>
 
-    <color name="background">#feffffff</color>
+    <color name="colorSeekBar">#88CFA224</color>
+
+    <color name="background">#ffffff</color>
     <color name="background_light">#F5F7FA</color>
-    <!--<color name="background_light">#EAEDF3</color>-->
+    <color name="background_dark">#E1E4E9</color>
     <color name="separator">#f3f3f3</color>
 
-    <color name="icon_tint">#7B8994</color>
-    <color name="icon_tint_light">#E1E4E6</color>
+    <color name="icon_tint">#6E7B8C</color>
+    <color name="icon_tint_light">#E1E4E9</color>
 
     <color name="app_red">#ff006a</color>
     <color name="app_red_dark">#BA0550</color>
@@ -31,7 +38,7 @@
     <color name="app_teal">#2fc3c1</color>
 
     <color name="shadow_light">#B3BBC4</color>
-    <color name="shadow">#8794A5</color>
+    <color name="shadow">#030303</color>
     <color name="shadow_dark">#6D7A8B</color>
 </resources>
 

@@ -5,6 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background_light"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -15,10 +16,10 @@
             android:layout_marginStart="@dimen/spacing_medium_2"
             android:layout_marginTop="@dimen/spacing_medium_2"
             android:layout_marginBottom="@dimen/spacing_medium_2"
-            android:outlineAmbientShadowColor="@color/shadow"
-            android:outlineSpotShadowColor="@color/shadow"
+            android:outlineAmbientShadowColor="@color/shadow_light"
+            android:outlineSpotShadowColor="@color/shadow_light"
             app:cardCornerRadius="2dp"
-            app:cardElevation="24dp"
+            app:cardElevation="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvCancel"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,9 +45,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_regular"
-                    android:background="@color/background"
+                    android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="Search books..."
+                    android:hint="Type to search..."
                     android:inputType="textCapSentences"
                     android:padding="@dimen/spacing_regular"
                     android:textColor="@color/text_body_1"
@@ -65,12 +66,12 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
+            android:text="Search"
             android:textAllCaps="false"
             android:textColor="@color/text_body_1"
             app:layout_constraintBottom_toBottomOf="@id/searchCard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/searchCard"
-            app:rippleColor="@color/background_light" />
+            app:rippleColor="@color/background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

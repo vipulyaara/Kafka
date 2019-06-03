@@ -1,7 +1,7 @@
 // Library version
 object Kafka {
     const val publishVersion = "0.0.1"
-    const val groupId = "com.airtel.kafka"
+    const val groupId = "com.kafka.user"
 
     const val compileSdkVersion = 28
     const val minSdkVersion = 19
@@ -101,15 +101,31 @@ object AndroidX {
 }
 
 object PlayServices {
-    const val version = "16.0.0"
+    const val version = "16.0.7"
     const val base = "com.google.android.gms:play-services-base:$version"
     const val location = "com.google.android.gms:play-services-location:$version"
+
+
+    const val pluginVersion = "4.2.0"
+    const val plugin = "google-services"
+}
+
+object Firebase {
+    const val version = "16.0.7"
+    const val core = "com.google.firebase:firebase-core:$version"
+    const val firestore = "com.google.firebase:firebase-firestore:18.0.1"
+}
+
+object ExoPlayer {
+    const val version = "2.9.6"
+    const val player = "com.google.android.exoplayer:exoplayer:$version"
 }
 
 object Retrofit {
     const val version = "2.3.0"
     const val runtime = "com.squareup.retrofit2:retrofit:$version"
     const val gson = "com.squareup.retrofit2:converter-gson:$version"
+    const val moshi = "com.squareup.retrofit2:converter-moshi:$version"
     const val rxjava = "com.squareup.retrofit2:adapter-rxjava2:$version"
 }
 
@@ -125,6 +141,11 @@ object Epoxy {
     const val processor = "com.airbnb.android:epoxy-processor:$version"
     const val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
     const val paging = "com.airbnb.android:epoxy-paging:$version"
+}
+
+object MvRx {
+    const val version = "0.7.2"
+    const val core = "com.airbnb.android:mvrx:$version"
 }
 
 // Modules dependencies
@@ -218,6 +239,8 @@ object Kodein {
 object Moshi {
     const val version = "1.8.0"
     const val dependency = "com.squareup.moshi:moshi:$version"
+    const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
+    const val compiler = "com.squareup.moshi:moshi-kotlin-codegen:$version"
 }
 
 object Reactor {

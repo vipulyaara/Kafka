@@ -4,6 +4,7 @@ pluginManagement {
         mavenCentral()
         jcenter()
         maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://kotlin.bintray.com/kotlinx")
     }
     resolutionStrategy {
         eachPlugin {
@@ -16,10 +17,13 @@ pluginManagement {
             if (requested.id.id == KotlinX.Serialization.plugin) {
                 useModule("org.jetbrains.kotlin:kotlin-serialization:${requested.version}")
             }
+            if (requested.id.id == PlayServices.plugin) {
+                useModule("com.google.gms:google-services:4.0.1:${requested.version}")
+            }
         }
     }
 }
 
 include(":app")
 include(":data")
-include(":kafka")
+include(":player")

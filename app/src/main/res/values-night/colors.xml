@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme_active">#ffffff</color>
+    <color name="onAccent">#ffffff</color>
+
+    <color name="text_body_2">#88888c</color>
+    <color name="text_body_1">#b7b7b7</color>
+    <color name="text_heading">#eeeeee</color>
+    <color name="text_subheading">#fefefe</color>
+
+    <color name="background">#121212</color>
+    <color name="background_light">#100F1C</color>
+    <!--<color name="background_light">#EAEDF3</color>-->
+    <color name="separator">#f3f3f3</color>
+
+    <color name="icon_tint">#7F7F8D</color>
+    <color name="icon_tint_light">#2C2F3C</color>
+
+    <color name="colorSeekBar">#ffffff</color>
+
+    <color name="app_red">#ff006a</color>
+    <color name="app_red_dark">#BA0550</color>
+    <color name="app_blue_retro">#5533ff</color>
+    <color name="app_blue_dark">#371bc3</color>
+    <color name="app_yellow">#f6bf26</color>
+    <color name="app_yellow_dark">#CFA224</color>
+    <color name="app_yellow_background">#11f6bf26</color>
+    <color name="app_green">#00cd6f</color>
+    <color name="app_black">#000000</color>
+    <color name="app_teal">#2fc3c1</color>
+
+    <color name="shadow_light">#B3BBC4</color>
+    <color name="shadow">#8794A5</color>
+    <color name="shadow_dark">#6D7A8B</color>
+</resources>
+
