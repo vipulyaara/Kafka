@@ -15,7 +15,7 @@ Currently in process of content curation in order to build our own CMS with Fire
 
 ## Architecture
 
-This app focuses on scalable, flexible and reactive app architecure. Parts of the architecture are taken from Chris Banes' [Tivi app](https://github.com/chrisbanes/tivi)
+This app focuses on scalable, flexible and reactive app architecure. Parts of the architecture are inspired by Chris Banes' [Tivi app](https://github.com/chrisbanes/tivi).
 
 It is a version of MVVM with interactors as an additional layer to enhance re-usability. The app uses following frameworks
 
