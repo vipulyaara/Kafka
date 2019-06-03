@@ -15,7 +15,7 @@ Currently in process of content curation in order to build our own CMS with Fire
 
 ## Architecture
 
-This app focuses on scalable, flexible and reactive app architecure. It can even be "too much code" (e.g. dependency injection) for an app this size, but it is meant to be scaled well.
+This app focuses on scalable, flexible and reactive app architecure. Parts of the architecture are taken from Chris Banes' [Tivi app](https://github.com/chrisbanes/tivi)
 
 It is a version of MVVM with interactors as an additional layer to enhance re-usability. The app uses following frameworks
 
@@ -25,10 +25,11 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 * [RxJava2](https://github.com/ReactiveX/RxJava) (enabling reactiveness on data layer)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * [Paging Library](https://developer.android.com/topic/libraries/architecture/paging/) (for pagination and integration with room)
-* [Epoxy](https://github.com/airbnb/epoxy) - Epoxy is a very flexible framework developed by Airbnb. We use it with recyclerView for any kind of data that can be presented in a list format (e.g. venue detail fragment)
+* [Epoxy](https://github.com/airbnb/epoxy) - Epoxy is an Android library for building complex screens in a RecyclerView.
 * [Kodein](https://kodein.org) (KOtlin DEpendency INjection)
 * Retrofit2
 * [Klint](https://github.com/shyiko/ktlint) (code formatter for Kotlin)
+* [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
 
 
 ![final-architecture](https://user-images.githubusercontent.com/6247940/50480774-0e71d980-0a04-11e9-90fc-89c9fdfb4115.png)
