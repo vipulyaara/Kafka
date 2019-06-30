@@ -1,6 +1,3 @@
-import Kafka.compileSdkVersion
-import Kafka.groupId
-import Kafka.minSdkVersion
 import com.android.build.gradle.BaseExtension
 import com.dicedmelon.gradle.jacoco.android.JacocoAndroidUnitTestReportExtension
 import org.jmailen.gradle.kotlinter.KotlinterExtension

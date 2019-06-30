@@ -11,11 +11,11 @@
         R.layout.item_search,
         R.layout.item_search_history,
         R.layout.item_banner,
-        R.layout.item_profile,
+        R.layout.item_content_alt,
         R.layout.item_page_header,
         R.layout.item_loader,
-        R.layout.item_collection_detail,
-        R.layout.item_footer, R.layout.item_genre})
+        R.layout.item_collection_header,
+        R.layout.item_footer, R.layout.item_genre, R.layout.item_player, R.layout.item_menu_context})
 package com.kafka.user.ui.epoxy;
 
 import com.airbnb.epoxy.EpoxyDataBindingLayouts;

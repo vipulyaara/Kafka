@@ -31,8 +31,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/coverCard"
-            android:layout_width="156dp"
-            android:layout_height="156dp"
+            android:layout_width="164dp"
+            android:layout_height="164dp"
             android:layout_marginTop="4dp"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
@@ -54,7 +54,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_regular"
             android:ellipsize="end"
             android:gravity="center"
             android:letterSpacing="0.015"
@@ -72,12 +72,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center"
-            android:letterSpacing="0.01"
-            android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:text="@{item.creator}"
             android:textAppearance="@style/Body1"
-            android:textSize="@dimen/text_mini"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />

@@ -101,8 +101,9 @@ object AndroidX {
 }
 
 object PlayServices {
-    const val version = "16.0.7"
+    const val version = "16.1.0"
     const val base = "com.google.android.gms:play-services-base:$version"
+    const val basement = "com.google.android.gms:play-services-basement:$version"
     const val location = "com.google.android.gms:play-services-location:$version"
 
 
@@ -160,7 +161,7 @@ object Gson {
 }
 
 object Glide {
-    const val version = "4.8.0"
+    const val version = "4.9.0"
     const val core = "com.github.bumptech.glide:glide:$version"
     const val compiler = "com.github.bumptech.glide:compiler:$version"
     const val transformations = "jp.wasabeef:glide-transformations:2.0.2"

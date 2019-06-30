@@ -1,9 +1,9 @@
 package com.kafka.user.extensions
 
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.data.config.logging.Logger
 import com.kafka.user.R
@@ -35,20 +35,20 @@ fun getRandomCoverResource(): Int {
         R.drawable.img_cover_8
     )
 
-    return covers[Random().nextInt(covers.size - 1)]
+    return covers[Random().nextInt(covers.size)]
 }
+
 fun getRandomAuthorResource(): Int {
     val covers = arrayOf(
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_camus_1,
-        R.drawable.img_author_camus_2,
         R.drawable.img_author_camus_3,
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_camus_caligula,
         R.drawable.img_author_camus_latranger,
+        R.drawable.img_author_camus_latranger,
         R.drawable.img_author_camus_the_fall,
-        R.drawable.img_author_freud_1,
         R.drawable.img_author_ghalib_1,
+        R.drawable.img_author_ghalib_1,
+        R.drawable.img_author_ghalib_2,
         R.drawable.img_author_ghalib_2,
         R.drawable.img_author_hemingway_1,
         R.drawable.img_author_kafka_1,
@@ -58,13 +58,8 @@ fun getRandomAuthorResource(): Int {
         R.drawable.img_author_plato_1,
         R.drawable.img_author_tagore_1,
         R.drawable.img_author_tagore_2,
-        R.drawable.img_author_jung_1,
-        R.drawable.img_author_kant_1,
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_marx_1,
-        R.drawable.img_author_nietzsche_1,
         R.drawable.img_author_rustaveli_1,
-        R.drawable.img_author_sartre_1,
         R.drawable.img_author_virginia_1,
         R.drawable.img_author_virginia_to_the_lighthouse,
         R.drawable.img_author_fitzgerald_the_great_gatsby,
@@ -72,7 +67,6 @@ fun getRandomAuthorResource(): Int {
         R.drawable.img_author_harper_lee_to_kill_a_mockingbird,
         R.drawable.img_author_karl_marx,
         R.drawable.img_author_karl_marx_das_capital,
-        R.drawable.img_author_nietzsche_1,
         R.drawable.img_author_nietzsche,
         R.drawable.img_author_orwell_animal_farm,
         R.drawable.img_author_paulo_eleven_minutes,

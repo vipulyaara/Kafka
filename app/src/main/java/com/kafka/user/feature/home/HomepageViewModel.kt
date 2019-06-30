@@ -11,9 +11,11 @@ import com.kafka.data.feature.query.QueryItems
 import com.kafka.data.model.RailItem
 import com.kafka.data.util.AppCoroutineDispatchers
 import com.kafka.data.util.AppRxSchedulers
+import com.kafka.user.extensions.logger
 import com.kafka.user.feature.common.BaseViewModel
 import com.kafka.user.ui.RxLoadingCounter
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.zipWith
 import org.kodein.di.generic.instance
 
 /**
@@ -33,18 +35,18 @@ class HomepageViewModel : BaseViewModel<HomepageViewState>(
         loadingState.observable.execute { copy(isLoading = it() ?: false) }
 
         QueryItems(dispatchers)
-            .also { it.launchQuery(QueryItems.Params.ByCreator("Mark Twain")) }
+            .also { it.launchQuery(QueryItems.Params.ByCreator("Franz Kafka")) }
             .observeQuery()
-            .concatMap {
-                QueryItems(dispatchers)
-                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
-                    .observeQuery()
-            }
-            .concatMap {
-                QueryItems(dispatchers)
-                    .also { it.launchQuery(QueryItems.Params.ByCreator("Franz Kafka")) }
-                    .observeQuery()
-            }
+//            .zipWith(
+//                QueryItems(dispatchers)
+//                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
+//                    .observeQuery()
+//            )
+//            .zipWith(
+//                QueryItems(dispatchers)
+//                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
+//                    .observeQuery()
+//            )
             .doOnError(logger::e)
             .execute { onItemsFetched(it) }
     }

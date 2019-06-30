@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_light">
+        android:background="@drawable/shape_rounded">
 
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/rvHome"

@@ -4,6 +4,8 @@ package com.kafka.data.query
 
 import androidx.collection.ArrayMap
 import androidx.collection.arrayMapOf
+import com.google.common.collect.ArrayListMultimap
+import com.google.common.collect.Multimap
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -15,6 +17,7 @@ const val _books = "texts"
 const val _audio = "audio"
 const val _image = "image"
 const val _video = "video"
+const val _librivoxaudio = "librivoxaudio"
 const val _collection = "collection"
 const val _railTitle = "railtitle"
 
@@ -24,40 +27,41 @@ const val _searchTerm = ""
 
 data class ArchiveQuery(
     var title: String? = null,
-    val queries: ArrayMap<String, String> = arrayMapOf()
+    val queries: Multimap<String, String> = ArrayListMultimap.create()
 )
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
     title = "Books by $collection"
-    queries[_mediaType] = _audio
-    queries[_collection] = collection
+    queries.put(_mediaType, _audio)
+    queries.put(_collection, collection)
     return this
 }
 
 fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
     title = "Books by $keyword"
-    queries[_mediaType] = _audio
-    queries[_searchTerm] = keyword
+    queries.put(_mediaType, _audio)
+    queries.put(_searchTerm, keyword)
     return this
 }
 
 fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
     title = "Books by $author"
-    queries[_mediaType] = _audio
-    queries[_creator] = author
+    queries.put(_mediaType, _audio)
+    queries.put(_creator, author)
     return this
 }
 
 fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
     title = "Books in $genre"
-    queries[_mediaType] = _audio
-    queries[_genre] = genre
+    queries.put(_mediaType, _audio)
+    queries.put(_genre, genre)
     return this
 }
 
 fun ArchiveQuery.buildSearchTerm(): String {
     var query = ""
-    for ((key, value) in queries) {
+    queries.put(_collection, _librivoxaudio)
+    for ((key, value) in queries.entries()) {
         query = query.plus("$key:($value)+AND+")
     }
     return query.dropLast(5)

@@ -2,8 +2,11 @@ package com.kafka.user.extensions
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
+import io.reactivex.processors.PublishProcessor
+import rx.subjects.PublishSubject
 
 /**
  * @author Vipul Kumar; dated 17/01/19.

@@ -3,12 +3,16 @@ package com.kafka.data.data.config.di
 import com.kafka.data.data.db.MiddlewareDb
 import com.kafka.data.data.db.dao.BookDao
 import com.kafka.data.data.db.dao.ItemDetailDao
+import com.kafka.data.data.db.dao.LanguageDao
 import com.kafka.data.data.db.dao.QueryDao
 import com.kafka.data.data.db.dao.SearchDao
 import com.kafka.data.feature.book.BookDataSource
 import com.kafka.data.feature.book.BookRepository
 import com.kafka.data.feature.book.GetBook
 import com.kafka.data.feature.book.LocalBookStore
+import com.kafka.data.feature.config.ContentLanguageRepository
+import com.kafka.data.feature.config.LocalContentLanguageStore
+import com.kafka.data.feature.config.UpdateContentLanguage
 import com.kafka.data.feature.detail.GetItemDetail
 import com.kafka.data.feature.detail.ItemDetailDataSource
 import com.kafka.data.feature.detail.ItemDetailRepository
@@ -71,6 +75,22 @@ val dataModule = Kodein.Module("dataModule") {
 
     bind<ItemDetailDao>() with singleton {
         instance<MiddlewareDb>().itemDetailDao()
+    }
+
+    bind<ContentLanguageRepository>() with provider {
+        ContentLanguageRepository(instance())
+    }
+
+    bind<UpdateContentLanguage>() with provider {
+        UpdateContentLanguage(instance(), instance())
+    }
+
+    bind<LocalContentLanguageStore>() with provider {
+        LocalContentLanguageStore(instance(), instance())
+    }
+
+    bind<LanguageDao>() with singleton {
+        instance<MiddlewareDb>().languageDao()
     }
 
     bind<SearchRepository>() with provider {

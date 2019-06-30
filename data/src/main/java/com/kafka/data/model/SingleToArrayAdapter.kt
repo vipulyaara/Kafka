@@ -7,6 +7,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
 import java.util.Collections
+import com.squareup.moshi.FromJson
+
+
 
 class SingleToArrayAdapter(
     val delegateAdapter: JsonAdapter<List<Any>>,

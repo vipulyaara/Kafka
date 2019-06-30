@@ -7,6 +7,7 @@ import com.kafka.user.R
 import com.kafka.user.databinding.FragmentMainBinding
 import com.kafka.user.feature.common.DataBindingFragment
 import com.kafka.user.feature.home.HomepageFragment
+import com.kafka.user.feature.player.PlayerFragment
 import com.kafka.user.ui.widget.TabItem
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -29,11 +30,20 @@ class MainFragment : DataBindingFragment<FragmentMainBinding>(
         )
 
         repeat(icons.size) { bottomBar.addItem(icons[it]) }
+
+        miniPlayer.setOnClickListener { launchPlayerFragment() }
     }
 
     private fun launchHomeFragment() {
         childFragmentManager.transaction {
             replace(R.id.fragmentContainer, HomepageFragment())
+        }
+    }
+
+    private fun launchPlayerFragment() {
+        childFragmentManager.transaction {
+            replace(R.id.fragmentContainer, PlayerFragment())
+            addToBackStack("")
         }
     }
 }

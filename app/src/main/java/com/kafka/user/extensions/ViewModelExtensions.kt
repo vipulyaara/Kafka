@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModelProviders
 /**
  * @author Vipul Kumar; dated 19/01/19.
  */
-inline fun <reified VM : ViewModel, T> T.viewModel(): Lazy<VM> where T : Fragment {
+inline fun <reified VM : ViewModel, T> T.viewModelByFragment(): Lazy<VM> where T : Fragment {
     return lazy { ViewModelProviders.of(this).get(VM::class.java) }
+}
+
+inline fun <reified VM : ViewModel, T> T.viewModelByActivity(): Lazy<VM> where T : Fragment {
+    return lazy { ViewModelProviders.of(activity!!).get(VM::class.java) }
 }

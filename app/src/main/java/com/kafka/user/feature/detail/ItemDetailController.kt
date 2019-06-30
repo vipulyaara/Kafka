@@ -3,6 +3,7 @@ package com.kafka.user.feature.detail
 import android.view.View
 import com.airbnb.epoxy.Carousel
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.ItemDetail
 import com.kafka.user.ItemBookBindingModel_
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
@@ -51,6 +52,9 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
             profileClickListener { _, _, _, _ ->
                 callbacks.onProfileClicked()
             }
+            playClickListener { _, _, _, _ ->
+                callbacks.onPlayClicked(viewState.itemDetail)
+            }
         }
 
         viewState.itemsByCreator?.let { list ->
@@ -66,12 +70,12 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
                     ItemBookBindingModel_()
                         .id(it.itemId)
                         .item(it)
+                        .resource(getRandomAuthorResource())
                         .itemClickListener { _, _, clickedView, _ ->
                             callbacks.onItemClicked(it, SharedElementHelper().apply {
                                 addSharedElement(clickedView, "poster")
                             })
                         }
-                        .resource(getRandomAuthorResource())
                 }
             }
         }
@@ -101,5 +105,6 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
         fun onReviewClicked()
         fun onProfileClicked()
         fun onItemClicked(item: Item, sharedElements: SharedElementHelper)
+        fun onPlayClicked(item: ItemDetail?)
     }
 }

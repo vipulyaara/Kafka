@@ -49,6 +49,7 @@ internal class ItemDetailViewModel(itemId: String) : BaseViewModel<ItemDetailVie
             .execute { copy(itemsByCreator = RailItem(queryItems.query.title ?: "", it())) }
 
         withState {
+            logger.d("Item detail ID : $detailId")
             getItemDetail.setParams(GetItemDetail.Params(detailId))
             refresh()
         }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2b92e4</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#ffaf20</color>
+    <!--<color name="colorPrimary">#2b92e4</color>-->
+    <color name="colorPrimary">#F5F7FA</color>
+    <color name="colorPrimaryDark">#F5F7FA</color>
+    <color name="colorAccent">#CFA224</color>
 
     <color name="app_blue">#58d8f6</color>
 
@@ -10,13 +11,14 @@
     <color name="onAccent">#ffffff</color>
     <color name="onPrimary">#ffffff</color>
     <color name="onDark">#ffffff</color>
+    <color name="onWhite">@color/text_heading</color>
 
     <color name="text_body_2">#886C788A</color>
     <color name="text_body_1">#6C788A</color>
-    <color name="text_heading">#000000</color>
-    <color name="text_subheading">#6D7A8B</color>
+    <color name="text_heading">#070707</color>
+    <color name="text_subheading">#232323</color>
 
-    <color name="colorSeekBar">#88CFA224</color>
+    <color name="colorSeekBar">#ffaf20</color>
 
     <color name="background">#ffffff</color>
     <color name="background_light">#F5F7FA</color>

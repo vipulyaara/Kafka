@@ -44,6 +44,7 @@ import com.kafka.player.analytics.PlayerAnalyticsModel
 import com.kafka.player.helper.TrackSelectionHelper
 import com.kafka.player.model.PlaybackItem
 import com.kafka.player.model.PlayerConfig
+import com.kafka.player.model.PlayerError
 import com.kafka.player.model.PlayerException
 import com.kafka.player.model.PlayerSeekInfo
 import com.kafka.player.model.PlayerState
@@ -85,8 +86,8 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
 
     private var playerIdleReasonStop: Boolean = false
 
-    private var currentPlaybackItem: PlaybackItem? = null
-    private var currentPlayerConfig: PlayerConfig? = null
+    var currentPlaybackItem: PlaybackItem? = null
+    var currentPlayerConfig: PlayerConfig? = null
 
     //used for exoPlayer playlist
     private var nextPlaybackItem: PlaybackItem? = null
@@ -359,7 +360,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
                 }
                 com.google.android.exoplayer2.Player.STATE_ENDED -> if (player.currentPosition >= player.duration && player.duration > 0) {
                     stopPlayerProgressUpdate()
-                    //TODO ANalytics
+                    //TODO Analytics
 //                    sendPlayStopEventIfNeeded(true)
                     updatePlayerState(PlayerState.Finished(-1))
                 }

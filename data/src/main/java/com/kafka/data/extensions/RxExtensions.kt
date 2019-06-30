@@ -10,6 +10,7 @@ import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.functions.Functions
 
@@ -38,7 +39,11 @@ fun Disposable.disposeOnDestroy(lifecycleOwner: LifecycleOwner) {
 
 class DisposingLifecycleObserver(private val disposable: Disposable) : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestory() {
+    fun onDestroy() {
         disposable.dispose()
     }
+}
+
+operator fun CompositeDisposable.plusAssign(disposable: Disposable?) {
+    disposable?.let { add(it) }
 }

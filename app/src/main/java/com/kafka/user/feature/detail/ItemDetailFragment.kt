@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.airbnb.mvrx.MvRx
@@ -12,16 +14,21 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.kafka.data.data.db.MiddlewareTypeConverters
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.item.File
+import com.kafka.player.model.PlaybackItem
 import com.kafka.user.R
 import com.kafka.user.databinding.FragmentItemDetailBinding
 import com.kafka.user.extensions.show
+import com.kafka.user.extensions.viewModelByActivity
 import com.kafka.user.feature.common.DataBindingMvRxFragment
 import com.kafka.user.feature.downloads.BookDownloadFragment
 import com.kafka.user.feature.home.NavigationViewModel
 import com.kafka.user.feature.home.detailId
 import com.kafka.user.feature.home.detailName
 import com.kafka.user.feature.home.detailUrl
+import com.kafka.user.player.Player
+import com.kafka.user.player.dummyUrl
 import com.kafka.user.ui.SharedElementHelper
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_item_detail.*
@@ -43,10 +50,7 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
         }
     }
 
-    private val navigator by lazy {
-        ViewModelProviders.of(activity!!).get(NavigationViewModel::class.java)
-    }
-
+    private val navigator:NavigationViewModel by viewModelByActivity()
     private val viewModel: ItemDetailViewModel by fragmentViewModel()
     private var files: List<File>? = listOf()
     private val controller = ItemDetailController(object : ItemDetailController.Callbacks {
@@ -71,10 +75,15 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
         override fun onReviewClicked() {
             navigator.showReviews()
         }
+
+        override fun onPlayClicked(item: ItemDetail?) {
+            Player.play(PlaybackItem(item?.files?.get(0)?.original ?: dummyUrl))
+        }
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        navigator.fragmentManager = activity!!.supportFragmentManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sharedElementEnterTransition =
                 TransitionInflater.from(context).inflateTransition(android.R.transition.move)

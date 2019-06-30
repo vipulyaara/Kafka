@@ -2,6 +2,7 @@ package com.kafka.user.feature.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -39,7 +40,7 @@ class HomepageFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
             navigator.showItemDetail(
                 item,
                 SharedElementHelper().apply {
-                    addSharedElement(view, view.transitionName)
+                    addSharedElement(view, ViewCompat.getTransitionName(view))
                 })
         }
 

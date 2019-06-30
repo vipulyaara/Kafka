@@ -17,4 +17,7 @@ class ContentCarousel @JvmOverloads constructor(
     attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : Carousel(context, attrs, defStyleAttr) {
 
+//    override fun createLayoutManager(): LayoutManager {
+//        return LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+//    }
 }

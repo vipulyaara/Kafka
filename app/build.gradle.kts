@@ -22,6 +22,12 @@ dependencies {
 
     implementation(Kotlin.stdlib)
 
+    implementation("com.google.guava:guava:26.0-android")
+    implementation("com.github.igalata:Bubble-Picker:v0.2.4")
+
+    implementation(PlayServices.basement)
+    implementation(PlayServices.base)
+
     implementation(AndroidX.appCompat)
     implementation(AndroidX.material)
     implementation(AndroidX.recyclerView)
@@ -138,6 +144,7 @@ configure<BaseExtension> {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/rxkotlin.properties")
     }
 }
 apply(plugin = "com.google.gms.google-services")

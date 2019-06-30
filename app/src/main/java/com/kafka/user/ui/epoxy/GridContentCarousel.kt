@@ -15,6 +15,6 @@ class GridContentCarousel @JvmOverloads constructor(
 ) : Carousel(context, attrs, defStyleAttr) {
 
     override fun createLayoutManager(): RecyclerView.LayoutManager {
-        return GridLayoutManager(context, 3)
+        return GridLayoutManager(context, 1)
     }
 }

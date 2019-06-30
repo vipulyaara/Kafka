@@ -1,16 +1,13 @@
 package com.kafka.player.core
 
-import android.content.Context
-import android.util.AttributeSet
-import android.widget.FrameLayout
 import androidx.annotation.CallSuper
-import com.bumptech.glide.Glide.init
 import com.kafka.player.model.PlaybackItem
 import com.kafka.player.model.PlayerConfig
 import com.kafka.player.model.PlayerException
 import com.kafka.player.model.PlayerSeekInfo
 import com.kafka.player.model.PlayerState
 import com.kafka.player.model.noPlayerStateError
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -21,8 +18,8 @@ abstract class BasePlayer : Player {
     protected val basePlayerHelper = BasePlayerHelper()
     protected val seekUpdateInterval: Long = 1000
     private lateinit var playerExceptionHandler: PlayerExceptionHandler
-    private var lastPlayerState: PlayerState? = null
-    val playerStateObservable = PublishSubject.create<PlayerState>()
+    var lastPlayerState: PlayerState? = null
+    val playerStateObservable = PublishProcessor.create<PlayerState>()
     val playerSeekInfoObservable = PublishSubject.create<PlayerSeekInfo>()
 
     init {

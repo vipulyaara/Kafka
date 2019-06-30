@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kafka.data.entities.Book
+import com.kafka.user.R
 import kotlinx.android.synthetic.main.fragment_reviews.*
 
 /**
@@ -29,7 +30,7 @@ class BookDownloadFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(com.kafka.user.R.layout.fragment_reviews, container, false)
+        return inflater.inflate(R.layout.fragment_reviews, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,8 +46,8 @@ class BookDownloadFragment : BottomSheetDialogFragment() {
 
     companion object {
         fun newInstance(data: String): BookDownloadFragment {
-            return BookDownloadFragment().also {
-                it.arguments = Bundle().also { it.putString("data", data) }
+            return BookDownloadFragment().also { fragment ->
+                fragment.arguments = Bundle().also { it.putString("data", data) }
             }
         }
     }

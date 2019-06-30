@@ -1,16 +1,20 @@
 package com.kafka.user.extensions
 
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.TransitionOptions
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.kafka.user.ui.graphics.SaturationTransitionFactory
 import com.zomato.photofilters.geometry.Point
 import com.zomato.photofilters.imageprocessors.Filter
 import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter
@@ -27,36 +31,12 @@ import kotlinx.coroutines.withContext
 inline fun ImageView.loadImage(
     requestManager: RequestManager = Glide.with(this),
     func:
-    RequestManager.() -> RequestBuilder<Bitmap>
+    RequestManager.() -> RequestBuilder<Drawable>
 ) {
     this.context?.let {
         requestManager
             .func()
-            .listener(object : RequestListener<Bitmap> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Bitmap>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return true
-                }
-
-                override fun onResourceReady(
-                    resource: Bitmap?,
-                    model: Any?,
-                    target: Target<Bitmap>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    GlobalScope.launch {
-                        val image = withContext(Dispatchers.Default) { resource }
-                        withContext(Dispatchers.Main) { this@loadImage.setImageBitmap(image) }
-                    }
-
-                    return true
-                }
-            })
+            .transition(DrawableTransitionOptions.with(SaturationTransitionFactory()))
             .into(this)
     }
 }
@@ -79,14 +59,14 @@ fun Bitmap.applyColorFilter(): Bitmap? {
     return myFilter.processFilter(this)
 }
 
-@BindingAdapter(value = ["srcUrl"])
+@BindingAdapter(value = ["android:src"])
 fun srcUrl(
     view: ImageView,
     srcUrl: String?
 ) {
     srcUrl?.let {
         view.loadImage {
-            asBitmap().load(srcUrl).apply(
+            load(srcUrl).apply(
                 RequestOptions().placeholder(com.kafka.user.R.drawable.ic_linked_camera_black_24dp)
                     .centerCrop()
             )

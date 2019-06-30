@@ -2,11 +2,12 @@
 <resources>
     <color name="theme_active">#ffffff</color>
     <color name="onAccent">#ffffff</color>
+    <color name="onWhite">@color/text_heading</color>
 
     <color name="text_body_2">#88888c</color>
     <color name="text_body_1">#b7b7b7</color>
     <color name="text_heading">#eeeeee</color>
-    <color name="text_subheading">#fefefe</color>
+    <color name="text_subheading">#aafefefe</color>
 
     <color name="background">#121212</color>
     <color name="background_light">#100F1C</color>

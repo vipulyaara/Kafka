@@ -5,13 +5,9 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import com.airbnb.epoxy.Carousel
 import com.kafka.data.entities.Item
-import com.kafka.user.ItemBookAltBindingModel_
 import com.kafka.user.ItemGenreBindingModel_
-import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
-import com.kafka.user.feature.profile.ProfileViewState
-import com.kafka.user.itemCollectionDetail
 import com.kafka.user.itemLoader
 import com.kafka.user.ui.epoxy.gridContentCarousel
 

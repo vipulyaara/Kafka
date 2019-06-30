@@ -8,8 +8,6 @@ import com.kafka.data.data.interactor.launchInteractor
 import com.kafka.data.feature.query.QueryItems
 import com.kafka.data.util.AppRxSchedulers
 import com.kafka.user.feature.common.BaseViewModel
-import com.kafka.user.feature.profile.ProfileViewModel
-import com.kafka.user.feature.profile.ProfileViewState
 import com.kafka.user.ui.RxLoadingCounter
 import org.kodein.di.generic.instance
 

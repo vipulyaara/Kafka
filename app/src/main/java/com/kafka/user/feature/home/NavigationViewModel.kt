@@ -1,13 +1,11 @@
 package com.kafka.user.feature.home
 
 import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.transaction
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.kafka.data.data.db.MiddlewareTypeConverters
 import com.kafka.data.entities.Item
 import com.kafka.data.util.SingleLiveEvent
 import com.kafka.user.R
@@ -16,8 +14,7 @@ import com.kafka.user.extensions.show
 import com.kafka.user.feature.MainFragment
 import com.kafka.user.feature.detail.ItemDetailFragment
 import com.kafka.user.feature.downloads.BookDownloadFragment
-import com.kafka.user.feature.genre.GenreFragment
-import com.kafka.user.feature.profile.ProfileFragment
+import com.kafka.user.feature.collection.CollectionFragment
 import com.kafka.user.feature.reviews.BookReviewFragment
 import com.kafka.user.feature.search.SearchFragment
 import com.kafka.user.ui.SharedElementHelper
@@ -91,7 +88,7 @@ class NavigationViewModel : ViewModel(), HomeNavigator {
 
     private fun launchProfileFragment(fragmentManager: FragmentManager) {
         fragmentManager.transaction {
-            add(R.id.fragmentContainer, ProfileFragment())
+            add(R.id.fragmentContainer, CollectionFragment())
             addToBackStack("")
         }
     }

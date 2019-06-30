@@ -1,12 +1,15 @@
 package com.kafka.user.ui
 
+import android.app.ActivityManager
 import android.content.Context
 import android.util.Log
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
+import com.kafka.user.BuildConfig
 
 /**
  * This module is used to provide global configuration for Glide e.g. Log level, Disk Strategy etc.
@@ -15,12 +18,16 @@ import com.bumptech.glide.request.RequestOptions
 @GlideModule
 class GlobalGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
-        builder.apply {
-            setLogLevel(Log.VERBOSE)
-            setDefaultRequestOptions(
-                RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            )
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        val options = RequestOptions()
+            .format(if (am.isLowRamDevice) DecodeFormat.PREFER_RGB_565 else DecodeFormat.PREFER_ARGB_8888)
+
+        builder.setDefaultRequestOptions(options)
+        if (BuildConfig.DEBUG) {
+            builder.setLogLevel(Log.VERBOSE)
         }
     }
+
+    override fun isManifestParsingEnabled() = false
 }

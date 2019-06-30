@@ -9,8 +9,6 @@ import com.kafka.user.R
 import com.kafka.user.config.NightModeManager
 import com.kafka.user.databinding.FragmentHomeBinding
 import com.kafka.user.feature.common.DataBindingMvRxFragment
-import com.kafka.user.feature.profile.ProfileController
-import com.kafka.user.feature.profile.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -18,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 
 class GenreFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
-    R.layout.fragment_profile
+    R.layout.fragment_collection
 ) {
 
     private val viewModel: GenreViewModel by fragmentViewModel()

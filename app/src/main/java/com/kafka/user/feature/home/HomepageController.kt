@@ -7,20 +7,22 @@ import com.airbnb.epoxy.Carousel
 import com.kafka.data.entities.Item
 import com.kafka.user.ItemAuthorBindingModel_
 import com.kafka.user.ItemBannerBindingModel_
+import com.kafka.user.ItemBookAltBindingModel_
 import com.kafka.user.ItemBookBindingModel_
 import com.kafka.user.extensions.carousel
 import com.kafka.user.extensions.getRandomAuthorResource
-import com.kafka.user.extensions.getRandomCoverResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
-import com.kafka.user.itemCollectionDetail
 import com.kafka.user.itemFooter
 import com.kafka.user.itemLoader
+import com.kafka.user.itemPageHeader
 import com.kafka.user.itemRowHeader
 import com.kafka.user.ui.epoxy.contentCarousel
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
+ *
+ * Controller to layout items on homepage.
  */
 
 class HomepageController constructor(private val callbacks: Callbacks) :
@@ -42,28 +44,16 @@ class HomepageController constructor(private val callbacks: Callbacks) :
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun buildHomepageModels(viewState: HomepageViewState) {
 
-        carousel {
-            id("banner")
-            padding(Carousel.Padding.dp(0, 0))
-            withModelsFrom(arrayListOf(1, 2, 3, 4, 5, 6, 78, 9, 10, 11, 12, 13, 14, 15)) {
-                ItemBannerBindingModel_()
-                    .itemClickListener { _, _, _, _ ->
-                        callbacks.onBannerClicked()
-                    }
-                    .id(it)
-            }
-        }
-
         viewState.items?.forEach { railItem ->
             if (railItem.items?.isNotEmpty() == true) {
                 itemRowHeader {
                     id("header ${railItem.title}")
-                    text(railItem.title.substring(2,railItem.title.length))
+                    text(railItem.title.substring(2, railItem.title.length))
                 }
 
                 contentCarousel {
                     id(railItem.title)
-                    padding(Carousel.Padding.dp(8, 16))
+                    padding(Carousel.Padding.dp(16, 12,16,32,16))
                     withModelsFrom(railItem.items ?: arrayListOf()) {
                         ItemBookBindingModel_()
                             .id(it.itemId)

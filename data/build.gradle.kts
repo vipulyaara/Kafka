@@ -14,6 +14,12 @@ dependencies {
     implementation(Firebase.core)
     implementation(Firebase.firestore)
 
+    implementation(PlayServices.basement)
+    implementation(PlayServices.base)
+
+//    implementation("com.google.firebase:firebase-auth:17.0.0")
+//    implementation("com.google.android.gms:play-services-auth:16.0.1")
+
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)

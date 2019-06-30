@@ -28,6 +28,10 @@
         <variable
             name="downloadClickListener"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="playClickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -95,7 +99,7 @@
             android:onClickListener="@{profileClickListener}"
             android:gravity="center"
             android:text="@{`by ` + item.creator}"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,6 +168,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_regular"
+            android:onClickListener="@{playClickListener}"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
             android:layout_marginTop="@dimen/spacing_xxlarge"
@@ -179,10 +184,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/theme_active"
+                android:clickable="false"
                 android:fontFamily="@font/source_sans_pro_semibold"
                 android:elevation="0dp"
-                android:text="Listen"
-                android:textColor="@color/colorPrimary"
+                android:text="Play"
+                android:textColor="@color/colorAccent"
                 app:cornerRadius="1dp"
                 app:rippleColor="@color/background_light" />
         </com.google.android.material.card.MaterialCardView>
