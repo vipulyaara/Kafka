@@ -1,6 +1,6 @@
 # Kafka
 
-Currently in process of content curation in order to build our own CMS with Firebase. We have more than 5 million audio content (about 20% is popular/usable) available in more than 100 languages, all free.
+Currently in process of content curation in order to build a CMS. It will host more than 5 million audio content (about 20% is popular) available in more than 100 languages, all free.
 
 
 
