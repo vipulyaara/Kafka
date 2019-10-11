@@ -6,7 +6,7 @@ Currently in process of content curation in order to build our own CMS with Fire
 
 </br></br>
 
-<img src="https://user-images.githubusercontent.com/6247940/56096787-4eed5880-5f0a-11e9-850c-fa8160266a5e.png">
+<img src="https://user-images.githubusercontent.com/6247940/66643361-22f22c00-ec3c-11e9-9710-c96f09c0e900.png">
 
 <img src="https://user-images.githubusercontent.com/6247940/56097011-9f65b580-5f0c-11e9-92a6-cf0498f1532a.png">
 
