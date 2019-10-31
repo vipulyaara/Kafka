@@ -1,5 +1,3 @@
-import com.android.tools.r8.kotlin.Kotlin
-
 plugins {
     id(Android.libPlugin)
     id(Kotlin.androidPlugin)

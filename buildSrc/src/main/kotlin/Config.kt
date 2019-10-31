@@ -4,13 +4,13 @@ object Kafka {
     const val groupId = "com.kafka.user"
 
     const val compileSdkVersion = 28
-    const val minSdkVersion = 19
+    const val minSdkVersion = 21
 }
 
 // Core dependencies
 object Kotlin {
-    const val version = "1.3.20"
-    const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Kotlin.version}"
+    const val version = "1.3.50"
+    const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Kotlin.version}"
     const val plugin = "kotlin"
     const val kapt = "kotlin-kapt"
     const val androidPlugin = "kotlin-android"
@@ -28,7 +28,7 @@ object Json {
 }
 
 object Android {
-    const val version = "3.3.0"
+    const val version = "3.6.0-beta01"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val multiDex = "com.android.support:multidex:"

@@ -10,11 +10,11 @@ plugins {
     id(Kotlin.androidExtensionsPlugin)
 }
 
-androidExtensions {
-    configure(delegateClosureOf<AndroidExtensionsExtension> {
-        isExperimental = true
-    })
-}
+//androidExtensions {
+//    configure(delegateClosureOf<AndroidExtensionsExtension> {
+//        isExperimental = true
+//    })
+//}
 
 dependencies {
     implementation(project(":data"))
@@ -23,7 +23,13 @@ dependencies {
     implementation(Kotlin.stdlib)
 
     implementation("com.google.guava:guava:26.0-android")
-    implementation("com.github.igalata:Bubble-Picker:v0.2.4")
+//    implementation("com.github.igalata:Bubble-Picker:v0.2.4")
+
+//    implementation("androidx.ui:ui-layout:0.1.0-dev02")
+//    implementation("androidx.ui:ui-material:0.1.0-dev02")
+//    implementation("androidx.ui:ui-tooling:0.1.0-dev02")
+//    implementation ("androidx.compose:compose-runtime:0.1.0-dev02")
+//    implementation ("androidx.ui:ui-framework:0.1.0-dev02")
 
     implementation(PlayServices.basement)
     implementation(PlayServices.base)
@@ -128,6 +134,10 @@ configure<BaseExtension> {
     dataBinding {
         this.isEnabled = true
     }
+
+//    buildFeatures {
+//        compose = true
+//    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
