@@ -10,7 +10,7 @@ import com.kafka.data.model.item.Doc
  */
 @Entity
 data class Item(
-    @PrimaryKey val itemId: String = "",
+    @PrimaryKey val contentId: String = "",
     val language: String? = null,
     val title: String? = null,
     val description: String? = null,
@@ -22,12 +22,12 @@ data class Item(
 ) {
 
     fun generateStableId(): String {
-        return itemId
+        return contentId
     }
 }
 
 fun Doc.toArchiveItem() = Item(
-    itemId = this.identifier,
+    contentId = this.identifier,
     language = "",
     title = this.title,
     description = this.description?.get(0)?.trim(),

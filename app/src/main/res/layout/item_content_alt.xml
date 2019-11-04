@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="item"
+            name="content"
             type="com.kafka.data.entities.Item" />
 
         <variable
@@ -62,7 +62,7 @@
             android:letterSpacing="0.015"
             android:maxLines="2"
             android:layout_marginStart="@dimen/spacing_medium"
-            android:text="@{item.title}"
+            android:text="@{content.title}"
             android:textAppearance="@style/Headline2"
             app:layout_constraintTop_toTopOf="@id/coverCard"
             app:layout_constraintStart_toEndOf="@id/coverCard"
@@ -78,7 +78,7 @@
             android:layout_marginTop="@dimen/spacing_micro"
             android:maxLines="1"
             android:visibility="gone"
-            android:text="@{item.creator}"
+            android:text="@{content.creator}"
             android:textAppearance="@style/Body1"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -94,7 +94,7 @@
             android:letterSpacing="0.05"
             android:layout_marginTop="@dimen/spacing_micro"
             android:maxLines="4"
-            android:text="@{item.description}"
+            android:text="@{content.description}"
             android:textAppearance="@style/Body1"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/tvAuthor"

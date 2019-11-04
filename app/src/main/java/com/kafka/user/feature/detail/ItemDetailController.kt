@@ -3,7 +3,7 @@ package com.kafka.user.feature.detail
 import android.view.View
 import com.airbnb.epoxy.Carousel
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.ContentDetail
 import com.kafka.user.ItemBookBindingModel_
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
@@ -23,7 +23,7 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
     BaseEpoxyController<ItemDetailViewState>() {
 
     override fun buildModels(viewState: ItemDetailViewState) {
-        if (viewState.isLoading && viewState.itemDetail == null) {
+        if (viewState.isLoading && viewState.contentDetail == null) {
             buildLoadingState()
         } else {
             buildDetailModels(viewState)
@@ -36,8 +36,8 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
 
     private fun buildDetailModels(viewState: ItemDetailViewState) {
         itemBookDetail {
-            id(viewState.itemDetail?.itemId)
-            item(viewState.itemDetail)
+            id(viewState.contentDetail?.contentId)
+            item(viewState.contentDetail)
             resource(getRandomAuthorResource())
             clickListener { _, parentView, clickedView, _ ->
                 clickedView.animateBookOpen()
@@ -53,7 +53,7 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
                 callbacks.onProfileClicked()
             }
             playClickListener { _, _, _, _ ->
-                callbacks.onPlayClicked(viewState.itemDetail)
+                callbacks.onPlayClicked(viewState.contentDetail)
             }
         }
 
@@ -68,7 +68,7 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
                 padding(Carousel.Padding.dp(12, 12))
                 withModelsFrom(list.items ?: arrayListOf()) {
                     ItemBookBindingModel_()
-                        .id(it.itemId)
+                        .id(it.contentId)
                         .item(it)
                         .resource(getRandomAuthorResource())
                         .itemClickListener { _, _, clickedView, _ ->
@@ -105,6 +105,6 @@ class ItemDetailController constructor(private val callbacks: Callbacks) :
         fun onReviewClicked()
         fun onProfileClicked()
         fun onItemClicked(item: Item, sharedElements: SharedElementHelper)
-        fun onPlayClicked(item: ItemDetail?)
+        fun onPlayClicked(content: ContentDetail?)
     }
 }

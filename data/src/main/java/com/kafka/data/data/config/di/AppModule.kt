@@ -1,5 +1,6 @@
 package com.kafka.data.data.config.di
 
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.room.Room
 import com.kafka.data.data.config.initializers.AppInitializer
 import com.kafka.data.data.config.initializers.AppInitializers
@@ -15,8 +16,7 @@ import com.kafka.data.data.db.RoomTransactionRunner
 import com.kafka.data.data.sharedPrefs.UserPreferenceManager
 import com.kafka.data.util.AppCoroutineDispatchers
 import com.kafka.data.util.AppRxSchedulers
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.rx2.asCoroutineDispatcher
 import org.kodein.di.Kodein
@@ -59,14 +59,6 @@ val appModule = Kodein.Module("appModule") {
         RetrofitRunner()
     }
 
-    bind<AppRxSchedulers>() with provider {
-        AppRxSchedulers(
-            io = Schedulers.io(),
-            computation = Schedulers.computation(),
-            main = AndroidSchedulers.mainThread()
-        )
-    }
-
     bind<AppCoroutineDispatchers>() with provider {
         AppCoroutineDispatchers(
             io = instance<AppRxSchedulers>().io.asCoroutineDispatcher(),
@@ -77,6 +69,11 @@ val appModule = Kodein.Module("appModule") {
 
     bind<UserPreferenceManager>() with singleton {
         UserPreferenceManager(instance())
+    }
+
+
+    bind<CoroutineScope>() with singleton {
+        ProcessLifecycleOwner.get().lifecycle.coroutineScope
     }
 }
 

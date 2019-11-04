@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kafka.data.entities.Book
 import com.kafka.user.R
 import kotlinx.android.synthetic.main.fragment_reviews.*
 
@@ -17,13 +16,6 @@ import kotlinx.android.synthetic.main.fragment_reviews.*
  * Fragment to show reviews.
  */
 class BookDownloadFragment : BottomSheetDialogFragment() {
-
-    private val controller = BookDownloadController(
-        object : BookDownloadController.Callbacks {
-            override fun onReviewsClicked() {
-            }
-        }
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +30,10 @@ class BookDownloadFragment : BottomSheetDialogFragment() {
 
         rvReviews.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            setController(controller)
+//            setController(controller)
         }
 
-        controller.setData(Book(bookId = ""))
+//        controller.setData(Book(bookId = ""))
     }
 
     companion object {

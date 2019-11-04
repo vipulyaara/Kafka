@@ -1,7 +1,6 @@
 package com.kafka.data.feature.search
 
 import com.kafka.data.entities.Item
-import com.kafka.data.data.interactor.SubjectInteractor
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.util.AppCoroutineDispatchers
 import io.reactivex.Flowable

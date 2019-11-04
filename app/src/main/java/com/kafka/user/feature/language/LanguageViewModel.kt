@@ -8,7 +8,7 @@ import com.kafka.data.data.interactor.launchInteractor
 import com.kafka.data.feature.config.UpdateContentLanguage
 import com.kafka.data.model.LanguageModel
 import com.kafka.user.feature.common.BaseViewModel
-import com.kafka.user.ui.RxLoadingCounter
+import com.kafka.user.ui.ObservableLoadingCounter
 import org.kodein.di.generic.instance
 
 /**
@@ -21,7 +21,7 @@ internal class LanguageViewModel : BaseViewModel<LanguageViewState>(
     LanguageViewState()
 ) {
     private val updateLanguage: UpdateContentLanguage by kodeinInstance.instance()
-    private val loadingState = RxLoadingCounter()
+    private val loadingState = ObservableLoadingCounter()
 
     init {
         loadingState.observable

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="item"
-            type="com.kafka.data.entities.ItemDetail" />
+            name="content"
+            type="com.kafka.data.entities.ContentDetail" />
 
         <variable
             name="clickListener"
@@ -83,7 +83,7 @@
             android:layout_margin="@dimen/spacing_medium_3"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="@{item.title}"
+            android:text="@{content.title}"
             android:textColor="@color/text_heading"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
             android:fontFamily="@font/alegreya_bold"
             android:onClickListener="@{profileClickListener}"
             android:gravity="center"
-            android:text="@{`by ` + item.creator}"
+            android:text="@{`by ` + content.creator}"
             android:textColor="@color/colorAccent"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +127,7 @@
             android:maxLines="4"
             android:textColor="@color/text_body_1"
             android:textSize="14sp"
-            app:htmlText="@{item.description}"
+            app:htmlText="@{content.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ratingWidget" />

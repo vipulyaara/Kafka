@@ -1,6 +1,5 @@
 package com.kafka.data.feature.config
 
-import com.kafka.data.data.interactor.SubjectInteractor
 import com.kafka.data.model.LanguageModel
 import com.kafka.data.util.AppCoroutineDispatchers
 import io.reactivex.Flowable

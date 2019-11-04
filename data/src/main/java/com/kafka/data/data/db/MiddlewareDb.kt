@@ -10,14 +10,14 @@ import com.kafka.data.data.db.dao.QueryDao
 import com.kafka.data.data.db.dao.SearchDao
 import com.kafka.data.entities.Book
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.ContentDetail
 import com.kafka.data.model.LanguageModel
 
 /**
  * Database description.
  */
 @Database(
-    entities = [Book::class, ItemDetail::class, Item::class, LanguageModel::class],
+    entities = [Book::class, ContentDetail::class, Item::class, LanguageModel::class],
     version = 1
 )
 @TypeConverters(MiddlewareTypeConverters::class)

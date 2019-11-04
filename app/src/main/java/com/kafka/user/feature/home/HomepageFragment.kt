@@ -34,8 +34,8 @@ class HomepageFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
 
     private val controller = HomepageController(object : HomepageController.Callbacks {
         override fun onBookClicked(view: View, item: Item) {
-            detailId = item.itemId
-            detailName = item.itemId
+            detailId = item.contentId
+            detailName = item.contentId
             detailUrl = item.coverImage ?: ""
             navigator.showItemDetail(
                 item,

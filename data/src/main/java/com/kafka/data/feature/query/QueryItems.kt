@@ -2,7 +2,6 @@ package com.kafka.data.feature.query
 
 import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.entities.Item
-import com.kafka.data.data.interactor.SubjectInteractor
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
 import com.kafka.data.query.booksByCollection

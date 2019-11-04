@@ -122,7 +122,7 @@ class NavigationViewModel : ViewModel(), HomeNavigator {
     }
 
     fun onMenuItemClicked(item: MenuItem) =
-        when (item.itemId) {
+        when (item.contentId) {
             R.id.menu_search -> {
                 launchSearchFragment(fragmentManager)
                 true

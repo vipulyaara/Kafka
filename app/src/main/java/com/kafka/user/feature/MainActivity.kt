@@ -1,6 +1,7 @@
 package com.kafka.user.feature
 
 import android.os.Bundle
+import androidx.fragment.app.commit
 import androidx.fragment.app.transaction
 import androidx.lifecycle.ViewModelProviders
 import com.kafka.user.R
@@ -20,7 +21,9 @@ class MainActivity : BaseActivity() {
 
         navigator.fragmentManager = supportFragmentManager
 
-        navigator.showMainFragment(null)
+        supportFragmentManager.commit {
+            replace(R.id.fragmentContainer, MainFragment())
+        }
 
         toolbar?.apply {
             inflateMenu(com.kafka.user.R.menu.menu_master)

@@ -7,6 +7,5 @@ package com.kafka.data.data.api
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 internal annotation class RequestPolicy(
-    val authenticated: Boolean = false,
-    val msisdnAuthentication: Boolean = false
+    val authenticated: Boolean = false
 )

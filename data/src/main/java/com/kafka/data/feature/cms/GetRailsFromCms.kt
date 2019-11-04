@@ -4,8 +4,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.model.ResourcePath
-import com.kafka.data.data.interactor.SubjectInteractor
-import com.kafka.data.feature.detail.ItemDetailRepository
+import com.kafka.data.feature.detail.ContentDetailRepository
 import com.kafka.data.util.AppCoroutineDispatchers
 import durdinapps.rxfirebase2.RxFirestore
 import io.reactivex.Flowable
@@ -16,7 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
  */
 class GetRailsFromCms constructor(
     dispatchers: AppCoroutineDispatchers,
-    private val repository: ItemDetailRepository
+    private val repository: ContentDetailRepository
 ) : SubjectInteractor<GetRailsFromCms.Params, GetRailsFromCms.ExecuteParams, DocumentSnapshot>() {
 
     override val dispatcher: CoroutineDispatcher = dispatchers.io
@@ -33,7 +32,7 @@ class GetRailsFromCms constructor(
         )
     }
 
-    data class Params(val itemId: String)
+    data class Params(val contentId: String)
 
     data class ExecuteParams(val id: Long = 0)
 }

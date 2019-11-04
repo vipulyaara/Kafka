@@ -1,7 +1,6 @@
 package com.kafka.data.feature.book
 
 import com.kafka.data.entities.Book
-import com.kafka.data.data.interactor.SubjectInteractor
 import com.kafka.data.util.AppCoroutineDispatchers
 import io.reactivex.Flowable
 import kotlinx.coroutines.CoroutineDispatcher

@@ -56,11 +56,11 @@ class HomepageController constructor(private val callbacks: Callbacks) :
                     padding(Carousel.Padding.dp(16, 12,16,32,16))
                     withModelsFrom(railItem.items ?: arrayListOf()) {
                         ItemBookBindingModel_()
-                            .id(it.itemId)
+                            .id(it.contentId)
                             .item(it)
                             .resource(getRandomAuthorResource())
                             .itemClickListener { _, _, clickedView, _ ->
-                                clickedView.transitionName = it.itemId
+                                clickedView.transitionName = it.contentId
                                 callbacks.onBookClicked(clickedView, it)
                             }
                     }

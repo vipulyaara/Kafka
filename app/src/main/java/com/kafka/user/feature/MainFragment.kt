@@ -2,6 +2,7 @@ package com.kafka.user.feature
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commit
 import androidx.fragment.app.transaction
 import com.kafka.user.R
 import com.kafka.user.databinding.FragmentMainBinding
@@ -22,26 +23,17 @@ class MainFragment : DataBindingFragment<FragmentMainBinding>(
 
         launchHomeFragment()
 
-        val icons = arrayOf(
-            TabItem(R.drawable.ic_book),
-            TabItem(R.drawable.ic_explore),
-            TabItem(R.drawable.ic_bookmark, true),
-            TabItem(R.drawable.ic_library)
-        )
-
-        repeat(icons.size) { bottomBar.addItem(icons[it]) }
-
         miniPlayer.setOnClickListener { launchPlayerFragment() }
     }
 
     private fun launchHomeFragment() {
-        childFragmentManager.transaction {
+        childFragmentManager.commit {
             replace(R.id.fragmentContainer, HomepageFragment())
         }
     }
 
     private fun launchPlayerFragment() {
-        childFragmentManager.transaction {
+        childFragmentManager.commit {
             replace(R.id.fragmentContainer, PlayerFragment())
             addToBackStack("")
         }

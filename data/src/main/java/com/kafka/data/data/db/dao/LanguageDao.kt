@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.LanguageModel
 import io.reactivex.Flowable
 

@@ -5,24 +5,18 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import com.kafka.data.data.db.MiddlewareTypeConverters
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.ContentDetail
 import com.kafka.data.model.item.File
 import com.kafka.player.model.PlaybackItem
 import com.kafka.user.R
 import com.kafka.user.databinding.FragmentItemDetailBinding
-import com.kafka.user.extensions.show
 import com.kafka.user.extensions.viewModelByActivity
 import com.kafka.user.feature.common.DataBindingMvRxFragment
-import com.kafka.user.feature.downloads.BookDownloadFragment
 import com.kafka.user.feature.home.NavigationViewModel
 import com.kafka.user.feature.home.detailId
 import com.kafka.user.feature.home.detailName
@@ -51,12 +45,12 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
     }
 
     private val navigator:NavigationViewModel by viewModelByActivity()
-    private val viewModel: ItemDetailViewModel by fragmentViewModel()
+    private val viewModel: ContentDetailViewModel by fragmentViewModel()
     private var files: List<File>? = listOf()
     private val controller = ItemDetailController(object : ItemDetailController.Callbacks {
         override fun onItemClicked(item: Item, sharedElements: SharedElementHelper) {
-            detailId = item.itemId
-            detailName = item.itemId
+            detailId = item.contentId
+            detailName = item.contentId
             detailUrl = item.coverImage ?: ""
             navigator.showItemDetail(
                 item,
@@ -76,8 +70,8 @@ class ItemDetailFragment : DataBindingMvRxFragment<FragmentItemDetailBinding>(
             navigator.showReviews()
         }
 
-        override fun onPlayClicked(item: ItemDetail?) {
-            Player.play(PlaybackItem(item?.files?.get(0)?.original ?: dummyUrl))
+        override fun onPlayClicked(content: ContentDetail?) {
+            Player.play(PlaybackItem(content?.files?.get(0)?.original ?: dummyUrl))
         }
     })
 

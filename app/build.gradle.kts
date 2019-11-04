@@ -1,7 +1,5 @@
+
 import com.android.build.gradle.BaseExtension
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 
 plugins {
     id(Android.appPlugin)
@@ -23,13 +21,6 @@ dependencies {
     implementation(Kotlin.stdlib)
 
     implementation("com.google.guava:guava:26.0-android")
-//    implementation("com.github.igalata:Bubble-Picker:v0.2.4")
-
-//    implementation("androidx.ui:ui-layout:0.1.0-dev02")
-//    implementation("androidx.ui:ui-material:0.1.0-dev02")
-//    implementation("androidx.ui:ui-tooling:0.1.0-dev02")
-//    implementation ("androidx.compose:compose-runtime:0.1.0-dev02")
-//    implementation ("androidx.ui:ui-framework:0.1.0-dev02")
 
     implementation(PlayServices.basement)
     implementation(PlayServices.base)
@@ -40,17 +31,25 @@ dependencies {
     implementation(AndroidX.cardView)
     implementation(AndroidX.constraintLayout)
     implementation(AndroidX.workManager)
-    implementation(AndroidX.Paging.common)
-    implementation(AndroidX.Paging.runtime)
-    implementation(AndroidX.Paging.rx)
+
+    implementation(Dagger.dagger)
+    implementation(Dagger.androidSupport)
+    kapt(Dagger.compiler)
+    kapt(Dagger.androidProcessor)
+
+    compileOnly(AssistedInject.annotationDagger2)
+    kapt(AssistedInject.processorDagger2)
 
     implementation(AndroidX.Room.runtime)
-    implementation(AndroidX.Room.rx)
     kapt(AndroidX.Room.compiler)
 
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
+
+    implementation(AndroidX.Navigation.fragment)
+    implementation(AndroidX.Navigation.ui)
+//    implementation(AndroidX.Navigation.safeArgs)
 
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
@@ -59,20 +58,18 @@ dependencies {
     implementation(AndroidX.Ktx.reactiveStreams)
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
+    implementation(AndroidX.Ktx.runtime)
+    implementation(AndroidX.Ktx.liveData)
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
-    implementation(KotlinX.Coroutines.rx)
     implementation(KotlinX.Serialization.dependency)
-
-    implementation(RxJava.rxJava2)
-    implementation(RxJava.rxAndroid)
-    implementation(RxJava.rxKotlin)
 
     implementation(Epoxy.core)
     implementation(Epoxy.dataBinding)
     kapt(Epoxy.processor)
     implementation(Epoxy.paging)
+    implementation(Epoxy.preloading)
 
     implementation(MvRx.core)
 
@@ -109,9 +106,8 @@ dependencies {
     testImplementation(Testing.PowerMock.core)
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
-
-    implementation("com.github.zomato:androidphotofilters:1.0.2")
 }
+
 
 configure<BaseExtension> {
     compileSdkVersion(Kafka.compileSdkVersion)
@@ -128,16 +124,20 @@ configure<BaseExtension> {
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        setTargetCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     dataBinding {
         this.isEnabled = true
     }
 
-//    buildFeatures {
-//        compose = true
-//    }
+    kapt {
+        javacOptions {
+            // Increase the max count of errors from annotation processors.
+            // Default is 100.
+            option("-Xmaxerrs", 500)
+        }
+    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
@@ -157,4 +157,5 @@ configure<BaseExtension> {
         exclude("META-INF/rxkotlin.properties")
     }
 }
+
 apply(plugin = "com.google.gms.google-services")

@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="item"
+            name="content"
             type="com.kafka.data.entities.Item" />
 
         <variable
@@ -64,7 +64,7 @@
             android:ellipsize="end"
             android:letterSpacing="0.015"
             android:maxLines="1"
-            android:text="@{item.title}"
+            android:text="@{content.title}"
             android:textAppearance="@style/Headline2"
             tools:text="Celebrating tagore"
             app:layout_constraintEnd_toEndOf="@id/coverCard"
@@ -79,7 +79,7 @@
             android:letterSpacing="0.05"
             android:maxLines="1"
             tools:text="Celebrating Rabindranath Tagore"
-            android:text="@{item.creator}"
+            android:text="@{content.creator}"
             android:textAppearance="@style/Body1"
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="@id/tvTitle"

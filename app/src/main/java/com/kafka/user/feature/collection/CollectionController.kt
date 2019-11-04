@@ -43,7 +43,7 @@ class CollectionController constructor(private val callbacks: Callbacks) :
                 padding(Carousel.Padding.dp(8,16,8, 24, 8))
                 withModelsFrom(it) {
                     ItemBookAltBindingModel_()
-                        .id(it.itemId)
+                        .id(it.contentId)
                         .item(it)
                         .resource(getRandomAuthorResource())
                 }

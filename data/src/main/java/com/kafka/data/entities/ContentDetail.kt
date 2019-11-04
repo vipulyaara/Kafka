@@ -11,11 +11,11 @@ import com.kafka.data.model.item.ItemDetailResponse
  */
 @Entity(
     indices = [
-        Index(value = ["itemId"], unique = true)
+        Index(value = ["contentId"], unique = true)
     ]
 )
-data class ItemDetail(
-    @PrimaryKey val itemId: String = "",
+data class ContentDetail(
+    @PrimaryKey val contentId: String = "",
     val language: String? = null,
     val title: String? = null,
     val description: String? = null,
@@ -26,12 +26,12 @@ data class ItemDetail(
 ) {
 
     fun generateStableId(): String {
-        return itemId
+        return contentId
     }
 }
 
-fun ItemDetailResponse.toItemDetail() = ItemDetail(
-    itemId = this.metadata.identifier,
+fun ItemDetailResponse.contentDetail() = ContentDetail(
+    contentId = this.metadata.identifier,
     language = this.metadata.licenseurl,
     title = this.metadata.title,
     description = this.metadata.description,
@@ -44,4 +44,4 @@ fun ItemDetailResponse.toItemDetail() = ItemDetail(
 //    }?.name
 )
 
-fun ItemDetail.mediaType() = mediaType(mediaType)
+fun ContentDetail.mediaType() = mediaType(mediaType)

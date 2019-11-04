@@ -8,7 +8,7 @@ import com.kafka.data.data.interactor.launchInteractor
 import com.kafka.data.feature.query.QueryItems
 import com.kafka.data.util.AppRxSchedulers
 import com.kafka.user.feature.common.BaseViewModel
-import com.kafka.user.ui.RxLoadingCounter
+import com.kafka.user.ui.ObservableLoadingCounter
 import org.kodein.di.generic.instance
 
 /**
@@ -17,12 +17,10 @@ import org.kodein.di.generic.instance
  * Implementation of [BaseViewModel] to provide data for search.
  */
 @UseInjection
-class CollectionViewModel : BaseViewModel<CollectionViewState>(
-    CollectionViewState()
-) {
+class CollectionViewModel : BaseViewModel() {
     private val schedulers: AppRxSchedulers by kodeinInstance.instance()
     private val queryItems: QueryItems by kodeinInstance.instance()
-    private val loadingState = RxLoadingCounter()
+    private val loadingState = ObservableLoadingCounter()
 
     init {
         loadingState.observable

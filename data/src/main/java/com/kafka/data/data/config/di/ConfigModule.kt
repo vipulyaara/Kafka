@@ -13,10 +13,10 @@ import com.kafka.data.feature.book.LocalBookStore
 import com.kafka.data.feature.config.ContentLanguageRepository
 import com.kafka.data.feature.config.LocalContentLanguageStore
 import com.kafka.data.feature.config.UpdateContentLanguage
-import com.kafka.data.feature.detail.GetItemDetail
+import com.kafka.data.feature.detail.ObserveContentDetail
 import com.kafka.data.feature.detail.ItemDetailDataSource
-import com.kafka.data.feature.detail.ItemDetailRepository
-import com.kafka.data.feature.detail.LocalItemDetailStore
+import com.kafka.data.feature.detail.ContentDetailRepository
+import com.kafka.data.feature.detail.LocalContentDetailStore
 import com.kafka.data.feature.query.QueryItems
 import com.kafka.data.feature.query.QueryLocalSource
 import com.kafka.data.feature.query.QueryRemoteSource
@@ -57,16 +57,16 @@ val dataModule = Kodein.Module("dataModule") {
         instance<MiddlewareDb>().contentDao()
     }
 
-    bind<ItemDetailRepository>() with provider {
-        ItemDetailRepository(instance(), instance())
+    bind<ContentDetailRepository>() with provider {
+        ContentDetailRepository(instance(), instance())
     }
 
-    bind<GetItemDetail>() with provider {
-        GetItemDetail(instance(), instance())
+    bind<ObserveContentDetail>() with provider {
+        ObserveContentDetail(instance(), instance())
     }
 
-    bind<LocalItemDetailStore>() with provider {
-        LocalItemDetailStore(instance(), instance())
+    bind<LocalContentDetailStore>() with provider {
+        LocalContentDetailStore(instance(), instance())
     }
 
     bind<ItemDetailDataSource>() with provider {
