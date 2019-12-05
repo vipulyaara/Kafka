@@ -1,36 +1,37 @@
-
+import Kotlin.kapt
 import com.android.build.gradle.BaseExtension
-
-plugins {
-    id(Android.appPlugin)
-    id(Kotlin.androidPlugin)
-    id(Kotlin.kapt)
-    id(Kotlin.androidExtensionsPlugin)
-}
-
-//androidExtensions {
-//    configure(delegateClosureOf<AndroidExtensionsExtension> {
-//        isExperimental = true
-//    })
-//}
 
 dependencies {
     implementation(project(":data"))
     implementation(project(":player"))
 
     implementation(Kotlin.stdlib)
-
-    implementation("com.google.guava:guava:26.0-android")
-
-    implementation(PlayServices.basement)
-    implementation(PlayServices.base)
+    implementation("org.jsoup:jsoup:1.12.1")
+    implementation("androidx.asynclayoutinflater:asynclayoutinflater:1.0.0")
 
     implementation(AndroidX.appCompat)
+    implementation(AndroidX.fragment)
+    implementation(AndroidX.drawerLayout)
     implementation(AndroidX.material)
     implementation(AndroidX.recyclerView)
-    implementation(AndroidX.cardView)
     implementation(AndroidX.constraintLayout)
     implementation(AndroidX.workManager)
+    implementation(AndroidX.viewPager2)
+    implementation(AndroidX.palette)
+    implementation(AndroidX.Paging.common)
+    implementation(AndroidX.Paging.runtime)
+
+    implementation(AndroidX.Navigation.fragment)
+    implementation(AndroidX.Navigation.ui)
+
+    implementation(AndroidX.Room.runtime)
+    kapt(AndroidX.Room.compiler)
+
+    implementation(AndroidX.Arch.extensions)
+    implementation(AndroidX.Arch.reactive_streams)
+    kapt(AndroidX.Arch.compiler)
+
+    implementation(Retrofit.runtime)
 
     implementation(Dagger.dagger)
     implementation(Dagger.androidSupport)
@@ -40,17 +41,6 @@ dependencies {
     compileOnly(AssistedInject.annotationDagger2)
     kapt(AssistedInject.processorDagger2)
 
-    implementation(AndroidX.Room.runtime)
-    kapt(AndroidX.Room.compiler)
-
-    implementation(AndroidX.Arch.extensions)
-    implementation(AndroidX.Arch.reactive_streams)
-    kapt(AndroidX.Arch.compiler)
-
-    implementation(AndroidX.Navigation.fragment)
-    implementation(AndroidX.Navigation.ui)
-//    implementation(AndroidX.Navigation.safeArgs)
-
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
     implementation(AndroidX.Ktx.fragment)
@@ -58,8 +48,7 @@ dependencies {
     implementation(AndroidX.Ktx.reactiveStreams)
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
-    implementation(AndroidX.Ktx.runtime)
-    implementation(AndroidX.Ktx.liveData)
+    implementation(AndroidX.Ktx.lifecycle)
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
@@ -75,23 +64,24 @@ dependencies {
 
     implementation(Lottie.core)
 
-    implementation(Kodein.runtime)
-    implementation(Kodein.androidX)
-
     implementation(Timber.core)
 
     implementation(Easeinterpolator.core)
 
-    implementation(Android.multiDex)
+    implementation(Coil.core)
 
-    implementation(Glide.core)
-    kapt(Glide.compiler)
-    implementation(Glide.transformations)
-
-    implementation(ExpectAnim.core)
+//    implementation(ExpectAnim.core)
 
     implementation(Stetho.core)
     implementation(Stetho.urlConnection)
+
+    implementation("com.github.jd-alexander:LikeButton:0.2.3")
+
+//    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
+
+//    implementation("me.everything:overscroll-decor-android:1.0.4")
+
+//    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0-beta-3")
 
     androidTestImplementation(AndroidX.annotation)
     androidTestImplementation(AndroidX.Test.junit)
@@ -108,53 +98,13 @@ dependencies {
     testImplementation(Testing.PowerMock.module)
 }
 
-
 configure<BaseExtension> {
-    compileSdkVersion(Kafka.compileSdkVersion)
-
-    defaultConfig {
-        applicationId = "com.kafka.user"
-        minSdkVersion(Kafka.minSdkVersion)
-        targetSdkVersion(Kafka.compileSdkVersion)
-        multiDexEnabled = true
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     dataBinding {
         this.isEnabled = true
     }
 
-    kapt {
-        javacOptions {
-            // Increase the max count of errors from annotation processors.
-            // Default is 100.
-            option("-Xmaxerrs", 500)
-        }
-    }
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-    }
-
-    packagingOptions {
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/rxkotlin.properties")
+    defaultConfig {
+        applicationId = "org.kafka.user"
     }
 }
 

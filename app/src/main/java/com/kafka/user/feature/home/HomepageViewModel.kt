@@ -1,37 +1,46 @@
 package com.kafka.user.feature.home
 
+import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.Async
+import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.kafka.data.data.annotations.UseInjection
-import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.data.interactor.launchInteractor
-import com.kafka.data.entities.Item
-import com.kafka.data.feature.query.QueryItems
+import com.kafka.data.entities.Content
 import com.kafka.data.model.RailItem
-import com.kafka.data.util.AppCoroutineDispatchers
-import com.kafka.data.util.AppRxSchedulers
 import com.kafka.user.extensions.logger
-import com.kafka.user.feature.common.BaseViewModel
+import com.kafka.user.feature.common.BaseMvRxViewModel
 import com.kafka.user.ui.ObservableLoadingCounter
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
+import org.rekhta.data.util.data.ObservableLoadingCounter
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
  *
- * Implementation of [BaseViewModel] to provide data for search.
+ * Implementation of [BaseMvRxViewModel] to provide data for homepage.
  */
-@UseInjection
-class HomepageViewModel : BaseViewModel<HomepageViewState>(
-    HomepageViewState()
-) {
-    private val schedulers: AppRxSchedulers by kodeinInstance.instance()
-    private val dispatchers: AppCoroutineDispatchers by kodeinInstance.instance()
-    private val loadingState = ObservableLoadingCounter()
+class HomepageViewModel @AssistedInject constructor(
+    @Assisted initialState: HomepageViewState,
+    private val updateHomepage: UpdateHomepage,
+    private val loadingState: ObservableLoadingCounter,
+    ) : BaseMvRxViewModel<HomepageViewState>(HomepageViewState()) {
 
     init {
-        loadingState.observable.execute { copy(isLoading = it() ?: false) }
+        viewModelScope.launch {
+            loadingState.observable
+                .distinctUntilChanged()
+                .debounce(1200)
+                .collect {
+                    setState { copy(isLoading = it) }
+                }
+        }
 
         QueryItems(dispatchers)
             .also { it.launchQuery(QueryItems.Params.ByCreator("Franz Kafka")) }
@@ -50,14 +59,14 @@ class HomepageViewModel : BaseViewModel<HomepageViewState>(
             .execute { onItemsFetched(it) }
     }
 
-    private fun HomepageViewState.onItemsFetched(it: Async<List<Item>>): HomepageViewState {
+    private fun HomepageViewState.onItemsFetched(it: Async<List<Content>>): HomepageViewState {
         val list =
             items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", it())) }
         logger.d("Items ${it() ?: 0}")
         return copy(items = list)
     }
 
-    private fun QueryItems.observeQuery(): Observable<List<Item>> {
+    private fun QueryItems.observeQuery(): Observable<List<Content>> {
         return observe().toObservable()
             .subscribeOn(schedulers.io)
     }
@@ -67,14 +76,15 @@ class HomepageViewModel : BaseViewModel<HomepageViewState>(
         scope.launchInteractor(this, QueryItems.ExecuteParams())
     }
 
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(initialState: HomepageViewState): HomepageViewModel
+    }
+
     companion object : MvRxViewModelFactory<HomepageViewModel, HomepageViewState> {
-        // This *must* be @JvmStatic for performance reasons.
-        @JvmStatic
-        override fun create(
-            viewModelContext: ViewModelContext,
-            state: HomepageViewState
-        ): HomepageViewModel {
-            return HomepageViewModel()
+        override fun create(viewModelContext: ViewModelContext, state: HomepageViewState): HomepageViewModel? {
+            val fragment: HomepageFragment = (viewModelContext as FragmentViewModelContext).fragment()
+            return fragment.discoverViewModelFactory.create(state)
         }
     }
 }

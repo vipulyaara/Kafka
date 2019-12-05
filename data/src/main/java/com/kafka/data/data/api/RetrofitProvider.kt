@@ -1,7 +1,6 @@
 package com.kafka.data.data.api
 
 import android.app.Application
-import com.kafka.data.data.api.interceptor.GenericInterceptor
 import com.kafka.data.model.SingleToArrayAdapter
 import com.kafka.data.util.NetworkConstants.baseUrl
 import com.squareup.moshi.Moshi

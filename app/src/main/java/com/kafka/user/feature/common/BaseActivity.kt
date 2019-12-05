@@ -1,20 +1,58 @@
-package com.kafka.user.feature.common
+package org.rekhta.user.feature.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.kafka.user.config.NightModeManager
+import androidx.core.view.doOnPreDraw
+import dagger.android.support.DaggerAppCompatActivity
 
 /**
- * @author Vipul Kumar; dated 22/10/18.
+ * @author Vipul Kumar; dated 2019-08-15.
  */
-
 @SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : DaggerAppCompatActivity() {
+    private var postponedTransition = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        handleIntent(intent)
+    }
 
-        NightModeManager.setNightModeFromSharedPrefs(this)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    override fun postponeEnterTransition() {
+        super.postponeEnterTransition()
+        postponedTransition = true
+    }
+
+    override fun startPostponedEnterTransition() {
+        postponedTransition = false
+        super.startPostponedEnterTransition()
+    }
+
+    fun scheduleStartPostponedTransitions() {
+        if (postponedTransition) {
+            window.decorView.doOnPreDraw {
+                startPostponedEnterTransition()
+            }
+        }
+    }
+
+    open fun handleIntent(intent: Intent) {}
+
+    override fun finishAfterTransition() {
+        val resultData = Intent()
+        val result = onPopulateResultIntent(resultData)
+        setResult(result, resultData)
+
+        super.finishAfterTransition()
+    }
+
+    open fun onPopulateResultIntent(intent: Intent): Int {
+        return Activity.RESULT_OK
     }
 }

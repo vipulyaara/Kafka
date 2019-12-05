@@ -1,14 +1,11 @@
 package com.kafka.user.extensions
 
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import android.os.StrictMode
+import androidx.databinding.ViewDataBinding
 import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.data.config.logging.Logger
 import com.kafka.user.R
-import org.kodein.di.generic.instance
-import java.util.Random
+import java.util.*
 
 /**
  * @author Vipul Kumar; dated 22/01/19.
@@ -80,4 +77,12 @@ fun getRandomAuthorResource(): Int {
 
 fun illegalArgumentException(msg: String): Nothing = throw RuntimeException(msg)
 
+inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
+    block()
+    executePendingBindings()
+}
 
+fun disableStrictMode() {
+    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+    StrictMode.setThreadPolicy(policy)
+}

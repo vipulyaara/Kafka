@@ -1,10 +1,9 @@
 package com.kafka.user.feature.home
 
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import com.airbnb.epoxy.Carousel
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.Content
+import com.kafka.data.extensions.observable
 import com.kafka.user.ItemAuthorBindingModel_
 import com.kafka.user.ItemBannerBindingModel_
 import com.kafka.user.ItemBookAltBindingModel_
@@ -18,6 +17,7 @@ import com.kafka.user.itemLoader
 import com.kafka.user.itemPageHeader
 import com.kafka.user.itemRowHeader
 import com.kafka.user.ui.epoxy.contentCarousel
+import org.jsoup.internal.StringUtil.padding
 
 /**
  * @author Vipul Kumar; dated 19/01/19.
@@ -25,15 +25,16 @@ import com.kafka.user.ui.epoxy.contentCarousel
  * Controller to layout items on homepage.
  */
 
-class HomepageController constructor(private val callbacks: Callbacks) :
-    BaseEpoxyController<HomepageViewState>() {
+class HomepageController constructor() : BaseEpoxyController() {
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun buildModels(viewState: HomepageViewState) {
-        if (viewState.isLoading) {
+    var callbacks: Callbacks? by observable(null, ::requestModelBuild)
+    var state: HomepageViewState by observable(HomepageViewState(), ::requestModelBuild)
+
+    override fun buildModels() {
+        if (state.isLoading) {
             buildLoadingState()
         } else {
-            buildHomepageModels(viewState)
+            buildHomepageModels(state)
         }
     }
 
@@ -41,11 +42,10 @@ class HomepageController constructor(private val callbacks: Callbacks) :
         itemLoader { id("loader") }
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun buildHomepageModels(viewState: HomepageViewState) {
 
         viewState.items?.forEach { railItem ->
-            if (railItem.items?.isNotEmpty() == true) {
+            if (railItem.contents?.isNotEmpty() == true) {
                 itemRowHeader {
                     id("header ${railItem.title}")
                     text(railItem.title.substring(2, railItem.title.length))
@@ -54,7 +54,7 @@ class HomepageController constructor(private val callbacks: Callbacks) :
                 contentCarousel {
                     id(railItem.title)
                     padding(Carousel.Padding.dp(16, 12,16,32,16))
-                    withModelsFrom(railItem.items ?: arrayListOf()) {
+                    withModelsFrom(railItem.contents ?: arrayListOf()) {
                         ItemBookBindingModel_()
                             .id(it.contentId)
                             .item(it)
@@ -87,7 +87,7 @@ class HomepageController constructor(private val callbacks: Callbacks) :
     }
 
     interface Callbacks {
-        fun onBookClicked(view: View, item: Item)
+        fun onBookClicked(view: View, content: Content)
         fun onBannerClicked()
     }
 }

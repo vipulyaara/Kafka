@@ -2,14 +2,10 @@ package com.kafka.user.feature.search
 
 import android.view.View
 import com.airbnb.epoxy.Carousel
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.Content
 import com.kafka.user.ItemAuthorBindingModel_
 import com.kafka.user.ItemBookBindingModel_
-import com.kafka.user.extensions.carousel
 import com.kafka.user.extensions.getRandomAuthorResource
-import com.kafka.user.extensions.getRandomCoverResource
-import com.kafka.user.extensions.withModelsFrom
-import com.kafka.user.feature.common.BaseEpoxyController
 import com.kafka.user.itemLoader
 import com.kafka.user.itemRowHeader
 import com.kafka.user.itemSearch
@@ -74,6 +70,6 @@ class SearchController constructor(private val callbacks: SearchController.Callb
     }
 
     interface Callbacks {
-        fun onBookClicked(view: View, item: Item)
+        fun onBookClicked(view: View, content: Content)
     }
 }

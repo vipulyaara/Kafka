@@ -3,6 +3,7 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.kafka.data.model.common.BaseEntity
 import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
 
@@ -15,6 +16,7 @@ import com.kafka.data.model.item.ItemDetailResponse
     ]
 )
 data class ContentDetail(
+    override val id: Long = 0L,
     @PrimaryKey val contentId: String = "",
     val language: String? = null,
     val title: String? = null,
@@ -23,7 +25,7 @@ data class ContentDetail(
     val mediaType: String? = null,
     val coverImage: String? = null,
     val files: List<File>? = null
-) {
+) : BaseEntity {
 
     fun generateStableId(): String {
         return contentId

@@ -6,13 +6,13 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.transaction
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.Content
 import com.kafka.data.util.SingleLiveEvent
 import com.kafka.user.R
 import com.kafka.user.extensions.logger
 import com.kafka.user.extensions.show
 import com.kafka.user.feature.MainFragment
-import com.kafka.user.feature.detail.ItemDetailFragment
+import com.kafka.user.feature.detail.ContentDetailFragment
 import com.kafka.user.feature.downloads.BookDownloadFragment
 import com.kafka.user.feature.collection.CollectionFragment
 import com.kafka.user.feature.reviews.BookReviewFragment
@@ -45,7 +45,7 @@ class NavigationViewModel : ViewModel(), HomeNavigator {
     override fun showHomepage(sharedElements: SharedElementHelper?) {
     }
 
-    override fun showItemDetail(item: Item, sharedElements: SharedElementHelper?) {
+    override fun showItemDetail(content: Content, sharedElements: SharedElementHelper?) {
         launchDetailFragment(fragmentManager, sharedElements)
     }
 
@@ -104,7 +104,7 @@ class NavigationViewModel : ViewModel(), HomeNavigator {
         fragmentManager: FragmentManager,
         sharedElements: SharedElementHelper?
     ) {
-        val detailFragment = ItemDetailFragment.create()
+        val detailFragment = ContentDetailFragment.create()
         fragmentManager.transaction {
             addToBackStack("")
             apply {

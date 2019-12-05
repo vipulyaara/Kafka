@@ -2,14 +2,11 @@ package com.kafka.user.feature.search
 
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.kafka.data.data.annotations.UseInjection
 import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.feature.search.SearchItems
 import com.kafka.data.data.interactor.launchInteractor
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.searchByKeyword
 import com.kafka.data.util.AppRxSchedulers
-import com.kafka.user.feature.common.BaseViewModel
 import com.kafka.user.ui.ObservableLoadingCounter
 import org.kodein.di.generic.instance
 
@@ -18,7 +15,6 @@ import org.kodein.di.generic.instance
  *
  * Implementation of [BaseViewModel] to provide data for search.
  */
-@UseInjection
 class SearchViewModel : BaseViewModel<SearchViewState>(
     SearchViewState()
 ) {

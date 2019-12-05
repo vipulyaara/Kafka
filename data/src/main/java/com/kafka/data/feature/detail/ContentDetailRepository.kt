@@ -7,14 +7,15 @@ import com.kafka.data.model.data.Success
 import com.kafka.data.util.AppCoroutineDispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
  *
  */
-class ContentDetailRepository constructor(
+class ContentDetailRepository @Inject constructor(
     private val localStore: LocalContentDetailStore,
-    private val dataSource: ItemDetailDataSource,
+    private val dataSource: ContentDetailDataSource,
     private val dispatchers: AppCoroutineDispatchers
 ) : Repository {
 

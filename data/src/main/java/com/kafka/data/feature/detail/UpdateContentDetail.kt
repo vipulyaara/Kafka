@@ -1,11 +1,11 @@
 package com.kafka.data.feature.detail
 
-import com.kafka.data.data.config.kodeinInstance
+import com.kafka.data.data.config.ProcessLifetime
 import com.kafka.data.data.interactor.Interactor
 import com.kafka.data.util.AppCoroutineDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
-import org.kodein.di.generic.instance
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
@@ -14,12 +14,11 @@ import org.kodein.di.generic.instance
  * @see ContentDetailRepository
  *
  */
-class UpdateContentDetail : Interactor<UpdateContentDetail.Param>() {
-
-    private val dispatchers: AppCoroutineDispatchers by kodeinInstance.instance()
-    private val repository: ContentDetailRepository by kodeinInstance.instance()
-    private val processScope: CoroutineScope by kodeinInstance.instance()
-
+class UpdateContentDetail @Inject constructor(
+    private val dispatchers: AppCoroutineDispatchers,
+    private val repository: ContentDetailRepository,
+    @ProcessLifetime private val processScope: CoroutineScope
+) : Interactor<UpdateContentDetail.Param>() {
     override val scope: CoroutineScope = processScope + dispatchers.io
 
     override suspend fun doWork(params: Param) {

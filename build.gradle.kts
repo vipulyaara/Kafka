@@ -1,21 +1,21 @@
 
 import com.android.build.gradle.BaseExtension
-import org.jmailen.gradle.kotlinter.KotlinterExtension
-import org.jmailen.gradle.kotlinter.support.ReporterType
-
-plugins {
-    java
-    kotlin("jvm") version Kotlin.version apply false
-    id(Android.libPlugin) version Android.version apply false
-    id(AndroidX.Navigation.plugin) version AndroidX.Navigation.pluginVersion apply false
-    id(KotlinX.Serialization.plugin) version Kotlin.version apply false
-    id(Ktlint.plugin) version Ktlint.version apply false
-    id(PlayServices.plugin) version PlayServices.pluginVersion apply false
-}
 
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.60-eap-76")
+        classpath(Android.gradlePlugin)
+        classpath("com.google.gms:google-services:4.3.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.pluginVersion}")
     }
 }
 
@@ -23,8 +23,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         jcenter()
+        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+        maven(url = "https://plugins.gradle.org/m2/")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://jitpack.io")
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
@@ -42,89 +43,84 @@ allprojects {
         }
     }
 
-    val androidModules = listOf("data", "player")
-    val androidSampleModules = listOf("app")
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+}
 
-    subprojects {
-        val isAndroidModule = project.name in androidModules
-        val isSample = project.name in androidSampleModules
-        val isJvmModule = !isAndroidModule && !isSample
+val libraryModules = listOf("data", "player")
+val applicationModules = listOf("app")
 
-        if (isJvmModule) {
-            apply {
-                plugin(Kotlin.plugin)
-            }
+subprojects {
+    val isLibrary = project.name in libraryModules
+    val isAndroid = project.name in libraryModules || project.name in applicationModules
+    val isApplication = project.name in applicationModules
 
-            dependencies {
-                implementation(Kotlin.stdlib)
-                testImplementation(JUnit.dependency)
-            }
+    if (isAndroid) {
 
-            configure<JavaPluginConvention> {
-                sourceCompatibility = JavaVersion.VERSION_1_8
-                targetCompatibility = JavaVersion.VERSION_1_8
-
-                sourceSets {
-                    getByName("main").java.srcDirs("src/main/kotlin")
-                    getByName("test").java.srcDirs("src/main/kotlin")
-                }
-            }
-        }
-
-        if (isAndroidModule) {
+        if (isLibrary) {
             apply {
                 plugin(Android.libPlugin)
                 plugin(Kotlin.androidPlugin)
+                plugin(KotlinX.Serialization.plugin)
                 plugin(Kotlin.androidExtensionsPlugin)
-            }
-
-
-            configure<BaseExtension> {
-                compileSdkVersion(Kafka.compileSdkVersion)
-
-                defaultConfig {
-                    minSdkVersion(Kafka.minSdkVersion)
-                    targetSdkVersion(Kafka.compileSdkVersion)
-                    versionCode = 1
-                    versionName = Kafka.publishVersion
-                }
-
-                sourceSets {
-                    getByName("main").java.srcDirs("src/main/kotlin")
-                    getByName("test").java.srcDirs("src/test/kotlin")
-                }
-
-                compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_1_8
-                    targetCompatibility = JavaVersion.VERSION_1_8
-                }
-
-                buildTypes {
-                    getByName("release") {
-                        isMinifyEnabled = false
-                        consumerProguardFiles("proguard-rules.pro")
-                    }
-                }
-
-                lintOptions {
-                    isAbortOnError = false
-                }
-
-                testOptions {
-                    unitTests.isReturnDefaultValues = true
-                }
+                plugin(Kotlin.kapt)
             }
         }
 
-        if (!isSample) {
+        if (isApplication) {
             apply {
-                plugin(Release.MavenPublish.plugin)
-                plugin(Release.Bintray.plugin)
-                plugin(Ktlint.plugin)
+                plugin(Android.appPlugin)
+                plugin(Kotlin.androidPlugin)
+                plugin(Kotlin.kapt)
+                plugin(KotlinX.Serialization.plugin)
+                plugin(Kotlin.androidExtensionsPlugin)
+                plugin("androidx.navigation.safeargs.kotlin")
+            }
+        }
+
+        configure<BaseExtension> {
+            compileSdkVersion(Kafka.compileSdkVersion)
+
+
+            defaultConfig {
+                minSdkVersion(Kafka.minSdkVersion)
+                targetSdkVersion(Kafka.compileSdkVersion)
+                vectorDrawables.useSupportLibrary = true
+                multiDexEnabled = true
+                versionCode = 1
+                versionName = Kafka.publishVersion
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
-            configure<KotlinterExtension> {
-                reporters = arrayOf(ReporterType.plain.name, ReporterType.checkstyle.name)
+            sourceSets {
+                getByName("main").java.srcDirs("src/main/kotlin")
+                getByName("test").java.srcDirs("src/test/kotlin")
+            }
+
+            compileOptions {
+                sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+                targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+            }
+
+            buildTypes {
+                getByName("release") {
+                    isMinifyEnabled = false
+                    consumerProguardFiles("proguard-rules.pro")
+                }
+            }
+
+            lintOptions {
+                isAbortOnError = false
+            }
+
+            testOptions {
+                unitTests.isReturnDefaultValues = true
+            }
+
+
+            packagingOptions {
+                exclude("META-INF/LICENSE.txt")
+                exclude("META-INF/NOTICE.txt")
+                exclude("META-INF/rxkotlin.properties")
             }
         }
     }

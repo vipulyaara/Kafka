@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.kafka.data.model.LanguageModel
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
@@ -17,7 +17,7 @@ abstract class LanguageDao {
     abstract fun insertLanguages(items: List<LanguageModel>)
 
     @Query("select * from LanguageModel")
-    abstract fun languageFlowable(): Flowable<List<LanguageModel>>
+    abstract fun languageFlow(): Flow<List<LanguageModel>>
 
     @Query("select * from LanguageModel")
     abstract fun languages(): List<LanguageModel>

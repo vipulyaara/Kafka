@@ -1,6 +1,6 @@
 package com.kafka.data.feature.search
 
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.Content
 import com.kafka.data.feature.Repository
 import com.kafka.data.model.data.Result
 import com.kafka.data.model.data.Success
@@ -17,7 +17,7 @@ class SearchRepository constructor(
 
     fun observeSearch(archiveQuery: ArchiveQuery) = localSource.observeSearch(archiveQuery)
 
-    suspend fun updateItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Item>> {
+    suspend fun updateItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Content>> {
         val result = remoteSource.fetchItemsByCreator(archiveQuery)
         when (result) {
             is Success -> {

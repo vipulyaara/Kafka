@@ -1,22 +1,25 @@
 package com.kafka.user.feature.common
 
+import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.Observable
+import androidx.lifecycle.Observer
+import com.airbnb.mvrx.BaseMvRxFragment
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
-/**
- * @author Vipul Kumar; dated 22/10/18.
- */
+abstract class BaseFragment : BaseMvRxFragment(), HasAndroidInjector {
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-abstract class BaseFragment : Fragment() {
-    protected var toolbar: Toolbar? = null
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        toolbar = (activity as BaseActivity).toolbar
-        super.onCreate(savedInstanceState)
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
     }
 }
