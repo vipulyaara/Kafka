@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class ContentDao : EntityDao<Content> {
 
-    @Query("select * from Content where creator = :creator order by title")
-    abstract fun observeQueryByCreator(creator: String): Flow<List<Content>>
+    @Query("select * from Content")
+    abstract fun observeQueryByCreator(): Flow<List<Content>>
 
     @Query("select * from Content where collection like :collection order by title")
     abstract fun observeQueryByCollection(collection: String): Flow<List<Content>>

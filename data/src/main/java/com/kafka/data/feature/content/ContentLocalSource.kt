@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class ContentLocalSource @Inject constructor(private val dao: ContentDao) {
 
-    fun observeQueryByCreator(creator: String) = dao.observeQueryByCreator(creator)
+    fun observeQueryByCreator(creator: String) = dao.observeQueryByCreator()
 
     fun observeQueryByCollection(collection: String) = dao.observeQueryByCollection("%$collection%")
 

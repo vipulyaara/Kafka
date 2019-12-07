@@ -54,7 +54,7 @@ class HomepageController @Inject constructor() : BaseEpoxyController() {
                             .resource(getRandomAuthorResource())
                             .itemClickListener { _, _, clickedView, _ ->
                                 clickedView.transitionName = it.contentId
-                                callbacks?.onBookClicked(clickedView, it)
+                                callbacks?.onContentClicked(clickedView, it)
                             }
                     }
                 }
@@ -80,7 +80,7 @@ class HomepageController @Inject constructor() : BaseEpoxyController() {
     }
 
     interface Callbacks {
-        fun onBookClicked(view: View, content: Content)
+        fun onContentClicked(view: View, content: Content)
         fun onBannerClicked()
     }
 }

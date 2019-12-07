@@ -21,7 +21,7 @@ abstract class BaseDataBindingFragment<Binding : ViewDataBinding>(
     lateinit var logger: Logger
 
     private var _binding: Binding? = null
-    val binding = binding()
+    val binding by lazy { binding() }
 
     private fun binding() = requireNotNull(_binding)
 

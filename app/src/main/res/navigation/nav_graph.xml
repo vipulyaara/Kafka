@@ -8,5 +8,21 @@
     <fragment
         android:id="@+id/navigation_homepage"
         android:name="com.kafka.user.feature.home.HomepageFragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+
+    <action
+        android:id="@+id/to_poet_detail"
+        app:destination="@id/navigation_content_detail"
+        app:popUpTo="@id/navigation_homepage"
+        app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_content_detail"
+        android:name="com.kafka.user.feature.detail.ContentDetailFragment">
+        <argument
+            android:name="mvrx:arg"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

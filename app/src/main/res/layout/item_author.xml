@@ -9,88 +9,80 @@
             type="Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:cardBackgroundColor="@color/background"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/icon_tint_light"
+        app:strokeWidth="0.7dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="156dp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/icon_tint_light"
-            app:strokeWidth="0.7dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_medium">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/spacing_medium">
+            <ImageView
+                android:id="@+id/ivAuthor"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                app:imageResource="@{resource}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/ivAuthor"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:imageResource="@{resource}"
-                    imageCircular="@{true}"/>
+            <TextView
+                android:id="@+id/tvAuthorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:fontFamily="sans-serif-medium"
+                android:text="Franz Kafka"
+                android:textAppearance="@style/Headline1"
+                android:textColor="@color/text_subheading"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivAuthor" />
 
-                <TextView
-                    android:id="@+id/tvAuthorName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Franz Kafka"
-                    android:textAppearance="@style/Headline1"
-                    android:textColor="@color/text_subheading"
-                    android:textSize="14sp"
-                    android:textStyle="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivAuthor" />
+            <TextView
+                android:id="@+id/tvAuthorDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:text="1883-1926"
+                android:textColor="@color/app_yellow_dark"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAuthorName" />
 
-                <TextView
-                    android:id="@+id/tvAuthorDesc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_micro"
-                    android:text="1883-1926"
-                    android:textColor="@color/app_yellow_dark"
-                    android:textSize="12sp"
-                    android:textStyle="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvAuthorName" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnFollow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                    app:contentPadding="0dp"
-                    android:layout_marginTop="@dimen/spacing_medium_2"
-                    android:elevation="0.5dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:minHeight="0dp"
-                    android:paddingVertical="@dimen/spacing_regular"
-                    android:text="Follow"
-                    android:textAllCaps="false"
-                    android:textColor="@color/onAccent"
-                    android:textSize="12sp"
-                    android:textStyle="normal"
-                    app:backgroundTint="@color/app_teal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvAuthorDesc" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFollow"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium_2"
+                android:elevation="0.5dp"
+                android:fontFamily="sans-serif-medium"
+                android:minHeight="0dp"
+                android:paddingVertical="@dimen/spacing_regular"
+                android:text="Follow"
+                android:textAllCaps="false"
+                android:textColor="@color/onAccent"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                app:backgroundTint="@color/app_teal"
+                app:contentPadding="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAuthorDesc" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

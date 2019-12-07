@@ -24,5 +24,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/elevationShadow"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:alpha="0"
+            android:background="@drawable/img_shadow_top_to_bottom"
+            android:stateListAnimator="@animator/active_alpha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
