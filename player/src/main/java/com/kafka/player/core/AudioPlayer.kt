@@ -1,26 +1,15 @@
 package com.kafka.player.core
 
-import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.DISCONTINUITY_REASON_PERIOD_TRANSITION
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsListener
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.MediaSourceEventListener
-import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.DefaultHlsDataSourceFactory
@@ -31,27 +20,15 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelection
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.upstream.HttpDataSource
+import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
-import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.data.config.logging.Logger
 import com.kafka.player.analytics.PlayerAnalyticsModel
 import com.kafka.player.helper.TrackSelectionHelper
-import com.kafka.player.model.PlaybackItem
-import com.kafka.player.model.PlayerConfig
-import com.kafka.player.model.PlayerError
-import com.kafka.player.model.PlayerException
-import com.kafka.player.model.PlayerSeekInfo
-import com.kafka.player.model.PlayerState
+import com.kafka.player.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import org.kodein.di.generic.instance
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -60,14 +37,14 @@ import kotlin.coroutines.CoroutineContext
 /**
  * @author Vipul Kumar; dated 05/03/19.
  */
-class AudioPlayer : BasePlayer(), CoroutineScope {
+class AudioPlayer(
+    private val context: Context, private val logger: Logger
+) : BasePlayer(), CoroutineScope {
 
     private val maxBufferDurationForWifiDevices = 1000 * 60 * 10
     private val loggerTag by lazy { this.javaClass.canonicalName }
 
     private val job = Job()
-    private val logger: Logger by kodeinInstance.instance()
-    private val context: Application by kodeinInstance.instance()
 
     private lateinit var player: SimpleExoPlayer
     private val trackSelector: DefaultTrackSelector

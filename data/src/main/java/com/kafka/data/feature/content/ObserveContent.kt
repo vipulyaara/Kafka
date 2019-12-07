@@ -13,14 +13,22 @@ import javax.inject.Inject
 class ObserveContent @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val repository: ContentRepository
-) : SubjectInteractor<UpdateContent.Params, List<Content>>() {
+) : SubjectInteractor<ObserveContent.Params, List<Content>>() {
     override val dispatcher: CoroutineDispatcher = dispatchers.io
 
-    override fun createObservable(params: UpdateContent.Params): Flow<List<Content>> {
+    override fun createObservable(params: Params): Flow<List<Content>> {
         return when (params) {
-            is UpdateContent.Params.ByCreator -> repository.observeQueryByCreator(params.creator)
-            is UpdateContent.Params.ByCollection -> repository.observeQueryByCollection(params.collection)
-            is UpdateContent.Params.ByGenre -> repository.observeQueryByGenre(params.genre)
+            is Params.ByCreator -> repository.observeQueryByCreator(params.creator)
+            is Params.ByCollection -> repository.observeQueryByCollection(params.collection)
+            is Params.ByGenre -> repository.observeQueryByGenre(params.genre)
         }
     }
+
+    sealed class Params {
+        class ByCreator(val creator: String) : Params()
+        class ByCollection(val collection: String) : Params()
+        class ByGenre(val genre: String) : Params()
+    }
+
+    data class ExecuteParams(val id: Long = 0)
 }

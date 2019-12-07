@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.kafka.user.extensions
+package com.kafka.data.extensions
 
 import timber.log.Timber
 

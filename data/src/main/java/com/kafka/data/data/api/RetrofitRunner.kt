@@ -7,8 +7,9 @@ import com.kafka.data.model.data.ErrorResult
 import com.kafka.data.model.data.Result
 import com.kafka.data.model.data.Success
 import retrofit2.Response
+import javax.inject.Inject
 
-class RetrofitRunner {
+class RetrofitRunner @Inject constructor(){
     suspend fun <T, E> executeForResponse(
         mapper: Mapper<T, E>,
         request: suspend () -> Response<T>

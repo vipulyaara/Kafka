@@ -1,4 +1,4 @@
-package org.rekhta.user.config.initializers
+package com.kafka.user.config.initializers
 
 /**
  * @author Vipul Kumar; dated 2019-08-20.

@@ -3,9 +3,6 @@
 package com.kafka.data.query
 
 import androidx.collection.ArrayMap
-import androidx.collection.arrayMapOf
-import com.google.common.collect.ArrayListMultimap
-import com.google.common.collect.Multimap
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -27,7 +24,7 @@ const val _searchTerm = ""
 
 data class ArchiveQuery(
     var title: String? = null,
-    val queries: Multimap<String, String> = ArrayListMultimap.create()
+    val queries: ArrayMap<String, String> = ArrayMap()
 )
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
@@ -61,7 +58,7 @@ fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
 fun ArchiveQuery.buildSearchTerm(): String {
     var query = ""
     queries.put(_collection, _librivoxaudio)
-    for ((key, value) in queries.entries()) {
+    for ((key, value) in queries.entries) {
         query = query.plus("$key:($value)+AND+")
     }
     return query.dropLast(5)

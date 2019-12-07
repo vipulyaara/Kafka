@@ -1,4 +1,8 @@
+import Kotlin.kapt
+
 dependencies {
+    implementation(project(":data"))
+
     implementation(AndroidX.Room.runtime)
     implementation(AndroidX.Room.ktx)
     kapt(AndroidX.Room.compiler)
@@ -34,6 +38,8 @@ dependencies {
     implementation(Retrofit.runtime)
     implementation(Retrofit.moshi)
     implementation(Retrofit.gson)
+
+    implementation(ExoPlayer.player)
 
     implementation(OkHttp.core)
     implementation(OkHttp.loggingInterceptor)

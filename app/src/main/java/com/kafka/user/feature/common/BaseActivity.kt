@@ -1,4 +1,4 @@
-package org.rekhta.user.feature.common
+package com.kafka.user.feature.common
 
 import android.annotation.SuppressLint
 import android.app.Activity

@@ -39,7 +39,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcRounded="@{resource}" />
+                    app:imageResource="@{resource}"
+                    imageCircular="@{true}"/>
 
                 <TextView
                     android:id="@+id/tvAuthorName"

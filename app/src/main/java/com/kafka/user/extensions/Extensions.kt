@@ -2,7 +2,6 @@ package com.kafka.user.extensions
 
 import android.os.StrictMode
 import androidx.databinding.ViewDataBinding
-import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.data.config.logging.Logger
 import com.kafka.user.R
 import java.util.*
@@ -17,8 +16,6 @@ import java.util.*
 fun <T : Collection<*>> T?.letEmpty(f: (it: T) -> Unit) {
     if (this != null && this.isNotEmpty()) f(this)
 }
-
-internal val logger: Logger by kodeinInstance.instance()
 
 fun getRandomCoverResource(): Int {
     val covers = arrayOf(

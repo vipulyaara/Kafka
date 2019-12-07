@@ -15,10 +15,6 @@ import javax.inject.Inject
  * @author Vipul Kumar; dated 02/02/19.
  */
 
-var detailId = ""
-var detailName = ""
-var detailUrl = ""
-
 class HomepageFragment : BaseDataBindingFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ) {

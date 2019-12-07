@@ -1,14 +1,7 @@
 package com.kafka.player.core
 
 import androidx.annotation.CallSuper
-import com.kafka.player.model.PlaybackItem
-import com.kafka.player.model.PlayerConfig
-import com.kafka.player.model.PlayerException
-import com.kafka.player.model.PlayerSeekInfo
-import com.kafka.player.model.PlayerState
-import com.kafka.player.model.noPlayerStateError
-import io.reactivex.processors.PublishProcessor
-import io.reactivex.subjects.PublishSubject
+import com.kafka.player.model.*
 
 /**
  * @author Vipul Kumar; dated 05/03/19.
@@ -19,8 +12,6 @@ abstract class BasePlayer : Player {
     protected val seekUpdateInterval: Long = 1000
     private lateinit var playerExceptionHandler: PlayerExceptionHandler
     var lastPlayerState: PlayerState? = null
-    val playerStateObservable = PublishProcessor.create<PlayerState>()
-    val playerSeekInfoObservable = PublishSubject.create<PlayerSeekInfo>()
 
     init {
         updatePlayerState(PlayerState.Stopped(false))
@@ -34,13 +25,13 @@ abstract class BasePlayer : Player {
 
     protected fun updatePlayerState(playerState: PlayerState) {
         lastPlayerState = playerState
-        playerStateObservable.onNext(playerState)
+//        playerStateObservable.onNext(playerState)
     }
 
     internal fun getPlayerState() = lastPlayerState ?: noPlayerStateError
 
     internal fun updatePlayerSeekInfo(playerSeekInfo: PlayerSeekInfo) {
-        playerSeekInfoObservable.onNext(playerSeekInfo)
+//        playerSeekInfoObservable.onNext(playerSeekInfo)
     }
 
     private fun validateStateChange(playerAction: PlayerAction) {

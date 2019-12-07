@@ -5,12 +5,13 @@ import com.kafka.data.feature.Repository
 import com.kafka.data.model.data.Result
 import com.kafka.data.model.data.Success
 import com.kafka.data.query.ArchiveQuery
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
  *
  */
-class ContentRepository constructor(
+class ContentRepository @Inject constructor(
     private val localSource: ContentLocalSource,
     private val remoteSource: ContentRemoteSource
 ) : Repository {

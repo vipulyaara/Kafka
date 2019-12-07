@@ -3,7 +3,7 @@ import com.android.build.gradle.BaseExtension
 
 dependencies {
     implementation(project(":data"))
-    implementation(project(":player"))
+//    implementation(project(":player"))
 
     implementation(Kotlin.stdlib)
     implementation("org.jsoup:jsoup:1.12.1")
@@ -104,7 +104,7 @@ configure<BaseExtension> {
     }
 
     defaultConfig {
-        applicationId = "org.kafka.user"
+        applicationId = "com.kafka.user"
     }
 }
 

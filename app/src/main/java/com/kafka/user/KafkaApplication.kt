@@ -1,15 +1,10 @@
 package com.kafka.user
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
-import com.google.android.gms.security.ProviderInstaller
-import com.kafka.data.data.config.initializers.AppInitializers
-import com.kafka.user.player.Player
+import com.kafka.data.extensions.d
+import com.kafka.user.config.di.DaggerAppComponent
+import com.kafka.user.config.initializers.AppInitializers
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.androidModule
 import javax.inject.Inject
 
 /**
@@ -28,7 +23,7 @@ class KafkaApplication : DaggerApplication() {
 
     override fun onTerminate() {
         super.onTerminate()
-        Player.unbindService(this)
+//        Player.unbindService(this)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

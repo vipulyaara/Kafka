@@ -6,15 +6,11 @@ import android.view.View
 import android.widget.FrameLayout
 import com.kafka.data.data.config.kodeinInstance
 import com.kafka.data.extensions.plusAssign
-import com.kafka.data.util.AppRxSchedulers
-import com.kafka.player.model.PlaybackItem
 import com.kafka.player.model.PlayerState
 import com.kafka.user.R
 import com.kafka.user.extensions.logger
 import com.kafka.user.player.Player
-import com.kafka.user.player.dummyUrl
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.widget_mini_player.view.*
 import org.kodein.di.generic.instance
 

@@ -1,7 +1,7 @@
 package com.kafka.player.analytics
 
 import android.text.TextUtils
-import com.kafka.player.extensions.logger
+import com.kafka.data.extensions.e
 import java.util.*
 
 class PlayerAnalyticsHashMap : HashMap<String, String?>() {
@@ -10,7 +10,7 @@ class PlayerAnalyticsHashMap : HashMap<String, String?>() {
         if (value != null && !TextUtils.isEmpty(value.toString())) {
             return super.put(key, value)
         } else {
-            logger.e("$TAG null info is trying to added key : $key value $value")
+            e {"$TAG null info is trying to added key : $key value $value" }
         }
         return value
     }

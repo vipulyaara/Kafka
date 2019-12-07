@@ -1,4 +1,4 @@
-package org.rekhta.data.util.data
+package com.kafka.user.ui
 
 import com.kafka.data.data.config.logging.Logger
 import com.kafka.data.data.interactor.*

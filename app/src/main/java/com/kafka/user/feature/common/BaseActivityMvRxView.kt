@@ -1,8 +1,9 @@
-package org.rekhta.user.feature.common
+package com.kafka.user.feature.common
 
 import android.os.Bundle
 import com.airbnb.mvrx.MvRxView
 import com.airbnb.mvrx.MvRxViewId
+import com.kafka.user.feature.common.BaseActivity
 
 /**
  * Base Activity class which supports LifecycleOwner and Dagger injection.

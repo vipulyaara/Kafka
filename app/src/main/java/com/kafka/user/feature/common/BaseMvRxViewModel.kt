@@ -2,7 +2,7 @@ package com.kafka.user.feature.common
 
 import com.airbnb.mvrx.*
 import com.airbnb.mvrx.BaseMvRxViewModel
-import com.kafka.user.extensions.e
+import com.kafka.data.extensions.e
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
  */
 open class BaseMvRxViewModel<S : MvRxState>(
     initialState: S
-) : BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG) {
+) : BaseMvRxViewModel<S>(initialState, debugMode = com.kafka.user.BuildConfig.DEBUG) {
     private val job = Job()
 
     protected suspend inline fun <T> Flow<T>.execute(
@@ -32,9 +32,9 @@ open class BaseMvRxViewModel<S : MvRxState>(
         @Suppress("USELESS_CAST")
         return map { Success(mapper(it)) as Async<V> }
             .catch {
-                if (BuildConfig.DEBUG) {
-//                    throw RuntimeException("Exception during observe in BaseViewModel")
+                if (com.kafka.user.BuildConfig.DEBUG) {
                     e(it) {"Exception during observe"}
+                    throw RuntimeException("Exception during observe in BaseViewModel")
                 }
                 emit(Fail(it))
             }

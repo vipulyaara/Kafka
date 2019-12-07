@@ -1,9 +1,10 @@
 package com.kafka.user.feature.detail
 
 import androidx.lifecycle.viewModelScope
-import com.airbnb.mvrx.*
-import com.kafka.data.data.annotations.UseInjection
-import com.kafka.data.data.config.kodeinInstance
+import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.ViewModelContext
 import com.kafka.data.data.interactor.launchObserve
 import com.kafka.data.feature.detail.ObserveContentDetail
 import com.kafka.data.feature.detail.UpdateContentDetail
@@ -13,14 +14,15 @@ import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import org.rekhta.data.util.data.ObservableLoadingCounter
+import com.kafka.user.ui.ObservableLoadingCounter
+import com.kafka.user.ui.collectFrom
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
  *
  * Implementation of [BaseMvRxViewModel] to provide data for content detail.
  */
-internal class ContentDetailViewModel  @AssistedInject constructor(
+class ContentDetailViewModel  @AssistedInject constructor(
     @Assisted initialState: ContentDetailViewState,
     private val updateContentDetail: UpdateContentDetail,
     private val observeContentDetail: ObserveContentDetail,
@@ -28,9 +30,8 @@ internal class ContentDetailViewModel  @AssistedInject constructor(
 ) : BaseMvRxViewModel<ContentDetailViewState>(initialState) {
 
     init {
-
         viewModelScope.launchObserve(observeContentDetail) {
-            it.distinctUntilChanged().collect { result ->
+            it.distinctUntilChanged().execute { result ->
                 if (result is Success) {
                     val value = result()
                     copy(contentDetail = value)
@@ -48,12 +49,24 @@ internal class ContentDetailViewModel  @AssistedInject constructor(
             observeContentDetail(ObserveContentDetail.Param(it.contentId))
         }
 
-        refresh()
+        withState {
+            updateContentDetail(UpdateContentDetail.Param(it.contentId)).also {
+                viewModelScope.launch {
+                    loadingState.collectFrom(it)
+                }
+            }
+        }
     }
 
-    private fun refresh() {
-        loadingState.addLoader()
-        scope.launchInteractor(observeContentDetail, ObserveContentDetail.ExecuteParams())
-            .invokeOnCompletion { loadingState.removeLoader() }
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(initialState: ContentDetailViewState): ContentDetailViewModel
+    }
+
+    companion object : MvRxViewModelFactory<ContentDetailViewModel, ContentDetailViewState> {
+        override fun create(viewModelContext: ViewModelContext, state: ContentDetailViewState): ContentDetailViewModel? {
+            val fragment: ContentDetailFragment = (viewModelContext as FragmentViewModelContext).fragment()
+            return fragment.viewModelFactory.create(state)
+        }
     }
 }

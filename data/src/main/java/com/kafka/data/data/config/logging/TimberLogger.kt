@@ -1,14 +1,13 @@
 package com.kafka.data.data.config.logging
 
 import timber.log.Timber
+import javax.inject.Inject
 
-class TimberLogger constructor(
-    private val tag: String = "TimberLogger"
-) : Logger {
+class TimberLogger @Inject constructor() : Logger {
     fun setup(debugMode: Boolean) {
         if (debugMode) {
             Timber.plant(Timber.DebugTree())
-            Timber.tag(tag)
+            Timber.tag("TimberLogger")
         }
     }
 

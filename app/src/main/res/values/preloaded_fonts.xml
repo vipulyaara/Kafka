@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <content>@font/alegreya</content>
-        <content>@font/alegreya_bold</content>
-        <content>@font/biryani_bold</content>
-        <content>@font/copse</content>
-        <content>@font/karla</content>
-        <content>@font/karla_bold</content>
-        <content>@font/lato</content>
-        <content>@font/noto_sans</content>
-        <content>@font/open_sans</content>
-        <content>@font/poppins</content>
-        <content>@font/raleway</content>
-        <content>@font/raleway_bold</content>
-        <content>@font/raleway_semibold</content>
-        <content>@font/source_sans_pro</content>
-        <content>@font/source_sans_pro_semibold</content>
+        <item>@font/alegreya</item>
+        <item>@font/alegreya_bold</item>
+        <item>@font/biryani_bold</item>
+        <item>@font/copse</item>
+        <item>@font/karla</item>
+        <item>@font/karla_bold</item>
+        <item>@font/lato</item>
+        <item>@font/noto_sans</item>
+        <item>@font/open_sans</item>
+        <item>@font/poppins</item>
+        <item>@font/raleway</item>
+        <item>@font/raleway_bold</item>
+        <item>@font/raleway_semibold</item>
+        <item>@font/source_sans_pro</item>
+        <item>@font/source_sans_pro_semibold</item>
     </array>
 </resources>

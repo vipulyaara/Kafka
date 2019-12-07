@@ -1,4 +1,4 @@
-package org.rekhta.user.config.initializers
+package com.kafka.user.config.initializers
 
 import android.app.Application
 import com.facebook.stetho.Stetho

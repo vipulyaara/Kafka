@@ -1,25 +1,23 @@
 package com.kafka.user.feature.home
 
 import androidx.lifecycle.viewModelScope
-import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
-import com.kafka.data.data.interactor.launchInteractor
+import com.kafka.data.data.interactor.launchObserve
 import com.kafka.data.entities.Content
+import com.kafka.data.feature.content.ContentRepository
+import com.kafka.data.feature.content.ObserveContent
 import com.kafka.data.model.RailItem
-import com.kafka.user.extensions.logger
+import com.kafka.data.util.AppCoroutineDispatchers
 import com.kafka.user.feature.common.BaseMvRxViewModel
-import com.kafka.user.ui.ObservableLoadingCounter
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.reactivex.Observable
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import org.kodein.di.generic.instance
-import org.rekhta.data.util.data.ObservableLoadingCounter
+import com.kafka.user.ui.ObservableLoadingCounter
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
@@ -28,9 +26,12 @@ import org.rekhta.data.util.data.ObservableLoadingCounter
  */
 class HomepageViewModel @AssistedInject constructor(
     @Assisted initialState: HomepageViewState,
-    private val updateHomepage: UpdateHomepage,
     private val loadingState: ObservableLoadingCounter,
-    ) : BaseMvRxViewModel<HomepageViewState>(HomepageViewState()) {
+    appCoroutineDispatchers: AppCoroutineDispatchers,
+    contentRepository: ContentRepository
+) : BaseMvRxViewModel<HomepageViewState>(HomepageViewState()) {
+
+    private val observeContents = arrayListOf(ObserveContent(appCoroutineDispatchers, contentRepository))
 
     init {
         viewModelScope.launch {
@@ -42,38 +43,21 @@ class HomepageViewModel @AssistedInject constructor(
                 }
         }
 
-        QueryItems(dispatchers)
-            .also { it.launchQuery(QueryItems.Params.ByCreator("Franz Kafka")) }
-            .observeQuery()
-//            .zipWith(
-//                QueryItems(dispatchers)
-//                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
-//                    .observeQuery()
-//            )
-//            .zipWith(
-//                QueryItems(dispatchers)
-//                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
-//                    .observeQuery()
-//            )
-            .doOnError(logger::e)
-            .execute { onItemsFetched(it) }
+        observeContents.forEach { observeContent ->
+            viewModelScope.launchObserve(observeContent) { flow ->
+                flow.execute {
+                    onItemsFetched(it())
+                }
+            }
+
+            observeContent(ObserveContent.Params.ByCreator("Kafka"))
+        }
     }
 
-    private fun HomepageViewState.onItemsFetched(it: Async<List<Content>>): HomepageViewState {
-        val list =
-            items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", it())) }
-        logger.d("Items ${it() ?: 0}")
-        return copy(items = list)
-    }
-
-    private fun QueryItems.observeQuery(): Observable<List<Content>> {
-        return observe().toObservable()
-            .subscribeOn(schedulers.io)
-    }
-
-    private fun QueryItems.launchQuery(params: QueryItems.Params) {
-        setParams(params)
-        scope.launchInteractor(this, QueryItems.ExecuteParams())
+    private fun HomepageViewState.onItemsFetched(list: List<Content>?): HomepageViewState {
+        val new =
+            items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", list)) }
+        return copy(items = new)
     }
 
     @AssistedInject.Factory

@@ -20,6 +20,17 @@
 
     <color name="colorSeekBar">#ffaf20</color>
 
+    <color name="placeholder_1">#4461DCB2</color>
+    <color name="placeholder_2">#eadea6</color>
+    <color name="placeholder_3">#c2e8ce</color>
+    <color name="placeholder_4">#f1d4d4</color>
+    <color name="placeholder_5">#d4d7dd</color>
+    <color name="placeholder_6">#f7e8f6</color>
+    <color name="placeholder_7">#88eea5f6</color>
+    <color name="placeholder_8">#c0ffb3</color>
+    <color name="placeholder_9">#ddf796</color>
+    <color name="placeholder_10">#e4f2f0</color>
+
     <color name="background">#ffffff</color>
     <color name="background_light">#F5F7FA</color>
     <color name="background_dark">#E1E4E9</color>

@@ -6,11 +6,15 @@ import com.kafka.data.data.config.logging.Logger
 import com.kafka.data.entities.Content
 import com.kafka.data.entities.ContentDetail
 import com.kafka.data.extensions.observable
+import com.kafka.user.BookBindingModel_
+import com.kafka.user.bookDetail
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
 import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
+import com.kafka.user.loader
+import com.kafka.user.rowHeader
 import com.kafka.user.ui.SharedElementHelper
 import org.jsoup.internal.StringUtil.padding
 import javax.inject.Inject
@@ -33,34 +37,34 @@ class ContentDetailController @Inject constructor(private val logger: Logger) : 
     }
 
     private fun buildLoadingState() {
-        itemLoader { id("loader") }
+        loader { id("loader") }
     }
 
     private fun buildDetailModels(viewState: ContentDetailViewState) {
-        itemBookDetail {
+        bookDetail {
             id(viewState.contentDetail?.contentId)
-            item(viewState.contentDetail)
+            content(viewState.contentDetail)
             resource(getRandomAuthorResource())
             clickListener { _, parentView, clickedView, _ ->
                 clickedView.animateBookOpen()
                 (parentView.dataBinding as ItemBookDetailBinding).coverCard2.animateScale()
             }
             reviewsClickListener { _, _, _, _ ->
-                callbacks.onReviewClicked()
+                callbacks?.onReviewClicked()
             }
             downloadClickListener { _, _, _, _ ->
-                callbacks.onDownloadClicked()
+                callbacks?.onDownloadClicked()
             }
             profileClickListener { _, _, _, _ ->
-                callbacks.onProfileClicked()
+                callbacks?.onProfileClicked()
             }
             playClickListener { _, _, _, _ ->
-                callbacks.onPlayClicked(viewState.contentDetail)
+                callbacks?.onPlayClicked(viewState.contentDetail)
             }
         }
 
         viewState.itemsByCreator?.let { list ->
-            itemRowHeader {
+            rowHeader {
                 id("row header")
                 text(list.title)
             }
@@ -69,12 +73,12 @@ class ContentDetailController @Inject constructor(private val logger: Logger) : 
                 id("suggestions")
                 padding(Carousel.Padding.dp(12, 12))
                 withModelsFrom(list.contents ?: arrayListOf()) {
-                    ItemBookBindingModel_()
+                    BookBindingModel_()
                         .id(it.contentId)
-                        .item(it)
+                        .content(it)
                         .resource(getRandomAuthorResource())
                         .itemClickListener { _, _, clickedView, _ ->
-                            callbacks.onItemClicked(it, SharedElementHelper().apply {
+                            callbacks?.onItemClicked(it, SharedElementHelper().apply {
                                 addSharedElement(clickedView, "poster")
                             })
                         }

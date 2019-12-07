@@ -1,3 +1,5 @@
+package com.kafka.player.queue
+
 //package com.kafka.player.queue
 //
 //import com.kafka.player.model.PlaybackItem

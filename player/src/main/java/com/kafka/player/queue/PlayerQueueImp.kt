@@ -1,3 +1,5 @@
+package com.kafka.player.queue
+
 //package com.kafka.player.queue
 //
 //import com.kafka.data.data.annotations.UseSingleton
