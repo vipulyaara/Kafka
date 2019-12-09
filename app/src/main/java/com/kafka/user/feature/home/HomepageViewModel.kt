@@ -35,18 +35,16 @@ import kotlinx.coroutines.launch
 class HomepageViewModel @AssistedInject constructor(
     @Assisted initialState: HomepageViewState,
     private val loadingState: ObservableLoadingCounter,
-    appCoroutineDispatchers: AppCoroutineDispatchers,
-    @ProcessLifetime processScope: CoroutineScope,
-    contentRepository: ContentRepository
+    private val appCoroutineDispatchers: AppCoroutineDispatchers,
+    @ProcessLifetime private val processScope: CoroutineScope,
+    private val contentRepository: ContentRepository
 ) : BaseMvRxViewModel<HomepageViewState>(HomepageViewState()), HomepageController.Callbacks {
 
+    private val creators = arrayOf("Kafka", "Sherlock", "Mark Twain")
 
     private val _navigateToContentDetailAction = MutableLiveData<Event<Content>>()
     val navigateToContentDetailAction: LiveData<Event<Content>>
         get() = _navigateToContentDetailAction
-
-    private val observeContents = arrayListOf(ObserveContent(appCoroutineDispatchers, contentRepository))
-    private val updateContents = arrayListOf(UpdateContent(appCoroutineDispatchers, processScope, contentRepository))
 
     init {
         viewModelScope.launch {
@@ -58,20 +56,22 @@ class HomepageViewModel @AssistedInject constructor(
                 }
         }
 
-        observeContents.forEach { observeContent ->
+        creators.forEach {
+            val observeContent  = ObserveContent(appCoroutineDispatchers, contentRepository)
             viewModelScope.launchObserve(observeContent) { flow ->
-                flow.execute {
+                flow.distinctUntilChanged().execute {
                     onItemsFetched(it())
                 }
             }
 
-            observeContent(ObserveContent.Params.ByCreator("Kafka"))
+            observeContent(ObserveContent.Params.ByCreator(it))
         }
     }
 
     fun refresh() {
-        updateContents.forEach { updateContent ->
-            updateContent(UpdateContent.Params.ByCreator("Kafka")).also {
+        creators.forEach {
+            val updateContent  = UpdateContent(appCoroutineDispatchers, processScope, contentRepository)
+            updateContent(UpdateContent.Params.ByCreator(it)).also {
                 viewModelScope.launch {
                     loadingState.collectFrom(it)
                 }
@@ -105,3 +105,4 @@ class HomepageViewModel @AssistedInject constructor(
         }
     }
 }
+

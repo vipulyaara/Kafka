@@ -6,17 +6,13 @@ import com.kafka.data.data.config.logging.Logger
 import com.kafka.data.entities.Content
 import com.kafka.data.entities.ContentDetail
 import com.kafka.data.extensions.observable
-import com.kafka.user.BookBindingModel_
-import com.kafka.user.bookDetail
+import com.kafka.user.*
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
 import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.extensions.withModelsFrom
 import com.kafka.user.feature.common.BaseEpoxyController
-import com.kafka.user.loader
-import com.kafka.user.rowHeader
 import com.kafka.user.ui.SharedElementHelper
-import org.jsoup.internal.StringUtil.padding
 import javax.inject.Inject
 
 /**
@@ -44,7 +40,7 @@ class ContentDetailController @Inject constructor(private val logger: Logger) : 
         bookDetail {
             id(viewState.contentDetail?.contentId)
             content(viewState.contentDetail)
-            resource(getRandomAuthorResource())
+            resource(R.drawable.img_author_1)
             clickListener { _, parentView, clickedView, _ ->
                 clickedView.animateBookOpen()
                 (parentView.dataBinding as ItemBookDetailBinding).coverCard2.animateScale()
@@ -62,6 +58,8 @@ class ContentDetailController @Inject constructor(private val logger: Logger) : 
                 callbacks?.onPlayClicked(viewState.contentDetail)
             }
         }
+
+        spacing { id("spacing") }
 
         viewState.itemsByCreator?.let { list ->
             rowHeader {

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
+import com.kafka.data.extensions.d
 import com.kafka.data.model.EventObserver
 import com.kafka.user.R
 import com.kafka.user.databinding.FragmentHomeBinding
@@ -34,44 +35,24 @@ class HomepageFragment : BaseDataBindingFragment<FragmentHomeBinding>(
 
         binding.rvHome.apply {
             setController(controller)
-            itemAnimator = null
             onScrolled {
                 binding.elevationShadow.isActivated = canScrollVertically(-1)
             }
         }
-
-//        controller.callbacks = object : HomepageController.Callbacks {
-//            override fun onContentClicked(view: View, content: Content) {
-////                detailId = item.contentId
-////                detailName = item.contentId
-////                detailUrl = item.coverImage ?: ""
-////                navigator.showItemDetail(
-////                    item,
-////                    SharedElementHelper().apply {
-////                        addSharedElement(view, ViewCompat.getTransitionName(view))
-////                    })
-//            }
-//
-//            override fun onBannerClicked() {
-//                NightModeManager.toggleNightMode(activity)
-//            }
-//        }
 
         viewModel.navigateToContentDetailAction.observe(this,
             EventObserver { content -> navController.navigate(toPoetDetail(content.contentId)) }
         )
 
         controller.callbacks = viewModel
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.refresh()
     }
 
     override fun invalidate() {
         withState(viewModel) {
+            d { "homepage invalidate "}
             controller.state = it
+            binding.rvHome.scrollToPosition(0)
         }
     }
 }

@@ -24,7 +24,7 @@ class HomepageController @Inject constructor() : BaseEpoxyController() {
     var state: HomepageViewState by observable(HomepageViewState(), ::requestModelBuild)
 
     override fun buildModels() {
-        if (state.isLoading) {
+        if (state.isLoading && state.items.isNullOrEmpty()) {
             buildLoadingState()
         } else {
             buildHomepageModels(state)

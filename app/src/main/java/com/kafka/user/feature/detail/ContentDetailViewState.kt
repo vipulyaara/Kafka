@@ -11,7 +11,7 @@ data class ContentDetailViewState(
     val contentId: String = "",
     val contentDetail: ContentDetail? = null,
     val itemsByCreator: RailItem? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = true
 ) : BaseViewState {
     constructor(id: String) : this(contentId = id)
 }

@@ -11,6 +11,7 @@ class MainActivity : BaseActivityMvRxView() {
 
     private lateinit var navController: NavController
     private var currentNavId = NAV_ID_NONE
+    private var checkedItem = NAV_ID_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +27,17 @@ class MainActivity : BaseActivityMvRxView() {
             currentNavId = destination.id
         }
 
-        if (savedInstanceState == null) {
-            // default to showing Home
-            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_homepage)
-            navigateTo(initialNavId)
-        }
+//        if (savedInstanceState == null) {
+//            // default to showing Home
+//            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_homepage)
+//            checkedItem = initialNavId
+//            navigateTo(initialNavId)
+//        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentNavId = checkedItem
     }
 
     private fun navigateTo(navId: Int) {

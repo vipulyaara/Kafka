@@ -12,9 +12,7 @@
 
     <action
         android:id="@+id/to_poet_detail"
-        app:destination="@id/navigation_content_detail"
-        app:popUpTo="@id/navigation_homepage"
-        app:popUpToInclusive="false" />
+        app:destination="@id/navigation_content_detail" />
     </fragment>
 
     <fragment
