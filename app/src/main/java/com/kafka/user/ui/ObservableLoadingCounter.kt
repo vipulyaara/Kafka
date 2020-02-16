@@ -1,7 +1,7 @@
 package com.kafka.user.ui
 
-import com.kafka.data.data.config.logging.Logger
 import com.kafka.data.data.interactor.*
+import com.kafka.data.extensions.d
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
-class ObservableLoadingCounter @Inject constructor(val logger: Logger) {
+class ObservableLoadingCounter @Inject constructor() {
     private val count = AtomicInteger()
     private val loadingState = ConflatedBroadcastChannel(count.get())
 
@@ -30,10 +30,10 @@ class ObservableLoadingCounter @Inject constructor(val logger: Logger) {
 suspend fun ObservableLoadingCounter.collectFrom(statuses: Flow<InvokeStatus>) {
     statuses.collect {
         if (it == InvokeStarted) {
-            logger.d("Add loader")
+            d {"Add loader" }
             addLoader()
         } else if (it == InvokeSuccess || it == InvokeTimeout || it is InvokeError) {
-            logger.d("Remove loader")
+            d {"Remove loader"}
             removeLoader()
         }
     }

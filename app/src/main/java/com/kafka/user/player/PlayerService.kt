@@ -44,7 +44,7 @@
 //        player?.playerStateObservable?.observeOn(Schedulers.io())
 //            ?.subscribe {
 //                lastPlayerState = it
-//                logger.d("State $it")
+//                d("State $it")
 //            }
 //            ?.disposeOnDestroy(this)
 //

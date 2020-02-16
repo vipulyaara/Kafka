@@ -1,12 +1,17 @@
 package com.kafka.user.feature.detail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
-import com.kafka.user.R
-import com.kafka.user.databinding.FragmentItemDetailBinding
-import com.kafka.user.feature.common.BaseDataBindingFragment
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.kafka.data.model.EventObserver
+import com.kafka.ui.content.composeContentDetailScreen
+import com.kafka.user.feature.common.BaseFragment
+import com.kafka.user.feature.home.HomepageFragmentDirections
 import javax.inject.Inject
 
 /**
@@ -14,25 +19,40 @@ import javax.inject.Inject
  *
  * Fragment to host detail page.
  */
-class ContentDetailFragment : BaseDataBindingFragment<FragmentItemDetailBinding>(
-    R.layout.fragment_item_detail
-) {
+class ContentDetailFragment: BaseFragment() {
+
     @Inject
-    lateinit var viewModelFactory: ContentDetailViewModel.Factory
-    @Inject lateinit var controller: ContentDetailController
-    private val viewModel: ContentDetailViewModel by fragmentViewModel()
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: ContentDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
+
+    private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvHome.apply {
-            setController(controller)
-        }
+        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
+            contentId = it
+            navController.navigate(HomepageFragmentDirections.toPoetDetail(it))
+        })
     }
 
-    override fun invalidate() {
-        withState(viewModel) {
-            controller.state = it
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return FrameLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            composeContentDetailScreen(
+                viewLifecycleOwner,
+                viewModel.viewState,
+                viewModel::submitAction
+            )
         }
     }
 }

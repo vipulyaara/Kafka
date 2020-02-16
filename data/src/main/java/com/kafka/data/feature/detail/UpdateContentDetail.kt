@@ -15,7 +15,7 @@ import javax.inject.Inject
  *
  */
 class UpdateContentDetail @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     private val repository: ContentDetailRepository,
     @ProcessLifetime private val processScope: CoroutineScope
 ) : Interactor<UpdateContentDetail.Param>() {

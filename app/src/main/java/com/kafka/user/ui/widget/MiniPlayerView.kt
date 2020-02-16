@@ -41,7 +41,7 @@
 //    }
 //
 //    private fun onPlayerStateChanged(playerState: PlayerState) {
-//        logger.d("miniPlayer Player state $playerState")
+//        d("miniPlayer Player state $playerState")
 //        when (playerState) {
 //            is PlayerState.Playing -> {
 //                showPlayer()

@@ -34,6 +34,4 @@ class UpdateContent @Inject constructor(
         class ByCollection(val collection: String) : Params()
         class ByGenre(val genre: String) : Params()
     }
-
-    data class ExecuteParams(val id: Long = 0)
 }

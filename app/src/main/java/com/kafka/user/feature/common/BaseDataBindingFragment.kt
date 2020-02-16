@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.kafka.data.data.config.logging.Logger
 import javax.inject.Inject
 
 /**
@@ -14,11 +13,7 @@ import javax.inject.Inject
  */
 abstract class BaseDataBindingFragment<Binding : ViewDataBinding>(
     private val layoutRes: Int
-) : BaseFragment() {
-
-    // Fake injected variable to force Dagger to create the factory
-    @Inject
-    lateinit var logger: Logger
+) : BaseMvFragment() {
 
     private var _binding: Binding? = null
     val binding by lazy { binding() }

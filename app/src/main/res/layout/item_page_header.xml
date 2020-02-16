@@ -29,7 +29,6 @@
             android:layout_marginStart="@dimen/spacing_medium_2"
             android:textStyle="bold"
             android:text="Vipul's catalog"
-            android:textAppearance="@style/Headline4"
             app:layout_constraintStart_toEndOf="@id/ivIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +39,6 @@
             android:layout_marginStart="@dimen/spacing_medium_2"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="An exhaustive list of audiobooks!"
-            android:textAppearance="@style/Body1"
             app:layout_constraintStart_toEndOf="@id/ivIcon"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>

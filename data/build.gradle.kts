@@ -53,7 +53,4 @@ dependencies {
     testImplementation(RoboElectric.dependency)
 
     implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
-
-    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
-    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
 }

@@ -1,15 +1,14 @@
 package com.kafka.user.config.initializers
 
 import android.app.Application
-import com.kafka.data.data.config.logging.Logger
-import com.kafka.data.data.config.logging.TimberLogger
 import com.kafka.user.BuildConfig
+import timber.log.Timber
 import javax.inject.Inject
 
-class TimberInitializer @Inject constructor(private val timberLogger: Logger) : AppInitializer {
+class TimberInitializer @Inject constructor() : AppInitializer {
     override fun init(application: Application) {
-        if (timberLogger is TimberLogger) {
-            timberLogger.setup(BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

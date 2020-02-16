@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
  * DI module that provides objects which will live during the application lifecycle.
  */
 
-
 @Module(includes = [AppModuleBinds::class])
 class AppModule {
 

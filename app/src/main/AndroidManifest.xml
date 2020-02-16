@@ -13,7 +13,7 @@
         android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/FrameTheme"
+        android:theme="@style/Theme.Coyote"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.kafka.user.feature.MainActivity">
             <intent-filter>
@@ -31,7 +31,7 @@
 <!--            android:name="com.google.android.gms.version"-->
 <!--            android:value="@integer/google_play_services_version" />-->
 
-        <service android:name=".player.PlayerService"/>
+<!--        <service android:name=".player.PlayerService"/>-->
 
     </application>
 </manifest>

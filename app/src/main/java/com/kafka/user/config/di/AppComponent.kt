@@ -14,11 +14,12 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
+        ActivityBindingModule::class,
+        ViewModelModule::class,
         AppModule::class,
         DataModule::class,
         ServiceModule::class,
-        DatabaseModule::class,
-        HomeBuilder::class
+        DatabaseModule::class
     ]
 )
 interface AppComponent : AndroidInjector<KafkaApplication> {

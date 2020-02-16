@@ -1,7 +1,7 @@
 package com.kafka.data.feature.content
 
 import com.kafka.data.entities.Content
-import com.kafka.data.feature.Repository
+import com.kafka.data.extensions.asyncOrAwait
 import com.kafka.data.model.data.Result
 import com.kafka.data.model.data.Success
 import com.kafka.data.query.ArchiveQuery
@@ -12,20 +12,21 @@ import javax.inject.Inject
  *
  */
 class ContentRepository @Inject constructor(
-    private val localSource: ContentLocalSource,
-    private val remoteSource: ContentRemoteSource
-) : Repository {
+    private val localDataSource: ContentLocalDataSource,
+    private val remoteDataSource: ContentRemoteDataSource
+) {
 
-    fun observeQueryByCreator(creator: String) = localSource.observeQueryByCreator(creator)
+    fun observeQueryByCreator(creator: String) = localDataSource.observeQueryByCreator(creator)
 
-    fun observeQueryByCollection(collection: String) = localSource.observeQueryByCollection(collection)
+    fun observeQueryByCollection(collection: String) =
+        localDataSource.observeQueryByCollection(collection)
 
-    fun observeQueryByGenre(genre: String) = localSource.observeQueryByGenre(genre)
+    fun observeQueryByGenre(genre: String) = localDataSource.observeQueryByGenre(genre)
 
     suspend fun updateQuery(archiveQuery: ArchiveQuery): Result<List<Content>> {
-        val result = remoteSource.fetchItemsByCreator(archiveQuery)
+        val result = remoteDataSource.fetchItemsByCreator(archiveQuery)
         if (result is Success) {
-            result.data.let { localSource.saveItems(it) }
+            result.data.let { localDataSource.saveItems(it) }
         }
         return result
     }

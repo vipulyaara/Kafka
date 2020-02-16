@@ -3,11 +3,10 @@ import com.android.build.gradle.BaseExtension
 
 dependencies {
     implementation(project(":data"))
-//    implementation(project(":player"))
+    implementation(project(":ui"))
 
     implementation(Kotlin.stdlib)
-    implementation("org.jsoup:jsoup:1.12.1")
-    implementation("androidx.asynclayoutinflater:asynclayoutinflater:1.0.0")
+    implementation(Jsoup.core)
 
     implementation(AndroidX.appCompat)
     implementation(AndroidX.fragment)
@@ -27,11 +26,11 @@ dependencies {
     implementation(AndroidX.Room.runtime)
     kapt(AndroidX.Room.compiler)
 
+    implementation(Retrofit.runtime)
+
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
-
-    implementation(Retrofit.runtime)
 
     implementation(Dagger.dagger)
     implementation(Dagger.androidSupport)
@@ -70,18 +69,8 @@ dependencies {
 
     implementation(Coil.core)
 
-//    implementation(ExpectAnim.core)
-
     implementation(Stetho.core)
     implementation(Stetho.urlConnection)
-
-    implementation("com.github.jd-alexander:LikeButton:0.2.3")
-
-//    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
-
-//    implementation("me.everything:overscroll-decor-android:1.0.4")
-
-//    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0-beta-3")
 
     androidTestImplementation(AndroidX.annotation)
     androidTestImplementation(AndroidX.Test.junit)
@@ -104,8 +93,8 @@ configure<BaseExtension> {
     }
 
     defaultConfig {
-        applicationId = "com.kafka.user"
+        applicationId = Kafka.applicationId
     }
 }
 
-apply(plugin = "com.google.gms.google-services")
+//apply(plugin = "com.google.gms.google-services")

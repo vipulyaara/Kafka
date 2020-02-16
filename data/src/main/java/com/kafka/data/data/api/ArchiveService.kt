@@ -12,7 +12,7 @@ import retrofit2.http.Url
 /**
  * @author Vipul Kumar; dated 29/11/18.
  *
- * configures the API module and provides services to interact with the APIs.
+ * Configures the API module and provides services to interact with the APIs.
  */
 interface ArchiveService {
     @GET("")

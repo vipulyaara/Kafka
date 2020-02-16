@@ -22,7 +22,10 @@ import com.google.android.exoplayer2.trackselection.TrackSelection
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
-import com.kafka.data.data.config.logging.Logger
+import com.kafka.data.extensions.d
+import com.kafka.data.extensions.e
+import com.kafka.data.extensions.i
+import com.kafka.data.extensions.v
 import com.kafka.player.analytics.PlayerAnalyticsModel
 import com.kafka.player.helper.TrackSelectionHelper
 import com.kafka.player.model.*
@@ -38,7 +41,7 @@ import kotlin.coroutines.CoroutineContext
  * @author Vipul Kumar; dated 05/03/19.
  */
 class AudioPlayer(
-    private val context: Context, private val logger: Logger
+    private val context: Context
 ) : BasePlayer(), CoroutineScope {
 
     private val maxBufferDurationForWifiDevices = 1000 * 60 * 10
@@ -110,7 +113,7 @@ class AudioPlayer(
             updatePlayerConfig(playerConfig)
             currentPlaybackItem = playbackItem
             seekPositionInMs = Math.max(0, playbackItem.resumePointInMilliSeconds)
-            logger.d("seek position for content is : $seekPositionInMs")
+            d { "seek position for content is : $seekPositionInMs" }
             if (oldConfig == null) {
                 initPlayerWithoutDRM(playbackItem, playerConfig)
             } else {
@@ -155,7 +158,7 @@ class AudioPlayer(
         super.seekTo(seekPositionInMs)
         this.seekPositionInMs = seekPositionInMs
 
-        logger.d("seeking to $seekPositionInMs")
+        d { "seeking to $seekPositionInMs" }
         player.seekTo(seekPositionInMs)
     }
 
@@ -190,7 +193,7 @@ class AudioPlayer(
     }
 
     private fun initPlayerWithoutDRM(playbackItem: PlaybackItem, playerConfig: PlayerConfig) {
-        logger.d("$loggerTag initPlayerWithoutDRM()")
+        d { "$loggerTag initPlayerWithoutDRM()" }
         initLoadControl(playbackItem)
         player = ExoPlayerFactory.newSimpleInstance(
             context,
@@ -226,18 +229,18 @@ class AudioPlayer(
         playerConfig: PlayerConfig?,
         addToPlayList: Boolean = false
     ) {
-        logger.d("$loggerTag loadPlaybackItem() $playUrl $seekPosition $playerConfig")
+        d { "$loggerTag loadPlaybackItem() $playUrl $seekPosition $playerConfig" }
         val mediaSource = mergeMediaSources(playUrl)
 
         if (addToPlayList) {
-            logger.d("adding to existing playlist")
+            d { "adding to existing playlist" }
             if (currentMediaSource.size == 2) {
                 //keep only the current and the next one
                 currentMediaSource.removeMediaSource(0)
             }
             currentMediaSource.addMediaSource(mediaSource)
         } else {
-            logger.d("$loggerTag loadPlaybackItem() concatenatingMediaSource")
+            d { "$loggerTag loadPlaybackItem() concatenatingMediaSource" }
             currentMediaSource = ConcatenatingMediaSource()
             currentMediaSource.addMediaSource(mediaSource)
             analyticsModel.videoPrepareStartTime = System.currentTimeMillis()
@@ -245,7 +248,7 @@ class AudioPlayer(
 //            UriUtil.requestCookieProperties = requestCookieProperties
 
             player.prepare(currentMediaSource, true, true)
-            logger.d("seeking to ${seekPosition ?: 0}")
+            d { "seeking to ${seekPosition ?: 0}" }
             player.seekTo(seekPosition ?: 0)
         }
     }
@@ -306,7 +309,7 @@ class AudioPlayer(
     private val playerEventListener = object : Player.DefaultEventListener() {
 
         override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-            logger.v("timeline changed reason : $reason")
+            v { "timeline changed reason : $reason" }
             updatePlayerSeekInfo()
         }
 
@@ -356,7 +359,7 @@ class AudioPlayer(
             super.onPlayerError(error)
             stopPlayerProgressUpdate()
             val playerError = PlayerError(error, getPlayerState())
-            logger.e("playback error: $playerError")
+            e { "playback error: $playerError" }
             if (playerError.isRecoverable) {
                 try {
                     retryPlayback(true)
@@ -382,10 +385,10 @@ class AudioPlayer(
             super.onPositionDiscontinuity(reason)
             if (player.currentWindowIndex > 0 && reason == DISCONTINUITY_REASON_PERIOD_TRANSITION) {
                 //content switched due to playlist
-                logger.d("VISION Starting new content")
+                d { "VISION Starting new content" }
                 pausedDueToContentSwitch = true
                 player.playWhenReady = false
-                logger.i("started playing next content in playlist")
+                i { "started playing next content in playlist" }
                 currentPlaybackItem = nextPlaybackItem
                 currentPlayerConfig?.let {
                     updatePlayerConfig(it)
@@ -406,7 +409,7 @@ class AudioPlayer(
             super.onTracksChanged(trackGroups, trackSelections)
             //manifest loaded
             val current = player.videoFormat
-            logger.d("tracks changed $current")
+            d { "tracks changed $current" }
             analyticsModel.hasManifestBeenFetched = true
 //            analyticsModel.manifestFetchTime = loadTime
         }
@@ -418,7 +421,7 @@ class AudioPlayer(
         val currentPosition = player.currentPosition
         val duration = if (player.duration < 0) 0 else player.duration
         val bufferedPosition = player.bufferedPosition
-        logger.d("player progress -> current position : ${player.currentPosition}, duration -> ${player.duration}")
+        d { "player progress -> current position : ${player.currentPosition}, duration -> ${player.duration}" }
         seekPositionInMs = currentPosition
         updatePlayerSeekInfo(PlayerSeekInfo(currentPosition, duration, bufferedPosition))
         stopPlayerProgressUpdate()
@@ -469,7 +472,7 @@ class AudioPlayer(
         ) {
             super.onLoadCompleted(eventTime, loadEventInfo, mediaLoadData)
             if (mediaLoadData.dataType == C.DATA_TYPE_MEDIA) {
-                logger.d("loaded segment uri : ${loadEventInfo.dataSpec.uri}")
+                d { "loaded segment uri : ${loadEventInfo.dataSpec.uri}" }
 //                PlayerAnalytics.onSegmentDownloaded(loadEventInfo, mediaLoadData)
             }
         }

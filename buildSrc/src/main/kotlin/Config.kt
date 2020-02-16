@@ -1,7 +1,7 @@
 // Library version
 object Kafka {
     const val publishVersion = "0.0.1"
-    const val groupId = "com.kafka.user"
+    const val applicationId = "com.kafka.android"
 
     const val compileSdkVersion = 28
     const val minSdkVersion = 22
@@ -9,7 +9,7 @@ object Kafka {
 
 // Core dependencies
 object Kotlin {
-    const val version = "1.3.60"
+    const val version = "1.3.61"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     const val plugin = "kotlin"
     const val kapt = "kotlin-kapt"
@@ -18,8 +18,18 @@ object Kotlin {
 }
 
 object Coil {
-    private const val version = "0.8.0"
+    private const val version = "0.9.2"
     const val core = "io.coil-kt:coil:$version"
+}
+
+object Freshchat {
+    private const val version = "3.0.0"
+    const val core = "com.github.freshdesk:freshchat-android:$version"
+}
+
+object Sendbird {
+    private const val version = "v2.2.6"
+    const val core = "com.github.deliveryhero:logistics-rider-app-sendbird-android:$version"
 }
 
 object Result {
@@ -32,8 +42,18 @@ object Json {
     const val dependency = "org.json:json:$version"
 }
 
+object Jsoup {
+    private const val version = "1.12.1"
+    const val core = "org.jsoup:jsoup:$version"
+}
+
+object ThreeTenBp {
+    private const val version = "1.0.5"
+    const val core = "com.jakewharton.threetenabp:threetenabp:$version"
+}
+
 object Android {
-    private const val version = "3.6.0-beta04"
+    private const val version = "4.0.0-alpha09"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"
@@ -83,7 +103,15 @@ object AndroidX {
     }
 
     object Compose {
-        private const val version = "0.1.0-dev02"
+        private const val compose_version = "0.1.0-SNAPSHOT"
+
+        const val runtime = "androidx.compose:compose-runtime:$compose_version"
+        const val framework = "androidx.ui:ui-framework:$compose_version"
+        const val layout = "androidx.ui:ui-layout:$compose_version"
+        const val material = "androidx.ui:ui-material:$compose_version"
+        const val foundation = "androidx.ui:ui-foundation:$compose_version"
+        const val animation = "androidx.ui:ui-animation:$compose_version"
+        const val tooling = "androidx.ui:ui-tooling:$compose_version"
     }
 
     object Ktx {
@@ -97,12 +125,13 @@ object AndroidX {
         const val collection = "androidx.collection:collection-ktx:$ktxVersion"
         const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktxLifecycleVersion"
         const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$ktxLifecycleVersion"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$ktxLifecycleVersion"
         const val reactiveStreams =
             "androidx.lifecycle:lifecycle-reactivestreams-ktx:$ktxLifecycleVersion"
     }
 
     object Arch {
-        private const val version = "2.2.0-alpha03"
+        private const val version = "2.2.0-rc03"
         private const val testingVersion = "2.0.0"
         const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
         const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -163,10 +192,16 @@ object PlayServices {
 
 object Firebase {
     const val firestore = "com.google.firebase:firebase-firestore:18.0.1"
-    const val analytics = "com.google.firebase:firebase-analytics:17.2.1"
+    const val analytics = "com.google.firebase:firebase-analytics:17.2.2"
+    const val messaging = "com.google.firebase:firebase-messaging:20.1.0"
     const val perf = "com.google.firebase:firebase-perf:19.0.0"
     const val perfPlugin = "perf-plugin"
     const val perfPluginVersion = "1.3.1"
+}
+
+object Mapbox {
+    private const val version = "8.6.0"
+    const val core = "com.mapbox.mapboxsdk:mapbox-android-sdk:$version"
 }
 
 object ExoPlayer {
@@ -357,6 +392,11 @@ object Jacoco {
 object RoboElectric {
     private const val version = "3.8"
     const val dependency = "org.robolectric:robolectric:$version"
+}
+
+object LeakCanary {
+    private const val version = "2.0-beta-3"
+    const val core = "com.squareup.leakcanary:leakcanary-android:$version"
 }
 
 object Release {

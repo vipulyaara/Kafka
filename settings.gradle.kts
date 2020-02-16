@@ -1,3 +1,4 @@
+include(":ui")
 pluginManagement {
     repositories {
         google()

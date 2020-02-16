@@ -1,58 +1,59 @@
 package com.kafka.user.feature.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
-import com.kafka.data.extensions.d
 import com.kafka.data.model.EventObserver
-import com.kafka.user.R
-import com.kafka.user.databinding.FragmentHomeBinding
-import com.kafka.user.feature.common.BaseDataBindingFragment
-import com.kafka.user.feature.home.HomepageFragmentDirections.Companion.toPoetDetail
-import com.kafka.user.ui.onScrolled
+import com.kafka.ui.home.composeHomepageScreen
+import com.kafka.user.feature.common.BaseFragment
+import com.kafka.user.feature.detail.contentId
 import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
  */
 
-class HomepageFragment : BaseDataBindingFragment<FragmentHomeBinding>(
-    R.layout.fragment_home
-) {
-    @Inject
-    lateinit var discoverViewModelFactory: HomepageViewModel.Factory
+class HomepageFragment : BaseFragment() {
 
     @Inject
-    lateinit var controller: HomepageController
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: HomepageViewModel by fragmentViewModel()
+    private val viewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
+
     private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvHome.apply {
-            setController(controller)
-            onScrolled {
-                binding.elevationShadow.isActivated = canScrollVertically(-1)
-            }
-        }
+        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
+            contentId = it
+            navController.navigate(HomepageFragmentDirections.toPoetDetail(it))
+        })
 
-        viewModel.navigateToContentDetailAction.observe(this,
-            EventObserver { content -> navController.navigate(toPoetDetail(content.contentId)) }
-        )
-
-        controller.callbacks = viewModel
         viewModel.refresh()
     }
 
-    override fun invalidate() {
-        withState(viewModel) {
-            d { "homepage invalidate "}
-            controller.state = it
-            binding.rvHome.scrollToPosition(0)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return FrameLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            composeHomepageScreen(
+                viewLifecycleOwner,
+                viewModel.viewState,
+                viewModel::submitAction
+            )
         }
     }
 }

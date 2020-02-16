@@ -1,12 +1,8 @@
 package com.kafka.user.feature.home
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.airbnb.mvrx.FragmentViewModelContext
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.ViewModelContext
 import com.kafka.data.data.config.ProcessLifetime
 import com.kafka.data.data.interactor.launchObserve
 import com.kafka.data.entities.Content
@@ -16,48 +12,58 @@ import com.kafka.data.feature.content.UpdateContent
 import com.kafka.data.model.Event
 import com.kafka.data.model.RailItem
 import com.kafka.data.util.AppCoroutineDispatchers
+import com.kafka.ui.home.ContentItemClick
+import com.kafka.ui.home.HomepageAction
+import com.kafka.ui.home.HomepageViewState
+import com.kafka.user.extensions.getRandomAuthorResource
 import com.kafka.user.feature.common.BaseMvRxViewModel
+import com.kafka.user.feature.common.BaseViewModel
 import com.kafka.user.ui.ObservableLoadingCounter
 import com.kafka.user.ui.collectFrom
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
  *
  * Implementation of [BaseMvRxViewModel] to provide data for homepage.
  */
-class HomepageViewModel @AssistedInject constructor(
-    @Assisted initialState: HomepageViewState,
+class HomepageViewModel @Inject constructor(
     private val loadingState: ObservableLoadingCounter,
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     @ProcessLifetime private val processScope: CoroutineScope,
     private val contentRepository: ContentRepository
-) : BaseMvRxViewModel<HomepageViewState>(HomepageViewState()), HomepageController.Callbacks {
+) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
 
     private val creators = arrayOf("Kafka", "Sherlock", "Mark Twain")
 
-    private val _navigateToContentDetailAction = MutableLiveData<Event<Content>>()
-    val navigateToContentDetailAction: LiveData<Event<Content>>
+    private val pendingActions = Channel<HomepageAction>(Channel.BUFFERED)
+
+    private val _navigateToContentDetailAction = MutableLiveData<Event<String>>()
+    val navigateToContentDetailAction: LiveData<Event<String>>
         get() = _navigateToContentDetailAction
 
     init {
         viewModelScope.launch {
             loadingState.observable
                 .distinctUntilChanged()
-                .debounce(1200)
                 .collect {
                     setState { copy(isLoading = it) }
                 }
         }
 
+        viewModelScope.launch {
+            for (action in pendingActions) when (action) {
+                is ContentItemClick -> _navigateToContentDetailAction.postValue(Event(action.contentId))
+            }
+        }
+
         creators.forEach {
-            val observeContent  = ObserveContent(appCoroutineDispatchers, contentRepository)
+            val observeContent = ObserveContent(appCoroutineDispatchers, contentRepository)
             viewModelScope.launchObserve(observeContent) { flow ->
                 flow.distinctUntilChanged().execute {
                     onItemsFetched(it())
@@ -68,9 +74,14 @@ class HomepageViewModel @AssistedInject constructor(
         }
     }
 
+    fun submitAction(action: HomepageAction) {
+        viewModelScope.launch { pendingActions.send(action) }
+    }
+
     fun refresh() {
         creators.forEach {
-            val updateContent  = UpdateContent(appCoroutineDispatchers, processScope, contentRepository)
+            val updateContent =
+                UpdateContent(appCoroutineDispatchers, processScope, contentRepository)
             updateContent(UpdateContent.Params.ByCreator(it)).also {
                 viewModelScope.launch {
                     loadingState.collectFrom(it)
@@ -80,29 +91,19 @@ class HomepageViewModel @AssistedInject constructor(
     }
 
     private fun HomepageViewState.onItemsFetched(list: List<Content>?): HomepageViewState {
+
         val new =
-            items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", list)) }
-        return copy(items = new)
-    }
-
-    override fun onContentClicked(view: View, content: Content) {
-        _navigateToContentDetailAction.value = Event(content)
-    }
-
-    override fun onBannerClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(initialState: HomepageViewState): HomepageViewModel
-    }
-
-    companion object : MvRxViewModelFactory<HomepageViewModel, HomepageViewState> {
-        override fun create(viewModelContext: ViewModelContext, state: HomepageViewState): HomepageViewModel? {
-            val fragment: HomepageFragment = (viewModelContext as FragmentViewModelContext).fragment()
-            return fragment.discoverViewModelFactory.create(state)
+            items?.toMutableSet()
+                .also {
+                    it?.clear()
+                    it?.add(RailItem("Books by Kafka", list))
+                }
+        new?.map {
+            it.contents?.map {
+                it.also { it.coverImageResource = getRandomAuthorResource() }
+            }
         }
+        return copy(items = new)
     }
 }
 

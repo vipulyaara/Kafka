@@ -1,12 +1,8 @@
 package com.kafka.data.feature.detail
 
-import com.kafka.data.entities.ContentDetail
-import com.kafka.data.feature.Repository
+import com.kafka.data.extensions.asyncOrAwait
 import com.kafka.data.model.data.ErrorResult
 import com.kafka.data.model.data.Success
-import com.kafka.data.util.AppCoroutineDispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 /**
@@ -14,24 +10,21 @@ import javax.inject.Inject
  *
  */
 class ContentDetailRepository @Inject constructor(
-    private val localStore: LocalContentDetailStore,
-    private val dataSource: ContentDetailDataSource,
-    private val dispatchers: AppCoroutineDispatchers
-) : Repository {
+    private val localDataSource: ContentDetailLocalDataSource,
+    private val dataSource: ContentDetailDataSource
+) {
 
-    fun observeItemDetail(contentId: String) = localStore.itemDetailFlow(contentId)
+    fun observeItemDetail(contentId: String) = localDataSource.itemDetailFlow(contentId)
 
     suspend fun updateContentDetail(contentId: String) {
-        val local = localStore.itemDetail(contentId)
+        asyncOrAwait(key = "updateContentDetail") {
+            val remote = dataSource.fetchItemDetail(contentId)
 
-        val apiResult = coroutineScope {
-            async(dispatchers.io) {
-                dataSource.fetchItemDetail(contentId)
+            if (remote is Success) {
+                localDataSource.saveItemDetail(remote.data)
             }
-        }.await()
 
-        if (apiResult is ErrorResult) throw RuntimeException("Error Result")
-
-        localStore.saveItemDetail((apiResult as? Success)?.data ?: local ?: ContentDetail())
+            if (remote is ErrorResult) throw RuntimeException("Error Result")
+        }
     }
 }

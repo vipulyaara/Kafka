@@ -21,11 +21,6 @@ class KafkaApplication : DaggerApplication() {
         initializers.init(this)
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
-//        Player.unbindService(this)
-    }
-
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.factory().create(this)
     }

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.widget.TextView
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -61,13 +60,6 @@ fun View.animateScaleOnFocus(hasFocus: Boolean, scale: Float = 1.2f) {
 /** Inflate a [ViewGroup] */
 fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
-}
-
-/** Inflate a [ViewGroup] */
-fun ViewGroup.inflateAsync(layoutId: Int, onInflate: (View) -> Unit) {
-    return AsyncLayoutInflater(context).inflate(
-        layoutId, this
-    ) { view, _, _ -> onInflate.invoke(view) }
 }
 
 /** Inflate a [ViewGroup] with DataBinding */

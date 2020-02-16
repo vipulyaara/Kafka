@@ -19,11 +19,12 @@ data class Content(
     val creator: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
+    var coverImageResource: Int = 0,
     val collection: List<String>? = null,
     val genre: List<String>? = null
 ) : BaseEntity
 
-fun Doc.toArchiveItem() = Content(
+fun Doc.toContent() = Content(
     contentId = this.identifier,
     language = "",
     title = this.title,

@@ -2,10 +2,10 @@ package com.kafka.user.feature.detail
 
 import android.view.View
 import com.airbnb.epoxy.Carousel
-import com.kafka.data.data.config.logging.Logger
 import com.kafka.data.entities.Content
 import com.kafka.data.entities.ContentDetail
 import com.kafka.data.extensions.observable
+import com.kafka.ui.content.ContentDetailViewState
 import com.kafka.user.*
 import com.kafka.user.databinding.ItemBookDetailBinding
 import com.kafka.user.extensions.carousel
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * @author Vipul Kumar; dated 19/01/19.
  */
 
-class ContentDetailController @Inject constructor(private val logger: Logger) : BaseEpoxyController() {
+class ContentDetailController @Inject constructor() : BaseEpoxyController() {
 
     var callbacks: Callbacks? by observable(null, ::requestModelBuild)
     var state: ContentDetailViewState by observable(ContentDetailViewState(), ::requestModelBuild)
