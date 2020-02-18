@@ -13,15 +13,16 @@ import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Content
 import com.kafka.ui.LoadAndShowImage
+import com.kafka.ui.alignCenter
 
 @Composable
 fun ContentItem(content: Content, onItemClick: (String) -> Unit) {
     Clickable(onClick = {
         onItemClick(content.contentId)
     }) {
-        Column {
+        Column(modifier = LayoutPadding(left = 12.dp)) {
             Card(
-                modifier = LayoutSize(164.dp, 164.dp) + LayoutPadding(left = 12.dp),
+                modifier = LayoutSize(172.dp, 172.dp),
                 shape = RectangleShape,
                 elevation = 0.dp
             ) {
@@ -35,15 +36,16 @@ fun ContentItem(content: Content, onItemClick: (String) -> Unit) {
             Spacer(modifier = LayoutPadding(top = 12.dp))
             Text(
                 text = content.title ?: "",
-                style = MaterialTheme.typography().body2,
-                maxLines = 2,
+                style = MaterialTheme.typography().body1.alignCenter(),
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = LayoutPadding(left = 16.dp) + LayoutWidth.Max(150.dp)
+                modifier = LayoutWidth(172.dp)
             )
             Text(
                 text = content.creator ?: "",
-                style = MaterialTheme.typography().caption,
-                modifier = LayoutPadding(left = 16.dp)
+                style = MaterialTheme.typography().caption.alignCenter(),
+                overflow = TextOverflow.Ellipsis,
+                modifier = LayoutWidth(172.dp)
             )
         }
     }

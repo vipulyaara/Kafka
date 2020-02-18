@@ -11,6 +11,8 @@ import com.kafka.data.feature.content.ObserveContent
 import com.kafka.data.feature.content.UpdateContent
 import com.kafka.data.model.Event
 import com.kafka.data.model.RailItem
+import com.kafka.data.query.ArchiveQuery
+import com.kafka.data.query.booksByAuthor
 import com.kafka.data.util.AppCoroutineDispatchers
 import com.kafka.ui.home.ContentItemClick
 import com.kafka.ui.home.HomepageAction
@@ -39,7 +41,7 @@ class HomepageViewModel @Inject constructor(
     private val contentRepository: ContentRepository
 ) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
 
-    private val creators = arrayOf("Kafka", "Sherlock", "Mark Twain")
+    private val creators = arrayOf("Kafka", "Sherlock", "Mark")
 
     private val pendingActions = Channel<HomepageAction>(Channel.BUFFERED)
 
@@ -70,7 +72,7 @@ class HomepageViewModel @Inject constructor(
                 }
             }
 
-            observeContent(ObserveContent.Params.ByCreator(it))
+            observeContent(ObserveContent.Params(ArchiveQuery().booksByAuthor(it)))
         }
     }
 

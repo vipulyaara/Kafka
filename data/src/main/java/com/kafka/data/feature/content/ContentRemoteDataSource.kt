@@ -9,7 +9,7 @@ import com.kafka.data.extensions.executeWithRetry
 import com.kafka.data.model.data.Result
 import com.kafka.data.model.item.SearchResponse
 import com.kafka.data.query.ArchiveQuery
-import com.kafka.data.query.buildSearchTerm
+import com.kafka.data.query.buildRemoteQuery
 import javax.inject.Inject
 
 /**
@@ -28,7 +28,7 @@ class ContentRemoteDataSource @Inject constructor(
     suspend fun fetchItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Content>> {
         return retrofitRunner.executeForResponse(mapper) {
             archiveService
-                .search(archiveQuery.buildSearchTerm())
+                .search(archiveQuery.buildRemoteQuery())
                 .executeWithRetry()
         }
     }

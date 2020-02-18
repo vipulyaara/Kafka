@@ -1,5 +1,6 @@
 package com.kafka.data.feature.content
 
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.kafka.data.data.db.dao.ContentDao
 import com.kafka.data.entities.Content
 import javax.inject.Inject
@@ -15,6 +16,8 @@ class ContentLocalDataSource @Inject constructor(private val dao: ContentDao) {
     fun observeQueryByCollection(collection: String) = dao.observeQueryByCollection("%$collection%")
 
     fun observeQueryByGenre(genre: String) = dao.observeQueryByGenre("%$genre%")
+
+    fun observeQueryItems(sQLiteQuery: SupportSQLiteQuery) = dao.observeQueryByCreator()
 
     fun saveItems(contents: List<Content>) = dao.insertAll(contents)
 }

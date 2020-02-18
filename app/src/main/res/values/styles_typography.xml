@@ -47,9 +47,9 @@
     <style name="TextAppearance.Coyote.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">16.26sp</item>
-        <item name="android:letterSpacing">0.005</item>
-        <item name="android:textColor">@color/text_body</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.015</item>
+        <item name="android:textColor">@color/text_subheading</item>
     </style>
 
     <style name="TextAppearance.Coyote.Body2" parent="TextAppearance.MaterialComponents.Body2">
@@ -88,7 +88,7 @@
     <style name="TextAppearance.Coyote.Caption" parent="TextAppearance.MaterialComponents.Caption">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">12.19sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:letterSpacing">0.004</item>
         <item name="android:textColor">@color/text_caption</item>
     </style>

@@ -11,6 +11,8 @@ import com.kafka.data.feature.detail.ObserveContentDetail
 import com.kafka.data.feature.detail.UpdateContentDetail
 import com.kafka.data.model.Event
 import com.kafka.data.model.RailItem
+import com.kafka.data.query.ArchiveQuery
+import com.kafka.data.query.booksByAuthor
 import com.kafka.ui.content.ContentDetailAction
 import com.kafka.ui.content.ContentDetailViewState
 import com.kafka.user.feature.common.BaseMvRxViewModel
@@ -70,7 +72,7 @@ class ContentDetailViewModel @Inject constructor(
         }
 
         observeContentDetail(ObserveContentDetail.Param(contentId))
-        observeContent(ObserveContent.Params.ByCreator("Kafka"))
+        observeContent(ObserveContent.Params(ArchiveQuery().booksByAuthor("Kafka")))
 
         updateContentDetail(UpdateContentDetail.Param(contentId)).also {
             viewModelScope.launch {

@@ -3,6 +3,7 @@
 package com.kafka.data.query
 
 import androidx.collection.ArrayMap
+import androidx.sqlite.db.SimpleSQLiteQuery
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -29,37 +30,53 @@ data class ArchiveQuery(
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
     title = "Books by $collection"
-    queries.put(_mediaType, _audio)
-    queries.put(_collection, collection)
+    queries[_mediaType] = _audio
+    queries[_collection] = collection
     return this
 }
 
 fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
     title = "Books by $keyword"
-    queries.put(_mediaType, _audio)
-    queries.put(_searchTerm, keyword)
+    queries[_mediaType] = _audio
+    queries[_searchTerm] = keyword
     return this
 }
 
 fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
     title = "Books by $author"
-    queries.put(_mediaType, _audio)
-    queries.put(_creator, author)
+    queries[_mediaType] = _audio
+    queries[_creator] = author
     return this
 }
 
 fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
     title = "Books in $genre"
-    queries.put(_mediaType, _audio)
-    queries.put(_genre, genre)
+    queries[_mediaType] = _audio
+    queries[_genre] = genre
     return this
 }
 
-fun ArchiveQuery.buildSearchTerm(): String {
+fun ArchiveQuery.buildRemoteQuery(): String {
     var query = ""
-    queries.put(_collection, _librivoxaudio)
+    val joiner = "+AND+"
+    queries[_collection] = _librivoxaudio
     for ((key, value) in queries.entries) {
-        query = query.plus("$key:($value)+AND+")
+        query = query.plus("$key:($value)$joiner")
     }
-    return query.dropLast(5)
+    return query.removeSuffix(joiner)
+}
+
+fun ArchiveQuery.buildLocalQuery() = SimpleSQLiteQuery(toQueryString())
+
+fun ArchiveQuery.toQueryString(): String {
+    queries.remove("mediaType")
+
+    val joiner = " and "
+    val selectFrom = "select * from Content where"
+    var where = " "
+    queries.keys.forEach {
+        where += "$it like ${queries[it]?.replace(' ', '%')}$joiner"
+    }
+    val orderBy = " order by title"
+    return selectFrom + where.removeSuffix(joiner) + orderBy
 }

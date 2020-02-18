@@ -53,11 +53,11 @@ dependencies {
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Serialization.dependency)
 
-    implementation(Epoxy.core)
-    implementation(Epoxy.dataBinding)
-    kapt(Epoxy.processor)
-    implementation(Epoxy.paging)
-    implementation(Epoxy.preloading)
+//    implementation(Epoxy.core)
+//    implementation(Epoxy.dataBinding)
+//    kapt(Epoxy.processor)
+//    implementation(Epoxy.paging)
+//    implementation(Epoxy.preloading)
 
     implementation(MvRx.core)
 

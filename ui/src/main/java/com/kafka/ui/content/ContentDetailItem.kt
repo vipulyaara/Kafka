@@ -10,12 +10,12 @@ import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.material.surface.Card
 import androidx.ui.res.imageResource
-import androidx.ui.text.TextStyle
 import androidx.ui.text.style.TextOverflow
-import androidx.ui.unit.TextUnit
 import androidx.ui.unit.dp
 import com.kafka.data.entities.ContentDetail
 import com.kafka.ui.R
+import com.kafka.ui.alignCenter
+import com.kafka.ui.lineHeight
 
 @Composable
 fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAction) -> Unit) {
@@ -24,22 +24,20 @@ fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAct
             modifier = LayoutSize(196.dp, 258.dp) + LayoutGravity.Center,
             shape = RoundedCornerShape(5.dp),
             elevation = 6.dp
-        ) {
-            DrawImage(image = imageResource(id = R.drawable.img_author_camus_latranger))
-        }
+        ) { DrawImage(image = imageResource(id = R.drawable.img_author_camus_latranger)) }
 
         Spacer(modifier = LayoutPadding(top = 20.dp))
 
         Text(
             text = contentDetail?.title ?: "",
-            style = MaterialTheme.typography().h2,
+            style = MaterialTheme.typography().h2.alignCenter(),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = LayoutGravity.Center
         )
         Spacer(modifier = LayoutPadding(2.dp))
         Text(
-            text = "by " + contentDetail?.creator ?: "",
+            text = "by " + contentDetail?.creator,
             style = MaterialTheme.typography().h6,
             modifier = LayoutGravity.Center
         )
@@ -49,16 +47,11 @@ fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAct
             RatingWidget()
         }
 
-        Spacer(modifier = LayoutPadding(12.dp))
+        Spacer(modifier = LayoutPadding(4.dp))
         Text(
             text = contentDetail?.description?.let { Html.fromHtml(it)?.toString() } ?: "",
-            maxLines = 4,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography().body2.merge(
-                TextStyle(
-                    lineHeight = TextUnit.Companion.Em(1.3)
-                )
-            ),
+            maxLines = 3,
+            style = MaterialTheme.typography().body2.lineHeight(1.3).alignCenter(),
             modifier = LayoutPadding(20.dp)
         )
 

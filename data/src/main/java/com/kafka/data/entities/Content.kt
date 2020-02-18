@@ -1,5 +1,6 @@
 package com.kafka.data.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kafka.data.model.MediaType
@@ -17,6 +18,7 @@ data class Content(
     val title: String? = null,
     val description: String? = null,
     val creator: String? = null,
+    @ColumnInfo(name = "media_type")
     val mediaType: String? = null,
     val coverImage: String? = null,
     var coverImageResource: Int = 0,

@@ -27,13 +27,13 @@ fun ViewGroup.composeContentDetailScreen(
     val viewState = observe(state)
     if (viewState != null) {
         MaterialThemeFromAndroidTheme(context) {
-            HomepageScreen(viewState, actioner)
+            ContentDetailScreen(viewState, actioner)
         }
     }
 }
 
 @Composable
-private fun HomepageScreen(
+private fun ContentDetailScreen(
     viewState: ContentDetailViewState,
     actioner: (ContentDetailAction) -> Unit
 ) {
@@ -57,22 +57,21 @@ private fun ContentDetail(
                 Spacer(LayoutPadding(top = 24.dp))
                 ContentDetailItem(contentDetail = viewState.contentDetail, actioner = actioner)
                 Spacer(LayoutPadding(top = 24.dp))
+
                 ProvideEmphasis(emphasis = EmphasisLevels().disabled) {
                     Text(
-                        text = "More by creator",
-                        style = MaterialTheme.typography().body1,
+                        text = "More by ${viewState.contentDetail?.creator}",
+                        style = MaterialTheme.typography().h6,
                         modifier = LayoutPadding(left = 16.dp)
                     )
                 }
 
-                Spacer(modifier = LayoutHeight(12.dp))
+                Spacer(modifier = LayoutHeight(16.dp))
                 HorizontalScroller {
                     Row {
                         viewState.itemsByCreator?.contents?.forEach { content ->
                             ContentItem(content) {
-                                actioner.invoke(
-                                    ContentDetailAction.ContentItemClick(it)
-                                )
+                                actioner(ContentDetailAction.ContentItemClick(it))
                             }
                             Spacer(modifier = LayoutWidth(8.dp))
                         }
