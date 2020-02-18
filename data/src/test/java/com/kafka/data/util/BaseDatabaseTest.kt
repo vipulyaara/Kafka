@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.kafka.data.data.db.MiddlewareDb
+import com.kafka.data.data.db.KafkaRoomDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -17,13 +17,13 @@ abstract class BaseDatabaseTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    internal lateinit var db: MiddlewareDb
+    internal lateinit var db: KafkaRoomDatabase
         private set
 
     @Before
     open fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, MiddlewareDb::class.java)
+        db = Room.inMemoryDatabaseBuilder(context, KafkaRoomDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
     }

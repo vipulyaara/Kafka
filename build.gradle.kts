@@ -1,107 +1,97 @@
-import Kafka.compileSdkVersion
-import Kafka.groupId
-import Kafka.minSdkVersion
+
 import com.android.build.gradle.BaseExtension
-import com.dicedmelon.gradle.jacoco.android.JacocoAndroidUnitTestReportExtension
-import org.jmailen.gradle.kotlinter.KotlinterExtension
-import org.jmailen.gradle.kotlinter.support.ReporterType
-import org.gradle.api.publish.maven.MavenPom
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
-import org.jmailen.gradle.kotlinter.tasks.LintTask
 
-plugins {
-    java
-    kotlin("jvm") version Kotlin.version apply false
-    id(Android.libPlugin) version Android.version apply false
-    id(Jacoco.Android.plugin) version Jacoco.Android.version apply false
-    id(KotlinX.Serialization.plugin) version Kotlin.version apply false
-    id(Ktlint.plugin) version Ktlint.version apply false
-    id(PlayServices.plugin) version PlayServices.pluginVersion apply false
-
-    `maven-publish`
-    id(Release.Bintray.plugin) version Release.Bintray.version
+buildscript {
+    extra["kotlin_version"] = "1.3.61"
+    extra["compose_version"] = "0.1.0-SNAPSHOT"
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    }
+    dependencies {
+        classpath(Android.gradlePlugin)
+        classpath("com.google.gms:google-services:4.3.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.pluginVersion}")
+    }
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         jcenter()
+        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+        maven(url = "https://ci.android.com/builds/submitted/6153956/androidx_snapshot/latest/ui/repository/")
+        maven(url = "https://plugins.gradle.org/m2/")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://jitpack.io")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     }
+
+    val commonCompilerArgs = listOfNotNull(
+        "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+    )
+
+    tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>> {
+        kotlinOptions {
+            allWarningsAsErrors = false
+            freeCompilerArgs = commonCompilerArgs
+        }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 }
 
-val androidModules = listOf("data", "player")
-val androidSampleModules = listOf("app")
+val libraryModules = listOf("data", "player", "ui")
+val applicationModules = listOf("app")
 
 subprojects {
-    val isAndroidModule = project.name in androidModules
-    val isSample = project.name in androidSampleModules
-    val isJvmModule = !isAndroidModule && !isSample
+    val isLibrary = project.name in libraryModules
+    val isAndroid = project.name in libraryModules || project.name in applicationModules
+    val isApplication = project.name in applicationModules
 
-    if (isJvmModule) {
-        apply {
-            plugin(Kotlin.plugin)
-            plugin(Jacoco.plugin)
-        }
+    if (isAndroid) {
 
-        configure<JacocoPluginExtension> {
-            toolVersion = Jacoco.version
-        }
-
-        dependencies {
-            implementation(Kotlin.stdlib)
-            testImplementation(JUnit.dependency)
-        }
-
-        configure<JavaPluginConvention> {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-
-            sourceSets {
-                getByName("main").java.srcDirs("src/main/kotlin")
-                getByName("test").java.srcDirs("src/main/kotlin")
+        if (isLibrary) {
+            apply {
+                plugin(Android.libPlugin)
+                plugin(Kotlin.androidPlugin)
+                plugin(KotlinX.Serialization.plugin)
+                plugin(Kotlin.androidExtensionsPlugin)
+                plugin(Kotlin.kapt)
             }
         }
 
-        tasks.withType<JacocoReport> {
-            reports {
-                html.isEnabled = false
-                xml.isEnabled = true
-                csv.isEnabled = false
+        if (isApplication) {
+            apply {
+                plugin(Android.appPlugin)
+                plugin(Kotlin.androidPlugin)
+                plugin(Kotlin.kapt)
+                plugin(KotlinX.Serialization.plugin)
+                plugin(Kotlin.androidExtensionsPlugin)
+                plugin("androidx.navigation.safeargs.kotlin")
             }
         }
-
-        val sourcesJar by tasks.registering(Jar::class) {
-            from(sourceSets["main"].allSource)
-            classifier = "sources"
-        }
-
-        val doc by tasks.creating(Javadoc::class) {
-            isFailOnError = false
-            source = sourceSets["main"].allJava
-        }
-    }
-
-    if (isAndroidModule) {
-        apply {
-            plugin(Android.libPlugin)
-            plugin(Kotlin.androidPlugin)
-            plugin(Kotlin.androidExtensionsPlugin)
-            plugin(Jacoco.Android.plugin)
-        }
-
 
         configure<BaseExtension> {
             compileSdkVersion(Kafka.compileSdkVersion)
 
+
             defaultConfig {
                 minSdkVersion(Kafka.minSdkVersion)
                 targetSdkVersion(Kafka.compileSdkVersion)
+                vectorDrawables.useSupportLibrary = true
+                multiDexEnabled = true
                 versionCode = 1
                 versionName = Kafka.publishVersion
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
             sourceSets {
@@ -110,8 +100,8 @@ subprojects {
             }
 
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_1_8
-                setTargetCompatibility(JavaVersion.VERSION_1_8)
+                sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+                targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
             }
 
             buildTypes {
@@ -129,113 +119,11 @@ subprojects {
                 unitTests.isReturnDefaultValues = true
             }
 
-            val sourcesJar by tasks.registering(Jar::class) {
-                from(sourceSets["main"].java.srcDirs)
-                classifier = "sources"
-            }
 
-            val doc by tasks.creating(Javadoc::class) {
-                isFailOnError = false
-                source = sourceSets["main"].java.sourceFiles
-                classpath += files(bootClasspath.joinToString(File.pathSeparator))
-                classpath += configurations.compile
-            }
-        }
-
-        configure<JacocoAndroidUnitTestReportExtension> {
-            csv.enabled(false)
-            html.enabled(true)
-            xml.enabled(true)
-        }
-    }
-
-    if (!isSample) {
-        apply {
-            plugin(Release.MavenPublish.plugin)
-            plugin(Release.Bintray.plugin)
-            plugin(Ktlint.plugin)
-        }
-
-        configure<KotlinterExtension> {
-            reporters = arrayOf(ReporterType.plain.name, ReporterType.checkstyle.name)
-        }
-
-//        tasks.named<LintTask>("lintKotlinMain") {
-//            enabled = false
-//        }
-//
-//        tasks.named<LintTask>("lintKotlinTest") {
-//            enabled = false
-//        }
-
-        version = Kafka.publishVersion
-        group = Kafka.groupId
-        bintray {
-            user = findProperty("BINTRAY_USER") as? String
-            key = findProperty("BINTRAY_KEY") as? String
-            setPublications(project.name)
-            with(pkg) {
-                repo = "maven"
-                name = "Kafka-Android"
-                desc = "The dream book reading application"
-                userOrg = "airtel"
-                websiteUrl = ""
-                vcsUrl = ""
-                setLicenses("MIT")
-                with(version) {
-                    name = Kafka.publishVersion
-                }
-            }
-        }
-
-        fun MavenPom.addDependencies() = withXml {
-            asNode().appendNode("dependencies").let { depNode ->
-                configurations.implementation.allDependencies.forEach {
-                    depNode.appendNode("rxJava2").apply {
-                        appendNode("groupId", it.group)
-                        appendNode("artifactId", it.name)
-                        appendNode("version", it.version)
-                    }
-                }
-            }
-        }
-
-        val javadocJar by tasks.creating(Jar::class) {
-            val doc by tasks
-            dependsOn(doc)
-            from(doc)
-
-            classifier = "javadoc"
-        }
-
-        val sourcesJar by tasks
-        publishing {
-            publications {
-                register(project.name, MavenPublication::class) {
-                    if (project.hasProperty("android")) {
-                        artifact("$buildDir/outputs/aar/${project.name}-release.aar")
-                    } else {
-                        from(components["java"])
-                    }
-                    artifact(sourcesJar)
-                    artifact(javadocJar)
-                    groupId = Kafka.groupId
-                    artifactId = project.name
-                    version = Kafka.publishVersion
-
-                    pom {
-                        licenses {
-                            license {
-                                name.set("MIT License")
-                                url.set("http://www.opensource.org/licenses/mit-license.php")
-                            }
-                        }
-                    }
-
-                    if (project.hasProperty("android")) {
-                        pom.addDependencies()
-                    }
-                }
+            packagingOptions {
+                exclude("META-INF/LICENSE.txt")
+                exclude("META-INF/NOTICE.txt")
+                exclude("META-INF/rxkotlin.properties")
             }
         }
     }

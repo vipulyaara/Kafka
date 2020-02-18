@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andoid="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -9,30 +10,72 @@
             type="android.view.View.OnClickListener" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:onClickListener="@{itemClickListener}">
+        android:onClickListener="@{itemClickListener}"
+        android:padding="@dimen/spacing_large"
+        andoid:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.kafka.user.ui.widget.KafkaCardView
-            android:id="@+id/coverCard"
-            android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:layout_margin="@dimen/spacing_medium_2"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_author_tagore_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_banner_4" />
-        </com.kafka.user.ui.widget.KafkaCardView>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium_2"
+            android:text="Celebrating Tagore"
+            android:textAppearance="@style/Headline3"
+            android:textColor="@color/text_heading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image" />
+
+        <TextView
+            android:id="@+id/tvText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:gravity="center"
+            android:letterSpacing="0.05"
+            android:text="A collection of Rabindra Sangeet"
+            android:textAppearance="@style/Headline1"
+            android:textColor="@color/text_subheading"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium_2"
+            android:backgroundTint="@color/colorAccent"
+            android:elevation="4dp"
+            android:fontFamily="@font/raleway_semibold"
+            android:letterSpacing="0.05"
+            android:text="Explore"
+            android:textAppearance="@style/Headline1"
+            android:textColor="@color/onAccent"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_radio_black_24dp"
+            app:iconTint="@color/onAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

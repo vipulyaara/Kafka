@@ -3,7 +3,7 @@
 package com.kafka.data.query
 
 import androidx.collection.ArrayMap
-import androidx.collection.arrayMapOf
+import androidx.sqlite.db.SimpleSQLiteQuery
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -15,6 +15,7 @@ const val _books = "texts"
 const val _audio = "audio"
 const val _image = "image"
 const val _video = "video"
+const val _librivoxaudio = "librivoxaudio"
 const val _collection = "collection"
 const val _railTitle = "railtitle"
 
@@ -24,7 +25,7 @@ const val _searchTerm = ""
 
 data class ArchiveQuery(
     var title: String? = null,
-    val queries: ArrayMap<String, String> = arrayMapOf()
+    val queries: ArrayMap<String, String> = ArrayMap()
 )
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
@@ -55,10 +56,27 @@ fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
     return this
 }
 
-fun ArchiveQuery.buildSearchTerm(): String {
+fun ArchiveQuery.buildRemoteQuery(): String {
     var query = ""
-    for ((key, value) in queries) {
-        query = query.plus("$key:($value)+AND+")
+    val joiner = "+AND+"
+    queries[_collection] = _librivoxaudio
+    for ((key, value) in queries.entries) {
+        query = query.plus("$key:($value)$joiner")
     }
-    return query.dropLast(5)
+    return query.removeSuffix(joiner)
+}
+
+fun ArchiveQuery.buildLocalQuery() = SimpleSQLiteQuery(toQueryString())
+
+fun ArchiveQuery.toQueryString(): String {
+    queries.remove("mediaType")
+
+    val joiner = " and "
+    val selectFrom = "select * from Content where"
+    var where = " "
+    queries.keys.forEach {
+        where += "$it like ${queries[it]?.replace(' ', '%')}$joiner"
+    }
+    val orderBy = " order by title"
+    return selectFrom + where.removeSuffix(joiner) + orderBy
 }

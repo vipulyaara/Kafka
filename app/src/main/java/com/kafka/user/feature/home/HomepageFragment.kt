@@ -1,64 +1,59 @@
 package com.kafka.user.feature.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
-import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
-import com.kafka.data.entities.Item
-import com.kafka.user.R
-import com.kafka.user.config.NightModeManager
-import com.kafka.user.databinding.FragmentHomeBinding
-import com.kafka.user.feature.common.DataBindingMvRxFragment
-import com.kafka.user.ui.SharedElementHelper
-import kotlinx.android.synthetic.main.fragment_home.*
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.kafka.data.model.EventObserver
+import com.kafka.ui.home.composeHomepageScreen
+import com.kafka.user.feature.common.BaseFragment
+import com.kafka.user.feature.detail.contentId
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
  */
 
-var detailId = ""
-var detailName = ""
-var detailUrl = ""
+class HomepageFragment : BaseFragment() {
 
-class HomepageFragment : DataBindingMvRxFragment<FragmentHomeBinding>(
-    R.layout.fragment_home
-) {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val navigator by lazy {
-        ViewModelProviders.of(activity!!).get(NavigationViewModel::class.java)
-    }
+    private val viewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
 
-    private val viewModel: HomepageViewModel by fragmentViewModel()
-
-    private val controller = HomepageController(object : HomepageController.Callbacks {
-        override fun onBookClicked(view: View, item: Item) {
-            detailId = item.itemId
-            detailName = item.itemId
-            detailUrl = item.coverImage ?: ""
-            navigator.showItemDetail(
-                item,
-                SharedElementHelper().apply {
-                    addSharedElement(view, view.transitionName)
-                })
-        }
-
-        override fun onBannerClicked() {
-            NightModeManager.toggleNightMode(activity)
-        }
-    })
+    private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rvHome.apply {
-            setController(controller)
-        }
+        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
+            contentId = it
+            navController.navigate(HomepageFragmentDirections.toPoetDetail(it))
+        })
+
+        viewModel.refresh()
     }
 
-    override fun invalidate() {
-        withState(viewModel) {
-            controller.setData(it)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return FrameLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            composeHomepageScreen(
+                viewLifecycleOwner,
+                viewModel.viewState,
+                viewModel::submitAction
+            )
         }
     }
 }

@@ -1,38 +1,19 @@
-/*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.kafka.player.helper
 
 import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.data.config.logging.Logger
-import org.kodein.di.generic.instance
-import java.util.ArrayList
+import com.kafka.data.extensions.d
+import java.util.*
 
 class TrackSelectionHelper(
     private val trackSelector: DefaultTrackSelector,
     private val resolutionListener: ResolutionListener?
 ) {
-
-    private val logger: Logger by kodeinInstance.instance()
     private var trackGroups: TrackGroupArray? = null
     private var override: DefaultTrackSelector.SelectionOverride? = null
     private var rendererIndex: Int = 0
-    internal val availableFormats = ArrayList<Format>()
+    private val availableFormats = ArrayList<Format>()
     private var selectedFormat: Format? = null
 
     fun setAvailableBitRates(rendererIndex: Int, trackGroups: TrackGroupArray?) {
@@ -47,7 +28,6 @@ class TrackSelectionHelper(
             for (trackIndex in 0 until group.length) {
                 val format = group.getFormat(trackIndex)
                 availableFormats.add(format)
-                logger.d("available format : $format")
             }
         }
         availableFormats.sortBy {
@@ -70,18 +50,18 @@ class TrackSelectionHelper(
 
     fun setBitrates(bitrates: IntArray) {
         val trackIndexes = IntArray(bitrates.size)
-        for (i in 0 until bitrates.size) {
+        for (i in bitrates.indices) {
             val mostSuitable = getMostSuitableTrackBitrate(bitrates[i])
             val trackIndex = getSuitableTrackIndex(mostSuitable)
             trackIndexes[i] = trackIndex
-            logger.d("set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable")
+            d { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable" }
         }
         setOverride(0, false, *trackIndexes)
     }
 
     fun setBitRate(bitRateMax: Int) {
         if (availableFormats.size > 1) {
-            val groupIndex = 0 //  trakgroup of all trackgroups have one elemnt only
+            val groupIndex = 0 //  track group of all track groups have one element only
             val mostSuitable = getMostSuitableTrackBitrate(bitRateMax)
             if (mostSuitable == 0) {
                 return
@@ -89,9 +69,9 @@ class TrackSelectionHelper(
             val trackIndex = getSuitableTrackIndex(mostSuitable)
             selectedFormat = availableFormats[trackIndex]
             setOverride(groupIndex, bitRateMax == 0, trackIndex)
-            logger.d("set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable and max bitRate = $bitRateMax")
+            d { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable and max bitRate = $bitRateMax" }
         } else {
-            logger.d("multiple bitrates not found.")
+            d { "multiple bit rates not found." }
         }
     }
 
@@ -109,7 +89,7 @@ class TrackSelectionHelper(
     private fun getMostSuitableTrackBitrate(selectedBitrate: Int): Int {
         var mostSuitableBitrate = 0
         if (availableFormats.size == 0) {
-            logger.d("bitrate not found.")
+            d { "bitrate not found." }
             return mostSuitableBitrate
         }
         val min = availableFormats[0].bitrate

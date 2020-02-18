@@ -1,7 +1,6 @@
 package com.kafka.data.data.api
 
-import android.app.Application
-import com.kafka.data.data.api.interceptor.GenericInterceptor
+import android.content.Context
 import com.kafka.data.model.SingleToArrayAdapter
 import com.kafka.data.util.NetworkConstants.baseUrl
 import com.squareup.moshi.Moshi
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit
  */
 
 internal object RetrofitProvider {
-    fun provideDefaultRetrofit(context: Application): Retrofit {
+    fun provideDefaultRetrofit(context: Context): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -35,7 +34,7 @@ internal object RetrofitProvider {
     }
 
     private fun provideOkHttpClient(
-        context: Application,
+        context: Context,
         showNetworkLogs: Boolean = true
     ): OkHttpClient {
         val cacheSize = 20 * 1024 * 1024L

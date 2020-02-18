@@ -1,14 +1,9 @@
 package com.kafka.user.extensions
 
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.widget.TextView
-import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.data.config.logging.Logger
+import android.os.StrictMode
+import androidx.databinding.ViewDataBinding
 import com.kafka.user.R
-import org.kodein.di.generic.instance
-import java.util.Random
+import java.util.*
 
 /**
  * @author Vipul Kumar; dated 22/01/19.
@@ -20,8 +15,6 @@ import java.util.Random
 fun <T : Collection<*>> T?.letEmpty(f: (it: T) -> Unit) {
     if (this != null && this.isNotEmpty()) f(this)
 }
-
-internal val logger: Logger by kodeinInstance.instance()
 
 fun getRandomCoverResource(): Int {
     val covers = arrayOf(
@@ -35,20 +28,20 @@ fun getRandomCoverResource(): Int {
         R.drawable.img_cover_8
     )
 
-    return covers[Random().nextInt(covers.size - 1)]
+    return covers[Random().nextInt(covers.size)]
 }
+
 fun getRandomAuthorResource(): Int {
     val covers = arrayOf(
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_camus_1,
-        R.drawable.img_author_camus_2,
         R.drawable.img_author_camus_3,
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_camus_caligula,
         R.drawable.img_author_camus_latranger,
+        R.drawable.img_author_camus_latranger,
         R.drawable.img_author_camus_the_fall,
-        R.drawable.img_author_freud_1,
         R.drawable.img_author_ghalib_1,
+        R.drawable.img_author_ghalib_1,
+        R.drawable.img_author_ghalib_2,
         R.drawable.img_author_ghalib_2,
         R.drawable.img_author_hemingway_1,
         R.drawable.img_author_kafka_1,
@@ -58,13 +51,8 @@ fun getRandomAuthorResource(): Int {
         R.drawable.img_author_plato_1,
         R.drawable.img_author_tagore_1,
         R.drawable.img_author_tagore_2,
-        R.drawable.img_author_jung_1,
-        R.drawable.img_author_kant_1,
-        R.drawable.img_author_kerouac_1,
         R.drawable.img_author_marx_1,
-        R.drawable.img_author_nietzsche_1,
         R.drawable.img_author_rustaveli_1,
-        R.drawable.img_author_sartre_1,
         R.drawable.img_author_virginia_1,
         R.drawable.img_author_virginia_to_the_lighthouse,
         R.drawable.img_author_fitzgerald_the_great_gatsby,
@@ -72,7 +60,6 @@ fun getRandomAuthorResource(): Int {
         R.drawable.img_author_harper_lee_to_kill_a_mockingbird,
         R.drawable.img_author_karl_marx,
         R.drawable.img_author_karl_marx_das_capital,
-        R.drawable.img_author_nietzsche_1,
         R.drawable.img_author_nietzsche,
         R.drawable.img_author_orwell_animal_farm,
         R.drawable.img_author_paulo_eleven_minutes,
@@ -86,4 +73,12 @@ fun getRandomAuthorResource(): Int {
 
 fun illegalArgumentException(msg: String): Nothing = throw RuntimeException(msg)
 
+inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
+    block()
+    executePendingBindings()
+}
 
+fun disableStrictMode() {
+    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+    StrictMode.setThreadPolicy(policy)
+}

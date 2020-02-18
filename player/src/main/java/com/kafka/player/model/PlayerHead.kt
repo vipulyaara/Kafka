@@ -1,3 +1,5 @@
+package com.kafka.player.model
+
 //package com.kafka.player.model
 //
 ///**

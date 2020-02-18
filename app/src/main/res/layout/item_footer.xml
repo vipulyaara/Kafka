@@ -38,6 +38,7 @@
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:visibility="gone"
             android:alpha="0.8"
             android:src="@drawable/ic_music_logo"
             app:layout_constraintStart_toEndOf="@id/tvTitle" />

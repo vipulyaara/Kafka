@@ -1,17 +1,7 @@
 package com.kafka.player.core
 
-import android.content.Context
-import android.util.AttributeSet
-import android.widget.FrameLayout
 import androidx.annotation.CallSuper
-import com.bumptech.glide.Glide.init
-import com.kafka.player.model.PlaybackItem
-import com.kafka.player.model.PlayerConfig
-import com.kafka.player.model.PlayerException
-import com.kafka.player.model.PlayerSeekInfo
-import com.kafka.player.model.PlayerState
-import com.kafka.player.model.noPlayerStateError
-import io.reactivex.subjects.PublishSubject
+import com.kafka.player.model.*
 
 /**
  * @author Vipul Kumar; dated 05/03/19.
@@ -21,9 +11,7 @@ abstract class BasePlayer : Player {
     protected val basePlayerHelper = BasePlayerHelper()
     protected val seekUpdateInterval: Long = 1000
     private lateinit var playerExceptionHandler: PlayerExceptionHandler
-    private var lastPlayerState: PlayerState? = null
-    val playerStateObservable = PublishSubject.create<PlayerState>()
-    val playerSeekInfoObservable = PublishSubject.create<PlayerSeekInfo>()
+    var lastPlayerState: PlayerState? = null
 
     init {
         updatePlayerState(PlayerState.Stopped(false))
@@ -37,13 +25,13 @@ abstract class BasePlayer : Player {
 
     protected fun updatePlayerState(playerState: PlayerState) {
         lastPlayerState = playerState
-        playerStateObservable.onNext(playerState)
+//        playerStateObservable.onNext(playerState)
     }
 
     internal fun getPlayerState() = lastPlayerState ?: noPlayerStateError
 
     internal fun updatePlayerSeekInfo(playerSeekInfo: PlayerSeekInfo) {
-        playerSeekInfoObservable.onNext(playerSeekInfo)
+//        playerSeekInfoObservable.onNext(playerSeekInfo)
     }
 
     private fun validateStateChange(playerAction: PlayerAction) {

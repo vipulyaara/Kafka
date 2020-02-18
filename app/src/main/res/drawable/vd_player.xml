@@ -17,10 +17,10 @@
                     android:startY="0"
                     android:tileMode="repeat"
                     android:type="linear">
-                    <item
+                    <content
                         android:color="#000"
                         android:offset="0.5" />
-                    <item
+                    <content
                         android:color="#000"
                         android:offset="1.0" />
                 </gradient>

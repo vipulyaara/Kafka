@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_homepage">
+
+    <fragment
+        android:id="@+id/navigation_homepage"
+        android:name="com.kafka.user.feature.home.HomepageFragment"
+        tools:layout="@layout/fragment_home">
+
+    <action
+        android:id="@+id/to_poet_detail"
+        app:destination="@id/navigation_content_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_content_detail"
+        android:name="com.kafka.user.feature.detail.ContentDetailFragment">
+        <argument
+            android:name="mvrx:arg"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/to_poet_detail"
+            app:destination="@id/navigation_content_detail" />
+    </fragment>
+
+</navigation>

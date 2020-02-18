@@ -1,3 +1,5 @@
+package com.kafka.data.util
+
 //package com.airtel.data.util
 //
 //import com.airtel.data.model.SingleToArray

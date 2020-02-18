@@ -1,46 +1,47 @@
 package com.kafka.user.feature.common
 
-import com.airbnb.mvrx.BaseMvRxViewModel
-import com.airbnb.mvrx.MvRxState
-import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.data.config.logging.Logger
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.kafka.data.extensions.e
+import com.kafka.data.model.data.ErrorResult
+import com.kafka.data.model.data.Result
+import com.kafka.data.model.data.Success
+import com.kafka.ui.BaseViewState
 import com.kafka.user.BuildConfig
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import org.kodein.di.generic.instance
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 
-/**
- * @author Vipul Kumar; dated 22/10/18.
- *
- * ViewModel which exposes a [CompositeDisposable] and [Job]
- * which are automatically cleared/stopped when the ViewModel is cleared.
- *
- * Ideally, a code that triggers a change in viewState looks like
- *
- * flowable.toObservable()
- * .subscribeOn(schedulers.io)
- * .execute { state }
- *
- */
-open class BaseViewModel<S : MvRxState>(
-    initialState: S
-) : BaseMvRxViewModel<S>(initialState, debugMode = BuildConfig.DEBUG), IBaseViewModel {
+//TODO: Remove this class and liveData logic once Compose Reactive Models are stable
+open class BaseViewModel<ViewState : BaseViewState>(private var s: ViewState) : ViewModel() {
 
-    init {
-        logStateChanges()
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState>
+        get() = _viewState
+
+    fun setState(reducer: ViewState.() -> ViewState) {
+        s = reducer(s)
+        _viewState.postValue(s)
     }
 
-    private val job = Job()
-
-    protected val logger: Logger by kodeinInstance.instance()
-    override val disposables = CompositeDisposable()
-    override val scope = CoroutineScope(Dispatchers.Main + job)
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-        job.cancel()
+    protected suspend inline fun <T> Flow<T>.execute(
+        crossinline stateReducer: ViewState.(Success<T>) -> ViewState
+    ) {
+        return map { Success(it) as Result<T> }
+            .catch {
+                if (BuildConfig.DEBUG) {
+                    e(it) { "Exception during observe" }
+                    throw it
+                }
+                emit(ErrorResult(it))
+            }
+            .collect {
+                if (it is Success) { setState { stateReducer(it) }
+                } else {
+                    throw RuntimeException("Exceptions")
+                }
+            }
     }
 }

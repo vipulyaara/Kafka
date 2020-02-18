@@ -1,79 +1,111 @@
 package com.kafka.user.feature.home
 
-import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.ViewModelContext
-import com.kafka.data.data.annotations.UseInjection
-import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.data.interactor.launchInteractor
-import com.kafka.data.entities.Item
-import com.kafka.data.feature.query.QueryItems
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.kafka.data.data.config.ProcessLifetime
+import com.kafka.data.data.interactor.launchObserve
+import com.kafka.data.entities.Content
+import com.kafka.data.feature.content.ContentRepository
+import com.kafka.data.feature.content.ObserveContent
+import com.kafka.data.feature.content.UpdateContent
+import com.kafka.data.model.Event
 import com.kafka.data.model.RailItem
+import com.kafka.data.query.ArchiveQuery
+import com.kafka.data.query.booksByAuthor
 import com.kafka.data.util.AppCoroutineDispatchers
-import com.kafka.data.util.AppRxSchedulers
+import com.kafka.ui.home.ContentItemClick
+import com.kafka.ui.home.HomepageAction
+import com.kafka.ui.home.HomepageViewState
+import com.kafka.user.extensions.getRandomAuthorResource
+import com.kafka.user.feature.common.BaseMvRxViewModel
 import com.kafka.user.feature.common.BaseViewModel
-import com.kafka.user.ui.RxLoadingCounter
-import io.reactivex.Observable
-import org.kodein.di.generic.instance
+import com.kafka.user.ui.ObservableLoadingCounter
+import com.kafka.user.ui.collectFrom
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
  *
- * Implementation of [BaseViewModel] to provide data for search.
+ * Implementation of [BaseMvRxViewModel] to provide data for homepage.
  */
-@UseInjection
-class HomepageViewModel : BaseViewModel<HomepageViewState>(
-    HomepageViewState()
-) {
-    private val schedulers: AppRxSchedulers by kodeinInstance.instance()
-    private val dispatchers: AppCoroutineDispatchers by kodeinInstance.instance()
-    private val loadingState = RxLoadingCounter()
+class HomepageViewModel @Inject constructor(
+    private val loadingState: ObservableLoadingCounter,
+    private val appCoroutineDispatchers: AppCoroutineDispatchers,
+    @ProcessLifetime private val processScope: CoroutineScope,
+    private val contentRepository: ContentRepository
+) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
+
+    private val creators = arrayOf("Kafka", "Sherlock", "Mark")
+
+    private val pendingActions = Channel<HomepageAction>(Channel.BUFFERED)
+
+    private val _navigateToContentDetailAction = MutableLiveData<Event<String>>()
+    val navigateToContentDetailAction: LiveData<Event<String>>
+        get() = _navigateToContentDetailAction
 
     init {
-        loadingState.observable.execute { copy(isLoading = it() ?: false) }
+        viewModelScope.launch {
+            loadingState.observable
+                .distinctUntilChanged()
+                .collect {
+                    setState { copy(isLoading = it) }
+                }
+        }
 
-        QueryItems(dispatchers)
-            .also { it.launchQuery(QueryItems.Params.ByCreator("Mark Twain")) }
-            .observeQuery()
-            .concatMap {
-                QueryItems(dispatchers)
-                    .also { it.launchQuery(QueryItems.Params.ByCollection("librivoxaudio")) }
-                    .observeQuery()
+        viewModelScope.launch {
+            for (action in pendingActions) when (action) {
+                is ContentItemClick -> _navigateToContentDetailAction.postValue(Event(action.contentId))
             }
-            .concatMap {
-                QueryItems(dispatchers)
-                    .also { it.launchQuery(QueryItems.Params.ByCreator("Franz Kafka")) }
-                    .observeQuery()
+        }
+
+        creators.forEach {
+            val observeContent = ObserveContent(appCoroutineDispatchers, contentRepository)
+            viewModelScope.launchObserve(observeContent) { flow ->
+                flow.distinctUntilChanged().execute {
+                    onItemsFetched(it())
+                }
             }
-            .doOnError(logger::e)
-            .execute { onItemsFetched(it) }
-    }
 
-    private fun HomepageViewState.onItemsFetched(it: Async<List<Item>>): HomepageViewState {
-        val list =
-            items?.toMutableSet().also { it?.add(RailItem(it.size.toString() + " Books by Kafka", it())) }
-        logger.d("Items ${it() ?: 0}")
-        return copy(items = list)
-    }
-
-    private fun QueryItems.observeQuery(): Observable<List<Item>> {
-        return observe().toObservable()
-            .subscribeOn(schedulers.io)
-    }
-
-    private fun QueryItems.launchQuery(params: QueryItems.Params) {
-        setParams(params)
-        scope.launchInteractor(this, QueryItems.ExecuteParams())
-    }
-
-    companion object : MvRxViewModelFactory<HomepageViewModel, HomepageViewState> {
-        // This *must* be @JvmStatic for performance reasons.
-        @JvmStatic
-        override fun create(
-            viewModelContext: ViewModelContext,
-            state: HomepageViewState
-        ): HomepageViewModel {
-            return HomepageViewModel()
+            observeContent(ObserveContent.Params(ArchiveQuery().booksByAuthor(it)))
         }
     }
+
+    fun submitAction(action: HomepageAction) {
+        viewModelScope.launch { pendingActions.send(action) }
+    }
+
+    fun refresh() {
+        creators.forEach {
+            val updateContent =
+                UpdateContent(appCoroutineDispatchers, processScope, contentRepository)
+            updateContent(UpdateContent.Params.ByCreator(it)).also {
+                viewModelScope.launch {
+                    loadingState.collectFrom(it)
+                }
+            }
+        }
+    }
+
+    private fun HomepageViewState.onItemsFetched(list: List<Content>?): HomepageViewState {
+
+        val new =
+            items?.toMutableSet()
+                .also {
+                    it?.clear()
+                    it?.add(RailItem("Books by Kafka", list))
+                }
+        new?.map {
+            it.contents?.map {
+                it.also { it.coverImageResource = getRandomAuthorResource() }
+            }
+        }
+        return copy(items = new)
+    }
 }
+

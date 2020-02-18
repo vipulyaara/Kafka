@@ -1,26 +1,15 @@
 package com.kafka.player.core
 
-import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.DISCONTINUITY_REASON_PERIOD_TRANSITION
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsListener
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.MediaSourceEventListener
-import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.source.*
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.DefaultHlsDataSourceFactory
@@ -31,26 +20,18 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelection
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.upstream.HttpDataSource
+import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
-import com.kafka.data.data.config.kodeinInstance
-import com.kafka.data.data.config.logging.Logger
+import com.kafka.data.extensions.d
+import com.kafka.data.extensions.e
+import com.kafka.data.extensions.i
+import com.kafka.data.extensions.v
 import com.kafka.player.analytics.PlayerAnalyticsModel
 import com.kafka.player.helper.TrackSelectionHelper
-import com.kafka.player.model.PlaybackItem
-import com.kafka.player.model.PlayerConfig
-import com.kafka.player.model.PlayerException
-import com.kafka.player.model.PlayerSeekInfo
-import com.kafka.player.model.PlayerState
+import com.kafka.player.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import org.kodein.di.generic.instance
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -59,14 +40,14 @@ import kotlin.coroutines.CoroutineContext
 /**
  * @author Vipul Kumar; dated 05/03/19.
  */
-class AudioPlayer : BasePlayer(), CoroutineScope {
+class AudioPlayer(
+    private val context: Context
+) : BasePlayer(), CoroutineScope {
 
     private val maxBufferDurationForWifiDevices = 1000 * 60 * 10
     private val loggerTag by lazy { this.javaClass.canonicalName }
 
     private val job = Job()
-    private val logger: Logger by kodeinInstance.instance()
-    private val context: Application by kodeinInstance.instance()
 
     private lateinit var player: SimpleExoPlayer
     private val trackSelector: DefaultTrackSelector
@@ -85,8 +66,8 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
 
     private var playerIdleReasonStop: Boolean = false
 
-    private var currentPlaybackItem: PlaybackItem? = null
-    private var currentPlayerConfig: PlayerConfig? = null
+    var currentPlaybackItem: PlaybackItem? = null
+    var currentPlayerConfig: PlayerConfig? = null
 
     //used for exoPlayer playlist
     private var nextPlaybackItem: PlaybackItem? = null
@@ -132,7 +113,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
             updatePlayerConfig(playerConfig)
             currentPlaybackItem = playbackItem
             seekPositionInMs = Math.max(0, playbackItem.resumePointInMilliSeconds)
-            logger.d("seek position for content is : $seekPositionInMs")
+            d { "seek position for content is : $seekPositionInMs" }
             if (oldConfig == null) {
                 initPlayerWithoutDRM(playbackItem, playerConfig)
             } else {
@@ -177,7 +158,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
         super.seekTo(seekPositionInMs)
         this.seekPositionInMs = seekPositionInMs
 
-        logger.d("seeking to $seekPositionInMs")
+        d { "seeking to $seekPositionInMs" }
         player.seekTo(seekPositionInMs)
     }
 
@@ -212,7 +193,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
     }
 
     private fun initPlayerWithoutDRM(playbackItem: PlaybackItem, playerConfig: PlayerConfig) {
-        logger.d("$loggerTag initPlayerWithoutDRM()")
+        d { "$loggerTag initPlayerWithoutDRM()" }
         initLoadControl(playbackItem)
         player = ExoPlayerFactory.newSimpleInstance(
             context,
@@ -248,18 +229,18 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
         playerConfig: PlayerConfig?,
         addToPlayList: Boolean = false
     ) {
-        logger.d("$loggerTag loadPlaybackItem() $playUrl $seekPosition $playerConfig")
+        d { "$loggerTag loadPlaybackItem() $playUrl $seekPosition $playerConfig" }
         val mediaSource = mergeMediaSources(playUrl)
 
         if (addToPlayList) {
-            logger.d("adding to existing playlist")
+            d { "adding to existing playlist" }
             if (currentMediaSource.size == 2) {
                 //keep only the current and the next one
                 currentMediaSource.removeMediaSource(0)
             }
             currentMediaSource.addMediaSource(mediaSource)
         } else {
-            logger.d("$loggerTag loadPlaybackItem() concatenatingMediaSource")
+            d { "$loggerTag loadPlaybackItem() concatenatingMediaSource" }
             currentMediaSource = ConcatenatingMediaSource()
             currentMediaSource.addMediaSource(mediaSource)
             analyticsModel.videoPrepareStartTime = System.currentTimeMillis()
@@ -267,7 +248,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
 //            UriUtil.requestCookieProperties = requestCookieProperties
 
             player.prepare(currentMediaSource, true, true)
-            logger.d("seeking to ${seekPosition ?: 0}")
+            d { "seeking to ${seekPosition ?: 0}" }
             player.seekTo(seekPosition ?: 0)
         }
     }
@@ -328,7 +309,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
     private val playerEventListener = object : Player.DefaultEventListener() {
 
         override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-            logger.v("timeline changed reason : $reason")
+            v { "timeline changed reason : $reason" }
             updatePlayerSeekInfo()
         }
 
@@ -359,7 +340,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
                 }
                 com.google.android.exoplayer2.Player.STATE_ENDED -> if (player.currentPosition >= player.duration && player.duration > 0) {
                     stopPlayerProgressUpdate()
-                    //TODO ANalytics
+                    //TODO Analytics
 //                    sendPlayStopEventIfNeeded(true)
                     updatePlayerState(PlayerState.Finished(-1))
                 }
@@ -378,7 +359,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
             super.onPlayerError(error)
             stopPlayerProgressUpdate()
             val playerError = PlayerError(error, getPlayerState())
-            logger.e("playback error: $playerError")
+            e { "playback error: $playerError" }
             if (playerError.isRecoverable) {
                 try {
                     retryPlayback(true)
@@ -404,10 +385,10 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
             super.onPositionDiscontinuity(reason)
             if (player.currentWindowIndex > 0 && reason == DISCONTINUITY_REASON_PERIOD_TRANSITION) {
                 //content switched due to playlist
-                logger.d("VISION Starting new content")
+                d { "VISION Starting new content" }
                 pausedDueToContentSwitch = true
                 player.playWhenReady = false
-                logger.i("started playing next content in playlist")
+                i { "started playing next content in playlist" }
                 currentPlaybackItem = nextPlaybackItem
                 currentPlayerConfig?.let {
                     updatePlayerConfig(it)
@@ -428,7 +409,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
             super.onTracksChanged(trackGroups, trackSelections)
             //manifest loaded
             val current = player.videoFormat
-            logger.d("tracks changed $current")
+            d { "tracks changed $current" }
             analyticsModel.hasManifestBeenFetched = true
 //            analyticsModel.manifestFetchTime = loadTime
         }
@@ -440,7 +421,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
         val currentPosition = player.currentPosition
         val duration = if (player.duration < 0) 0 else player.duration
         val bufferedPosition = player.bufferedPosition
-        logger.d("player progress -> current position : ${player.currentPosition}, duration -> ${player.duration}")
+        d { "player progress -> current position : ${player.currentPosition}, duration -> ${player.duration}" }
         seekPositionInMs = currentPosition
         updatePlayerSeekInfo(PlayerSeekInfo(currentPosition, duration, bufferedPosition))
         stopPlayerProgressUpdate()
@@ -491,7 +472,7 @@ class AudioPlayer : BasePlayer(), CoroutineScope {
         ) {
             super.onLoadCompleted(eventTime, loadEventInfo, mediaLoadData)
             if (mediaLoadData.dataType == C.DATA_TYPE_MEDIA) {
-                logger.d("loaded segment uri : ${loadEventInfo.dataSpec.uri}")
+                d { "loaded segment uri : ${loadEventInfo.dataSpec.uri}" }
 //                PlayerAnalytics.onSegmentDownloaded(loadEventInfo, mediaLoadData)
             }
         }

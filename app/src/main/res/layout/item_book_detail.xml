@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="item"
-            type="com.kafka.data.entities.ItemDetail" />
+            name="content"
+            type="com.kafka.data.entities.ContentDetail" />
 
         <variable
             name="clickListener"
@@ -27,6 +27,10 @@
 
         <variable
             name="downloadClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="playClickListener"
             type="android.view.View.OnClickListener" />
     </data>
 
@@ -79,7 +83,7 @@
             android:layout_margin="@dimen/spacing_medium_3"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="@{item.title}"
+            android:text="@{content.title}"
             android:textColor="@color/text_heading"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,8 +98,8 @@
             android:fontFamily="@font/alegreya_bold"
             android:onClickListener="@{profileClickListener}"
             android:gravity="center"
-            android:text="@{`by ` + item.creator}"
-            android:textColor="@color/colorPrimary"
+            android:text="@{`by ` + content.creator}"
+            android:textColor="@color/colorAccent"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,6 +110,7 @@
             layout="@layout/item_rating_widget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:reviewsClickListener="@{reviewsClickListener}"
             android:layout_margin="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +128,7 @@
             android:maxLines="4"
             android:textColor="@color/text_body_1"
             android:textSize="14sp"
-            app:htmlText="@{item.description}"
+            app:htmlText="@{content.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ratingWidget" />
@@ -164,6 +169,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_regular"
+            android:onClickListener="@{playClickListener}"
             android:outlineAmbientShadowColor="@color/shadow_light"
             android:outlineSpotShadowColor="@color/shadow_light"
             android:layout_marginTop="@dimen/spacing_xxlarge"
@@ -179,10 +185,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/theme_active"
+                android:clickable="false"
                 android:fontFamily="@font/source_sans_pro_semibold"
                 android:elevation="0dp"
-                android:text="Listen"
-                android:textColor="@color/colorPrimary"
+                android:text="Play"
+                android:textColor="@color/colorAccent"
                 app:cornerRadius="1dp"
                 app:rippleColor="@color/background_light" />
         </com.google.android.material.card.MaterialCardView>

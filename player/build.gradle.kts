@@ -1,30 +1,20 @@
-import com.android.tools.r8.kotlin.Kotlin
-
-plugins {
-    id(Android.libPlugin)
-    id(Kotlin.androidPlugin)
-    id(Kotlin.kapt)
-}
+import Kotlin.kapt
 
 dependencies {
     implementation(project(":data"))
 
-    implementation(ExoPlayer.player)
+    implementation(AndroidX.Room.runtime)
+    implementation(AndroidX.Room.ktx)
+    kapt(AndroidX.Room.compiler)
 
-    implementation(Firebase.core)
-    implementation(Firebase.firestore)
+    implementation("org.jsoup:jsoup:1.12.1")
 
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
 
-    implementation(Glide.core)
-    kapt(Glide.compiler)
-    implementation(Glide.transformations)
-
     implementation(AndroidX.Paging.common)
     implementation(AndroidX.Paging.runtime)
-    implementation(AndroidX.Paging.rx)
 
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
@@ -32,30 +22,30 @@ dependencies {
     implementation(AndroidX.Ktx.reactiveStreams)
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
+    implementation(AndroidX.Ktx.lifecycle)
+
+    implementation(Dagger.dagger)
+    kapt(Dagger.compiler)
+    kapt(Dagger.androidProcessor)
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
-    implementation(KotlinX.Coroutines.rx)
     implementation(KotlinX.Serialization.dependency)
-
-    implementation(RxJava.rxJava2)
-    implementation(RxJava.rxAndroid)
-    implementation(RxJava.rxKotlin)
-
-    implementation(Kodein.runtime)
-    implementation(Kodein.androidX)
 
     implementation(Timber.core)
     implementation(Gson.dependency)
 
     implementation(Retrofit.runtime)
     implementation(Retrofit.moshi)
-    implementation(Retrofit.rxjava)
+    implementation(Retrofit.gson)
+
+    implementation(ExoPlayer.player)
 
     implementation(OkHttp.core)
     implementation(OkHttp.loggingInterceptor)
 
-    implementation(Moshi.dependency)
+    implementation(Moshi.kotlin)
+    kapt(Moshi.compiler)
 
     testImplementation(AndroidX.Test.core)
     testImplementation(AndroidX.Test.junit)
@@ -67,4 +57,9 @@ dependencies {
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
     testImplementation(RoboElectric.dependency)
+
+    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
+
+    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
+    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
 }

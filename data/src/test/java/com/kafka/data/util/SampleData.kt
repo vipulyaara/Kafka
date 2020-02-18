@@ -1,6 +1,6 @@
 package com.kafka.data.util
 
-import com.kafka.data.data.db.MiddlewareDb
+import com.kafka.data.data.db.KafkaRoomDatabase
 import com.kafka.data.entities.Book
 import java.time.OffsetDateTime
 
@@ -10,7 +10,7 @@ val book = Book(id = book1Id)
 const val book2Id = 2L
 val book2 = Book(id = book2Id)
 
-fun insertShow(db: MiddlewareDb) = db.contentDao().insertBooks()
+fun insertShow(db: KafkaRoomDatabase) = db.contentDao().insertBooks()
 
 fun deleteShow(db: TiviDatabase) = db.showDao().delete(show)
 

@@ -1,21 +1,19 @@
 package com.kafka.data.data.db.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.kafka.data.entities.ItemDetail
-import io.reactivex.Flowable
+import com.kafka.data.entities.ContentDetail
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
  */
 @Dao
-abstract class ItemDetailDao {
+abstract class ItemDetailDao : EntityDao<ContentDetail> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertItemDetail(items: ItemDetail)
+    @Query("select * from ContentDetail where contentId = :contentId")
+    abstract fun itemDetailFlow(contentId: String): Flow<ContentDetail>
 
-    @Query("select * from ItemDetail where itemId = :itemId")
-    abstract fun itemDetailFlowable(itemId: String): Flowable<ItemDetail>
+    @Query("select * from ContentDetail where contentId = :contentId")
+    abstract fun itemDetail(contentId: String): ContentDetail
 }
