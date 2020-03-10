@@ -11,14 +11,7 @@ import kotlinx.coroutines.flow.Flow
  * @author Vipul Kumar; dated 29/11/18.
  */
 @Dao
-abstract class LanguageDao {
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertLanguages(items: List<LanguageModel>)
-
+abstract class LanguageDao : EntityDao<LanguageModel>() {
     @Query("select * from LanguageModel")
     abstract fun languageFlow(): Flow<List<LanguageModel>>
-
-    @Query("select * from LanguageModel")
-    abstract fun languages(): List<LanguageModel>
 }

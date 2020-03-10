@@ -9,16 +9,17 @@ import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.material.surface.Card
+import androidx.ui.material.surface.Surface
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
-import com.kafka.data.entities.ContentDetail
+import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.R
 import com.kafka.ui.alignCenter
 import com.kafka.ui.lineHeight
 
 @Composable
-fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAction) -> Unit) {
+fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -> Unit) {
     Column {
         Card(
             modifier = LayoutSize(196.dp, 258.dp) + LayoutGravity.Center,
@@ -29,7 +30,7 @@ fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAct
         Spacer(modifier = LayoutPadding(top = 20.dp))
 
         Text(
-            text = contentDetail?.title ?: "",
+            text = itemDetail?.title ?: "",
             style = MaterialTheme.typography().h2.alignCenter(),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -37,19 +38,26 @@ fun ContentDetailItem(contentDetail: ContentDetail?, actioner: (ContentDetailAct
         )
         Spacer(modifier = LayoutPadding(2.dp))
         Text(
-            text = "by " + contentDetail?.creator,
+            text = "by " + itemDetail?.creator,
             style = MaterialTheme.typography().h6,
             modifier = LayoutGravity.Center
         )
         Spacer(modifier = LayoutPadding(12.dp))
 
         Clickable(onClick = { actioner(ContentDetailAction.RatingWidgetClick()) }) {
-            RatingWidget()
+            Card(
+                modifier = LayoutGravity.Center,
+                shape = RoundedCornerShape(5.dp),
+                elevation = 1.dp,
+                color = MaterialTheme.colors().surface
+            ) {
+                RatingWidget()
+            }
         }
 
         Spacer(modifier = LayoutPadding(4.dp))
         Text(
-            text = contentDetail?.description?.let { Html.fromHtml(it)?.toString() } ?: "",
+            text = itemDetail?.description?.let { Html.fromHtml(it)?.toString() } ?: "",
             maxLines = 3,
             style = MaterialTheme.typography().body2.lineHeight(1.3).alignCenter(),
             modifier = LayoutPadding(20.dp)

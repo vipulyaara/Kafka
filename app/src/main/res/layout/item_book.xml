@@ -6,7 +6,7 @@
 
         <variable
             name="content"
-            type="com.kafka.data.entities.Content" />
+            type="com.kafka.data.entities.Item" />
 
         <variable
             name="itemClickListener"

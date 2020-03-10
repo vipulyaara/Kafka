@@ -23,7 +23,6 @@ class ContentDetailFragment: BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel: ContentDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
 
     private val navController by lazy { findNavController() }
@@ -32,9 +31,13 @@ class ContentDetailFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-            contentId = it
-            navController.navigate(HomepageFragmentDirections.toPoetDetail(it))
+            navController.navigate(HomepageFragmentDirections.toContentDetail(it))
         })
+
+        ContentDetailFragmentArgs.fromBundle(arguments!!).mvrxArg.let {
+            viewModel.observeContentDetail(it)
+            viewModel.updateContentDetail(it)
+        }
     }
 
     override fun onCreateView(

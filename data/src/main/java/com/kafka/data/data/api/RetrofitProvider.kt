@@ -24,9 +24,7 @@ internal object RetrofitProvider {
             .baseUrl(baseUrl)
             .addConverterFactory(
                 MoshiConverterFactory.create(
-                    Moshi.Builder().add(
-                        SingleToArrayAdapter.INSTANCE
-                    ).build()
+                    Moshi.Builder().add(SingleToArrayAdapter.INSTANCE).build()
                 )
             )
             .client(provideOkHttpClient(context))

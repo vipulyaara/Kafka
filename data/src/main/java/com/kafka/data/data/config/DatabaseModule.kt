@@ -28,8 +28,9 @@ class RoomDatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(context: Context): KafkaRoomDatabase {
-        val builder = Room.databaseBuilder(context, KafkaRoomDatabase::class.java, databaseName)
-            .fallbackToDestructiveMigration()
+        val builder = Room.databaseBuilder(
+            context, KafkaRoomDatabase::class.java, databaseName
+        ).fallbackToDestructiveMigration()
         if (Debug.isDebuggerConnected()) {
             builder.allowMainThreadQueries()
         }
@@ -62,4 +63,7 @@ class DatabaseDaoModule {
 
     @Provides
     fun provideContentEntryDao(db: KafkaRoomDatabase) = db.searchDao()
+
+    @Provides
+    fun provideRecentItemDao(db: KafkaRoomDatabase) = db.recentItemDao()
 }

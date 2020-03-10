@@ -8,6 +8,8 @@ dependencies {
     implementation(Kotlin.stdlib)
     implementation(Jsoup.core)
 
+    implementation(Store.core)
+
     implementation(AndroidX.appCompat)
     implementation(AndroidX.fragment)
     implementation(AndroidX.drawerLayout)
@@ -53,20 +55,10 @@ dependencies {
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Serialization.dependency)
 
-//    implementation(Epoxy.core)
-//    implementation(Epoxy.dataBinding)
-//    kapt(Epoxy.processor)
-//    implementation(Epoxy.paging)
-//    implementation(Epoxy.preloading)
-
     implementation(MvRx.core)
-
     implementation(Lottie.core)
-
     implementation(Timber.core)
-
     implementation(Easeinterpolator.core)
-
     implementation(Coil.core)
 
     implementation(Stetho.core)

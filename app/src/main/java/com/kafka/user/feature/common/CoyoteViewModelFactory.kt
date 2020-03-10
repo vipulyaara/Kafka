@@ -1,4 +1,4 @@
-package com.coyote.android.ui.common
+package com.kafka.user.feature.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

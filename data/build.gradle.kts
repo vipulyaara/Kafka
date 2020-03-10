@@ -24,6 +24,8 @@ dependencies {
     kapt(Dagger.compiler)
     kapt(Dagger.androidProcessor)
 
+    implementation(Store.core)
+
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
     implementation(KotlinX.Serialization.dependency)

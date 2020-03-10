@@ -37,7 +37,7 @@ private fun ContentDetailScreen(
     viewState: ContentDetailViewState,
     actioner: (ContentDetailAction) -> Unit
 ) {
-    if (viewState.isLoading && viewState.contentDetail?.contentId == null) {
+    if (viewState.isLoading && viewState.itemDetail?.itemId == null) {
         Container(modifier = LayoutAlign.Center + LayoutPadding(top = 64.dp)) {
             CircularProgressIndicator()
         }
@@ -55,12 +55,12 @@ private fun ContentDetail(
         VerticalScroller {
             Column {
                 Spacer(LayoutPadding(top = 24.dp))
-                ContentDetailItem(contentDetail = viewState.contentDetail, actioner = actioner)
+                ContentDetailItem(itemDetail = viewState.itemDetail, actioner = actioner)
                 Spacer(LayoutPadding(top = 24.dp))
 
                 ProvideEmphasis(emphasis = EmphasisLevels().disabled) {
                     Text(
-                        text = "More by ${viewState.contentDetail?.creator}",
+                        text = "More by ${viewState.itemDetail?.creator}",
                         style = MaterialTheme.typography().h6,
                         modifier = LayoutPadding(left = 16.dp)
                     )
@@ -69,7 +69,7 @@ private fun ContentDetail(
                 Spacer(modifier = LayoutHeight(16.dp))
                 HorizontalScroller {
                     Row {
-                        viewState.itemsByCreator?.contents?.forEach { content ->
+                        viewState.itemsByCreator?.forEach { content ->
                             ContentItem(content) {
                                 actioner(ContentDetailAction.ContentItemClick(it))
                             }

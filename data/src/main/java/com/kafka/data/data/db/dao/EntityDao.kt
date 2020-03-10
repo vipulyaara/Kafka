@@ -1,24 +1,24 @@
 package com.kafka.data.data.db.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
 import com.kafka.data.model.common.BaseEntity
 
-interface EntityDao<in E : BaseEntity> {
+abstract class EntityDao<in E : BaseEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entity: E): Long
+    abstract suspend fun insert(entity: E): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg entity: E)
+    abstract suspend fun  insertAll(vararg entity: E)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(entities: List<E>)
+    abstract suspend fun  insertAll(entities: List<E>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(entity: E)
+    abstract suspend fun  update(entity: E)
 
     @Delete
-    fun delete(entity: E): Int
+    abstract suspend fun  delete(entity: E): Int
+
+    @Transaction
+    open suspend fun withTransaction(tx: suspend () -> Unit) = tx()
 }

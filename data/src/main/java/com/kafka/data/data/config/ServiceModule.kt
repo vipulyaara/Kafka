@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class ServiceModule {
     @Singleton
     @Provides
-    fun provideRekhtaService(context: Context) = RetrofitProvider
+    fun provideKafkaService(context: Context) = RetrofitProvider
         .provideDefaultRetrofit(context)
         .create(ArchiveService::class.java)
 }

@@ -1,7 +1,7 @@
 package com.kafka.ui.content
 
-import com.kafka.data.entities.ContentDetail
-import com.kafka.data.model.RailItem
+import com.kafka.data.entities.Item
+import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.BaseViewState
 
 /**
@@ -9,9 +9,7 @@ import com.kafka.ui.BaseViewState
  */
 data class ContentDetailViewState(
     val contentId: String = "",
-    val contentDetail: ContentDetail? = null,
-    val itemsByCreator: RailItem? = null,
+    val itemDetail: ItemDetail? = null,
+    val itemsByCreator: List<Item>? = null,
     val isLoading: Boolean = true
-) : BaseViewState {
-    constructor(id: String) : this(contentId = id)
-}
+) : BaseViewState
