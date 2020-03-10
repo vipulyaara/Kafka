@@ -9,7 +9,7 @@ object Kafka {
 
 // Core dependencies
 object Kotlin {
-    const val version = "1.3.61"
+    const val version = "1.3.70"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     const val plugin = "kotlin"
     const val kapt = "kotlin-kapt"
@@ -53,30 +53,11 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.0.0-alpha09"
+    private const val version = "4.1.0-alpha01"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"
     const val multiDex = "com.android.support:multidex:"
-}
-
-object Litho {
-    private const val version = "0.31.0"
-    const val core = "com.facebook.litho:litho-core:0.31.0"
-    const val widget = "com.facebook.litho:litho-widget:0.31.0"
-
-    const val processor = "com.facebook.litho:litho-processor:0.31.0"
-
-    // SoLoader
-    const val soloader = "com.facebook.soloader:soloader:0.5.1"
-
-    object Sections {
-        const val core = "com.facebook.litho:litho-sections-core:0.31.0"
-        const val widget = "com.facebook.litho:litho-sections-widget:0.31.0"
-        const val annotations = "com.facebook.litho:litho-sections-annotations:0.31.0"
-
-        const val processor = "com.facebook.litho:litho-sections-processor:0.31.0"
-    }
 }
 
 object AndroidX {
@@ -172,14 +153,6 @@ object AndroidX {
     }
 }
 
-object Hunter {
-    private const val debugVersion = "0.9.6"
-    const val transformVersion = "0.9.3"
-    const val debugPlugin = "hunter-debug"
-    const val transformPlugin = "hunter-transform"
-    const val debug = "com.quinn.hunter:hunter-debug-library:$debugVersion"
-}
-
 object PlayServices {
     private const val version = "16.1.0"
     const val base = "com.google.android.gms:play-services-base:$version"
@@ -188,6 +161,11 @@ object PlayServices {
 
     const val pluginVersion = "4.2.0"
     const val plugin = "com.google.gms:google-services:4.0.1:"
+}
+
+object Store {
+    private const val version = "4.0.0-alpha03"
+    const val core = "com.dropbox.mobile.store:store4:$version"
 }
 
 object Firebase {
@@ -199,18 +177,13 @@ object Firebase {
     const val perfPluginVersion = "1.3.1"
 }
 
-object Mapbox {
-    private const val version = "8.6.0"
-    const val core = "com.mapbox.mapboxsdk:mapbox-android-sdk:$version"
-}
-
 object ExoPlayer {
     private const val version = "2.9.6"
     const val player = "com.google.android.exoplayer:exoplayer:$version"
 }
 
 object Retrofit {
-    private const val version = "2.3.0"
+    private const val version = "2.7.1"
     const val runtime = "com.squareup.retrofit2:retrofit:$version"
     const val gson = "com.squareup.retrofit2:converter-gson:$version"
     const val moshi = "com.squareup.retrofit2:converter-moshi:$version"
@@ -218,34 +191,14 @@ object Retrofit {
 }
 
 object OkHttp {
-    private const val version = "3.6.0"
+    private const val version = "4.3.1"
     const val core = "com.squareup.okhttp3:okhttp:$version"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
-}
-
-object Epoxy {
-    private const val version = "3.7.0"
-    const val core = "com.airbnb.android:epoxy:$version"
-    const val processor = "com.airbnb.android:epoxy-processor:$version"
-    const val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
-    const val paging = "com.airbnb.android:epoxy-paging:$version"
-    const val preloading = "com.airbnb.android:epoxy-glide-preloading:$version"
 }
 
 object MvRx {
     private const val version = "1.3.0"
     const val core = "com.airbnb.android:mvrx:$version"
-}
-
-object Hugo {
-    const val version = "1.2.1"
-    const val plugin = "com.jakewharton.hugo"
-}
-
-// Modules dependencies
-object Forge {
-    private const val version = "0.3.0"
-    const val dependency = "com.github.kittinunf.forge:forge:$version"
 }
 
 object Gson {
@@ -286,21 +239,12 @@ object Logger {
     const val core = "com.orhanobut:logger:2.2.0"
 }
 
-object SmartTabLayout {
-    const val core = "com.ogaclejapan.smarttablayout:library:2.0.0@aar"
-}
-
 object Lottie {
     const val core = "com.airbnb.android:lottie:2.8.0"
 }
 
 object Easeinterpolator {
     const val core = "com.daasuu:EasingInterpolator:1.0.0"
-}
-
-object Jackson {
-    private const val version = "2.9.7"
-    const val dependency = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
 }
 
 object KotlinX {
@@ -348,12 +292,6 @@ object Moshi {
     const val dependency = "com.squareup.moshi:moshi:$version"
     const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
     const val compiler = "com.squareup.moshi:moshi-kotlin-codegen:$version"
-}
-
-object Reactor {
-    private const val version = "3.2.2.RELEASE"
-    const val core = "io.projectreactor:reactor-core:$version"
-    const val test = "io.projectreactor:reactor-test:$version"
 }
 
 object RxJava {

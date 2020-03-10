@@ -7,3 +7,7 @@ interface Mapper<F, T> {
 interface IndexedMapper<F, T> {
     fun map(index: Int, from: F): T
 }
+
+fun <F, T> Mapper<F, T>.toLambda(): suspend (F) -> T {
+    return { map(it) }
+}

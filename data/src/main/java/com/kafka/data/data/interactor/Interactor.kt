@@ -1,17 +1,12 @@
 package com.kafka.data.data.interactor
 
-import androidx.paging.PagedList
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
 import java.util.concurrent.TimeUnit
 
 abstract class Interactor<in P> {
@@ -53,15 +48,8 @@ interface ObservableInteractor<T> {
     fun observe(): Flow<T>
 }
 
-abstract class PagingInteractor<P : PagingInteractor.Parameters<T>, T> :
-    SubjectInteractor<P, PagedList<T>>() {
-    interface Parameters<T> {
-        val pagingConfig: PagedList.Config
-        val boundaryCallback: PagedList.BoundaryCallback<T>?
-    }
-}
-
-abstract class SuspendingWorkInteractor<P : Any, T : Any> : ObservableInteractor<T> {
+abstract class SuspendingWorkInteractor<P : Any, T : Any> :
+    ObservableInteractor<T> {
     private val channel = ConflatedBroadcastChannel<T>()
 
     suspend operator fun invoke(params: P) = channel.send(doWork(params))
@@ -80,7 +68,9 @@ abstract class SubjectInteractor<P : Any, T> : ObservableInteractor<T> {
 
     override fun observe(): Flow<T> = channel.asFlow()
         .distinctUntilChanged()
-        .flatMapLatest { createObservable(it) }
+        .flatMapLatest {
+            createObservable(it)
+        }
 }
 
 operator fun Interactor<Unit>.invoke() = invoke(Unit)

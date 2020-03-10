@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kafka.user.R
-import com.kafka.user.feature.common.BaseActivityMvRxView
+import com.kafka.user.feature.common.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivityMvRxView() {
+class MainActivity : BaseActivity() {
 
     private lateinit var navController: NavController
     private var currentNavId = NAV_ID_NONE
@@ -35,7 +35,7 @@ class MainActivity : BaseActivityMvRxView() {
 //        }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         currentNavId = checkedItem
     }
@@ -45,9 +45,6 @@ class MainActivity : BaseActivityMvRxView() {
             return // user tapped the current item
         }
         navController.navigate(navId)
-    }
-
-    override fun invalidate() {
     }
 
     companion object {

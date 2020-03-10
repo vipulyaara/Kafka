@@ -2,8 +2,8 @@
 import com.android.build.gradle.BaseExtension
 
 buildscript {
-    extra["kotlin_version"] = "1.3.61"
-    extra["compose_version"] = "0.1.0-SNAPSHOT"
+    extra["kotlin_version"] = "1.3.70"
+    extra["compose_version"] = "0.1.0-dev06"
     repositories {
         google()
         mavenCentral()
@@ -27,7 +27,6 @@ allprojects {
         mavenCentral()
         jcenter()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-        maven(url = "https://ci.android.com/builds/submitted/6153956/androidx_snapshot/latest/ui/repository/")
         maven(url = "https://plugins.gradle.org/m2/")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://jitpack.io")
@@ -49,7 +48,7 @@ allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 }
 
-val libraryModules = listOf("data", "player", "ui")
+val libraryModules = listOf("data", "player", "ui", "reader")
 val applicationModules = listOf("app")
 
 subprojects {
@@ -100,8 +99,8 @@ subprojects {
             }
 
             compileOptions {
-                sourceCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
-                targetCompatibility = org.gradle.api.JavaVersion.VERSION_1_8
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
             }
 
             buildTypes {
@@ -115,15 +114,13 @@ subprojects {
                 isAbortOnError = false
             }
 
-            testOptions {
-                unitTests.isReturnDefaultValues = true
-            }
-
+//            testOptions {
+//                unitTests.isReturnDefaultValues = true
+//            }
 
             packagingOptions {
                 exclude("META-INF/LICENSE.txt")
                 exclude("META-INF/NOTICE.txt")
-                exclude("META-INF/rxkotlin.properties")
             }
         }
     }

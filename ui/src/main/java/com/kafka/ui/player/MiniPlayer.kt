@@ -1,6 +1,7 @@
 package com.kafka.ui.player
 
 import android.view.ViewGroup
+import androidx.compose.Composable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.kafka.ui.MaterialThemeFromAndroidTheme
@@ -18,5 +19,10 @@ fun ViewGroup.composeHomepageScreen(
     if (viewState != null) {
         MaterialThemeFromAndroidTheme(context) {
         }
+    }
+
+    @Composable
+    fun MiniPlayer() {
+
     }
 }

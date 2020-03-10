@@ -6,7 +6,6 @@ sealed class Result<out R> {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
             is ErrorResult -> "Error[exception=$exception]"
-            Loading -> "Loading"
         }
     }
 }
@@ -17,9 +16,12 @@ data class Success<out T>(val data: T, val responseModified: Boolean = true) : R
 
 data class ErrorResult(val exception: Throwable?) : Result<Nothing>()
 
-object Loading : Result<Nothing>()
-
-fun throwError(message: () -> String) {
-    throw RuntimeException(message())
+fun <T> Result<T>.dataOrThrowError(block: (ErrorResult) -> Nothing = { throwError(it.exception) }): T {
+    return when (this) {
+        is Success -> this.data
+        is ErrorResult -> block(this)
+    }
 }
 
+private fun throwError(throwable: Throwable?): Nothing =
+    throw throwable ?: Throwable("Something went wrong")

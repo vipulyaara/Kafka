@@ -38,6 +38,7 @@
     <style name="Theme.Coyote" parent="Base.Theme.Coyote">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/text_heading</item>
+        <item name="colorSurface">@color/background</item>
 
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

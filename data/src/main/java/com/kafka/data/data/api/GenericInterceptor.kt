@@ -9,13 +9,13 @@ import okhttp3.Response
 internal class GenericInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        val url = request.url().newBuilder()
+        val url = request.url.newBuilder()
             .addQueryParameter("output", "json")
             .addQueryParameter("rows", "40")
             .addQueryParameter("page", "1")
             .addQueryParameter("sort", "-downloads")
             .build()
-        request = request.newBuilder().url(url).method(request.method(), request.body()).build()
+        request = request.newBuilder().url(url).method(request.method, request.body).build()
         return chain.proceed(request)
     }
 }

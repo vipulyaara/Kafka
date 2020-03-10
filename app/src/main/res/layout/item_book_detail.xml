@@ -7,7 +7,7 @@
 
         <variable
             name="content"
-            type="com.kafka.data.entities.ContentDetail" />
+            type="com.kafka.data.entities.ItemDetail" />
 
         <variable
             name="clickListener"
@@ -54,27 +54,6 @@
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_height="258dp"/>
-
-        <com.kafka.user.ui.widget.KafkaCardView
-            android:id="@+id/coverCard"
-            android:layout_width="196dp"
-            android:layout_height="258dp"
-            android:layout_margin="@dimen/spacing_xlarge"
-            android:onClickListener="@{clickListener}"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/ivImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@{resource}"
-                tools:ignore="ContentDescription" />
-        </com.kafka.user.ui.widget.KafkaCardView>
 
         <TextView
             android:id="@+id/tvBookName"

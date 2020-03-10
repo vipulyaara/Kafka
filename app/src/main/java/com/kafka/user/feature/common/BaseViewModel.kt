@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
-//TODO: Remove this class and liveData logic once Compose Reactive Models are stable
 open class BaseViewModel<ViewState : BaseViewState>(private var s: ViewState) : ViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -29,19 +28,14 @@ open class BaseViewModel<ViewState : BaseViewState>(private var s: ViewState) : 
     protected suspend inline fun <T> Flow<T>.execute(
         crossinline stateReducer: ViewState.(Success<T>) -> ViewState
     ) {
-        return map { Success(it) as Result<T> }
+        return map { Success(it) }
             .catch {
                 if (BuildConfig.DEBUG) {
                     e(it) { "Exception during observe" }
                     throw it
                 }
-                emit(ErrorResult(it))
+                // TODO: handle error
             }
-            .collect {
-                if (it is Success) { setState { stateReducer(it) }
-                } else {
-                    throw RuntimeException("Exceptions")
-                }
-            }
+            .collect { setState { stateReducer(it) } }
     }
 }

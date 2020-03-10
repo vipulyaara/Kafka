@@ -9,13 +9,6 @@ import java.util.*
  * @author Vipul Kumar; dated 22/01/19.
  */
 
-/**
- * "let"s when the genre is non-null and non-empty
- * */
-fun <T : Collection<*>> T?.letEmpty(f: (it: T) -> Unit) {
-    if (this != null && this.isNotEmpty()) f(this)
-}
-
 fun getRandomCoverResource(): Int {
     val covers = arrayOf(
         R.drawable.img_cover_1,
@@ -69,16 +62,4 @@ fun getRandomAuthorResource(): Int {
     )
 
     return covers[Random().nextInt(covers.size - 1)]
-}
-
-fun illegalArgumentException(msg: String): Nothing = throw RuntimeException(msg)
-
-inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
-    block()
-    executePendingBindings()
-}
-
-fun disableStrictMode() {
-    val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-    StrictMode.setThreadPolicy(policy)
 }

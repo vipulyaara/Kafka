@@ -31,8 +31,7 @@ class HomepageFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-            contentId = it
-            navController.navigate(HomepageFragmentDirections.toPoetDetail(it))
+            navController.navigate(HomepageFragmentDirections.toContentDetail(it))
         })
 
         viewModel.refresh()

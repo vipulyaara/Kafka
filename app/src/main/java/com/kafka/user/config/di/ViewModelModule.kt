@@ -1,7 +1,7 @@
 package com.kafka.user.config.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.coyote.android.ui.common.CoyoteViewModelFactory
+import com.kafka.user.feature.common.CoyoteViewModelFactory
 import dagger.Binds
 import dagger.Module
 

@@ -9,11 +9,12 @@ import java.lang.reflect.Type
 import java.util.Collections
 import com.squareup.moshi.FromJson
 
-
-
+/**
+ * Moshi adapter that enables both single and collection serialization.
+ * */
 class SingleToArrayAdapter(
-    val delegateAdapter: JsonAdapter<List<Any>>,
-    val elementAdapter: JsonAdapter<Any>
+    private val delegateAdapter: JsonAdapter<List<Any>>,
+    private val elementAdapter: JsonAdapter<Any>
 ) : JsonAdapter<Any>() {
 
     companion object {

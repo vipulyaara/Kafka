@@ -1,8 +1,8 @@
 package com.kafka.data.util
 
 import com.kafka.data.data.db.RoomTransactionRunner
-import com.kafka.data.feature.content.BookDataSource
-import com.kafka.data.feature.content.BookRepository
+import com.kafka.data.content.BookDataSource
+import com.kafka.data.content.BookRepository
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 

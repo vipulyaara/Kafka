@@ -7,11 +7,10 @@
 
     <fragment
         android:id="@+id/navigation_homepage"
-        android:name="com.kafka.user.feature.home.HomepageFragment"
-        tools:layout="@layout/fragment_home">
+        android:name="com.kafka.user.feature.home.HomepageFragment">
 
     <action
-        android:id="@+id/to_poet_detail"
+        android:id="@+id/to_content_detail"
         app:destination="@id/navigation_content_detail" />
     </fragment>
 
