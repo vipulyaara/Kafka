@@ -1,4 +1,4 @@
-package com.kafka.user.feature.home
+package com.kafka.user.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,10 +9,11 @@ import com.kafka.data.content.UpdateContent
 import com.kafka.data.model.Event
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
+import com.kafka.data.query.booksByGenre
 import com.kafka.ui.home.ContentItemClick
 import com.kafka.ui.home.HomepageAction
 import com.kafka.ui.home.HomepageViewState
-import com.kafka.user.feature.common.BaseViewModel
+import com.kafka.user.common.BaseViewModel
 import com.kafka.user.ui.ObservableLoadingCounter
 import com.kafka.user.ui.collectFrom
 import kotlinx.coroutines.channels.Channel
@@ -32,7 +33,11 @@ class HomepageViewModel @Inject constructor(
     private val updateContent: UpdateContent
 ) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
 
-    private val query = ArchiveQuery().booksByAuthor("Kafka")
+    private val queries = arrayListOf(
+        ArchiveQuery().booksByAuthor("Kafka"),
+        ArchiveQuery().booksByAuthor("Mark Twain"),
+        ArchiveQuery().booksByGenre("Comedy")
+    )
 
     private val pendingActions = Channel<HomepageAction>(Channel.BUFFERED)
 
@@ -54,13 +59,16 @@ class HomepageViewModel @Inject constructor(
                 is ContentItemClick -> _navigateToContentDetailAction.postValue(Event(action.contentId))
             }
         }
-        viewModelScope.launchObserve(observeContent) { flow ->
-            flow.distinctUntilChanged().execute {
-                copy(items = it.data)
-            }
-        }
 
-        observeContent(ObserveContent.Params(query))
+        queries.map { ObserveContent.Params(it) }.forEach { params ->
+            viewModelScope.launchObserve(observeContent) { flow ->
+                flow.distinctUntilChanged().execute {
+                    copy(items = it.data)
+                }
+            }
+
+            observeContent(params)
+        }
     }
 
     fun submitAction(action: HomepageAction) {
@@ -68,10 +76,9 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun refresh() {
-        updateContent(UpdateContent.Params(query)).also {
-            viewModelScope.launch {
-                loadingState.collectFrom(it)
-            }
+        queries.map { UpdateContent.Params(it) }.forEach {
+            updateContent(it)
+                .also { viewModelScope.launch { loadingState.collectFrom(it) } }
         }
     }
 }

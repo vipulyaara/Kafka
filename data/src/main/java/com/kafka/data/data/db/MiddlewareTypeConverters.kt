@@ -2,34 +2,28 @@ package com.kafka.data.data.db
 
 import androidx.room.TypeConverter
 import com.kafka.data.model.item.File
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.UnstableDefault
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import java.lang.reflect.Type
 
 /**
  * @author Vipul Kumar; dated 21/01/19.
  */
 class MiddlewareTypeConverters {
-    @UnstableDefault
     @TypeConverter
-    @ImplicitReflectionSerializer fun stringToList(input: String?): List<String>? {
-        return if (input == null) null else Json.parse(
-            String.serializer().list,
-            input
-        )
+    fun stringToList(input: String?): List<String>? {
+        return if (input == null) null else Moshi.Builder().build().adapter<List<String>>(
+            Types.newParameterizedType(List::class.java, String::class.java)
+        ).fromJson(input)
     }
 
-    @UnstableDefault
     @TypeConverter
-    @ImplicitReflectionSerializer fun listToString(input: List<String>?): String? {
-        return if (input == null) null else Json.stringify(
-            String.serializer().list,
-            input
-        )
+    fun listToString(input: List<String>?): String? {
+        return if (input == null) null else Moshi.Builder().build().adapter<List<String>>(
+            Types.newParameterizedType(List::class.java, String::class.java)
+        ).toJson(input)
     }
 
     @JvmName("stringToFile")

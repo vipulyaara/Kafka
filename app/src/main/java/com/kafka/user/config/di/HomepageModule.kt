@@ -1,8 +1,8 @@
 package com.kafka.user.config.di
 
 import androidx.lifecycle.ViewModel
-import com.kafka.user.feature.home.HomepageFragment
-import com.kafka.user.feature.home.HomepageViewModel
+import com.kafka.user.home.HomepageFragment
+import com.kafka.user.home.HomepageViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

@@ -4,7 +4,7 @@ import android.text.Html
 import androidx.compose.Composable
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.DrawImage
+import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.*
@@ -17,6 +17,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.R
 import com.kafka.ui.alignCenter
 import com.kafka.ui.lineHeight
+import com.kafka.ui.widget.ButtonRegular
 
 @Composable
 fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -> Unit) {
@@ -25,7 +26,7 @@ fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -
             modifier = LayoutSize(196.dp, 258.dp) + LayoutGravity.Center,
             shape = RoundedCornerShape(5.dp),
             elevation = 6.dp
-        ) { DrawImage(image = imageResource(id = R.drawable.img_author_camus_latranger)) }
+        ) { SimpleImage(image = imageResource(id = R.drawable.img_author_camus_latranger)) }
 
         Spacer(modifier = LayoutPadding(top = 20.dp))
 
@@ -65,28 +66,24 @@ fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -
 
         Row(modifier = LayoutPadding(20.dp)) {
             ProvideEmphasis(emphasis = EmphasisLevels().disabled) {
-                Button(
+                ButtonRegular(
                     modifier = LayoutFlexible(0.49f),
                     text = "DOWNLOAD",
-                    style = ContainedButtonStyle(
-                        backgroundColor = MaterialTheme.colors().surface,
-                        shape = RoundedCornerShape(2.dp),
-                        elevation = 16.dp
-                    ).copy(paddings = EdgeInsets(16.dp))
+                    backgroundColor = MaterialTheme.colors().surface,
+                    shape = RoundedCornerShape(2.dp),
+                    elevation = 16.dp
                 )
             }
 
             Container(modifier = LayoutFlexible(0.04f)) {}
 
-            Button(
+            ButtonRegular(
                 modifier = LayoutFlexible(0.49f),
                 text = "LISTEN",
-                style = ContainedButtonStyle(
-                    backgroundColor = MaterialTheme.colors().surface,
-                    elevation = 24.dp,
-                    shape = RoundedCornerShape(2.dp),
-                    contentColor = MaterialTheme.colors().secondary
-                ).copy(paddings = EdgeInsets(16.dp)),
+                backgroundColor = MaterialTheme.colors().surface,
+                elevation = 24.dp,
+                shape = RoundedCornerShape(2.dp),
+                contentColor = MaterialTheme.colors().secondary,
                 onClick = {}
             )
         }

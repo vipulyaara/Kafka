@@ -13,7 +13,7 @@ inline fun ifPlanted(action: () -> Unit) {
 }
 
 /** Delegates the provided message to [Timber.e] if any trees are planted. */
-inline fun e(throwable: Throwable? = null, message: () -> String) = ifPlanted {
+inline fun error(throwable: Throwable? = null, message: () -> String) = ifPlanted {
     throwable?.let {
         Timber.e(it, message())
     } ?: run {
@@ -22,7 +22,7 @@ inline fun e(throwable: Throwable? = null, message: () -> String) = ifPlanted {
 }
 
 /** Delegates the provided message to [Timber.w] if any trees are planted. */
-inline fun w(throwable: Throwable? = null, message: () -> String) = ifPlanted {
+inline fun warning(throwable: Throwable? = null, message: () -> String) = ifPlanted {
     throwable?.let {
         Timber.w(it, message())
     } ?: run {
@@ -31,7 +31,7 @@ inline fun w(throwable: Throwable? = null, message: () -> String) = ifPlanted {
 }
 
 /** Delegates the provided message to [Timber.i] if any trees are planted. */
-inline fun i(throwable: Throwable? = null, message: () -> String) = ifPlanted {
+inline fun info(throwable: Throwable? = null, message: () -> String) = ifPlanted {
     throwable?.let {
         Timber.i(it, message())
     } ?: run {
@@ -40,7 +40,7 @@ inline fun i(throwable: Throwable? = null, message: () -> String) = ifPlanted {
 }
 
 /** Delegates the provided message to [Timber.d] if any trees are planted. */
-inline fun d(throwable: Throwable? = null, message: () -> String) = ifPlanted {
+inline fun debug(throwable: Throwable? = null, message: () -> String) = ifPlanted {
     throwable?.let {
         Timber.d(it, message())
     } ?: run {
@@ -49,7 +49,7 @@ inline fun d(throwable: Throwable? = null, message: () -> String) = ifPlanted {
 }
 
 /** Delegates the provided message to [Timber.v] if any trees are planted. */
-inline fun v(throwable: Throwable? = null, message: () -> String) = ifPlanted {
+inline fun verbose(throwable: Throwable? = null, message: () -> String) = ifPlanted {
     throwable?.let {
         Timber.v(it, message())
     } ?: run {

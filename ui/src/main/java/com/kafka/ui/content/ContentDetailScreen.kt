@@ -62,7 +62,7 @@ private fun ContentDetail(
                     Text(
                         text = "More by ${viewState.itemDetail?.creator}",
                         style = MaterialTheme.typography().h6,
-                        modifier = LayoutPadding(left = 16.dp)
+                        modifier = LayoutPadding(start = 16.dp)
                     )
                 }
 

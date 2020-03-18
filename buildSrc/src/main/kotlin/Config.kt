@@ -7,7 +7,6 @@ object Kafka {
     const val minSdkVersion = 22
 }
 
-// Core dependencies
 object Kotlin {
     const val version = "1.3.70"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
@@ -15,6 +14,21 @@ object Kotlin {
     const val kapt = "kotlin-kapt"
     const val androidPlugin = "kotlin-android"
     const val androidExtensionsPlugin = "kotlin-android-extensions"
+}
+
+object KotlinX {
+    object Coroutines {
+        private const val version = "1.3.4"
+        val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
+        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+    }
+
+    object Serialization {
+        private const val version = "0.11.0"
+        const val dependency = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
+        const val plugin = "kotlinx-serialization"
+    }
 }
 
 object Coil {
@@ -245,21 +259,6 @@ object Lottie {
 
 object Easeinterpolator {
     const val core = "com.daasuu:EasingInterpolator:1.0.0"
-}
-
-object KotlinX {
-    object Coroutines {
-        private const val version = "1.3.0-RC2"
-        val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
-        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-        val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-    }
-
-    object Serialization {
-        private const val version = "0.11.0"
-        const val dependency = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
-        const val plugin = "kotlinx-serialization"
-    }
 }
 
 object Testing {

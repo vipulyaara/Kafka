@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_homepage"
-        android:name="com.kafka.user.feature.home.HomepageFragment">
+        android:name="com.kafka.user.home.HomepageFragment">
 
     <action
         android:id="@+id/to_content_detail"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/navigation_content_detail"
-        android:name="com.kafka.user.feature.detail.ContentDetailFragment">
+        android:name="com.kafka.user.detail.ContentDetailFragment">
         <argument
             android:name="mvrx:arg"
             app:argType="string" />

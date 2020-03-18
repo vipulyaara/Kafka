@@ -1,8 +1,8 @@
 package com.kafka.user.config.di
 
 import androidx.lifecycle.ViewModel
-import com.kafka.user.feature.detail.ContentDetailFragment
-import com.kafka.user.feature.detail.ContentDetailViewModel
+import com.kafka.user.detail.ContentDetailFragment
+import com.kafka.user.detail.ContentDetailViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
