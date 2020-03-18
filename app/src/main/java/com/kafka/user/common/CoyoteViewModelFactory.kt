@@ -1,4 +1,4 @@
-package com.kafka.user.feature.common
+package com.kafka.user.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

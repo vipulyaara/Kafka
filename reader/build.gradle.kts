@@ -51,7 +51,6 @@ dependencies {
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
-    implementation(KotlinX.Serialization.dependency)
 
     implementation(MvRx.core)
 

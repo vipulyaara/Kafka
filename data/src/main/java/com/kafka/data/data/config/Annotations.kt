@@ -21,3 +21,14 @@ annotation class ApplicationId
 @Qualifier
 @MustBeDocumented
 annotation class ProcessLifetime
+
+@Qualifier
+annotation class ApplicationContext
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Initializers
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IsLowRamDevice

@@ -1,4 +1,4 @@
-package com.kafka.user.feature.notification
+package com.kafka.user.notification
 
 //package com.kafka.user.feature.notification
 //

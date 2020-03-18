@@ -1,14 +1,16 @@
-package com.kafka.user.feature.common
+package com.kafka.user.common
 
 import android.content.Context
-import androidx.fragment.app.Fragment
+import android.os.Bundle
+import androidx.lifecycle.Observer
+import com.airbnb.mvrx.BaseMvRxFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-abstract class BaseFragment : Fragment(), HasAndroidInjector {
+abstract class BaseMvFragment : BaseMvRxFragment(), HasAndroidInjector {
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 

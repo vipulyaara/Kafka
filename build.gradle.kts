@@ -62,7 +62,6 @@ subprojects {
             apply {
                 plugin(Android.libPlugin)
                 plugin(Kotlin.androidPlugin)
-                plugin(KotlinX.Serialization.plugin)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin(Kotlin.kapt)
             }
@@ -73,7 +72,6 @@ subprojects {
                 plugin(Android.appPlugin)
                 plugin(Kotlin.androidPlugin)
                 plugin(Kotlin.kapt)
-                plugin(KotlinX.Serialization.plugin)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin("androidx.navigation.safeargs.kotlin")
             }

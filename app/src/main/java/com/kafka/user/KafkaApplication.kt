@@ -1,8 +1,8 @@
 package com.kafka.user
 
-import com.kafka.data.extensions.d
+import com.kafka.data.data.config.Initializers
+import com.kafka.data.extensions.debug
 import com.kafka.user.config.di.DaggerAppComponent
-import com.kafka.user.config.initializers.AppInitializers
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject
@@ -10,15 +10,13 @@ import javax.inject.Inject
 /**
  * @author Vipul Kumar; dated 21/12/18.
  */
+private typealias InitializerFunction = () -> @JvmSuppressWildcards Unit
+
 class KafkaApplication : DaggerApplication() {
 
     @Inject
-    lateinit var initializers: AppInitializers
-
-    override fun onCreate() {
-        super.onCreate()
-
-        initializers.init(this)
+    internal fun init(@Initializers initializers: Set<@JvmSuppressWildcards InitializerFunction>) {
+        initializers.forEach { it() }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
@@ -34,7 +32,7 @@ class KafkaApplication : DaggerApplication() {
             TRIM_MEMORY_BACKGROUND,
             TRIM_MEMORY_UI_HIDDEN,
             TRIM_MEMORY_COMPLETE,
-            TRIM_MEMORY_RUNNING_CRITICAL -> d { "onTrimMemory $level" }
+            TRIM_MEMORY_RUNNING_CRITICAL -> debug { "onTrimMemory $level" }
         }
     }
 }

@@ -3,7 +3,7 @@ package com.kafka.player.helper
 import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.kafka.data.extensions.d
+import com.kafka.data.extensions.debug
 import java.util.*
 
 class TrackSelectionHelper(
@@ -54,7 +54,7 @@ class TrackSelectionHelper(
             val mostSuitable = getMostSuitableTrackBitrate(bitrates[i])
             val trackIndex = getSuitableTrackIndex(mostSuitable)
             trackIndexes[i] = trackIndex
-            d { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable" }
+            debug { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable" }
         }
         setOverride(0, false, *trackIndexes)
     }
@@ -69,9 +69,9 @@ class TrackSelectionHelper(
             val trackIndex = getSuitableTrackIndex(mostSuitable)
             selectedFormat = availableFormats[trackIndex]
             setOverride(groupIndex, bitRateMax == 0, trackIndex)
-            d { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable and max bitRate = $bitRateMax" }
+            debug { "set track Index  for exo player := $trackIndex, mostSuitable selected = $mostSuitable and max bitRate = $bitRateMax" }
         } else {
-            d { "multiple bit rates not found." }
+            debug { "multiple bit rates not found." }
         }
     }
 
@@ -89,7 +89,7 @@ class TrackSelectionHelper(
     private fun getMostSuitableTrackBitrate(selectedBitrate: Int): Int {
         var mostSuitableBitrate = 0
         if (availableFormats.size == 0) {
-            d { "bitrate not found." }
+            debug { "bitrate not found." }
             return mostSuitableBitrate
         }
         val min = availableFormats[0].bitrate

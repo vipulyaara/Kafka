@@ -3,7 +3,6 @@ package com.kafka.ui.home
 import androidx.compose.Composable
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.DrawImage
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
@@ -14,13 +13,14 @@ import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.ui.LoadAndShowImage
 import com.kafka.ui.alignCenter
+import com.kafka.ui.graphics.DrawImage
 
 @Composable
 fun ContentItem(content: Item, onItemClick: (String) -> Unit) {
     Clickable(onClick = {
         onItemClick(content.contentId)
     }) {
-        Column(modifier = LayoutPadding(left = 12.dp)) {
+        Column(modifier = LayoutPadding(start = 12.dp)) {
             Card(
                 modifier = LayoutSize(164.dp, 164.dp),
                 shape = RectangleShape,
