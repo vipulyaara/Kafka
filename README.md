@@ -22,11 +22,8 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 
 * [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (throughout the data layer; for thread switching)
 * [Livedata](https://developer.android.com/topic/libraries/architecture/livedata) (between ViewModels and Fragments)
-* [RxJava2](https://github.com/ReactiveX/RxJava) (enabling reactiveness on data layer)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * [Paging Library](https://developer.android.com/topic/libraries/architecture/paging/) (for pagination and integration with room)
-* [Epoxy](https://github.com/airbnb/epoxy) - Epoxy is an Android library for building complex screens in a RecyclerView.
-* [Kodein](https://kodein.org) (KOtlin DEpendency INjection)
 * Retrofit2
 * [Klint](https://github.com/shyiko/ktlint) (code formatter for Kotlin)
 * [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
