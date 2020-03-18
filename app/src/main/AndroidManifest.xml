@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coyote"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.kafka.user.feature.MainActivity">
+        <activity android:name="com.kafka.user.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

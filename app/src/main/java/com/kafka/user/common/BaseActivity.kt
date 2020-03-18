@@ -1,4 +1,4 @@
-package com.kafka.user.feature.common
+package com.kafka.user.common
 
 import android.annotation.SuppressLint
 import android.app.Activity

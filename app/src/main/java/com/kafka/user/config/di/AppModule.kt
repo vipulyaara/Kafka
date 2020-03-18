@@ -1,23 +1,31 @@
 package com.kafka.user.config.di
 
+import android.app.ActivityManager
+import android.app.Application
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import androidx.core.app.ActivityManagerCompat
+import androidx.core.content.getSystemService
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.kafka.data.data.config.ApplicationId
-import com.kafka.data.data.config.ProcessLifetime
+import com.kafka.data.data.config.*
 import com.kafka.user.KafkaApplication
-import com.kafka.user.config.initializers.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
+import dagger.multibindings.Multibinds
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * DI module that provides objects which will live during the application lifecycle.
  */
 
-@Module(includes = [AppModuleBinds::class])
+@Module(includes = [InitializersModule::class, AppModuleBinds::class])
 class AppModule {
 
     @Provides
@@ -36,24 +44,15 @@ class AppModule {
 
 @Module
 abstract class AppModuleBinds {
+    @Binds
+    @ApplicationContext
+    @Singleton
+    abstract fun provideApplicationContext(application: KafkaApplication): Context
 
     @Binds
-    @IntoSet
-    abstract fun provideEpoxyInitializer(bind: EpoxyInitializer): AppInitializer
+    abstract fun provideApplication(application: KafkaApplication): Application
 
-    @Binds
-    @IntoSet
-    abstract fun provideThemeInitializer(bind: ThemeInitializer): AppInitializer
-
-    @Binds
-    @IntoSet
-    abstract fun provideLoggingInitializer(bind: LoggingInitializer): AppInitializer
-
-    @Binds
-    @IntoSet
-    abstract fun provideStethoInitializer(bind: StethoInitializer): AppInitializer
-
-    @Binds
-    @IntoSet
-    abstract fun provideTimberInitializer(bind: TimberInitializer): AppInitializer
+    @Initializers
+    @Multibinds
+    abstract fun initializers(): Set<() -> Unit>
 }

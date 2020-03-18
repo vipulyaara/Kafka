@@ -1,4 +1,4 @@
-package com.kafka.user.feature.home
+package com.kafka.user.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,21 +9,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kafka.data.model.EventObserver
-import com.kafka.ui.home.composeHomepageScreen
-import com.kafka.user.feature.common.BaseFragment
-import com.kafka.user.feature.detail.contentId
+import com.kafka.ui.content.composeContentDetailScreen
+import com.kafka.user.common.BaseFragment
+import com.kafka.user.home.HomepageFragmentDirections
 import javax.inject.Inject
 
 /**
- * @author Vipul Kumar; dated 02/02/19.
+ * @author Vipul Kumar; dated 27/12/18.
+ *
+ * Fragment to host detail page.
  */
-
-class HomepageFragment : BaseFragment() {
+class ContentDetailFragment: BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val viewModel: ContentDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
 
     private val navController by lazy { findNavController() }
 
@@ -34,7 +34,12 @@ class HomepageFragment : BaseFragment() {
             navController.navigate(HomepageFragmentDirections.toContentDetail(it))
         })
 
-        viewModel.refresh()
+        ContentDetailFragmentArgs.fromBundle(
+            arguments!!
+        ).mvrxArg.let {
+            viewModel.observeContentDetail(it)
+            viewModel.updateContentDetail(it)
+        }
     }
 
     override fun onCreateView(
@@ -48,7 +53,7 @@ class HomepageFragment : BaseFragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-            composeHomepageScreen(
+            composeContentDetailScreen(
                 viewLifecycleOwner,
                 viewModel.viewState,
                 viewModel::submitAction

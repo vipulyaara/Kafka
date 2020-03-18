@@ -1,6 +1,6 @@
 package com.kafka.user.config.di
 
-import com.kafka.user.feature.MainActivity
+import com.kafka.user.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

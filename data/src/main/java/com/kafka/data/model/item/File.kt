@@ -2,7 +2,6 @@ package com.kafka.data.model.item
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.serialization.Serializable
 
 @JsonClass(generateAdapter = true)
 data class File(

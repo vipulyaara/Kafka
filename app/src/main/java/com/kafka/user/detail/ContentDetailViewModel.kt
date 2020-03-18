@@ -1,4 +1,4 @@
-package com.kafka.user.feature.detail
+package com.kafka.user.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +13,7 @@ import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
 import com.kafka.ui.content.ContentDetailAction
 import com.kafka.ui.content.ContentDetailViewState
-import com.kafka.user.feature.common.BaseViewModel
+import com.kafka.user.common.BaseViewModel
 import com.kafka.user.ui.ObservableLoadingCounter
 import com.kafka.user.ui.collectFrom
 import kotlinx.coroutines.channels.Channel

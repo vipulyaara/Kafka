@@ -1,7 +1,7 @@
 package com.kafka.user.ui
 
 import com.kafka.data.data.interactor.*
-import com.kafka.data.extensions.d
+import com.kafka.data.extensions.debug
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -30,10 +30,10 @@ class ObservableLoadingCounter @Inject constructor() {
 suspend fun ObservableLoadingCounter.collectFrom(statuses: Flow<InvokeStatus>) {
     statuses.collect {
         if (it == InvokeStarted) {
-            d {"Add loader" }
+            debug {"Add loader" }
             addLoader()
         } else if (it == InvokeSuccess || it == InvokeTimeout || it is InvokeError) {
-            d {"Remove loader"}
+            debug {"Remove loader"}
             removeLoader()
         }
     }

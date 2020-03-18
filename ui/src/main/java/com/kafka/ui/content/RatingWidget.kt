@@ -1,17 +1,14 @@
 package com.kafka.ui.content
 
 import androidx.compose.Composable
-import androidx.ui.core.Modifier
 import androidx.ui.core.Text
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
-import androidx.ui.material.surface.Card
 import androidx.ui.unit.dp
-import com.coyote.ui.VectorImage
+import com.kafka.ui.VectorImage
 import com.kafka.ui.R
-import com.kafka.ui.tinyButtonPadding
+import com.kafka.ui.widget.tinyButtonPadding
 
 @Composable
 fun RatingWidget() {

@@ -1,10 +1,9 @@
-package com.kafka.user.feature
+package com.kafka.user
 
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.kafka.user.R
-import com.kafka.user.feature.common.BaseActivity
+import com.kafka.user.common.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {

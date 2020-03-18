@@ -1,11 +1,9 @@
-package com.kafka.user.feature.common
+package com.kafka.user.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kafka.data.extensions.e
-import com.kafka.data.model.data.ErrorResult
-import com.kafka.data.model.data.Result
+import com.kafka.data.extensions.error
 import com.kafka.data.model.data.Success
 import com.kafka.ui.BaseViewState
 import com.kafka.user.BuildConfig
@@ -31,7 +29,7 @@ open class BaseViewModel<ViewState : BaseViewState>(private var s: ViewState) : 
         return map { Success(it) }
             .catch {
                 if (BuildConfig.DEBUG) {
-                    e(it) { "Exception during observe" }
+                    error(it) { "Exception during observe" }
                     throw it
                 }
                 // TODO: handle error
