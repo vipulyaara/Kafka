@@ -1,8 +1,8 @@
 package com.kafka.user
 
-import com.kafka.data.data.config.Initializers
-import com.kafka.data.extensions.debug
-import com.kafka.user.config.di.DaggerAppComponent
+import com.data.base.extensions.debug
+import com.kafka.data.di.Initializers
+import com.kafka.user.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject

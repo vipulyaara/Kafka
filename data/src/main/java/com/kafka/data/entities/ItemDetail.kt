@@ -3,7 +3,6 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.kafka.data.model.common.BaseEntity
 import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
 

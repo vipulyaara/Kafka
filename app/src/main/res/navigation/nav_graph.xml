@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/navigation_content_detail"
-        android:name="com.kafka.user.detail.ContentDetailFragment">
+        android:name="com.kafka.user.detail.ItemDetailFragment">
         <argument
             android:name="mvrx:arg"
             app:argType="string" />

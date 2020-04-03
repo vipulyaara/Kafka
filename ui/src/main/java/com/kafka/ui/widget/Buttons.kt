@@ -2,8 +2,8 @@ package com.kafka.ui.widget
 
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
-import androidx.ui.core.Text
 import androidx.ui.foundation.Border
+import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Shape
@@ -18,9 +18,9 @@ import androidx.ui.unit.dp
 @Composable
 fun ButtonRegular(
     modifier: Modifier = Modifier.None,
-    onClick: (() -> Unit)? = null,
+    onClick: (() -> Unit) = {},
     text: String,
-    backgroundColor: Color = MaterialTheme.colors().primary,
+    backgroundColor: Color = MaterialTheme.colors.primary,
     contentColor: Color = contentColorFor(backgroundColor),
     shape: Shape = RectangleShape,
     elevation: Dp = 12.dp
@@ -32,21 +32,21 @@ fun ButtonRegular(
         shape = shape,
         elevation = elevation,
         contentColor = contentColor,
-        paddings = regularButtonPadding
+        innerPadding = regularButtonPadding
     ) {
-        Text(text = text, style = MaterialTheme.typography().button)
+        Text(text = text, style = MaterialTheme.typography.button)
     }
 
 @Composable
 fun ButtonSmall(
     modifier: Modifier = Modifier.None,
-    onClick: (() -> Unit)? = null,
+    onClick: (() -> Unit) = {},
     text: String,
-    backgroundColor: Color = MaterialTheme.colors().primary,
+    backgroundColor: Color = MaterialTheme.colors.primary,
     contentColor: Color = contentColorFor(backgroundColor),
     shape: Shape = RectangleShape,
     elevation: Dp = 2.dp,
-    border: Border? = Border(1.dp, MaterialTheme.colors().background),
+    border: Border? = Border(1.dp, MaterialTheme.colors.background),
     paddings: EdgeInsets = smallButtonPadding
 ) =
     Button(
@@ -57,9 +57,9 @@ fun ButtonSmall(
         contentColor = contentColor,
         border = border,
         elevation = elevation,
-        paddings = paddings
+        innerPadding = paddings
     ) {
-        Text(text = text, style = MaterialTheme.typography().button, maxLines = 1)
+        Text(text = text, style = MaterialTheme.typography.button, maxLines = 1)
     }
 
 val regularButtonPadding =

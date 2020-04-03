@@ -1,3 +1,4 @@
+include(":domain")
 include(":reader")
 include(":ui")
 pluginManagement {
@@ -12,4 +13,5 @@ pluginManagement {
 
 include(":app")
 include(":data")
+include(":data-base")
 include(":player")

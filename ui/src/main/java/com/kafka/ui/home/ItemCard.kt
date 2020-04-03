@@ -1,19 +1,19 @@
 package com.kafka.ui.home
 
 import androidx.compose.Composable
-import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
+import androidx.ui.foundation.SimpleImage
+import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.layout.*
+import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
-import androidx.ui.material.surface.Card
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
-import com.kafka.ui.LoadAndShowImage
 import com.kafka.ui.alignCenter
-import com.kafka.ui.graphics.DrawImage
+import com.kafka.ui.graphics.LoadNetworkImage
 
 @Composable
 fun ContentItem(content: Item, onItemClick: (String) -> Unit) {
@@ -27,9 +27,9 @@ fun ContentItem(content: Item, onItemClick: (String) -> Unit) {
                 elevation = 0.dp
             ) {
                 if (content.coverImageResource == 0) {
-                    LoadAndShowImage(data = content.coverImage ?: "")
+                    LoadNetworkImage(data = content.coverImage ?: "")
                 } else {
-                    DrawImage(image = imageResource(id = content.coverImageResource))
+                    SimpleImage(image = imageResource(id = content.coverImageResource))
                 }
             }
 
@@ -38,13 +38,13 @@ fun ContentItem(content: Item, onItemClick: (String) -> Unit) {
                 text = content.title ?: "",
                 modifier = LayoutWidth(164.dp),
                 maxLines = 2,
-                style = MaterialTheme.typography().body1.alignCenter(),
+                style = MaterialTheme.typography.body1.alignCenter(),
                 overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = content.creator ?: "",
                 modifier = LayoutWidth(164.dp),
-                style = MaterialTheme.typography().caption.alignCenter(),
+                style = MaterialTheme.typography.caption.alignCenter(),
                 overflow = TextOverflow.Ellipsis
             )
         }

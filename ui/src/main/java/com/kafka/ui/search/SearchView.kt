@@ -1,11 +1,11 @@
 package com.kafka.ui.search
 
 import androidx.compose.Composable
-import androidx.ui.core.TextField
+import androidx.ui.foundation.TextField
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.Row
-import androidx.ui.material.surface.Card
+import androidx.ui.material.Card
 import androidx.ui.unit.dp
 import com.kafka.ui.VectorImage
 import com.kafka.ui.R
@@ -20,13 +20,14 @@ fun SearchView() {
             Row(modifier = LayoutPadding(14.dp)) {
                 VectorImage(id = R.drawable.ic_twotone_search_24)
                 TextField(value = "Search for books, author...",
+                    onValueChange = {},
                     modifier = LayoutPadding(start = 16.dp))
             }
         }
 
 //        Text(
 //            text = "Search",
-//            style = MaterialTheme.typography().h6
+//            style = MaterialTheme.typography.h6
 //        )
     }
 }

@@ -32,7 +32,6 @@ dependencies {
     implementation(KotlinX.Coroutines.android)
 
     implementation(Timber.core)
-    implementation(Gson.dependency)
 
     implementation(Retrofit.runtime)
     implementation(Retrofit.moshi)

@@ -3,10 +3,11 @@ package com.kafka.data.recent
 import androidx.room.Dao
 import androidx.room.Query
 import com.kafka.data.data.db.dao.EntityDao
+import com.kafka.data.entities.RecentItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class RecentItemDao : EntityDao<RecentItem>() {
+abstract class RecentItemDao : EntityDao<RecentItem> {
 
     @Query("select * from recentitem")
     abstract fun observeRecentlyVisitedItems(): Flow<List<RecentItem>>

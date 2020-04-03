@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  * @author Vipul Kumar; dated 29/11/18.
  */
 @Dao
-abstract class ItemDao : EntityDao<Item>() {
+abstract class ItemDao : EntityDao<Item> {
 
     @Query("select * from item")
     abstract fun observeQueryItems(): Flow<List<Item>>

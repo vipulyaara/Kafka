@@ -12,7 +12,6 @@ import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.EmphasisLevels
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ProvideEmphasis
-import androidx.ui.material.surface.Surface
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.ui.MaterialThemeFromAndroidTheme

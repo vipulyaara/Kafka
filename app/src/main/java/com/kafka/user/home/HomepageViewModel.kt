@@ -3,19 +3,19 @@ package com.kafka.user.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.content.ObserveContent
-import com.kafka.data.data.interactor.launchObserve
-import com.kafka.data.content.UpdateContent
-import com.kafka.data.model.Event
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
 import com.kafka.data.query.booksByGenre
+import com.kafka.domain.item.ObserveItems
+import com.kafka.domain.item.UpdateItems
+import com.kafka.domain.launchObserve
 import com.kafka.ui.home.ContentItemClick
 import com.kafka.ui.home.HomepageAction
 import com.kafka.ui.home.HomepageViewState
 import com.kafka.user.common.BaseViewModel
-import com.kafka.user.ui.ObservableLoadingCounter
-import com.kafka.user.ui.collectFrom
+import com.kafka.user.util.Event
+import com.kafka.user.util.ObservableLoadingCounter
+import com.kafka.user.util.collectFrom
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -28,9 +28,9 @@ import javax.inject.Inject
  * Implementation of [BaseViewModel] to provide data for homepage.
  */
 class HomepageViewModel @Inject constructor(
-    observeContent: ObserveContent,
+    observeItems: ObserveItems,
     private val loadingState: ObservableLoadingCounter,
-    private val updateContent: UpdateContent
+    private val updateItems: UpdateItems
 ) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
 
     private val queries = arrayListOf(
@@ -60,14 +60,14 @@ class HomepageViewModel @Inject constructor(
             }
         }
 
-        queries.map { ObserveContent.Params(it) }.forEach { params ->
-            viewModelScope.launchObserve(observeContent) { flow ->
+        queries.map { ObserveItems.Params(it) }.forEach { params ->
+            viewModelScope.launchObserve(observeItems) { flow ->
                 flow.distinctUntilChanged().execute {
-                    copy(items = it.data)
+                    copy(items = it)
                 }
             }
 
-            observeContent(params)
+            observeItems(params)
         }
     }
 
@@ -76,8 +76,8 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun refresh() {
-        queries.map { UpdateContent.Params(it) }.forEach {
-            updateContent(it)
+        queries.map { UpdateItems.Params(it) }.forEach {
+            updateItems(it)
                 .also { viewModelScope.launch { loadingState.collectFrom(it) } }
         }
     }

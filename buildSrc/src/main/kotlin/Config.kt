@@ -1,14 +1,83 @@
 // Library version
 object Kafka {
-    const val publishVersion = "0.0.1"
-    const val applicationId = "com.kafka.android"
+    const val name = "app"
+    const val applicationId = "com.coyote.android"
+    const val versionName = "0.0.1"
+    const val versionCode = 1
 
-    const val compileSdkVersion = 28
-    const val minSdkVersion = 22
+    const val compileSdkVersion = 29
+    const val minSdkVersion = 23
+
+    object Publish {
+        const val publishVersion = "0.0.1"
+        const val groupId = "com.coyote.hurrier"
+    }
+
+    object Auth {
+        const val name = "auth"
+        const val nameDependency = ":auth"
+    }
+
+    object Hurrier {
+        const val applicationId = "com.coyote.hurrier"
+        const val name = "hurrier"
+        const val nameDependency = ":hurrier"
+    }
+
+    object BaseData {
+        const val name = "data-base"
+        const val nameDependency = ":data-base"
+    }
+
+    object Data {
+        const val name = "data"
+        const val nameDependency = ":data"
+    }
+
+    object Domain {
+        const val name = "domain"
+        const val nameDependency = ":domain"
+    }
+
+    object Iris {
+        const val name = "iris-chat"
+        const val nameDependency = ":iris-chat"
+    }
+
+    object Map {
+        const val name = "map"
+        const val nameDependency = ":map"
+    }
+
+    object Location {
+        const val name = "location"
+        const val nameDependency = ":location"
+    }
+
+    object Push {
+        const val name = "push"
+        const val nameDependency = ":push"
+    }
+
+    object UiCommon {
+        const val name = "ui-common"
+        const val nameDependency = ":ui-common"
+    }
+
+    object UiCompose {
+        const val name = "ui"
+        const val nameDependency = ":ui"
+    }
 }
 
+object ExoPlayer {
+    private const val version = "2.9.6"
+    const val player = "com.google.android.exoplayer:exoplayer:$version"
+}
+
+// Core dependencies
 object Kotlin {
-    const val version = "1.3.70"
+    const val version = "1.3.71"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     const val plugin = "kotlin"
     const val kapt = "kotlin-kapt"
@@ -16,19 +85,9 @@ object Kotlin {
     const val androidExtensionsPlugin = "kotlin-android-extensions"
 }
 
-object KotlinX {
-    object Coroutines {
-        private const val version = "1.3.4"
-        val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
-        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-        val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-    }
-
-    object Serialization {
-        private const val version = "0.11.0"
-        const val dependency = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
-        const val plugin = "kotlinx-serialization"
-    }
+object Store {
+    private const val version = "4.0.0-alpha03"
+    const val core = "com.dropbox.mobile.store:store4:$version"
 }
 
 object Coil {
@@ -42,18 +101,8 @@ object Freshchat {
 }
 
 object Sendbird {
-    private const val version = "v2.2.6"
-    const val core = "com.github.deliveryhero:logistics-rider-app-sendbird-android:$version"
-}
-
-object Result {
-    private const val version = "2.0.0"
-    const val dependency = "com.github.kittinunf.result:result:$version"
-}
-
-object Json {
-    private const val version = "20170516"
-    const val dependency = "org.json:json:$version"
+    private const val version = "3.0.90"
+    const val core = "com.sendbird.sdk:sendbird-android-sdk:$version"
 }
 
 object Jsoup {
@@ -75,12 +124,12 @@ object Android {
 }
 
 object AndroidX {
-    const val fragment = "androidx.fragment:fragment:1.2.0-rc01"
+    const val fragment = "androidx.fragment:fragment:1.3.0-alpha02"
     const val drawerLayout = "androidx.drawerlayout:drawerlayout:1.1.0-alpha02"
     const val annotation = "androidx.annotation:annotation:1.0.0"
     const val palette = "androidx.palette:palette:1.0.0-alpha1"
     const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0-rc01"
-    const val appCompat = "androidx.appcompat:appcompat:1.1.0-beta01"
+    const val appCompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
     const val leanback = "androidx.leanback:leanback:1.1.0-alpha02"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val material = "com.google.android.material:material:1.2.0-alpha01"
@@ -88,6 +137,7 @@ object AndroidX {
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
     const val workManager = "android.arch.work:work-runtime:1.0.0-alpha13"
+    const val preference = "androidx.preference:preference:1.1.0"
 
     object Navigation {
         private const val version = "2.2.0-alpha01"
@@ -98,21 +148,22 @@ object AndroidX {
     }
 
     object Compose {
-        private const val compose_version = "0.1.0-SNAPSHOT"
+        private const val version = "0.1.0-SNAPSHOT"
 
-        const val runtime = "androidx.compose:compose-runtime:$compose_version"
-        const val framework = "androidx.ui:ui-framework:$compose_version"
-        const val layout = "androidx.ui:ui-layout:$compose_version"
-        const val material = "androidx.ui:ui-material:$compose_version"
-        const val foundation = "androidx.ui:ui-foundation:$compose_version"
-        const val animation = "androidx.ui:ui-animation:$compose_version"
-        const val tooling = "androidx.ui:ui-tooling:$compose_version"
+        const val runtime = "androidx.compose:compose-runtime:$version"
+        const val framework = "androidx.ui:ui-framework:$version"
+        const val layout = "androidx.ui:ui-layout:$version"
+        const val material = "androidx.ui:ui-material:$version"
+        const val foundation = "androidx.ui:ui-foundation:$version"
+        const val animation = "androidx.ui:ui-animation:$version"
+        const val tooling = "androidx.ui:ui-tooling:$version"
     }
 
     object Ktx {
         private const val sqliteVersion = "2.0.0"
         private const val ktxVersion = "1.0.0"
-        private const val ktxLifecycleVersion = "2.2.0-alpha03"
+        private const val ktxLifecycleVersion = "2.2.0"
+        private const val workManagerVersion = "2.3.2"
         const val core = "androidx.core:core-ktx:$ktxVersion"
         const val fragment = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
         const val palette = "androidx.palette:palette-ktx:$ktxVersion"
@@ -123,10 +174,11 @@ object AndroidX {
         const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$ktxLifecycleVersion"
         const val reactiveStreams =
             "androidx.lifecycle:lifecycle-reactivestreams-ktx:$ktxLifecycleVersion"
+        const val workManager = "androidx.work:work-runtime-ktx:$workManagerVersion"
     }
 
     object Arch {
-        private const val version = "2.2.0-rc03"
+        private const val version = "2.2.0"
         private const val testingVersion = "2.0.0"
         const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
         const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -167,33 +219,40 @@ object AndroidX {
     }
 }
 
-object PlayServices {
-    private const val version = "16.1.0"
+object Mockk {
+    const val core = "io.mockk:mockk:1.9.3"
+}
+
+object Hunter {
+    private const val debugVersion = "0.9.6"
+    const val transformVersion = "0.9.3"
+    const val debugPlugin = "hunter-debug"
+    const val transformPlugin = "hunter-transform"
+    const val debug = "com.quinn.hunter:hunter-debug-library:$debugVersion"
+}
+
+object GooglePlayServices {
+    private const val version = "17.0.0"
     const val base = "com.google.android.gms:play-services-base:$version"
     const val basement = "com.google.android.gms:play-services-basement:$version"
     const val location = "com.google.android.gms:play-services-location:$version"
 
     const val pluginVersion = "4.2.0"
-    const val plugin = "com.google.gms:google-services:4.0.1:"
-}
-
-object Store {
-    private const val version = "4.0.0-alpha03"
-    const val core = "com.dropbox.mobile.store:store4:$version"
+    const val libPlugin = "com.google.gms.google-services"
 }
 
 object Firebase {
     const val firestore = "com.google.firebase:firebase-firestore:18.0.1"
     const val analytics = "com.google.firebase:firebase-analytics:17.2.2"
-    const val messaging = "com.google.firebase:firebase-messaging:20.1.0"
+    const val messaging = "com.google.firebase:firebase-messaging:20.1.4"
     const val perf = "com.google.firebase:firebase-perf:19.0.0"
     const val perfPlugin = "perf-plugin"
     const val perfPluginVersion = "1.3.1"
 }
 
-object ExoPlayer {
-    private const val version = "2.9.6"
-    const val player = "com.google.android.exoplayer:exoplayer:$version"
+object Mapbox {
+    private const val version = "9.0.0"
+    const val core = "com.mapbox.mapboxsdk:mapbox-android-sdk:$version"
 }
 
 object Retrofit {
@@ -205,23 +264,18 @@ object Retrofit {
 }
 
 object OkHttp {
-    private const val version = "4.3.1"
+    private const val version = "4.4.0"
     const val core = "com.squareup.okhttp3:okhttp:$version"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
 }
 
-object MvRx {
-    private const val version = "1.3.0"
-    const val core = "com.airbnb.android:mvrx:$version"
-}
-
-object Gson {
-    private const val version = "2.8.5"
-    const val dependency = "com.google.code.gson:gson:$version"
+object Hugo {
+    const val version = "1.2.1"
+    const val plugin = "com.jakewharton.hugo"
 }
 
 object Dagger {
-    private const val version = "2.25.2"
+    private const val version = "2.27"
     const val dagger = "com.google.dagger:dagger:$version"
     const val androidSupport = "com.google.dagger:dagger-android-support:$version"
     const val compiler = "com.google.dagger:dagger-compiler:$version"
@@ -245,12 +299,12 @@ object Timber {
     const val core = "com.jakewharton.timber:timber:4.5.1"
 }
 
-object ExpectAnim {
-    const val core = "com.github.florent37:expectanim:1.0.7"
-}
-
 object Logger {
     const val core = "com.orhanobut:logger:2.2.0"
+}
+
+object SmartTabLayout {
+    const val core = "com.ogaclejapan.smarttablayout:library:2.0.0@aar"
 }
 
 object Lottie {
@@ -259,6 +313,22 @@ object Lottie {
 
 object Easeinterpolator {
     const val core = "com.daasuu:EasingInterpolator:1.0.0"
+}
+
+object KotlinX {
+    object Coroutines {
+        private const val version = "1.3.2"
+        val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
+        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+        val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+    }
+
+    object Serialization {
+        private const val version = "0.20.0"
+        const val dependency = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
+        const val plugin = "kotlinx-serialization"
+    }
 }
 
 object Testing {
@@ -276,27 +346,11 @@ object Testing {
     }
 }
 
-object Facebook {
-    const val stetho = "com.facebook.stetho:stetho:1.5.0"
-}
-
-object Kodein {
-    private const val version = "5.2.0"
-    const val runtime = "org.kodein.di:kodein-di-generic-jvm:$version"
-    const val androidX = "org.kodein.di:kodein-di-framework-android-x:$version"
-}
-
 object Moshi {
     private const val version = "1.8.0"
     const val dependency = "com.squareup.moshi:moshi:$version"
     const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
     const val compiler = "com.squareup.moshi:moshi-kotlin-codegen:$version"
-}
-
-object RxJava {
-    const val rxJava2 = "io.reactivex.rxjava2:rxjava:2.1.3"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.2"
-    const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.3.0"
 }
 
 // Lint

@@ -8,10 +8,9 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.kafka.data.model.EventObserver
 import com.kafka.ui.home.composeHomepageScreen
 import com.kafka.user.common.BaseFragment
-import com.kafka.user.detail.contentId
+import com.kafka.user.util.EventObserver
 import javax.inject.Inject
 
 /**

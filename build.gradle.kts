@@ -2,8 +2,8 @@
 import com.android.build.gradle.BaseExtension
 
 buildscript {
-    extra["kotlin_version"] = "1.3.70"
-    extra["compose_version"] = "0.1.0-dev06"
+    extra["kotlin_version"] = "1.3.71"
+    extra["compose_version"] = "0.1.0-dev08"
     repositories {
         google()
         mavenCentral()
@@ -48,7 +48,7 @@ allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 }
 
-val libraryModules = listOf("data", "player", "ui", "reader")
+val libraryModules = listOf("data", "data-base", "domain", "player", "ui", "reader")
 val applicationModules = listOf("app")
 
 subprojects {
@@ -86,8 +86,8 @@ subprojects {
                 targetSdkVersion(Kafka.compileSdkVersion)
                 vectorDrawables.useSupportLibrary = true
                 multiDexEnabled = true
-                versionCode = 1
-                versionName = Kafka.publishVersion
+                versionCode = Kafka.versionCode
+                versionName = Kafka.versionName
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 

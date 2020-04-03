@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
  * @author Vipul Kumar; dated 29/11/18.
  */
 @Dao
-abstract class SearchDao {
+abstract class SearchDao : EntityDao<Item> {
 
     @Query("select * from Item where genre = :creator order by title")
     abstract fun searchItemsFlow(creator: String): Flow<List<Item>>

@@ -29,7 +29,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "0.1.0-dev06"
+        kotlinCompilerExtensionVersion "0.1.0-dev08"
     }
 }
 
@@ -45,8 +45,6 @@ dependencies {
 
     implementation(project(":data"))
 
-    implementation(MvRx.core)
-
     implementation("androidx.compose:compose-runtime:$compose_version")
     implementation("androidx.ui:ui-framework:$compose_version")
     implementation("androidx.ui:ui-layout:$compose_version")
@@ -55,6 +53,6 @@ dependencies {
     implementation("androidx.ui:ui-animation:$compose_version")
     implementation "androidx.ui:ui-tooling:$compose_version"
 
-    implementation "io.coil-kt:coil:0.9.2"
+    implementation "io.coil-kt:coil:0.9.5"
     implementation "com.dropbox.mobile.store:store4:4.0.0-alpha03"
 }

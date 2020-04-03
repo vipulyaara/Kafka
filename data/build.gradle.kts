@@ -1,4 +1,6 @@
 dependencies {
+    api(project(Kafka.BaseData.nameDependency))
+
     implementation(AndroidX.Room.runtime)
     implementation(AndroidX.Room.ktx)
     kapt(AndroidX.Room.compiler)
@@ -30,7 +32,6 @@ dependencies {
     implementation(KotlinX.Coroutines.android)
 
     implementation(Timber.core)
-    implementation(Gson.dependency)
 
     implementation(Retrofit.runtime)
     implementation(Retrofit.moshi)

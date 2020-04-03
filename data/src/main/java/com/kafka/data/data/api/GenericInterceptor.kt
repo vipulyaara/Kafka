@@ -2,11 +2,12 @@ package com.kafka.data.data.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
 /**
  * Created by VipulKumar on 20/09/18.
  */
-internal class GenericInterceptor : Interceptor {
+class GenericInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         val url = request.url.newBuilder()

@@ -5,9 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.common.BaseEntity
 import com.kafka.data.model.item.Doc
-import com.kafka.data.recent.RecentItem
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -41,7 +39,8 @@ fun Doc.toItem() = Item(
     genre = this.subject
 )
 
-fun Item.asRecentlyVisited(visitedTime: Long) = RecentItem(contentId, creator, visitedTime)
+fun Item.asRecentlyVisited(visitedTime: Long) =
+    RecentItem(contentId, creator, visitedTime)
 
 fun Item.mediaType() = mediaType(mediaType)
 

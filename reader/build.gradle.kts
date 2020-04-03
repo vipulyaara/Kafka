@@ -52,8 +52,6 @@ dependencies {
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
 
-    implementation(MvRx.core)
-
     implementation(Lottie.core)
 
     implementation(Timber.core)

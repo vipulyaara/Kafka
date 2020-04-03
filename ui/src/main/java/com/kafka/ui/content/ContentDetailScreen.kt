@@ -4,15 +4,11 @@ import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.ui.core.Text
 import androidx.ui.foundation.HorizontalScroller
+import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.layout.*
-import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.EmphasisLevels
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.ProvideEmphasis
-import androidx.ui.material.surface.Surface
+import androidx.ui.material.*
 import androidx.ui.unit.dp
 import com.kafka.ui.MaterialThemeFromAndroidTheme
 import com.kafka.ui.home.ContentItem
@@ -51,17 +47,17 @@ private fun ContentDetail(
     viewState: ContentDetailViewState,
     actioner: (ContentDetailAction) -> Unit
 ) {
-    Surface(color = MaterialTheme.colors().background) {
+    Surface(color = MaterialTheme.colors.background) {
         VerticalScroller {
             Column {
                 Spacer(LayoutPadding(top = 24.dp))
                 ContentDetailItem(itemDetail = viewState.itemDetail, actioner = actioner)
                 Spacer(LayoutPadding(top = 24.dp))
 
-                ProvideEmphasis(emphasis = EmphasisLevels().disabled) {
+                ProvideEmphasis(emphasis = EmphasisAmbient.current.disabled) {
                     Text(
                         text = "More by ${viewState.itemDetail?.creator}",
-                        style = MaterialTheme.typography().h6,
+                        style = MaterialTheme.typography.h6,
                         modifier = LayoutPadding(start = 16.dp)
                     )
                 }
