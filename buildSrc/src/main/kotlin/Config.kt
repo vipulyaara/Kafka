@@ -67,7 +67,7 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.1.0-alpha01"
+    private const val version = "4.1.0-alpha04"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"
