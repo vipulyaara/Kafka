@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -20,9 +21,7 @@ import javax.inject.Inject
  * Fragment to host detail page.
  */
 class ItemDetailFragment : BaseFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: ItemDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
 
     private val navController by lazy { findNavController() }
@@ -48,16 +47,8 @@ class ItemDetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return FrameLayout(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            composeContentDetailScreen(
-                viewLifecycleOwner,
-                viewModel.viewState,
-                viewModel::submitAction
-            )
+            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            composeContentDetailScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
         }
     }
 }

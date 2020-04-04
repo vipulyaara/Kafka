@@ -3,6 +3,7 @@ package com.kafka.ui.content
 import android.text.Html
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.Text
@@ -21,13 +22,12 @@ import com.kafka.ui.widget.ButtonRegular
 @Composable
 fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -> Unit) {
     Column {
-        Card(
-            modifier = LayoutSize(196.dp, 258.dp) + LayoutGravity.Center,
-            shape = RoundedCornerShape(5.dp),
-            elevation = 6.dp
+        Box(
+            modifier = Modifier.preferredSize(196.dp, 258.dp) + Modifier.gravity(ColumnAlign.Center),
+            shape = RoundedCornerShape(5.dp)
         ) { SimpleImage(image = imageResource(id = R.drawable.img_author_camus_latranger)) }
 
-        Spacer(modifier = LayoutPadding(top = 20.dp))
+        Spacer(modifier = Modifier.padding(top = 20.dp))
 
         Text(
             text = itemDetail?.title ?: "",
@@ -36,13 +36,13 @@ fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -
             overflow = TextOverflow.Ellipsis,
             modifier = LayoutGravity.Center
         )
-        Spacer(modifier = LayoutPadding(2.dp))
+        Spacer(modifier = Modifier.padding(2.dp))
         Text(
             text = "by " + itemDetail?.creator,
             style = MaterialTheme.typography.h6,
             modifier = LayoutGravity.Center
         )
-        Spacer(modifier = LayoutPadding(12.dp))
+        Spacer(modifier = Modifier.padding(12.dp))
 
         Clickable(onClick = { actioner(ContentDetailAction.RatingWidgetClick()) }) {
             Card(
@@ -55,15 +55,15 @@ fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -
             }
         }
 
-        Spacer(modifier = LayoutPadding(4.dp))
+        Spacer(modifier = Modifier.padding(4.dp))
         Text(
             text = itemDetail?.description?.let { Html.fromHtml(it)?.toString() } ?: "",
             maxLines = 3,
             style = MaterialTheme.typography.body2.lineHeight(1.3).alignCenter(),
-            modifier = LayoutPadding(20.dp)
+            modifier = Modifier.padding(20.dp)
         )
 
-        Row(modifier = LayoutPadding(20.dp)) {
+        Row(modifier = Modifier.padding(20.dp)) {
             ProvideEmphasis(emphasis = EmphasisAmbient.current.disabled) {
                 ButtonRegular(
                     modifier = Modifier.weight(0.49f),
@@ -74,7 +74,7 @@ fun ContentDetailItem(itemDetail: ItemDetail?, actioner: (ContentDetailAction) -
                 )
             }
 
-            Container(modifier = Modifier.weight(0.04f)) {}
+            Box(modifier = Modifier.weight(0.04f)) {}
 
             ButtonRegular(
                 modifier = Modifier.weight(0.49f),

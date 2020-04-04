@@ -1,9 +1,9 @@
 package com.kafka.player.helper
 
+import com.data.base.extensions.debug
 import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.kafka.data.extensions.debug
 import java.util.*
 
 class TrackSelectionHelper(

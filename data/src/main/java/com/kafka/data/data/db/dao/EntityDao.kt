@@ -5,17 +5,17 @@ import com.kafka.data.entities.BaseEntity
 
 interface EntityDao<in E : BaseEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(entity: E): Long
+    suspend fun insert(entity: E): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg entity: E)
+    suspend fun insertAll(vararg entity: E)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(entities: List<E>)
+    suspend fun insertAll(entities: List<E>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(entity: E)
+    suspend fun update(entity: E)
 
     @Delete
-    fun delete(entity: E): Int
+    suspend fun delete(entity: E): Int
 }

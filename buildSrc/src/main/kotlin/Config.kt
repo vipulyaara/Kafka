@@ -1,7 +1,7 @@
 // Library version
 object Kafka {
     const val name = "app"
-    const val applicationId = "com.coyote.android"
+    const val applicationId = "com.kafka.android"
     const val versionName = "0.0.1"
     const val versionCode = 1
 
@@ -16,12 +16,6 @@ object Kafka {
     object Auth {
         const val name = "auth"
         const val nameDependency = ":auth"
-    }
-
-    object Hurrier {
-        const val applicationId = "com.coyote.hurrier"
-        const val name = "hurrier"
-        const val nameDependency = ":hurrier"
     }
 
     object BaseData {

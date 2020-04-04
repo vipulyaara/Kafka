@@ -27,7 +27,6 @@ import javax.inject.Inject
  *
  * Implementation of [BaseViewModel] to provide data for item detail.
  */
-
 class ItemDetailViewModel @Inject constructor(
     private val updateItemDetail: UpdateItemDetail,
     private val observeItemDetail: ObserveItemDetail,
