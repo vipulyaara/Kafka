@@ -12,13 +12,11 @@ import com.kafka.data.model.item.Doc
  */
 @Entity
 data class Item(
-    val id: Long = 0L,
-    @PrimaryKey val contentId: String = "",
+    @PrimaryKey val itemId: String = "",
     val language: List<String>? = null,
     val title: String? = null,
     val description: String? = null,
     val creator: String? = null,
-    @ColumnInfo(name = "media_type")
     val mediaType: String? = null,
     val coverImage: String? = null,
     var coverImageResource: Int = 0,
@@ -27,7 +25,7 @@ data class Item(
 ) : BaseEntity
 
 fun Doc.toItem() = Item(
-    contentId = this.identifier,
+    itemId = this.identifier,
     language = this.language,
     title = this.title,
     description = this.description?.get(0)?.trim(),
@@ -40,7 +38,7 @@ fun Doc.toItem() = Item(
 )
 
 fun Item.asRecentlyVisited(visitedTime: Long) =
-    RecentItem(contentId, creator, visitedTime)
+    RecentItem(itemId, creator, visitedTime)
 
 fun Item.mediaType() = mediaType(mediaType)
 

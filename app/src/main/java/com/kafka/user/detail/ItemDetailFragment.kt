@@ -9,35 +9,36 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.kafka.ui.content.composeContentDetailScreen
-import com.kafka.user.common.BaseFragment
-import com.kafka.user.home.HomepageFragmentDirections
-import com.kafka.user.util.EventObserver
+import com.kafka.ui.detail.composeContentDetailScreen
+import com.kafka.ui_common.BaseFragment
+import com.kafka.ui_common.EventObserver
+import com.kafka.user.common.itemDetailDeepLinkUri
+import com.kafka.user.common.playerDeepLinkUri
 import javax.inject.Inject
 
-/**
- * @author Vipul Kumar; dated 27/12/18.
- *
- * Fragment to host detail page.
- */
 class ItemDetailFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: ItemDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
 
-    private val navController by lazy { findNavController() }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-            navController.navigate(HomepageFragmentDirections.toContentDetail(it))
-        })
+        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(itemDetailDeepLinkUri(it.itemId))
+            })
+
+        viewModel.navigateToPlayerAction.observe(viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(playerDeepLinkUri())
+            })
 
         ItemDetailFragmentArgs.fromBundle(
             requireArguments()
-        ).mvrxArg.let {
-            viewModel.observeItemDetail(it)
-            viewModel.updateItemDetail(it)
+        ).let {
+            viewModel.imageResource = it.imageResource
+            viewModel.observeItemDetail(it.itemId)
+            viewModel.updateItemDetail(it.itemId)
         }
     }
 

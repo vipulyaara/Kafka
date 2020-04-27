@@ -38,19 +38,19 @@ object Kafka {
         const val nameDependency = ":iris-chat"
     }
 
-    object Map {
-        const val name = "map"
-        const val nameDependency = ":map"
+    object Player {
+        const val name = "player"
+        const val nameDependency = ":player"
     }
 
-    object Location {
-        const val name = "location"
-        const val nameDependency = ":location"
+    object Language {
+        const val name = "language"
+        const val nameDependency = ":language"
     }
 
-    object Push {
-        const val name = "push"
-        const val nameDependency = ":push"
+    object Search {
+        const val name = "search"
+        const val nameDependency = ":search"
     }
 
     object UiCommon {
@@ -59,9 +59,13 @@ object Kafka {
     }
 
     object UiCompose {
-        const val name = "ui"
-        const val nameDependency = ":ui"
+        const val name = "ui-compose"
+        const val nameDependency = ":$name"
     }
+}
+
+object FolioReader{
+    val core = "com.folioreader:folioreader:0.5.4"
 }
 
 object ExoPlayer {
@@ -110,7 +114,7 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.1.0-alpha04"
+    private const val version = "4.1.0-alpha06"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"

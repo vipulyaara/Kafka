@@ -20,8 +20,8 @@
         <item name="textAppearanceBody2">@style/Body2</item>
 
         <item name="android:textColorPrimary">@color/text_heading</item>
-        <item name="android:textColorSecondary">@color/text_body_1</item>
-        <item name="android:textColorHint">@color/text_body_2</item>
+        <item name="android:textColorSecondary">@color/text_body</item>
+        <item name="android:textColorHint">@color/text_body</item>
     </style>
 
     <style name="FrameTheme.ThemeTransitionAnimation">
@@ -61,14 +61,14 @@
     </style>
 
     <style name="Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/text_body_1</item>
+        <item name="android:textColor">@color/text_body</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">2dp</item>
     </style>
 
     <style name="Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textColor">@color/text_body_2</item>
+        <item name="android:textColor">@color/text_body</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingExtra">4dp</item>

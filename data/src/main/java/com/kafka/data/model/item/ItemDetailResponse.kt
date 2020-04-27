@@ -11,8 +11,8 @@ data class ItemDetailResponse(
     val d2: String,
     @Json(name = "dir")
     val dir: String,
-//    @Json(name = "files")
-//    val files: List<File>,
+    @Json(name = "files")
+    val files: List<File>,
     @Json(name = "files_count")
     val filesCount: Int,
     @Json(name = "item_size")

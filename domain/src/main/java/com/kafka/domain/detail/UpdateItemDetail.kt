@@ -1,6 +1,8 @@
 package com.kafka.domain.detail
 
-import com.kafka.data.di.ProcessLifetime
+import com.data.base.AppCoroutineDispatchers
+import com.data.base.Interactor
+import com.kafka.data.injection.ProcessLifetime
 import com.kafka.data.detail.ItemDetailRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
@@ -14,10 +16,10 @@ import javax.inject.Inject
  *
  */
 class UpdateItemDetail @Inject constructor(
-    dispatchers: com.data.base.AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     private val repository: ItemDetailRepository,
     @ProcessLifetime private val processScope: CoroutineScope
-) : com.kafka.domain.Interactor<UpdateItemDetail.Param>() {
+) : Interactor<UpdateItemDetail.Param>() {
     override val scope: CoroutineScope = processScope + dispatchers.io
 
     override suspend fun doWork(params: Param) {

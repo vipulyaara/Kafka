@@ -4,7 +4,11 @@ import com.android.build.gradle.BaseExtension
 dependencies {
     implementation(project(Kafka.Data.nameDependency))
     implementation(project(Kafka.Domain.nameDependency))
+    implementation(project(Kafka.Language.nameDependency))
     implementation(project(Kafka.UiCompose.nameDependency))
+    implementation(project(Kafka.UiCommon.nameDependency))
+    implementation(project(Kafka.Search.nameDependency))
+    implementation(project(Kafka.Player.nameDependency))
 
     implementation(Kotlin.stdlib)
     implementation(Jsoup.core)

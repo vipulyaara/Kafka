@@ -1,85 +1,76 @@
 package com.kafka.user.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.data.base.launchObserve
+import com.kafka.data.entities.Item
+import com.kafka.data.entities.Language
 import com.kafka.data.query.ArchiveQuery
+import com.kafka.data.query.ResultTye
 import com.kafka.data.query.booksByAuthor
-import com.kafka.data.query.booksByGenre
-import com.kafka.domain.item.ObserveItems
-import com.kafka.domain.item.UpdateItems
-import com.kafka.domain.launchObserve
+import com.kafka.domain.item.ObserveBatchItems
+import com.kafka.language.domain.UpdateLanguages
+import com.kafka.search.ui.SearchViewModel
 import com.kafka.ui.home.ContentItemClick
 import com.kafka.ui.home.HomepageAction
 import com.kafka.ui.home.HomepageViewState
-import com.kafka.user.common.BaseViewModel
-import com.kafka.user.util.Event
-import com.kafka.user.util.ObservableLoadingCounter
-import com.kafka.user.util.collectFrom
+import com.kafka.ui.home.SearchItemClick
+import com.kafka.ui_common.BaseViewModel
+import com.kafka.ui_common.Event
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * @author Vipul Kumar; dated 10/12/18.
- *
- * Implementation of [BaseViewModel] to provide data for homepage.
- */
 class HomepageViewModel @Inject constructor(
-    observeItems: ObserveItems,
-    private val loadingState: ObservableLoadingCounter,
-    private val updateItems: UpdateItems
+    private val searchViewModel: SearchViewModel,
+    private val updateLanguages: UpdateLanguages,
+    observeBatchItems: ObserveBatchItems
 ) : BaseViewModel<HomepageViewState>(HomepageViewState()) {
 
     private val queries = arrayListOf(
-        ArchiveQuery().booksByAuthor("Kafka"),
-        ArchiveQuery().booksByAuthor("Mark Twain"),
-        ArchiveQuery().booksByGenre("Comedy")
+        ArchiveQuery("Franz Kafka").booksByAuthor("Kafka"),
+        ArchiveQuery("Mark Twain").booksByAuthor("Mark Twain"),
+        ArchiveQuery("Dostoyevsky").booksByAuthor("dostoyevsky"),
+        ArchiveQuery("Mirza Ghalib").booksByAuthor("Ghalib").copy(resultTye = ResultTye.Banner)
+    ).mapIndexed { index, archiveQuery ->  archiveQuery.copy(position = index) }
+
+    private val languages = arrayListOf(
+        Language("en", "English"),
+        Language("hi", "Hindi"),
+        Language("ur", "Urdu"),
+        Language("de", "German"),
+        Language("fr", "French")
     )
 
     private val pendingActions = Channel<HomepageAction>(Channel.BUFFERED)
-
-    private val _navigateToContentDetailAction = MutableLiveData<Event<String>>()
-    val navigateToContentDetailAction: LiveData<Event<String>>
-        get() = _navigateToContentDetailAction
+    val navigateToContentDetailAction = MutableLiveData<Event<Item>>()
+    val navigateToSearchAction = MutableLiveData<Event<Boolean>>()
 
     init {
         viewModelScope.launch {
-            loadingState.observable
-                .distinctUntilChanged()
-                .collect {
-                    setState { copy(isLoading = it) }
-                }
-        }
-
-        viewModelScope.launch {
             for (action in pendingActions) when (action) {
-                is ContentItemClick -> _navigateToContentDetailAction.postValue(Event(action.contentId))
+                is ContentItemClick -> navigateToContentDetailAction.postValue(Event(action.item))
+                is SearchItemClick -> navigateToSearchAction.postValue(Event(true))
             }
         }
 
-        queries.map { ObserveItems.Params(it) }.forEach { params ->
-            viewModelScope.launchObserve(observeItems) { flow ->
-                flow.distinctUntilChanged().execute {
-                    copy(items = it)
-                }
+        viewModelScope.launchObserve(observeBatchItems) { flow ->
+            flow.distinctUntilChanged().execute { items ->
+                items.let { copy(items = it) }
             }
-
-            observeItems(params)
         }
+
+        observeBatchItems(ObserveBatchItems.Params(queries))
+
+        updateLanguages(UpdateLanguages.Params(languages))
     }
 
     fun submitAction(action: HomepageAction) {
         viewModelScope.launch { pendingActions.send(action) }
     }
 
-    fun refresh() {
-        queries.map { UpdateItems.Params(it) }.forEach {
-            updateItems(it)
-                .also { viewModelScope.launch { loadingState.collectFrom(it) } }
-        }
+    fun updateItems() {
+        searchViewModel.updateItems(queries)
     }
 }
-

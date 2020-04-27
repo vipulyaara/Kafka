@@ -1,63 +1,83 @@
 import Kotlin.kapt
 
 dependencies {
-    implementation(project(":data"))
+    implementation(project(Kafka.Data.nameDependency))
+    implementation(project(Kafka.Domain.nameDependency))
+    implementation(project(Kafka.Language.nameDependency))
+    implementation(project(Kafka.UiCompose.nameDependency))
+    implementation(project(Kafka.UiCommon.nameDependency))
+
+    implementation(Kotlin.stdlib)
+    implementation(Jsoup.core)
+
+    implementation(Store.core)
+
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.fragment)
+    implementation(AndroidX.drawerLayout)
+    implementation(AndroidX.material)
+    implementation(AndroidX.recyclerView)
+    implementation(AndroidX.constraintLayout)
+    implementation(AndroidX.workManager)
+    implementation(AndroidX.viewPager2)
+    implementation(AndroidX.palette)
+
+    implementation(AndroidX.Navigation.fragment)
+    implementation(AndroidX.Navigation.ui)
 
     implementation(AndroidX.Room.runtime)
-    implementation(AndroidX.Room.ktx)
     kapt(AndroidX.Room.compiler)
 
-    implementation("org.jsoup:jsoup:1.12.1")
+    implementation(Retrofit.runtime)
 
     implementation(AndroidX.Arch.extensions)
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
 
-    implementation(AndroidX.Paging.common)
-    implementation(AndroidX.Paging.runtime)
+    implementation(Dagger.dagger)
+    implementation(Dagger.androidSupport)
+    kapt(Dagger.compiler)
+    kapt(Dagger.androidProcessor)
+
+    compileOnly(AssistedInject.annotationDagger2)
+    kapt(AssistedInject.processorDagger2)
 
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
+    implementation(AndroidX.Ktx.fragment)
     implementation(AndroidX.Ktx.palette)
     implementation(AndroidX.Ktx.reactiveStreams)
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
     implementation(AndroidX.Ktx.lifecycle)
 
-    implementation(Dagger.dagger)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
-
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)
 
+    implementation(Lottie.core)
+
     implementation(Timber.core)
 
-    implementation(Retrofit.runtime)
-    implementation(Retrofit.moshi)
-    implementation(Retrofit.gson)
+    implementation(Easeinterpolator.core)
 
-    implementation(ExoPlayer.player)
+    implementation(Coil.core)
 
-    implementation(OkHttp.core)
-    implementation(OkHttp.loggingInterceptor)
+    implementation(Stetho.core)
+    implementation(Stetho.urlConnection)
 
-    implementation(Moshi.kotlin)
-    kapt(Moshi.compiler)
+    androidTestImplementation(AndroidX.annotation)
+    androidTestImplementation(AndroidX.Test.junit)
+    androidTestImplementation(AndroidX.Test.rules)
+    androidTestImplementation(AndroidX.Espresso.core)
+    androidTestImplementation(AndroidX.Espresso.intents)
+    androidTestImplementation(AndroidX.Espresso.contrib)
 
-    testImplementation(AndroidX.Test.core)
-    testImplementation(AndroidX.Test.junit)
-    testImplementation(AndroidX.Test.rules)
     testImplementation(AndroidX.Arch.testing)
     testImplementation(AndroidX.Room.testing)
     testImplementation(Testing.Mockito.kotlin)
     testImplementation(Testing.PowerMock.core)
     testImplementation(Testing.PowerMock.api)
     testImplementation(Testing.PowerMock.module)
-    testImplementation(RoboElectric.dependency)
 
-    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
-
-    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
-    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
+    implementation(ExoPlayer.player)
 }

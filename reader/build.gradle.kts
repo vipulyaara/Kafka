@@ -2,13 +2,16 @@ import Kotlin.kapt
 import com.android.build.gradle.BaseExtension
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":ui"))
+    implementation(project(Kafka.Data.nameDependency))
+    implementation(project(Kafka.Domain.nameDependency))
+    implementation(project(Kafka.UiCompose.nameDependency))
+    implementation(project(Kafka.UiCommon.nameDependency))
 
     implementation(Kotlin.stdlib)
     implementation(Jsoup.core)
 
     implementation(Store.core)
+    implementation(FolioReader.core)
 
     implementation(AndroidX.appCompat)
     implementation(AndroidX.fragment)

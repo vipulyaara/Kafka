@@ -14,12 +14,8 @@ import retrofit2.http.Query
  */
 interface ArchiveService {
     @GET("advancedsearch.php")
-    fun search(
-        @Query("q", encoded = true) query: String?
-    ): Call<SearchResponse>
+    fun search(@Query("q", encoded = true) query: String?): Call<SearchResponse>
 
     @GET("/metadata/{id}")
-    fun getItemDetail(
-        @Path("id") id: String?
-    ): Call<ItemDetailResponse>
+    fun getItemDetail(@Path("id") id: String?): Call<ItemDetailResponse>
 }

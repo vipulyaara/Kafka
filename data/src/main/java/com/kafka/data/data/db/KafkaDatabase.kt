@@ -9,7 +9,7 @@ import com.kafka.data.data.db.dao.LanguageDao
 import com.kafka.data.data.db.dao.SearchDao
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.LanguageModel
+import com.kafka.data.entities.Language
 import com.kafka.data.recent.RecentItemDao
 import com.kafka.data.entities.RecentItem
 
@@ -24,7 +24,7 @@ interface KafkaDatabase {
     entities = [
         ItemDetail::class,
         Item::class,
-        LanguageModel::class,
+        Language::class,
         RecentItem::class
     ],
     version = 1

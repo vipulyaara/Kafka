@@ -48,7 +48,9 @@ allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 }
 
-val libraryModules = listOf("data", "data-base", "domain", "player", "ui", "reader")
+val libraryModules = listOf(
+    "data", "data-base", "domain", "player", "ui-compose", "reader", "language", "search", "ui-common"
+)
 val applicationModules = listOf("app")
 
 subprojects {

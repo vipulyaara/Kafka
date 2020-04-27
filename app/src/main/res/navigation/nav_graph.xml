@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_homepage">
 
@@ -9,21 +8,44 @@
         android:id="@+id/navigation_homepage"
         android:name="com.kafka.user.home.HomepageFragment">
 
-    <action
-        android:id="@+id/to_content_detail"
-        app:destination="@id/navigation_content_detail" />
+        <action
+            android:id="@+id/to_item_detail"
+            app:destination="@id/navigation_item_detail" />
+
+        <action
+            android:id="@+id/to_search"
+            app:destination="@id/navigation_search" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_content_detail"
+        android:id="@+id/navigation_search"
+        android:name="com.kafka.search.ui.SearchFragment">
+
+        <deepLink app:uri="app.kafka://search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_player"
+        android:name="com.kafka.player.ui.PlayerFragment">
+
+        <deepLink app:uri="app.kafka://player" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_item_detail"
         android:name="com.kafka.user.detail.ItemDetailFragment">
         <argument
-            android:name="mvrx:arg"
+            android:name="item_id"
             app:argType="string" />
-
+        <argument
+            android:name="image_resource"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
-            android:id="@+id/to_poet_detail"
-            app:destination="@id/navigation_content_detail" />
+            android:id="@+id/to_item_detail"
+            app:destination="@id/navigation_item_detail" />
+
+        <deepLink app:uri="app.kafka://item/{item_id}" />
     </fragment>
 
 </navigation>

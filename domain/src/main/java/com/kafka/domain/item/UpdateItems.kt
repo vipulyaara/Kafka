@@ -1,7 +1,7 @@
 package com.kafka.domain.item
 
-import com.kafka.data.di.ProcessLifetime
-import com.kafka.domain.Interactor
+import com.kafka.data.injection.ProcessLifetime
+import com.data.base.Interactor
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.item.ItemRepository
 import kotlinx.coroutines.CoroutineScope

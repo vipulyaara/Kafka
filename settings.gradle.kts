@@ -1,6 +1,9 @@
+include(":ui-common")
+include(":language")
+include(":search")
 include(":domain")
 include(":reader")
-include(":ui")
+include(":ui-compose")
 pluginManagement {
     repositories {
         google()

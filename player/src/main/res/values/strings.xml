@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Player</string>
+    <string name="playing_notification_name">Player</string>
+    <string name="playing_notification_description">Player</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.kafka.reader
 
 import android.graphics.pdf.PdfRenderer
+import com.folioreader.FolioReader
 
-class PdfReader {
+object PdfReader {
+
 }

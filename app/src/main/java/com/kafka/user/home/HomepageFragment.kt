@@ -4,36 +4,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kafka.ui.home.composeHomepageScreen
-import com.kafka.user.common.BaseFragment
-import com.kafka.user.util.EventObserver
+import com.kafka.ui_common.BaseFragment
+import com.kafka.ui_common.EventObserver
+import com.kafka.user.common.searchDeepLinkUri
+import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
+import com.kafka.user.home.HomepageFragmentDirections.Companion.toSearch
 import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
  */
-
 class HomepageFragment : BaseFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
-
     private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-            navController.navigate(HomepageFragmentDirections.toContentDetail(it))
-        })
+        viewModel.navigateToContentDetailAction.observe(
+            viewLifecycleOwner,
+            EventObserver { navController.navigate(toItemDetail(it.itemId, it.coverImageResource)) })
+        viewModel.navigateToSearchAction.observe(
+            viewLifecycleOwner,
+            EventObserver { navController.navigate(searchDeepLinkUri()) })
 
-        viewModel.refresh()
+        viewModel.updateItems()
     }
 
     override fun onCreateView(
@@ -42,16 +44,8 @@ class HomepageFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return FrameLayout(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            composeHomepageScreen(
-                viewLifecycleOwner,
-                viewModel.viewState,
-                viewModel::submitAction
-            )
+            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            composeHomepageScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
         }
     }
 }

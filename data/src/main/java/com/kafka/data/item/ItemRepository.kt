@@ -1,9 +1,13 @@
 package com.kafka.data.item
 
-import com.kafka.data.entities.Item
-import com.kafka.data.entities.asRecentlyVisited
 import com.data.base.model.getOrThrow
+import com.kafka.data.data.db.dao.ItemLocalDataSource
+import com.kafka.data.entities.Item
+import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.asRecentlyVisited
 import com.kafka.data.query.ArchiveQuery
+import com.kafka.data.query.buildLocalQuery
+import com.kafka.data.recent.RecentItemLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -13,14 +17,20 @@ import javax.inject.Inject
  *
  */
 class ItemRepository @Inject constructor(
-    private val itemItemLocalDataSource: ItemLocalDataSource,
+    private val itemLocalDataSource: ItemLocalDataSource,
+    private val recentItemLocalDataSource: RecentItemLocalDataSource,
     private val remoteDataSource: ItemRemoteDataSource
 ) {
 
-    fun observeQueryItems() = itemItemLocalDataSource.observeQueryItems()
+    fun observeQueryItems(archiveQuery: ArchiveQuery) =
+        itemLocalDataSource.observeQueryItems(archiveQuery.buildLocalQuery())
 
-    fun observeRecentlyVisitedItems(): Flow<List<Item>> {
-        return itemItemLocalDataSource.observeRecentlyVisitedItems()
+    fun observeRecentlyVisitedItems(): Flow<List<RecentItem>> {
+        return recentItemLocalDataSource.observeRecentlyVisitedItems()
+    }
+
+    fun observeRecentlyVisitedItemsAsItems(): Flow<List<Item>> {
+        return recentItemLocalDataSource.observeRecentlyVisitedItems()
             .map { list ->
                 list.sortedByDescending { it.timeStamp }
                     .map { getItemByItemId(it.itemId) }
@@ -28,12 +38,12 @@ class ItemRepository @Inject constructor(
     }
 
     private fun getItemByItemId(itemId: String): Item {
-        return itemItemLocalDataSource.getItemByItemId(itemId)
+        return itemLocalDataSource.getItemByItemId(itemId)
     }
 
     suspend fun addRecentlyVisitedItem(itemId: String) {
         val item = getItemByItemId(itemId)
-        itemItemLocalDataSource.saveRecentlyVisitedItem(
+        recentItemLocalDataSource.insert(
             item.asRecentlyVisited(System.currentTimeMillis())
         )
     }
@@ -41,6 +51,6 @@ class ItemRepository @Inject constructor(
     suspend fun updateQuery(archiveQuery: ArchiveQuery) {
         remoteDataSource.fetchItemsByCreator(archiveQuery)
             .getOrThrow()
-            .let { itemItemLocalDataSource.saveItems(it) }
+            .let { itemLocalDataSource.insertAll(it) }
     }
 }

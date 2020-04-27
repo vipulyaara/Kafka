@@ -8,8 +8,11 @@
         <item>@font/karla</item>
         <item>@font/karla_bold</item>
         <item>@font/lato</item>
+        <item>@font/lato_black</item>
+        <item>@font/lato_bold</item>
         <item>@font/noto_sans</item>
         <item>@font/open_sans</item>
+        <item>@font/open_sans_semibold</item>
         <item>@font/poppins</item>
         <item>@font/raleway</item>
         <item>@font/raleway_bold</item>

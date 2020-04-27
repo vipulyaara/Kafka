@@ -6,6 +6,8 @@ import com.kafka.data.data.db.dao.EntityDao
 import com.kafka.data.entities.RecentItem
 import kotlinx.coroutines.flow.Flow
 
+typealias RecentItemLocalDataSource = RecentItemDao
+
 @Dao
 abstract class RecentItemDao : EntityDao<RecentItem> {
 
