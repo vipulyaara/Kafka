@@ -4,8 +4,9 @@ import android.text.Html
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.kafka.data.model.item.File
+import com.kafka.data.extensions.formattedDuration
 import com.kafka.data.model.item.ItemDetailResponse
+import org.threeten.bp.Duration
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -23,6 +24,10 @@ data class ItemDetail(
     val files: List<File>? = null
 ) : BaseEntity
 
-fun List<File>.filterMp3() = filter { it.format.contains("mp3", true) }
-
 fun ItemDetail?.formattedDescription() = this?.description?.let { Html.fromHtml(it)?.toString() } ?: ""
+
+data class File(val title: String?, val creator: String?, val time: Long, val format: String?, val playbackUrl: String?)
+
+fun File.formattedDuration() = Duration.ofMillis(time).formattedDuration()
+
+fun List<File>.filterMp3() = filter { it.format?.contains("mp3", true) ?: false }

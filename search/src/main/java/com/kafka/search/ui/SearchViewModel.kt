@@ -13,8 +13,8 @@ import com.kafka.ui.search.SearchAction
 import com.kafka.ui.search.SearchViewState
 import com.kafka.ui_common.BaseViewModel
 import com.kafka.ui_common.Event
-import com.kafka.ui_common.ObservableLoadingCounter
-import com.kafka.ui_common.collectFrom
+import com.kafka.domain.ObservableLoadingCounter
+import com.kafka.domain.collectFrom
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged

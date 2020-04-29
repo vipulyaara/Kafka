@@ -8,7 +8,8 @@ import androidx.ui.foundation.Text
 import androidx.ui.layout.*
 import androidx.ui.material.Surface
 import androidx.ui.unit.dp
-import com.kafka.data.model.item.File
+import com.kafka.data.entities.File
+import com.kafka.data.entities.formattedDuration
 import com.kafka.ui.*
 import com.kafka.ui.R
 
@@ -21,10 +22,10 @@ fun PlayerQueue(files: List<File>, actioner: (PlayerAction) -> Unit) {
 
 @Composable
 fun File(it: File?, actioner: (PlayerAction) -> Unit) {
-    val title = it?.name ?: ""
-    val subtitle = it?.artist + " ∙ " + it?.mtime
-    Clickable(onClick = { actioner(Play(it?.original ?: "")) }) {
-        Column(modifier = Modifier.paddingHV(horizontal = 24.dp, vertical = 24.dp).fillMaxWidth()) {
+    val title = it?.title ?: ""
+    val subtitle = arrayListOf(it?.creator, it?.formattedDuration()).filterNotNull().joinToString(" ∙ ")
+    Clickable(onClick = { actioner(Play(it?.playbackUrl ?: "")) }) {
+        Column(modifier = Modifier.paddingHV(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
             Row {
                 Surface(modifier = Modifier.gravity(RowAlign.Center), color = colors().background) {
                     VectorImage(id = R.drawable.ic_headphones, tint = colors().primary)

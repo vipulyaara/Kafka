@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.kafka.player.ui.PlayerViewModel
 import com.kafka.ui.detail.composeContentDetailScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class ItemDetailFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: ItemDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val playerViewModel: PlayerViewModel by viewModels(factoryProducer = { viewModelFactory })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +32,7 @@ class ItemDetailFragment : BaseFragment() {
 
         viewModel.navigateToPlayerAction.observe(viewLifecycleOwner,
             EventObserver {
+                playerViewModel.submitAction(it)
                 findNavController().navigate(playerDeepLinkUri())
             })
 

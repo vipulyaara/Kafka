@@ -29,5 +29,5 @@ interface KafkaDatabase {
     ],
     version = 1
 )
-@TypeConverters(MiddlewareTypeConverters::class)
+@TypeConverters(AppTypeConverters::class)
 abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase

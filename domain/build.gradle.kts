@@ -1,6 +1,7 @@
 dependencies {
     implementation(project(Kafka.BaseData.nameDependency))
     implementation(project(Kafka.Data.nameDependency))
+    implementation(project(Kafka.Logger.nameDependency))
 
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)

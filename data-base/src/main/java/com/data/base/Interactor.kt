@@ -1,5 +1,6 @@
 package com.data.base
 
+import com.data.base.extensions.e
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
@@ -24,6 +25,7 @@ abstract class Interactor<in P> {
                         doWork(params)
                         channel.send(InvokeSuccess)
                     } catch (t: Throwable) {
+                        e(t) { t.localizedMessage ?: "exception" }
                         channel.send(InvokeError(t))
                     }
                 }

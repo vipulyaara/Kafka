@@ -1,7 +1,10 @@
 package com.kafka.data.model.item
 
+import com.kafka.data.extensions.formattedDuration
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.threeten.bp.Duration
+import org.threeten.bp.LocalDateTime
 
 data class File(
     @Json(name = "album")

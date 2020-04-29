@@ -1,29 +1,35 @@
 package com.kafka.user.detail
 
-import androidx.lifecycle.LiveData
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.asRecentlyVisited
+import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
+import com.kafka.domain.ObservableErrorCounter
+import com.kafka.domain.ObservableLoadingCounter
+import com.kafka.domain.collectFrom
 import com.kafka.domain.detail.ObserveItemDetail
 import com.kafka.domain.detail.UpdateItemDetail
 import com.kafka.domain.item.ObserveItems
 import com.kafka.domain.item.UpdateItems
 import com.kafka.domain.recent.AddRecentItem
 import com.kafka.domain.recent.ObserveRecentItems
+import com.kafka.player.domain.CommandPlayer
 import com.kafka.player.ui.playingItemId
 import com.kafka.ui.detail.ItemDetailAction
 import com.kafka.ui.detail.ItemDetailViewState
+import com.kafka.ui.player.Play
+import com.kafka.ui.player.PlayerAction
 import com.kafka.ui_common.BaseViewModel
 import com.kafka.ui_common.Event
-import com.kafka.ui_common.ObservableLoadingCounter
-import com.kafka.ui_common.collectFrom
+import com.kafka.user.extensions.showToast
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,12 +45,15 @@ class ItemDetailViewModel @Inject constructor(
     private val observeItems: ObserveItems,
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
+    private val commandPlayer: CommandPlayer,
     observeRecentItems: ObserveRecentItems,
-    private val loadingState: ObservableLoadingCounter
+    private val loadingState: ObservableLoadingCounter,
+    private val errorState: ObservableErrorCounter,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val pendingActions = Channel<ItemDetailAction>(Channel.BUFFERED)
     val navigateToContentDetailAction = MutableLiveData<Event<Item>>()
-    val navigateToPlayerAction = MutableLiveData<Event<String?>>()
+    val navigateToPlayerAction = MutableLiveData<Event<PlayerAction>>()
     var imageResource: Int = 0
 
     init {
@@ -55,6 +64,24 @@ class ItemDetailViewModel @Inject constructor(
                 playingItemId = it?.itemId ?: ""
                 copy(itemDetail = it?.copy(coverImageResource = imageResource))
             }
+        }
+
+        viewModelScope.launch {
+            loadingState.observable.distinctUntilChanged()
+                .debounce(500).execute { copy(isLoading = it) }
+        }
+
+        viewModelScope.launch {
+            errorState.observable.distinctUntilChanged()
+                .debounce(500).execute {
+                    it?.message?.let { context.showToast(it) }
+                    this
+                }
+        }
+
+        viewModelScope.launch {
+            loadingState.observable.distinctUntilChanged()
+                .debounce(500).execute { copy(isLoading = it) }
         }
 
         viewModelScope.launchObserve(observeItems) {
@@ -77,13 +104,17 @@ class ItemDetailViewModel @Inject constructor(
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
                 is ItemDetailAction.RelatedItemClick -> navigateToContentDetailAction.postValue(Event(action.item))
-                is ItemDetailAction.Play -> navigateToPlayerAction.postValue(Event(viewState?.value?.itemDetail?.itemId))
+                is ItemDetailAction.Play -> {
+                    onPlayClicked()
+                    navigateToPlayerAction.postValue(Event(Play(viewState.value?.itemDetail?.itemId!!)))
+                }
             }
         }
     }
 
     private fun onPlayClicked() {
         addRecentItem(AddRecentItem.Params(viewState.value?.itemDetail?.itemId!!))
+        commandPlayer(CommandPlayer.Command.Play(viewState.value?.itemDetail?.itemId!!))
     }
 
     private fun observeByAuthor(itemDetail: ItemDetail?) {
@@ -103,11 +134,9 @@ class ItemDetailViewModel @Inject constructor(
 
     fun updateItemDetail(contentId: String) {
         debug { "update item detail for $contentId" }
-        updateItemDetail(UpdateItemDetail.Param(contentId)).also {
-            viewModelScope.launch {
-                loadingState.collectFrom(it)
-            }
-        }
+        updateItemDetail(UpdateItemDetail.Param(contentId))
+            .also { viewModelScope.launch { loadingState.collectFrom(it) } }
+            .also { viewModelScope.launch { errorState.collectFrom(it) } }
     }
 
     fun submitAction(action: ItemDetailAction) {

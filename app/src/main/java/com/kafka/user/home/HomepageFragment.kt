@@ -14,7 +14,6 @@ import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
 import com.kafka.user.common.searchDeepLinkUri
 import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
-import com.kafka.user.home.HomepageFragmentDirections.Companion.toSearch
 import javax.inject.Inject
 
 /**
@@ -30,10 +29,13 @@ class HomepageFragment : BaseFragment() {
 
         viewModel.navigateToContentDetailAction.observe(
             viewLifecycleOwner,
-            EventObserver { navController.navigate(toItemDetail(it.itemId, it.coverImageResource)) })
+            EventObserver { navController.navigate(toItemDetail(it.itemId, it.coverImageResource)) }
+        )
+
         viewModel.navigateToSearchAction.observe(
             viewLifecycleOwner,
-            EventObserver { navController.navigate(searchDeepLinkUri()) })
+            EventObserver { navController.navigate(searchDeepLinkUri()) }
+        )
 
         viewModel.updateItems()
     }

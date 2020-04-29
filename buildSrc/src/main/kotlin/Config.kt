@@ -8,54 +8,49 @@ object Kafka {
     const val compileSdkVersion = 29
     const val minSdkVersion = 23
 
-    object Publish {
-        const val publishVersion = "0.0.1"
-        const val groupId = "com.coyote.hurrier"
-    }
-
-    object Auth {
-        const val name = "auth"
-        const val nameDependency = ":auth"
-    }
-
     object BaseData {
         const val name = "data-base"
-        const val nameDependency = ":data-base"
+        const val nameDependency = ":$name"
     }
 
     object Data {
         const val name = "data"
-        const val nameDependency = ":data"
+        const val nameDependency = ":$name"
     }
 
     object Domain {
         const val name = "domain"
-        const val nameDependency = ":domain"
+        const val nameDependency = ":$name"
     }
 
-    object Iris {
-        const val name = "iris-chat"
-        const val nameDependency = ":iris-chat"
+    object Reader {
+        const val name = "reader"
+        const val nameDependency = ":$name"
     }
 
     object Player {
         const val name = "player"
-        const val nameDependency = ":player"
+        const val nameDependency = ":$name"
     }
 
     object Language {
         const val name = "language"
-        const val nameDependency = ":language"
+        const val nameDependency = ":$name"
     }
 
     object Search {
         const val name = "search"
-        const val nameDependency = ":search"
+        const val nameDependency = ":$name"
+    }
+
+    object Logger {
+        const val name = "logger"
+        const val nameDependency = ":$name"
     }
 
     object UiCommon {
         const val name = "ui-common"
-        const val nameDependency = ":ui-common"
+        const val nameDependency = ":$name"
     }
 
     object UiCompose {
@@ -114,7 +109,7 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.1.0-alpha06"
+    private const val version = "4.1.0-alpha08"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"

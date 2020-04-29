@@ -11,6 +11,7 @@ dependencies {
     implementation(Jsoup.core)
 
     implementation(Store.core)
+    implementation("com.google.android.exoplayer:extension-mediasession:2.9.4")
 
     implementation(AndroidX.appCompat)
     implementation(AndroidX.fragment)

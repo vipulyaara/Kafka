@@ -8,9 +8,15 @@ import kotlinx.coroutines.flow.Flow
 /**
  * @author Vipul Kumar; dated 29/11/18.
  */
+
+typealias ItemDetailLocalDataSource = ItemDetailDao
+
 @Dao
 abstract class ItemDetailDao : EntityDao<ItemDetail> {
 
     @Query("select * from ItemDetail where itemId = :itemId")
     abstract fun itemDetailFlow(itemId: String): Flow<ItemDetail>
+
+    @Query("select * from ItemDetail where itemId = :itemId")
+    abstract fun itemDetail(itemId: String): ItemDetail
 }

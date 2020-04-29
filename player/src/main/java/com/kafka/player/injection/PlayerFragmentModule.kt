@@ -1,4 +1,4 @@
-package com.kafka.player
+package com.kafka.player.injection
 
 import androidx.lifecycle.ViewModel
 import com.kafka.player.ui.PlayerFragment
@@ -12,7 +12,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 @Suppress("UNUSED")
-abstract class PlayerModule {
+abstract class PlayerFragmentModule {
 
     @FragmentScoped
     @ContributesAndroidInjector

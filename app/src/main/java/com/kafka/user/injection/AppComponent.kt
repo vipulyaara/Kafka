@@ -3,6 +3,7 @@ package com.kafka.user.injection
 import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.injection.ServiceModule
+import com.kafka.player.injection.PlayerModule
 import com.kafka.user.KafkaApplication
 import dagger.BindsInstance
 import dagger.Component
@@ -18,8 +19,9 @@ import javax.inject.Singleton
         ViewModelModule::class,
         AppModule::class,
         DataModule::class,
-        ServiceModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        PlayerModule::class,
+        ServiceModule::class
     ]
 )
 interface AppComponent : AndroidInjector<KafkaApplication> {

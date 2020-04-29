@@ -1,6 +1,6 @@
 package com.kafka.user.injection
 
-import com.kafka.player.PlayerModule
+import com.kafka.player.injection.PlayerFragmentModule
 import com.kafka.search.inejction.SearchModule
 import com.kafka.ui_common.injection.ActivityScoped
 import com.kafka.user.MainActivity
@@ -28,7 +28,7 @@ abstract class ActivityBindingModule {
             HomepageModule::class,
             ContentDetailModule::class,
             SearchModule::class,
-            PlayerModule::class
+            PlayerFragmentModule::class
         ]
     )
     internal abstract fun mainActivity(): MainActivity

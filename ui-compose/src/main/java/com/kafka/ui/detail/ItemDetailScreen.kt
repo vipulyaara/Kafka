@@ -61,29 +61,35 @@ private fun ContentDetail(
                     actioner = actioner
                 )
                 Spacer(Modifier.padding(top = 48.dp))
-
-                viewState.itemsByCreator?.letEmpty {
-                    ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
-                        Text(
-                            text = "More by ${viewState.itemDetail?.creator}",
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier.padding(start = 24.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.preferredHeight(16.dp))
-                    HorizontalScroller {
-                        Row {
-                            viewState.itemsByCreator.forEach { content ->
-                                ContentItem(content) {
-                                    actioner(ItemDetailAction.RelatedItemClick(it))
-                                }
-                                Spacer(modifier = Modifier.preferredWidth(8.dp))
-                            }
-                        }
-                    }
-                }
-
+                ItemsByCreator(viewState = viewState, actioner = actioner)
                 Spacer(modifier = Modifier.preferredHeight(48.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemsByCreator(
+    viewState: ItemDetailViewState,
+    actioner: (ItemDetailAction) -> Unit
+) {
+    viewState.itemsByCreator?.letEmpty {
+        ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+            Text(
+                text = "More by ${viewState.itemDetail?.creator}",
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(start = 24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.preferredHeight(16.dp))
+        HorizontalScroller {
+            Row {
+                viewState.itemsByCreator.forEach { content ->
+                    ContentItem(content) {
+                        actioner(ItemDetailAction.RelatedItemClick(it))
+                    }
+                    Spacer(modifier = Modifier.preferredWidth(8.dp))
+                }
             }
         }
     }

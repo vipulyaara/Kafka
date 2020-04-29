@@ -49,7 +49,16 @@ allprojects {
 }
 
 val libraryModules = listOf(
-    "data", "data-base", "domain", "player", "ui-compose", "reader", "language", "search", "ui-common"
+    Kafka.Data.name,
+    Kafka.BaseData.name,
+    Kafka.Domain.name,
+    Kafka.Player.name,
+    Kafka.UiCommon.name,
+    Kafka.UiCompose.name,
+    Kafka.Reader.name,
+    Kafka.Search.name,
+    Kafka.Language.name,
+    Kafka.Logger.name
 )
 val applicationModules = listOf("app")
 

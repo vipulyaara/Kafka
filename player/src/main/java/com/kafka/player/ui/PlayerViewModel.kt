@@ -1,25 +1,18 @@
 package com.kafka.player.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.domain.detail.ObserveItemDetail
 import com.kafka.domain.item.ObserveBatchItems
 import com.kafka.domain.item.UpdateBatchItems
-import com.kafka.language.domain.ObserveSelectedLanguages
-import com.kafka.player.domain.OperatePlayer
+import com.kafka.player.domain.CommandPlayer
 import com.kafka.ui.player.Play
 import com.kafka.ui.player.PlayerAction
 import com.kafka.ui.player.PlayerViewState
-import com.kafka.ui.search.ContentItemClick
-import com.kafka.ui.search.SearchAction
-import com.kafka.ui.search.SearchViewState
 import com.kafka.ui_common.BaseViewModel
-import com.kafka.ui_common.Event
-import com.kafka.ui_common.ObservableLoadingCounter
-import com.kafka.ui_common.collectFrom
+import com.kafka.domain.ObservableLoadingCounter
+import com.kafka.domain.collectFrom
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -31,7 +24,7 @@ var playingItemId = ""
 class PlayerViewModel @Inject constructor(
     private val observeBatchItems: ObserveBatchItems,
     private val loadingState: ObservableLoadingCounter,
-    private val operatePlayer: OperatePlayer,
+    private val commandPlayer: CommandPlayer,
     observeItemDetail: ObserveItemDetail,
     private val updateBatchItems: UpdateBatchItems
 ) : BaseViewModel<PlayerViewState>(PlayerViewState()) {
@@ -57,7 +50,7 @@ class PlayerViewModel @Inject constructor(
 
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
-                is Play -> operatePlayer(OperatePlayer.Command.Play(action.contentId))
+                is Play -> commandPlayer(CommandPlayer.Command.Play(action.contentId))
             }
         }
     }

@@ -27,13 +27,13 @@ fun MiniPlayer(playerData: PlayerData?, modifier: Modifier = Modifier.None) {
                 Text(text = playerData?.subtitle ?: "Mirza Ghalib", style = typography().caption)
             }
 
-            PlayerControls(modifier = Modifier.gravity(ColumnAlign.Center).gravity(RowAlign.Center))
+            MiniPlayerControls(modifier = Modifier.gravity(ColumnAlign.Center).gravity(RowAlign.Center))
         }
     }
 }
 
 @Composable
-fun PlayerControls(modifier: Modifier) {
+fun MiniPlayerControls(modifier: Modifier) {
     Row(modifier = modifier) {
         VectorImage(id = R.drawable.ic_pause)
         Spacer(modifier = Modifier.preferredWidth(24.dp))

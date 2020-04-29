@@ -1,7 +1,7 @@
 package com.kafka.data.data.db
 
 import androidx.room.TypeConverter
-import com.kafka.data.model.item.File
+import com.kafka.data.entities.File
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 /**
  * @author Vipul Kumar; dated 21/01/19.
  */
-class MiddlewareTypeConverters {
+class AppTypeConverters {
     @TypeConverter
     fun stringToList(input: String?): List<String>? {
         return if (input == null) null else Moshi.Builder().build().adapter<List<String>>(

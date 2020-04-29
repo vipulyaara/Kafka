@@ -1,3 +1,4 @@
+include(":logger")
 include(":ui-common")
 include(":language")
 include(":search")

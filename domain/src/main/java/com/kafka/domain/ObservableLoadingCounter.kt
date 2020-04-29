@@ -1,4 +1,4 @@
-package com.kafka.ui_common
+package com.kafka.domain
 
 import com.data.base.*
 import com.data.base.extensions.debug

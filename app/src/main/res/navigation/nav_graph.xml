@@ -10,7 +10,11 @@
 
         <action
             android:id="@+id/to_item_detail"
-            app:destination="@id/navigation_item_detail" />
+            app:destination="@id/navigation_item_detail"
+            app:enterAnim="@anim/sliding_in_left"
+            app:exitAnim="@anim/sliding_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
 
         <action
             android:id="@+id/to_search"
@@ -28,7 +32,11 @@
         android:id="@+id/navigation_player"
         android:name="com.kafka.player.ui.PlayerFragment">
 
-        <deepLink app:uri="app.kafka://player" />
+        <deepLink app:uri="app.kafka://player"
+            app:enterAnim="@anim/sliding_in_left"
+            app:exitAnim="@anim/sliding_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
 
     <fragment
