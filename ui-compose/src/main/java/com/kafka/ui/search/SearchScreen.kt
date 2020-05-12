@@ -34,7 +34,7 @@ fun ViewGroup.composeSearchScreen(
 fun SearchScreen(viewState: SearchViewState, actioner: (SearchAction) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Filters(viewState)
-        SearchView(viewState.query ?: "Meer") { actioner(SubmitQueryAction(it)) }
+        SearchView(viewState.query ?: "Meer taqi meer") { actioner(SubmitQueryAction(it)) }
 
         debug { "${viewState.isLoading} ${viewState.items.isNullOrEmpty()}"}
         if (viewState.isLoading && viewState.items.values.flatten().isNullOrEmpty()) {

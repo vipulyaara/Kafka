@@ -74,7 +74,7 @@ object FinestWebView {
 
 // Core dependencies
 object Kotlin {
-    const val version = "1.3.71"
+    const val version = "1.3.72"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
     const val plugin = "kotlin"
     const val kapt = "kotlin-kapt"
@@ -113,7 +113,7 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.1.0-alpha08"
+    private const val version = "4.1.0-alpha09"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"
@@ -146,7 +146,8 @@ object AndroidX {
     }
 
     object Compose {
-        private const val version = "0.1.0-dev10"
+        const val version = "0.1.0-dev10"
+        const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
 
         const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
         const val runtime = "androidx.compose:compose-runtime:$version"
