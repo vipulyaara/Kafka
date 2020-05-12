@@ -14,8 +14,8 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             itemId = metadata.identifier,
             language = metadata.licenseurl,
             title = metadata.title,
-            description = "✪✪✪✪✪  " + (metadata.description ?: ""),
-            creator = metadata.creator,
+            description = "✪✪✪✪✪  " + (metadata.description?.joinToString() ?: ""),
+            creator = metadata.creator?.joinToString(),
             mediaType = metadata.mediatype,
             files = files.filter { it.title != null },
             coverImage = "https://archive.org/services/img/${metadata.identifier}"

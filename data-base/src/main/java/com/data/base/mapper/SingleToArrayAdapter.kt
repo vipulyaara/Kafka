@@ -1,6 +1,5 @@
 package com.data.base.mapper
 
-import com.kafka.data.model.SingleToArray
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter

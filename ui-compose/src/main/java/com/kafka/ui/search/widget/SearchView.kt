@@ -12,6 +12,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.input.ImeAction
 import androidx.ui.layout.*
 import androidx.ui.material.Card
+import androidx.ui.text.TextRange
 import androidx.ui.unit.dp
 import com.kafka.ui.*
 import com.kafka.ui.R
@@ -26,12 +27,12 @@ fun SearchView(value: String, onSearch: (String) -> Unit) {
         shape = RoundedCornerShape(8.dp),
         color = colors().background
     ) {
-        Row(modifier = Modifier.padding(14.dp).wrapContentSize(Alignment.Center)) {
+        Row(modifier = Modifier.padding(14.dp).fillMaxWidth()) {
             VectorImage(id = R.drawable.ic_twotone_search_24, tint = colors().onSecondary)
             TextField(
-                value = TextFieldValue(state.value),
+                value = TextFieldValue(state.value, TextRange(state.value.length, state.value.length)),
                 onValueChange = { state.value = it.text },
-                modifier = Modifier.padding(start = 16.dp).gravity(RowAlign.Center),
+                modifier = Modifier.padding(start = 16.dp).fillMaxWidth().gravity(Alignment.CenterVertically),
                 textStyle = typography().body1,
                 imeAction = ImeAction.Search,
                 onImeActionPerformed = {

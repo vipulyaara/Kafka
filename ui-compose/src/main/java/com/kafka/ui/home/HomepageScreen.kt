@@ -5,17 +5,16 @@ import androidx.compose.Composable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.AdapterList
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.Text
-import androidx.ui.layout.fillMaxHeight
-import androidx.ui.layout.fillMaxWidth
-import androidx.ui.layout.padding
+import androidx.ui.foundation.VerticalScroller
+import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.data.item.RowItems
+import com.kafka.ui.colors
 import com.kafka.ui.observe
 import com.kafka.ui.setContentWithLifecycle
 import com.kafka.ui.typography
@@ -50,8 +49,18 @@ fun ContentList(
     items: RowItems,
     actioner: (Item) -> Unit
 ) {
-    AdapterList(data = items.values.flatten()) {
-        ContentItem(content = it, onItemClick = { actioner(it) })
+    val pair = items.values.flatten().run {
+        subList(0, size/2).zip(subList(size/2, size))
+    }
+    VerticalScroller(modifier = Modifier.fillMaxWidth()) {
+        Table(columns = 2) {
+            pair.forEach {
+                tableRow {
+                    ContentItem(content = it.first, onItemClick = actioner)
+                    ContentItem(content = it.second, onItemClick = actioner)
+                }
+            }
+        }
     }
 }
 

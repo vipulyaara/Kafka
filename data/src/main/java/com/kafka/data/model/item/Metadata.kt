@@ -1,5 +1,6 @@
 package com.kafka.data.model.item
 
+import com.data.base.mapper.SingleToArray
 import com.squareup.moshi.Json
 
 data class Metadata(
@@ -11,14 +12,16 @@ data class Metadata(
     val boxid: String?,
 //    @Json(name = "genre")
 //    val genre: List<String?>,
-    @Json(name = "genre")
-    val creator: String,
+    @SingleToArray
+    @Json(name = "creator")
+    val creator: List<String>?,
     @Json(name = "curation")
     val curation: String?,
     @Json(name = "date")
     val date: String?,
+    @SingleToArray
     @Json(name = "description")
-    val description: String,
+    val description: List<String>?,
     @Json(name = "identifier")
     val identifier: String,
     @Json(name = "licenseurl")

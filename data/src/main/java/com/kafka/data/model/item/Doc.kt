@@ -1,6 +1,6 @@
 package com.kafka.data.model.item
 
-import com.kafka.data.model.SingleToArray
+import com.data.base.mapper.SingleToArray
 import com.squareup.moshi.Json
 
 data class Doc(

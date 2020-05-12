@@ -35,7 +35,7 @@ fun ViewGroup.composeContentDetailScreen(
 @Composable
 private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
     if (viewState.isLoading && viewState.itemDetail?.itemId == null) {
-        Box(modifier = Modifier.wrapContentSize(Alignment.Center)) {
+        Box(modifier = Modifier.fillMaxSize()) {
             CircularProgressIndicator()
         }
     } else {

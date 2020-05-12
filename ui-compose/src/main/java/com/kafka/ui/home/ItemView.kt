@@ -7,10 +7,7 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.layout.Column
-import androidx.ui.layout.padding
-import androidx.ui.layout.preferredSize
-import androidx.ui.layout.preferredWidth
+import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
 import androidx.ui.res.imageResource
@@ -27,15 +24,15 @@ fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
     Clickable(onClick = { onItemClick(content) }) {
         Column(modifier = Modifier.padding(12.dp)) {
             Card(
-                modifier = Modifier.preferredSize(size, size),
-                shape = RoundedCornerShape(6.dp),
+                modifier = Modifier.preferredSize(size),
+                shape = RoundedCornerShape(0.dp),
                 elevation = 0.dp
             ) {
-//                if (content.coverImageResource <= 0) {
+                if (content.coverImageResource <= 0) {
                     LoadNetworkImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
-//                } else {
-//                    SimpleImage(image = imageResource(id = content.coverImageResource))
-//                }
+                } else {
+                    SimpleImage(image = imageResource(id = content.coverImageResource))
+                }
             }
 
             Text(

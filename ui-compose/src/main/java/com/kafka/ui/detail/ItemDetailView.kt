@@ -85,7 +85,7 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
             if (itemDetail.hasText()) {
                 ButtonItem(
                     modifier = Modifier.weight(0.5f),
-                    text = "READ",
+                    text = "Continue Reading",
                     actioner = { actioner(ItemDetailAction.Read()) })
             }
         }
@@ -93,7 +93,7 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
         if (itemDetail.hasAudio()) {
             ButtonItem(
                 modifier = Modifier.weight(0.5f),
-                text = "PLAY",
+                text = "Play",
                 actioner = { actioner(ItemDetailAction.Play()) })
         }
     }
@@ -104,7 +104,7 @@ fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.paddingHV(horizontal = 8.dp),
-            backgroundColor = MaterialTheme.colors.primary,
+            backgroundColor = colors().primary,
             elevation = 12.dp,
             shape = RoundedCornerShape(2.dp),
             contentColor = MaterialTheme.colors.onPrimary,
@@ -114,7 +114,8 @@ fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.button.alignCenter(),
-                modifier = Modifier.gravity(RowAlign.Center).fillMaxWidth()
+                modifier = Modifier.gravity(RowAlign.Center).fillMaxWidth(),
+                maxLines = 1
             )
         }
     }

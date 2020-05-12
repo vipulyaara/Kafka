@@ -1,4 +1,4 @@
-package com.kafka.data.model
+package com.data.base.mapper
 
 import com.squareup.moshi.JsonQualifier
 

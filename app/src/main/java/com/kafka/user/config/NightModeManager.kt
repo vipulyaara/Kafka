@@ -14,7 +14,7 @@ object NightModeManager {
         activity?.let {
             setCurrentNightMode(activity, AppCompatDelegate.MODE_NIGHT_YES)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            activity.window?.setWindowAnimations(R.style.FrameTheme_ThemeTransitionAnimation)
+            activity.window?.setWindowAnimations(R.style.Theme_Coyote_ThemeTransitionAnimation)
             activity.recreate()
         }
     }
@@ -23,7 +23,7 @@ object NightModeManager {
         activity?.let {
             setCurrentNightMode(activity, AppCompatDelegate.MODE_NIGHT_NO)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            activity.window.setWindowAnimations(R.style.FrameTheme_ThemeTransitionAnimation)
+            activity.window.setWindowAnimations(R.style.Theme_Coyote_ThemeTransitionAnimation)
             activity.recreate()
         }
     }

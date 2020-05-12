@@ -65,6 +65,8 @@ class SearchViewModel @Inject constructor(
                 is SubmitQueryAction -> submitQuery(action.query)
             }
         }
+
+        submitQuery("Plato")
     }
 
     fun submitAction(action: SearchAction) {
@@ -72,6 +74,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun submitQuery(searchQuery: String) {
+        setState { copy(query = searchQuery) }
         listOf(ArchiveQuery().booksByAuthor(searchQuery)).let {
             observeQuery(it)
             updateItems(it)

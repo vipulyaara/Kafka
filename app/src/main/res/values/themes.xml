@@ -56,6 +56,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <style name="Theme.Coyote.ThemeTransitionAnimation">
+        <item name="android:windowEnterAnimation">@anim/window_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/window_fade_out</item>
+    </style>
+
     <style name="Theme.Coyote.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
