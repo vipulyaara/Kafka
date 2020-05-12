@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Coyote"
+        tools:replace="android:networkSecurityConfig"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.kafka.user.MainActivity">
             <intent-filter>

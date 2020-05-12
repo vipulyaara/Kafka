@@ -68,6 +68,10 @@ object ExoPlayer {
     const val player = "com.google.android.exoplayer:exoplayer:$version"
 }
 
+object FinestWebView {
+    const val core = "com.thefinestartist:finestwebview:1.2.7"
+}
+
 // Core dependencies
 object Kotlin {
     const val version = "1.3.71"
@@ -117,6 +121,7 @@ object Android {
 }
 
 object AndroidX {
+    const val swipeRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     const val fragment = "androidx.fragment:fragment:1.3.0-alpha02"
     const val drawerLayout = "androidx.drawerlayout:drawerlayout:1.1.0-alpha02"
     const val annotation = "androidx.annotation:annotation:1.0.0"
@@ -141,8 +146,9 @@ object AndroidX {
     }
 
     object Compose {
-        private const val version = "0.1.0-SNAPSHOT"
+        private const val version = "0.1.0-dev10"
 
+        const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
         const val runtime = "androidx.compose:compose-runtime:$version"
         const val framework = "androidx.ui:ui-framework:$version"
         const val layout = "androidx.ui:ui-layout:$version"

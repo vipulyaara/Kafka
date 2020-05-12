@@ -14,10 +14,10 @@ import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.unit.dp
 import com.kafka.data.extensions.letEmpty
-import com.kafka.ui.MaterialThemeFromAndroidTheme
 import com.kafka.ui.home.ContentItem
 import com.kafka.ui.observe
 import com.kafka.ui.setContentWithLifecycle
+import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeContentDetailScreen(
     lifecycleOwner: LifecycleOwner,
@@ -26,17 +26,14 @@ fun ViewGroup.composeContentDetailScreen(
 ): Any = setContentWithLifecycle(lifecycleOwner) {
     val viewState = observe(state)
     if (viewState != null) {
-        MaterialThemeFromAndroidTheme(context) {
+        MaterialThemeFromMdcTheme {
             ContentDetailScreen(viewState, actioner)
         }
     }
 }
 
 @Composable
-private fun ContentDetailScreen(
-    viewState: ItemDetailViewState,
-    actioner: (ItemDetailAction) -> Unit
-) {
+private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
     if (viewState.isLoading && viewState.itemDetail?.itemId == null) {
         Box(modifier = Modifier.wrapContentSize(Alignment.Center)) {
             CircularProgressIndicator()
@@ -47,15 +44,12 @@ private fun ContentDetailScreen(
 }
 
 @Composable
-private fun ContentDetail(
-    viewState: ItemDetailViewState,
-    actioner: (ItemDetailAction) -> Unit
-) {
+private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
     Surface(color = MaterialTheme.colors.background) {
         VerticalScroller {
             Column {
                 Spacer(Modifier.padding(top = 24.dp))
-                ContentDetailItem(
+                ItemDetailView(
                     itemDetail = viewState.itemDetail,
                     recentItem = viewState.recentItem,
                     actioner = actioner
@@ -69,10 +63,7 @@ private fun ContentDetail(
 }
 
 @Composable
-fun ItemsByCreator(
-    viewState: ItemDetailViewState,
-    actioner: (ItemDetailAction) -> Unit
-) {
+fun ItemsByCreator(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
     viewState.itemsByCreator?.letEmpty {
         ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
             Text(

@@ -11,9 +11,10 @@ dependencies {
     implementation(Jsoup.core)
 
     implementation(Store.core)
-    implementation(FolioReader.core)
+    implementation(FinestWebView.core)
 
     implementation(AndroidX.appCompat)
+    implementation(AndroidX.swipeRefresh)
     implementation(AndroidX.fragment)
     implementation(AndroidX.drawerLayout)
     implementation(AndroidX.material)

@@ -17,8 +17,7 @@ import javax.inject.Inject
  * @author Vipul Kumar; dated 02/02/19.
  */
 class PlayerFragment : BaseFragment() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: PlayerViewModel by viewModels(factoryProducer = { viewModelFactory })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

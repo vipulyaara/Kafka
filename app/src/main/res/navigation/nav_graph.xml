@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_homepage">
+    app:startDestination="@id/navigation_search">
 
     <fragment
         android:id="@+id/navigation_homepage"
@@ -10,11 +10,7 @@
 
         <action
             android:id="@+id/to_item_detail"
-            app:destination="@id/navigation_item_detail"
-            app:enterAnim="@anim/sliding_in_left"
-            app:exitAnim="@anim/sliding_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:destination="@id/navigation_item_detail"/>
 
         <action
             android:id="@+id/to_search"
@@ -32,11 +28,14 @@
         android:id="@+id/navigation_player"
         android:name="com.kafka.player.ui.PlayerFragment">
 
-        <deepLink app:uri="app.kafka://player"
-            app:enterAnim="@anim/sliding_in_left"
-            app:exitAnim="@anim/sliding_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+        <deepLink app:uri="app.kafka://player"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_reader"
+        android:name="com.kafka.reader.ReaderFragment">
+
+        <deepLink app:uri="app.kafka://reader"/>
     </fragment>
 
     <fragment

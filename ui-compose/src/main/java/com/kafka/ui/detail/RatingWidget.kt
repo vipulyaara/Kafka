@@ -1,6 +1,8 @@
 package com.kafka.ui.detail
 
 import androidx.compose.Composable
+import androidx.ui.core.Alignment
+import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
@@ -16,7 +18,7 @@ fun RatingWidget() {
         val starIcon = R.drawable.ic_star
         val onStarColor = MaterialTheme.colors.secondary
         val offStarColor = Color(0x44575C70)
-        val iconModifier = LayoutSize(14.dp, 14.dp) + LayoutGravity.Center
+        val iconModifier = Modifier.size(14.dp, 14.dp).gravity(Alignment.CenterVertically)
 
         repeat(3) {
             VectorImage(modifier = iconModifier, id = starIcon, tint = onStarColor)

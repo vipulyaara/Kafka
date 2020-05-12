@@ -9,13 +9,17 @@ import androidx.ui.foundation.AdapterList
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.Text
-import androidx.ui.layout.*
+import androidx.ui.layout.fillMaxHeight
+import androidx.ui.layout.fillMaxWidth
+import androidx.ui.layout.padding
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.unit.dp
-import com.kafka.ui.MaterialThemeFromAndroidTheme
+import com.kafka.data.entities.Item
+import com.kafka.data.item.RowItems
 import com.kafka.ui.observe
 import com.kafka.ui.setContentWithLifecycle
 import com.kafka.ui.typography
+import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeHomepageScreen(
     lifecycleOwner: LifecycleOwner,
@@ -24,30 +28,30 @@ fun ViewGroup.composeHomepageScreen(
 ): Any = setContentWithLifecycle(lifecycleOwner) {
     val viewState = observe(state)
     if (viewState != null) {
-        MaterialThemeFromAndroidTheme(context) {
+        MaterialThemeFromMdcTheme {
             HomepageScreen(viewState, actioner)
         }
     }
 }
 
 @Composable
-private fun HomepageScreen(
-    viewState: HomepageViewState,
-    actioner: (HomepageAction) -> Unit
-) {
+private fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
     if (viewState.isLoading && viewState.items.isNullOrEmpty()) {
         Box(modifier = Modifier.padding(24.dp).fillMaxHeight().fillMaxWidth()) {
             CircularProgressIndicator()
         }
     } else {
-        Row {
-            AdapterList(data = viewState.items.values.flatten()) {
-                ContentItem(content = it, onItemClick = { actioner(ContentItemClick(it)) })
-            }
-            AdapterList(data = viewState.items.values.flatten()) {
-                ContentItem(content = it, onItemClick = { actioner(ContentItemClick(it)) })
-            }
-        }
+        ContentList(viewState.items) { actioner(ContentItemClick(it)) }
+    }
+}
+
+@Composable
+fun ContentList(
+    items: RowItems,
+    actioner: (Item) -> Unit
+) {
+    AdapterList(data = items.values.flatten()) {
+        ContentItem(content = it, onItemClick = { actioner(it) })
     }
 }
 

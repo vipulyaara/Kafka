@@ -8,6 +8,7 @@ import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Shape
 import androidx.ui.layout.EdgeInsets
+import androidx.ui.layout.InnerPadding
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
@@ -33,7 +34,7 @@ fun ButtonRegular(
         shape = shape,
         elevation = elevation,
         contentColor = contentColor,
-        innerPadding = regularButtonPadding
+        padding = regularButtonPadding
     ) {
         Text(text = text, style = MaterialTheme.typography.button.alignCenter())
     }
@@ -48,7 +49,7 @@ fun ButtonSmall(
     shape: Shape = RectangleShape,
     elevation: Dp = 2.dp,
     border: Border? = Border(1.dp, MaterialTheme.colors.background),
-    paddings: EdgeInsets = smallButtonPadding
+    paddings: InnerPadding = smallButtonPadding
 ) =
     Button(
         modifier = modifier,
@@ -58,15 +59,15 @@ fun ButtonSmall(
         contentColor = contentColor,
         border = border,
         elevation = elevation,
-        innerPadding = paddings
+        padding = paddings
     ) {
         Text(text = text, style = MaterialTheme.typography.button.alignCenter(), maxLines = 1)
     }
 
 val regularButtonPadding =
-    EdgeInsets(left = 24.dp, right = 24.dp, top = 16.dp, bottom = 16.dp)
+    InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
 
 val smallButtonPadding =
-    EdgeInsets(top = 10.dp, bottom = 10.dp, left = 24.dp, right = 24.dp)
+    InnerPadding(top = 10.dp, bottom = 10.dp, start = 24.dp, end = 24.dp)
 
 val tinyButtonPadding = LayoutPadding(start = 12.dp, end = 12.dp, top = 4.dp, bottom = 4.dp)

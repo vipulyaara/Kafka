@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_search"
+        android:id="@+id/menud_dark_mode"
         android:icon="@drawable/ic_sun"
         android:title="Dark mode"
         app:showAsAction="always" />

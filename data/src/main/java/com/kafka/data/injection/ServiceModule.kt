@@ -47,9 +47,7 @@ class ServiceModule {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(
-                MoshiConverterFactory.create(
-                    Moshi.Builder().add(SingleToArrayAdapter.INSTANCE).build()
-                )
+                MoshiConverterFactory.create(Moshi.Builder().add(SingleToArrayAdapter.INSTANCE).build())
             )
             .client(okHttpClient)
     }

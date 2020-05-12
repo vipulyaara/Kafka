@@ -23,8 +23,6 @@ import com.kafka.player.domain.CommandPlayer
 import com.kafka.player.ui.playingItemId
 import com.kafka.ui.detail.ItemDetailAction
 import com.kafka.ui.detail.ItemDetailViewState
-import com.kafka.ui.player.Play
-import com.kafka.ui.player.PlayerAction
 import com.kafka.ui_common.BaseViewModel
 import com.kafka.ui_common.Event
 import com.kafka.user.extensions.showToast
@@ -53,7 +51,8 @@ class ItemDetailViewModel @Inject constructor(
 ) : BaseViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val pendingActions = Channel<ItemDetailAction>(Channel.BUFFERED)
     val navigateToContentDetailAction = MutableLiveData<Event<Item>>()
-    val navigateToPlayerAction = MutableLiveData<Event<PlayerAction>>()
+    val navigateToPlayerAction = MutableLiveData<Event<String>>()
+    val navigateToReaderAction = MutableLiveData<Event<String?>>()
     var imageResource: Int = 0
 
     init {
@@ -106,11 +105,17 @@ class ItemDetailViewModel @Inject constructor(
                 is ItemDetailAction.RelatedItemClick -> navigateToContentDetailAction.postValue(Event(action.item))
                 is ItemDetailAction.Play -> {
                     onPlayClicked()
-                    navigateToPlayerAction.postValue(Event(Play(viewState.value?.itemDetail?.itemId!!)))
+                    navigateToPlayerAction.postValue(Event(viewState.value?.itemDetail?.itemId!!))
+                }
+                is ItemDetailAction.Read -> {
+                    navigateToReaderAction.postValue(Event(getReaderUrl()))
                 }
             }
         }
     }
+
+    private fun getReaderUrl() =
+        viewState.value?.itemDetail?.files?.firstOrNull { it.readerUrl != null }?.readerUrl
 
     private fun onPlayClicked() {
         addRecentItem(AddRecentItem.Params(viewState.value?.itemDetail?.itemId!!))

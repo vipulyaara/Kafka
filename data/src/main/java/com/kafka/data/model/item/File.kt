@@ -8,45 +8,45 @@ import org.threeten.bp.LocalDateTime
 
 data class File(
     @Json(name = "album")
-    val album: String,
+    val album: String?,
     @Json(name = "artist")
-    val artist: String,
+    val artist: String?,
     @Json(name = "bitrate")
-    val bitrate: String,
+    val bitrate: String?,
     @Json(name = "btih")
-    val btih: String,
+    val btih: String?,
     @Json(name = "crc32")
-    val crc32: String,
+    val crc32: String?,
     @Json(name = "genre")
-    val creator: String,
+    val creator: String?,
     @Json(name = "format")
-    val format: String,
+    val format: String?,
     @Json(name = "genre")
-    val genre: String,
+    val genre: String?,
     @Json(name = "height")
-    val height: String,
+    val height: String?,
     @Json(name = "length")
-    val length: String,
+    val length: String?,
     @Json(name = "md5")
-    val md5: String,
+    val md5: String?,
     @Json(name = "mtime")
-    val mtime: String,
+    val mtime: String?,
     @Json(name = "name")
-    val name: String,
+    val name: String?,
     @Json(name = "original")
-    val original: String,
+    val original: String?,
     @Json(name = "rotation")
-    val rotation: String,
+    val rotation: String?,
     @Json(name = "sha1")
-    val sha1: String,
+    val sha1: String?,
     @Json(name = "size")
-    val size: String,
+    val size: String?,
     @Json(name = "source")
-    val source: String,
+    val source: String?,
     @Json(name = "title")
-    val title: String,
+    val title: String?,
     @Json(name = "track")
-    val track: String,
+    val track: String?,
     @Json(name = "width")
-    val width: String
+    val width: String?
 )

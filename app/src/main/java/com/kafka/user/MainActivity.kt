@@ -1,7 +1,6 @@
 package com.kafka.user
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kafka.user.common.BaseActivity
@@ -19,7 +18,7 @@ class MainActivity : BaseActivity() {
             inflateMenu(R.menu.menu_master)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menu_search -> { NightModeManager.toggleNightMode(this@MainActivity) }
+                    R.id.menud_dark_mode -> { NightModeManager.toggleNightMode(this@MainActivity) }
                     else -> { }
                 }
                 true

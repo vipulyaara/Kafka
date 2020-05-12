@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kafka.reader">
 
-    /
+    <application>
+
+    <activity
+        android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:screenOrientation="sensor"
+        android:theme="@style/FinestWebViewTheme.Light" />
+    </application>
 </manifest>

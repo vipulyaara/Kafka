@@ -1,9 +1,8 @@
-
 import com.android.build.gradle.BaseExtension
 
 buildscript {
     extra["kotlin_version"] = "1.3.71"
-    extra["compose_version"] = "0.1.0-dev08"
+    extra["compose_version"] = "0.1.0-dev10"
     repositories {
         google()
         mavenCentral()
@@ -75,6 +74,7 @@ subprojects {
                 plugin(Kotlin.androidPlugin)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin(Kotlin.kapt)
+                plugin(Release.MavenPublish.plugin)
             }
         }
 
@@ -90,7 +90,6 @@ subprojects {
 
         configure<BaseExtension> {
             compileSdkVersion(Kafka.compileSdkVersion)
-
 
             defaultConfig {
                 minSdkVersion(Kafka.minSdkVersion)

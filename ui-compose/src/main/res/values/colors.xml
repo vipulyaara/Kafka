@@ -20,7 +20,7 @@
     <color name="shadow_light">#575C70</color>
 
     <color name="background">#FFFFFF</color>
-    <color name="background_light">#fff</color>
+    <color name="background_light">#f8f8f8</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#000</color>

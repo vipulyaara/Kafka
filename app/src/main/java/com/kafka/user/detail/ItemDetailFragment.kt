@@ -10,12 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kafka.player.ui.PlayerViewModel
+import com.kafka.reader.Reader
 import com.kafka.ui.detail.composeContentDetailScreen
+import com.kafka.ui.player.Play
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
-import com.kafka.user.common.itemDetailDeepLinkUri
-import com.kafka.user.common.playerDeepLinkUri
+import com.kafka.ui_common.itemDetailDeepLinkUri
+import com.kafka.ui_common.playerDeepLinkUri
+import com.kafka.ui_common.readerDeepLinkUri
 import javax.inject.Inject
+
 
 class ItemDetailFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -25,20 +29,21 @@ class ItemDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner,
-            EventObserver {
-                findNavController().navigate(itemDetailDeepLinkUri(it.itemId))
-            })
+        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
+            findNavController().navigate(itemDetailDeepLinkUri(it.itemId))
+        })
 
-        viewModel.navigateToPlayerAction.observe(viewLifecycleOwner,
-            EventObserver {
-                playerViewModel.submitAction(it)
-                findNavController().navigate(playerDeepLinkUri())
-            })
+        viewModel.navigateToPlayerAction.observe(viewLifecycleOwner, EventObserver {
+            playerViewModel.submitAction(Play(it))
+            findNavController().navigate(playerDeepLinkUri())
+        })
 
-        ItemDetailFragmentArgs.fromBundle(
-            requireArguments()
-        ).let {
+        viewModel.navigateToReaderAction.observe(viewLifecycleOwner, EventObserver {
+            Reader.url = it
+            findNavController().navigate(readerDeepLinkUri())
+        })
+
+        ItemDetailFragmentArgs.fromBundle(requireArguments()).let {
             viewModel.imageResource = it.imageResource
             viewModel.observeItemDetail(it.itemId)
             viewModel.updateItemDetail(it.itemId)

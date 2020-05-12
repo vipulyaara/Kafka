@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.kafka.ui.home.composeHomepageScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
-import com.kafka.user.common.searchDeepLinkUri
+import com.kafka.ui_common.searchDeepLinkUri
 import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
 import javax.inject.Inject
 

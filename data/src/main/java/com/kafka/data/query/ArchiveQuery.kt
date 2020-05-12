@@ -29,7 +29,7 @@ sealed class ResultTye {
 }
 
 data class ArchiveQuery(
-    var title: String,
+    var title: String? = null,
     val queries: ArrayMap<String, String> = ArrayMap(),
     val resultTye: ResultTye = ResultTye.Row,
     val position: Int = 0
@@ -48,7 +48,7 @@ fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
 }
 
 fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
-    queries[_mediaType] = _audio
+//    queries[_mediaType] = _audio
     queries[_creator] = author
     return this
 }
@@ -62,7 +62,7 @@ fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
 fun ArchiveQuery.buildRemoteQuery(): String {
     var query = ""
     val joiner = "+AND+"
-    queries[_collection] = _librivoxaudio
+//    queries[_collection] = _librivoxaudio
     for ((key, value) in queries.entries) {
         query = query.plus("$key:($value)$joiner")
     }
@@ -78,6 +78,6 @@ fun ArchiveQuery.toQueryString(): String {
     queries.keys.first().let {
         where += "$it like '%${queries[it]?.replace(' ', '%')}%'$joiner"
     }
-    val orderBy = " order by title"
+    val orderBy = " "
     return selectFrom + where.removeSuffix(joiner) + orderBy
 }

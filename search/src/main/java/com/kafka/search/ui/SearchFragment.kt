@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.kafka.ui.search.composeSearchScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
+import com.kafka.ui_common.itemDetailDeepLinkUri
 import javax.inject.Inject
 
 /**
@@ -25,9 +26,10 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-//            navController.navigate(HomepageFragmentDirections.toContentDetail(it))
-        })
+        viewModel.navigateToContentDetailAction.observe(
+            viewLifecycleOwner,
+            EventObserver { navController.navigate(itemDetailDeepLinkUri(it.itemId)) }
+        )
     }
 
     override fun onCreateView(

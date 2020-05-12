@@ -5,14 +5,15 @@ import androidx.compose.Composable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.ui.core.Alignment
+import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
+import androidx.ui.core.ScaleFit
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.ScaleFit
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
 import androidx.ui.material.Card
@@ -25,6 +26,7 @@ import com.kafka.data.entities.filterMp3
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
 import com.kafka.ui.R
+import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composePlayerScreen(
     lifecycleOwner: LifecycleOwner,
@@ -33,7 +35,7 @@ fun ViewGroup.composePlayerScreen(
 ): Any = setContentWithLifecycle(lifecycleOwner) {
     val viewState = observe(state)
     if (viewState != null) {
-        MaterialThemeFromAndroidTheme(context) {
+        MaterialThemeFromMdcTheme {
             PlayerScreen(viewState, actioner)
         }
     }
@@ -117,7 +119,7 @@ fun ImageCover() {
         val image = getRandomAuthorResource()
         Image(
             asset = imageResource(id = image),
-            scaleFit = ScaleFit.FillHeight
+            contentScale = ContentScale.Crop
         )
     }
 }

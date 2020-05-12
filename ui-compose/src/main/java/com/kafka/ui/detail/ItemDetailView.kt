@@ -3,26 +3,24 @@ package com.kafka.ui.detail
 import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.state
+import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.*
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.ScaleFit
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
 import androidx.ui.material.*
-import androidx.ui.material.ripple.RippleEffectFactory
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
-import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.RecentItem
-import com.kafka.data.entities.formattedDescription
+import com.kafka.data.entities.*
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
+import com.kafka.ui.graphics.LoadNetworkImage
 import com.kafka.ui.widget.regularButtonPadding
 
 @Composable
-fun ContentDetailItem(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (ItemDetailAction) -> Unit) {
+fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (ItemDetailAction) -> Unit) {
     val showDialog = state { false }
     Stack {
         Column {
@@ -35,11 +33,12 @@ fun ContentDetailItem(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner
                 style = MaterialTheme.typography.h2.alignCenter(),
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.paddingHV(horizontal = 20.dp).padding(top = 24.dp) + Modifier.gravity(ColumnAlign.Center)
+                modifier = Modifier.paddingHV(horizontal = 20.dp)
+                    .padding(top = 24.dp) + Modifier.gravity(ColumnAlign.Center)
             )
 
             Text(
-                text = "by " + itemDetail?.creator,
+                text = itemDetail?.creator ?: "",
                 style = MaterialTheme.typography.h3.alignCenter(),
                 modifier = Modifier.paddingHV(
                     horizontal = 20.dp,
@@ -51,11 +50,11 @@ fun ContentDetailItem(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner
                     text = itemDetail.formattedDescription(),
                     maxLines = 3,
                     style = MaterialTheme.typography.body2.lineHeight(1.4).alignCenter(),
-                    modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 24.dp)
+                    modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
                 )
             }
 
-            ActionButtons(actioner)
+            ActionButtons(itemDetail, actioner)
         }
         DescriptionDialog(showDialog = showDialog, description = itemDetail.formattedDescription())
     }
@@ -71,51 +70,49 @@ fun ImageCover(modifier: Modifier, itemDetail: ItemDetail?) {
     ) {
         val image =
             if (itemDetail?.coverImageResource != 0) itemDetail?.coverImageResource else getRandomAuthorResource()
-        Image(
-            asset = imageResource(id = image ?: getRandomAuthorResource()),
-            scaleFit = ScaleFit.FillHeight
-        )
+//        Image(
+//            asset = imageResource(id = image ?: getRandomAuthorResource()),
+//            scaleFit = ScaleFit.FillHeight
+//        )
+        LoadNetworkImage(data = itemDetail?.coverImage ?: "", contentScale = ContentScale.Crop)
     }
 }
 
 @Composable
-fun ActionButtons(actioner: (ItemDetailAction) -> Unit) {
-    Row(modifier = Modifier.padding(16.dp).gravity(ColumnAlign.Center)) {
+fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit) {
+    Row(modifier = Modifier.padding(8.dp).gravity(ColumnAlign.Center)) {
         ProvideEmphasis(emphasis = EmphasisAmbient.current.disabled) {
-            Button(
-                modifier = Modifier.weight(0.49f),
-                backgroundColor = MaterialTheme.colors.surface,
-                shape = RoundedCornerShape(2.dp),
-                contentColor = MaterialTheme.colors.onSecondary,
-                elevation = 24.dp,
-                border = Border(0.dp, colors().background),
-                innerPadding = regularButtonPadding,
-                onClick = {}
-            ) {
-                Text(
-                    modifier = Modifier.gravity(ColumnAlign.Center).fillMaxWidth(),
+            if (itemDetail.hasText()) {
+                ButtonItem(
+                    modifier = Modifier.weight(0.5f),
                     text = "READ",
-                    style = MaterialTheme.typography.button.alignCenter()
-                )
+                    actioner = { actioner(ItemDetailAction.Read()) })
             }
         }
 
-        Box(modifier = Modifier.weight(0.04f)) {}
+        if (itemDetail.hasAudio()) {
+            ButtonItem(
+                modifier = Modifier.weight(0.5f),
+                text = "PLAY",
+                actioner = { actioner(ItemDetailAction.Play()) })
+        }
+    }
+}
 
+@Composable
+fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
+    Row(modifier = modifier) {
         Button(
-            modifier = Modifier.weight(0.49f),
-            backgroundColor = MaterialTheme.colors.surface,
-            elevation = 24.dp,
-            border = Border(0.dp, colors().background),
+            modifier = Modifier.paddingHV(horizontal = 8.dp),
+            backgroundColor = MaterialTheme.colors.primary,
+            elevation = 12.dp,
             shape = RoundedCornerShape(2.dp),
             contentColor = MaterialTheme.colors.onPrimary,
-            onClick = {
-                actioner(ItemDetailAction.Play())
-            },
-            innerPadding = regularButtonPadding
+            onClick = actioner,
+            padding = regularButtonPadding
         ) {
             Text(
-                text = "PLAY",
+                text = text,
                 style = MaterialTheme.typography.button.alignCenter(),
                 modifier = Modifier.gravity(RowAlign.Center).fillMaxWidth()
             )

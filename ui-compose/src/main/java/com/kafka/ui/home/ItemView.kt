@@ -1,6 +1,7 @@
 package com.kafka.ui.home
 
 import androidx.compose.Composable
+import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.SimpleImage
@@ -30,11 +31,11 @@ fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
                 shape = RoundedCornerShape(6.dp),
                 elevation = 0.dp
             ) {
-                if (content.coverImageResource == 0) {
-                    LoadNetworkImage(data = content.coverImage ?: "")
-                } else {
-                    SimpleImage(image = imageResource(id = content.coverImageResource))
-                }
+//                if (content.coverImageResource <= 0) {
+                    LoadNetworkImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
+//                } else {
+//                    SimpleImage(image = imageResource(id = content.coverImageResource))
+//                }
             }
 
             Text(

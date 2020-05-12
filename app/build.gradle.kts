@@ -9,6 +9,7 @@ dependencies {
     implementation(project(Kafka.UiCommon.nameDependency))
     implementation(project(Kafka.Search.nameDependency))
     implementation(project(Kafka.Player.nameDependency))
+    implementation(project(Kafka.Reader.nameDependency))
 
     implementation(Kotlin.stdlib)
     implementation(Jsoup.core)

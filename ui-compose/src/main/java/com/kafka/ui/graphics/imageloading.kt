@@ -19,14 +19,12 @@ package com.kafka.ui.graphics
 import android.graphics.ColorMatrixColorFilter
 import androidx.animation.FloatPropKey
 import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.compose.onCommit
-import androidx.compose.remember
-import androidx.compose.stateFor
+import androidx.compose.*
 import androidx.core.graphics.drawable.toBitmap
 import androidx.ui.animation.Transition
 import androidx.ui.core.*
 import androidx.ui.foundation.Box
+import androidx.ui.foundation.Image
 import androidx.ui.geometry.Offset
 import androidx.ui.graphics.*
 import androidx.ui.graphics.painter.ImagePainter
@@ -87,8 +85,8 @@ fun LoadNetworkImageWithCrossfade(
     data: Any,
     transformations: List<Transformation> = emptyList(),
     alignment: Alignment = Alignment.Center,
-    scaleFit: ScaleFit = ScaleFit.Fit,
-    modifier: Modifier = Modifier.None
+    contentScale: ContentScale = ContentScale.Fit,
+    modifier: Modifier = Modifier
 ) = WithConstraints(modifier) { constraints, _ ->
     var imgLoadState by stateFor(data) { ImageLoadState.Empty }
 
@@ -128,7 +126,7 @@ fun LoadNetworkImageWithCrossfade(
             val cf = ColorMatrixColorFilter(matrix)
             childModifier = childModifier.clipToBounds().paint(
                 painter = AndroidColorMatrixImagePainter(image, cf),
-                scaleFit = scaleFit,
+                contentScale = contentScale,
                 alignment = alignment
             )
         }
@@ -144,7 +142,10 @@ fun LoadNetworkImageWithCrossfade(
 fun LoadNetworkImage(
     data: Any,
     transformations: List<Transformation> = emptyList(),
-    modifier: Modifier = Modifier.None
+    alignment: Alignment = Alignment.Center,
+    contentScale: ContentScale = ContentScale.Fit,
+    colorFilter: ColorFilter? = null,
+    modifier: Modifier = Modifier
 ) = WithConstraints(modifier) { constraints, _ ->
     val width = when {
         constraints.hasFixedWidth -> constraints.maxWidth
@@ -160,10 +161,16 @@ fun LoadNetworkImage(
 
     val image = loadImage(data, width.value, height.value, transformations)
 
-    Box(
-        modifier.plus(
-            image?.let { Modifier.clipToBounds().paint(ImagePainter(image)) } ?: Modifier.None)
-    )
+    val mod = if (image != null) {
+        Modifier.clipToBounds().paint(
+            painter = ImagePainter(image),
+            contentScale = contentScale,
+            alignment = alignment,
+            colorFilter = colorFilter
+        )
+    } else Modifier
+
+    Box(modifier.plus(mod))
 }
 
 /**

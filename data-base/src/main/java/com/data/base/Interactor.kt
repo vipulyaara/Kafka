@@ -30,6 +30,7 @@ abstract class Interactor<in P> {
                     }
                 }
             } catch (t: TimeoutCancellationException) {
+                e(t) { t.localizedMessage ?: "timeout handle" }
                 channel.send(InvokeTimeout)
             }
         }
