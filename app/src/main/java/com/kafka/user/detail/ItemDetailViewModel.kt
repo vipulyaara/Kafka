@@ -25,7 +25,6 @@ import com.kafka.ui.detail.ItemDetailAction
 import com.kafka.ui.detail.ItemDetailViewState
 import com.kafka.ui_common.BaseViewModel
 import com.kafka.ui_common.Event
-import com.kafka.user.extensions.showToast
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -46,8 +45,7 @@ class ItemDetailViewModel @Inject constructor(
     private val commandPlayer: CommandPlayer,
     observeRecentItems: ObserveRecentItems,
     private val loadingState: ObservableLoadingCounter,
-    private val errorState: ObservableErrorCounter,
-    @ApplicationContext private val context: Context
+    private val errorState: ObservableErrorCounter
 ) : BaseViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val pendingActions = Channel<ItemDetailAction>(Channel.BUFFERED)
     val navigateToContentDetailAction = MutableLiveData<Event<Item>>()
@@ -73,8 +71,7 @@ class ItemDetailViewModel @Inject constructor(
         viewModelScope.launch {
             errorState.observable.distinctUntilChanged()
                 .debounce(500).execute {
-                    it?.message?.let { context.showToast(it) }
-                    this
+                    copy(error = it?.message)
                 }
         }
 

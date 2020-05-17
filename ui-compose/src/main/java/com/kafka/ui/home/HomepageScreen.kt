@@ -34,7 +34,7 @@ fun ViewGroup.composeHomepageScreen(
 }
 
 @Composable
-private fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
+fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
     if (viewState.isLoading && viewState.items.isNullOrEmpty()) {
         Box(modifier = Modifier.padding(24.dp).fillMaxHeight().fillMaxWidth()) {
             CircularProgressIndicator()

@@ -1,7 +1,6 @@
 package com.data.base.mapper
 
 interface Mapper<F, T> {
-
     fun map(from: F): T
 }
 

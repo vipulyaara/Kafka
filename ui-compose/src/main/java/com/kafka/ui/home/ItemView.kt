@@ -7,16 +7,19 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.layout.*
+import androidx.ui.layout.Column
+import androidx.ui.layout.padding
+import androidx.ui.layout.preferredSize
+import androidx.ui.layout.preferredWidth
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
-import com.kafka.ui.graphics.LoadNetworkImage
 import com.kafka.ui.lineHeight
 import com.kafka.ui.paddingHV
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
@@ -25,11 +28,11 @@ fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
         Column(modifier = Modifier.padding(12.dp)) {
             Card(
                 modifier = Modifier.preferredSize(size),
-                shape = RoundedCornerShape(0.dp),
-                elevation = 0.dp
+                shape = RoundedCornerShape(2.dp),
+                elevation = 6.dp
             ) {
-                if (content.coverImageResource <= 0) {
-                    LoadNetworkImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
+                if (content.coverImageResource > 0) {
+                    CoilImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
                 } else {
                     SimpleImage(image = imageResource(id = content.coverImageResource))
                 }

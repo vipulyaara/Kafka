@@ -9,11 +9,9 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.kafka.ui.home.composeHomepageScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
 import com.kafka.ui_common.searchDeepLinkUri
-import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
 import javax.inject.Inject
 
 /**
@@ -27,10 +25,10 @@ class HomepageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.navigateToContentDetailAction.observe(
-            viewLifecycleOwner,
-            EventObserver { navController.navigate(toItemDetail(it.itemId, it.coverImageResource)) }
-        )
+//        viewModel.navigateToContentDetailAction.observe(
+//            viewLifecycleOwner,
+//            EventObserver { navController.navigate(toItemDetail(it.itemId, it.coverImageResource)) }
+//        )
 
         viewModel.navigateToSearchAction.observe(
             viewLifecycleOwner,
@@ -47,7 +45,7 @@ class HomepageFragment : BaseFragment() {
     ): View? {
         return FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            composeHomepageScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
+//            composeHomepageScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
         }
     }
 }

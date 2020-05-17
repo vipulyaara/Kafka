@@ -11,10 +11,6 @@ import androidx.core.content.ContextCompat
  */
 fun <Service> ContextWrapper.getService(name: String) = getSystemService(name) as Service
 
-fun Context.showToast(message: String?, length: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, message, length).show()
-}
-
 fun Context.getColorCompat(resource: Int) = ContextCompat.getColor(this, resource)
 
 fun Context.resolveActivity(): Activity {

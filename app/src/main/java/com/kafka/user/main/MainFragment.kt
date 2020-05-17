@@ -1,4 +1,4 @@
-package com.kafka.search.ui
+package com.kafka.user.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,18 +9,21 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.kafka.search.ui.SearchViewModel
 import com.kafka.ui.actions.ItemClickAction
+import com.kafka.ui.home.ContentItemClick
+import com.kafka.ui.main.composeMainScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
 import com.kafka.ui_common.itemDetailDeepLinkUri
+import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
+import com.kafka.user.home.HomepageViewModel
 import javax.inject.Inject
 
-/**
- * @author Vipul Kumar; dated 02/02/19.
- */
-class SearchFragment : BaseFragment() {
+class MainFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchViewModel: SearchViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val homepageViewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
     private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,6 +31,11 @@ class SearchFragment : BaseFragment() {
 
         searchViewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
             (it as? ItemClickAction)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
+        })
+        homepageViewModel.pendingActionLiveData.observe(viewLifecycleOwner, EventObserver {
+            (it as? ContentItemClick)?.let { navController.navigate(
+                toItemDetail(it.item.itemId, it.item.coverImageResource)
+            ) }
         })
     }
 
@@ -38,7 +46,13 @@ class SearchFragment : BaseFragment() {
     ): View? {
         return FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-//            composeMainScreen(viewLifecycleOwner, searchViewModel.viewState, searchViewModel::submitAction)
+            composeMainScreen(
+                viewLifecycleOwner,
+                searchViewModel.viewState,
+                homepageViewModel.viewState,
+                searchViewModel::submitAction,
+                homepageViewModel::submitAction
+            )
         }
     }
 }

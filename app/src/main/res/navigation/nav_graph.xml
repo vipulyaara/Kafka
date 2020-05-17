@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_search">
+    app:startDestination="@id/navigation_main">
 
     <fragment
         android:id="@+id/navigation_homepage"
@@ -22,6 +22,11 @@
         android:name="com.kafka.search.ui.SearchFragment">
 
         <deepLink app:uri="app.kafka://search" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_main"
+        android:name="com.kafka.user.main.MainFragment">
     </fragment>
 
     <fragment

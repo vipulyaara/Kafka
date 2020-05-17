@@ -10,18 +10,19 @@ import androidx.ui.foundation.TextFieldValue
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.input.ImeAction
-import androidx.ui.layout.*
+import androidx.ui.layout.Row
+import androidx.ui.layout.fillMaxWidth
+import androidx.ui.layout.padding
 import androidx.ui.material.Card
 import androidx.ui.text.TextRange
 import androidx.ui.unit.dp
 import com.kafka.ui.*
-import com.kafka.ui.R
 
 @Composable
 fun SearchView(value: String, onSearch: (String) -> Unit) {
     val state = state { value }
     Card(
-        modifier = Modifier.padding(24.dp),
+        modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 8.dp),
         elevation = 1.dp,
         border = Border(1.dp, Color(0xFFE2E3E9)),
         shape = RoundedCornerShape(8.dp),

@@ -41,15 +41,11 @@ class ReaderFragment : BaseFragment() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     debug { progress.toString() }
-                    progressBar.progress = progress
+                    progressBar?.progress = progress
                 }
             }
         }
     }
-
-//    private fun configureWebView() {
-//        FinestWebView.Builder(requireContext()).show(viewModel.preparePdfUrl(Reader.url ?: ""))
-//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)

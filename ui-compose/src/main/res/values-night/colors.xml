@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#C7AF60</color>
+    <color name="colorPrimary">#ffad33</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#F64D74</color>
     <color name="colorAccentDark">#1E328D</color>
 
     <color name="app_blue">#3D64FF</color>
 
-    <color name="background_blue">#883D64FF</color>
+    <color name="background_blue">#1f2633</color>
 
     <color name="onPrimary">#ffffff</color>
     <color name="onAccent">#ffffff</color>

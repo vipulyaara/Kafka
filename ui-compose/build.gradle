@@ -45,6 +45,7 @@ dependencies {
 
 
     implementation(project(":data"))
+    implementation(project(":ui-common"))
 
     implementation("androidx.compose:compose-runtime:$compose_version")
     implementation("androidx.ui:ui-framework:$compose_version")
@@ -54,7 +55,8 @@ dependencies {
     implementation("androidx.ui:ui-animation:$compose_version")
     implementation "androidx.ui:ui-tooling:$compose_version"
     implementation "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.0-SNAPSHOT"
 
-    implementation "io.coil-kt:coil:0.9.5"
+    implementation "io.coil-kt:coil:0.10.1"
     implementation "com.dropbox.mobile.store:store4:4.0.0-alpha03"
 }

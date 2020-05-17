@@ -1,5 +1,3 @@
-import Kotlin.kapt
-
 fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
     asNode().appendNode("dependencies").let { depNode ->
         configurations.implementation.allDependencies.forEach {
@@ -24,7 +22,7 @@ publishing {
             }
             groupId = "com.kafka"
             artifactId = project.name
-            version = "0.0.3-test"
+            version = "0.0.1-alpha"
 
             pom {
                 licenses {
@@ -47,7 +45,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/vipulyaara/kafka")
             credentials {
                 username = "vipulyaara"
-                password = "5bcfed1d042e5aebe1a58068f95094fa93b55503"
+                password = "7684cd343d2db17c1f1830bd321a78980317993d"
             }
         }
     }

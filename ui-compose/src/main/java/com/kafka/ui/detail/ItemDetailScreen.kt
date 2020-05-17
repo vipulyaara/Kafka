@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.HorizontalScroller
@@ -17,6 +16,7 @@ import com.kafka.data.extensions.letEmpty
 import com.kafka.ui.home.ContentItem
 import com.kafka.ui.observe
 import com.kafka.ui.setContentWithLifecycle
+import com.kafka.ui_common.showToast
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeContentDetailScreen(
@@ -28,6 +28,10 @@ fun ViewGroup.composeContentDetailScreen(
     if (viewState != null) {
         MaterialThemeFromMdcTheme {
             ContentDetailScreen(viewState, actioner)
+
+            viewState.error?.let {
+                context.showToast(it)
+            }
         }
     }
 }

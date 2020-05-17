@@ -16,8 +16,8 @@ import androidx.ui.unit.dp
 import com.kafka.data.entities.*
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
-import com.kafka.ui.graphics.LoadNetworkImage
 import com.kafka.ui.widget.regularButtonPadding
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (ItemDetailAction) -> Unit) {
@@ -74,7 +74,7 @@ fun ImageCover(modifier: Modifier, itemDetail: ItemDetail?) {
 //            asset = imageResource(id = image ?: getRandomAuthorResource()),
 //            scaleFit = ScaleFit.FillHeight
 //        )
-        LoadNetworkImage(data = itemDetail?.coverImage ?: "", contentScale = ContentScale.Crop)
+        CoilImage(data = itemDetail?.coverImage ?: "", contentScale = ContentScale.Crop)
     }
 }
 
@@ -85,7 +85,7 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
             if (itemDetail.hasText()) {
                 ButtonItem(
                     modifier = Modifier.weight(0.5f),
-                    text = "Continue Reading",
+                    text = "Read",
                     actioner = { actioner(ItemDetailAction.Read()) })
             }
         }

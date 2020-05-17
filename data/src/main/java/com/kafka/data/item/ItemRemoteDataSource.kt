@@ -14,13 +14,14 @@ import javax.inject.Inject
  * @author Vipul Kumar; dated 29/11/18.
  */
 class ItemRemoteDataSource @Inject constructor(
-    private val archiveService: ArchiveService
+    private val archiveService: ArchiveService,
+    private val itemMapper: ItemMapper
 ) {
 
     suspend fun fetchItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Item>> {
         return archiveService
             .search(archiveQuery.buildRemoteQuery())
             .executeWithRetry()
-            .toResult { it.response.docs.map { it.toItem() } }
+            .toResult(itemMapper)
     }
 }
