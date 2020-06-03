@@ -21,6 +21,7 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 
 
 * [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (throughout the data layer; for thread switching)
+* Jetpack compose
 * [Livedata](https://developer.android.com/topic/libraries/architecture/livedata) (between ViewModels and Fragments)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * [Paging Library](https://developer.android.com/topic/libraries/architecture/paging/) (for pagination and integration with room)
