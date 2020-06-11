@@ -8,12 +8,15 @@ import com.kafka.data.data.db.KafkaRoomDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 import kotlin.coroutines.EmptyCoroutineContext
 
 const val databaseName = "kafka.db"
 
+@InstallIn(ApplicationComponent::class)
 @Module(
     includes = [
         RoomDatabaseModule::class,
@@ -23,6 +26,7 @@ const val databaseName = "kafka.db"
 )
 class DatabaseModule
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class RoomDatabaseModule {
     @Singleton
@@ -43,7 +47,7 @@ class RoomDatabaseModule {
     fun providesStoreDispatcher(): CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 }
 
-
+@InstallIn(ApplicationComponent::class)
 @Module
 abstract class DatabaseModuleBinds {
 
@@ -52,6 +56,7 @@ abstract class DatabaseModuleBinds {
     abstract fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase
 }
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class DatabaseDaoModule {
     @Provides

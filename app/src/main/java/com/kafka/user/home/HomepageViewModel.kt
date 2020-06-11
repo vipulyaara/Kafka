@@ -8,7 +8,6 @@ import com.kafka.data.query.languages
 import com.kafka.data.query.queries
 import com.kafka.domain.item.ObserveBatchItems
 import com.kafka.language.domain.UpdateLanguages
-import com.kafka.search.ui.SearchViewModel
 import com.kafka.ui.home.ContentItemClick
 import com.kafka.ui.home.HomepageAction
 import com.kafka.ui.home.HomepageViewState
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class HomepageViewModel @ViewModelInject constructor(
-    private val searchViewModel: SearchViewModel,
     updateLanguages: UpdateLanguages,
     observeBatchItems: ObserveBatchItems
 ) : BaseComposeViewModel<HomepageViewState>(HomepageViewState()) {
@@ -48,7 +46,7 @@ class HomepageViewModel @ViewModelInject constructor(
 
         updateLanguages(UpdateLanguages.Params(languages))
 
-        searchViewModel.updateItems(queries)
+//        searchViewModel.updateItems(queries)
     }
 
     fun submitAction(action: HomepageAction) {
@@ -56,6 +54,6 @@ class HomepageViewModel @ViewModelInject constructor(
     }
 
     fun updateItems() {
-        searchViewModel.updateItems(queries)
+//        searchViewModel.updateItems(queries)
     }
 }

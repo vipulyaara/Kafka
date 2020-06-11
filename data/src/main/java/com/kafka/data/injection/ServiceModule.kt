@@ -1,12 +1,15 @@
 package com.kafka.data.injection
 
-import com.data.base.api.interceptor.*
+import com.data.base.api.interceptor.AcceptDialogInterceptor
+import com.data.base.api.interceptor.PrettyHttpLogging
 import com.data.base.mapper.SingleToArrayAdapter
 import com.kafka.data.data.api.ArchiveService
 import com.kafka.data.data.api.GenericInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 const val baseUrl = "https://archive.org/"
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class ServiceModule {
 

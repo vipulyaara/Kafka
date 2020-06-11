@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
-import dagger.android.support.DaggerAppCompatActivity
 
 /**
  * @author Vipul Kumar; dated 2019-08-15.
  */
 @SuppressLint("Registered")
-open class BaseActivity : DaggerAppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
     private var postponedTransition = false
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

@@ -1,13 +1,12 @@
 package com.kafka.user.detail
 
-import android.content.Context
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.booksByAuthor
 import com.kafka.domain.ObservableErrorCounter
@@ -29,14 +28,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 10/12/18.
  *
  * Implementation of [BaseViewModel] to provide data for item detail.
  */
-class ItemDetailViewModel @Inject constructor(
+class ItemDetailViewModel @ViewModelInject constructor(
     private val updateItemDetail: UpdateItemDetail,
     private val observeItemDetail: ObserveItemDetail,
     private val observeItems: ObserveItems,

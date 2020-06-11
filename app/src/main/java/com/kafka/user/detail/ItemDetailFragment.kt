@@ -14,12 +14,13 @@ import com.kafka.reader.Reader
 import com.kafka.ui.detail.composeContentDetailScreen
 import com.kafka.ui.player.Play
 import com.kafka.ui_common.*
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ItemDetailFragment : BaseFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: ItemDetailViewModel by viewModels(factoryProducer = { viewModelFactory })
-    private val playerViewModel: PlayerViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val viewModel: ItemDetailViewModel by viewModels()
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

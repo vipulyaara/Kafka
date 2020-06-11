@@ -1,9 +1,9 @@
 package com.kafka.reader
 
+import androidx.hilt.lifecycle.ViewModelInject
 import com.kafka.ui_common.BaseViewModel
-import javax.inject.Inject
 
-class ReaderViewModel @Inject constructor(
+class ReaderViewModel @ViewModelInject constructor(
 
 ) : BaseViewModel<ReaderViewState>(ReaderViewState()) {
 

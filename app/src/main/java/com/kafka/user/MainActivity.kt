@@ -5,8 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kafka.user.common.BaseActivity
 import com.kafka.user.config.NightModeManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
 

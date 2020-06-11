@@ -12,7 +12,6 @@ import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.injection.ApplicationId
 import com.kafka.data.injection.Initializers
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.KafkaApplication
 import com.kafka.user.util.CrashlyticsCrashLogger
 import dagger.Binds
 import dagger.Module
@@ -39,12 +38,12 @@ class AppModule {
 
     @ApplicationId
     @Provides
-    fun provideApplicationId(application: KafkaApplication): String = application.packageName
+    fun provideApplicationId(application: Application): String = application.packageName
 
     @Named("app")
     @Provides
     @Singleton
-    fun provideAppPreferences(application: KafkaApplication): SharedPreferences {
+    fun provideAppPreferences(application: Application): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(application)
     }
 
@@ -55,15 +54,13 @@ class AppModule {
     }
 }
 
+@InstallIn(ApplicationComponent::class)
 @Module
 abstract class AppModuleBinds {
     @Binds
     @ApplicationContext
     @Singleton
-    abstract fun provideApplicationContext(application: KafkaApplication): Context
-
-    @Binds
-    abstract fun provideApplication(application: KafkaApplication): Application
+    abstract fun provideApplicationContext(application: Application): Context
 
     @Initializers
     @Multibinds

@@ -61,6 +61,30 @@ object Kafka {
     }
 }
 
+object Android {
+    const val version = "4.2.0-alpha01"
+    const val appPlugin = "com.android.application"
+    const val libPlugin = "com.android.library"
+    const val gradlePlugin = "com.android.tools.build:gradle:$version"
+    const val multiDex = "com.android.support:multidex:"
+}
+
+object Hilt {
+    const val plugin = "dagger.hilt.android.plugin"
+    const val android = "com.google.dagger:hilt-android:2.28-alpha"
+    const val compiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    const val lifecycle_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
+}
+
+object Dagger {
+    private const val version = "2.27"
+    const val dagger = "com.google.dagger:dagger:$version"
+    const val androidSupport = "com.google.dagger:dagger-android-support:$version"
+    const val compiler = "com.google.dagger:dagger-compiler:$version"
+    const val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
+}
+
 object FolioReader{
     val core = "com.folioreader:folioreader:0.5.4"
 }
@@ -112,14 +136,6 @@ object Jsoup {
 object ThreeTenBp {
     private const val version = "1.0.5"
     const val core = "com.jakewharton.threetenabp:threetenabp:$version"
-}
-
-object Android {
-    const val version = "4.1.0-alpha09"
-    const val appPlugin = "com.android.application"
-    const val libPlugin = "com.android.library"
-    const val gradlePlugin = "com.android.tools.build:gradle:$version"
-    const val multiDex = "com.android.support:multidex:"
 }
 
 object AndroidX {
@@ -273,22 +289,6 @@ object OkHttp {
 object Hugo {
     const val version = "1.2.1"
     const val plugin = "com.jakewharton.hugo"
-}
-
-object Hilt {
-    const val plugin = "dagger.hilt.android.plugin"
-    const val android = "com.google.dagger:hilt-android:2.28-alpha"
-    const val compiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
-    const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
-    const val lifecycle_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
-}
-
-object Dagger {
-    private const val version = "2.27"
-    const val dagger = "com.google.dagger:dagger:$version"
-    const val androidSupport = "com.google.dagger:dagger-android-support:$version"
-    const val compiler = "com.google.dagger:dagger-compiler:$version"
-    const val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
 }
 
 object AssistedInject {

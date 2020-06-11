@@ -77,14 +77,15 @@ subprojects {
 
     if (isAndroid) {
 
+
         if (isLibrary) {
             apply {
                 plugin(Android.libPlugin)
                 plugin(Kotlin.androidPlugin)
-                plugin(Hilt.plugin)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin(Kotlin.kapt)
                 plugin(Release.MavenPublish.plugin)
+                plugin(Hilt.plugin)
             }
         }
 

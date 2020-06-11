@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kafka.search.ui.SearchViewModel
 import com.kafka.ui.actions.ItemClickAction
@@ -18,13 +17,11 @@ import com.kafka.ui_common.EventObserver
 import com.kafka.ui_common.itemDetailDeepLinkUri
 import com.kafka.user.home.HomepageViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val searchViewModel: SearchViewModel by viewModels(factoryProducer = { viewModelFactory })
-    private val homepageViewModel: HomepageViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val searchViewModel: SearchViewModel by viewModels()
+    private val homepageViewModel: HomepageViewModel by viewModels()
     private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

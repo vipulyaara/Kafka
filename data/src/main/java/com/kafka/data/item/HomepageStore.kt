@@ -9,11 +9,14 @@ import com.kafka.data.query.ArchiveQuery
 import com.kafka.data.query.asLocalQuery
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 
 typealias ItemStore = Store<ArchiveQuery, List<Item>>
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class ItemStoreModule {
     @Singleton
@@ -28,7 +31,7 @@ class ItemStoreModule {
             .from(
                 fetcher = nonFlowValueFetcher { itemRemoteDataSource.fetchItemsByCreator(it).getOrThrow() },
                 sourceOfTruth = SourceOfTruth.from(
-                    reader = { it: ArchiveQuery -> itemDao.observeQueryItems(it.asLocalQuery()) },
+                    reader = { itemDao.observeQueryItems(it.asLocalQuery()) },
                     writer = { _, value: List<Item> -> itemDao.insertAll(value) },
                     delete = { it: ArchiveQuery -> },
                     deleteAll = itemDao::deleteAll

@@ -1,5 +1,6 @@
 package com.kafka.search.ui
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,9 +24,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(
+class SearchViewModel @ViewModelInject constructor(
     private val observeBatchItems: ObserveBatchItems,
     private val loadingState: ObservableLoadingCounter,
     private val updateBatchItems: UpdateBatchItems,

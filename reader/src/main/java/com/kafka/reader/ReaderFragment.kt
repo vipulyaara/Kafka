@@ -1,27 +1,20 @@
 package com.kafka.reader
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.data.base.extensions.debug
 import com.kafka.ui_common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_webview.*
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class ReaderFragment : BaseFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: ReaderViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val viewModel: ReaderViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

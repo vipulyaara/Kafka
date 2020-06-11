@@ -8,17 +8,14 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.kafka.ui.player.composePlayerScreen
 import com.kafka.ui_common.BaseFragment
-import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
  */
 class PlayerFragment : BaseFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: PlayerViewModel by viewModels(factoryProducer = { viewModelFactory })
+    private val viewModel: PlayerViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
