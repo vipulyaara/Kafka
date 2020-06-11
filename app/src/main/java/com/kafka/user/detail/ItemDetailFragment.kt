@@ -13,13 +13,8 @@ import com.kafka.player.ui.PlayerViewModel
 import com.kafka.reader.Reader
 import com.kafka.ui.detail.composeContentDetailScreen
 import com.kafka.ui.player.Play
-import com.kafka.ui_common.BaseFragment
-import com.kafka.ui_common.EventObserver
-import com.kafka.ui_common.itemDetailDeepLinkUri
-import com.kafka.ui_common.playerDeepLinkUri
-import com.kafka.ui_common.readerDeepLinkUri
+import com.kafka.ui_common.*
 import javax.inject.Inject
-
 
 class ItemDetailFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -57,7 +52,7 @@ class ItemDetailFragment : BaseFragment() {
     ): View? {
         return FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            composeContentDetailScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
+            composeContentDetailScreen(viewModel.viewState, viewModel::submitAction)
         }
     }
 }

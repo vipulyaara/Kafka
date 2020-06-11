@@ -1,8 +1,15 @@
 import com.android.build.gradle.BaseExtension
 
+
+plugins {
+    java
+    kotlin("jvm") version Kotlin.version apply false
+    `maven-publish`
+}
+
 buildscript {
     extra["kotlin_version"] = "1.3.71"
-    extra["compose_version"] = "0.1.0-dev10"
+    extra["compose_version"] = "0.1.0-dev12"
     repositories {
         google()
         mavenCentral()
@@ -13,8 +20,8 @@ buildscript {
     }
     dependencies {
         classpath(Android.gradlePlugin)
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28-alpha")
         classpath("com.google.gms:google-services:4.3.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.pluginVersion}")
     }
@@ -59,10 +66,12 @@ val libraryModules = listOf(
     Kafka.Language.name,
     Kafka.Logger.name
 )
+val publishableModules = listOf(Kafka.Player.name)
 val applicationModules = listOf("app")
 
 subprojects {
     val isLibrary = project.name in libraryModules
+    val isPublishable = project.name in publishableModules
     val isAndroid = project.name in libraryModules || project.name in applicationModules
     val isApplication = project.name in applicationModules
 
@@ -72,9 +81,58 @@ subprojects {
             apply {
                 plugin(Android.libPlugin)
                 plugin(Kotlin.androidPlugin)
+                plugin(Hilt.plugin)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin(Kotlin.kapt)
                 plugin(Release.MavenPublish.plugin)
+            }
+        }
+
+        if (isPublishable) {
+            apply {
+                plugin(Release.MavenPublish.plugin)
+            }
+            fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
+                asNode().appendNode("dependencies").let { depNode ->
+                    configurations.implementation.allDependencies.forEach {
+                        depNode.appendNode("dependency").apply {
+                            appendNode("groupId", it.group)
+                            appendNode("artifactId", it.name)
+                            appendNode("version", it.version)
+                        }
+                    }
+                }
+            }
+
+            publishing {
+                publications {
+                    register(project.name, MavenPublication::class) {
+                        if (project.hasProperty("android")) {
+                            artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
+                                builtBy(tasks.getByPath("assemble"))
+                            }
+                        } else {
+                            from(components["java"])
+                        }
+//                        artifact(sourcesJar)
+                        groupId = Kafka.groupId
+                        artifactId = project.name
+                        version = Kafka.publishVersion
+
+                        pom {
+                            licenses {
+                                license {
+                                    name.set("MIT License")
+                                    url.set("http://www.opensource.org/licenses/mit-license.php")
+                                }
+                            }
+                        }
+
+                        if (project.hasProperty("android")) {
+                            pom.addDependencies()
+                        }
+                    }
+                }
             }
         }
 
@@ -82,6 +140,7 @@ subprojects {
             apply {
                 plugin(Android.appPlugin)
                 plugin(Kotlin.androidPlugin)
+                plugin(Hilt.plugin)
                 plugin(Kotlin.kapt)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin("androidx.navigation.safeargs.kotlin")

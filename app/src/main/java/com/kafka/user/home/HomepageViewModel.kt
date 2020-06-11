@@ -1,5 +1,6 @@
 package com.kafka.user.home
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
@@ -14,12 +15,12 @@ import com.kafka.ui.home.HomepageViewState
 import com.kafka.ui.home.SearchItemClick
 import com.kafka.ui_common.BaseComposeViewModel
 import com.kafka.ui_common.Event
+import com.kafka.ui_common.isLoading
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class HomepageViewModel @Inject constructor(
+class HomepageViewModel @ViewModelInject constructor(
     private val searchViewModel: SearchViewModel,
     updateLanguages: UpdateLanguages,
     observeBatchItems: ObserveBatchItems
@@ -37,12 +38,17 @@ class HomepageViewModel @Inject constructor(
         }
 
         viewModelScope.launchObserve(observeBatchItems) { flow ->
-            flow.distinctUntilChanged().execute { items = it }
+            flow.distinctUntilChanged().execute {
+                isLoading = it.isLoading()
+                it.dataOrNull()?.let { items = it }
+            }
         }
 
         observeBatchItems(ObserveBatchItems.Params(queries))
 
         updateLanguages(UpdateLanguages.Params(languages))
+
+        searchViewModel.updateItems(queries)
     }
 
     fun submitAction(action: HomepageAction) {

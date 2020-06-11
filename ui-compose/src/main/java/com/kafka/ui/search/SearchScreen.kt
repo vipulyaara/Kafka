@@ -1,70 +1,68 @@
 package com.kafka.ui.search
 
 import androidx.compose.Composable
-import androidx.compose.MutableState
+import androidx.compose.state
+import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.foundation.Text
+import androidx.ui.graphics.Color
 import androidx.ui.layout.*
-import androidx.ui.material.Card
 import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Tab
+import androidx.ui.material.TabRow
 import androidx.ui.unit.dp
 import com.data.base.extensions.debug
-import com.kafka.data.entities.Language
 import com.kafka.ui.actions.ItemClickAction
 import com.kafka.ui.actions.SearchAction
 import com.kafka.ui.actions.SubmitQueryAction
-import com.kafka.ui.alignCenter
+import com.kafka.ui.alpha
 import com.kafka.ui.colors
 import com.kafka.ui.home.ContentList
 import com.kafka.ui.paddingHV
-import com.kafka.ui.search.widget.SearchView
+import com.kafka.ui.typography
 
 @Composable
 fun SearchScreen(viewState: SearchViewState, actioner: (SearchAction) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        SearchView(viewState.query ?: "Search for an author...") { actioner(SubmitQueryAction(it)) }
-        Filters(viewState)
+        actioner.invoke(SubmitQueryAction("Franz Kafka"))
 
         debug { "${viewState.isLoading} ${viewState.items.isNullOrEmpty()}" }
-        if (viewState.isLoading && viewState.items.values.flatten().isNullOrEmpty()) {
-            Box(modifier = Modifier.padding(24.dp).fillMaxHeight().fillMaxWidth()) { CircularProgressIndicator() }
+        if (viewState.isLoading && viewState.items.isNullOrEmpty()) {
+            Stack(modifier = Modifier.padding(24.dp).fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.gravity(Alignment.Center))
+            }
         } else {
-            SearchResults(viewState = viewState, actioner = actioner)
+            Stack(modifier = Modifier) {
+                SearchResults(viewState = viewState, actioner = actioner)
+            }
         }
     }
 }
 
 @Composable
-fun Filters(viewState: SearchViewState) {
-    HorizontalScroller(modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 12.dp)) { FilterItem(viewState) }
-}
+fun ContentTabs(tabList: Array<String>, onSelect: (String) -> Unit) {
+    val selectedIndex = state { 0 }
 
-@Composable
-fun FilterItem(viewState: SearchViewState) {
-    val selectedNavigation = androidx.compose.state { viewState.selectedLanguages?.firstOrNull() }
-    Row {
-        viewState.selectedLanguages?.forEach {
-            SelectionButton(it, selectedNavigation)
-        }
-    }
-}
-
-@Composable
-fun SelectionButton(language: Language, selected: MutableState<Language?>) {
-    Clickable(onClick = { selected.value = language }) {
-        Card(
-            modifier = Modifier.paddingHV(horizontal = 2.dp),
-            color = if (selected.value == language) colors().primary else colors().surface,
-            border = Border(1.5.dp, colors().onPrimary),
-            shape = RoundedCornerShape(2.dp),
-            elevation = 2.dp
-        ) {
+    TabRow(
+        modifier = Modifier.height(1.dp),
+        items = tabList.toList(),
+        backgroundColor = Color.Transparent,
+        scrollable = true,
+        selectedIndex = selectedIndex.value
+    ) { position, tabData ->
+        Tab(
+            modifier = Modifier.wrapContentWidth(),
+            selected = selectedIndex.value == position,
+            onSelected = {
+                selectedIndex.value = position
+                onSelect(tabList[selectedIndex.value])
+            }) {
+            val isSelected = selectedIndex.value == position
+            val alpha = if (isSelected) 1f else 0.4f
             Text(
-                modifier = Modifier.paddingHV(horizontal = 12.dp, vertical = 4.dp),
-                text = language.languageName,
-                style = MaterialTheme.typography.body1.alignCenter(),
+                text = tabData ?: "",
+                modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 16.dp),
+                style = typography().body2.copy(color = colors().onPrimary.alpha(alpha = alpha)),
                 maxLines = 1
             )
         }

@@ -4,7 +4,7 @@
     <style name="Theme.Coyote" parent="Base.Theme.Coyote">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/text_heading</item>
-        <item name="colorSurface">@color/background_light</item>
+        <item name="colorSurface">@color/surface</item>
         <item name="android:colorBackground">@color/background</item>
 
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>

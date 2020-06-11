@@ -3,9 +3,10 @@ package com.kafka.ui.main
 import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.compose.MutableState
-import androidx.lifecycle.LifecycleOwner
+import androidx.compose.Recomposer
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
+import androidx.ui.core.setContent
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Stack
 import androidx.ui.layout.fillMaxSize
@@ -17,17 +18,15 @@ import com.kafka.ui.R
 import com.kafka.ui.VectorImage
 import com.kafka.ui.actions.SearchAction
 import com.kafka.ui.home.HomepageAction
-import com.kafka.ui.home.HomepageScreen
 import com.kafka.ui.home.HomepageViewState
 import com.kafka.ui.search.SearchScreen
 import com.kafka.ui.search.SearchViewState
-import com.kafka.ui.setContentWithLifecycle
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 sealed class BottomNavigationItem(val icon: Int) {
-    object Home : BottomNavigationItem(R.drawable.ic_download)
-    object Search : BottomNavigationItem(R.drawable.ic_twotone_search_24)
-    object Library : BottomNavigationItem(R.drawable.ic_headphones)
+    object Home : BottomNavigationItem(R.drawable.ic_headphones)
+    object Search : BottomNavigationItem(R.drawable.ic_layers)
+    object Library : BottomNavigationItem(R.drawable.ic_heart)
     object Profile : BottomNavigationItem(R.drawable.ic_user)
 }
 
@@ -39,18 +38,17 @@ val navigationItems = arrayOf(
 )
 
 fun ViewGroup.composeMainScreen(
-    lifecycleOwner: LifecycleOwner,
     searchViewState: SearchViewState,
     homepageViewState: HomepageViewState,
     searchActioner: (SearchAction) -> Unit,
     homepageActioner: (HomepageAction) -> Unit
-): Any = setContentWithLifecycle(lifecycleOwner) {
+): Any = setContent(Recomposer.current()) {
     val selectedNavigation: MutableState<BottomNavigationItem> = androidx.compose.state { BottomNavigationItem.Home }
     MaterialThemeFromMdcTheme {
         Stack(modifier = Modifier.fillMaxSize()) {
             when (selectedNavigation.value) {
-                BottomNavigationItem.Home -> HomepageScreen(viewState = homepageViewState, actioner = homepageActioner)
-                BottomNavigationItem.Search -> SearchScreen(viewState = searchViewState, actioner = searchActioner)
+                BottomNavigationItem.Home -> SearchScreen(viewState = searchViewState, actioner = searchActioner)
+                BottomNavigationItem.Search -> {}
                 BottomNavigationItem.Library -> { }
                 BottomNavigationItem.Profile -> {}
             }

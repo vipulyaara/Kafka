@@ -11,7 +11,7 @@
 
         <!-- Default widget styles -->
         <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
-        <item name="android:shadowColor">@color/background_light</item>
+        <item name="android:shadowColor">@color/surface</item>
 
         <!-- Type styles -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.Coyote.Headline1</item>
@@ -28,7 +28,7 @@
         <item name="textAppearanceButton">@style/TextAppearance.Coyote.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.Coyote.Overline</item>
 
-        <item name="android:colorBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/surface</item>
 
         <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBody1</item>
         <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBody2</item>
@@ -42,7 +42,7 @@
         <item name="colorSecondary">@color/colorAccent</item>
         <item name="colorSecondaryVariant">@color/colorAccentDark</item>
         <item name="colorOnSecondary">@color/onAccent</item>
-        <item name="colorSurface">@color/background_light</item>
+        <item name="colorSurface">@color/surface</item>
         <item name="android:colorBackground">@color/background</item>
 
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>

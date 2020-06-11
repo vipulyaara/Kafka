@@ -1,16 +1,17 @@
 package com.kafka.user.injection
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
-import com.kafka.data.BuildConfig
 import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.injection.Initializers
 import com.kafka.user.config.NightModeManager
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import dagger.multibindings.IntoSet
 import timber.log.Timber
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class InitializersModule {
 

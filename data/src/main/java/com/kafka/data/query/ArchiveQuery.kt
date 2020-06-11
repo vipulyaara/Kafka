@@ -48,7 +48,7 @@ fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
 }
 
 fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
-//    queries[_mediaType] = _audio
+    queries[_mediaType] = _audio
     queries[_creator] = author
     return this
 }
@@ -69,7 +69,7 @@ fun ArchiveQuery.buildRemoteQuery(): String {
     return query.removeSuffix(joiner)
 }
 
-fun ArchiveQuery.buildLocalQuery() = SimpleSQLiteQuery(toQueryString())
+fun ArchiveQuery.asLocalQuery() = SimpleSQLiteQuery(toQueryString())
 
 fun ArchiveQuery.toQueryString(): String {
     val joiner = " AND "

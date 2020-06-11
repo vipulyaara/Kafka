@@ -4,11 +4,9 @@ import androidx.compose.Composable
 import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Border
 import androidx.ui.foundation.TextField
 import androidx.ui.foundation.TextFieldValue
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.Color
 import androidx.ui.input.ImeAction
 import androidx.ui.layout.Row
 import androidx.ui.layout.fillMaxWidth
@@ -23,22 +21,24 @@ fun SearchView(value: String, onSearch: (String) -> Unit) {
     val state = state { value }
     Card(
         modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 8.dp),
-        elevation = 1.dp,
-        border = Border(1.dp, Color(0xFFE2E3E9)),
+        elevation = 0.dp,
         shape = RoundedCornerShape(8.dp),
-        color = colors().background
+        color = colors().primaryVariant
     ) {
-        Row(modifier = Modifier.padding(14.dp).fillMaxWidth()) {
-            VectorImage(id = R.drawable.ic_twotone_search_24, tint = colors().onSecondary)
+        Row(modifier = Modifier.padding(8.dp).fillMaxWidth()) {
+            VectorImage(
+                id = R.drawable.ic_headphones,
+                tint = colors().secondary,
+                modifier = Modifier.gravity(Alignment.CenterVertically),
+                size = 84.dp
+            )
             TextField(
                 value = TextFieldValue(state.value, TextRange(state.value.length, state.value.length)),
                 onValueChange = { state.value = it.text },
-                modifier = Modifier.padding(start = 16.dp).fillMaxWidth().gravity(Alignment.CenterVertically),
-                textStyle = typography().body1,
+                modifier = Modifier.padding(start = 24.dp).fillMaxWidth().gravity(Alignment.CenterVertically),
+                textStyle = typography().h3,
                 imeAction = ImeAction.Search,
-                onImeActionPerformed = {
-                    onSearch(state.value)
-                }
+                onImeActionPerformed = { onSearch(state.value) }
             )
         }
     }

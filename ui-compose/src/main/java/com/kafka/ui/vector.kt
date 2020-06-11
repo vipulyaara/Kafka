@@ -21,22 +21,23 @@ import androidx.compose.Composable
 import androidx.ui.core.Modifier
 import androidx.ui.core.paint
 import androidx.ui.foundation.Box
-import androidx.ui.foundation.contentColor
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.ColorFilter
 import androidx.ui.graphics.vector.VectorPainter
 import androidx.ui.layout.preferredSize
 import androidx.ui.res.vectorResource
+import androidx.ui.unit.Dp
 
 @Composable
 fun VectorImage(
     modifier: Modifier = Modifier.None,
     @DrawableRes id: Int,
-    tint: Color = colors().onPrimary
+    tint: Color = colors().onPrimary,
+    size: Dp? = null
 ) {
     val vector = vectorResource(id)
     Box(
-        modifier = modifier.preferredSize(vector.defaultWidth, vector.defaultHeight)
+        modifier = modifier.preferredSize(size ?: vector.defaultWidth, size ?: vector.defaultHeight)
             .paint(
                 painter = VectorPainter(vector),
                 colorFilter = ColorFilter.tint(tint)

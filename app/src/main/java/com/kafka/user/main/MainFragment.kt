@@ -16,10 +16,11 @@ import com.kafka.ui.main.composeMainScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.EventObserver
 import com.kafka.ui_common.itemDetailDeepLinkUri
-import com.kafka.user.home.HomepageFragmentDirections.Companion.toItemDetail
 import com.kafka.user.home.HomepageViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainFragment : BaseFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchViewModel: SearchViewModel by viewModels(factoryProducer = { viewModelFactory })
@@ -33,9 +34,7 @@ class MainFragment : BaseFragment() {
             (it as? ItemClickAction)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
         })
         homepageViewModel.pendingActionLiveData.observe(viewLifecycleOwner, EventObserver {
-            (it as? ContentItemClick)?.let { navController.navigate(
-                toItemDetail(it.item.itemId, it.item.coverImageResource)
-            ) }
+            (it as? ContentItemClick)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
         })
     }
 
@@ -47,7 +46,6 @@ class MainFragment : BaseFragment() {
         return FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
             composeMainScreen(
-                viewLifecycleOwner,
                 searchViewModel.viewState,
                 homepageViewModel.viewState,
                 searchViewModel::submitAction,

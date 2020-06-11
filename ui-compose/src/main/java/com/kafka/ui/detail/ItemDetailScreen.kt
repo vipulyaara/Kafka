@@ -2,36 +2,36 @@ package com.kafka.ui.detail
 
 import android.view.ViewGroup
 import androidx.compose.Composable
-import androidx.lifecycle.LifecycleOwner
+import androidx.compose.Recomposer
 import androidx.lifecycle.LiveData
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
+import androidx.ui.core.setContent
 import androidx.ui.foundation.HorizontalScroller
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.layout.*
-import androidx.ui.material.*
+import androidx.ui.material.EmphasisAmbient
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.ProvideEmphasis
+import androidx.ui.material.Surface
 import androidx.ui.unit.dp
 import com.kafka.data.extensions.letEmpty
+import com.kafka.ui.colors
 import com.kafka.ui.home.ContentItem
+import com.kafka.ui.home.FullScreenLoader
 import com.kafka.ui.observe
-import com.kafka.ui.setContentWithLifecycle
 import com.kafka.ui_common.showToast
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeContentDetailScreen(
-    lifecycleOwner: LifecycleOwner,
     state: LiveData<ItemDetailViewState>,
     actioner: (ItemDetailAction) -> Unit
-): Any = setContentWithLifecycle(lifecycleOwner) {
+): Any = setContent(Recomposer.current()) {
     val viewState = observe(state)
     if (viewState != null) {
         MaterialThemeFromMdcTheme {
             ContentDetailScreen(viewState, actioner)
-
-            viewState.error?.let {
-                context.showToast(it)
-            }
+            viewState.error?.let { context.showToast(it) }
         }
     }
 }
@@ -39,9 +39,7 @@ fun ViewGroup.composeContentDetailScreen(
 @Composable
 private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
     if (viewState.isLoading && viewState.itemDetail?.itemId == null) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator()
-        }
+        FullScreenLoader()
     } else {
         ContentDetail(viewState = viewState, actioner = actioner)
     }
@@ -49,7 +47,7 @@ private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemD
 
 @Composable
 private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(color = colors().primaryVariant) {
         VerticalScroller {
             Column {
                 Spacer(Modifier.padding(top = 24.dp))

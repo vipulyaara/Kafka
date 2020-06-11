@@ -1,6 +1,7 @@
 package com.kafka.ui.player
 
 import androidx.compose.Composable
+import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.AdapterList
 import androidx.ui.foundation.Clickable
@@ -27,11 +28,11 @@ fun File(it: File?, actioner: (PlayerAction) -> Unit) {
     Clickable(onClick = { actioner(Play(it?.playbackUrl ?: "")) }) {
         Column(modifier = Modifier.paddingHV(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
             Row {
-                Surface(modifier = Modifier.gravity(RowAlign.Center), color = colors().background) {
+                Surface(modifier = Modifier.gravity(Alignment.CenterVertically), color = colors().background) {
                     VectorImage(id = R.drawable.ic_headphones, tint = colors().primary)
                 }
                 Spacer(modifier = Modifier.preferredWidth(16.dp))
-                Column(modifier = Modifier.gravity(RowAlign.Center)) {
+                Column(modifier = Modifier.gravity(Alignment.CenterVertically)) {
                     Text(text = title, style = typography().body1.lineHeight(1.3))
                     Text(text = subtitle, style = typography().caption.lineHeight(1.3))
                 }

@@ -24,14 +24,7 @@ annotation class ApplicationContext
 @Retention(AnnotationRetention.BINARY)
 annotation class Initializers
 
+@Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IsLowRamDevice
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Customer
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Dispatcher
+@MustBeDocumented
+annotation class ForStore

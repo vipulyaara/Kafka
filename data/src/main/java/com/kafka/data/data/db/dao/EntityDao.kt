@@ -1,6 +1,8 @@
 package com.kafka.data.data.db.dao
 
-import androidx.room.*
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Update
 import com.kafka.data.entities.BaseEntity
 
 interface EntityDao<in E : BaseEntity> {
@@ -15,7 +17,4 @@ interface EntityDao<in E : BaseEntity> {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(entity: E)
-
-    @Delete
-    suspend fun delete(entity: E): Int
 }

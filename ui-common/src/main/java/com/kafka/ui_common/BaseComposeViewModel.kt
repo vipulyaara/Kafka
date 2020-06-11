@@ -1,6 +1,7 @@
 package com.kafka.ui_common
 
 import androidx.lifecycle.ViewModel
+import com.dropbox.android.external.store4.StoreResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -21,3 +22,5 @@ open class BaseComposeViewModel<ViewState : BaseViewState>(var viewState: ViewSt
             }.collect { setState { viewState.stateReducer(it) } }
     }
 }
+
+fun <T> StoreResponse<T>.isLoading() = (this as? StoreResponse.Loading) != null

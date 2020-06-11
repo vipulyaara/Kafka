@@ -6,7 +6,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.asRecentlyVisited
 import com.kafka.data.query.ArchiveQuery
-import com.kafka.data.query.buildLocalQuery
+import com.kafka.data.query.asLocalQuery
 import com.kafka.data.recent.RecentItemLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,7 +23,7 @@ class ItemRepository @Inject constructor(
 ) {
 
     fun observeQueryItems(archiveQuery: ArchiveQuery) =
-        itemLocalDataSource.observeQueryItems(archiveQuery.buildLocalQuery())
+        itemLocalDataSource.observeQueryItems(archiveQuery.asLocalQuery())
 
     fun observeRecentlyVisitedItems(): Flow<List<RecentItem>> {
         return recentItemLocalDataSource.observeRecentlyVisitedItems()

@@ -22,9 +22,10 @@ dependencies {
     implementation(AndroidX.Ktx.viewmodel)
     implementation(AndroidX.Ktx.lifecycle)
 
-    implementation(Dagger.dagger)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
+    implementation(Hilt.android)
+    kapt(Hilt.compiler)
+    implementation(Hilt.lifecycle)
+    kapt(Hilt.lifecycle_compiler)
 
     implementation(Store.core)
 

@@ -10,46 +10,19 @@ fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
     }
 }
 
-publishing {
-    publications {
-        register(project.name, MavenPublication::class) {
-            if (project.hasProperty("android")) {
-                artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
-                    builtBy(tasks.getByPath("assemble"))
-                }
-            } else {
-                from(components["java"])
-            }
-            groupId = "com.kafka"
-            artifactId = project.name
-            version = "0.0.1-alpha"
-
-            pom {
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("http://www.opensource.org/licenses/mit-license.php")
-                    }
-                }
-            }
-
-            if (project.hasProperty("android")) {
-                pom.addDependencies()
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/vipulyaara/kafka")
-            credentials {
-                username = "vipulyaara"
-                password = "7684cd343d2db17c1f1830bd321a78980317993d"
-            }
-        }
-    }
-}
+//publishing {
+//
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/vipulyaara/kafka")
+//            credentials {
+//                username = "vipulyaara"
+//                password = "7684cd343d2db17c1f1830bd321a78980317993d"
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     implementation(project(Kafka.Data.nameDependency))
@@ -86,10 +59,10 @@ dependencies {
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
 
-    implementation(Dagger.dagger)
-    implementation(Dagger.androidSupport)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
+    implementation(Hilt.android)
+    kapt(Hilt.compiler)
+    implementation(Hilt.lifecycle)
+    kapt(Hilt.lifecycle_compiler)
 
     compileOnly(AssistedInject.annotationDagger2)
     kapt(AssistedInject.processorDagger2)

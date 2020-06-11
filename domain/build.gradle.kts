@@ -6,11 +6,14 @@ dependencies {
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
 
-    implementation(Dagger.dagger)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
+    implementation(Hilt.android)
+    kapt(Hilt.compiler)
+    implementation(Hilt.lifecycle)
+    kapt(Hilt.lifecycle_compiler)
 
     implementation(ThreeTenBp.core)
+
+    implementation(Store.core)
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)

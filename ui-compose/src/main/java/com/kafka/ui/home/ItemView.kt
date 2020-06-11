@@ -4,7 +4,6 @@ import androidx.compose.Composable
 import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.Column
@@ -13,7 +12,6 @@ import androidx.ui.layout.preferredSize
 import androidx.ui.layout.preferredWidth
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
-import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
@@ -31,11 +29,7 @@ fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
                 shape = RoundedCornerShape(2.dp),
                 elevation = 6.dp
             ) {
-                if (content.coverImageResource > 0) {
-                    CoilImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
-                } else {
-                    SimpleImage(image = imageResource(id = content.coverImageResource))
-                }
+                CoilImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
             }
 
             Text(

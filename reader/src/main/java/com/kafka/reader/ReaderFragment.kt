@@ -1,21 +1,22 @@
 package com.kafka.reader
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.data.base.extensions.debug
 import com.kafka.ui_common.BaseFragment
-import com.kafka.ui_common.showSnackbar
-import com.thefinestartist.finestwebview.FinestWebView
 import kotlinx.android.synthetic.main.fragment_webview.*
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 import javax.inject.Inject
 
 class ReaderFragment : BaseFragment() {

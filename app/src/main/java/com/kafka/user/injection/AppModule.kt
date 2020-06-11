@@ -12,11 +12,13 @@ import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.injection.ApplicationId
 import com.kafka.data.injection.Initializers
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.util.CrashlyticsCrashLogger
 import com.kafka.user.KafkaApplication
+import com.kafka.user.util.CrashlyticsCrashLogger
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import dagger.multibindings.Multibinds
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Named
@@ -26,6 +28,7 @@ import javax.inject.Singleton
  * DI module that provides objects which will live during the application lifecycle.
  */
 
+@InstallIn(ApplicationComponent::class)
 @Module(includes = [InitializersModule::class, AppModuleBinds::class])
 class AppModule {
 

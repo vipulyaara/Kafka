@@ -17,7 +17,7 @@
     <style name="TextAppearance.Coyote.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
         <item name="fontFamily">@font/circular_std_medium</item>
         <item name="android:fontFamily">@font/circular_std_medium</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
@@ -37,9 +37,9 @@
     </style>
 
     <style name="TextAppearance.Coyote.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/circular</item>
-        <item name="android:fontFamily">@font/circular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/alegreya_bold</item>
+        <item name="android:fontFamily">@font/alegreya_bold</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_subheading</item>
     </style>
 
@@ -53,21 +53,21 @@
     <style name="TextAppearance.Coyote.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/circular_std_medium</item>
         <item name="android:fontFamily">@font/circular_std_medium</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_subheading</item>
     </style>
 
     <style name="TextAppearance.Coyote.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/circular</item>
-        <item name="android:fontFamily">@font/circular</item>
+        <item name="fontFamily">@font/metropolis_regular</item>
+        <item name="android:fontFamily">@font/metropolis_regular</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/text_heading</item>
     </style>
 
     <style name="TextAppearance.Coyote.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/circular</item>
-        <item name="android:fontFamily">@font/circular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/circular_std_medium</item>
+        <item name="android:fontFamily">@font/circular_std_medium</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/text_body</item>
     </style>
 
@@ -78,8 +78,6 @@
         <item name="android:letterSpacing">0.1</item>
         <item name="android:textColor">@color/text_heading</item>
         <item name="android:shadowColor">@color/shadow_light</item>
-        <item name="android:outlineAmbientShadowColor">@color/shadow_light</item>
-        <item name="android:outlineSpotShadowColor">@color/shadow_light</item>
     </style>
 
     <style name="TextAppearance.Coyote.Caption" parent="TextAppearance.MaterialComponents.Caption">

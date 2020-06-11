@@ -1,6 +1,3 @@
-import Kotlin.kapt
-import com.android.build.gradle.BaseExtension
-
 dependencies {
     implementation(project(Kafka.Data.nameDependency))
     implementation(project(Kafka.Domain.nameDependency))
@@ -35,10 +32,11 @@ dependencies {
     implementation(AndroidX.Arch.reactive_streams)
     kapt(AndroidX.Arch.compiler)
 
-    implementation(Dagger.dagger)
-    implementation(Dagger.androidSupport)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
+    implementation(Hilt.android)
+    kapt(Hilt.compiler)
+
+    implementation(Hilt.lifecycle)
+    kapt(Hilt.lifecycle_compiler)
 
     compileOnly(AssistedInject.annotationDagger2)
     kapt(AssistedInject.processorDagger2)

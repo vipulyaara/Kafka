@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffad33</color>
-    <color name="colorPrimaryDark">#F6F7FB</color>
-    <color name="colorAccent">#FD3532</color>
+    <color name="colorPrimary">#FF6F5E</color>
+    <color name="colorPrimaryDark">#fff</color>
+    <color name="colorAccent">#f6bf26</color>
     <color name="colorAccentDark">#1E328D</color>
 
     <color name="app_blue">#3D64FF</color>
@@ -20,7 +20,7 @@
     <color name="shadow_light">#575C70</color>
 
     <color name="background">#FFFFFF</color>
-    <color name="background_light">#f8f8f8</color>
+    <color name="surface">#DFE9FF</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#000</color>

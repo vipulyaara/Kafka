@@ -17,6 +17,7 @@ import com.kafka.ui.actions.SubmitQueryAction
 import com.kafka.ui.search.SearchViewState
 import com.kafka.ui_common.BaseComposeViewModel
 import com.kafka.ui_common.Event
+import com.kafka.ui_common.isLoading
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -52,7 +53,10 @@ class SearchViewModel @Inject constructor(
         observeSelectedLanguages(Unit)
 
         viewModelScope.launchObserve(observeBatchItems) { flow ->
-            flow.distinctUntilChanged().execute { items = it }
+            flow.distinctUntilChanged().execute {
+                it.dataOrNull()?.let { items = it }
+                isLoading = it.isLoading()
+            }
         }
 
         viewModelScope.launch {

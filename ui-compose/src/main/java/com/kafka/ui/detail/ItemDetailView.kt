@@ -3,30 +3,29 @@ package com.kafka.ui.detail
 import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.state
+import androidx.ui.core.Alignment
 import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
+import androidx.ui.foundation.Dialog
+import androidx.ui.foundation.Text
+import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
 import androidx.ui.material.*
-import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.*
-import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
-import com.kafka.ui.widget.regularButtonPadding
 import dev.chrisbanes.accompanist.coil.CoilImage
+import regularButtonPadding
 
 @Composable
 fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (ItemDetailAction) -> Unit) {
     val showDialog = state { false }
     Stack {
         Column {
-            Column(modifier = Modifier.gravity(ColumnAlign.Center)) {
-                ImageCover(modifier = Modifier.gravity(ColumnAlign.Center), itemDetail = itemDetail)
-            }
+                ImageCover(modifier = Modifier.gravity(Alignment.CenterHorizontally), itemDetail = itemDetail)
 
             Text(
                 text = itemDetail?.title ?: "",
@@ -34,22 +33,23 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.paddingHV(horizontal = 20.dp)
-                    .padding(top = 24.dp) + Modifier.gravity(ColumnAlign.Center)
+                    .padding(top = 24.dp).gravity(Alignment.CenterHorizontally)
             )
 
             Text(
                 text = itemDetail?.creator ?: "",
-                style = MaterialTheme.typography.h3.alignCenter(),
+                style = MaterialTheme.typography.h6.alignCenter().copy(color = colors().secondary),
                 modifier = Modifier.paddingHV(
                     horizontal = 20.dp,
                     vertical = 2.dp
-                ) + Modifier.gravity(ColumnAlign.Center)
+                ) + Modifier.gravity(Alignment.CenterHorizontally)
             )
-            Clickable(onClick = { showDialog.value = true }) {
+            Clickable(onClick = { showDialog.value = true }, modifier = Modifier) {
                 Text(
                     text = itemDetail.formattedDescription(),
                     maxLines = 3,
-                    style = MaterialTheme.typography.body2.lineHeight(1.4).alignCenter(),
+                    style = MaterialTheme.typography.body1.lineHeight(1.4).alignCenter().alpha(alpha = 0.5f)
+                        .decrementTextSize(),
                     modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
                 )
             }
@@ -68,19 +68,13 @@ fun ImageCover(modifier: Modifier, itemDetail: ItemDetail?) {
         elevation = 12.dp,
         color = colors().background
     ) {
-        val image =
-            if (itemDetail?.coverImageResource != 0) itemDetail?.coverImageResource else getRandomAuthorResource()
-//        Image(
-//            asset = imageResource(id = image ?: getRandomAuthorResource()),
-//            scaleFit = ScaleFit.FillHeight
-//        )
         CoilImage(data = itemDetail?.coverImage ?: "", contentScale = ContentScale.Crop)
     }
 }
 
 @Composable
 fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit) {
-    Row(modifier = Modifier.padding(8.dp).gravity(ColumnAlign.Center)) {
+    Row(modifier = Modifier.padding(8.dp).gravity(Alignment.CenterHorizontally)) {
         ProvideEmphasis(emphasis = EmphasisAmbient.current.disabled) {
             if (itemDetail.hasText()) {
                 ButtonItem(
@@ -104,8 +98,8 @@ fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.paddingHV(horizontal = 8.dp),
-            backgroundColor = colors().primary,
-            elevation = 12.dp,
+            backgroundColor = colors().background,
+            elevation = 8.dp,
             shape = RoundedCornerShape(2.dp),
             contentColor = MaterialTheme.colors.onPrimary,
             onClick = actioner,
@@ -114,7 +108,7 @@ fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.button.alignCenter(),
-                modifier = Modifier.gravity(RowAlign.Center).fillMaxWidth(),
+                modifier = Modifier.gravity(Alignment.CenterHorizontally).fillMaxWidth(),
                 maxLines = 1
             )
         }

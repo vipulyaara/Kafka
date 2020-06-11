@@ -21,4 +21,7 @@ abstract class ItemDao : EntityDao<Item> {
 
     @Query("select * from item where itemId = :itemId")
     abstract fun getItemByItemId(itemId: String): Item
+
+    @Query("delete from item")
+    abstract suspend fun deleteAll()
 }

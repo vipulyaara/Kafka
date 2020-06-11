@@ -8,7 +8,9 @@ import com.kafka.data.data.db.KafkaRoomDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
+import kotlin.coroutines.EmptyCoroutineContext
 
 const val databaseName = "kafka.db"
 
@@ -34,6 +36,11 @@ class RoomDatabaseModule {
         }
         return builder.build()
     }
+
+    @ForStore
+    @Singleton
+    @Provides
+    fun providesStoreDispatcher(): CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 }
 
 

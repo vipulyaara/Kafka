@@ -1,9 +1,11 @@
 // Library version
 object Kafka {
-    const val name = "app"
+    const val groupId = "com.kafka"
     const val applicationId = "com.kafka.android"
-    const val versionName = "0.0.1"
     const val versionCode = 1
+    const val versionName = "1.0.0"
+
+    const val publishVersion = "0.0.1"
 
     const val compileSdkVersion = 29
     const val minSdkVersion = 23
@@ -83,7 +85,7 @@ object Kotlin {
 }
 
 object Store {
-    private const val version = "4.0.0-alpha03"
+    private const val version = "4.0.0-alpha06"
     const val core = "com.dropbox.mobile.store:store4:$version"
 }
 
@@ -113,7 +115,7 @@ object ThreeTenBp {
 }
 
 object Android {
-    private const val version = "4.1.0-alpha09"
+    const val version = "4.1.0-alpha09"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"
@@ -146,12 +148,11 @@ object AndroidX {
     }
 
     object Compose {
-        const val version = "0.1.0-dev10"
+        const val version = "0.1.0-dev12"
         const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
 
         const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
         const val runtime = "androidx.compose:compose-runtime:$version"
-        const val framework = "androidx.ui:ui-framework:$version"
         const val layout = "androidx.ui:ui-layout:$version"
         const val material = "androidx.ui:ui-material:$version"
         const val foundation = "androidx.ui:ui-foundation:$version"
@@ -272,6 +273,14 @@ object OkHttp {
 object Hugo {
     const val version = "1.2.1"
     const val plugin = "com.jakewharton.hugo"
+}
+
+object Hilt {
+    const val plugin = "dagger.hilt.android.plugin"
+    const val android = "com.google.dagger:hilt-android:2.28-alpha"
+    const val compiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
+    const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    const val lifecycle_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 }
 
 object Dagger {

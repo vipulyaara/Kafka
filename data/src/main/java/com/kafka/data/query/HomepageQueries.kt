@@ -3,9 +3,9 @@ package com.kafka.data.query
 import com.kafka.data.entities.Language
 
 val queries = arrayListOf(
-    ArchiveQuery("Franz Kafka").booksByAuthor("Kafka"),
-    ArchiveQuery("राही मासूम रज़ा").booksByAuthor("राही मासूम रज़ा"),
-    ArchiveQuery("Mirza Ghalib").booksByAuthor("Mirza Ghalib").copy(resultTye = ResultTye.Banner)
+    ArchiveQuery("Mirza Ghalib").booksByAuthor("Mirza Ghalib"),
+    ArchiveQuery("Franz Kafka").booksByAuthor("Franz Kafka"),
+    ArchiveQuery("राही मासूम रज़ा").booksByAuthor("राही मासूम रज़ा")
 ).mapIndexed { index, archiveQuery ->  archiveQuery.copy(position = index) }
 
 val languages = arrayListOf(
