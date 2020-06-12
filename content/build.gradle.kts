@@ -9,6 +9,7 @@ dependencies {
     implementation(Jsoup.core)
 
     implementation(Store.core)
+    implementation("info.androidhive:imagefilters:1.0.7")
 
     implementation(AndroidX.appCompat)
     implementation(AndroidX.fragment)
@@ -48,6 +49,7 @@ dependencies {
     implementation(AndroidX.Ktx.reactiveStreams)
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
+    implementation(AndroidX.Ktx.liveData)
     implementation(AndroidX.Ktx.lifecycle)
 
     implementation(KotlinX.Coroutines.core)

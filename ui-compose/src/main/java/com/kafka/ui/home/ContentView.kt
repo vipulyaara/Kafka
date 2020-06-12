@@ -2,7 +2,6 @@ package com.kafka.ui.home
 
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
-import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
@@ -18,7 +17,6 @@ import com.kafka.ui.colors
 import com.kafka.ui.detail.RatingWidget
 import com.kafka.ui.paddingHV
 import com.kafka.ui.typography
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 fun randomColor() =
     arrayOf(
@@ -38,7 +36,7 @@ fun ContentView(content: Item, onItemClick: (Item) -> Unit) {
         Clickable({ onItemClick(content) }) {
             Row(modifier = Modifier.padding(16.dp)) {
                 Card(modifier = Modifier.size(76.dp).gravity(Alignment.CenterVertically)) {
-                    CoilImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
+//                    CoilImage(data = content.coverImage ?: "", contentScale = ContentScale.Crop)
                 }
                 Column(modifier = Modifier.padding(start = 20.dp)) {
                     Text(text = content.title ?: "", style = typography().subtitle1, maxLines = 2)

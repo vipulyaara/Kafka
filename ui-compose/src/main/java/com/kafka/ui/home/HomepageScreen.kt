@@ -1,62 +1,55 @@
 package com.kafka.ui.home
 
+import android.view.ViewGroup
 import androidx.compose.Composable
+import androidx.compose.Recomposer
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
+import androidx.ui.core.setContent
 import androidx.ui.foundation.AdapterList
-import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Stack
-import androidx.ui.layout.fillMaxSize
-import androidx.ui.layout.padding
+import androidx.ui.layout.*
+import androidx.ui.livedata.observeAsState
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.unit.dp
-import com.data.base.extensions.debug
-import com.kafka.data.entities.Item
-import com.kafka.ui.typography
+import com.kafka.ui.actions.HomepageAction
+import com.kafka.ui.actions.ItemClickAction
+import com.kafka.ui.actions.SubmitQueryAction
+import com.kafka.ui.search.HomepageViewState
+import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
-@Composable
-fun FullScreenLoader() {
-    Stack(modifier = Modifier.padding(24.dp).fillMaxSize()) {
-        CircularProgressIndicator(modifier = Modifier.gravity(Alignment.Center))
+fun ViewGroup.composeSearchScreen(
+    homepageViewState: HomepageViewState,
+    actioner: (HomepageAction) -> Unit
+): Any = setContent(Recomposer.current()) {
+    MaterialThemeFromMdcTheme {
+        HomepageScreen(viewState = homepageViewState, actioner = actioner)
     }
 }
 
 @Composable
 fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
-    debug { "Homepage $viewState" }
-    if (viewState.isLoading && viewState.items.isNullOrEmpty()) {
-        FullScreenLoader()
-    } else {
-        ContentList(viewState.items) { actioner(ContentItemClick(it)) }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        if (viewState.items?.value.isNullOrEmpty()) actioner.invoke(SubmitQueryAction("Franz Kafka"))
+        if (viewState.isLoading && viewState.items?.value.isNullOrEmpty()) {
+            FullScreenLoader()
+        } else {
+            ContentResults(viewState = viewState, actioner = actioner)
+        }
     }
 }
 
 @Composable
-fun ContentList(
-    items: List<Item>?,
-    actioner: (Item) -> Unit
-) {
-//    VerticalScroller {
-//            Column {
-//                items?.forEach {
-//                    ContentView(content = it, onItemClick = actioner)
-//                }
-//            }
-//    }
-
-    AdapterList(data = items ?: arrayListOf()) {
-        ContentView(content = it, onItemClick = actioner)
+fun ContentResults(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
+    val items = viewState.items?.observeAsState()
+    AdapterList(modifier = Modifier.fillMaxSize(), data = items?.value ?: emptyList()) {
+        ContentItem(content = it, onItemClick = { actioner(ItemClickAction(it))})
     }
 }
 
+
 @Composable
-fun Header(actioner: (HomepageAction) -> Unit) {
-    Clickable(onClick = { actioner.invoke(SearchItemClick) }) {
-        Text(
-            modifier = Modifier.padding(top = 96.dp, bottom = 64.dp, start = 32.dp),
-            text = "Search",
-            style = typography().h5
-        )
+fun FullScreenLoader() {
+    Stack(modifier = Modifier.padding(24.dp).fillMaxSize()) {
+        CircularProgressIndicator(modifier = Modifier.gravity(Alignment.Center))
     }
 }

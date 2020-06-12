@@ -1,7 +1,11 @@
 package com.kafka.data.detail
 
 import com.data.base.mapper.Mapper
-import com.kafka.data.entities.*
+import com.kafka.data.entities.File
+import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.isMp3
+import com.kafka.data.entities.isPdf
+import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.data.model.item.ItemDetailResponse
 import java.net.URL
 import javax.inject.Inject
@@ -18,6 +22,7 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             creator = metadata.creator?.joinToString(),
             mediaType = metadata.mediatype,
             files = files.filter { it.title != null },
+            coverImageResource = getRandomAuthorResource(),
             coverImage = "https://archive.org/services/img/${metadata.identifier}"
         )
     }

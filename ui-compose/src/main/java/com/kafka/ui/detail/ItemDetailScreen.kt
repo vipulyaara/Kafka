@@ -13,10 +13,8 @@ import androidx.ui.layout.*
 import androidx.ui.material.EmphasisAmbient
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ProvideEmphasis
-import androidx.ui.material.Surface
 import androidx.ui.unit.dp
 import com.kafka.data.extensions.letEmpty
-import com.kafka.ui.colors
 import com.kafka.ui.home.ContentItem
 import com.kafka.ui.home.FullScreenLoader
 import com.kafka.ui.observe
@@ -47,19 +45,17 @@ private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemD
 
 @Composable
 private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
-    Surface(color = colors().primaryVariant) {
-        VerticalScroller {
-            Column {
-                Spacer(Modifier.padding(top = 24.dp))
-                ItemDetailView(
-                    itemDetail = viewState.itemDetail,
-                    recentItem = viewState.recentItem,
-                    actioner = actioner
-                )
-                Spacer(Modifier.padding(top = 48.dp))
-                ItemsByCreator(viewState = viewState, actioner = actioner)
-                Spacer(modifier = Modifier.preferredHeight(48.dp))
-            }
+    VerticalScroller {
+        Column {
+            Spacer(Modifier.padding(top = 24.dp))
+            ItemDetailView(
+                itemDetail = viewState.itemDetail,
+                recentItem = viewState.recentItem,
+                actioner = actioner
+            )
+            Spacer(Modifier.height(48.dp))
+            ItemsByCreator(viewState = viewState, actioner = actioner)
+            Spacer(Modifier.height(48.dp))
         }
     }
 }

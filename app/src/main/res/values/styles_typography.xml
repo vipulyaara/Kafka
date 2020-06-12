@@ -58,8 +58,8 @@
     </style>
 
     <style name="TextAppearance.Coyote.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/metropolis_regular</item>
-        <item name="android:fontFamily">@font/metropolis_regular</item>
+        <item name="fontFamily">@font/circular</item>
+        <item name="android:fontFamily">@font/circular</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/text_heading</item>
     </style>

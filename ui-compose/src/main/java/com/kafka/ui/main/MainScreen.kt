@@ -16,11 +16,8 @@ import androidx.ui.material.BottomNavigationItem
 import androidx.ui.unit.dp
 import com.kafka.ui.R
 import com.kafka.ui.VectorImage
-import com.kafka.ui.actions.SearchAction
-import com.kafka.ui.home.HomepageAction
-import com.kafka.ui.home.HomepageViewState
-import com.kafka.ui.search.SearchScreen
-import com.kafka.ui.search.SearchViewState
+import com.kafka.ui.actions.HomepageAction
+import com.kafka.ui.search.HomepageViewState
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 sealed class BottomNavigationItem(val icon: Int) {
@@ -38,16 +35,18 @@ val navigationItems = arrayOf(
 )
 
 fun ViewGroup.composeMainScreen(
-    searchViewState: SearchViewState,
     homepageViewState: HomepageViewState,
-    searchActioner: (SearchAction) -> Unit,
-    homepageActioner: (HomepageAction) -> Unit
+    searchActioner: (HomepageAction) -> Unit
 ): Any = setContent(Recomposer.current()) {
     val selectedNavigation: MutableState<BottomNavigationItem> = androidx.compose.state { BottomNavigationItem.Home }
     MaterialThemeFromMdcTheme {
         Stack(modifier = Modifier.fillMaxSize()) {
             when (selectedNavigation.value) {
-                BottomNavigationItem.Home -> SearchScreen(viewState = searchViewState, actioner = searchActioner)
+                BottomNavigationItem.Home -> {}
+//                    SearchScreen(
+//                    viewState = homepageViewState,
+//                    actioner = searchActioner
+//                )
                 BottomNavigationItem.Search -> {}
                 BottomNavigationItem.Library -> { }
                 BottomNavigationItem.Profile -> {}

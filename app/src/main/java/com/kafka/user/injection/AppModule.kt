@@ -28,7 +28,7 @@ import javax.inject.Singleton
  */
 
 @InstallIn(ApplicationComponent::class)
-@Module(includes = [InitializersModule::class, AppModuleBinds::class])
+@Module
 class AppModule {
 
     @Provides

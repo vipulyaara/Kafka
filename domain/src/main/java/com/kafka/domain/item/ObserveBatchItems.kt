@@ -22,8 +22,7 @@ class ObserveBatchItems @Inject constructor(
     override fun createObservable(params: Params): Flow<StoreResponse<List<Item>>> {
         return flow {
             params.archiveQuery.map { query ->
-                itemStore.stream(StoreRequest.cached(query, true))
-                    .collect { emit(it) }
+                itemStore.stream(StoreRequest.cached(query, false)).collect { emit(it) }
             }
         }
     }

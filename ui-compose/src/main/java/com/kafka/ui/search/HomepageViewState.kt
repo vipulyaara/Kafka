@@ -1,7 +1,9 @@
-package com.kafka.ui.home
+package com.kafka.ui.search
 
 import androidx.compose.Model
+import androidx.lifecycle.LiveData
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.Language
 import com.kafka.ui_common.BaseViewState
 
 /**
@@ -9,6 +11,8 @@ import com.kafka.ui_common.BaseViewState
  */
 @Model
 data class HomepageViewState(
-    var items: List<Item>? = null,
+    var query: String? = null,
+    var selectedLanguages: List<Language>? = null,
+    var items: LiveData<List<Item>?>? = null,
     var isLoading: Boolean = false
 ) : BaseViewState

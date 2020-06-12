@@ -1,7 +1,7 @@
 include(":logger")
 include(":ui-common")
 include(":language")
-include(":search")
+include(":content")
 include(":domain")
 include(":reader")
 include(":ui-compose")

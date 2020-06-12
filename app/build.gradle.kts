@@ -6,7 +6,7 @@ dependencies {
     implementation(project(Kafka.Language.nameDependency))
     implementation(project(Kafka.UiCompose.nameDependency))
     implementation(project(Kafka.UiCommon.nameDependency))
-    implementation(project(Kafka.Search.nameDependency))
+    implementation(project(Kafka.Content.nameDependency))
     implementation(project(Kafka.Player.nameDependency))
     implementation(project(Kafka.Reader.nameDependency))
 
@@ -24,6 +24,7 @@ dependencies {
     implementation(AndroidX.workManager)
     implementation(AndroidX.viewPager2)
     implementation(AndroidX.palette)
+    implementation(AndroidX.appStartup)
     implementation(AndroidX.Paging.common)
     implementation(AndroidX.Paging.runtime)
 
@@ -55,6 +56,7 @@ dependencies {
     implementation(AndroidX.Ktx.sqlite)
     implementation(AndroidX.Ktx.viewmodel)
     implementation(AndroidX.Ktx.lifecycle)
+    implementation(AndroidX.Ktx.liveData)
 
     implementation(KotlinX.Coroutines.core)
     implementation(KotlinX.Coroutines.android)

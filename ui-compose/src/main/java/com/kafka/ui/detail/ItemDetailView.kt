@@ -9,14 +9,18 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.Dialog
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
+import androidx.ui.foundation.clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
 import androidx.ui.material.*
+import androidx.ui.material.ripple.ripple
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.*
 import com.kafka.ui.*
+import com.kafka.ui.R
 import dev.chrisbanes.accompanist.coil.CoilImage
 import regularButtonPadding
 
@@ -25,7 +29,7 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
     val showDialog = state { false }
     Stack {
         Column {
-                ImageCover(modifier = Modifier.gravity(Alignment.CenterHorizontally), itemDetail = itemDetail)
+            ImageCover(modifier = Modifier.gravity(Alignment.CenterHorizontally), itemDetail = itemDetail)
 
             Text(
                 text = itemDetail?.title ?: "",
@@ -44,15 +48,14 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
                     vertical = 2.dp
                 ) + Modifier.gravity(Alignment.CenterHorizontally)
             )
-            Clickable(onClick = { showDialog.value = true }, modifier = Modifier) {
-                Text(
-                    text = itemDetail.formattedDescription(),
-                    maxLines = 3,
-                    style = MaterialTheme.typography.body1.lineHeight(1.4).alignCenter().alpha(alpha = 0.5f)
-                        .decrementTextSize(),
-                    modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
-                )
-            }
+            Text(
+                text = itemDetail.formattedDescription(),
+                maxLines = 3,
+                style = MaterialTheme.typography.body1
+                    .lineHeight(1.4).alignCenter().alpha(alpha = 0.8f).decrementTextSize(),
+                modifier = Modifier.clickable(onClick = { showDialog.value = true }).ripple(enabled = false)
+                    .paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
+            )
 
             ActionButtons(itemDetail, actioner)
         }
@@ -79,7 +82,8 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
             if (itemDetail.hasText()) {
                 ButtonItem(
                     modifier = Modifier.weight(0.5f),
-                    text = "Read",
+                    text = "READ",
+                    icon = R.drawable.ic_layers,
                     actioner = { actioner(ItemDetailAction.Read()) })
             }
         }
@@ -87,30 +91,41 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
         if (itemDetail.hasAudio()) {
             ButtonItem(
                 modifier = Modifier.weight(0.5f),
-                text = "Play",
+                text = "PLAY",
+                icon = R.drawable.ic_headphones,
                 actioner = { actioner(ItemDetailAction.Play()) })
         }
     }
 }
 
 @Composable
-fun ButtonItem(modifier: Modifier, text: String, actioner: () -> Unit) {
+fun ButtonItem(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.paddingHV(horizontal = 8.dp),
-            backgroundColor = colors().background,
-            elevation = 8.dp,
-            shape = RoundedCornerShape(2.dp),
-            contentColor = MaterialTheme.colors.onPrimary,
+            backgroundColor = colors().secondary,
+            elevation = 4.dp,
+            shape = RoundedCornerShape(1.dp),
+            contentColor = Color.White,
             onClick = actioner,
             padding = regularButtonPadding
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.button.alignCenter(),
-                modifier = Modifier.gravity(Alignment.CenterHorizontally).fillMaxWidth(),
-                maxLines = 1
-            )
+
+            Row(modifier = Modifier.gravity(Alignment.CenterHorizontally)) {
+                VectorImage(
+                    id = icon,
+                    modifier = Modifier.paddingHV(horizontal = 8.dp).gravity(Alignment.CenterVertically),
+                    size = 20.dp,
+                    tint = Color.White
+                )
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.button.alignCenter(),
+                    modifier = Modifier.gravity(Alignment.CenterVertically).fillMaxWidth(),
+                    maxLines = 1
+                )
+            }
+
         }
     }
 }

@@ -22,7 +22,7 @@ import com.kafka.ui.*
 import com.kafka.ui.home.randomColor
 
 @Composable
-fun SearchFilters(viewState: SearchViewState) {
+fun SearchFilters(viewState: HomepageViewState) {
     HorizontalScroller(modifier = Modifier.paddingHV(vertical = 12.dp)) {
         val selectedLanguages = state { viewState.selectedLanguages?.firstOrNull() }
         Row {

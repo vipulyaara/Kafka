@@ -40,8 +40,8 @@ object Kafka {
         const val nameDependency = ":$name"
     }
 
-    object Search {
-        const val name = "search"
+    object Content {
+        const val name = "content"
         const val nameDependency = ":$name"
     }
 
@@ -144,6 +144,7 @@ object AndroidX {
     const val drawerLayout = "androidx.drawerlayout:drawerlayout:1.1.0-alpha02"
     const val annotation = "androidx.annotation:annotation:1.0.0"
     const val palette = "androidx.palette:palette:1.0.0-alpha1"
+    const val appStartup = "androidx.startup:startup-runtime:1.0.0-alpha01"
     const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0-rc01"
     const val appCompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
     const val leanback = "androidx.leanback:leanback:1.1.0-alpha02"
@@ -164,13 +165,14 @@ object AndroidX {
     }
 
     object Compose {
-        const val version = "0.1.0-dev12"
+        const val version = "0.1.0-dev13"
         const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
 
         const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
         const val runtime = "androidx.compose:compose-runtime:$version"
         const val layout = "androidx.ui:ui-layout:$version"
         const val material = "androidx.ui:ui-material:$version"
+        const val livedata = "androidx.ui:ui-livedata:$version"
         const val foundation = "androidx.ui:ui-foundation:$version"
         const val animation = "androidx.ui:ui-animation:$version"
         const val tooling = "androidx.ui:ui-tooling:$version"

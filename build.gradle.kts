@@ -9,7 +9,7 @@ plugins {
 
 buildscript {
     extra["kotlin_version"] = "1.3.71"
-    extra["compose_version"] = "0.1.0-dev12"
+    extra["compose_version"] = "0.1.0-dev13"
     repositories {
         google()
         mavenCentral()
@@ -62,7 +62,7 @@ val libraryModules = listOf(
     Kafka.UiCommon.name,
     Kafka.UiCompose.name,
     Kafka.Reader.name,
-    Kafka.Search.name,
+    Kafka.Content.name,
     Kafka.Language.name,
     Kafka.Logger.name
 )
