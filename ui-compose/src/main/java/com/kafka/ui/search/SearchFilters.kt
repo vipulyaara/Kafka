@@ -19,7 +19,6 @@ import androidx.ui.material.Surface
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Language
 import com.kafka.ui.*
-import com.kafka.ui.home.randomColor
 
 @Composable
 fun SearchFilters(viewState: HomepageViewState) {
@@ -35,7 +34,7 @@ fun SearchFilters(viewState: HomepageViewState) {
 
 @Composable
 fun SelectionButton(language: Language, selected: MutableState<Language?>) {
-    val color = randomColor()
+    val color = colors().background
     val icon = if (selected.value == language) R.drawable.ic_check_circle else R.drawable.ic_circle
     Clickable(onClick = { selected.value = language }) {
         Surface(

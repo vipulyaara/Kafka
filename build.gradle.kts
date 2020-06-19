@@ -55,18 +55,18 @@ allprojects {
 }
 
 val libraryModules = listOf(
-    Kafka.Data.name,
-    Kafka.BaseData.name,
-    Kafka.Domain.name,
-    Kafka.Player.name,
-    Kafka.UiCommon.name,
-    Kafka.UiCompose.name,
-    Kafka.Reader.name,
-    Kafka.Content.name,
-    Kafka.Language.name,
-    Kafka.Logger.name
+    Libs.Data.name,
+    Libs.BaseData.name,
+    Libs.Domain.name,
+    Libs.Player.name,
+    Libs.UiCommon.name,
+    Libs.UiCompose.name,
+    Libs.Reader.name,
+    Libs.Content.name,
+    Libs.Language.name,
+    Libs.Logger.name
 )
-val publishableModules = listOf(Kafka.Player.name)
+val publishableModules = listOf(Libs.Player.name)
 val applicationModules = listOf("app")
 
 subprojects {
@@ -116,9 +116,9 @@ subprojects {
                             from(components["java"])
                         }
 //                        artifact(sourcesJar)
-                        groupId = Kafka.groupId
+                        groupId = Libs.groupId
                         artifactId = project.name
-                        version = Kafka.publishVersion
+                        version = Libs.publishVersion
 
                         pom {
                             licenses {
@@ -149,15 +149,15 @@ subprojects {
         }
 
         configure<BaseExtension> {
-            compileSdkVersion(Kafka.compileSdkVersion)
+            compileSdkVersion(Libs.compileSdkVersion)
 
             defaultConfig {
-                minSdkVersion(Kafka.minSdkVersion)
-                targetSdkVersion(Kafka.compileSdkVersion)
+                minSdkVersion(Libs.minSdkVersion)
+                targetSdkVersion(Libs.compileSdkVersion)
                 vectorDrawables.useSupportLibrary = true
                 multiDexEnabled = true
-                versionCode = Kafka.versionCode
-                versionName = Kafka.versionName
+                versionCode = Libs.versionCode
+                versionName = Libs.versionName
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 

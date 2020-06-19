@@ -1,5 +1,5 @@
-// Library version
-object Kafka {
+
+object Libs {
     const val groupId = "com.kafka"
     const val applicationId = "com.kafka.android"
     const val versionCode = 1

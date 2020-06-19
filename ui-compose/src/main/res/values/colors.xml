@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CFA224</color>
+    <color name="colorPrimary">#3D84FD</color>
     <color name="colorPrimaryDark">#fff</color>
-    <color name="colorAccent">#CFA224</color>
+    <color name="colorAccent">#3D84FD</color>
     <color name="colorAccentDark">#1E328D</color>
 
     <color name="app_blue">#3D64FF</color>

@@ -2,6 +2,7 @@ package com.kafka.ui.player
 
 import android.view.ViewGroup
 import androidx.compose.Composable
+import androidx.compose.state
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.ui.core.Alignment
@@ -10,14 +11,11 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
-import androidx.ui.material.Card
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Surface
+import androidx.ui.material.*
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
@@ -42,29 +40,21 @@ fun ViewGroup.composePlayerScreen(
 
 @Composable
 fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerAction) -> Unit) {
-    Surface(color = colors().background) {
-        VerticalScroller {
-            Column {
-                PlayerNowPlaying(modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp))
-                PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).paddingHV(vertical = 24.dp))
-                Surface(color = colors().surface) {
-                    Column {
-                        Spacer(modifier = Modifier.padding(top = 12.dp))
-                        Card(
-                            modifier = Modifier.gravity(Alignment.CenterHorizontally).preferredSize(56.dp, 4.dp),
-                            color = colors().background
-                        ) {}
-                        Spacer(modifier = Modifier.padding(top = 24.dp))
-                        PlayerQueue(
-                            files = viewState.itemDetail?.files?.filterMp3() ?: arrayListOf(),
-                            actioner = actioner
-                        )
-                    }
+    val (state, onStateChange) = state { DrawerState.Closed }
+    BottomDrawerLayout(
+        drawerState = state,
+        onStateChange = onStateChange,
+        drawerContent = { QueBottomDrawer(viewState, actioner) },
+        bodyContent = {
+            Stack(modifier = Modifier.fillMaxSize()) {
+                Column {
+                    PlayerNowPlaying(modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp))
+                    PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).paddingHV(vertical = 24.dp))
                 }
-//            MiniPlayer(modifier = Modifier.None, playerData = viewState.playerData)
-        }
-        }
-    }
+                MiniPlayer(modifier = Modifier.gravity(Alignment.BottomCenter), playerData = viewState.playerData)
+            }
+        })
+
 }
 
 @Composable
@@ -82,7 +72,7 @@ fun PlayerNowPlaying(modifier: Modifier) {
 
         Text(
             text = "by Mirza Ghalib",
-            style = MaterialTheme.typography.h3.alignCenter(),
+            style = MaterialTheme.typography.subtitle2.alignCenter().copy(color = colors().primary),
             modifier = Modifier.paddingHV(
                 horizontal = 20.dp,
                 vertical = 2.dp
@@ -98,7 +88,7 @@ fun PlayerControls(modifier: Modifier) {
         VectorImage(id = R.drawable.ic_heart_sign, modifier = iconModifier)
         VectorImage(id = R.drawable.ic_step_backward, modifier = iconModifier)
         Card(shape = CircleShape, color = colors().secondary, modifier = iconModifier) {
-            Box(modifier = Modifier.padding(12.dp)) {
+            Box(modifier = Modifier.padding(13.dp)) {
                 VectorImage(id = R.drawable.ic_pause, tint = colors().background)
             }
         }
@@ -120,5 +110,26 @@ fun ImageCover() {
             asset = imageResource(id = image),
             contentScale = ContentScale.Crop
         )
+    }
+}
+
+@Composable
+fun QueBottomDrawer(
+    viewState: PlayerViewState,
+    actioner: (PlayerAction) -> Unit
+) {
+    Surface(color = colors().surface) {
+        Column {
+            Spacer(modifier = Modifier.padding(top = 12.dp))
+            Card(
+                modifier = Modifier.gravity(Alignment.CenterHorizontally).preferredSize(56.dp, 4.dp),
+                color = colors().background
+            ) {}
+            Spacer(modifier = Modifier.padding(top = 24.dp))
+            PlayerQueue(
+                files = viewState.itemDetail?.files?.filterMp3() ?: arrayListOf(),
+                actioner = actioner
+            )
+        }
     }
 }

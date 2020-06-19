@@ -41,7 +41,8 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
             )
 
             Text(
-                text = itemDetail?.creator ?: "",
+                text = listOfNotNull(itemDetail?.creator, itemDetail?.collection?.split(",")?.firstOrNull())
+                    .joinToString(bulletSymbol),
                 style = MaterialTheme.typography.h6.alignCenter().copy(color = colors().secondary),
                 modifier = Modifier.paddingHV(
                     horizontal = 20.dp,
@@ -103,29 +104,29 @@ fun ButtonItem(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.paddingHV(horizontal = 8.dp),
-            backgroundColor = colors().secondary,
-            elevation = 4.dp,
-            shape = RoundedCornerShape(1.dp),
+            backgroundColor = Color(0xFF3D84FD),
+            elevation = 1.dp,
+            shape = RoundedCornerShape(5.dp),
             contentColor = Color.White,
             onClick = actioner,
             padding = regularButtonPadding
         ) {
-
-            Row(modifier = Modifier.gravity(Alignment.CenterHorizontally)) {
-                VectorImage(
-                    id = icon,
-                    modifier = Modifier.paddingHV(horizontal = 8.dp).gravity(Alignment.CenterVertically),
-                    size = 20.dp,
-                    tint = Color.White
-                )
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.button.alignCenter(),
-                    modifier = Modifier.gravity(Alignment.CenterVertically).fillMaxWidth(),
-                    maxLines = 1
-                )
+            Stack(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.gravity(Alignment.Center)) {
+                    VectorImage(
+                        id = icon,
+                        modifier = Modifier.padding(end = 16.dp),
+                        size = 20.dp,
+                        tint = Color.White
+                    )
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.button.alignCenter(),
+                        modifier = Modifier,
+                        maxLines = 1
+                    )
+                }
             }
-
         }
     }
 }

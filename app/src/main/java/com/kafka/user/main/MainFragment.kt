@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.search.ui.HomepageViewModel
 import com.kafka.ui.actions.ItemClickAction
 import com.kafka.ui.home.composeSearchScreen
 import com.kafka.ui_common.BaseFragment
-import com.kafka.ui_common.EventObserver
 import com.kafka.ui_common.itemDetailDeepLinkUri
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,9 +24,11 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homepageViewModel.navigateToContentDetailAction.observe(viewLifecycleOwner, EventObserver {
-            (it as? ItemClickAction)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
-        })
+        lifecycleScope.launchWhenCreated {
+            for (action in homepageViewModel.pendingActions) {
+                (action as? ItemClickAction)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
+            }
+        }
     }
 
     override fun onCreateView(

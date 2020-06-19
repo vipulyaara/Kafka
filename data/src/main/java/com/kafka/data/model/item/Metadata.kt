@@ -15,6 +15,9 @@ data class Metadata(
     @SingleToArray
     @Json(name = "creator")
     val creator: List<String>?,
+    @SingleToArray
+    @Json(name = "collection")
+    val collection: List<String>?,
     @Json(name = "curation")
     val curation: String?,
     @Json(name = "date")

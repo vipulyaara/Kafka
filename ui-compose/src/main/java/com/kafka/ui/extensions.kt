@@ -35,3 +35,5 @@ fun TextStyle.decrementTextSize(step: Int = 2) =
 
 fun TextStyle.incrementTextSize(step: Int = 2) =
     copy(fontSize = fontSize.plus(TextUnit.Companion.Sp(step)))
+
+const val bulletSymbol = "  •  "

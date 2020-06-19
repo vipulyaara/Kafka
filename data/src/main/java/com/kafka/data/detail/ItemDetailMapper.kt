@@ -20,6 +20,7 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             title = metadata.title,
             description = "✪✪✪✪✪  " + (metadata.description?.joinToString() ?: ""),
             creator = metadata.creator?.joinToString(),
+            collection = metadata.collection?.joinToString(),
             mediaType = metadata.mediatype,
             files = files.filter { it.title != null },
             coverImageResource = getRandomAuthorResource(),

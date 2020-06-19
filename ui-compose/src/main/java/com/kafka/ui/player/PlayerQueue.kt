@@ -28,7 +28,7 @@ fun File(it: File?, actioner: (PlayerAction) -> Unit) {
     Clickable(onClick = { actioner(Play(it?.playbackUrl ?: "")) }) {
         Column(modifier = Modifier.paddingHV(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
             Row {
-                Surface(modifier = Modifier.gravity(Alignment.CenterVertically), color = colors().background) {
+                Surface(modifier = Modifier.gravity(Alignment.CenterVertically)) {
                     VectorImage(id = R.drawable.ic_headphones, tint = colors().primary)
                 }
                 Spacer(modifier = Modifier.preferredWidth(16.dp))

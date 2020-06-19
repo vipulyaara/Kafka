@@ -10,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.ui.player.composePlayerScreen
 import com.kafka.ui_common.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
  */
+@AndroidEntryPoint
 class PlayerFragment : BaseFragment() {
     private val viewModel: PlayerViewModel by viewModels()
 

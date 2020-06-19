@@ -4,8 +4,6 @@ import android.text.Html
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.kafka.data.extensions.formattedDuration
-import org.threeten.bp.Duration
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -17,6 +15,7 @@ data class ItemDetail(
     val title: String? = null,
     val description: String? = null,
     val creator: String? = null,
+    val collection: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
     val coverImageResource: Int = 0,

@@ -1,8 +1,11 @@
 package com.kafka.player.ui
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
 import com.kafka.data.query.ArchiveQuery
+import com.kafka.domain.ObservableLoadingCounter
+import com.kafka.domain.collectFrom
 import com.kafka.domain.detail.ObserveItemDetail
 import com.kafka.domain.item.ObserveBatchItems
 import com.kafka.domain.item.UpdateBatchItems
@@ -11,17 +14,14 @@ import com.kafka.ui.player.Play
 import com.kafka.ui.player.PlayerAction
 import com.kafka.ui.player.PlayerViewState
 import com.kafka.ui_common.BaseViewModel
-import com.kafka.domain.ObservableLoadingCounter
-import com.kafka.domain.collectFrom
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 var playingItemId = ""
 
-class PlayerViewModel @Inject constructor(
+class PlayerViewModel @ViewModelInject constructor(
     private val observeBatchItems: ObserveBatchItems,
     private val loadingState: ObservableLoadingCounter,
     private val commandPlayer: CommandPlayer,

@@ -81,5 +81,7 @@ fun ItemsByCreator(viewState: ItemDetailViewState, actioner: (ItemDetailAction) 
                 }
             }
         }
+
+        Spacer(Modifier.height(48.dp))
     }
 }

@@ -18,7 +18,7 @@ import com.kafka.ui.R
 
 @Composable
 fun MiniPlayer(playerData: PlayerData?, modifier: Modifier = Modifier.None) {
-    Surface(modifier = modifier + Modifier.fillMaxWidth(), elevation = 12.dp, color = colors().surface) {
+    Surface(modifier = modifier + Modifier.fillMaxWidth(), elevation = 12.dp, color = colors().background) {
         Row(modifier = Modifier.padding(20.dp).gravity(Alignment.CenterHorizontally)) {
             Card(modifier = Modifier.preferredSize(40.dp), shape = RoundedCornerShape(6.dp), elevation = 0.dp) {
                 SimpleImage(image = imageResource(id = getRandomAuthorResource()))

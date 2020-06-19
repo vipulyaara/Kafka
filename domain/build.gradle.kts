@@ -1,7 +1,7 @@
 dependencies {
-    implementation(project(Kafka.BaseData.nameDependency))
-    implementation(project(Kafka.Data.nameDependency))
-    implementation(project(Kafka.Logger.nameDependency))
+    implementation(project(Libs.BaseData.nameDependency))
+    implementation(project(Libs.Data.nameDependency))
+    implementation(project(Libs.Logger.nameDependency))
 
     implementation(AndroidX.Ktx.core)
     implementation(AndroidX.Ktx.collection)
@@ -12,27 +12,11 @@ dependencies {
     kapt(Hilt.lifecycle_compiler)
 
     implementation(ThreeTenBp.core)
-
     implementation(Store.core)
 
-    implementation(KotlinX.Coroutines.core)
-    implementation(KotlinX.Coroutines.android)
-    implementation(KotlinX.Serialization.dependency)
+    common()
+    coroutines()
 
-    implementation(Timber.core)
-
-    testImplementation(AndroidX.Test.core)
-    testImplementation(AndroidX.Test.junit)
-    testImplementation(AndroidX.Test.rules)
-    testImplementation(KotlinX.Coroutines.test)
-    testImplementation(KotlinX.Coroutines.android)
-
-    testImplementation(Mockk.core)
-    testImplementation(Testing.Mockito.kotlin)
-
-    testImplementation(AndroidX.Arch.testing)
-    testImplementation(AndroidX.Room.testing)
-    kaptTest(AndroidX.Room.compiler)
-
-    kaptTest(Dagger.compiler)
+    test()
+    androidTest()
 }

@@ -26,7 +26,9 @@ class CommandPlayer @Inject constructor(
         debug { "player command invoked for $params" }
         when (params) {
             is Command.Play -> {
-                playback.play(getItemDetail(params.itemId).asMediaResource(), true)
+                if (playback.currentMediaId != params.itemId) {
+                    playback.play(getItemDetail(params.itemId).asMediaResource(), true)
+                }
             }
         }
     }
@@ -34,7 +36,7 @@ class CommandPlayer @Inject constructor(
     private fun getItemDetail(itemId: String) = itemDetailRepository.getItemDetail(itemId)
 
     private fun ItemDetail.asMediaResource() = MediaResource(
-        mediaId = "new",
+        mediaId = itemId,
         mediaUrl = files?.filterMp3()?.firstOrNull()?.playbackUrl,
         queueId = 0,
         headData = null
