@@ -57,7 +57,7 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
                     text = "4.8",
                     modifier = Modifier,
                     maxLines = 2,
-                    style = MaterialTheme.typography.subtitle1.lineHeight(1.3).copy(color = colors().secondary),
+                    style = MaterialTheme.typography.subtitle1.lineHeight(1.3).copy(color = colors().secondary).decrementTextSize(),
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(

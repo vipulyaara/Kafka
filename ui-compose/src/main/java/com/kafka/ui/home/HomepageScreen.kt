@@ -47,6 +47,7 @@ fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> U
                 HomepageSearchView(actioner = actioner)
                 VerticalScroller {
                     Column {
+
                         Surface(modifier = Modifier.fillMaxWidth()) {
                             ContentCarousal(list = viewState.favorites, actioner = actioner)
                         }
