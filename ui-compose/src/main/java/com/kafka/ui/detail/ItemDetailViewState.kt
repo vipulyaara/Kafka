@@ -10,6 +10,7 @@ import com.kafka.ui_common.BaseViewState
  */
 data class ItemDetailViewState(
     val recentItem: RecentItem? = null,
+    val isFavorite: Boolean = false,
     val itemDetail: ItemDetail? = null,
     val itemsByCreator: List<Item>? = null,
     val isLoading: Boolean = true,

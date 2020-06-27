@@ -49,6 +49,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
         <item name="android:shadowColor">@color/app_red</item>
+        <item name="colorError">@color/app_red</item>
 
         <item name="android:windowLightStatusBar">true</item>
 

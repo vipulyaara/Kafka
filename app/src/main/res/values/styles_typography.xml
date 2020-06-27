@@ -2,8 +2,9 @@
 <resources>
 
     <style name="TextAppearance.Coyote.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/circular_std_black</item>
+        <item name="android:fontFamily">@font/circular_std_black</item>
+        <item name="android:textColor">@color/app_red</item>
         <item name="android:textSize">32sp</item>
     </style>
 
@@ -52,7 +53,7 @@
     <style name="TextAppearance.Coyote.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/circular_std_medium</item>
         <item name="android:fontFamily">@font/circular_std_medium</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_subheading</item>
     </style>
 

@@ -12,22 +12,31 @@ import com.kafka.player.playback.Playback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CommandPlayer @Inject constructor(
     dispatchers: AppCoroutineDispatchers,
     @ProcessLifetime private val processScope: CoroutineScope,
     private val itemDetailRepository: ItemDetailRepository,
     private val playback: Playback
 ) : Interactor<CommandPlayer.Command>() {
-
     override val scope: CoroutineScope = processScope + dispatchers.io
+    private var mediaResource: MediaResource? = null
 
     override suspend fun doWork(params: Command) {
         debug { "player command invoked for $params" }
         when (params) {
             is Command.Play -> {
                 if (playback.currentMediaId != params.itemId) {
-                    playback.play(getItemDetail(params.itemId).asMediaResource(), true)
+                    mediaResource = getItemDetail(params.itemId).asMediaResource()
+                    playback.play(mediaResource!!, true)
+                }
+            }
+            Command.Toggle -> {
+                if (playback.isPlaying) {
+                    playback.pause()
+                } else {
                 }
             }
         }
@@ -44,5 +53,6 @@ class CommandPlayer @Inject constructor(
 
     sealed class Command {
         data class Play(val itemId: String) : Command()
+        object Toggle : Command()
     }
 }

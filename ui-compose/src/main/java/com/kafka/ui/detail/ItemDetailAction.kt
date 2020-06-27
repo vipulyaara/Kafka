@@ -9,4 +9,5 @@ sealed class ItemDetailAction {
     class Read(val file: File? = null) : ItemDetailAction()
     class AuthorClick(val authorId: String) : ItemDetailAction()
     object RatingWidgetClick : ItemDetailAction()
+    object FavoriteClick : ItemDetailAction()
 }

@@ -1,6 +1,7 @@
 package com.kafka.ui.search
 
 import androidx.compose.Model
+import com.kafka.data.entities.Item
 import com.kafka.data.entities.Language
 import com.kafka.data.item.RowItems
 import com.kafka.ui_common.BaseViewState
@@ -12,6 +13,7 @@ import com.kafka.ui_common.BaseViewState
 data class HomepageViewState(
     var query: String? = null,
     var selectedLanguages: List<Language>? = null,
-    var items: RowItems = RowItems(),
+    var favorites: List<Item>? = null,
+    var homepageItems: RowItems = RowItems(),
     var isLoading: Boolean = false
 ) : BaseViewState

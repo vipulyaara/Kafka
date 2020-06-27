@@ -11,7 +11,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 const val _mediaType = "mediaType"
 const val _mediaTypeText = "texts"
 const val _books = "texts"
-const val _audio = "audio"
+const val _mediatypeAudio = "audio"
 const val _image = "image"
 const val _video = "video"
 const val _librivoxaudio = "librivoxaudio"
@@ -36,25 +36,25 @@ data class ArchiveQuery(
 )
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
-    queries[_mediaType] = _audio
+    queries[_mediaType] = _mediatypeAudio
     queries[_collection] = collection
     return this
 }
 
 fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
-    queries[_mediaType] = _audio
+    queries[_mediaType] = _mediatypeAudio
     queries[_searchTerm] = keyword
     return this
 }
 
 fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
-    queries[_mediaType] = _audio
+//    queries[_mediaType] = _audio
     queries[_creator] = author
     return this
 }
 
 fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
-    queries[_mediaType] = _audio
+    queries[_mediaType] = _mediatypeAudio
     queries[_genre] = genre
     return this
 }

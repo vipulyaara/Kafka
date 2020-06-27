@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.search.ui.HomepageViewModel
-import com.kafka.ui.actions.ItemClickAction
+import com.kafka.ui.actions.ItemDetailAction
+import com.kafka.ui.actions.SubmitQueryAction
+import com.kafka.ui.actions.UpdateHomepageAction
 import com.kafka.ui.home.composeSearchScreen
 import com.kafka.ui_common.BaseFragment
 import com.kafka.ui_common.itemDetailDeepLinkUri
@@ -25,8 +27,10 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launchWhenCreated {
-            for (action in homepageViewModel.pendingActions) {
-                (action as? ItemClickAction)?.let { navController.navigate(itemDetailDeepLinkUri(it.item.itemId)) }
+            for (action in homepageViewModel.pendingActions) when (action) {
+                is UpdateHomepageAction -> homepageViewModel.updateHomepage()
+                is SubmitQueryAction -> homepageViewModel.submitQuery(action.query)
+                is ItemDetailAction -> navController.navigate(itemDetailDeepLinkUri(action.item.itemId))
             }
         }
     }

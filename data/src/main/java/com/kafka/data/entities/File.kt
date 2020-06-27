@@ -1,6 +1,8 @@
 package com.kafka.data.entities
 
 import com.kafka.data.extensions.formattedDuration
+import com.kafka.data.query._mediaTypeText
+import com.kafka.data.query._mediatypeAudio
 import org.threeten.bp.Duration
 
 data class File(
@@ -12,8 +14,10 @@ data class File(
     val readerUrl: String?
 )
 
-fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
+fun ItemDetail?.isText() = this?.mediaType == _mediaTypeText
+fun ItemDetail?.isAudio() = this?.mediaType == _mediatypeAudio
 
+fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
 fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null
 
 fun File.formattedDuration() = Duration.ofMillis(time).formattedDuration()

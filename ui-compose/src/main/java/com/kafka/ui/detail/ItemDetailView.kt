@@ -6,16 +6,20 @@ import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Dialog
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
-import androidx.ui.foundation.clickable
+import androidx.ui.foundation.*
+import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
-import androidx.ui.material.*
+import androidx.ui.material.Button
+import androidx.ui.material.Card
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.icons.Icons
+import androidx.ui.material.icons.twotone.Favorite
+import androidx.ui.material.icons.twotone.FavoriteBorder
 import androidx.ui.material.ripple.ripple
+import androidx.ui.res.vectorResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.*
@@ -25,7 +29,12 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import regularButtonPadding
 
 @Composable
-fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (ItemDetailAction) -> Unit) {
+fun ItemDetailView(
+    itemDetailViewState: ItemDetailViewState,
+    recentItem: RecentItem?,
+    actioner: (ItemDetailAction) -> Unit
+) {
+    val itemDetail = itemDetailViewState.itemDetail
     val showDialog = state { false }
     Stack {
         Column {
@@ -43,7 +52,7 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
             Text(
                 text = listOfNotNull(itemDetail?.creator, itemDetail?.collection?.split(",")?.firstOrNull())
                     .joinToString(bulletSymbol),
-                style = MaterialTheme.typography.h6.alignCenter().copy(color = colors().secondary),
+                style = MaterialTheme.typography.h6.alignCenter().copy(color = colors().primary),
                 modifier = Modifier.paddingHV(
                     horizontal = 20.dp,
                     vertical = 2.dp
@@ -58,7 +67,7 @@ fun ItemDetailView(itemDetail: ItemDetail?, recentItem: RecentItem?, actioner: (
                     .paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
             )
 
-            ActionButtons(itemDetail, actioner)
+            ActionButtons(itemDetailViewState, actioner)
         }
         DescriptionDialog(showDialog = showDialog, description = itemDetail.formattedDescription())
     }
@@ -77,21 +86,59 @@ fun ImageCover(modifier: Modifier, itemDetail: ItemDetail?) {
 }
 
 @Composable
-fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit) {
+fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
+    val itemDetail = itemDetailViewState.itemDetail
+    val isFollowed = itemDetailViewState.isFavorite
+    val followedIcon = if (isFollowed) Icons.TwoTone.Favorite else Icons.TwoTone.FavoriteBorder
+    val followedBackgroundTint = if (isFollowed) Color(0xFFff006a) else Color.White
+    val followedIconTint = if (isFollowed) Color.White else colors().primary
+
     Row(modifier = Modifier.padding(8.dp).gravity(Alignment.CenterHorizontally)) {
-        ProvideEmphasis(emphasis = EmphasisAmbient.current.disabled) {
-            if (itemDetail.hasText()) {
-                ButtonItem(
-                    modifier = Modifier.weight(0.5f),
-                    text = "READ",
-                    icon = R.drawable.ic_layers,
-                    actioner = { actioner(ItemDetailAction.Read()) })
-            }
+        val modifier = Modifier
+            .gravity(Alignment.CenterVertically)
+            .padding(12.dp)
+
+        Card(
+            border = Border(2.dp, Color(0xFFECF3F8)),
+            elevation = 0.dp,
+            shape = CircleShape,
+            color = followedBackgroundTint,
+            modifier = modifier.clickable(onClick = { actioner(ItemDetailAction.FavoriteClick) })
+        ) {
+            Icon(
+                asset = followedIcon.copy(defaultWidth = 24.dp, defaultHeight = 24.dp),
+                tint = followedIconTint,
+                modifier = Modifier.padding(16.dp)
+            )
         }
 
-        if (itemDetail.hasAudio()) {
+        Card(
+            border = Border(2.dp, Color(0xFFECF3F8)),
+            elevation = 0.dp,
+            shape = CircleShape,
+            modifier = modifier,
+            color = Color.White
+        ) {
+            Icon(
+                asset = vectorResource(id = R.drawable.ic_download).copy(defaultWidth = 24.dp, defaultHeight = 24.dp),
+                tint = colors().primary,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(end = 12.dp))
+
+        if (itemDetail.isText()) {
             ButtonItem(
-                modifier = Modifier.weight(0.5f),
+                modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
+                text = "READ",
+                icon = R.drawable.ic_layers,
+                actioner = { actioner(ItemDetailAction.Read()) })
+        }
+
+        if (itemDetail.isAudio()) {
+            ButtonItem(
+                modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "PLAY",
                 icon = R.drawable.ic_headphones,
                 actioner = { actioner(ItemDetailAction.Play()) })
@@ -101,6 +148,32 @@ fun ActionButtons(itemDetail: ItemDetail?, actioner: (ItemDetailAction) -> Unit)
 
 @Composable
 fun ButtonItem(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit) {
+    Row(modifier = modifier) {
+        Button(
+            modifier = Modifier.paddingHV(horizontal = 8.dp),
+            backgroundColor = Color(0xFFFFFFFF),
+            elevation = 0.dp,
+            border = Border(2.dp, colors().surface),
+            shape = RoundedCornerShape(6.dp),
+            onClick = actioner,
+            padding = regularButtonPadding
+        ) {
+            Stack(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.gravity(Alignment.Center)) {
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.button.alignCenter(),
+                        modifier = Modifier,
+                        maxLines = 1
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ButtonItemBlue(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.paddingHV(horizontal = 8.dp),

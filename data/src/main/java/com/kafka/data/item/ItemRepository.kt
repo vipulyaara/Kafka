@@ -30,7 +30,7 @@ class ItemRepository @Inject constructor(
     }
 
     fun observeRecentlyVisitedItemsAsItems(): Flow<List<Item>> {
-        return recentItemLocalDataSource.observeRecentlyVisitedItems()
+        return observeRecentlyVisitedItems()
             .map { list ->
                 list.sortedByDescending { it.timeStamp }
                     .map { getItemByItemId(it.itemId) }

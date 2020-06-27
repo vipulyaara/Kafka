@@ -8,7 +8,6 @@ import com.kafka.data.item.RowItems
 import com.kafka.data.query.ArchiveQuery
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -22,15 +21,19 @@ class ObserveBatchItems @Inject constructor(
 
     override fun createObservable(params: Params): Flow<RowItems> {
         result = RowItems()
-        params.archiveQuery.map { channel.sendBlocking(it) }
-        return observable().map { pair ->
-            pair.second.dataOrNull()?.let { result.add(pair.first, it) }
-            result
-        }
+
+        return merges(params.archiveQuery.map { query ->
+            itemStore.stream(StoreRequest.cached(query, true))
+                .map { query to it }
+                .map { pair ->
+                    pair.second.dataOrNull()?.let { result.add(pair.first, it) } ?: result
+                }
+        }.toTypedArray())
     }
 
+    fun <T> merges(flows: Array<Flow<T>>): Flow<T> = flowOf(*flows).flattenMerge()
+
     private fun observable() = channel.asFlow()
-        .distinctUntilChanged()
         .flatMapMerge { query ->
             itemStore.stream(StoreRequest.cached(query, true))
                 .map { query to it }

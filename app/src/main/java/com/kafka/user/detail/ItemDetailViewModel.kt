@@ -14,6 +14,8 @@ import com.kafka.domain.ObservableLoadingCounter
 import com.kafka.domain.collectFrom
 import com.kafka.domain.detail.ObserveItemDetail
 import com.kafka.domain.detail.UpdateItemDetail
+import com.kafka.domain.followed.ObserveItemFollowStatus
+import com.kafka.domain.followed.UpdateFollowedItems
 import com.kafka.domain.item.ObserveItems
 import com.kafka.domain.item.UpdateItems
 import com.kafka.domain.recent.AddRecentItem
@@ -24,6 +26,7 @@ import com.kafka.ui.detail.ItemDetailAction
 import com.kafka.ui.detail.ItemDetailViewState
 import com.kafka.ui_common.BaseViewModel
 import com.kafka.ui_common.Event
+import com.kafka.user.extensions.getRandomAuthorResource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -41,6 +44,8 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
     private val commandPlayer: CommandPlayer,
+    private val observeItemFollowStatus: ObserveItemFollowStatus,
+    private val updateFollowedItems: UpdateFollowedItems,
     observeRecentItems: ObserveRecentItems,
     private val loadingState: ObservableLoadingCounter,
     private val errorState: ObservableErrorCounter
@@ -49,7 +54,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     val navigateToContentDetailAction = MutableLiveData<Event<Item>>()
     val navigateToPlayerAction = MutableLiveData<Event<String>>()
     val navigateToReaderAction = MutableLiveData<Event<String?>>()
-    var imageResource: Int = 0
+    var imageResource: Int = getRandomAuthorResource()
 
     init {
         viewModelScope.launchObserve(observeItemDetail) {
@@ -84,6 +89,10 @@ class ItemDetailViewModel @ViewModelInject constructor(
             }
         }
 
+        viewModelScope.launchObserve(observeItemFollowStatus) {
+            it.distinctUntilChanged().execute { copy(isFavorite = it) }
+        }
+
         viewModelScope.launchObserve(observeRecentItems) {
             it.distinctUntilChanged().execute {
                 debug { "recent items fetched ${it.size}" }
@@ -105,6 +114,9 @@ class ItemDetailViewModel @ViewModelInject constructor(
                 is ItemDetailAction.Read -> {
                     navigateToReaderAction.postValue(Event(getReaderUrl()))
                 }
+                is ItemDetailAction.FavoriteClick -> {
+                    updateFollowedItems(UpdateFollowedItems.Params(viewState.value?.itemDetail?.itemId ?: ""))
+                }
             }
         }
     }
@@ -120,6 +132,8 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private fun observeByAuthor(itemDetail: ItemDetail?) {
         itemDetail?.let {
             debug { "observe query for creator ${itemDetail.creator}" }
+
+            observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
             ArchiveQuery("").booksByAuthor(itemDetail.creator).let {
                 observeItems(ObserveItems.Params(it))
                 updateItems(UpdateItems.Params(it))

@@ -34,7 +34,8 @@ class RoomDatabaseModule {
     fun provideDatabase(context: Context): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
             context, KafkaRoomDatabase::class.java, databaseName
-        ).fallbackToDestructiveMigration()
+        ).allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
         if (Debug.isDebuggerConnected()) {
             builder.allowMainThreadQueries()
         }
@@ -73,4 +74,7 @@ class DatabaseDaoModule {
 
     @Provides
     fun provideRecentItemDao(db: KafkaRoomDatabase) = db.recentItemDao()
+
+    @Provides
+    fun provideFollowedItemDao(db: KafkaRoomDatabase) = db.followedItemDao()
 }

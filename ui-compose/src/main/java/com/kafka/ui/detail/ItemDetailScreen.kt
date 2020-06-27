@@ -49,7 +49,7 @@ private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailA
         Column {
             Spacer(Modifier.padding(top = 24.dp))
             ItemDetailView(
-                itemDetail = viewState.itemDetail,
+                itemDetailViewState = viewState,
                 recentItem = viewState.recentItem,
                 actioner = actioner
             )

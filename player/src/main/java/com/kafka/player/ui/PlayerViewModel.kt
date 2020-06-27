@@ -13,6 +13,7 @@ import com.kafka.player.domain.CommandPlayer
 import com.kafka.ui.player.Play
 import com.kafka.ui.player.PlayerAction
 import com.kafka.ui.player.PlayerViewState
+import com.kafka.ui.player.ToggleCurrent
 import com.kafka.ui_common.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -51,6 +52,7 @@ class PlayerViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
                 is Play -> commandPlayer(CommandPlayer.Command.Play(action.contentId))
+                is ToggleCurrent -> commandPlayer(CommandPlayer.Command.Toggle)
             }
         }
     }

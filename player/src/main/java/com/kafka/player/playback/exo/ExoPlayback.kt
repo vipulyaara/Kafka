@@ -6,7 +6,6 @@ import com.data.base.extensions.debug
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC
 import com.google.android.exoplayer2.C.USAGE_MEDIA
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto
@@ -19,7 +18,9 @@ import com.kafka.player.playback.MediaResource
 import com.kafka.player.playback.MusicCacheManager
 import com.kafka.player.playback.Playback
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class ExoPlayback @Inject constructor(
     var context: Context,
     private var cacheManager: MusicCacheManager

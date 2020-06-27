@@ -14,6 +14,7 @@ data class PlayerViewState(
 
 data class PlayerData(
     val contentId: String,
+    val isPlaying: Boolean = false,
     val title: String? = "aah ko chaahiye ik umr",
     val subtitle: String? = "Mirza Ghalib"
 )

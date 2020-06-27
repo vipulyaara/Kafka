@@ -5,6 +5,7 @@ import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
@@ -17,7 +18,7 @@ import com.kafka.ui.*
 import com.kafka.ui.R
 
 @Composable
-fun MiniPlayer(playerData: PlayerData?, modifier: Modifier = Modifier.None) {
+fun MiniPlayer(playerData: PlayerData?, modifier: Modifier = Modifier, actioner: (PlayerAction) -> Unit) {
     Surface(modifier = modifier + Modifier.fillMaxWidth(), elevation = 12.dp, color = colors().background) {
         Row(modifier = Modifier.padding(20.dp).gravity(Alignment.CenterHorizontally)) {
             Card(modifier = Modifier.preferredSize(40.dp), shape = RoundedCornerShape(6.dp), elevation = 0.dp) {
@@ -28,15 +29,20 @@ fun MiniPlayer(playerData: PlayerData?, modifier: Modifier = Modifier.None) {
                 Text(text = playerData?.subtitle ?: "Mirza Ghalib", style = typography().caption)
             }
 
-            MiniPlayerControls(modifier = Modifier.gravity(Alignment.CenterHorizontally))
+            MiniPlayerControls(
+                modifier = Modifier.gravity(Alignment.CenterHorizontally),
+                playerData = playerData,
+                actioner = actioner
+            )
         }
     }
 }
 
 @Composable
-fun MiniPlayerControls(modifier: Modifier) {
+fun MiniPlayerControls(modifier: Modifier, playerData: PlayerData?, actioner: (PlayerAction) -> Unit) {
     Row(modifier = modifier) {
-        VectorImage(id = R.drawable.ic_pause)
+        val playIcon = if (playerData?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
+        VectorImage(modifier = Modifier.clickable(onClick = { actioner(ToggleCurrent) }), id = playIcon)
         Spacer(modifier = Modifier.preferredWidth(24.dp))
         VectorImage(id = R.drawable.ic_skip_forward)
     }

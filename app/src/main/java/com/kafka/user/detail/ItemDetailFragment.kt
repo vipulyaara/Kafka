@@ -14,6 +14,7 @@ import com.kafka.reader.Reader
 import com.kafka.ui.detail.composeContentDetailScreen
 import com.kafka.ui.player.Play
 import com.kafka.ui_common.*
+import com.kafka.user.extensions.openPdf
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -35,8 +36,8 @@ class ItemDetailFragment : BaseFragment() {
         })
 
         viewModel.navigateToReaderAction.observe(viewLifecycleOwner, EventObserver {
-            Reader.url = it
-            findNavController().navigate(readerDeepLinkUri())
+            requireContext().openPdf(it ?: "")
+//            findNavController().navigate(readerDeepLinkUri())
         })
 
         ItemDetailFragmentArgs.fromBundle(requireArguments()).let {

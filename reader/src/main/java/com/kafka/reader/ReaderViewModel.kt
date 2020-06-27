@@ -12,5 +12,7 @@ class ReaderViewModel @ViewModelInject constructor(
     }
 
     fun preparePdfUrl(url: String) = "$url"
+
+    fun preparePdfUrlGdrive(url: String) = "https://docs.google.com/gview?embedded=true&url=$url"
 }
 

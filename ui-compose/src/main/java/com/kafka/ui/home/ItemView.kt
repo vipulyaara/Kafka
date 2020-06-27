@@ -1,15 +1,12 @@
 package com.kafka.ui.home
 
 import androidx.compose.Composable
-import androidx.ui.core.Alignment
 import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Border
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
@@ -19,19 +16,17 @@ import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
-import com.kafka.ui.R
 
 @Composable
 fun ContentItem(content: Item, onItemClick: (Item) -> Unit) {
-    val size = 184.dp
+    val size = 164.dp
     Column(
         modifier = Modifier.padding(12.dp).clickable(onClick = { onItemClick(content) })
     ) {
         Card(
             modifier = Modifier.preferredSize(size),
             shape = RoundedCornerShape(4.dp),
-            border = Border(1.dp, colors().surface),
-            elevation = 0.dp
+            elevation = 1.dp
         ) {
             Image(asset = imageResource(id = content.coverImageResource), contentScale = ContentScale.Crop)
         }
@@ -59,6 +54,13 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
             }
             Column(modifier = Modifier.paddingHV(horizontal = 16.dp, vertical = 4.dp)) {
                 Text(
+                    text = "4.8",
+                    modifier = Modifier,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.subtitle1.lineHeight(1.3).copy(color = colors().secondary),
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
                     text = content.title ?: "",
                     modifier = Modifier,
                     maxLines = 2,
@@ -70,14 +72,9 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
                         .joinToString(separator = bulletSymbol),
                     modifier = Modifier.padding(top = 4.dp),
                     maxLines = 2,
-                    style = MaterialTheme.typography.caption.alpha(alpha = 0.6f)
+                    style = MaterialTheme.typography.caption.alpha(alpha = 0.4f).incrementTextSize()
                 )
             }
-        }
-        Row(modifier = Modifier.gravity(Alignment.BottomEnd).padding(24.dp)) {
-            VectorImage(id = R.drawable.ic_layers, size = 16.dp, tint = Color(0x88FDD901))
-            Spacer(modifier = Modifier.width(24.dp))
-            VectorImage(id = R.drawable.ic_headphones, size = 16.dp, tint = Color(0x8825C681))
         }
     }
 }

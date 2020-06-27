@@ -51,7 +51,7 @@ fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerAction) -> Unit) {
                     PlayerNowPlaying(modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp))
                     PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).paddingHV(vertical = 24.dp))
                 }
-                MiniPlayer(modifier = Modifier.gravity(Alignment.BottomCenter), playerData = viewState.playerData)
+                MiniPlayer(modifier = Modifier.gravity(Alignment.BottomCenter), playerData = viewState.playerData, actioner = actioner)
             }
         })
 
