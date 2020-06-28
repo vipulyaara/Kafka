@@ -4,11 +4,11 @@ import com.data.base.AppCoroutineDispatchers
 import com.data.base.Interactor
 import com.data.base.extensions.debug
 import com.kafka.data.detail.ItemDetailRepository
-import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.filterMp3
+import com.kafka.data.entities.firstAudio
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.player.playback.MediaResource
-import com.kafka.player.playback.Playback
+import com.kafka.player.timber.MusicUtils
+import com.kafka.player.timber.models.Song
+import com.kafka.player.timber.playback.players.SongPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
@@ -19,37 +19,34 @@ class CommandPlayer @Inject constructor(
     dispatchers: AppCoroutineDispatchers,
     @ProcessLifetime private val processScope: CoroutineScope,
     private val itemDetailRepository: ItemDetailRepository,
-    private val playback: Playback
+    private val songPlayer: SongPlayer
 ) : Interactor<CommandPlayer.Command>() {
     override val scope: CoroutineScope = processScope + dispatchers.io
-    private var mediaResource: MediaResource? = null
 
     override suspend fun doWork(params: Command) {
         debug { "player command invoked for $params" }
         when (params) {
             is Command.Play -> {
-                if (playback.currentMediaId != params.itemId) {
-                    mediaResource = getItemDetail(params.itemId).asMediaResource()
-                    playback.play(mediaResource!!, true)
+                getItemDetail(params.itemId).apply {
+                    MusicUtils.songUri = firstAudio() ?: ""
+                    songPlayer.playSong(
+                        Song(
+                            id = itemId.hashCode().toLong(),
+                            title = title ?: "",
+                            artist = creator ?: ""
+                        )
+                    )
                 }
             }
             Command.Toggle -> {
-                if (playback.isPlaying) {
-                    playback.pause()
-                } else {
+                songPlayer.onPlayingState { isPlaying ->
+                    if (isPlaying) songPlayer.pause() else songPlayer.playSong()
                 }
             }
         }
     }
 
     private fun getItemDetail(itemId: String) = itemDetailRepository.getItemDetail(itemId)
-
-    private fun ItemDetail.asMediaResource() = MediaResource(
-        mediaId = itemId,
-        mediaUrl = files?.filterMp3()?.firstOrNull()?.playbackUrl,
-        queueId = 0,
-        headData = null
-    )
 
     sealed class Command {
         data class Play(val itemId: String) : Command()

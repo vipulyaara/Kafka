@@ -34,6 +34,22 @@
 
 <!--        <service android:name=".player.PlayerService"/>-->
 
+        <service
+            android:name="com.kafka.player.timber.playback.TimberMusicService"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+<!--        <receiver android:name="androidx.media.session.MediaButtonReceiver">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

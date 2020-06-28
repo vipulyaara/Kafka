@@ -21,7 +21,7 @@ const val _railTitle = "railtitle"
 const val _creator = "creator"
 const val _genre = "genre"
 
-const val _searchTerm = ""
+const val _searchTerm = "title"
 
 sealed class ResultTye {
     object Banner : ResultTye()
@@ -41,7 +41,7 @@ fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
     return this
 }
 
-fun ArchiveQuery.searchByKeyword(keyword: String?): ArchiveQuery {
+fun ArchiveQuery.booksByKeyword(keyword: String?): ArchiveQuery {
     queries[_mediaType] = _mediatypeAudio
     queries[_searchTerm] = keyword
     return this

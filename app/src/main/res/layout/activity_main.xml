@@ -12,7 +12,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        app:title="" />
+        app:title="">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alegreya_bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="Kafka"
+            android:textAppearance="@style/TextAppearance.Coyote.Headline3"
+            android:textColor="@color/text_heading" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/nav_host_fragment"

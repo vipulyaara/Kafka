@@ -49,7 +49,7 @@ fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerAction) -> Unit) {
             Stack(modifier = Modifier.fillMaxSize()) {
                 Column {
                     PlayerNowPlaying(modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp))
-                    PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).paddingHV(vertical = 24.dp))
+                    PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).padding(vertical = 24.dp))
                 }
                 MiniPlayer(modifier = Modifier.gravity(Alignment.BottomCenter), playerData = viewState.playerData, actioner = actioner)
             }
@@ -67,13 +67,13 @@ fun PlayerNowPlaying(modifier: Modifier) {
             style = MaterialTheme.typography.h2.alignCenter(),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.paddingHV(horizontal = 20.dp).padding(top = 24.dp).gravity(Alignment.CenterHorizontally)
+            modifier = Modifier.padding(horizontal = 20.dp).padding(top = 24.dp).gravity(Alignment.CenterHorizontally)
         )
 
         Text(
             text = "by Mirza Ghalib",
             style = MaterialTheme.typography.subtitle2.alignCenter().copy(color = colors().primary),
-            modifier = Modifier.paddingHV(
+            modifier = Modifier.padding(
                 horizontal = 20.dp,
                 vertical = 2.dp
             ) + Modifier.gravity(Alignment.CenterHorizontally)
@@ -84,7 +84,7 @@ fun PlayerNowPlaying(modifier: Modifier) {
 @Composable
 fun PlayerControls(modifier: Modifier) {
     Row(modifier = modifier + Modifier.padding(24.dp).gravity(Alignment.CenterHorizontally)) {
-        val iconModifier = Modifier.paddingHV(horizontal = 12.dp).gravity(Alignment.CenterHorizontally).weight(1f)
+        val iconModifier = Modifier.padding(horizontal = 12.dp).gravity(Alignment.CenterHorizontally).weight(1f)
         VectorImage(id = R.drawable.ic_heart_sign, modifier = iconModifier)
         VectorImage(id = R.drawable.ic_step_backward, modifier = iconModifier)
         Card(shape = CircleShape, color = colors().secondary, modifier = iconModifier) {

@@ -9,7 +9,7 @@ plugins {
 
 buildscript {
     extra["kotlin_version"] = "1.3.71"
-    extra["compose_version"] = "0.1.0-dev13"
+    extra["compose_version"] = "0.1.0-dev14"
     repositories {
         google()
         mavenCentral()

@@ -11,6 +11,7 @@ fun DependencyHandlerScope.ui() {
     implementation { AndroidX.fragment }
     implementation { AndroidX.material }
     implementation { AndroidX.workManager }
+    implementation { AndroidX.palette }
 
     implementation { Timber.core }
     implementation { Kotlin.stdlib }
@@ -87,6 +88,11 @@ fun DependencyHandlerScope.retrofit() {
 fun DependencyHandlerScope.moshi() {
     implementation { Moshi.kotlin }
     kapt { Moshi.compiler }
+}
+
+fun DependencyHandlerScope.mediaSession() {
+    implementation { MediaSession.core }
+//    implementation { MediaSession.router }
 }
 
 private fun DependencyHandler.implementation(block: () -> String) {

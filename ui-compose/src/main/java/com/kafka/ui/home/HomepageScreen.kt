@@ -3,36 +3,39 @@ package com.kafka.ui.home
 import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.compose.Recomposer
+import androidx.lifecycle.LiveData
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
 import androidx.ui.foundation.HorizontalScroller
 import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
+import androidx.ui.foundation.lazy.LazyColumnItems
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.Surface
 import androidx.ui.unit.dp
 import com.data.base.extensions.debug
 import com.kafka.data.entities.Item
+import com.kafka.ui.*
+import com.kafka.ui.R
 import com.kafka.ui.actions.HomepageAction
 import com.kafka.ui.actions.ItemDetailAction
-import com.kafka.ui.actions.SubmitQueryAction
 import com.kafka.ui.actions.UpdateHomepageAction
-import com.kafka.ui.alpha
-import com.kafka.ui.colors
-import com.kafka.ui.incrementTextSize
 import com.kafka.ui.search.HomepageViewState
-import com.kafka.ui.search.widget.SearchView
-import com.kafka.ui.typography
+import com.kafka.ui.search.widget.HomepageSearchView
+import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
+const val searchHint = "Search..."
+
 fun ViewGroup.composeSearchScreen(
-    homepageViewState: HomepageViewState,
+    homepageViewState: LiveData<HomepageViewState>,
     actioner: (HomepageAction) -> Unit
 ): Any = setContent(Recomposer.current()) {
+    val viewState = observe(homepageViewState)
     MaterialThemeFromMdcTheme {
-        HomepageScreen(viewState = homepageViewState, actioner = actioner)
+        if (viewState != null) {
+            HomepageScreen(viewState = viewState, actioner = actioner)
+        }
     }
 }
 
@@ -40,32 +43,14 @@ fun ViewGroup.composeSearchScreen(
 fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (viewState.homepageItems.isNullOrEmpty()) actioner.invoke(UpdateHomepageAction())
-        if (viewState.isLoading && viewState.homepageItems.isNullOrEmpty()) {
+        if (viewState.isLoading) {
             FullScreenLoader()
         } else {
             Column {
-                HomepageSearchView(actioner = actioner)
-                VerticalScroller {
-                    Column {
-
-                        Surface(modifier = Modifier.fillMaxWidth()) {
-                            ContentCarousal(list = viewState.favorites, actioner = actioner)
-                        }
-                        ContentResults(viewState = viewState, actioner = actioner)
-                    }
-                }
+                HomepageSearchView(viewState = viewState, actioner = actioner)
+                ContentResults(viewState = viewState, actioner = actioner)
             }
         }
-    }
-}
-
-@Composable
-fun HomepageSearchView(actioner: (HomepageAction) -> Unit) {
-    Row(
-        horizontalArrangement = Arrangement.End,
-        verticalGravity = Alignment.CenterVertically
-    ) {
-        SearchView(value = "Search for author", onSearch = { actioner(SubmitQueryAction(it)) })
     }
 }
 
@@ -88,20 +73,14 @@ fun ContentResults(viewState: HomepageViewState, actioner: (HomepageAction) -> U
     val items = viewState.homepageItems
     debug { "Showing results for ${items.values.size}" }
 
-    VerticalScroller {
-        Column {
-            items.values.map { it.items }.flatten().forEach {
-                ContentItemList(content = it, onItemClick = { actioner(ItemDetailAction(it)) })
-            }
+    Stack {
+        LazyColumnItems(
+            items = items.values.map { it.items }.flatten()
+        ) {
+            ContentItemList(content = it, onItemClick = { actioner(ItemDetailAction(it)) })
         }
+        Shadow()
     }
-
-//    AdapterList(
-//        modifier = Modifier.padding(top = 24.dp),
-//        data = items.values.map { it.items }.flatten() ?: arrayListOf()
-//    ) {
-//        ContentItemList(content = it, onItemClick = { actioner(ItemDetailAction(it)) })
-//    }
 }
 
 
@@ -110,4 +89,12 @@ fun FullScreenLoader() {
     Stack(modifier = Modifier.padding(24.dp).fillMaxSize()) {
         CircularProgressIndicator(modifier = Modifier.gravity(Alignment.Center))
     }
+}
+
+@Composable
+fun Shadow() {
+    CoilImage(
+        data = R.drawable.img_shadow_top_to_bottom,
+        modifier = Modifier.fillMaxWidth().height(16.dp)
+    )
 }

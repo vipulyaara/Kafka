@@ -18,7 +18,6 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.twotone.Favorite
 import androidx.ui.material.icons.twotone.FavoriteBorder
-import androidx.ui.material.ripple.ripple
 import androidx.ui.res.vectorResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
@@ -43,28 +42,27 @@ fun ItemDetailView(
             Text(
                 text = itemDetail?.title ?: "",
                 style = MaterialTheme.typography.h2.alignCenter(),
+                color = colors().onPrimary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.paddingHV(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
                     .padding(top = 24.dp).gravity(Alignment.CenterHorizontally)
             )
 
             Text(
                 text = listOfNotNull(itemDetail?.creator, itemDetail?.collection?.split(",")?.firstOrNull())
-                    .joinToString(bulletSymbol),
-                style = MaterialTheme.typography.h6.alignCenter().copy(color = colors().primary),
-                modifier = Modifier.paddingHV(
-                    horizontal = 20.dp,
-                    vertical = 2.dp
-                ) + Modifier.gravity(Alignment.CenterHorizontally)
+                    .joinToString(bulletSymbolWithSpace),
+                style = MaterialTheme.typography.h6.alignCenter(),
+                color = colors().primary,
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp).gravity(Alignment.CenterHorizontally)
             )
             Text(
                 text = itemDetail.formattedDescription(),
                 maxLines = 3,
-                style = MaterialTheme.typography.body1
-                    .lineHeight(1.4).alignCenter().alpha(alpha = 0.8f).decrementTextSize(),
-                modifier = Modifier.clickable(onClick = { showDialog.value = true }).ripple(enabled = false)
-                    .paddingHV(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
+                style = MaterialTheme.typography.body1.lineHeight(1.4).alignCenter().decrementTextSize(),
+                color = colors().onPrimary.alpha(alpha = 0.8f),
+                modifier = Modifier.clickable(onClick = { showDialog.value = true }, indication = null)
+                    .padding(horizontal = 16.dp, vertical = 24.dp).fillMaxWidth()
             )
 
             ActionButtons(itemDetailViewState, actioner)
@@ -90,7 +88,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
     val itemDetail = itemDetailViewState.itemDetail
     val isFollowed = itemDetailViewState.isFavorite
     val followedIcon = if (isFollowed) Icons.TwoTone.Favorite else Icons.TwoTone.FavoriteBorder
-    val followedBackgroundTint = if (isFollowed) Color(0xFFff006a) else Color.White
+    val followedBackgroundTint = if (isFollowed) Color(0xFFff006a) else colors().background
     val followedIconTint = if (isFollowed) Color.White else colors().primary
 
     Row(modifier = Modifier.padding(8.dp).gravity(Alignment.CenterHorizontally)) {
@@ -99,11 +97,11 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
             .padding(12.dp)
 
         Card(
-            border = Border(2.dp, Color(0xFFECF3F8)),
+            border = Border(2.dp, colors().surface),
             elevation = 0.dp,
             shape = CircleShape,
             color = followedBackgroundTint,
-            modifier = modifier.clickable(onClick = { actioner(ItemDetailAction.FavoriteClick) })
+            modifier = modifier.clickable(onClick = { actioner(ItemDetailAction.FavoriteClick) }, indication = null)
         ) {
             Icon(
                 asset = followedIcon.copy(defaultWidth = 24.dp, defaultHeight = 24.dp),
@@ -113,11 +111,11 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
         }
 
         Card(
-            border = Border(2.dp, Color(0xFFECF3F8)),
+            border = Border(2.dp, colors().surface),
             elevation = 0.dp,
             shape = CircleShape,
             modifier = modifier,
-            color = Color.White
+            color = colors().background
         ) {
             Icon(
                 asset = vectorResource(id = R.drawable.ic_download).copy(defaultWidth = 24.dp, defaultHeight = 24.dp),
@@ -129,7 +127,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
         Spacer(modifier = Modifier.padding(end = 12.dp))
 
         if (itemDetail.isText()) {
-            ButtonItem(
+            ButtonItemBlue(
                 modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "READ",
                 icon = R.drawable.ic_layers,
@@ -137,7 +135,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
         }
 
         if (itemDetail.isAudio()) {
-            ButtonItem(
+            ButtonItemBlue(
                 modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "PLAY",
                 icon = R.drawable.ic_headphones,
@@ -150,7 +148,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
 fun ButtonItem(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
-            modifier = Modifier.paddingHV(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = 8.dp),
             backgroundColor = Color(0xFFFFFFFF),
             elevation = 0.dp,
             border = Border(2.dp, colors().surface),
@@ -176,8 +174,8 @@ fun ButtonItem(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit
 fun ButtonItemBlue(modifier: Modifier, text: String, icon: Int, actioner: () -> Unit) {
     Row(modifier = modifier) {
         Button(
-            modifier = Modifier.paddingHV(horizontal = 8.dp),
-            backgroundColor = Color(0xFF3D84FD),
+            modifier = Modifier.padding(horizontal = 8.dp),
+            backgroundColor = colors().primary,
             elevation = 1.dp,
             shape = RoundedCornerShape(5.dp),
             contentColor = Color.White,
@@ -209,7 +207,7 @@ fun DescriptionDialog(showDialog: MutableState<Boolean>, description: String) {
     if (showDialog.value) {
         Dialog(onCloseRequest = { showDialog.value = false }) {
             Card(
-                modifier = Modifier.paddingHV(vertical = 64.dp).fillMaxWidth(),
+                modifier = Modifier.padding(vertical = 64.dp).fillMaxWidth(),
                 color = colors().background,
                 shape = RoundedCornerShape(12.dp),
                 elevation = 0.dp
@@ -218,6 +216,7 @@ fun DescriptionDialog(showDialog: MutableState<Boolean>, description: String) {
                     Text(
                         text = description,
                         style = MaterialTheme.typography.body2.lineHeight(1.4).alignCenter().justify(),
+                        color = colors().onPrimary.alpha(alpha = 0.7f),
                         modifier = Modifier.padding(24.dp)
                     )
                 }

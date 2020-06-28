@@ -20,9 +20,22 @@ import androidx.ui.unit.dp
 import com.kafka.data.entities.Language
 import com.kafka.ui.*
 
+//@Composable
+//fun SearchTypeFilters(viewState: HomepageViewState, onSelect: (SearchQuery) -> Unit) {
+//    val filters = listOf("creator")
+//    HorizontalScroller(modifier = Modifier.paddingHV(vertical = 12.dp)) {
+//        val selectedLanguages = state { filters.first() }
+//        Row {
+//            viewState.selectedLanguages?.forEach {
+//                SelectionButton(it, selectedLanguages)
+//            }
+//        }
+//    }
+//}
+
 @Composable
 fun SearchFilters(viewState: HomepageViewState) {
-    HorizontalScroller(modifier = Modifier.paddingHV(vertical = 12.dp)) {
+    HorizontalScroller(modifier = Modifier.padding(vertical = 12.dp)) {
         val selectedLanguages = state { viewState.selectedLanguages?.firstOrNull() }
         Row {
             viewState.selectedLanguages?.forEach {
@@ -43,10 +56,10 @@ fun SelectionButton(language: Language, selected: MutableState<Language?>) {
             color = if (selected.value == language) color.alpha(alpha = 0.4f) else colors().background,
             shape = RoundedCornerShape(4.dp)
         ) {
-            Row(modifier = Modifier.paddingHV(horizontal = 12.dp, vertical = 6.dp)) {
-                VectorImage(id = icon, modifier = Modifier.size(16.dp).gravity(Alignment.CenterVertically))
+            Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+                VectorImage(id = icon, modifier = Modifier.size(16.dp).gravity(Alignment.CenterVertically), tint = colors().secondary)
                 Text(
-                    modifier = Modifier.paddingHV(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp)
                         .gravity(Alignment.CenterVertically),
                     text = language.languageName,
                     style = MaterialTheme.typography.body1.alignCenter(),

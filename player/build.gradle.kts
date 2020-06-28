@@ -17,6 +17,8 @@ dependencies {
     implementation(project(Libs.UiCompose.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
 
+    mediaSession()
+
     common()
     arch()
     ktx()

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.search.ui.HomepageViewModel
+import com.kafka.search.ui.MainViewModel
 import com.kafka.ui.actions.ItemDetailAction
 import com.kafka.ui.actions.SubmitQueryAction
 import com.kafka.ui.actions.UpdateHomepageAction
@@ -21,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
     private val homepageViewModel: HomepageViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,6 +35,8 @@ class MainFragment : BaseFragment() {
                 is ItemDetailAction -> navController.navigate(itemDetailDeepLinkUri(action.item.itemId))
             }
         }
+
+        mainViewModel.updateLanguages()
     }
 
     override fun onCreateView(

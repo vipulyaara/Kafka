@@ -165,7 +165,7 @@ object AndroidX {
     }
 
     object Compose {
-        const val version = "0.1.0-dev13"
+        const val version = "0.1.0-dev14"
         const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
 
         const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.0-SNAPSHOT"
@@ -355,6 +355,12 @@ object Testing {
         const val all = "org.mockito:mockito-all:1.10.19"
         const val kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3"
     }
+}
+
+object MediaSession {
+    private const val version = "28.0.0"
+    const val core = "androidx.media:media:1.1.0"
+    const val router = "com.android.support:mediarouter-v7:$version"
 }
 
 object Moshi {

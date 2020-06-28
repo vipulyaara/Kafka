@@ -15,6 +15,8 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ProvideEmphasis
 import androidx.ui.unit.dp
 import com.kafka.data.extensions.letEmpty
+import com.kafka.ui.alpha
+import com.kafka.ui.colors
 import com.kafka.ui.home.ContentItem
 import com.kafka.ui.home.FullScreenLoader
 import com.kafka.ui.observe
@@ -67,6 +69,7 @@ fun ItemsByCreator(viewState: ItemDetailViewState, actioner: (ItemDetailAction) 
             Text(
                 text = "More by ${viewState.itemDetail?.creator}",
                 style = MaterialTheme.typography.h6,
+                color = colors().onPrimary.alpha(alpha = 0.6f),
                 modifier = Modifier.padding(start = 24.dp)
             )
         }

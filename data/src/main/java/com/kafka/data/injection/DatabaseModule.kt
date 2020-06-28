@@ -61,7 +61,10 @@ abstract class DatabaseModuleBinds {
 @Module
 class DatabaseDaoModule {
     @Provides
-    fun providePoetsDao(db: KafkaRoomDatabase) = db.queryDao()
+    fun provideItemDao(db: KafkaRoomDatabase) = db.itemDao()
+
+    @Provides
+    fun provideQueueDao(db: KafkaRoomDatabase) = db.queueDao()
 
     @Provides
     fun providePoetEntryDao(db: KafkaRoomDatabase) = db.itemDetailDao()

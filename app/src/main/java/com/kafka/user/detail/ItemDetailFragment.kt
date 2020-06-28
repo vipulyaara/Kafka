@@ -31,7 +31,7 @@ class ItemDetailFragment : BaseFragment() {
         })
 
         viewModel.navigateToPlayerAction.observe(viewLifecycleOwner, EventObserver {
-            playerViewModel.submitAction(Play(it))
+//            playerViewModel.submitAction(Play(it))
             findNavController().navigate(playerDeepLinkUri())
         })
 

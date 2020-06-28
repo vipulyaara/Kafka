@@ -13,6 +13,8 @@ dependencies {
     implementation(Store.core)
     implementation(Retrofit.runtime)
 
+    mediaSession()
+
     common()
     arch()
     room()

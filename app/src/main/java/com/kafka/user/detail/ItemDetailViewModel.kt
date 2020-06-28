@@ -21,6 +21,7 @@ import com.kafka.domain.item.UpdateItems
 import com.kafka.domain.recent.AddRecentItem
 import com.kafka.domain.recent.ObserveRecentItems
 import com.kafka.player.domain.CommandPlayer
+import com.kafka.player.timber.playback.MediaSessionConnection
 import com.kafka.player.ui.playingItemId
 import com.kafka.ui.detail.ItemDetailAction
 import com.kafka.ui.detail.ItemDetailViewState
@@ -44,6 +45,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
     private val commandPlayer: CommandPlayer,
+    private val mediaSessionConnection: MediaSessionConnection,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val updateFollowedItems: UpdateFollowedItems,
     observeRecentItems: ObserveRecentItems,

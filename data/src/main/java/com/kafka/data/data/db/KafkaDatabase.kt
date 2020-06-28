@@ -12,16 +12,20 @@ interface KafkaDatabase {
     fun recentItemDao(): RecentItemDao
     fun followedItemDao(): FollowedItemDao
     fun searchDao(): SearchDao
-    fun queryDao(): ItemDao
+    fun itemDao(): ItemDao
+    fun queueDao(): QueueDao
     fun languageDao(): LanguageDao
 }
+
 @Database(
     entities = [
         ItemDetail::class,
         Item::class,
         Language::class,
         RecentItem::class,
-        FollowedItem::class
+        FollowedItem::class,
+        QueueEntity::class,
+        SongEntity::class
     ],
     version = 1
 )

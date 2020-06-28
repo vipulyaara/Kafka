@@ -30,9 +30,17 @@ object NightModeManager {
 
     fun toggleNightMode(activity: Activity?) {
         activity?.let {
-            val nightMode = getCurrentMode(activity)
-            when (nightMode) {
+            when (getCurrentMode(activity)) {
                 AppCompatDelegate.MODE_NIGHT_YES -> disableNightMode(activity)
+                else -> enableNightMode(activity)
+            }
+        }
+    }
+
+    fun applyCurrentNightMode(activity: Activity?) {
+        activity?.let {
+            when (getCurrentMode(activity)) {
+                AppCompatDelegate.MODE_NIGHT_NO -> disableNightMode(activity)
                 else -> enableNightMode(activity)
             }
         }

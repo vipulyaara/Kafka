@@ -26,7 +26,7 @@ fun File(it: File?, actioner: (PlayerAction) -> Unit) {
     val title = it?.title ?: ""
     val subtitle = arrayListOf(it?.creator, it?.formattedDuration()).filterNotNull().joinToString(" ∙ ")
     Clickable(onClick = { actioner(Play(it?.playbackUrl ?: "")) }) {
-        Column(modifier = Modifier.paddingHV(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
+        Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
             Row {
                 Surface(modifier = Modifier.gravity(Alignment.CenterVertically)) {
                     VectorImage(id = R.drawable.ic_headphones, tint = colors().primary)
