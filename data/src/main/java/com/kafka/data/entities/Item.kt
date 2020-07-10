@@ -1,11 +1,10 @@
 package com.kafka.data.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kafka.data.extensions.getRandomAuthorResource
-import com.kafka.data.model.MediaType
-import com.kafka.data.model.item.Doc
+import com.data.base.model.MediaType
+import com.data.base.model.item.Doc
 
 /**
  * @author Vipul Kumar; dated 13/02/19.

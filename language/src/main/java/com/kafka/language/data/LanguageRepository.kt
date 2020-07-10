@@ -1,6 +1,6 @@
 package com.kafka.language.data
 
-import com.kafka.data.data.db.dao.LanguageDao
+import com.kafka.data.dao.LanguageDao
 import com.kafka.data.entities.Language
 import javax.inject.Inject
 import javax.inject.Singleton

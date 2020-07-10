@@ -8,7 +8,7 @@ plugins {
 }
 
 buildscript {
-    extra["kotlin_version"] = "1.3.71"
+    extra["kotlin_version"] = "1.3.72"
     extra["compose_version"] = "0.1.0-dev14"
     repositories {
         google()
@@ -57,7 +57,6 @@ allprojects {
 val libraryModules = listOf(
     Libs.Data.name,
     Libs.BaseData.name,
-    Libs.Domain.name,
     Libs.Player.name,
     Libs.UiCommon.name,
     Libs.UiCompose.name,
@@ -77,7 +76,6 @@ subprojects {
 
     if (isAndroid) {
 
-
         if (isLibrary) {
             apply {
                 plugin(Android.libPlugin)
@@ -86,6 +84,7 @@ subprojects {
                 plugin(Kotlin.kapt)
                 plugin(Release.MavenPublish.plugin)
                 plugin(Hilt.plugin)
+                plugin("androidx.navigation.safeargs.kotlin")
             }
         }
 

@@ -53,7 +53,7 @@ fun ItemDetailView(
                 text = listOfNotNull(itemDetail?.creator, itemDetail?.collection?.split(",")?.firstOrNull())
                     .joinToString(bulletSymbolWithSpace),
                 style = MaterialTheme.typography.h6.alignCenter(),
-                color = colors().primary,
+                color = colors().secondary,
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp).gravity(Alignment.CenterHorizontally)
             )
             Text(

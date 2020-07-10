@@ -1,7 +1,7 @@
 package com.kafka.ui.detail
 
 import com.kafka.data.entities.Item
-import com.kafka.data.model.item.File
+import com.data.base.model.item.File
 
 sealed class ItemDetailAction {
     class RelatedItemClick(val item: Item) : ItemDetailAction()

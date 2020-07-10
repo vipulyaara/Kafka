@@ -7,12 +7,10 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.data.base.CrashLogger
 import com.kafka.data.injection.ApplicationContext
 import com.kafka.data.injection.ApplicationId
 import com.kafka.data.injection.Initializers
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.util.CrashlyticsCrashLogger
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -65,7 +63,4 @@ abstract class AppModuleBinds {
     @Initializers
     @Multibinds
     abstract fun initializers(): Set<() -> Unit>
-
-    @Binds
-    abstract fun bindCrashLogger(bind: CrashlyticsCrashLogger): CrashLogger
 }

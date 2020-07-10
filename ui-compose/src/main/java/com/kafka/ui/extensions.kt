@@ -8,6 +8,8 @@ import androidx.ui.text.TextStyle
 import androidx.ui.text.style.TextAlign
 import androidx.ui.unit.TextUnit
 
+fun TextStyle.singleLine() = merge(TextStyle())
+
 fun TextStyle.alignCenter() = merge(TextStyle(textAlign = TextAlign.Center))
 
 fun TextStyle.justify() = merge(TextStyle(textAlign = TextAlign.Justify))

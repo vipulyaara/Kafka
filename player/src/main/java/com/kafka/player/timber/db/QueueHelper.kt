@@ -14,8 +14,8 @@
  */
 package com.kafka.player.timber.db
 
-import com.kafka.data.data.db.QueueEntity
-import com.kafka.data.data.db.dao.QueueDao
+import com.kafka.data.entities.QueueEntity
+import com.kafka.data.dao.QueueDao
 import com.kafka.player.timber.extensions.equalsBy
 import com.kafka.player.timber.extensions.toSongEntityList
 import com.kafka.player.timber.repository.SongsRepository

@@ -1,5 +1,7 @@
 package com.kafka.data.query
 
+import com.data.base.model.ArchiveQuery
+import com.data.base.model.booksByAuthor
 import com.kafka.data.entities.Language
 
 val queries = arrayListOf(

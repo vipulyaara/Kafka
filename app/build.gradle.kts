@@ -2,7 +2,6 @@ import com.android.build.gradle.BaseExtension
 
 dependencies {
     implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.Domain.nameDependency))
     implementation(project(Libs.Language.nameDependency))
     implementation(project(Libs.UiCompose.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))

@@ -1,8 +1,10 @@
 package com.kafka.ui.search
 
+import com.kafka.data.model.RowItems
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.Language
-import com.kafka.data.item.RowItems
+import com.kafka.ui.actions.PlayerCommand
+import com.kafka.ui.player.PlayerData
 import com.kafka.ui_common.BaseViewState
 
 /**
@@ -13,7 +15,9 @@ data class HomepageViewState(
     var selectedLanguages: List<Language>? = null,
     var favorites: List<Item>? = null,
     var homepageItems: RowItems = RowItems(),
-    var isLoading: Boolean = false
+    var isLoading: Boolean = false,
+    var playerData: PlayerData = PlayerData(),
+    val playerCommand: (PlayerCommand) -> Unit = {}
 ) : BaseViewState
 
 data class SearchQuery(val text: String? = null, val type: SearchQueryType)
@@ -23,3 +27,4 @@ sealed class SearchQueryType {
     object Title : SearchQueryType()
     object Collection : SearchQueryType()
 }
+

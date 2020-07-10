@@ -3,8 +3,8 @@ package com.kafka.data.injection
 import com.data.base.api.interceptor.AcceptDialogInterceptor
 import com.data.base.api.interceptor.PrettyHttpLogging
 import com.data.base.mapper.SingleToArrayAdapter
-import com.kafka.data.data.api.ArchiveService
-import com.kafka.data.data.api.GenericInterceptor
+import com.data.base.api.ArchiveService
+import com.data.base.api.interceptor.GenericInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

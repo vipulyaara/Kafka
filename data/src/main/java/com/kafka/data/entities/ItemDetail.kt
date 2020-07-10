@@ -24,4 +24,4 @@ data class ItemDetail(
 
 fun ItemDetail?.formattedDescription() = this?.description?.let { Html.fromHtml(it)?.toString() } ?: ""
 
-fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()?.playbackUrl
+fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()

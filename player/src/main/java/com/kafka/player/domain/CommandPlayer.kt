@@ -3,13 +3,15 @@ package com.kafka.player.domain
 import com.data.base.AppCoroutineDispatchers
 import com.data.base.Interactor
 import com.data.base.extensions.debug
-import com.kafka.data.detail.ItemDetailRepository
+import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.firstAudio
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.timber.MusicUtils
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.playback.players.SongPlayer
+import com.kafka.ui.actions.PlayerCommand
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,38 +20,34 @@ import javax.inject.Singleton
 class CommandPlayer @Inject constructor(
     dispatchers: AppCoroutineDispatchers,
     @ProcessLifetime private val processScope: CoroutineScope,
-    private val itemDetailRepository: ItemDetailRepository,
+    private val itemDetailDao: ItemDetailDao,
     private val songPlayer: SongPlayer
-) : Interactor<CommandPlayer.Command>() {
+) : Interactor<PlayerCommand>() {
     override val scope: CoroutineScope = processScope + dispatchers.io
 
-    override suspend fun doWork(params: Command) {
+    override suspend fun doWork(params: PlayerCommand) {
         debug { "player command invoked for $params" }
         when (params) {
-            is Command.Play -> {
+            is PlayerCommand.Play -> {
                 getItemDetail(params.itemId).apply {
-                    MusicUtils.songUri = firstAudio() ?: ""
+                    MusicUtils.songUri = firstAudio()?.playbackUrl ?: ""
                     songPlayer.playSong(
                         Song(
                             id = itemId.hashCode().toLong(),
                             title = title ?: "",
-                            artist = creator ?: ""
+                            artist = firstAudio()?.title ?: ""
                         )
                     )
                 }
             }
-            Command.Toggle -> {
-                songPlayer.onPlayingState { isPlaying ->
-                    if (isPlaying) songPlayer.pause() else songPlayer.playSong()
+            PlayerCommand.ToggleCurrent -> {
+                songPlayer.playingState.collect {
+                    if (it) songPlayer.pause() else songPlayer.playSong()
                 }
             }
         }
     }
 
-    private fun getItemDetail(itemId: String) = itemDetailRepository.getItemDetail(itemId)
+    private fun getItemDetail(itemId: String) = itemDetailDao.itemDetail(itemId)
 
-    sealed class Command {
-        data class Play(val itemId: String) : Command()
-        object Toggle : Command()
-    }
 }

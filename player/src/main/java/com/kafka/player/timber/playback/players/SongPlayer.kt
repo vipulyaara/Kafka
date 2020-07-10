@@ -23,8 +23,8 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.session.PlaybackStateCompat.*
 import androidx.core.net.toUri
-import com.kafka.data.data.db.QueueEntity
-import com.kafka.data.data.db.dao.QueueDao
+import com.kafka.data.entities.QueueEntity
+import com.kafka.data.dao.QueueDao
 import com.kafka.player.R
 import com.kafka.player.timber.MusicUtils
 import com.kafka.player.timber.constants.Constants.ACTION_REPEAT_QUEUE
@@ -37,11 +37,13 @@ import com.kafka.player.timber.extensions.position
 import com.kafka.player.timber.extensions.toSongIDs
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.repository.SongsRepository
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
-
-typealias OnIsPlaying = SongPlayer.(playing: Boolean) -> Unit
 
 /**
  * A wrapper around [MusicPlayer] that specifically manages playing [Song]s and
@@ -86,7 +88,7 @@ interface SongPlayer {
 
     fun release()
 
-    fun onPlayingState(playing: OnIsPlaying)
+    val playingState: Flow<Boolean>
 
     fun onPrepared(prepared: OnPrepared<SongPlayer>)
 
@@ -99,6 +101,8 @@ interface SongPlayer {
     fun setPlaybackState(state: PlaybackStateCompat)
 
     fun restoreFromQueueData(queueData: QueueEntity)
+
+    val songChannel: ConflatedBroadcastChannel<Song>
 }
 
 @Singleton
@@ -112,13 +116,16 @@ class RealSongPlayer @Inject constructor(
 
     private var isInitialized: Boolean = false
 
-    private var isPlayingCallback: OnIsPlaying = {}
     private var preparedCallback: OnPrepared<SongPlayer> = {}
     private var errorCallback: OnError<SongPlayer> = {}
     private var completionCallback: OnCompletion<SongPlayer> = {}
 
     private var metadataBuilder = MediaMetadataCompat.Builder()
     private var stateBuilder = createDefaultPlaybackState()
+
+    private val playingStateChannel =  ConflatedBroadcastChannel(false)
+    override val playingState: Flow<Boolean>
+        get() = playingStateChannel.asFlow()
 
     private var mediaSession = MediaSessionCompat(context, context.getString(R.string.app_name)).apply {
         setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
@@ -296,10 +303,6 @@ class RealSongPlayer @Inject constructor(
         queue.reset()
     }
 
-    override fun onPlayingState(playing: OnIsPlaying) {
-        this.isPlayingCallback = playing
-    }
-
     override fun onPrepared(prepared: OnPrepared<SongPlayer>) {
         this.preparedCallback = prepared
     }
@@ -326,11 +329,8 @@ class RealSongPlayer @Inject constructor(
             mediaSession.setRepeatMode(bundle.getInt(REPEAT_MODE))
             mediaSession.setShuffleMode(bundle.getInt(SHUFFLE_MODE))
         }
-        if (state.isPlaying) {
-            isPlayingCallback(this, true)
-        } else {
-            isPlayingCallback(this, false)
-        }
+
+        playingStateChannel.sendBlocking(state.isPlaying)
     }
 
     override fun restoreFromQueueData(queueData: QueueEntity) {
@@ -367,7 +367,11 @@ class RealSongPlayer @Inject constructor(
             putLong(METADATA_KEY_DURATION, song.duration.toLong())
         }.build()
         mediaSession.setMetadata(mediaMetadata)
+
+        songChannel.sendBlocking(song)
     }
+
+    override val songChannel: ConflatedBroadcastChannel<Song> = ConflatedBroadcastChannel()
 }
 
 private fun createDefaultPlaybackState(): PlaybackStateCompat.Builder {

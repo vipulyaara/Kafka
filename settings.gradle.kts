@@ -2,7 +2,6 @@ include(":logger")
 include(":ui-common")
 include(":language")
 include(":content")
-include(":domain")
 include(":reader")
 include(":ui-compose")
 pluginManagement {

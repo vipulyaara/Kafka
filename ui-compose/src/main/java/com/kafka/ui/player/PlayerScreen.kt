@@ -11,6 +11,7 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.clickable
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
@@ -23,12 +24,13 @@ import com.kafka.data.entities.filterMp3
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
 import com.kafka.ui.R
+import com.kafka.ui.actions.PlayerCommand
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composePlayerScreen(
     lifecycleOwner: LifecycleOwner,
     state: LiveData<PlayerViewState>,
-    actioner: (PlayerAction) -> Unit
+    actioner: (PlayerCommand) -> Unit
 ): Any = setContentWithLifecycle(lifecycleOwner) {
     val viewState = observe(state)
     if (viewState != null) {
@@ -39,7 +41,7 @@ fun ViewGroup.composePlayerScreen(
 }
 
 @Composable
-fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerAction) -> Unit) {
+fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerCommand) -> Unit) {
     val (state, onStateChange) = state { DrawerState.Closed }
     BottomDrawerLayout(
         drawerState = state,
@@ -48,22 +50,29 @@ fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerAction) -> Unit) {
         bodyContent = {
             Stack(modifier = Modifier.fillMaxSize()) {
                 Column {
-                    PlayerNowPlaying(modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp))
-                    PlayerControls(Modifier.gravity(Alignment.CenterHorizontally).padding(vertical = 24.dp))
+                    PlayerNowPlaying(
+                        modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp),
+                        playerData = viewState.playerData
+                    )
+                    PlayerControls(
+                        Modifier.gravity(Alignment.CenterHorizontally).padding(vertical = 24.dp),
+                        playerData = viewState.playerData,
+                        actioner = actioner
+                    )
+
+                    PlayerQueue(files = viewState.itemDetail?.files ?: emptyList(), actioner = {})
                 }
-                MiniPlayer(modifier = Modifier.gravity(Alignment.BottomCenter), playerData = viewState.playerData, actioner = actioner)
             }
         })
-
 }
 
 @Composable
-fun PlayerNowPlaying(modifier: Modifier) {
+fun PlayerNowPlaying(modifier: Modifier, playerData: PlayerData?) {
     Column(modifier = modifier) {
         ImageCover()
 
         Text(
-            text = "Aah ko chahiye ik umr",
+            text = playerData?.title ?: "",
             style = MaterialTheme.typography.h2.alignCenter(),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
@@ -71,7 +80,7 @@ fun PlayerNowPlaying(modifier: Modifier) {
         )
 
         Text(
-            text = "by Mirza Ghalib",
+            text = playerData?.subtitle ?: "",
             style = MaterialTheme.typography.subtitle2.alignCenter().copy(color = colors().primary),
             modifier = Modifier.padding(
                 horizontal = 20.dp,
@@ -82,14 +91,15 @@ fun PlayerNowPlaying(modifier: Modifier) {
 }
 
 @Composable
-fun PlayerControls(modifier: Modifier) {
+fun PlayerControls(modifier: Modifier, playerData: PlayerData?, actioner: (PlayerCommand) -> Unit) {
+    val playIcon = if (playerData?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
     Row(modifier = modifier + Modifier.padding(24.dp).gravity(Alignment.CenterHorizontally)) {
         val iconModifier = Modifier.padding(horizontal = 12.dp).gravity(Alignment.CenterHorizontally).weight(1f)
         VectorImage(id = R.drawable.ic_heart_sign, modifier = iconModifier)
         VectorImage(id = R.drawable.ic_step_backward, modifier = iconModifier)
         Card(shape = CircleShape, color = colors().secondary, modifier = iconModifier) {
-            Box(modifier = Modifier.padding(13.dp)) {
-                VectorImage(id = R.drawable.ic_pause, tint = colors().background)
+            Box(modifier = Modifier.padding(13.dp).clickable(onClick = { actioner(PlayerCommand.ToggleCurrent) })) {
+                VectorImage(id = playIcon, tint = colors().background)
             }
         }
         VectorImage(id = R.drawable.ic_skip_forward, modifier = iconModifier)
@@ -116,7 +126,7 @@ fun ImageCover() {
 @Composable
 fun QueBottomDrawer(
     viewState: PlayerViewState,
-    actioner: (PlayerAction) -> Unit
+    actioner: (PlayerCommand) -> Unit
 ) {
     Surface(color = colors().surface) {
         Column {

@@ -18,7 +18,7 @@ import android.os.Bundle
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.session.PlaybackStateCompat.STATE_NONE
-import com.kafka.data.data.db.dao.QueueDao
+import com.kafka.data.dao.QueueDao
 import com.kafka.player.timber.constants.Constants.ACTION_PLAY_NEXT
 import com.kafka.player.timber.constants.Constants.ACTION_QUEUE_REORDER
 import com.kafka.player.timber.constants.Constants.ACTION_REPEAT_QUEUE

@@ -29,7 +29,7 @@ fun HomepageSearchView(viewState: HomepageViewState, actioner: (HomepageAction) 
     Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
         SearchWidget(
             value = viewState.query ?: searchHint,
-            onSearch = { actioner(SubmitQueryAction(SearchQuery(it, SearchQueryType.Title))) },
+            onSearch = { actioner(SubmitQueryAction(SearchQuery(it, SearchQueryType.Creator))) },
             onFocusChange = { filtersVisibility.value = it })
 
         if (filtersVisibility.value) {

@@ -17,7 +17,7 @@ package com.kafka.player.timber.playback.players
 import android.app.Application
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat.SHUFFLE_MODE_ALL
-import com.kafka.data.data.db.dao.QueueDao
+import com.kafka.data.dao.QueueDao
 import com.kafka.player.R
 import com.kafka.player.timber.extensions.moveElement
 import com.kafka.player.timber.extensions.toQueue

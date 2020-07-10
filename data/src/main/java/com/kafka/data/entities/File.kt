@@ -1,8 +1,8 @@
 package com.kafka.data.entities
 
 import com.kafka.data.extensions.formattedDuration
-import com.kafka.data.query._mediaTypeText
-import com.kafka.data.query._mediatypeAudio
+import com.data.base.model._mediaTypeText
+import com.data.base.model._mediatypeAudio
 import org.threeten.bp.Duration
 
 data class File(

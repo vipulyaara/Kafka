@@ -28,7 +28,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
-import com.kafka.data.data.db.QueueEntity
+import com.kafka.data.entities.QueueEntity
 import com.kafka.player.R
 import com.kafka.player.timber.Utils.EMPTY_ALBUM_ART_URI
 import com.kafka.player.timber.constants.Constants
@@ -127,20 +127,22 @@ class TimberMusicService : MediaBrowserServiceCompat(), LifecycleOwner {
         sessionToken = player.getSession().sessionToken
         becomingNoisyReceiver = BecomingNoisyReceiver(this, sessionToken!!)
 
-        player.onPlayingState { isPlaying ->
-            if (isPlaying) {
-                becomingNoisyReceiver.register()
-                startForeground(NOTIFICATION_ID, notifications.buildNotification(getSession()))
-            } else {
-                becomingNoisyReceiver.unregister()
-                stopForeground(false)
-                saveCurrentData()
+        GlobalScope.launch {
+            player.playingState.collect {  isPlaying ->
+                if (isPlaying) {
+                    becomingNoisyReceiver.register()
+                    startForeground(NOTIFICATION_ID, notifications.buildNotification(player.getSession()))
+                } else {
+                    becomingNoisyReceiver.unregister()
+                    stopForeground(false)
+                    saveCurrentData()
+                }
+                notifications.updateNotification(player.getSession())
             }
-            notifications.updateNotification(player.getSession())
-        }
 
-        player.onCompletion {
-            notifications.updateNotification(player.getSession())
+            player.onCompletion {
+                notifications.updateNotification(player.getSession())
+            }
         }
     }
 

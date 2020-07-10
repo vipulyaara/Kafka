@@ -20,11 +20,6 @@ object Libs {
         const val nameDependency = ":$name"
     }
 
-    object Domain {
-        const val name = "domain"
-        const val nameDependency = ":$name"
-    }
-
     object Reader {
         const val name = "reader"
         const val nameDependency = ":$name"
@@ -62,7 +57,7 @@ object Libs {
 }
 
 object Android {
-    const val version = "4.2.0-alpha01"
+    const val version = "4.2.0-alpha04"
     const val appPlugin = "com.android.application"
     const val libPlugin = "com.android.library"
     const val gradlePlugin = "com.android.tools.build:gradle:$version"

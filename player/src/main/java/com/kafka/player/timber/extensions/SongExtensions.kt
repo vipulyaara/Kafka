@@ -16,7 +16,7 @@ package com.kafka.player.timber.extensions
 
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.session.MediaSessionCompat
-import com.kafka.data.data.db.SongEntity
+import com.kafka.data.entities.SongEntity
 import com.kafka.player.timber.Utils
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.repository.SongsRepository

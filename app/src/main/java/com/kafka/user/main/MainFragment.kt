@@ -9,8 +9,8 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.kafka.search.ui.HomepageViewModel
-import com.kafka.search.ui.MainViewModel
+import com.kafka.content.ui.HomepageViewModel
+import com.kafka.content.ui.MainViewModel
 import com.kafka.ui.actions.ItemDetailAction
 import com.kafka.ui.actions.SubmitQueryAction
 import com.kafka.ui.actions.UpdateHomepageAction
