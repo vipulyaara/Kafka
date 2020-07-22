@@ -26,6 +26,8 @@ dependencies {
     test()
     androidTest()
 
+    implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
+
     implementation(AndroidX.appStartup)
 
     implementation(Hilt.android)
@@ -38,13 +40,8 @@ dependencies {
 }
 
 configure<BaseExtension> {
-    dataBinding {
-        this.isEnabled = true
-    }
 
     defaultConfig {
         applicationId = Libs.applicationId
     }
 }
-
-//apply(plugin = "com.google.gms.google-services")

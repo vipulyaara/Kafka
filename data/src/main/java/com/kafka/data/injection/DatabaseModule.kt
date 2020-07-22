@@ -34,8 +34,7 @@ class RoomDatabaseModule {
     fun provideDatabase(context: Context): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
             context, KafkaRoomDatabase::class.java, databaseName
-        ).allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
+        ).fallbackToDestructiveMigration()
         if (Debug.isDebuggerConnected()) {
             builder.allowMainThreadQueries()
         }

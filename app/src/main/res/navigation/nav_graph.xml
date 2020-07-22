@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/navigation_player"
-        android:name="com.kafka.content.ui.PlayerFragment">
+        android:name="com.kafka.content.ui.player.PlayerFragment">
 
         <deepLink app:uri="app.kafka://player"/>
     </fragment>
@@ -19,13 +19,16 @@
     <fragment
         android:id="@+id/navigation_reader"
         android:name="com.kafka.reader.ui.ReaderFragment">
+        <argument
+            android:name="item_url"
+            app:argType="string" />
 
-        <deepLink app:uri="app.kafka://reader"/>
+        <deepLink app:uri="app.kafka://reader/{item_url}"/>
     </fragment>
 
     <fragment
         android:id="@+id/navigation_item_detail"
-        android:name="com.kafka.content.ui.ItemDetailFragment">
+        android:name="com.kafka.content.ui.detail.ItemDetailFragment">
         <argument
             android:name="item_id"
             app:argType="string" />

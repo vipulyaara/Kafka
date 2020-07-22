@@ -8,15 +8,15 @@ import androidx.lifecycle.LiveData
 import androidx.ui.core.Alignment
 import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Image
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.clickable
+import androidx.ui.foundation.*
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.gravity
-import androidx.ui.material.*
+import androidx.ui.material.Card
+import androidx.ui.material.DrawerState
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Surface
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
@@ -25,6 +25,7 @@ import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
 import com.kafka.ui.R
 import com.kafka.ui.actions.PlayerCommand
+import com.kafka.ui.widget.FakeSeekBar
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composePlayerScreen(
@@ -43,27 +44,36 @@ fun ViewGroup.composePlayerScreen(
 @Composable
 fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerCommand) -> Unit) {
     val (state, onStateChange) = state { DrawerState.Closed }
-    BottomDrawerLayout(
-        drawerState = state,
-        onStateChange = onStateChange,
-        drawerContent = { QueBottomDrawer(viewState, actioner) },
-        bodyContent = {
-            Stack(modifier = Modifier.fillMaxSize()) {
-                Column {
-                    PlayerNowPlaying(
-                        modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 64.dp),
-                        playerData = viewState.playerData
-                    )
-                    PlayerControls(
-                        Modifier.gravity(Alignment.CenterHorizontally).padding(vertical = 24.dp),
-                        playerData = viewState.playerData,
-                        actioner = actioner
-                    )
 
-                    PlayerQueue(files = viewState.itemDetail?.files ?: emptyList(), actioner = {})
-                }
-            }
-        })
+    VerticalScroller {
+        Column(modifier = Modifier.fillMaxSize()) {
+            PlayerNowPlaying(
+                modifier = Modifier.gravity(Alignment.CenterHorizontally).padding(top = 24.dp),
+                playerData = viewState.playerData
+            )
+            PlayerControls(
+                Modifier.gravity(Alignment.CenterHorizontally).padding(vertical = 12.dp),
+                playerData = viewState.playerData,
+                actioner = actioner
+            )
+
+            FakeSeekBar(duration = 300)
+            
+            Spacer(modifier = Modifier.height(64.dp))
+
+            PlayerQueue(files = viewState.itemDetail?.files ?: emptyList(), actioner = {})
+
+            Spacer(modifier = Modifier.height(64.dp))
+        }
+    }
+
+//    BottomDrawerLayout(
+//        drawerState = state,
+//        onStateChange = onStateChange,
+//        drawerContent = { QueBottomDrawer(viewState, actioner) },
+//        bodyContent = {
+//
+//        })
 }
 
 @Composable
@@ -74,6 +84,7 @@ fun PlayerNowPlaying(modifier: Modifier, playerData: PlayerData?) {
         Text(
             text = playerData?.title ?: "",
             style = MaterialTheme.typography.h2.alignCenter(),
+            color = colors().onPrimary,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(horizontal = 20.dp).padding(top = 24.dp).gravity(Alignment.CenterHorizontally)
@@ -81,7 +92,8 @@ fun PlayerNowPlaying(modifier: Modifier, playerData: PlayerData?) {
 
         Text(
             text = playerData?.subtitle ?: "",
-            style = MaterialTheme.typography.subtitle2.alignCenter().copy(color = colors().primary),
+            style = MaterialTheme.typography.subtitle2.alignCenter(),
+            color = colors().secondary,
             modifier = Modifier.padding(
                 horizontal = 20.dp,
                 vertical = 2.dp
@@ -110,9 +122,9 @@ fun PlayerControls(modifier: Modifier, playerData: PlayerData?, actioner: (Playe
 @Composable
 fun ImageCover() {
     Card(
-        modifier = Modifier.preferredSize(196.dp, 196.dp).gravity(Alignment.CenterHorizontally),
+        modifier = Modifier.preferredSize(256.dp, 256.dp).gravity(Alignment.CenterHorizontally),
         shape = RoundedCornerShape(5.dp),
-        elevation = 0.dp,
+        elevation = 24.dp,
         color = colors().background
     ) {
         val image = getRandomAuthorResource()

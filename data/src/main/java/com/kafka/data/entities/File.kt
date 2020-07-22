@@ -1,8 +1,8 @@
 package com.kafka.data.entities
 
-import com.kafka.data.extensions.formattedDuration
 import com.data.base.model._mediaTypeText
 import com.data.base.model._mediatypeAudio
+import com.kafka.data.extensions.formattedDuration
 import org.threeten.bp.Duration
 
 data class File(
@@ -29,7 +29,7 @@ fun File.isPdf() = format?.isPdf() ?: false
 fun File.isMp3() = format?.isMp3() ?: false
 
 fun File.isCoverImage() = format?.contains("JPEG", true) ?: false ||
-        format?.contains("Tile", true) ?: false
+        format?.endsWith("Tile", true) ?: false
 
 fun String?.isPdf() = this?.contains("pdf", true) ?: false
 

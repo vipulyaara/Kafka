@@ -85,7 +85,7 @@ fun <I : ObservableInteractor<T>, T> CoroutineScope.launchObserve(
     interactor: I,
     f: suspend (Flow<T>) -> Unit
 ) {
-    launch(Dispatchers.Main) {
+    launch(interactor.dispatcher) {
         f(interactor.observe())
     }
 }

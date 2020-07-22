@@ -30,7 +30,6 @@ import regularButtonPadding
 @Composable
 fun ItemDetailView(
     itemDetailViewState: ItemDetailViewState,
-    recentItem: RecentItem?,
     actioner: (ItemDetailAction) -> Unit
 ) {
     val itemDetail = itemDetailViewState.itemDetail
@@ -97,8 +96,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
             .padding(12.dp)
 
         Card(
-            border = Border(2.dp, colors().surface),
-            elevation = 0.dp,
+            elevation = 12.dp,
             shape = CircleShape,
             color = followedBackgroundTint,
             modifier = modifier.clickable(onClick = { actioner(ItemDetailAction.FavoriteClick) }, indication = null)
@@ -111,8 +109,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
         }
 
         Card(
-            border = Border(2.dp, colors().surface),
-            elevation = 0.dp,
+            elevation = 12.dp,
             shape = CircleShape,
             modifier = modifier,
             color = colors().background
@@ -131,7 +128,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
                 modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "READ",
                 icon = R.drawable.ic_layers,
-                actioner = { actioner(ItemDetailAction.Read()) })
+                actioner = { actioner(ItemDetailAction.Read(itemDetail?.readerUrl() ?: "")) })
         }
 
         if (itemDetail.isAudio()) {
@@ -176,7 +173,7 @@ fun ButtonItemBlue(modifier: Modifier, text: String, icon: Int, actioner: () -> 
         Button(
             modifier = Modifier.padding(horizontal = 8.dp),
             backgroundColor = colors().primary,
-            elevation = 1.dp,
+            elevation = 12.dp,
             shape = RoundedCornerShape(5.dp),
             contentColor = Color.White,
             onClick = actioner,

@@ -54,6 +54,8 @@ publishing {
 
 dependencies {
     implementation(project(":data"))
+    implementation(ThreeTenBp.core)
+
 
     arch()
     room()

@@ -1,7 +1,7 @@
 package com.kafka.ui
 
 import androidx.lifecycle.ViewModel
-import com.kafka.ui_common.BaseViewState
+import com.kafka.ui_common.base.BaseViewState
 import com.kafka.ui_common.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

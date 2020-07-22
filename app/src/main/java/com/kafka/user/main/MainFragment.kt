@@ -9,19 +9,16 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.kafka.content.ui.HomepageViewModel
-import com.kafka.content.ui.MainViewModel
+import com.kafka.content.ui.search.SearchViewModel
 import com.kafka.ui.actions.ItemDetailAction
-import com.kafka.ui.actions.SubmitQueryAction
-import com.kafka.ui.actions.UpdateHomepageAction
-import com.kafka.ui.home.composeSearchScreen
-import com.kafka.ui_common.BaseFragment
+import com.kafka.ui.main.composeMainScreen
+import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.itemDetailDeepLinkUri
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
-    private val homepageViewModel: HomepageViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
     private val navController by lazy { findNavController() }
 
@@ -29,10 +26,10 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launchWhenCreated {
-            for (action in homepageViewModel.pendingActions) when (action) {
-                is UpdateHomepageAction -> homepageViewModel.updateHomepage()
-                is SubmitQueryAction -> homepageViewModel.submitQuery(action.query)
-                is ItemDetailAction -> navController.navigate(itemDetailDeepLinkUri(action.item.itemId))
+            searchViewModel.actioner.observe { action ->
+                when (action) {
+                    is ItemDetailAction -> navController.navigate(itemDetailDeepLinkUri(action.item.itemId))
+                }
             }
         }
 
@@ -46,7 +43,7 @@ class MainFragment : BaseFragment() {
     ): View? {
         return FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            composeSearchScreen(homepageViewModel.viewState, homepageViewModel::submitAction)
+            composeMainScreen(mainViewModel.liveData, searchViewModel.liveData, searchViewModel::submitAction)
         }
     }
 }

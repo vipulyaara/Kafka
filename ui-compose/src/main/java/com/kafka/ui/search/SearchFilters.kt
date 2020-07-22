@@ -2,7 +2,6 @@ package com.kafka.ui.search
 
 import androidx.compose.Composable
 import androidx.compose.MutableState
-import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Border
@@ -34,14 +33,14 @@ import com.kafka.ui.*
 //}
 
 @Composable
-fun SearchFilters(viewState: HomepageViewState) {
+fun SearchFilters(viewState: SearchViewState) {
     HorizontalScroller(modifier = Modifier.padding(vertical = 12.dp)) {
-        val selectedLanguages = state { viewState.selectedLanguages?.firstOrNull() }
-        Row {
-            viewState.selectedLanguages?.forEach {
-                SelectionButton(it, selectedLanguages)
-            }
-        }
+//        val selectedLanguages = state { viewState.selectedLanguages?.firstOrNull() }
+//        Row {
+//            viewState.selectedLanguages?.forEach {
+//                SelectionButton(it, selectedLanguages)
+//            }
+//        }
     }
 }
 

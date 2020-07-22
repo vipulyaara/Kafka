@@ -2,6 +2,7 @@ dependencies {
     implementation(project(Libs.Data.nameDependency))
     implementation(project(Libs.Language.nameDependency))
     implementation(project(Libs.Player.nameDependency))
+    implementation(project(Libs.Reader.nameDependency))
     implementation(project(Libs.Logger.nameDependency))
     implementation(project(Libs.UiCompose.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))

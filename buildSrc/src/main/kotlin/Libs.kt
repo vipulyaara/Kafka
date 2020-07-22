@@ -153,7 +153,7 @@ object AndroidX {
 
     object Navigation {
         private const val version = "2.2.0-alpha01"
-        const val pluginVersion = "2.1.0"
+        const val pluginVersion = "2.3.0"
         const val plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:"
         const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
         const val ui = "androidx.navigation:navigation-ui-ktx:$version"
@@ -323,7 +323,7 @@ object Easeinterpolator {
 
 object KotlinX {
     object Coroutines {
-        private const val version = "1.3.2"
+        private const val version = "1.3.7"
         val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
         val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"

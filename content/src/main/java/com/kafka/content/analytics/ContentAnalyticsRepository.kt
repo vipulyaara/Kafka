@@ -1,4 +1,4 @@
-package com.kafka.content.data
+package com.kafka.content.analytics
 
 import javax.inject.Inject
 

@@ -8,4 +8,4 @@ fun searchDeepLinkUri() = "app.kafka://search".toUri()
 
 fun playerDeepLinkUri() = "app.kafka://player".toUri()
 
-fun readerDeepLinkUri() = "app.kafka://reader".toUri()
+fun readerDeepLinkUri(itemUrl: String) = "app.kafka://reader/$itemUrl".toUri()

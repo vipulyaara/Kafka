@@ -1,17 +1,18 @@
 package com.kafka.content.data.item
 
-import com.data.base.model.getOrThrow
-import com.dropbox.android.external.store4.*
-import com.kafka.data.dao.ItemDao
-import com.kafka.data.entities.Item
-import com.kafka.data.injection.ForStore
 import com.data.base.model.ArchiveQuery
 import com.data.base.model.asLocalQuery
+import com.data.base.model.getOrThrow
+import com.dropbox.android.external.store4.SourceOfTruth
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.nonFlowValueFetcher
+import com.kafka.data.dao.ItemDao
+import com.kafka.data.entities.Item
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 
 typealias ItemStore = Store<ArchiveQuery, List<Item>>
@@ -21,12 +22,7 @@ typealias ItemStore = Store<ArchiveQuery, List<Item>>
 class ItemStoreModule {
     @Singleton
     @Provides
-    @ExperimentalStdlibApi
-    fun provideStore(
-        itemDao: ItemDao,
-        itemRemoteDataSource: ItemRemoteDataSource,
-        @ForStore scope: CoroutineScope
-    ): ItemStore {
+    fun provideStore(itemDao: ItemDao, itemRemoteDataSource: ItemRemoteDataSource): ItemStore {
         return StoreBuilder
             .from(
                 fetcher = nonFlowValueFetcher { itemRemoteDataSource.fetchItemsByCreator(it).getOrThrow() },
@@ -36,16 +32,6 @@ class ItemStoreModule {
                     delete = { it: ArchiveQuery -> },
                     deleteAll = itemDao::deleteAll
                 )
-            ).scope(scope).build()
-    }
-}
-
-
-fun <F, T> StoreResponse<F?>.map(block: (F?) -> T?) {
-    val result = block(dataOrNull())
-    when (this) {
-        is StoreResponse.Loading -> StoreResponse.Loading(origin)
-        is StoreResponse.Data -> StoreResponse.Data(result, origin)
-        else -> this
+            ).build()
     }
 }

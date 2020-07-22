@@ -1,40 +1,32 @@
 package com.kafka.data.model
 
-import com.data.base.*
-import com.data.base.extensions.debug
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import com.data.base.InvokeError
+import com.data.base.InvokeStarted
+import com.data.base.InvokeStatus
+import com.data.base.InvokeSuccess
+import kotlinx.coroutines.flow.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 class ObservableLoadingCounter @Inject constructor() {
     private val count = AtomicInteger()
-    private val loadingState = ConflatedBroadcastChannel(count.get())
+    private val loadingState = MutableStateFlow(count.get())
 
     val observable: Flow<Boolean>
-        get() = loadingState.asFlow().map { it > 0 }
+        get() = loadingState.map { it > 0 }.distinctUntilChanged()
 
     fun addLoader() {
-        loadingState.sendBlocking(count.incrementAndGet())
+        loadingState.value = count.incrementAndGet()
     }
 
     fun removeLoader() {
-        loadingState.sendBlocking(count.decrementAndGet())
+        loadingState.value = count.decrementAndGet()
     }
 }
 
-suspend fun ObservableLoadingCounter.collectFrom(statuses: Flow<InvokeStatus>) {
-    statuses.collect {
-        if (it == InvokeStarted) {
-            debug { "Add loader" }
-            addLoader()
-        } else if (it == InvokeSuccess || it == InvokeTimeout || it is InvokeError) {
-            debug { "Remove loader" }
-            removeLoader()
-        }
+suspend fun Flow<InvokeStatus>.collectInto(counter: ObservableLoadingCounter) = collect {
+    when (it) {
+        InvokeStarted -> counter.addLoader()
+        InvokeSuccess, is InvokeError -> counter.removeLoader()
     }
 }

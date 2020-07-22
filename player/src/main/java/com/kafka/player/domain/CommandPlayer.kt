@@ -4,6 +4,7 @@ import com.data.base.AppCoroutineDispatchers
 import com.data.base.Interactor
 import com.data.base.extensions.debug
 import com.kafka.data.dao.ItemDetailDao
+import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.firstAudio
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.timber.MusicUtils
@@ -31,15 +32,10 @@ class CommandPlayer @Inject constructor(
             is PlayerCommand.Play -> {
                 getItemDetail(params.itemId).apply {
                     MusicUtils.songUri = firstAudio()?.playbackUrl ?: ""
-                    songPlayer.playSong(
-                        Song(
-                            id = itemId.hashCode().toLong(),
-                            title = title ?: "",
-                            artist = firstAudio()?.title ?: ""
-                        )
-                    )
+                    songPlayer.playSong(asSong())
                 }
             }
+
             PlayerCommand.ToggleCurrent -> {
                 songPlayer.playingState.collect {
                     if (it) songPlayer.pause() else songPlayer.playSong()
@@ -50,4 +46,10 @@ class CommandPlayer @Inject constructor(
 
     private fun getItemDetail(itemId: String) = itemDetailDao.itemDetail(itemId)
 
+    private fun ItemDetail.asSong() =
+        Song(
+            id = itemId.hashCode().toLong(),
+            title = title ?: "",
+            artist = creator ?: ""
+        )
 }

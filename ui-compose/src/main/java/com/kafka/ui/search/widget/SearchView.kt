@@ -17,24 +17,23 @@ import com.kafka.ui.actions.HomepageAction
 import com.kafka.ui.actions.SubmitQueryAction
 import com.kafka.ui.colors
 import com.kafka.ui.home.searchHint
-import com.kafka.ui.search.HomepageViewState
-import com.kafka.ui.search.SearchFilters
 import com.kafka.ui.search.SearchQuery
 import com.kafka.ui.search.SearchQueryType
+import com.kafka.ui.search.SearchViewState
 import com.kafka.ui.typography
 
 @Composable
-fun HomepageSearchView(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
+fun HomepageSearchView(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
     val filtersVisibility = state { false }
-    Column(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
+    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
         SearchWidget(
             value = viewState.query ?: searchHint,
             onSearch = { actioner(SubmitQueryAction(SearchQuery(it, SearchQueryType.Creator))) },
             onFocusChange = { filtersVisibility.value = it })
 
-        if (filtersVisibility.value) {
-            SearchFilters(viewState = viewState)
-        }
+//        if (filtersVisibility.value) {
+//            SearchFilters(viewState = viewState)
+//        }
     }
 }
 

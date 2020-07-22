@@ -41,6 +41,7 @@ fun DependencyHandlerScope.ktx() {
     implementation { AndroidX.Ktx.sqlite }
     implementation { AndroidX.Ktx.viewmodel }
     implementation { AndroidX.Ktx.lifecycle }
+    implementation { AndroidX.Ktx.liveData }
 }
 
 fun DependencyHandlerScope.coroutines() {

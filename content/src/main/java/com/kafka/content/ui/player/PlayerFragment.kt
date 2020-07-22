@@ -1,4 +1,4 @@
-package com.kafka.content.ui
+package com.kafka.content.ui.player
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.ui.player.composePlayerScreen
-import com.kafka.ui_common.BaseFragment
+import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

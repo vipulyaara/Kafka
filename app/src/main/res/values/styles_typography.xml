@@ -46,7 +46,7 @@
     <style name="TextAppearance.Coyote.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/circular_std_medium</item>
         <item name="android:fontFamily">@font/circular_std_medium</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/text_subheading</item>
     </style>
 

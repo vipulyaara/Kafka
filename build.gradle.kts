@@ -181,10 +181,6 @@ subprojects {
                 isAbortOnError = false
             }
 
-//            testOptions {
-//                unitTests.isReturnDefaultValues = true
-//            }
-
             packagingOptions {
                 exclude("META-INF/LICENSE.txt")
                 exclude("META-INF/NOTICE.txt")

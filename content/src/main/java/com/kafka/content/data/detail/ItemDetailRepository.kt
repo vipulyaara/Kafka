@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 class ItemDetailRepository @Inject constructor(
     private val itemDetailLocalDataSource: ItemDetailLocalDataSource,
-    private val itemDetailRemoteDataSource: com.kafka.content.data.detail.ItemDetailRemoteDataSource
+    private val itemDetailRemoteDataSource: ItemDetailRemoteDataSource
 ) {
 
     fun observeItemDetail(itemId: String) = itemDetailLocalDataSource.itemDetailFlow(itemId)

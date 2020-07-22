@@ -2,7 +2,7 @@ package com.kafka.ui.player
 
 import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.R
-import com.kafka.ui_common.BaseViewState
+import com.kafka.ui_common.base.BaseViewState
 
 /**
  * @author Vipul Kumar; dated 27/12/18.

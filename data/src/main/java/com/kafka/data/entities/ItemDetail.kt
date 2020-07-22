@@ -25,3 +25,5 @@ data class ItemDetail(
 fun ItemDetail?.formattedDescription() = this?.description?.let { Html.fromHtml(it)?.toString() } ?: ""
 
 fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()
+
+fun ItemDetail?.readerUrl() = this?.files?.first { it.readerUrl != null }?.readerUrl ?: error("Null reader url")

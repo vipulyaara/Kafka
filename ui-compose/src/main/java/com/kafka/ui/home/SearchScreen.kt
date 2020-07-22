@@ -1,18 +1,13 @@
 package com.kafka.ui.home
 
-import android.view.ViewGroup
 import androidx.compose.Composable
-import androidx.compose.Recomposer
-import androidx.lifecycle.LiveData
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.core.setContent
 import androidx.ui.foundation.HorizontalScroller
 import androidx.ui.foundation.Text
-import androidx.ui.foundation.drawBackground
 import androidx.ui.foundation.lazy.LazyColumnItems
-import androidx.ui.graphics.Shadow
 import androidx.ui.layout.*
+import androidx.ui.material.Card
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.unit.dp
 import com.data.base.extensions.debug
@@ -21,42 +16,22 @@ import com.kafka.ui.*
 import com.kafka.ui.R
 import com.kafka.ui.actions.HomepageAction
 import com.kafka.ui.actions.ItemDetailAction
-import com.kafka.ui.player.MiniPlayer
-import com.kafka.ui.search.HomepageViewState
+import com.kafka.ui.search.SearchViewState
 import com.kafka.ui.search.widget.HomepageSearchView
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 const val searchHint = "Search..."
 
-fun ViewGroup.composeSearchScreen(
-    homepageViewState: LiveData<HomepageViewState>,
-    actioner: (HomepageAction) -> Unit
-): Any = setContent(Recomposer.current()) {
-    val viewState = observe(homepageViewState)
-    MaterialThemeFromMdcTheme {
-        if (viewState != null) {
-            Stack {
-                MiniPlayer(
-                    modifier = Modifier.drawBackground(colors().primary).wrapContentHeight()
-                        .gravity(Alignment.BottomCenter),
-                    playerData = viewState.playerData,
-                    actioner = viewState.playerCommand
-                )
-                HomepageScreen(viewState = viewState, actioner = actioner)
-            }
-        }
-    }
-}
-
 @Composable
-fun HomepageScreen(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
+fun SearchScreen(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        if (viewState.isLoading) {
+        if (viewState.isLoading && viewState.homepageItems.isEmpty()) {
             FullScreenLoader()
         } else {
             Column {
-                HomepageSearchView(viewState = viewState, actioner = actioner)
+                Card(elevation = 4.dp, color = colors().background) {
+                    HomepageSearchView(viewState = viewState, actioner = actioner)
+                }
                 ContentResults(viewState = viewState, actioner = actioner)
             }
         }
@@ -78,7 +53,7 @@ fun ContentCarousal(list: List<Item>?, actioner: (HomepageAction) -> Unit) {
 }
 
 @Composable
-fun ContentResults(viewState: HomepageViewState, actioner: (HomepageAction) -> Unit) {
+fun ContentResults(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
     val items = viewState.homepageItems
     debug { "Showing results for ${items.values.size}" }
 
@@ -88,7 +63,25 @@ fun ContentResults(viewState: HomepageViewState, actioner: (HomepageAction) -> U
         ) {
             ContentItemList(content = it, onItemClick = { actioner(ItemDetailAction(it)) })
         }
-        Shadow()
+    }
+}
+
+@Composable
+fun Authors() {
+    HorizontalScroller {
+        Row {
+            arrayListOf(
+                "Franz Kafka",
+                "Dostoyevsky",
+                "Pablo Picasso",
+                "Mirza Ghalib",
+                "Mir Taqi Mir",
+                "Albert Camus",
+                "Faiz Ahmed Faiz"
+            ).map { Author(it) }.forEach {
+                AuthorItem(author = it)
+            }
+        }
     }
 }
 
@@ -104,6 +97,6 @@ fun FullScreenLoader() {
 fun Shadow() {
     CoilImage(
         data = R.drawable.img_shadow_top_to_bottom,
-        modifier = Modifier.fillMaxWidth().height(16.dp)
+        modifier = Modifier.fillMaxWidth().height(24.dp)
     )
 }

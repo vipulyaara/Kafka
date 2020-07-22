@@ -6,9 +6,4 @@
         android:icon="@drawable/ic_sun"
         android:title="Dark mode"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_user"
-        android:icon="@drawable/ic_settings"
-        android:title="User"
-        app:showAsAction="always" />
 </menu>
