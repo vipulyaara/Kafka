@@ -2,10 +2,12 @@ package com.kafka.ui.home
 
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
+import androidx.ui.core.ContentScale
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.HorizontalScroller
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.lazy.LazyColumnItems
+import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.CircularProgressIndicator
@@ -29,12 +31,21 @@ fun SearchScreen(viewState: SearchViewState, actioner: (HomepageAction) -> Unit)
             FullScreenLoader()
         } else {
             Column {
-                Card(elevation = 4.dp, color = colors().background) {
-                    HomepageSearchView(viewState = viewState, actioner = actioner)
-                }
+                HomepageSearchView(viewState = viewState, actioner = actioner)
                 ContentResults(viewState = viewState, actioner = actioner)
             }
         }
+    }
+}
+
+@Composable
+fun Banner() {
+    Card(
+        modifier = Modifier.height(232.dp).fillMaxWidth().padding(24.dp),
+        shape = RoundedCornerShape(5.dp),
+        elevation = 0.dp
+    ) {
+        CoilImage(data = R.drawable.img_banner_11, contentScale = ContentScale.Crop)
     }
 }
 
@@ -84,7 +95,6 @@ fun Authors() {
         }
     }
 }
-
 
 @Composable
 fun FullScreenLoader() {

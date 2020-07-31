@@ -7,16 +7,14 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
 import com.kafka.data.entities.Item
-import com.kafka.ui.alpha
-import com.kafka.ui.colors
-import com.kafka.ui.incrementTextSize
-import com.kafka.ui.lineHeight
+import com.kafka.ui.*
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -49,7 +47,7 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
     Stack(modifier = Modifier.clickable(onClick = { onItemClick(content) }, indication = null)) {
         Row(modifier = Modifier.padding(top = 36.dp, start = 20.dp, end = 20.dp, bottom = 2.dp).fillMaxWidth()) {
             Card(
-                modifier = Modifier.preferredSize(106.dp, 106.dp).gravity(Alignment.CenterVertically),
+                modifier = Modifier.preferredSize(96.dp, 116.dp).gravity(Alignment.CenterVertically),
                 shape = RoundedCornerShape(2.dp),
                 elevation = 1.dp
             ) {
@@ -57,8 +55,16 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
             }
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(
+                    text = "✪✪✪✪✪",
+                    modifier = Modifier,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.subtitle1.copy(color = colors().secondary.alpha(alpha = 1f))
+                        .decrementTextSize(),
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
                     text = content.title ?: "",
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 12.dp),
                     maxLines = 2,
                     style = MaterialTheme.typography.subtitle1.lineHeight(1.1),
                     color = colors().onPrimary,
@@ -68,7 +74,7 @@ fun ContentItemList(content: Item, onItemClick: (Item) -> Unit) {
                     text = content.creator ?: "",
                     modifier = Modifier.padding(top = 4.dp),
                     maxLines = 2,
-                    color = colors().onPrimary.alpha(alpha = 0.5f),
+                    color = Color(0xFFCABBB9),
                     style = MaterialTheme.typography.caption.alpha(alpha = 0.4f).incrementTextSize()
                 )
             }

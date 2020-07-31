@@ -30,13 +30,8 @@ fun HomepageSearchView(viewState: SearchViewState, actioner: (HomepageAction) ->
             value = viewState.query ?: searchHint,
             onSearch = { actioner(SubmitQueryAction(SearchQuery(it, SearchQueryType.Creator))) },
             onFocusChange = { filtersVisibility.value = it })
-
-//        if (filtersVisibility.value) {
-//            SearchFilters(viewState = viewState)
-//        }
     }
 }
-
 
 @Composable
 fun SearchWidget(value: String, onSearch: (String) -> Unit, onFocusChange: (Boolean) -> Unit) {
