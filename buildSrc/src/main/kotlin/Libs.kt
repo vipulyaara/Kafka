@@ -93,6 +93,12 @@ object FinestWebView {
     const val core = "com.thefinestartist:finestwebview:1.2.7"
 }
 
+object Epoxy {
+    const val core = "com.airbnb.android:epoxy:4.0.0-beta6"
+    const val databinding = "com.airbnb.android:epoxy-databinding:4.0.0-beta6"
+    const val processor = "com.airbnb.android:epoxy-processor:4.0.0-beta6"
+}
+
 // Core dependencies
 object Kotlin {
     const val version = "1.3.72"
@@ -109,7 +115,7 @@ object Store {
 }
 
 object Coil {
-    private const val version = "0.9.2"
+    private const val version = "0.11.0"
     const val core = "io.coil-kt:coil:$version"
 }
 
@@ -147,7 +153,7 @@ object AndroidX {
     const val material = "com.google.android.material:material:1.2.0-alpha01"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
     const val constraintLayout =
-        "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
+        "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
     const val workManager = "android.arch.work:work-runtime:1.0.0-alpha13"
     const val preference = "androidx.preference:preference:1.1.0"
 
@@ -309,12 +315,16 @@ object Logger {
     const val core = "com.orhanobut:logger:2.2.0"
 }
 
+object Butterknife {
+    const val plugin = "com.jakewharton.butterknife"
+}
+
 object SmartTabLayout {
     const val core = "com.ogaclejapan.smarttablayout:library:2.0.0@aar"
 }
 
 object Lottie {
-    const val core = "com.airbnb.android:lottie:2.8.0"
+    const val core = "com.airbnb.android:lottie:3.4.1"
 }
 
 object Easeinterpolator {

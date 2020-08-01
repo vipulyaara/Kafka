@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="closeClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="isSelected"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:onClick="@{clickListener}"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxWidth="130dp"
+            android:maxLines="1"
+            android:text="@{text}"
+            android:textAppearance="@style/TextAppearance.Coyote.Subtitle1"
+            tools:text="Franz Kafka" />
+
+        <ImageView
+            visibleGone="@{isSelected}"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:onClick="@{closeClickListener}"
+            android:padding="4dp"
+            android:src="@drawable/ic_close_circle" />
+    </LinearLayout>
+</layout>

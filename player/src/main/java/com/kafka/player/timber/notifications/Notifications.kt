@@ -97,7 +97,7 @@ class RealNotifications @Inject constructor(
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setStyle(style)
-            setSmallIcon(R.drawable.ic_feather)
+            setSmallIcon(R.drawable.ic_play)
             setLargeIcon(artwork)
 //            setContentIntent(clickIntent)
             setContentTitle(trackName)
@@ -149,7 +149,7 @@ class RealNotifications @Inject constructor(
     private fun getEmptyNotification(): Notification {
         createNotificationChannel()
         return NotificationCompat.Builder(context, CHANNEL_ID).apply {
-            setSmallIcon(R.drawable.ic_feather)
+            setSmallIcon(R.drawable.ic_play)
             setContentTitle("Loading audio...")
             setColorized(true)
             setShowWhen(false)

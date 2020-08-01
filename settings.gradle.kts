@@ -3,7 +3,6 @@ include(":ui-common")
 include(":language")
 include(":content")
 include(":reader")
-include(":ui-compose")
 pluginManagement {
     repositories {
         google()

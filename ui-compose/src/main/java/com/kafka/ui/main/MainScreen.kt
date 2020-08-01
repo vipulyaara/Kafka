@@ -18,18 +18,18 @@ import androidx.ui.material.BottomNavigationItem
 import androidx.ui.unit.dp
 import com.kafka.ui.R
 import com.kafka.ui.VectorImage
-import com.kafka.ui.actions.HomepageAction
+import com.kafka.content.ui.search.HomepageAction
 import com.kafka.ui.colors
 import com.kafka.ui.home.SearchScreen
 import com.kafka.ui.observe
 import com.kafka.ui.profile.ProfileScreen
-import com.kafka.ui.search.SearchViewState
+import com.kafka.content.ui.search.SearchViewState
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeMainScreen(
-    mainViewState: LiveData<MainViewState>,
-    searchViewState: LiveData<SearchViewState>,
-    searchActioner: (HomepageAction) -> Unit
+    mainViewState: LiveData<com.kafka.content.ui.main.MainViewState>,
+    searchViewState: LiveData<com.kafka.content.ui.search.SearchViewState>,
+    searchActioner: (com.kafka.content.ui.search.HomepageAction) -> Unit
 ): Any = setContent(Recomposer.current()) {
     val selectedNavigation: MutableState<BottomNavigationItem> = androidx.compose.state { BottomNavigationItem.Search }
     MaterialThemeFromMdcTheme {

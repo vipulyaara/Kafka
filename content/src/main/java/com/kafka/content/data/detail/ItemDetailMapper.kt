@@ -1,12 +1,13 @@
 package com.kafka.content.data.detail
 
+import android.text.Html
 import com.data.base.mapper.Mapper
+import com.data.base.model.item.ItemDetailResponse
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isMp3
 import com.kafka.data.entities.isPdf
 import com.kafka.data.extensions.getRandomAuthorResource
-import com.data.base.model.item.ItemDetailResponse
 import java.net.URL
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             itemId = metadata.identifier,
             language = metadata.licenseurl,
             title = metadata.title,
-            description = "✪✪✪✪✪  " + (metadata.description?.joinToString() ?: ""),
+            description = "✪✪✪✪✪  " + (metadata.description?.joinToString()?.format() ?: ""),
             creator = metadata.creator?.joinToString(),
             collection = metadata.collection?.joinToString(),
             mediaType = metadata.mediatype,
@@ -28,6 +29,9 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
         )
     }
 }
+
+
+fun String?.format() = Html.fromHtml(this)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 

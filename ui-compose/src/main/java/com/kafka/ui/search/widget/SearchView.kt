@@ -13,22 +13,29 @@ import androidx.ui.layout.fillMaxWidth
 import androidx.ui.layout.padding
 import androidx.ui.text.TextRange
 import androidx.ui.unit.dp
-import com.kafka.ui.actions.HomepageAction
-import com.kafka.ui.actions.SubmitQueryAction
+import com.kafka.content.ui.search.HomepageAction
+import com.kafka.content.ui.search.SubmitQueryAction
 import com.kafka.ui.colors
 import com.kafka.ui.home.searchHint
-import com.kafka.ui.search.SearchQuery
-import com.kafka.ui.search.SearchQueryType
-import com.kafka.ui.search.SearchViewState
+import com.kafka.content.ui.search.SearchQuery
+import com.kafka.content.ui.search.SearchQueryType
+import com.kafka.content.ui.search.SearchViewState
 import com.kafka.ui.typography
 
 @Composable
-fun HomepageSearchView(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
+fun HomepageSearchView(viewState: com.kafka.content.ui.search.SearchViewState, actioner: (com.kafka.content.ui.search.HomepageAction) -> Unit) {
     val filtersVisibility = state { false }
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
         SearchWidget(
             value = viewState.query ?: searchHint,
-            onSearch = { actioner(SubmitQueryAction(SearchQuery(it, SearchQueryType.Creator))) },
+            onSearch = { actioner(
+                com.kafka.content.ui.search.SubmitQueryAction(
+                    com.kafka.content.ui.search.SearchQuery(
+                        it,
+                        com.kafka.content.ui.search.SearchQueryType.Creator
+                    )
+                )
+            ) },
             onFocusChange = { filtersVisibility.value = it })
     }
 }

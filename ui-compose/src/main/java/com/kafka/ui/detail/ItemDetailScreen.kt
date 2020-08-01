@@ -14,7 +14,6 @@ import androidx.ui.material.EmphasisAmbient
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ProvideEmphasis
 import androidx.ui.unit.dp
-import com.kafka.data.extensions.letEmpty
 import com.kafka.ui.alpha
 import com.kafka.ui.colors
 import com.kafka.ui.home.ContentItem
@@ -24,8 +23,8 @@ import com.kafka.ui_common.showToast
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composeContentDetailScreen(
-    state: LiveData<ItemDetailViewState>,
-    actioner: (ItemDetailAction) -> Unit
+    state: LiveData<com.kafka.content.ui.detail.ItemDetailViewState>,
+    actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit
 ): Any = setContent(Recomposer.current()) {
     val viewState = observe(state)
     if (viewState != null) {
@@ -37,7 +36,7 @@ fun ViewGroup.composeContentDetailScreen(
 }
 
 @Composable
-private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
+private fun ContentDetailScreen(viewState: com.kafka.content.ui.detail.ItemDetailViewState, actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit) {
     if (viewState.isLoading && viewState.itemDetail?.itemId == null) {
         FullScreenLoader()
     } else {
@@ -46,7 +45,7 @@ private fun ContentDetailScreen(viewState: ItemDetailViewState, actioner: (ItemD
 }
 
 @Composable
-private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
+private fun ContentDetail(viewState: com.kafka.content.ui.detail.ItemDetailViewState, actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit) {
     VerticalScroller {
         Column {
             Spacer(Modifier.padding(top = 24.dp))
@@ -62,7 +61,7 @@ private fun ContentDetail(viewState: ItemDetailViewState, actioner: (ItemDetailA
 }
 
 @Composable
-fun ItemsByCreator(viewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
+fun ItemsByCreator(viewState: com.kafka.content.ui.detail.ItemDetailViewState, actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit) {
     viewState.itemsByCreator?.letEmpty {
         ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
             Text(
@@ -77,7 +76,7 @@ fun ItemsByCreator(viewState: ItemDetailViewState, actioner: (ItemDetailAction) 
             Row {
                 viewState.itemsByCreator.forEach { content ->
                     ContentItem(content) {
-                        actioner(ItemDetailAction.RelatedItemClick(it))
+                        actioner(com.kafka.content.ui.detail.ItemDetailAction.RelatedItemClick(it))
                     }
                     Spacer(modifier = Modifier.preferredWidth(8.dp))
                 }

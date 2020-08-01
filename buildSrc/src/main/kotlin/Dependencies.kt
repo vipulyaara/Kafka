@@ -13,6 +13,12 @@ fun DependencyHandlerScope.ui() {
     implementation { AndroidX.workManager }
     implementation { AndroidX.palette }
 
+    implementation { Lottie.core }
+    implementation { AndroidX.constraintLayout }
+    implementation { Epoxy.core }
+    implementation { Epoxy.databinding }
+    kapt { Epoxy.processor }
+
     implementation { Timber.core }
     implementation { Kotlin.stdlib }
 }
@@ -36,6 +42,7 @@ fun DependencyHandlerScope.arch() {
 
 fun DependencyHandlerScope.ktx() {
     implementation { AndroidX.Ktx.core }
+    implementation { AndroidX.Ktx.fragment }
     implementation { AndroidX.Ktx.collection }
     implementation { AndroidX.Ktx.reactiveStreams }
     implementation { AndroidX.Ktx.sqlite }

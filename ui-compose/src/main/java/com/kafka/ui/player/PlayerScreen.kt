@@ -20,18 +20,17 @@ import androidx.ui.material.Surface
 import androidx.ui.res.imageResource
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
-import com.kafka.data.entities.filterMp3
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
 import com.kafka.ui.R
-import com.kafka.ui.actions.PlayerCommand
+import com.kafka.content.ui.PlayerCommand
 import com.kafka.ui.widget.FakeSeekBar
 import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
 
 fun ViewGroup.composePlayerScreen(
     lifecycleOwner: LifecycleOwner,
-    state: LiveData<PlayerViewState>,
-    actioner: (PlayerCommand) -> Unit
+    state: LiveData<com.kafka.content.ui.player.PlayerViewState>,
+    actioner: (com.kafka.content.ui.PlayerCommand) -> Unit
 ): Any = setContentWithLifecycle(lifecycleOwner) {
     val viewState = observe(state)
     if (viewState != null) {
@@ -42,7 +41,7 @@ fun ViewGroup.composePlayerScreen(
 }
 
 @Composable
-fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerCommand) -> Unit) {
+fun PlayerScreen(viewState: com.kafka.content.ui.player.PlayerViewState, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
     val (state, onStateChange) = state { DrawerState.Closed }
 
     VerticalScroller {
@@ -77,7 +76,7 @@ fun PlayerScreen(viewState: PlayerViewState, actioner: (PlayerCommand) -> Unit) 
 }
 
 @Composable
-fun PlayerNowPlaying(modifier: Modifier, playerData: PlayerData?) {
+fun PlayerNowPlaying(modifier: Modifier, playerData: com.kafka.content.ui.player.PlayerData?) {
     Column(modifier = modifier) {
         ImageCover()
 
@@ -103,14 +102,14 @@ fun PlayerNowPlaying(modifier: Modifier, playerData: PlayerData?) {
 }
 
 @Composable
-fun PlayerControls(modifier: Modifier, playerData: PlayerData?, actioner: (PlayerCommand) -> Unit) {
+fun PlayerControls(modifier: Modifier, playerData: com.kafka.content.ui.player.PlayerData?, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
     val playIcon = if (playerData?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
     Row(modifier = modifier + Modifier.padding(24.dp).gravity(Alignment.CenterHorizontally)) {
         val iconModifier = Modifier.padding(horizontal = 12.dp).gravity(Alignment.CenterHorizontally).weight(1f)
         VectorImage(id = R.drawable.ic_heart_sign, modifier = iconModifier)
         VectorImage(id = R.drawable.ic_step_backward, modifier = iconModifier)
         Card(shape = CircleShape, color = colors().secondary, modifier = iconModifier) {
-            Box(modifier = Modifier.padding(13.dp).clickable(onClick = { actioner(PlayerCommand.ToggleCurrent) })) {
+            Box(modifier = Modifier.padding(13.dp).clickable(onClick = { actioner(com.kafka.content.ui.PlayerCommand.ToggleCurrent) })) {
                 VectorImage(id = playIcon, tint = colors().background)
             }
         }
@@ -137,8 +136,8 @@ fun ImageCover() {
 
 @Composable
 fun QueBottomDrawer(
-    viewState: PlayerViewState,
-    actioner: (PlayerCommand) -> Unit
+    viewState: com.kafka.content.ui.player.PlayerViewState,
+    actioner: (com.kafka.content.ui.PlayerCommand) -> Unit
 ) {
     Surface(color = colors().surface) {
         Column {

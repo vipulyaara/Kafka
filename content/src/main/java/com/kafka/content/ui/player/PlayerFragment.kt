@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.kafka.ui.player.composePlayerScreen
+import com.kafka.content.R
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_player.*
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
@@ -18,17 +17,21 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlayerFragment : BaseFragment() {
     private val viewModel: PlayerViewModel by viewModels()
+    private val playerController = PlayerController()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { })
+        recyclerView.apply {
+            setController(playerController)
+        }
+
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            playerController.setData(it)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FrameLayout(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            composePlayerScreen(viewLifecycleOwner, viewModel.viewState, viewModel::submitAction)
-        }
+        return inflater.inflate(R.layout.fragment_player, container, false)
     }
 }

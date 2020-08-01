@@ -8,8 +8,6 @@ plugins {
 }
 
 buildscript {
-    extra["kotlin_version"] = "1.3.72"
-    extra["compose_version"] = "0.1.0-dev14"
     repositories {
         google()
         mavenCentral()
@@ -20,7 +18,7 @@ buildscript {
     }
     dependencies {
         classpath(Android.gradlePlugin)
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28-alpha")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28.3-alpha")
         classpath("com.google.gms:google-services:4.3.3")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.pluginVersion}")

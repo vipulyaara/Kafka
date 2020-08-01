@@ -13,10 +13,10 @@ import com.kafka.data.entities.filterMp3
 import com.kafka.data.entities.formattedDuration
 import com.kafka.ui.*
 import com.kafka.ui.R
-import com.kafka.ui.actions.PlayerCommand
+import com.kafka.content.ui.PlayerCommand
 
 @Composable
-fun PlayerQueue(files: List<File>, actioner: (PlayerCommand) -> Unit) {
+fun PlayerQueue(files: List<File>, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
 //    VerticalScroller {
     Column {
         files.filterMp3().sortedBy { it.title }.forEach {
@@ -27,10 +27,10 @@ fun PlayerQueue(files: List<File>, actioner: (PlayerCommand) -> Unit) {
 }
 
 @Composable
-fun File(it: File?, actioner: (PlayerCommand) -> Unit) {
+fun File(it: File?, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
     val title = it?.title ?: ""
     val subtitle = it?.formattedDuration() ?: ""
-    Clickable(onClick = { actioner(PlayerCommand.Play(it?.playbackUrl ?: "")) }) {
+    Clickable(onClick = { actioner(com.kafka.content.ui.PlayerCommand.Play(it?.playbackUrl ?: "")) }) {
         Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp).fillMaxWidth()) {
             Row {
                 Surface(modifier = Modifier.gravity(Alignment.CenterVertically), color = colors().background) {

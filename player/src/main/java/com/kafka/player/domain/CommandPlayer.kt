@@ -10,7 +10,6 @@ import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.timber.MusicUtils
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.playback.players.SongPlayer
-import com.kafka.ui.actions.PlayerCommand
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.plus

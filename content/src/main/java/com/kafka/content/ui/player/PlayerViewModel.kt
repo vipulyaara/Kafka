@@ -7,8 +7,8 @@ import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.player.domain.CommandPlayer
 import com.kafka.player.domain.ObservePlayer
-import com.kafka.ui.actions.PlayerCommand
-import com.kafka.ui.player.PlayerViewState
+import com.kafka.player.domain.PlayerCommand
+import com.kafka.player.domain.PlayerViewState
 import com.kafka.ui_common.base.BaseViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -37,7 +37,8 @@ class PlayerViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
                 is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(action.itemId))
-                is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
+                is PlayerCommand.ToggleCurrent -> commandPlayer(
+                    PlayerCommand.ToggleCurrent)
             }
         }
 

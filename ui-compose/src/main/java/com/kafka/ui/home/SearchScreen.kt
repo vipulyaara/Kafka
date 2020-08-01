@@ -16,16 +16,16 @@ import com.data.base.extensions.debug
 import com.kafka.data.entities.Item
 import com.kafka.ui.*
 import com.kafka.ui.R
-import com.kafka.ui.actions.HomepageAction
-import com.kafka.ui.actions.ItemDetailAction
-import com.kafka.ui.search.SearchViewState
+import com.kafka.content.ui.search.HomepageAction
+import com.kafka.content.ui.search.ItemDetailAction
+import com.kafka.content.ui.search.SearchViewState
 import com.kafka.ui.search.widget.HomepageSearchView
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 const val searchHint = "Search..."
 
 @Composable
-fun SearchScreen(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
+fun SearchScreen(viewState: com.kafka.content.ui.search.SearchViewState, actioner: (com.kafka.content.ui.search.HomepageAction) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (viewState.isLoading && viewState.homepageItems.isEmpty()) {
             FullScreenLoader()
@@ -50,7 +50,7 @@ fun Banner() {
 }
 
 @Composable
-fun ContentCarousal(list: List<Item>?, actioner: (HomepageAction) -> Unit) {
+fun ContentCarousal(list: List<Item>?, actioner: (com.kafka.content.ui.search.HomepageAction) -> Unit) {
     HorizontalScroller(modifier = Modifier.padding(top = 12.dp)) {
         Row {
             Text(
@@ -58,13 +58,17 @@ fun ContentCarousal(list: List<Item>?, actioner: (HomepageAction) -> Unit) {
                 style = typography().h1.incrementTextSize(12).copy(color = colors().secondary.alpha(alpha = 0.3f)),
                 modifier = Modifier.size(164.dp).padding(24.dp)
             )
-            list?.forEach { ContentItem(content = it, onItemClick = { actioner(ItemDetailAction(it)) }) }
+            list?.forEach { ContentItem(content = it, onItemClick = { actioner(
+                com.kafka.content.ui.search.ItemDetailAction(
+                    it
+                )
+            ) }) }
         }
     }
 }
 
 @Composable
-fun ContentResults(viewState: SearchViewState, actioner: (HomepageAction) -> Unit) {
+fun ContentResults(viewState: com.kafka.content.ui.search.SearchViewState, actioner: (com.kafka.content.ui.search.HomepageAction) -> Unit) {
     val items = viewState.homepageItems
     debug { "Showing results for ${items.values.size}" }
 
@@ -72,7 +76,11 @@ fun ContentResults(viewState: SearchViewState, actioner: (HomepageAction) -> Uni
         LazyColumnItems(
             items = items.values.map { it.items }.flatten()
         ) {
-            ContentItemList(content = it, onItemClick = { actioner(ItemDetailAction(it)) })
+            ContentItemList(content = it, onItemClick = { actioner(
+                com.kafka.content.ui.search.ItemDetailAction(
+                    it
+                )
+            ) })
         }
     }
 }

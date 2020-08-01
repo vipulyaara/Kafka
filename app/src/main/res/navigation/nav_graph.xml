@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.kafka.user.main.MainFragment">
+        android:name="com.kafka.content.ui.main.MainFragment">
     </fragment>
 
     <fragment

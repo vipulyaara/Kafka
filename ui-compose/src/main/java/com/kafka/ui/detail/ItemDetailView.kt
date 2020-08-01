@@ -29,8 +29,8 @@ import regularButtonPadding
 
 @Composable
 fun ItemDetailView(
-    itemDetailViewState: ItemDetailViewState,
-    actioner: (ItemDetailAction) -> Unit
+    itemDetailViewState: com.kafka.content.ui.detail.ItemDetailViewState,
+    actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit
 ) {
     val itemDetail = itemDetailViewState.itemDetail
     val showDialog = state { false }
@@ -83,7 +83,7 @@ fun ImageCover(modifier: Modifier, itemDetail: ItemDetail?) {
 }
 
 @Composable
-fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetailAction) -> Unit) {
+fun ActionButtons(itemDetailViewState: com.kafka.content.ui.detail.ItemDetailViewState, actioner: (com.kafka.content.ui.detail.ItemDetailAction) -> Unit) {
     val itemDetail = itemDetailViewState.itemDetail
     val isFollowed = itemDetailViewState.isFavorite
     val followedIcon = if (isFollowed) Icons.TwoTone.Favorite else Icons.TwoTone.FavoriteBorder
@@ -99,7 +99,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
             elevation = 12.dp,
             shape = CircleShape,
             color = followedBackgroundTint,
-            modifier = modifier.clickable(onClick = { actioner(ItemDetailAction.FavoriteClick) }, indication = null)
+            modifier = modifier.clickable(onClick = { actioner(com.kafka.content.ui.detail.ItemDetailAction.FavoriteClick) }, indication = null)
         ) {
             Icon(
                 asset = followedIcon.copy(defaultWidth = 24.dp, defaultHeight = 24.dp),
@@ -128,7 +128,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
                 modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "READ",
                 icon = R.drawable.ic_layers,
-                actioner = { actioner(ItemDetailAction.Read(itemDetail?.readerUrl() ?: "")) })
+                actioner = { actioner(com.kafka.content.ui.detail.ItemDetailAction.Read(itemDetail?.readerUrl() ?: "")) })
         }
 
         if (itemDetail.isAudio()) {
@@ -136,7 +136,7 @@ fun ActionButtons(itemDetailViewState: ItemDetailViewState, actioner: (ItemDetai
                 modifier = Modifier.weight(0.5f).gravity(Alignment.CenterVertically),
                 text = "PLAY",
                 icon = R.drawable.ic_headphones,
-                actioner = { actioner(ItemDetailAction.Play()) })
+                actioner = { actioner(com.kafka.content.ui.detail.ItemDetailAction.Play()) })
         }
     }
 }
@@ -172,10 +172,10 @@ fun ButtonItemBlue(modifier: Modifier, text: String, icon: Int, actioner: () -> 
     Row(modifier = modifier) {
         Button(
             modifier = Modifier.padding(horizontal = 8.dp),
-            backgroundColor = colors().primary,
+            backgroundColor = colors().background,
             elevation = 12.dp,
-            shape = RoundedCornerShape(5.dp),
-            contentColor = Color.White,
+            shape = RoundedCornerShape(1.dp),
+            contentColor = Color.Black,
             onClick = actioner,
             padding = regularButtonPadding
         ) {
@@ -185,7 +185,7 @@ fun ButtonItemBlue(modifier: Modifier, text: String, icon: Int, actioner: () -> 
                         id = icon,
                         modifier = Modifier.padding(end = 16.dp),
                         size = 20.dp,
-                        tint = Color.White
+                        tint = Color.Black
                     )
                     Text(
                         text = text,

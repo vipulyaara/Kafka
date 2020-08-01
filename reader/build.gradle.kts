@@ -1,6 +1,5 @@
 dependencies {
     implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.UiCompose.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
 
     implementation(Store.core)

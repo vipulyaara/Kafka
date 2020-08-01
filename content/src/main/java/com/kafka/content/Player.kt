@@ -2,7 +2,7 @@ package com.kafka.content
 
 import com.data.base.AppCoroutineDispatchers
 import com.kafka.player.domain.CommandPlayer
-import com.kafka.ui.actions.PlayerCommand
+import com.kafka.player.domain.PlayerCommand
 import javax.inject.Inject
 import javax.inject.Singleton
 

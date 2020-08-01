@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 toolbar?.menuItemView(it.itemId)
                     .springAnimation(DynamicAnimation.ROTATION)
                     .doOnEnd { NightModeManager.toggleNightMode(this@MainActivity) }
-                    .animateToFinalPosition(270f)
+                    .animateToFinalPosition(90f)
             }
             else -> {
             }

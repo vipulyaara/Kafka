@@ -3,7 +3,6 @@ import com.android.build.gradle.BaseExtension
 dependencies {
     implementation(project(Libs.Data.nameDependency))
     implementation(project(Libs.Language.nameDependency))
-    implementation(project(Libs.UiCompose.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
     implementation(project(Libs.Content.nameDependency))
     implementation(project(Libs.Player.nameDependency))
@@ -40,8 +39,5 @@ dependencies {
 }
 
 configure<BaseExtension> {
-
-    defaultConfig {
-        applicationId = Libs.applicationId
-    }
+    dataBinding.isEnabled = true
 }

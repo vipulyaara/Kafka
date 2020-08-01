@@ -33,7 +33,7 @@ import com.kafka.ui.*
 //}
 
 @Composable
-fun SearchFilters(viewState: SearchViewState) {
+fun SearchFilters(viewState: com.kafka.content.ui.search.SearchViewState) {
     HorizontalScroller(modifier = Modifier.padding(vertical = 12.dp)) {
 //        val selectedLanguages = state { viewState.selectedLanguages?.firstOrNull() }
 //        Row {

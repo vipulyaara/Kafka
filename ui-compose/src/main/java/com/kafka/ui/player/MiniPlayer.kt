@@ -11,14 +11,16 @@ import androidx.ui.layout.ColumnScope.gravity
 import androidx.ui.material.Card
 import androidx.ui.material.Surface
 import androidx.ui.unit.dp
+import com.kafka.content.ui.player.isValid
+import com.kafka.content.ui.player.playIcon
 import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.ui.*
 import com.kafka.ui.R
-import com.kafka.ui.actions.PlayerCommand
+import com.kafka.content.ui.PlayerCommand
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun MiniPlayer(playerData: PlayerData, modifier: Modifier = Modifier, actioner: (PlayerCommand) -> Unit) {
+fun MiniPlayer(playerData: com.kafka.content.ui.player.PlayerData, modifier: Modifier = Modifier, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
     if (!playerData.isValid()) return
     Surface(modifier = modifier + Modifier.fillMaxWidth(), elevation = 12.dp, color = colors().background) {
         Row(modifier = Modifier.padding(20.dp).gravity(Alignment.CenterHorizontally)) {
@@ -40,9 +42,9 @@ fun MiniPlayer(playerData: PlayerData, modifier: Modifier = Modifier, actioner: 
 }
 
 @Composable
-fun MiniPlayerControls(modifier: Modifier, playerData: PlayerData, actioner: (PlayerCommand) -> Unit) {
+fun MiniPlayerControls(modifier: Modifier, playerData: com.kafka.content.ui.player.PlayerData, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
     Row(modifier = modifier) {
-        VectorImage(modifier = Modifier.clickable(onClick = { actioner(PlayerCommand.ToggleCurrent) }), id = playerData.playIcon())
+        VectorImage(modifier = Modifier.clickable(onClick = { actioner(com.kafka.content.ui.PlayerCommand.ToggleCurrent) }), id = playerData.playIcon())
         Spacer(modifier = Modifier.preferredWidth(24.dp))
         VectorImage(id = R.drawable.ic_skip_forward)
     }

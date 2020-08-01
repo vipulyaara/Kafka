@@ -4,7 +4,6 @@ import com.data.base.AppCoroutineDispatchers
 import com.data.base.SubjectInteractor
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.playback.players.SongPlayer
-import com.kafka.ui.player.PlayerData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

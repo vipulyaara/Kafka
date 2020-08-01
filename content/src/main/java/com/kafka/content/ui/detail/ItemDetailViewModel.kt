@@ -19,8 +19,6 @@ import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectFrom
 import com.kafka.data.model.collectInto
 import com.kafka.player.timber.playback.MediaSessionConnection
-import com.kafka.ui.detail.ItemDetailAction
-import com.kafka.ui.detail.ItemDetailViewState
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel

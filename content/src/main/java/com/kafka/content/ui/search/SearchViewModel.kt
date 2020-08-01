@@ -12,12 +12,6 @@ import com.kafka.content.domain.item.ObserveBatchItems
 import com.kafka.content.domain.item.UpdateBatchItems
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectInto
-import com.kafka.ui.actions.HomepageAction
-import com.kafka.ui.actions.SubmitQueryAction
-import com.kafka.ui.actions.UpdateHomepageAction
-import com.kafka.ui.search.SearchQuery
-import com.kafka.ui.search.SearchQueryType
-import com.kafka.ui.search.SearchViewState
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
