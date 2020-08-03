@@ -1,9 +1,6 @@
 package com.kafka.content.ui
 
-import android.view.View
 import android.widget.ImageView
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.annotation.ExperimentalCoilApi
 import coil.api.loadAny

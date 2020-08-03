@@ -10,10 +10,3 @@ val queries = arrayListOf(
     ArchiveQuery("राही मासूम रज़ा").booksByAuthor("राही मासूम रज़ा")
 ).mapIndexed { index, archiveQuery ->  archiveQuery.copy(position = index) }
 
-val languages = arrayListOf(
-    Language("en", "English"),
-    Language("hi", "Hindi"),
-    Language("ur", "Urdu"),
-    Language("de", "German"),
-    Language("fr", "French")
-)

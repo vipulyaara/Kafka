@@ -4,7 +4,7 @@
     <style name="TextAppearance.Coyote.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="fontFamily">@font/circular_std_black</item>
         <item name="android:fontFamily">@font/circular_std_black</item>
-        <item name="android:textColor">@color/app_red</item>
+        <item name="android:textColor">@color/text_heading</item>
         <item name="android:textSize">32sp</item>
     </style>
 

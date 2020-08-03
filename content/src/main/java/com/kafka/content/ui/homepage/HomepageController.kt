@@ -1,10 +1,11 @@
 package com.kafka.content.ui.homepage
 
-import android.content.Context
 import android.widget.EditText
+import coil.api.clear
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
+import com.kafka.content.databinding.ItemBookBinding
 import com.kafka.content.ui.ActionListener
 import com.kafka.content.ui.search.SearchAction
 import com.kafka.content.ui.search.SearchQuery
@@ -13,15 +14,12 @@ import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
 import com.kafka.ui_common.ui.kafkaCarousel
 import com.kafka.ui_common.ui.withModelsFrom
-import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomepageController @Inject constructor(
-    @ActivityContext private val context: Context
-) : TypedEpoxyController<HomepageViewState>() {
+class HomepageController @Inject constructor() : TypedEpoxyController<HomepageViewState>() {
 
     lateinit var homepageActioner: Channel<HomepageAction>
     lateinit var searchActioner: Channel<SearchAction>
@@ -30,14 +28,24 @@ class HomepageController @Inject constructor(
         data?.apply {
             search()
             banner()
-            loading(searchViewState)
             tags(tags)
-            searchViewState.items?.let { data.favorites?.let { it1 -> searchResults(it, it1) } }
+            searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
+            loading(searchViewState)
+//            empty(searchViewState)
+        }
+    }
+
+    private fun empty(searchViewState: SearchViewState) {
+        if (!searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
+            emptyState {
+                id("empty")
+                text("No results found")
+            }
         }
     }
 
     private fun loading(searchViewState: SearchViewState) {
-        if (searchViewState.isLoading && searchViewState.items == null) {
+        if (searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
             loader { id("loading") }
         }
     }
@@ -66,6 +74,9 @@ class HomepageController @Inject constructor(
             }
 
             book {
+                onUnbind { _, view ->
+                    (view.dataBinding as ItemBookBinding).heroImage.clear()
+                }
                 id(item.itemId)
                 item(item)
                 clickListener { _ -> sendAction(SearchAction.ItemDetailAction(item)) }
@@ -75,6 +86,9 @@ class HomepageController @Inject constructor(
 
     private fun tags(it: List<HomepageTag>) {
         kafkaCarousel {
+            onBind { model, view, position ->
+                view.scrollToPosition(0)
+            }
             id("recent_search")
             padding(Carousel.Padding.dp(12, 12))
             withModelsFrom(it) {
@@ -97,7 +111,7 @@ class HomepageController @Inject constructor(
         kafkaCarousel {
             id("favorites")
             padding(Carousel.Padding.dp(12, 12, 12, 12, 2))
-            itemWidth(context.resources.getDimensionPixelSize(R.dimen.homepage_favorite_item_width))
+            numViewsToShowOnScreen(1.9f)
             hasFixedSize(true)
             withModelsFrom(favorites.map { it }) {
                 BookGridBindingModel_().apply {

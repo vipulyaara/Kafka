@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
  */
 @Entity
 data class Language(
-    @PrimaryKey val languageId: String,
-    val languageName: String,
+    @PrimaryKey val id: String,
+    val name: String,
+    val nameInLocale: String,
     val isSelected: Boolean = false
 ): BaseEntity

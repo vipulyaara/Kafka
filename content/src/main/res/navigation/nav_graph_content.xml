@@ -7,13 +7,18 @@
     <fragment
         android:id="@id/navigation_homepage"
         android:name="com.kafka.content.ui.homepage.HomepageFragment">
-        <deepLink app:uri="app.kafka://homepage"/>
     </fragment>
 
     <fragment
         android:id="@id/navigation_library"
         android:name="com.kafka.content.ui.library.LibraryFragment">
         <deepLink app:uri="app.kafka://library"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_language"
+        android:name="com.kafka.content.ui.language.LanguageFragment">
+        <deepLink app:uri="app.kafka://language"/>
     </fragment>
 
     <fragment

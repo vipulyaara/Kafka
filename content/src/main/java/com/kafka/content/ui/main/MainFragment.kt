@@ -19,8 +19,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModel.updateLanguages()
-
         navController = findNavController(requireActivity(), R.id.nav_host_fragment)
     }
 

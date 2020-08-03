@@ -1,15 +1,16 @@
-package com.kafka.language.domain
+package com.kafka.content.domain.language
 
+import com.data.base.AppCoroutineDispatchers
 import com.data.base.Interactor
+import com.kafka.content.data.language.LanguageRepository
 import com.kafka.data.entities.Language
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.language.data.LanguageRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 class UpdateLanguages @Inject constructor(
-    dispatchers: com.data.base.AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     @ProcessLifetime processScope: CoroutineScope,
     private val languageRepository: LanguageRepository
 ) : Interactor<UpdateLanguages.Params>() {

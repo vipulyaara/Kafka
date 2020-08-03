@@ -2,12 +2,10 @@ package com.kafka.content.ui.search
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.data.base.model.ArchiveQuery
 import com.kafka.content.domain.item.ObserveItems
 import com.kafka.content.domain.item.UpdateItems
-import com.kafka.data.entities.Item
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectInto
 import com.kafka.ui_common.base.ReduxViewModel
@@ -24,13 +22,10 @@ class SearchViewModel @ViewModelInject constructor(
     snackbarManager: SnackbarManager
 ) : ReduxViewModel<SearchViewState>(SearchViewState()) {
     private val actioner = Channel<SearchAction>(Channel.BUFFERED)
-    private var oldItems = emptyList<Item>()
 
     init {
         viewModelScope.launchObserve(observeItems) { flow ->
             flow.collectAndSetState {
-                debug { "Search results are ${oldItems.size} ${it.size} ${oldItems == it}" }
-                oldItems = it
                 copy(items = it)
             }
         }

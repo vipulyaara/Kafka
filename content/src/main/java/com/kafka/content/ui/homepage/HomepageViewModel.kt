@@ -24,7 +24,7 @@ class HomepageViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             actioner.consumeAsFlow().collect {
                 when (it) {
-                    is HomepageAction.SelectTag -> select(it.tag)
+                    is HomepageAction.SelectTag -> selectTag(it.tag)
                 }
             }
         }
@@ -32,23 +32,30 @@ class HomepageViewModel @ViewModelInject constructor(
         observeFollowedItems(Unit)
     }
 
-    fun getSelectedAction() = currentState().tags.first { it.isSelected }
+    fun getSelectedTag() = currentState().tags.first { it.isSelected }
 
-    fun submitAction(action: HomepageAction) {
+    fun addTag(title: String) {
+        if (currentState().tags.map { it.title }.contains(title)) return
+        val tag = HomepageTag(title)
         viewModelScope.launch {
-            if (!actioner.isClosedForSend) { actioner.send(action) }
+            setState { copy(tags = tags.toMutableList().also { it.add(0, tag) }) }
+            submitAction(HomepageAction.SelectTag(tag))
         }
     }
 
-    private fun select(homepageTag: HomepageTag) {
-        select(homepageTag.title)
+    fun submitAction(action: HomepageAction) {
+        viewModelScope.launch {
+            if (!actioner.isClosedForSend) {
+                actioner.send(action)
+            }
+        }
     }
 
-    private fun select(label: String) {
+    private fun selectTag(homepageTag: HomepageTag) {
         currentState().apply {
             tags = tags.apply {
                 forEach { it.isSelected = false }
-                first { it.title == label }.isSelected = true
+                first { it.title == homepageTag.title }.isSelected = true
             }
         }
     }

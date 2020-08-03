@@ -1,9 +1,9 @@
-package com.kafka.language.domain
+package com.kafka.content.domain.language
 
 import com.data.base.AppCoroutineDispatchers
 import com.data.base.SubjectInteractor
+import com.kafka.content.data.language.LanguageRepository
 import com.kafka.data.entities.Language
-import com.kafka.language.data.LanguageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

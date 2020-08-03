@@ -12,11 +12,12 @@
         android:gravity="center">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="@dimen/spacing_xxlarge"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_speed="1.5"
-            app:lottie_rawRes="@raw/loader_2" />
+            app:lottie_rawRes="@raw/loader_2"
+            app:lottie_speed="1.5" />
     </LinearLayout>
 </layout>

@@ -20,7 +20,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginVertical="48dp"
             android:text="@{text}"
-            android:textAppearance="@style/TextAppearance.Coyote.Headline3"
+            android:textAppearance="@style/TextAppearance.Coyote.Headline1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

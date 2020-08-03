@@ -75,6 +75,7 @@ class ItemDetailController : TypedEpoxyController<ItemDetailViewState>() {
             book {
                 id(it.itemId)
                 item(it)
+                clickListener { _ -> sendAction(ItemDetailAction.RelatedItemClick(it)) }
             }
         }
     }

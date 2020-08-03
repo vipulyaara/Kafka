@@ -47,6 +47,9 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_library -> {
                 navController.navigate(Navigation.Library)
             }
+            R.id.menu_user -> {
+                navController.navigate(Navigation.LanguageSelection)
+            }
         }
         true
     }

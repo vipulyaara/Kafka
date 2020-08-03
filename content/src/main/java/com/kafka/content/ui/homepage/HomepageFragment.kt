@@ -55,7 +55,10 @@ class HomepageFragment : BaseFragment() {
             searchActioner.consumeAsFlow().collect { action ->
                 when (action) {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
-                    is SearchAction.SubmitQueryAction -> searchViewModel.submitAction(action)
+                    is SearchAction.SubmitQueryAction -> {
+                        searchViewModel.submitAction(action)
+                        homepageViewModel.addTag(action.query.text ?: "")
+                    }
                 }
             }
         }
@@ -81,7 +84,7 @@ class HomepageFragment : BaseFragment() {
         super.onResume()
 
         lifecycleScope.launchWhenResumed {
-            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedAction()))
+            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
         }
     }
 }
