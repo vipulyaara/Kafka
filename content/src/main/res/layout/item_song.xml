@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.kafka.data.entities.FileKt" />
+
+        <variable
+            name="song"
+            type="com.kafka.data.entities.File" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?selectableItemBackground"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:cardBackgroundColor="@color/background"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/surface">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/infoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/spacing_regular">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/imageCard"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="@color/background"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    app:tint="@color/text_body"
+                    android:src="@drawable/ic_music" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvBookTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_mini"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{song.title}"
+                android:textAppearance="@style/TextAppearance.Coyote.Body1"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageCard"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvBookSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_mini"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{FileKt.formattedDuration(song)}"
+                android:textAppearance="@style/TextAppearance.Coyote.Caption"
+                android:textColor="@color/text_body"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imageCard"
+                app:layout_constraintTop_toBottomOf="@id/tvBookTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

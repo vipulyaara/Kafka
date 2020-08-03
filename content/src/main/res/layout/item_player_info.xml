@@ -22,8 +22,6 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="24dp"
-            android:outlineAmbientShadowColor="@color/surface"
-            android:outlineSpotShadowColor="@color/surface"
             app:cardCornerRadius="4dp"
             app:cardElevation="12dp">
 
@@ -31,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_author_camus_3"
+                android:src="@drawable/img_banner_26"
                 tools:ignore="ContentDescription" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -51,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{playerData.subtitle}"

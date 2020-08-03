@@ -1,7 +1,10 @@
 package com.kafka.content.ui.search
 
+import com.data.base.model.ArchiveQuery
+import com.data.base.model.booksByAuthor
+import com.data.base.model.booksByCollection
+import com.data.base.model.booksByKeyword
 import com.kafka.data.entities.Item
-import com.kafka.data.model.RowItems
 import com.kafka.ui_common.base.BaseViewState
 
 /**
@@ -9,8 +12,7 @@ import com.kafka.ui_common.base.BaseViewState
  */
 data class SearchViewState(
     var query: String? = null,
-    var favorites: List<Item>? = null,
-    var homepageItems: RowItems = RowItems(),
+    var items: List<Item>? = null,
     var isLoading: Boolean = false,
     val error: Throwable? = null
 ) : BaseViewState
@@ -23,5 +25,11 @@ sealed class SearchQueryType {
     object Collection : SearchQueryType()
 }
 
-data class RecentSearch(val title: String, val isSelected: Boolean)
+fun SearchQuery.asArchiveQuery() = ArchiveQuery().apply {
+    when (type) {
+        SearchQueryType.Creator -> booksByAuthor(text)
+        SearchQueryType.Title -> booksByKeyword(text)
+        SearchQueryType.Collection -> booksByCollection(text)
+    }
+}
 

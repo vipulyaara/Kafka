@@ -17,8 +17,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="@dimen/spacing_medium_2"
+        android:layout_marginVertical="8dp"
         android:background="?selectableItemBackground"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -36,21 +36,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp">
+            android:padding="@dimen/spacing_medium">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/imageCard"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
+                android:layout_margin="4dp"
                 app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     image="@{item.coverImage}"
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/img_author_camus_3" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -59,8 +61,8 @@
                 android:id="@+id/tvBookTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="@dimen/spacing_regular"
+                android:layout_marginHorizontal="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_mini"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{item.title}"
@@ -75,10 +77,10 @@
                 android:id="@+id/tvBookSubtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginHorizontal="@dimen/spacing_large"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{item.creator}"
+                android:text="@{item.creator.name}"
                 android:textAppearance="@style/TextAppearance.Coyote.Body2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageCard"
@@ -88,7 +90,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginHorizontal="@dimen/spacing_large"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{item.mediaType}"

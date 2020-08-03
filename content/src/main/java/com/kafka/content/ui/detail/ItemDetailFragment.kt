@@ -9,39 +9,33 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.ui_common.Navigation
+import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseFragment
-import com.kafka.ui_common.base.observeActions
-import com.kafka.ui_common.itemDetailDeepLinkUri
-import com.kafka.ui_common.playerDeepLinkUri
-import com.kafka.ui_common.readerDeepLinkUri
+import com.kafka.ui_common.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_item_detail.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseFragment() {
     private val viewModel: ItemDetailViewModel by viewModels()
+
+    //    private val readerViewModel: ReaderViewModel by viewModels()
     private val itemDetailController = ItemDetailController()
+    private val pendingActions = RealActioner<ItemDetailAction>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView.apply {
             setController(itemDetailController)
-            itemDetailController.actioner = viewModel.actioner
+            itemDetailController.actioner = pendingActions
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {
             itemDetailController.setData(it)
         })
-
-        lifecycleScope.observeActions(viewModel.actioner) {
-            when (it) {
-                is ItemDetailAction.RelatedItemClick -> findNavController().navigate(itemDetailDeepLinkUri(it.item.itemId))
-                is ItemDetailAction.Play -> findNavController().navigate(playerDeepLinkUri())
-                is ItemDetailAction.Read -> findNavController().navigate(readerDeepLinkUri(it.readerUrl))
-                else -> { }
-            }
-        }
 
         requireArguments().getString("item_id")?.let {
             viewModel.observeItemDetail(it)
@@ -51,5 +45,26 @@ class ItemDetailFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_item_detail, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        lifecycleScope.launch {
+            pendingActions.observe { action ->
+                when (action) {
+                    is ItemDetailAction.RelatedItemClick -> findNavController().navigate(Navigation.ItemDetail(action.item.itemId))
+                    is ItemDetailAction.Play -> findNavController().navigate(Navigation.Player(action.itemId))
+                    is ItemDetailAction.Read -> {
+//                        readerViewModel.read(requireContext(), action.readerUrl)
+                    }
+                    is ItemDetailAction.FavoriteClick -> {
+                        viewModel.sendAction(action)
+                        viewModel.showFavoriteToast(requireContext())
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 }

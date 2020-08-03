@@ -16,6 +16,9 @@ dependencies {
     test()
     androidTest()
 
+    implementation("com.pdftron:pdftron:7.1.4")
+    implementation("com.pdftron:tools:7.1.4")
+
 
     implementation(Hilt.android)
     kapt(Hilt.compiler)

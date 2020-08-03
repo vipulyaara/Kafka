@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="navigation_main" type="id" />
+    <item name="navigation_homepage" type="id" />
+    <item name="navigation_item_detail" type="id" />
+    <item name="navigation_search" type="id" />
+    <item name="navigation_library" type="id" />
+    <item name="navigation_player" type="id" />
+    <item name="navigation_reader" type="id" />
+</resources>

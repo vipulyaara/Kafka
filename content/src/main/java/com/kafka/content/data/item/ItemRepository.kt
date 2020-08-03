@@ -1,13 +1,13 @@
 package com.kafka.content.data.item
 
+import com.data.base.model.ArchiveQuery
+import com.data.base.model.asLocalQuery
 import com.data.base.model.getOrThrow
 import com.kafka.data.dao.ItemLocalDataSource
 import com.kafka.data.dao.RecentItemLocalDataSource
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.asRecentlyVisited
-import com.data.base.model.ArchiveQuery
-import com.data.base.model.asLocalQuery
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -51,6 +51,8 @@ class ItemRepository @Inject constructor(
     suspend fun updateQuery(archiveQuery: ArchiveQuery) {
         remoteDataSource.fetchItemsByCreator(archiveQuery)
             .getOrThrow()
-            .let { itemLocalDataSource.insertAll(it) }
+            .let {
+                itemLocalDataSource.insertAll(it)
+            }
     }
 }

@@ -19,11 +19,14 @@ data class ItemDetail(
     val mediaType: String? = null,
     val coverImage: String? = null,
     val coverImageResource: Int = 0,
-    val files: List<File>? = null
+    val files: List<File>? = null,
+    val metadata: List<String>? = null
 ) : BaseEntity
 
 fun ItemDetail?.formattedDescription() = this?.description?.let { Html.fromHtml(it)?.toString() } ?: ""
 
 fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()
+
+fun ItemDetail?.mp3Files() = this?.files?.filterMp3()
 
 fun ItemDetail?.readerUrl() = this?.files?.first { it.readerUrl != null }?.readerUrl ?: error("Null reader url")

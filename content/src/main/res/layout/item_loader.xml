@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,8 +11,12 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_speed="1.5"
+            app:lottie_rawRes="@raw/loader_2" />
     </LinearLayout>
 </layout>

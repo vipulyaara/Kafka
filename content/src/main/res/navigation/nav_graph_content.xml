@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_homepage">
+
+    <fragment
+        android:id="@id/navigation_homepage"
+        android:name="com.kafka.content.ui.homepage.HomepageFragment">
+        <deepLink app:uri="app.kafka://homepage"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_library"
+        android:name="com.kafka.content.ui.library.LibraryFragment">
+        <deepLink app:uri="app.kafka://library"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_player"
+        android:name="com.kafka.content.ui.player.PlayerFragment">
+
+        <deepLink app:uri="app.kafka://player/{item_id}"/>
+    </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@id/navigation_reader"-->
+<!--        android:name="com.kafka.reader.ui.ReaderFragment">-->
+<!--        <argument-->
+<!--            android:name="item_url"-->
+<!--            app:argType="string" />-->
+
+<!--        <deepLink app:uri="app.kafka://reader/{item_url}"/>-->
+<!--    </fragment>-->
+
+    <fragment
+        android:id="@id/navigation_item_detail"
+        android:name="com.kafka.content.ui.detail.ItemDetailFragment">
+        <argument
+            android:name="item_id"
+            app:argType="string" />
+        <argument
+            android:name="image_resource"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/to_item_detail"
+            app:destination="@id/navigation_item_detail" />
+
+        <deepLink app:uri="app.kafka://item/{item_id}" />
+    </fragment>
+
+</navigation>

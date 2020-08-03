@@ -6,7 +6,8 @@ dependencies {
     implementation(project(Libs.UiCommon.nameDependency))
     implementation(project(Libs.Content.nameDependency))
     implementation(project(Libs.Player.nameDependency))
-    implementation(project(Libs.Reader.nameDependency))
+
+    debugImplementation(LeakCanary.core)
 
     implementation(Store.core)
     implementation(Retrofit.runtime)

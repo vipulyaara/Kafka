@@ -11,6 +11,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class SearchDao : EntityDao<Item> {
 
-    @Query("select * from Item where genre = :creator order by title")
+    @Query("select * from Item where creator_name = :creator order by title")
     abstract fun searchItemsFlow(creator: String): Flow<List<Item>>
 }

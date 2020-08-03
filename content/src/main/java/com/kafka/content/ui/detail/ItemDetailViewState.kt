@@ -11,6 +11,6 @@ data class ItemDetailViewState(
     val isFavorite: Boolean = false,
     val itemDetail: ItemDetail? = null,
     val itemsByCreator: List<Item>? = null,
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val error: String? = null
 ) : BaseViewState

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000</color>
+    <color name="colorPrimary">#AF945C</color>
     <color name="colorPrimaryDark">@color/surface_light</color>
     <color name="colorAccent">#AF945C</color>
     <color name="colorAccentDark">#1E328D</color>
@@ -21,8 +21,9 @@
 
     <color name="background">#fff</color>
     <color name="surface">#DFE9FF</color>
-    <color name="shadow">#DFE9FF</color>
-    <color name="surface_light">#44DFE9FF</color>
+    <color name="shadow">#ACB8D2</color>
+    <color name="shadow_dark">#7B8994</color>
+    <color name="surface_light">#22DFE9FF</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#000</color>
@@ -56,7 +57,7 @@
     <color name="grey_700">#616161</color>
     <color name="grey_800">#424242</color>
     <color name="grey_900">#212121</color>
-    <color name="grey_dropbox">#7B8994</color>
+    <color name="grey_dropbox">#887B8994</color>
 
     <color name="app_red">#ff006a</color>
     <color name="app_red_dark">#BA0550</color>

@@ -5,7 +5,7 @@ import com.data.base.extensions.executeWithRetry
 import com.data.base.extensions.toResult
 import com.data.base.model.ArchiveQuery
 import com.data.base.model.Result
-import com.data.base.model.buildRemoteQuery
+import com.data.base.model.asRemoteQuery
 import com.kafka.data.entities.Item
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class ItemRemoteDataSource @Inject constructor(
 
     suspend fun fetchItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Item>> {
         return archiveService
-            .search(archiveQuery.buildRemoteQuery())
+            .search(archiveQuery.asRemoteQuery())
             .executeWithRetry()
             .toResult(itemMapper)
     }

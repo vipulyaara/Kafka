@@ -88,7 +88,6 @@ fun DependencyHandlerScope.retrofit() {
 
     implementation { Retrofit.runtime }
     implementation { Retrofit.moshi }
-    implementation { Retrofit.gson }
     implementation { OkHttp.core }
     implementation { OkHttp.loggingInterceptor }
 }

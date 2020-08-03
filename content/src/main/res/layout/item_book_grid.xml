@@ -17,12 +17,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="12dp"
+        android:layout_margin="@dimen/spacing_regular"
         android:background="?selectableItemBackground"
         android:onClick="@{clickListener}"
-        android:outlineAmbientShadowColor="@color/surface"
-        android:outlineSpotShadowColor="@color/surface"
         app:cardBackgroundColor="@color/background"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,8 +36,6 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/imageCard"
                 android:layout_width="166dp"
-                android:outlineAmbientShadowColor="@color/surface"
-                android:outlineSpotShadowColor="@color/surface"
                 android:layout_height="166dp"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +45,9 @@
                     image="@{item.coverImage}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/img_author_camus_3" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_author_camus_3"
+                    tools:ignore="ContentDescription" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -76,14 +73,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
                 android:ellipsize="end"
-                android:lines="2"
-                android:text="@{item.creator}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="@color/text_body"
+                android:lines="1"
+                android:text="@{item.creator.name}"
+                android:textAppearance="@style/TextAppearance.Coyote.Body2"
                 app:layout_constraintEnd_toEndOf="@id/imageCard"
                 app:layout_constraintStart_toStartOf="@id/imageCard"
                 app:layout_constraintTop_toBottomOf="@id/tvBookTitle"
                 tools:text="Franz Kafka" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{item.mediaType}"
+                android:textAppearance="@style/TextAppearance.Coyote.Body2"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="@id/imageCard"
+                app:layout_constraintStart_toStartOf="@id/imageCard"
+                app:layout_constraintTop_toBottomOf="@id/tvBookSubtitle"
+                tools:text="The Witcher" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

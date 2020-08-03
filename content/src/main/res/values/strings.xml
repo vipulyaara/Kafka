@@ -2,4 +2,5 @@
 <resources>
     <string name="search">Search</string>
     <string name="play">Play</string>
+    <string name="read">Read</string>
 </resources>

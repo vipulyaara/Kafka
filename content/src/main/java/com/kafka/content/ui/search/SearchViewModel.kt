@@ -2,38 +2,37 @@ package com.kafka.content.ui.search
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
+import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.data.base.model.ArchiveQuery
-import com.data.base.model.booksByAuthor
-import com.data.base.model.booksByCollection
-import com.data.base.model.booksByKeyword
-import com.kafka.content.domain.followed.ObserveFollowedItems
-import com.kafka.content.domain.item.ObserveBatchItems
-import com.kafka.content.domain.item.UpdateBatchItems
+import com.kafka.content.domain.item.ObserveItems
+import com.kafka.content.domain.item.UpdateItems
+import com.kafka.data.entities.Item
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectInto
-import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel @ViewModelInject constructor(
-    observeFollowedItems: ObserveFollowedItems,
-    private val observeBatchItems: ObserveBatchItems,
-    private val updateBatchItems: UpdateBatchItems,
+    private val observeItems: ObserveItems,
+    private val updateItems: UpdateItems,
     private val loadingState: ObservableLoadingCounter,
     snackbarManager: SnackbarManager
 ) : ReduxViewModel<SearchViewState>(SearchViewState()) {
-    val actioner = RealActioner<HomepageAction>()
+    private val actioner = Channel<SearchAction>(Channel.BUFFERED)
+    private var oldItems = emptyList<Item>()
 
     init {
-        viewModelScope.launchObserve(observeFollowedItems) { flow ->
-            flow.distinctUntilChanged().collectAndSetState { copy(favorites = it) }
-        }
-
-        viewModelScope.launchObserve(observeBatchItems) { flow ->
-            flow.distinctUntilChanged().collectAndSetState { copy(homepageItems = it) }
+        viewModelScope.launchObserve(observeItems) { flow ->
+            flow.collectAndSetState {
+                debug { "Search results are ${oldItems.size} ${it.size} ${oldItems == it}" }
+                oldItems = it
+                copy(items = it)
+            }
         }
 
         viewModelScope.launch {
@@ -47,45 +46,30 @@ class SearchViewModel @ViewModelInject constructor(
         }
 
         viewModelScope.launch {
-            actioner.observe {
+            actioner.consumeAsFlow().collect {
                 when (it) {
-                    is UpdateHomepageAction -> updateHomepage()
-                    is SubmitQueryAction -> submitQuery(it.query)
+                    is SearchAction.SubmitQueryAction -> submitQuery(it.query)
+                    is SearchAction.ItemDetailAction -> { }
                 }
             }
         }
-
-        observeFollowedItems(Unit)
-        updateHomepage()
     }
 
-    fun submitAction(action: HomepageAction) {
-        viewModelScope.launch { actioner.sendAction(action) }
+    fun submitAction(action: SearchAction) {
+        viewModelScope.launch {
+            if (!actioner.isClosedForSend) { actioner.send(action) }
+        }
     }
 
     private fun submitQuery(searchQuery: SearchQuery) {
-        observeQuery(listOf(searchQuery.asArchiveQuery()))
+        observeQuery(searchQuery.asArchiveQuery())
     }
 
-    private fun updateHomepage() {
-        observeQuery(arrayOf("Franz Kafka", "Dostoyevsky").map {
-            ArchiveQuery("Books by $it").booksByAuthor(it)
-        })
-    }
-
-    private fun observeQuery(queries: List<ArchiveQuery>) {
-        observeBatchItems(ObserveBatchItems.Params(queries))
+    private fun observeQuery(queries: ArchiveQuery) {
+        observeItems(ObserveItems.Params(queries))
         viewModelScope.launch {
-            updateBatchItems(UpdateBatchItems.Params(queries)).collectInto(loadingState)
+            updateItems(UpdateItems.Params(queries)).collectInto(loadingState)
         }
-    }
-}
-
-fun SearchQuery.asArchiveQuery() = ArchiveQuery().apply {
-    when (type) {
-        SearchQueryType.Creator -> booksByAuthor(text)
-        SearchQueryType.Title -> booksByKeyword(text)
-        SearchQueryType.Collection -> booksByCollection(text)
     }
 }
 

@@ -108,6 +108,70 @@
             </LayoutPositions>
           </value>
         </entry>
+        <entry key="nav_graph_main.xml">
+          <value>
+            <LayoutPositions>
+              <option name="myPositions">
+                <map>
+                  <entry key="nav">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph_c">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph_content">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navgr">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nested_nav_graph">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </LayoutPositions>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

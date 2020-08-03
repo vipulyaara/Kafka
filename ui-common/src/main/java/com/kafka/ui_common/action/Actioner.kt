@@ -2,6 +2,8 @@ package com.kafka.ui_common.action
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
 
 interface Action
 
@@ -14,11 +16,14 @@ class RealActioner<T: Action> : Actioner<T> {
     private val pendingActions = Channel<T>(BUFFERED)
 
     override suspend fun sendAction(action: T) {
-        pendingActions.send(action)
+//        pendingActions.offer(action)
+        if (!pendingActions.isClosedForSend) {
+            pendingActions.send(action)
+        }
     }
 
     override suspend fun observe(observer: (T) -> Unit) {
-        observer(pendingActions.receive())
+        pendingActions.consumeAsFlow().collect { observer(it) }
     }
 
 }

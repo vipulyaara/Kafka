@@ -18,7 +18,8 @@ const val _librivoxaudio = "librivoxaudio"
 const val _collection = "collection"
 const val _railTitle = "railtitle"
 
-const val _creator = "creator"
+const val _creator = "creator_name"
+const val _creator_remote = "creator"
 const val _genre = "genre"
 
 const val _searchTerm = "title"
@@ -36,13 +37,13 @@ data class ArchiveQuery(
 )
 
 fun ArchiveQuery.booksByCollection(collection: String?): ArchiveQuery {
-    queries[_mediaType] = _mediatypeAudio
+//    queries[_mediaType] = _mediatypeAudio
     queries[_collection] = collection
     return this
 }
 
 fun ArchiveQuery.booksByKeyword(keyword: String?): ArchiveQuery {
-    queries[_mediaType] = _mediatypeAudio
+//    queries[_mediaType] = _mediatypeAudio
     queries[_searchTerm] = keyword
     return this
 }
@@ -54,30 +55,36 @@ fun ArchiveQuery.booksByAuthor(author: String?): ArchiveQuery {
 }
 
 fun ArchiveQuery.booksByGenre(genre: String?): ArchiveQuery {
-    queries[_mediaType] = _mediatypeAudio
+//    queries[_mediaType] = _mediatypeAudio
     queries[_genre] = genre
     return this
 }
 
-fun ArchiveQuery.buildRemoteQuery(): String {
+fun ArchiveQuery.asRemoteQuery(): String {
     var query = ""
-    val joiner = "+AND+"
+    val joinerAnd = "+AND+"
+    val joinerOr = "+OR+"
 //    queries[_collection] = _librivoxaudio
     for ((key, value) in queries.entries) {
-        query = query.plus("$key:($value)$joiner")
+        val newKey = if (key == _creator) _creator_remote else key
+        query = query.plus(keyValueRemoteQuery(newKey, value, joinerAnd))
+        query = query.plus(keyValueRemoteQuery(_mediaType, _mediaTypeText, joinerOr))
+        query = query.plus(keyValueRemoteQuery(_mediaType, _mediatypeAudio, joinerOr))
     }
-    return query.removeSuffix(joiner)
+    return query.removeSuffix(joinerOr)
 }
+
+fun keyValueRemoteQuery(key: String, value: String, joiner: String) = "$key:($value)$joiner"
 
 fun ArchiveQuery.asLocalQuery() = SimpleSQLiteQuery(toQueryString())
 
 fun ArchiveQuery.toQueryString(): String {
     val joiner = " AND "
-    val selectFrom = "select * from item where"
+    val selectFrom = "SELECT * FROM item WHERE"
     var where = " "
     queries.keys.first().let {
         where += "$it like '%${queries[it]?.replace(' ', '%')}%'$joiner"
     }
-    val orderBy = " "
+    val orderBy = "ORDER BY title"
     return selectFrom + where.removeSuffix(joiner) + orderBy
 }

@@ -1,10 +1,9 @@
 package com.kafka.data.injection
 
-import com.data.base.api.interceptor.AcceptDialogInterceptor
-import com.data.base.api.interceptor.PrettyHttpLogging
-import com.data.base.mapper.SingleToArrayAdapter
 import com.data.base.api.ArchiveService
+import com.data.base.api.interceptor.AcceptDialogInterceptor
 import com.data.base.api.interceptor.GenericInterceptor
+import com.data.base.mapper.SingleToArrayAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -38,7 +37,7 @@ class ServiceModule {
 
             addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
-            addInterceptor(HttpLoggingInterceptor(PrettyHttpLogging()).apply {
+            addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
         }

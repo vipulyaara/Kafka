@@ -15,6 +15,7 @@ buildscript {
         maven(url = "https://plugins.gradle.org/m2/")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+        maven(url= "https://pdftron-maven.s3.amazonaws.com/release")
     }
     dependencies {
         classpath(Android.gradlePlugin)
@@ -35,6 +36,7 @@ allprojects {
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://jitpack.io")
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+        maven(url= "https://pdftron-maven.s3.amazonaws.com/release")
     }
 
     val commonCompilerArgs = listOfNotNull(

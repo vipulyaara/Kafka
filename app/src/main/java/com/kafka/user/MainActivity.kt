@@ -7,6 +7,8 @@ import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kafka.player.timber.permissions.PermissionsManager
+import com.kafka.ui_common.Navigation
+import com.kafka.ui_common.navigate
 import com.kafka.user.config.NightModeManager
 import com.kafka.user.extensions.doOnEnd
 import com.kafka.user.extensions.menuItemView
@@ -18,7 +20,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
-
     @Inject lateinit var permissionsManager: PermissionsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,13 +38,14 @@ class MainActivity : AppCompatActivity() {
 
     private val menuItemListener = Toolbar.OnMenuItemClickListener {
         when (it.itemId) {
-            R.id.menud_dark_mode -> {
+            R.id.menu_dark_mode -> {
                 toolbar?.menuItemView(it.itemId)
                     .springAnimation(DynamicAnimation.ROTATION)
                     .doOnEnd { NightModeManager.toggleNightMode(this@MainActivity) }
                     .animateToFinalPosition(90f)
             }
-            else -> {
+            R.id.menu_library -> {
+                navController.navigate(Navigation.Library)
             }
         }
         true

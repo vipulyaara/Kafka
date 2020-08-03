@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.content.R
+import com.kafka.player.domain.PlayerCommand
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -26,9 +27,14 @@ class PlayerFragment : BaseFragment() {
             setController(playerController)
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+        viewModel.liveData.observe(viewLifecycleOwner, Observer {
             playerController.setData(it)
         })
+
+        requireArguments().getString("item_id")?.let {
+            viewModel.observeItemDetail(it)
+            viewModel.submitAction(PlayerCommand.Play(it))
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

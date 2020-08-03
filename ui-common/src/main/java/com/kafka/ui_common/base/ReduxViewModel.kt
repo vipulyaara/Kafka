@@ -44,7 +44,7 @@ abstract class ReduxViewModel<S>(
         get() = state.asLiveData()
 
     protected suspend fun <T> Flow<T>.collectAndSetState(reducer: S.(T) -> S) {
-        return collect { item -> setState { reducer(item) } }
+        return collectLatest { item -> setState { reducer(item) } }
     }
 
     fun <A> selectObserve(prop1: KProperty1<S, A>): LiveData<A> {

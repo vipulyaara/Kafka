@@ -408,7 +408,7 @@ object RoboElectric {
 }
 
 object LeakCanary {
-    private const val version = "2.0-beta-3"
+    private const val version = "2.3"
     const val core = "com.squareup.leakcanary:leakcanary-android:$version"
 }
 

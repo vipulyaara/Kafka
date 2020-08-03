@@ -1,5 +1,6 @@
 package com.kafka.content.ui.detail
 
+import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.data.base.extensions.debug
@@ -13,7 +14,6 @@ import com.kafka.content.domain.followed.UpdateFollowedItems
 import com.kafka.content.domain.item.ObserveItems
 import com.kafka.content.domain.item.UpdateItems
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.extensions.getRandomAuthorResource
 import com.kafka.data.model.ObservableErrorCounter
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectFrom
@@ -22,7 +22,9 @@ import com.kafka.player.timber.playback.MediaSessionConnection
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
-import com.kafka.ui_common.base.observeActions
+import com.kafka.ui_common.showToast
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -42,7 +44,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val loadingState: ObservableLoadingCounter,
     private val errorState: ObservableErrorCounter
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
-    val actioner = RealActioner<ItemDetailAction>()
+    private val pendingActions = RealActioner<ItemDetailAction>()
 
     init {
         viewModelScope.launchObserve(observeItemDetail) { flow ->
@@ -50,12 +52,12 @@ class ItemDetailViewModel @ViewModelInject constructor(
                 debug { "item detail fetched $it" }
 
                 observeByAuthor(it)
-                copy(itemDetail = it?.copy(coverImageResource = getRandomAuthorResource()))
+                copy(itemDetail = it)
             }
         }
 
         viewModelScope.launch {
-            loadingState.observable.distinctUntilChanged().collectAndSetState { copy(isLoading = it) }
+            loadingState.observable.distinctUntilChanged().debounce(500).collectAndSetState { copy(isLoading = it) }
         }
 
         viewModelScope.launch {
@@ -72,15 +74,21 @@ class ItemDetailViewModel @ViewModelInject constructor(
             flow.distinctUntilChanged().collectAndSetState { copy(isFavorite = it) }
         }
 
-        viewModelScope.observeActions(actioner) {
-            when (it) {
-                is ItemDetailAction.Read -> { }
-                is ItemDetailAction.FavoriteClick -> {
-                    updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
+        viewModelScope.launch {
+            pendingActions.observe {
+                when (it) {
+                    is ItemDetailAction.FavoriteClick -> {
+                        updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
+                    }
+                    else -> { }
                 }
-                else -> { }
             }
         }
+    }
+
+    fun showFavoriteToast(context: Context) {
+        val message = if (!currentState().isFavorite) "Added to favorites" else "Removed from favorites"
+        context.showToast(message)
     }
 
     private fun observeByAuthor(itemDetail: ItemDetail?) {
@@ -107,7 +115,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
             .also { viewModelScope.launch { errorState.collectFrom(it) } }
     }
 
-    fun submitAction(action: ItemDetailAction) {
-        viewModelScope.launch { actioner.sendAction(action) }
+    fun sendAction(action: ItemDetailAction) {
+        viewModelScope.launch { pendingActions.sendAction(action) }
     }
 }
