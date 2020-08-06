@@ -128,7 +128,7 @@ class TimberMusicService : MediaBrowserServiceCompat(), LifecycleOwner {
         becomingNoisyReceiver = BecomingNoisyReceiver(this, sessionToken!!)
 
         GlobalScope.launch {
-            player.playingState.collect {  isPlaying ->
+            player.isPlayingStateFlow.collect { isPlaying ->
                 if (isPlaying) {
                     becomingNoisyReceiver.register()
                     startForeground(NOTIFICATION_ID, notifications.buildNotification(player.getSession()))

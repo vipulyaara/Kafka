@@ -7,12 +7,25 @@
     <fragment
         android:id="@id/navigation_homepage"
         android:name="com.kafka.content.ui.homepage.HomepageFragment">
+        <deepLink app:uri="app.kafka://homepage"/>
     </fragment>
 
     <fragment
         android:id="@id/navigation_library"
         android:name="com.kafka.content.ui.library.LibraryFragment">
         <deepLink app:uri="app.kafka://library"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_search"
+        android:name="com.kafka.content.ui.search.SearchFragment">
+        <deepLink app:uri="app.kafka://search"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_profile"
+        android:name="com.kafka.content.ui.profile.ProfileFragment">
+        <deepLink app:uri="app.kafka://profile"/>
     </fragment>
 
     <fragment

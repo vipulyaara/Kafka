@@ -2,19 +2,17 @@ package com.kafka.data.model
 
 import com.data.base.InvokeError
 import com.data.base.InvokeStatus
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class ObservableErrorCounter @Inject constructor() {
-    private val errorState = ConflatedBroadcastChannel<Throwable?>()
+    private val errorState = MutableStateFlow<Throwable?>(null)
 
     val observable: Flow<Throwable?>
-        get() = errorState.asFlow()
+        get() = errorState
 
     fun sendError(throwable: Throwable?) {
-        errorState.sendBlocking(throwable)
+        errorState.value  = throwable
     }
 }
 

@@ -10,6 +10,8 @@ sealed class Navigation {
     data class Reader(val itemId: String): Navigation()
     object Library : Navigation()
     object LanguageSelection : Navigation()
+    object Profile : Navigation()
+    object Search : Navigation()
 }
 
 fun NavController.navigate(navigation: Navigation) {
@@ -24,6 +26,8 @@ object DeepLinksNavigations {
             is Navigation.Reader -> "app.kafka://reader/${navigation.itemId}".toUri()
             is Navigation.Library -> "app.kafka://library".toUri()
             is Navigation.LanguageSelection -> "app.kafka://language".toUri()
+            is Navigation.Profile -> "app.kafka://profile".toUri()
+            is Navigation.Search -> "app.kafka://search".toUri()
         }
 
 }

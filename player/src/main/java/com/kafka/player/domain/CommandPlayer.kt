@@ -36,7 +36,7 @@ class CommandPlayer @Inject constructor(
             }
 
             PlayerCommand.ToggleCurrent -> {
-                songPlayer.playingState.collect {
+                songPlayer.isPlayingStateFlow.collect {
                     if (it) songPlayer.pause() else songPlayer.playSong()
                 }
             }

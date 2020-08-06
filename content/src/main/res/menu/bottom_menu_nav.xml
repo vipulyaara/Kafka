@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_homepage"
+        android:icon="@drawable/ic_home"
+        android:orderInCategory="1"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:orderInCategory="2"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ic_book"
+        android:orderInCategory="2"
+        android:title="@string/library"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_user"
+        android:orderInCategory="2"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
+</menu>

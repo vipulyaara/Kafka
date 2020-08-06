@@ -1,7 +1,7 @@
 
 object Libs {
     const val groupId = "com.kafka"
-    const val applicationId = "com.kafka.android"
+    const val applicationId = "com.kafka.user"
     const val versionCode = 1
     const val versionName = "1.0.0"
 
@@ -9,6 +9,11 @@ object Libs {
 
     const val compileSdkVersion = 29
     const val minSdkVersion = 23
+
+    object App {
+        const val name = "app"
+        const val nameDependency = ":$name"
+    }
 
     object BaseData {
         const val name = "data-base"

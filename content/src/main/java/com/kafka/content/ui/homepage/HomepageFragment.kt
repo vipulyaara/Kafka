@@ -30,7 +30,6 @@ class HomepageFragment : BaseFragment() {
     private val navController by lazy { findNavController() }
 
     @Inject lateinit var homepageController: HomepageController
-
     private val homepageActioner = Channel<HomepageAction>(Channel.BUFFERED)
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
 

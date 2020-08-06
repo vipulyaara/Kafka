@@ -60,19 +60,20 @@ val libraryModules = listOf(
     Libs.Player.name,
     Libs.UiCommon.name,
     Libs.UiCompose.name,
-    Libs.Reader.name,
     Libs.Content.name,
     Libs.Language.name,
     Libs.Logger.name
 )
 val publishableModules = listOf(Libs.Player.name)
 val applicationModules = listOf("app")
+val dynamicFeatureModules = listOf(Libs.Reader.name)
 
 subprojects {
     val isLibrary = project.name in libraryModules
     val isPublishable = project.name in publishableModules
-    val isAndroid = project.name in libraryModules || project.name in applicationModules
+    val isAndroid = project.name in libraryModules || project.name in applicationModules || project.name in dynamicFeatureModules
     val isApplication = project.name in applicationModules
+    val isDynamicFeature = project.name in dynamicFeatureModules
 
     if (isAndroid) {
 
@@ -83,6 +84,17 @@ subprojects {
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin(Kotlin.kapt)
                 plugin(Release.MavenPublish.plugin)
+                plugin(Hilt.plugin)
+                plugin("androidx.navigation.safeargs.kotlin")
+            }
+        }
+
+        if (isDynamicFeature) {
+            apply {
+                plugin("com.android.dynamic-feature")
+                plugin(Kotlin.androidPlugin)
+                plugin(Kotlin.androidExtensionsPlugin)
+                plugin(Kotlin.kapt)
                 plugin(Hilt.plugin)
                 plugin("androidx.navigation.safeargs.kotlin")
             }

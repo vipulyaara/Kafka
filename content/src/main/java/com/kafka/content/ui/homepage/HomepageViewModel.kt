@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
 import com.kafka.content.domain.followed.ObserveFollowedItems
+import com.kafka.content.domain.recent.ObserveRecentItems
 import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -12,13 +13,18 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class HomepageViewModel @ViewModelInject constructor(
-    observeFollowedItems: ObserveFollowedItems
+    observeFollowedItems: ObserveFollowedItems,
+    observeRecentItems: ObserveRecentItems
 ) : ReduxViewModel<HomepageViewState>(HomepageViewState()) {
     private val actioner = Channel<HomepageAction>(Channel.BUFFERED)
 
     init {
         viewModelScope.launchObserve(observeFollowedItems) { flow ->
             flow.distinctUntilChanged().collectAndSetState { copy(favorites = it) }
+        }
+
+        viewModelScope.launchObserve(observeRecentItems) { flow ->
+            flow.distinctUntilChanged().collectAndSetState { copy(recentItems = it) }
         }
 
         viewModelScope.launch {
@@ -30,6 +36,7 @@ class HomepageViewModel @ViewModelInject constructor(
         }
 
         observeFollowedItems(Unit)
+        observeRecentItems(Unit)
     }
 
     fun getSelectedTag() = currentState().tags.first { it.isSelected }

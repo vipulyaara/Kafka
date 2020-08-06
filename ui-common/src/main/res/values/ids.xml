@@ -8,4 +8,5 @@
     <item name="navigation_language" type="id" />
     <item name="navigation_player" type="id" />
     <item name="navigation_reader" type="id" />
+    <item name="navigation_profile" type="id" />
 </resources>

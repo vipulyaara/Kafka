@@ -35,8 +35,7 @@ class PlayerViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
                 is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(action.itemId))
-                is PlayerCommand.ToggleCurrent -> commandPlayer(
-                    PlayerCommand.ToggleCurrent)
+                is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
             }
         }
 

@@ -27,6 +27,7 @@ dependencies {
     androidTest()
 
     implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
+    implementation("com.google.android.play:core:1.8.0")
 
     implementation(AndroidX.appStartup)
 
@@ -39,6 +40,13 @@ dependencies {
     implementation(Stetho.urlConnection)
 }
 
+android {
+    dynamicFeatures = mutableSetOf(":reader")
+}
+
 configure<BaseExtension> {
+    defaultConfig {
+        applicationId = Libs.applicationId
+    }
     dataBinding.isEnabled = true
 }

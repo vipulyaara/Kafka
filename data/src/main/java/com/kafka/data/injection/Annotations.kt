@@ -18,9 +18,6 @@ annotation class ProcessLifetime
 annotation class Authenticated
 
 @Qualifier
-annotation class ApplicationContext
-
-@Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class Initializers
 

@@ -2,6 +2,7 @@ package com.kafka.content.ui.homepage
 
 import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.RecentItem
 import com.kafka.ui_common.base.BaseViewState
 
 /**
@@ -10,6 +11,7 @@ import com.kafka.ui_common.base.BaseViewState
 data class HomepageViewState(
     val searchViewState: SearchViewState = SearchViewState(),
     var favorites: List<Item>? = null,
+    var recentItems: List<RecentItem>? = null,
     var tags: List<HomepageTag> = suggestedTags
 ) : BaseViewState
 

@@ -26,8 +26,9 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
 
     override fun buildModels(data: HomepageViewState?) {
         data?.apply {
-            search()
+//            search()
             banner()
+            favorites.letEmpty { continueReading(it) }
             tags(tags)
             searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
             loading(searchViewState)
@@ -97,6 +98,27 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
                     text(it.title)
                     isSelected(it.isSelected)
                     clickListener { _ -> sendAction(HomepageAction.SelectTag(HomepageTag(it.title))) }
+                }
+            }
+        }
+    }
+
+    private fun continueReading(favorites: List<Item>) {
+        verticalSpacingMedium { id("continue_reading_spacing_top") }
+        sectionHeader {
+            id("continue_reading_header")
+            text("Continue Reading")
+        }
+        kafkaCarousel {
+            id("continue_reading")
+            padding(Carousel.Padding.dp(12, 12, 12, 12, 2))
+            numViewsToShowOnScreen(1.2f)
+            hasFixedSize(true)
+            withModelsFrom(favorites.map { it }) {
+                BookOnShelfBindingModel_().apply {
+                    id(it.itemId)
+                    item(it)
+                    clickListener { _ -> sendAction(SearchAction.ItemDetailAction(it)) }
                 }
             }
         }

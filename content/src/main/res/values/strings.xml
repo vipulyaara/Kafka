@@ -3,4 +3,7 @@
     <string name="search">Search</string>
     <string name="play">Play</string>
     <string name="read">Read</string>
+    <string name="home">Home</string>
+    <string name="library">Library</string>
+    <string name="profile">Profile</string>
 </resources>

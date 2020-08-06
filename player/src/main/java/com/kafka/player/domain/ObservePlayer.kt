@@ -19,8 +19,10 @@ class ObservePlayer @Inject constructor(
     override val dispatcher: CoroutineDispatcher = dispatchers.io
 
     override fun createObservable(params: Unit): Flow<PlayerData> {
-        return songPlayer.songChannel.asFlow().map { it.asPlayerData() }
+        return songPlayer.songChannel.asFlow().map { song -> song.asPlayerData() }
     }
-}
 
-fun Song.asPlayerData() = PlayerData("", true, title, artist)
+    private fun Song.asPlayerData() = PlayerData(id, isPlaying(), seekFlow(), title, artist, album)
+    private fun Song.isPlaying() = true
+    private fun Song.seekFlow() = songPlayer.seekPositionFlow.map { (it / duration) * 100 }
+}

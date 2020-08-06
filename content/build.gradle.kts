@@ -2,7 +2,6 @@ dependencies {
     implementation(project(Libs.Data.nameDependency))
     implementation(project(Libs.Language.nameDependency))
     implementation(project(Libs.Player.nameDependency))
-//    implementation(project(Libs.Reader.nameDependency))
     implementation(project(Libs.Logger.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
 
@@ -12,6 +11,7 @@ dependencies {
     common()
 
     implementation(Store.core)
+    implementation("com.google.android.play:core:1.8.0")
 
     arch()
     ktx()
@@ -33,7 +33,6 @@ dependencies {
 }
 
 configure<com.android.build.gradle.BaseExtension> {
-
     dataBinding.isEnabled = true
 }
 

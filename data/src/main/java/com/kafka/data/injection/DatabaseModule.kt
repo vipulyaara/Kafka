@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 import kotlin.coroutines.EmptyCoroutineContext
@@ -31,7 +32,7 @@ class DatabaseModule
 class RoomDatabaseModule {
     @Singleton
     @Provides
-    fun provideDatabase(context: Context): KafkaRoomDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
             context, KafkaRoomDatabase::class.java, databaseName
         ).fallbackToDestructiveMigration()
