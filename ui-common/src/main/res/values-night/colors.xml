@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="app_blue">#3D64FF</color>
 
     <color name="background_blue">#1f2633</color>
@@ -14,11 +13,11 @@
     <color name="text_subheading">#ddffffff</color>
     <color name="text_heading">#ffffff</color>
     <color name="shadow_light">#575C70</color>
-    <color name="shadow">#212121</color>
+    <color name="shadow">#575C70</color>
 
     <color name="background">#000</color>
-    <color name="surface">#212121</color>
-    <color name="surface_light">#171717</color>
+    <color name="surface">#000</color>
+    <color name="surface_light">#000</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#fff</color>

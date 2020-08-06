@@ -12,8 +12,11 @@ import com.kafka.content.R
 import com.kafka.ui_common.Navigation
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.navigate
+import com.kafka.ui_common.onSearchIme
+import com.kafka.ui_common.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.item_search_view.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -41,11 +44,21 @@ class SearchFragment : BaseFragment() {
             searchActioner.consumeAsFlow().collect { action ->
                 when (action) {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
-                    is SearchAction.SubmitQueryAction -> { searchViewModel.submitAction(action) }
+                    is SearchAction.SubmitQueryAction -> searchViewModel.submitAction(action)
                 }
             }
         }
 
+        lifecycleScope.launchWhenResumed {
+            etSearch.requestFocus()
+            requireContext().showKeyboard()
+        }
+
+        etSearch.onSearchIme {
+            lifecycleScope.launchWhenCreated {
+                searchActioner.send(SearchAction.SubmitQueryAction(SearchQuery(it)))
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

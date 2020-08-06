@@ -1,7 +1,9 @@
 package com.kafka.ui_common
 
+import android.content.Context
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
@@ -14,14 +16,20 @@ fun View.showSnackbar(message: String) {
 
 fun EditText.onSearchIme(block: (String) -> Unit) = run {
     setOnEditorActionListener { v, actionId, event ->
-    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-        block(v.text.toString())
-        true
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            block(v.text.toString())
+            true
+        }
+        false
     }
-    false
 }
-}
+
 fun <T> delayFlow(timeout: Long, value: T): Flow<T> = flow {
     delay(timeout)
     emit(value)
+}
+
+fun Context.showKeyboard() {
+    val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 }

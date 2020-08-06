@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="28dp"
             android:layout_marginTop="12dp"
-            android:background="@color/app_black"
+            android:background="@color/onPrimary"
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingHorizontal="@dimen/spacing_medium"

@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.annotation.ExperimentalCoilApi
 import coil.api.loadAny
+import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 import com.kafka.ui_common.ui.SaturatingTransformation
@@ -29,6 +30,7 @@ fun ImageView.loadImage(
     ) return
 
     loadAny(image) {
+        scale(Scale.FILL)
         transition(SaturatingTransformation())
 
         val transformations = ArrayList<Transformation>()
@@ -38,4 +40,10 @@ fun ImageView.loadImage(
 
         transformations(transformations)
     }
+}
+
+@BindingAdapter("image")
+@ExperimentalCoilApi
+fun ImageView.loadImage(image: Int?) {
+    loadAny(image)
 }

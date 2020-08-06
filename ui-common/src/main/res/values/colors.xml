@@ -15,7 +15,7 @@
 
     <color name="text_caption">#575C70</color>
     <color name="text_body">#6c7689</color>
-    <color name="text_subheading">#1f2633</color>
+    <color name="text_subheading">#5D5D5D</color>
     <color name="text_heading">#131313</color>
     <color name="shadow_light">#575C70</color>
 
@@ -23,7 +23,7 @@
     <color name="surface">#DFE9FF</color>
     <color name="shadow">#ACB8D2</color>
     <color name="shadow_dark">#7B8994</color>
-    <color name="surface_light">#22DFE9FF</color>
+    <color name="surface_light">#fbfcff</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#000</color>

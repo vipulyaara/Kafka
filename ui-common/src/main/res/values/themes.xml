@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Platform.Theme.Coyote" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-    </style>
+    <style name="Platform.Theme.Coyote" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
 
     <style name="Base.Theme.Coyote" parent="Platform.Theme.Coyote">
         <item name="actionBarTheme">@style/ThemeOverlay.Coyote.ActionBar</item>
@@ -34,7 +33,6 @@
         <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBody2</item>
         <item name="textAppearancePopupMenuHeader">@style/TextAppearance.Coyote.PopupMenu.Header</item>
     </style>
-
 
     <style name="Theme.Coyote" parent="Base.Theme.Coyote">
         <item name="colorPrimary">@color/colorPrimary</item>

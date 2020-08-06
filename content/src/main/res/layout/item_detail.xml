@@ -58,6 +58,7 @@
             tools:text="Franz Kafka" />
 
         <TextView
+            android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_large"

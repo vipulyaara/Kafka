@@ -33,6 +33,16 @@ class HomepageFragment : BaseFragment() {
     private val homepageActioner = Channel<HomepageAction>(Channel.BUFFERED)
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        exitTransition = MaterialFadeThrough()
+
+//        reenterTransition = MaterialSharedAxis(
+//            MaterialSharedAxis.Z, /* forward = */ false)
+//        exitTransition = MaterialSharedAxis(
+//            MaterialSharedAxis.Z, /* forward = */ true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

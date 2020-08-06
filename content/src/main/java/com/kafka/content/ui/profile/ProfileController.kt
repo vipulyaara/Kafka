@@ -16,6 +16,7 @@ class ProfileController @Inject constructor() : TypedEpoxyController<Int>() {
                 profileItem {
                     id("$it")
                     text(it.text)
+                    resource(it.icon)
                 }
             }
             if (it is MenuSeparator) {
@@ -35,11 +36,11 @@ val menuItems = arrayListOf(
     MenuSeparator,
     TextMenuItem(R.drawable.ic_feather, "Poets"),
     TextMenuItem(R.drawable.ic_book, "Sher"),
-    TextMenuItem(R.drawable.ic_check_circle, "Shayari"),
-    TextMenuItem(R.drawable.ic_disc, "Prose"),
+    TextMenuItem(R.drawable.ic_layers, "Shayari"),
+    TextMenuItem(R.drawable.ic_headphones, "Prose"),
     MenuSeparator,
-    TextMenuItem(R.drawable.ic_eye, "Image Shayari"),
-    TextMenuItem(R.drawable.ic_book, "Dictionary"),
+    TextMenuItem(R.drawable.ic_music, "Image Shayari"),
+    TextMenuItem(R.drawable.ic_user, "Dictionary"),
     MenuSeparator,
     TextMenuItem(R.drawable.ic_settings, "Settings"),
     TextMenuItem(R.drawable.ic_info, "About us"),

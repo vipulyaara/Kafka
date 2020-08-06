@@ -18,7 +18,6 @@ class PlayerController : TypedEpoxyController<PlayerViewState>() {
         }
 
         verticalSpacingLarge { id("spacing") }
-        verticalSpacingLarge { id("spacing2") }
         bottomsheetHandle {id("handle") }
         data?.itemDetail?.mp3Files()?.forEach {
             song {

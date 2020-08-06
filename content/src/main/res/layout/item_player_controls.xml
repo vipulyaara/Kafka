@@ -95,9 +95,10 @@
         </LinearLayout>
 
         <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             seekFlow="@{playerData.seekFlow}"
-            android:layout_marginHorizontal="@dimen/spacing_large" />
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_large" />
     </LinearLayout>
 </layout>

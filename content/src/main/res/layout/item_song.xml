@@ -14,8 +14,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?selectableItemBackground"
+        android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
         app:cardBackgroundColor="@color/background"
@@ -31,12 +31,13 @@
             android:id="@+id/infoLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/spacing_regular">
+            android:paddingHorizontal="@dimen/spacing_large"
+            android:paddingVertical="@dimen/spacing_medium">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/imageCard"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_margin="4dp"
                 app:cardBackgroundColor="@color/background"
                 app:cardCornerRadius="8dp"
@@ -45,11 +46,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
-                    app:tint="@color/text_body"
-                    android:src="@drawable/ic_music" />
+                    android:src="@drawable/ic_music"
+                    app:tint="@color/text_body" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -58,13 +59,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_large"
-                android:layout_marginTop="@dimen/spacing_mini"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{song.title}"
                 android:textAppearance="@style/TextAppearance.Coyote.Body1"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageCard"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_large"
                 android:layout_marginTop="@dimen/spacing_mini"
+                android:visibility="gone"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{FileKt.formattedDuration(song)}"

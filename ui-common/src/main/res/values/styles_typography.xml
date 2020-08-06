@@ -52,10 +52,10 @@
     </style>
 
     <style name="TextAppearance.Coyote.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/roboto_medium</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/circular_std_medium</item>
+        <item name="android:fontFamily">@font/circular_std_medium</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/text_subheading</item>
+        <item name="android:textColor">@color/text_heading</item>
     </style>
 
     <style name="TextAppearance.Coyote.Body1" parent="TextAppearance.MaterialComponents.Body1">

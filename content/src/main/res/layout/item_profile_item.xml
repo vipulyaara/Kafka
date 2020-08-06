@@ -8,28 +8,38 @@
         <variable
             name="text"
             type="String" />
+
+        <variable
+            name="resource"
+            type="Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:clickable="true"
-        android:paddingHorizontal="@dimen/spacing_medium_2"
-        android:paddingVertical="@dimen/spacing_medium_2">
+        android:paddingHorizontal="@dimen/spacing_medium_3"
+        android:gravity="center_vertical"
+        android:paddingVertical="@dimen/spacing_medium_3">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_music"
+            image="@{resource}"
+            app:tint="@color/colorAccent" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{text}"
             android:textAppearance="@style/TextAppearance.Coyote.Subtitle2"
             android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="The Witcher" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

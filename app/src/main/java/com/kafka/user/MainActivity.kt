@@ -7,8 +7,6 @@ import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kafka.player.timber.permissions.PermissionsManager
-import com.kafka.ui_common.Navigation
-import com.kafka.ui_common.navigate
 import com.kafka.user.config.NightModeManager
 import com.kafka.user.extensions.doOnEnd
 import com.kafka.user.extensions.menuItemView
@@ -43,12 +41,6 @@ class MainActivity : AppCompatActivity() {
                     .springAnimation(DynamicAnimation.ROTATION)
                     .doOnEnd { NightModeManager.toggleNightMode(this@MainActivity) }
                     .animateToFinalPosition(90f)
-            }
-            R.id.menu_library -> {
-                navController.navigate(Navigation.Library)
-            }
-            R.id.menu_user -> {
-                navController.navigate(Navigation.LanguageSelection)
             }
         }
         true

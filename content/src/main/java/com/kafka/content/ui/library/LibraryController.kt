@@ -13,7 +13,7 @@ class LibraryController : TypedEpoxyController<LibraryViewState>() {
     override fun buildModels(data: LibraryViewState?) {
         data?.apply {
             favorites?.let { favorites(it) }
-            if (favorites.isNullOrEmpty()) { empty() }
+//            if (favorites.isNullOrEmpty()) { empty() }
         }
     }
 

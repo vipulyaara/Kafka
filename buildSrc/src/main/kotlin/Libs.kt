@@ -155,7 +155,7 @@ object AndroidX {
     const val appCompat = "androidx.appcompat:appcompat:1.2.0-alpha03"
     const val leanback = "androidx.leanback:leanback:1.1.0-alpha02"
     const val cardView = "androidx.cardview:cardview:1.0.0"
-    const val material = "com.google.android.material:material:1.2.0-alpha01"
+    const val material = "com.google.android.material:material:1.2.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:2.0.0-beta8"

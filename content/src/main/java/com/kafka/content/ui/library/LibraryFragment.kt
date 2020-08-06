@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialSharedAxis
 import com.kafka.content.R
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,14 @@ class LibraryFragment : BaseFragment() {
     private val libraryViewModel: LibraryViewModel by viewModels()
     private val libraryController = LibraryController()
     private val navController by lazy { findNavController() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialSharedAxis(
+            MaterialSharedAxis.Z, /* forward = */ true)
+        returnTransition = MaterialSharedAxis(
+            MaterialSharedAxis.Z, /* forward = */ false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

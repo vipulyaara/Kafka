@@ -2,6 +2,7 @@ package com.kafka.content.ui.detail
 
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
+import com.data.base.extensions.debug
 import com.kafka.content.*
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.isAudio
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 class ItemDetailController : TypedEpoxyController<ItemDetailViewState>() {
     lateinit var actioner: Actioner<ItemDetailAction>
     override fun buildModels(data: ItemDetailViewState?) {
+
+        debug { "loading ${data?.isLoading} items ${data?.itemDetail}" }
 
         if (data?.isLoading == true && data.itemDetail == null) {
             loader { id("loading") }
