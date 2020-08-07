@@ -1,14 +1,11 @@
 package com.kafka.content.ui.homepage
 
-import android.widget.EditText
 import coil.api.clear
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
-import com.kafka.content.ui.ActionListener
 import com.kafka.content.ui.search.SearchAction
-import com.kafka.content.ui.search.SearchQuery
 import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
@@ -20,13 +17,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomepageController @Inject constructor() : TypedEpoxyController<HomepageViewState>() {
-
     lateinit var homepageActioner: Channel<HomepageAction>
     lateinit var searchActioner: Channel<SearchAction>
 
     override fun buildModels(data: HomepageViewState?) {
         data?.apply {
-//            search()
             banner()
             favorites.letEmpty { continueReading(it) }
             tags(tags)
@@ -51,17 +46,6 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         }
     }
 
-    private fun search() {
-        searchView {
-            id("search")
-            actionListener(object : ActionListener {
-                override fun onAction(editText: EditText) {
-                    sendAction(SearchAction.SubmitQueryAction(SearchQuery(editText.text.toString())))
-                }
-            })
-        }
-    }
-
     private fun banner() {
         banner {
             id("banner")
@@ -71,7 +55,7 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
     private fun searchResults(it: List<Item>, favorites: List<Item>) {
         it.forEachIndexed { index, item ->
             if (index == 5) {
-                favorites.letEmpty { favorites(it) }
+                favorites.letEmpty { favorite(it) }
             }
 
             book {
@@ -87,11 +71,9 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
 
     private fun tags(it: List<HomepageTag>) {
         kafkaCarousel {
-            onBind { model, view, position ->
-                view.scrollToPosition(0)
-            }
+            onBind { _, view, _ -> view.scrollToPosition(0) }
             id("recent_search")
-            padding(Carousel.Padding.dp(12, 12))
+            padding(Carousel.Padding.dp(12, 24))
             withModelsFrom(it) {
                 HomepageTagBindingModel_().apply {
                     id(it.title)
@@ -111,8 +93,8 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         }
         kafkaCarousel {
             id("continue_reading")
-            padding(Carousel.Padding.dp(12, 12, 12, 12, 2))
-            numViewsToShowOnScreen(1.2f)
+            padding(Carousel.Padding.dp(12, 8, 12, 12, 2))
+            numViewsToShowOnScreen(1.3f)
             hasFixedSize(true)
             withModelsFrom(favorites.map { it }) {
                 BookOnShelfBindingModel_().apply {
@@ -124,19 +106,18 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         }
     }
 
-    private fun favorites(favorites: List<Item>) {
-        verticalSpacingMedium { id("favorites_spacing_top") }
-        fancySectionHeader {
-            id("favorites_header")
+    private fun favorite(favorites: List<Item>) {
+        sectionHeader {
+            id("favorite_header")
             text("Favorites")
         }
         kafkaCarousel {
-            id("favorites")
-            padding(Carousel.Padding.dp(12, 12, 12, 12, 2))
-            numViewsToShowOnScreen(1.9f)
+            id("favorite")
+            padding(Carousel.Padding.dp(12, 0, 12, 12, 2))
+            numViewsToShowOnScreen(1.3f)
             hasFixedSize(true)
             withModelsFrom(favorites.map { it }) {
-                BookGridBindingModel_().apply {
+                BookOnShelfBindingModel_().apply {
                     id(it.itemId)
                     item(it)
                     clickListener { _ -> sendAction(SearchAction.ItemDetailAction(it)) }

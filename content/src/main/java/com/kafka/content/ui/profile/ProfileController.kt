@@ -26,7 +26,6 @@ class ProfileController @Inject constructor() : TypedEpoxyController<Int>() {
     }
 }
 
-
 sealed class MenuItem
 data class TextMenuItem(val icon: Int, val text: String) : MenuItem()
 object MenuSeparator : MenuItem()

@@ -2,6 +2,7 @@ package com.kafka.player.domain
 
 import com.kafka.data.entities.ItemDetail
 import com.kafka.player.R
+import com.kafka.ui_common.action.Action
 import com.kafka.ui_common.base.BaseViewState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,10 @@ data class PlayerData(
     val subtitle: String? = "Mirza Ghalib",
     val coverImage: String? = null
 )
+
+sealed class PlayerAction : Action {
+    data class Command(val playerCommand: PlayerCommand): PlayerAction()
+}
 
 fun PlayerData.isValid() = itemId != null
 

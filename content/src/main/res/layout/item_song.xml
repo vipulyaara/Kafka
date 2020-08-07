@@ -9,14 +9,18 @@
         <variable
             name="song"
             type="com.kafka.data.entities.File" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:clickable="true"
         android:focusable="false"
+        android:onClick="@{clickListener}"
         android:focusableInTouchMode="false"
         app:cardBackgroundColor="@color/background"
         app:cardCornerRadius="0dp"

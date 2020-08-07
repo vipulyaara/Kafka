@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.dynamicanimation.animation.DynamicAnimation
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.fragment.app.commit
+import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.user.config.NightModeManager
 import com.kafka.user.extensions.doOnEnd
@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
     @Inject lateinit var permissionsManager: PermissionsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             setOnMenuItemClickListener(menuItemListener)
         }
 
-        navController = findNavController(R.id.nav_host_fragment)
+        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
     }
 
     private val menuItemListener = Toolbar.OnMenuItemClickListener {
@@ -44,5 +43,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }

@@ -1,6 +1,6 @@
 package com.kafka.ui_common.base
 
-import com.kafka.ui_common.delayFlow
+import com.kafka.ui_common.extensions.delayFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay

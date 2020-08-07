@@ -2,28 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/navigation_homepage"
+        android:id="@+id/nav_graph_home"
         android:icon="@drawable/ic_home"
         android:orderInCategory="1"
         android:title="@string/home"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/navigation_search"
+        android:id="@+id/nav_graph_search"
         android:icon="@drawable/ic_baseline_search_24"
         android:orderInCategory="2"
         android:title="@string/search"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/navigation_library"
+        android:id="@+id/nav_graph_library"
         android:icon="@drawable/ic_book"
         android:orderInCategory="2"
         android:title="@string/library"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/navigation_profile"
+        android:id="@+id/nav_graph_profile"
         android:icon="@drawable/ic_user"
         android:orderInCategory="2"
         android:title="@string/profile"

@@ -1,4 +1,4 @@
-package com.kafka.ui_common
+package com.kafka.ui_common.extensions
 
 import kotlin.properties.ObservableProperty
 import kotlin.properties.ReadWriteProperty

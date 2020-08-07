@@ -33,16 +33,6 @@ class HomepageFragment : BaseFragment() {
     private val homepageActioner = Channel<HomepageAction>(Channel.BUFFERED)
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        exitTransition = MaterialFadeThrough()
-
-//        reenterTransition = MaterialSharedAxis(
-//            MaterialSharedAxis.Z, /* forward = */ false)
-//        exitTransition = MaterialSharedAxis(
-//            MaterialSharedAxis.Z, /* forward = */ true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -83,17 +73,13 @@ class HomepageFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_homepage, container, false)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         lifecycleScope.launchWhenResumed {
             homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
         }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_homepage, container, false)
     }
 }

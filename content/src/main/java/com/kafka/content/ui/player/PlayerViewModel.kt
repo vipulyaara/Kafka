@@ -5,10 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.data.model.ObservableLoadingCounter
-import com.kafka.player.domain.CommandPlayer
-import com.kafka.player.domain.ObservePlayer
-import com.kafka.player.domain.PlayerCommand
-import com.kafka.player.domain.PlayerViewState
+import com.kafka.player.domain.*
+import com.kafka.player.timber.playback.players.SongPlayer
 import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,9 +16,10 @@ class PlayerViewModel @ViewModelInject constructor(
     private val loadingState: ObservableLoadingCounter,
     private val commandPlayer: CommandPlayer,
     observePlayer: ObservePlayer,
+    songPlayer: SongPlayer,
     private val observeItemDetail: ObserveItemDetail
 ) : ReduxViewModel<PlayerViewState>(PlayerViewState()) {
-    private val pendingActions = Channel<PlayerCommand>(Channel.BUFFERED)
+    val pendingActions = Channel<PlayerAction>(Channel.BUFFERED)
 
     init {
         viewModelScope.launch {
@@ -31,11 +30,15 @@ class PlayerViewModel @ViewModelInject constructor(
 
         viewModelScope.launchObserve(observeItemDetail) { it.collectAndSetState { copy(itemDetail = it) } }
         viewModelScope.launchObserve(observePlayer) { it.collectAndSetState { copy(playerData = it) } }
+        viewModelScope.launch {
+            songPlayer.isPlayingStateFlow.collectAndSetState {
+                copy(playerData = playerData?.copy(isPlaying = it))
+            }
+        }
 
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
-                is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(action.itemId))
-                is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
+                is PlayerAction.Command -> commandPlayer(action)
             }
         }
 
@@ -46,8 +49,15 @@ class PlayerViewModel @ViewModelInject constructor(
         observeItemDetail(ObserveItemDetail.Param(it))
     }
 
-    fun submitAction(command: PlayerCommand) {
-        viewModelScope.launch { pendingActions.send(command) }
+    fun submitAction(action: PlayerAction) {
+        viewModelScope.launch { pendingActions.send(action) }
+    }
+
+    private fun commandPlayer(action: PlayerAction.Command) {
+        when (val command = action.playerCommand) {
+            is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(command.itemId))
+            is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
+        }
     }
 }
 

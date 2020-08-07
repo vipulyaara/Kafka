@@ -8,10 +8,11 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.firstAudio
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.timber.MusicUtils
+import com.kafka.player.timber.extensions.isPlayEnabled
+import com.kafka.player.timber.extensions.isPlaying
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.playback.players.SongPlayer
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,6 +28,7 @@ class CommandPlayer @Inject constructor(
 
     override suspend fun doWork(params: PlayerCommand) {
         debug { "player command invoked for $params" }
+        val controller = songPlayer.getSession().controller
         when (params) {
             is PlayerCommand.Play -> {
                 getItemDetail(params.itemId).apply {
@@ -36,9 +38,20 @@ class CommandPlayer @Inject constructor(
             }
 
             PlayerCommand.ToggleCurrent -> {
-                songPlayer.isPlayingStateFlow.collect {
-                    if (it) songPlayer.pause() else songPlayer.playSong()
+                controller.playbackState?.let { playbackState ->
+                    when {
+                        playbackState.isPlaying -> controller.transportControls.pause()
+                        playbackState.isPlayEnabled -> controller.transportControls.play()
+                    }
                 }
+            }
+
+            PlayerCommand.Next -> {
+                controller.transportControls.skipToNext()
+            }
+
+            PlayerCommand.Previous -> {
+                controller.transportControls.skipToPrevious()
             }
         }
     }

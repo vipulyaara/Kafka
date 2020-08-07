@@ -22,8 +22,7 @@ import com.kafka.player.timber.playback.MediaSessionConnection
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
-import com.kafka.ui_common.showToast
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.kafka.ui_common.extensions.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch

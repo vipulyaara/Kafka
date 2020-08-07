@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_medium"
                 android:layout_marginHorizontal="@dimen/spacing_medium"
-                android:layout_marginVertical="@dimen/spacing_medium_3"
+                android:layout_marginVertical="@dimen/spacing_large"
                 app:cardBackgroundColor="@color/background"
                 app:cardElevation="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -143,7 +143,7 @@
                             app:cardCornerRadius="@dimen/spacing_medium" />
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="96dp"
+                            android:layout_width="4dp"
                             android:layout_height="4dp"
                             app:cardBackgroundColor="@color/app_blue"
                             app:cardCornerRadius="@dimen/spacing_medium" />
@@ -155,7 +155,7 @@
                         android:layout_marginHorizontal="@dimen/spacing_medium"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="76%"
+                        android:text="0%"
                         android:textAppearance="@style/TextAppearance.Coyote.Body2"
                         android:textSize="@dimen/text_mini"
                         app:layout_constraintEnd_toEndOf="parent"

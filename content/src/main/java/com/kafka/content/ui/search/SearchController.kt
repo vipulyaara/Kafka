@@ -3,17 +3,12 @@ package com.kafka.content.ui.search
 import android.widget.EditText
 import coil.api.clear
 import com.airbnb.epoxy.TypedEpoxyController
-import com.kafka.content.book
+import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
-import com.kafka.content.emptyState
-import com.kafka.content.loader
-import com.kafka.content.searchView
 import com.kafka.content.ui.ActionListener
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchController @Inject constructor() : TypedEpoxyController<SearchViewState>() {
@@ -46,7 +41,7 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
             id("search")
             actionListener(object : ActionListener {
                 override fun onAction(editText: EditText) {
-                    sendAction(SearchAction.SubmitQueryAction(SearchQuery(editText.text.toString())))
+                    searchActioner.sendAction(SearchAction.SubmitQueryAction(SearchQuery(editText.text.toString())))
                 }
             })
         }
@@ -60,12 +55,8 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
                 }
                 id(item.itemId)
                 item(item)
-                clickListener { _ -> sendAction(SearchAction.ItemDetailAction(item)) }
+                clickListener { _ -> searchActioner.sendAction(SearchAction.ItemDetailAction(item)) }
             }
         }
-    }
-
-    private fun sendAction(searchAction: SearchAction) = GlobalScope.launch {
-        searchActioner.send(searchAction)
     }
 }

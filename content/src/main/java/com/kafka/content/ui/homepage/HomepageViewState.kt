@@ -18,6 +18,7 @@ data class HomepageViewState(
 val suggestedTags = listOf(
     HomepageTag("Mirza Ghalib", true),
     HomepageTag("Camus", false),
+    HomepageTag("Meer Taqi", false),
     HomepageTag("Dostoyevsky", false),
     HomepageTag("Kafka", false)
 )

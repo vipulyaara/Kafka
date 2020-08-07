@@ -28,6 +28,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                image="@{playerData.coverImage}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_banner_26"
                 tools:ignore="ContentDescription" />

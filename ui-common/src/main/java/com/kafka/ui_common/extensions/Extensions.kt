@@ -1,4 +1,4 @@
-package com.kafka.ui_common
+package com.kafka.ui_common.extensions
 
 import android.content.Context
 import android.view.View

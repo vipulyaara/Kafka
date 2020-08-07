@@ -42,8 +42,6 @@ import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -128,9 +126,9 @@ class RealSongPlayer @Inject constructor(
     private var metadataBuilder = MediaMetadataCompat.Builder()
     private var stateBuilder = createDefaultPlaybackState()
 
-    private val isPlayingChannel =  ConflatedBroadcastChannel(false)
+    private val isPlayingChannel =  MutableStateFlow(false)
     override val isPlayingStateFlow: Flow<Boolean>
-        get() = isPlayingChannel.asFlow()
+        get() = isPlayingChannel
 
     private var mediaSession = MediaSessionCompat(context, context.getString(R.string.app_name)).apply {
         setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
@@ -191,7 +189,7 @@ class RealSongPlayer @Inject constructor(
         }
         musicPlayer.reset()
 
-        val path = MusicUtils.getSongUri(queue.currentSongId).toString()
+        val path = MusicUtils.getSongUri(queue.currentSongId)
         val isSourceSet = if (path.startsWith("content://")) {
             musicPlayer.setSource(path.toUri())
         } else {
@@ -335,7 +333,7 @@ class RealSongPlayer @Inject constructor(
             mediaSession.setShuffleMode(bundle.getInt(SHUFFLE_MODE))
         }
 
-        isPlayingChannel.sendBlocking(state.isPlaying)
+        isPlayingChannel.value = state.isPlaying
     }
 
     override fun restoreFromQueueData(queueData: QueueEntity) {

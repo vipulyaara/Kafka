@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.player.domain.PlayerAction
 import com.kafka.player.domain.PlayerCommand
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,7 @@ class PlayerFragment : BaseFragment() {
 
         recyclerView.apply {
             setController(playerController)
+            playerController.playerActioner = viewModel.pendingActions
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {
@@ -33,11 +36,17 @@ class PlayerFragment : BaseFragment() {
 
         requireArguments().getString("item_id")?.let {
             viewModel.observeItemDetail(it)
-            viewModel.submitAction(PlayerCommand.Play(it))
+            viewModel.submitAction(PlayerAction.Command(PlayerCommand.Play(it)))
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_player, container, false)
+    }
+
+    override fun onBackPressed(): Boolean {
+        super.onBackPressed()
+        findNavController().popBackStack()
+        return true
     }
 }

@@ -25,3 +25,9 @@ dependencies {
     implementation(Hilt.lifecycle)
     kapt(Hilt.lifecycle_compiler)
 }
+
+configure<com.android.build.gradle.BaseExtension> {
+    defaultConfig {
+        applicationId = "com.kafka.reader"
+    }
+}

@@ -4,8 +4,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_main">
 
-    <include app:graph="@navigation/nav_graph_content" />
-
     <fragment
         android:id="@id/navigation_main"
         android:name="com.kafka.content.ui.main.MainFragment">

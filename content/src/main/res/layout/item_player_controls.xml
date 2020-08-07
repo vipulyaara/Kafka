@@ -8,6 +8,10 @@
         <variable
             name="playerData"
             type="com.kafka.player.domain.PlayerData" />
+
+        <variable
+            name="playerCommandListener"
+            type="com.kafka.content.ui.player.PlayerCommandListener" />
     </data>
 
     <LinearLayout
@@ -28,6 +32,7 @@
                 android:layout_margin="12dp"
                 android:background="?selectableItemBackground"
                 android:backgroundTint="@android:color/transparent"
+                android:onClick="@{() -> playerCommandListener.favoriteClick()}"
                 android:src="@drawable/ic_heart_sign"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
@@ -40,6 +45,7 @@
                 android:layout_margin="12dp"
                 android:background="?selectableItemBackground"
                 android:backgroundTint="@android:color/transparent"
+                android:onClick="@{() -> playerCommandListener.previousClick()}"
                 android:src="@drawable/ic_step_backward"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
@@ -53,6 +59,7 @@
                 android:layout_margin="12dp"
                 android:background="?selectableItemBackground"
                 android:backgroundTint="@color/app_red"
+                android:onClick="@{() -> playerCommandListener.playClick()}"
                 android:outlineAmbientShadowColor="@color/shadow"
                 android:outlineSpotShadowColor="@color/shadow"
                 app:borderWidth="0dp"
@@ -65,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_play"
+                    android:src="@{playerData.isPlaying ? @drawable/ic_pause : @drawable/ic_play}"
                     app:tint="@color/background" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -75,6 +82,7 @@
                 android:layout_margin="12dp"
                 android:background="?selectableItemBackground"
                 android:backgroundTint="@android:color/transparent"
+                android:onClick="@{() -> playerCommandListener.nextClick()}"
                 android:src="@drawable/ic_skip_forward"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
@@ -87,6 +95,7 @@
                 android:layout_margin="12dp"
                 android:background="?selectableItemBackground"
                 android:backgroundTint="@android:color/transparent"
+                android:onClick="@{() -> playerCommandListener.favoriteClick()}"
                 android:src="@drawable/ic_download"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
@@ -95,7 +104,6 @@
         </LinearLayout>
 
         <SeekBar
-            seekFlow="@{playerData.seekFlow}"
             android:layout_width="match_parent"
             android:layout_height="12dp"
             android:layout_marginHorizontal="@dimen/spacing_large"

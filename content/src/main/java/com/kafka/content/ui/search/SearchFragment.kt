@@ -11,9 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
 import com.kafka.ui_common.Navigation
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.onSearchIme
+import com.kafka.ui_common.extensions.showKeyboard
 import com.kafka.ui_common.navigate
-import com.kafka.ui_common.onSearchIme
-import com.kafka.ui_common.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.item_search_view.*
@@ -27,6 +27,10 @@ class SearchFragment : BaseFragment() {
     private val searchController = SearchController()
     private val navController by lazy { findNavController() }
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
