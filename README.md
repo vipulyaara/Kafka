@@ -20,11 +20,10 @@ This app focuses on scalable, flexible and reactive app architecure. Parts of th
 It is a version of MVVM with interactors as an additional layer to enhance re-usability. The app uses following frameworks
 
 
-* [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (throughout the data layer; for thread switching)
+* [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (for thread switching; and streams with Flow)
 * Jetpack compose (the app is almost complete with compose in the branch [jetpack-compose](https://github.com/vipulyaara/Kafka/tree/develop-compose). But I had to move away from it in order to complete some features as the framework is not as mature (dev-14 as of now) 
-* [Livedata](https://developer.android.com/topic/libraries/architecture/livedata) (between ViewModels and Fragments)
+* [Livedata](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
-* [Paging Library](https://developer.android.com/topic/libraries/architecture/paging/) (for pagination and integration with room)
 * Retrofit2
 * [Dagger Hilt](https://dagger.dev/hilt/)
 * [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
