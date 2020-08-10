@@ -21,8 +21,6 @@
             android:layout_width="196dp"
             android:layout_height="248dp"
             android:layout_margin="24dp"
-            android:outlineAmbientShadowColor="@color/shadow"
-            android:outlineSpotShadowColor="@color/shadow"
             app:cardCornerRadius="4dp"
             app:cardElevation="12dp">
 

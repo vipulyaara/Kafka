@@ -12,7 +12,6 @@ fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
 
 dependencies {
     implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.Language.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
 
     mediaSession()

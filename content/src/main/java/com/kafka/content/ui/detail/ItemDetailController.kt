@@ -38,7 +38,7 @@ class ItemDetailController : TypedEpoxyController<ItemDetailViewState>() {
                     if (detail.isAudio()) {
                         sendAction(ItemDetailAction.Play(detail.itemId))
                     } else {
-                        sendAction(ItemDetailAction.Read(detail.readerUrl()))
+                        sendAction(ItemDetailAction.Read(detail.readerUrl(), detail.title ?: ""))
                     }
                 }
             }

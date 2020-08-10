@@ -1,8 +1,6 @@
 include(":logger")
 include(":ui-common")
-include(":language")
 include(":content")
-include(":reader")
 pluginManagement {
     repositories {
         google()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -13,7 +14,9 @@ import androidx.navigation.NavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.setupWithNavController
+import com.kafka.ui_common.extensions.toggleNightMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.flow.collect
@@ -27,8 +30,15 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        toolbar?.setupToolbar(R.menu.menu_master) {
+            when (it?.itemId) {
+                R.id.menu_dark_mode -> toolbar?.toggleNightMode(requireActivity(), it.itemId)
+            }
+        }
+
         setupBottomNavigationBar()
-        initDynamicDelivery()
+//        initDynamicDelivery()
     }
 
     private fun initDynamicDelivery() {
@@ -40,9 +50,6 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    /**
-     * Called on first creation and when restoring state.
-     */
     private fun setupBottomNavigationBar() {
         val navGraphIds = listOf(
             R.navigation.nav_graph_home,
@@ -68,7 +75,23 @@ class MainFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onBackPressed(): Boolean {
-        return currentNavController?.value?.navigateUp() ?: false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val navigationHandled = currentNavController?.value?.navigateUp() ?: false
+                if (!navigationHandled) {
+                    if (bottom_navigation_view?.selectedItemId == R.id.nav_graph_home) {
+                        requireActivity().finish()
+                    } else {
+                        bottom_navigation_view?.selectedItemId = R.id.nav_graph_home
+                    }
+                }
+            }
+        })
     }
 }

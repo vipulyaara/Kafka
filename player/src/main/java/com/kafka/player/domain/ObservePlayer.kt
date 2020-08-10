@@ -2,6 +2,7 @@ package com.kafka.player.domain
 
 import com.data.base.AppCoroutineDispatchers
 import com.data.base.SubjectInteractor
+import com.data.base.extensions.debug
 import com.kafka.player.timber.models.Song
 import com.kafka.player.timber.playback.players.SongPlayer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,5 +25,10 @@ class ObservePlayer @Inject constructor(
 
     private fun Song.asPlayerData() = PlayerData(id, isPlaying(), seekFlow(), title, artist, album)
     private fun Song.isPlaying() = true
-    private fun Song.seekFlow() = songPlayer.seekPositionFlow.map { (it / duration) * 100 }
+    private fun Song.seekFlow(): Flow<Int> = songPlayer.seekPositionFlow.map {
+        debug { "seek progress is $it" }
+        if (duration != 0) {
+            (it / duration) * 100
+        } else 0
+    }
 }

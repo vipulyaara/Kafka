@@ -6,6 +6,7 @@ import com.data.base.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.player.domain.*
+import com.kafka.player.timber.extensions.isPlaying
 import com.kafka.player.timber.playback.players.SongPlayer
 import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel
@@ -31,8 +32,8 @@ class PlayerViewModel @ViewModelInject constructor(
         viewModelScope.launchObserve(observeItemDetail) { it.collectAndSetState { copy(itemDetail = it) } }
         viewModelScope.launchObserve(observePlayer) { it.collectAndSetState { copy(playerData = it) } }
         viewModelScope.launch {
-            songPlayer.isPlayingStateFlow.collectAndSetState {
-                copy(playerData = playerData?.copy(isPlaying = it))
+            songPlayer.addStateChangeListener {
+                viewModelScope.launchSetState { copy(playerData = playerData?.copy(isPlaying = it.isPlaying)) }
             }
         }
 

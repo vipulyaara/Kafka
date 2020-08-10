@@ -46,7 +46,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_author_camus_3"
                     tools:ignore="ContentDescription" />
 
             </com.google.android.material.card.MaterialCardView>

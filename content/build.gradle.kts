@@ -1,6 +1,5 @@
 dependencies {
     implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.Language.nameDependency))
     implementation(project(Libs.Player.nameDependency))
     implementation(project(Libs.Logger.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))
@@ -12,6 +11,11 @@ dependencies {
 
     implementation(Store.core)
     implementation("com.google.android.play:core:1.8.0")
+
+
+    implementation("com.pdftron:pdftron:7.1.4")
+    implementation("com.pdftron:tools:7.1.4")
+
 
     arch()
     ktx()

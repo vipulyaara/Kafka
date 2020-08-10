@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":data"))
     implementation(ThreeTenBp.core)
 
+    implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
 
     arch()
     room()

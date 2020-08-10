@@ -1,7 +1,7 @@
 package com.kafka.logger.firebase
 
-import com.kafka.logger.EventInfo
-import com.kafka.logger.Logger
+import com.kafka.logger.loggers.EventInfo
+import com.kafka.logger.loggers.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 

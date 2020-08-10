@@ -1,6 +1,5 @@
 dependencies {
     implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.Language.nameDependency))
 
     implementation(Hilt.android)
     kapt(Hilt.compiler)

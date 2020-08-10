@@ -16,7 +16,6 @@ class RealActioner<T: Action> : Actioner<T> {
     private val pendingActions = Channel<T>(BUFFERED)
 
     override suspend fun sendAction(action: T) {
-//        pendingActions.offer(action)
         if (!pendingActions.isClosedForSend) {
             pendingActions.send(action)
         }

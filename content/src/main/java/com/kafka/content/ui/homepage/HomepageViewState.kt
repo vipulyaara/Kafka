@@ -1,5 +1,6 @@
 package com.kafka.content.ui.homepage
 
+import com.kafka.content.R
 import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
@@ -21,6 +22,10 @@ val suggestedTags = listOf(
     HomepageTag("Meer Taqi", false),
     HomepageTag("Dostoyevsky", false),
     HomepageTag("Kafka", false)
+)
+
+val bannerImages = listOf(
+    R.drawable.img_banner_26, R.drawable.img_banner_30, R.drawable.img_banner_31, R.drawable.img_banner_32
 )
 
 data class HomepageTag(var title: String, var isSelected: Boolean = false)

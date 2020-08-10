@@ -59,9 +59,7 @@ val libraryModules = listOf(
     Libs.BaseData.name,
     Libs.Player.name,
     Libs.UiCommon.name,
-    Libs.UiCompose.name,
     Libs.Content.name,
-    Libs.Language.name,
     Libs.Logger.name
 )
 val publishableModules = listOf(Libs.Player.name)

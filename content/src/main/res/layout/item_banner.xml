@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="item"
-            type="com.kafka.data.entities.Item" />
+            name="resource"
+            type="java.lang.Integer" />
 
         <variable
             name="clickListener"
@@ -16,8 +17,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_medium_2"
-        android:layout_marginVertical="8dp"
+        android:layout_margin="@dimen/spacing_regular"
         android:background="?selectableItemBackground"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -35,10 +35,12 @@
             android:layout_height="164dp">
 
             <ImageView
+                image="@{resource}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_banner_26" />
+                android:src="@drawable/img_banner_26"
+                tools:ignore="ContentDescription" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="36dp"

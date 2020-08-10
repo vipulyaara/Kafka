@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
-import com.kafka.content.ui.library.LibraryController
-import com.kafka.content.ui.library.LibraryViewModel
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_library.*
@@ -19,7 +16,6 @@ import javax.inject.Inject
 class LanguageFragment : BaseFragment() {
     private val languageViewModel: LanguageViewModel by viewModels()
     @Inject lateinit var languageController: LanguageController
-    private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

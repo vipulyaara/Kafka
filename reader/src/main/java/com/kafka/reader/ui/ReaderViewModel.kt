@@ -7,6 +7,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import com.data.base.extensions.debug
 import com.kafka.reader.ReaderViewState
 import com.kafka.ui_common.base.BaseViewModel
+import com.pdftron.pdf.config.ViewerConfig
+import com.pdftron.pdf.controls.DocumentActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class ReaderViewModel @ViewModelInject constructor(
@@ -23,16 +25,16 @@ class ReaderViewModel @ViewModelInject constructor(
     }
 
     fun read(context: Context, readerUrl: String) {
-//        val config = ViewerConfig.Builder()
-//            .openUrlCachePath(context.cacheDir.absolutePath)
-//            .fullscreenModeEnabled(true)
-//            .multiTabEnabled(false)
-//            .documentEditingEnabled(false)
-//            .longPressQuickMenuEnabled(true)
-//            .toolbarTitle("")
-//            .showSearchView(true)
-//            .build()
-//        DocumentActivity.openDocument(context, readerUrl.toUri(), config)
+        val config = ViewerConfig.Builder()
+            .openUrlCachePath(context.cacheDir.absolutePath)
+            .fullscreenModeEnabled(true)
+            .multiTabEnabled(false)
+            .documentEditingEnabled(false)
+            .longPressQuickMenuEnabled(true)
+            .toolbarTitle("")
+            .showSearchView(true)
+            .build()
+        DocumentActivity.openDocument(context, readerUrl.toUri(), config)
     }
 
 }

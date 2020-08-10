@@ -13,6 +13,7 @@ import com.kafka.ui_common.base.SnackbarManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class SearchViewModel @ViewModelInject constructor(
@@ -25,8 +26,15 @@ class SearchViewModel @ViewModelInject constructor(
 
     init {
         viewModelScope.launchObserve(observeItems) { flow ->
-            flow.collectAndSetState {
-                copy(items = it)
+            flow.distinctUntilChanged().collectAndSetState { list ->
+                var copy = this
+//                list.forEach {
+//                    if (items?.contains(it) != true) {
+//                        copy =  copy.copy(items = list)
+//                        return@forEach
+//                    }
+//                }
+                copy.copy(items = list)
             }
         }
 
@@ -44,10 +52,11 @@ class SearchViewModel @ViewModelInject constructor(
             actioner.consumeAsFlow().collect {
                 when (it) {
                     is SearchAction.SubmitQueryAction -> submitQuery(it.query)
-                    is SearchAction.ItemDetailAction -> { }
                 }
             }
         }
+
+//        submitAction(SearchAction.SubmitQueryAction(SearchQuery("Kafka")))
     }
 
     fun submitAction(action: SearchAction) {

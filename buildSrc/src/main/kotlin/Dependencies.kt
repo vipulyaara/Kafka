@@ -36,6 +36,7 @@ fun DependencyHandlerScope.room() {
 
 fun DependencyHandlerScope.arch() {
     implementation { AndroidX.Arch.extensions }
+    implementation { AndroidX.Arch.java8 }
     implementation { AndroidX.Arch.reactive_streams }
     kapt { AndroidX.Arch.compiler }
 }

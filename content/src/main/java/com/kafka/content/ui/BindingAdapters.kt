@@ -2,10 +2,11 @@ package com.kafka.content.ui
 
 import android.view.View
 import android.widget.EditText
-import android.widget.SeekBar
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import com.data.base.extensions.debug
+import com.google.android.material.slider.Slider
 import com.kafka.ui_common.extensions.onSearchIme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -28,8 +29,13 @@ fun EditText.onImeAction(actionListener: ActionListener) {
 }
 
 @BindingAdapter("seekFlow")
-fun SeekBar.moveSeekBar(seekFlow: Flow<Int>?) {
-    GlobalScope.launch { seekFlow?.collect { progress = it } }
+fun Slider.moveSeekBar(seekFlow: Flow<Int>?) {
+    GlobalScope.launch {
+        seekFlow?.collect {
+            debug { "Progress is $it" }
+            this@moveSeekBar.value = it.toFloat()
+        }
+    }
 }
 
 interface ActionListener {

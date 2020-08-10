@@ -43,7 +43,6 @@ fun ImageView.loadImage(
 }
 
 @BindingAdapter("image")
-@ExperimentalCoilApi
 fun ImageView.loadImage(image: Int?) {
     loadAny(image)
 }

@@ -24,6 +24,8 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.session.PlaybackStateCompat.*
 import androidx.core.net.toUri
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.map
+import com.data.base.extensions.debug
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.entities.QueueEntity
 import com.kafka.player.R
@@ -33,7 +35,6 @@ import com.kafka.player.timber.constants.Constants.ACTION_REPEAT_SONG
 import com.kafka.player.timber.constants.Constants.REPEAT_MODE
 import com.kafka.player.timber.constants.Constants.SHUFFLE_MODE
 import com.kafka.player.timber.extensions.asString
-import com.kafka.player.timber.extensions.isPlaying
 import com.kafka.player.timber.extensions.position
 import com.kafka.player.timber.extensions.toSongIDs
 import com.kafka.player.timber.models.Song
@@ -41,7 +42,6 @@ import com.kafka.player.timber.repository.SongsRepository
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -52,6 +52,7 @@ import javax.inject.Singleton
  *
  * @author Aidan Follestad (@afollestad)
  */
+
 interface SongPlayer {
 
     fun setQueue(
@@ -89,7 +90,7 @@ interface SongPlayer {
 
     fun release()
 
-    val isPlayingStateFlow: Flow<Boolean>
+    fun addStateChangeListener(state: (PlaybackStateCompat) -> Unit)
 
     fun onPrepared(prepared: OnPrepared<SongPlayer>)
 
@@ -126,9 +127,7 @@ class RealSongPlayer @Inject constructor(
     private var metadataBuilder = MediaMetadataCompat.Builder()
     private var stateBuilder = createDefaultPlaybackState()
 
-    private val isPlayingChannel =  MutableStateFlow(false)
-    override val isPlayingStateFlow: Flow<Boolean>
-        get() = isPlayingChannel
+    private val stateListeners = mutableListOf<(PlaybackStateCompat) -> Unit>()
 
     private var mediaSession = MediaSessionCompat(context, context.getString(R.string.app_name)).apply {
         setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
@@ -226,9 +225,9 @@ class RealSongPlayer @Inject constructor(
             musicPlayer.seekTo(position)
             updatePlaybackState {
                 setState(
-                        mediaSession.controller.playbackState.state,
-                        position.toLong(),
-                        1F
+                    mediaSession.controller.playbackState.state,
+                    position.toLong(),
+                    1F
                 )
             }
         }
@@ -333,7 +332,11 @@ class RealSongPlayer @Inject constructor(
             mediaSession.setShuffleMode(bundle.getInt(SHUFFLE_MODE))
         }
 
-        isPlayingChannel.value = state.isPlaying
+        stateListeners.forEach { it.invoke(state) }
+    }
+
+    override fun addStateChangeListener(state: (PlaybackStateCompat) -> Unit) {
+        stateListeners.add(state)
     }
 
     override fun restoreFromQueueData(queueData: QueueEntity) {
@@ -376,19 +379,23 @@ class RealSongPlayer @Inject constructor(
 
     override val songChannel: ConflatedBroadcastChannel<Song> = ConflatedBroadcastChannel()
 
-    override val seekPositionFlow: Flow<Int> = queueDao.getQueueCurrentSeekPos().asFlow()
+    override val seekPositionFlow: Flow<Int> = queueDao.getQueueCurrentSeekPos().map {
+        debug { "Current seek pos $it" }
+        it
+    }.asFlow()
 }
 
 private fun createDefaultPlaybackState(): PlaybackStateCompat.Builder {
     return PlaybackStateCompat.Builder().setActions(
-            ACTION_PLAY
-                    or ACTION_PAUSE
-                    or ACTION_PLAY_FROM_SEARCH
-                    or ACTION_PLAY_FROM_MEDIA_ID
-                    or ACTION_PLAY_PAUSE
-                    or ACTION_SKIP_TO_NEXT
-                    or ACTION_SKIP_TO_PREVIOUS
-                    or ACTION_SET_SHUFFLE_MODE
-                    or ACTION_SET_REPEAT_MODE)
-            .setState(STATE_NONE, 0, 1f)
+        ACTION_PLAY
+                or ACTION_PAUSE
+                or ACTION_PLAY_FROM_SEARCH
+                or ACTION_PLAY_FROM_MEDIA_ID
+                or ACTION_PLAY_PAUSE
+                or ACTION_SKIP_TO_NEXT
+                or ACTION_SKIP_TO_PREVIOUS
+                or ACTION_SET_SHUFFLE_MODE
+                or ACTION_SET_REPEAT_MODE
+    )
+        .setState(STATE_NONE, 0, 1f)
 }

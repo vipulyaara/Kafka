@@ -7,13 +7,14 @@ import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.ui.gridCarousel
 import com.kafka.ui_common.ui.withModelsFrom
+import kotlinx.coroutines.channels.Channel
 
 class LibraryController : TypedEpoxyController<LibraryViewState>() {
+    lateinit var actioner: Channel<LibraryAction>
 
     override fun buildModels(data: LibraryViewState?) {
         data?.apply {
             favorites?.let { favorites(it) }
-//            if (favorites.isNullOrEmpty()) { empty() }
         }
     }
 
@@ -42,8 +43,8 @@ class LibraryController : TypedEpoxyController<LibraryViewState>() {
             withModelsFrom(favorites.map { it }) {
                 BookGridBindingModel_().apply {
                     id(it.itemId)
+                    clickListener { _ ->  actioner.sendAction(LibraryAction.ItemDetailAction(it)) }
                     item(it)
-                    clickListener { _ ->  }
                 }
             }
         }

@@ -1,11 +1,16 @@
 package com.kafka.ui_common.extensions
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.MenuRes
+import androidx.appcompat.widget.Toolbar
+import androidx.dynamicanimation.animation.DynamicAnimation
 import com.google.android.material.snackbar.Snackbar
+import com.kafka.ui_common.config.NightModeManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

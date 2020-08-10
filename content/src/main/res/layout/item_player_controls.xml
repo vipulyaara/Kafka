@@ -103,10 +103,13 @@
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 
-        <SeekBar
+        <com.google.android.material.slider.Slider
             android:layout_width="match_parent"
             android:layout_height="12dp"
+            seekFlow="@{playerData.seekFlow}"
             android:layout_marginHorizontal="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_large" />
+            android:layout_marginTop="@dimen/spacing_large"
+            app:labelStyle="@color/background"
+            app:thumbColor="?colorAccent" />
     </LinearLayout>
 </layout>

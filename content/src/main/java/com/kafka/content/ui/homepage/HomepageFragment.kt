@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
 import com.kafka.content.ui.search.SearchAction
 import com.kafka.content.ui.search.SearchQuery
 import com.kafka.content.ui.search.SearchViewModel
-import com.kafka.ui_common.Navigation
 import com.kafka.ui_common.base.BaseFragment
-import com.kafka.ui_common.navigate
+import com.kafka.ui_common.navigation.Navigation
+import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_homepage.*
 import kotlinx.coroutines.channels.Channel
@@ -43,17 +45,23 @@ class HomepageFragment : BaseFragment() {
         }
 
         searchViewModel.liveData.observe(viewLifecycleOwner, Observer {
-            homepageController.setData(homepageController.currentData?.copy(searchViewState = it))
+            homepageController.setSearchViewState(it)
         })
 
         homepageViewModel.liveData.observe(viewLifecycleOwner, Observer {
-            homepageController.setData(it)
+            debug { "Homepage updated $it" }
+            homepageController.setHomepageViewState(it)
         })
 
         lifecycleScope.launchWhenCreated {
             searchActioner.consumeAsFlow().collect { action ->
                 when (action) {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
+                    is SearchAction.ItemDetailWithSharedElement -> {
+                        action.view.transitionName = action.item.itemId
+                        val extras: FragmentNavigator.Extras = FragmentNavigatorExtras(action.view to action.item.itemId)
+                        navController.navigate(Navigation.ItemDetail(action.item.itemId), extras)
+                    }
                     is SearchAction.SubmitQueryAction -> {
                         searchViewModel.submitAction(action)
                         homepageViewModel.addTag(action.query.text ?: "")

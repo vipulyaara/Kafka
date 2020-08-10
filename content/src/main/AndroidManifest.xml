@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.kafka.content">
 
-
+    <application tools:ignore="AllowBackup">
+        <activity
+            android:name="com.pdftron.pdf.controls.DocumentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:theme="@style/Theme.Coyote"
+            android:windowSoftInputMode="adjustPan" />
+    </application>
 </manifest>

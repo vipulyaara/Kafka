@@ -27,7 +27,7 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             tags(tags)
             searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
             loading(searchViewState)
-//            empty(searchViewState)
+            empty(searchViewState)
         }
     }
 
@@ -47,8 +47,16 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
     }
 
     private fun banner() {
-        banner {
+        kafkaCarousel {
             id("banner")
+            padding(Carousel.Padding.dp(0, 4))
+            numViewsToShowOnScreen(1.1f)
+            withModelsFrom(bannerImages) {
+                BannerBindingModel_().apply {
+                    id("$it banner")
+                    resource(it)
+                }
+            }
         }
     }
 
@@ -64,16 +72,19 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
                 }
                 id(item.itemId)
                 item(item)
-                clickListener { _ -> sendAction(SearchAction.ItemDetailAction(item)) }
+                clickListener { view -> sendAction(SearchAction.ItemDetailWithSharedElement(item, view)) }
             }
         }
     }
 
     private fun tags(it: List<HomepageTag>) {
         kafkaCarousel {
-            onBind { _, view, _ -> view.scrollToPosition(0) }
+            onBind { _, view, _ ->
+                val position = it.indexOfFirst { it.isSelected }
+                view.scrollToPosition(position)
+            }
             id("recent_search")
-            padding(Carousel.Padding.dp(12, 24))
+            padding(Carousel.Padding.dp(12, 0, 12, 0, 24))
             withModelsFrom(it) {
                 HomepageTagBindingModel_().apply {
                     id(it.title)
@@ -100,7 +111,7 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
                 BookOnShelfBindingModel_().apply {
                     id(it.itemId)
                     item(it)
-                    clickListener { _ -> sendAction(SearchAction.ItemDetailAction(it)) }
+                    clickListener { view -> sendAction(SearchAction.ItemDetailWithSharedElement(it, view)) }
                 }
             }
         }
@@ -120,10 +131,27 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
                 BookOnShelfBindingModel_().apply {
                     id(it.itemId)
                     item(it)
-                    clickListener { _ -> sendAction(SearchAction.ItemDetailAction(it)) }
+                    clickListener { view -> sendAction(SearchAction.ItemDetailWithSharedElement(it, view)) }
                 }
             }
         }
+    }
+
+    fun setSearchViewState(searchViewState: SearchViewState) {
+        setData(
+            currentData?.copy(searchViewState = searchViewState)
+                ?: HomepageViewState(searchViewState = searchViewState)
+        )
+    }
+
+    fun setHomepageViewState(homepageViewState: HomepageViewState) {
+        setData(
+            currentData?.copy(
+                favorites = homepageViewState.favorites,
+                recentItems = homepageViewState.recentItems,
+                tags = homepageViewState.tags
+            )
+        )
     }
 
     private fun sendAction(homepageAction: HomepageAction) = GlobalScope.launch {

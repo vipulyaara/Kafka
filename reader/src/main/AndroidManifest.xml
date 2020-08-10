@@ -13,9 +13,12 @@
     </dist:module>
 
     <application tools:ignore="AllowBackup">
-<!--        <activity android:name="com.pdftron.pdf.controls.DocumentActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"-->
-<!--            android:windowSoftInputMode="adjustPan"-->
-<!--            android:theme="@style/Theme.Coyote"/>-->
+        <activity
+            android:name="com.pdftron.pdf.controls.DocumentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:theme="@style/Theme.Coyote"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity android:name=".ui.ReaderActivity"/>
     </application>
 </manifest>

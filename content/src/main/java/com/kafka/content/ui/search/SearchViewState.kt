@@ -13,7 +13,7 @@ import com.kafka.ui_common.base.BaseViewState
 data class SearchViewState(
     var query: String? = null,
     var items: List<Item>? = null,
-    var isLoading: Boolean = false,
+    var isLoading: Boolean = true,
     val error: Throwable? = null
 ) : BaseViewState
 

@@ -1,7 +1,7 @@
 package com.kafka.logger.firebase
 
-import com.data.base.CrashLogger
 import com.data.base.extensions.e
+import com.kafka.logger.loggers.CrashLogger
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -35,11 +35,6 @@ object Libs {
         const val nameDependency = ":$name"
     }
 
-    object Language {
-        const val name = "language"
-        const val nameDependency = ":$name"
-    }
-
     object Content {
         const val name = "content"
         const val nameDependency = ":$name"
@@ -52,11 +47,6 @@ object Libs {
 
     object UiCommon {
         const val name = "ui-common"
-        const val nameDependency = ":$name"
-    }
-
-    object UiCompose {
-        const val name = "ui-compose"
         const val nameDependency = ":$name"
     }
 }
@@ -207,6 +197,7 @@ object AndroidX {
         private const val testingVersion = "2.0.0"
         const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
         const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
+        const val java8 = "androidx.lifecycle:lifecycle-common-java8:$version"
         const val reactive_streams = "androidx.lifecycle:lifecycle-reactivestreams:$version"
         const val testing = "androidx.arch.core:core-testing:$testingVersion"
     }

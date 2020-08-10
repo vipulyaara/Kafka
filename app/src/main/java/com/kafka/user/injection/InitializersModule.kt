@@ -5,7 +5,7 @@ import androidx.startup.Initializer
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyAsyncUtil
 import com.airbnb.epoxy.EpoxyController
-import com.kafka.user.config.NightModeManager
+import com.kafka.ui_common.config.NightModeManager
 import timber.log.Timber
 
 class LoggerInitializer : Initializer<Unit> {

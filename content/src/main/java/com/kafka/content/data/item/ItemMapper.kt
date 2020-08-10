@@ -9,10 +9,10 @@ import javax.inject.Inject
 
 class ItemMapper @Inject constructor(): Mapper<SearchResponse, List<Item>> {
     override fun map(from: SearchResponse): List<Item> {
-        return from.response.docs.map { it.toItem() }
+        return from.response.docs.mapIndexed { index, doc -> doc.toItem(index) }
     }
 
-    private fun Doc.toItem() = Item(
+    private fun Doc.toItem(index: Int) = Item(
         itemId = this.identifier,
         language = this.language,
         title = this.title,
@@ -22,6 +22,7 @@ class ItemMapper @Inject constructor(): Mapper<SearchResponse, List<Item>> {
         coverImage = "https://archive.org/services/img/$identifier",
         coverImageResource = 0,
         collection = this.collection,
-        genre = this.subject
+        genre = this.subject,
+        position = this.downloads
     )
 }

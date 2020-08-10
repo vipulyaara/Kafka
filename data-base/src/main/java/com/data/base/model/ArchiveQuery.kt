@@ -85,6 +85,6 @@ fun ArchiveQuery.toQueryString(): String {
     queries.keys.first().let {
         where += "$it like '%${queries[it]?.replace(' ', '%')}%'$joiner"
     }
-    val orderBy = " ORDER BY title"
+    val orderBy = " ORDER BY position"
     return selectFrom + where.removeSuffix(joiner) + orderBy
 }

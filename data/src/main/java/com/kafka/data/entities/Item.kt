@@ -9,7 +9,7 @@ import com.data.base.model.MediaType
  * @author Vipul Kumar; dated 13/02/19.
  */
 @Entity
-data class Item(
+data class Item constructor(
     @PrimaryKey val itemId: String = "",
     @Embedded(prefix = "creator_") val creator: Creator? = null,
     val language: List<String>? = null,
@@ -19,7 +19,8 @@ data class Item(
     val coverImage: String? = null,
     var coverImageResource: Int = 0,
     val collection: List<String>? = null,
-    val genre: List<String>? = null
+    val genre: List<String>? = null,
+    val position: Int = 0
 ) : BaseEntity
 
 data class Creator(val id: String, val name: String)
