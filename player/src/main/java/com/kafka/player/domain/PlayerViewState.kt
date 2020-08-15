@@ -18,7 +18,7 @@ data class PlayerViewState(
 
 data class PlayerData(
     val itemId: Long? = null,
-    val isPlaying: Boolean = false,
+    val isPlaying: Boolean? = null,
     val seekFlow: Flow<Int> = MutableStateFlow(0),
     val title: String? = "aah ko chaahiye ik umr",
     val subtitle: String? = "Mirza Ghalib",
@@ -31,4 +31,8 @@ sealed class PlayerAction : Action {
 
 fun PlayerData.isValid() = itemId != null
 
-fun PlayerData.playIcon() = if (isPlaying) R.drawable.ic_play else R.drawable.ic_pause
+fun PlayerData.playIcon() = when (isPlaying) {
+    true -> R.drawable.ic_pause
+    false -> R.drawable.ic_play
+    else -> 0
+}

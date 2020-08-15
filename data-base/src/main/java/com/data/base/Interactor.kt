@@ -15,23 +15,23 @@ abstract class Interactor<in P> {
 
     operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
         val channel = ConflatedBroadcastChannel<InvokeStatus>(
-            InvokeIdle
+            InvokeStatus.InvokeIdle
         )
         scope.launch {
             try {
                 withTimeout(timeoutMs) {
-                    channel.send(InvokeStarted)
+                    channel.send(InvokeStatus.InvokeStarted)
                     try {
                         doWork(params)
-                        channel.send(InvokeSuccess)
+                        channel.send(InvokeStatus.InvokeSuccess)
                     } catch (t: Throwable) {
                         e(t) { t.localizedMessage ?: "exception" }
-                        channel.send(InvokeError(t))
+                        channel.send(InvokeStatus.InvokeError(t))
                     }
                 }
             } catch (t: TimeoutCancellationException) {
                 e(t) { t.localizedMessage ?: "timeout handle" }
-                channel.send(InvokeTimeout)
+                channel.send(InvokeStatus.InvokeTimeout)
             }
         }
         return channel.asFlow()

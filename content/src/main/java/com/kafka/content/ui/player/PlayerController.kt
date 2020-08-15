@@ -42,19 +42,24 @@ class PlayerController : TypedEpoxyController<PlayerViewState>() {
         }
 
         verticalSpacingLarge { id("spacing") }
-        bottomsheetHandle {id("handle") }
+        bottomsheetHandle { id("handle") }
         data?.itemDetail?.mp3Files()?.forEach {
             song {
                 id(it.title)
                 song(it)
+                clickListener { _ ->
+                    playerActioner.sendAction(
+                        PlayerAction.Command(
+                            PlayerCommand.Play(
+                                data.itemDetail?.itemId!!, it.playbackUrl!!))) }
+                }
             }
         }
     }
-}
 
-interface PlayerCommandListener {
-    fun favoriteClick()
-    fun playClick()
-    fun previousClick()
-    fun nextClick()
-}
+    interface PlayerCommandListener {
+        fun favoriteClick()
+        fun playClick()
+        fun previousClick()
+        fun nextClick()
+    }

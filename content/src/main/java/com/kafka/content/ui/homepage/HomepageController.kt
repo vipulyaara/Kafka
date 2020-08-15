@@ -23,11 +23,10 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
     override fun buildModels(data: HomepageViewState?) {
         data?.apply {
             banner()
-            favorites.letEmpty { continueReading(it) }
+            recentItems.letEmpty { continueReading(it.map { it.item }) }
             tags(tags)
             searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
             loading(searchViewState)
-            empty(searchViewState)
         }
     }
 

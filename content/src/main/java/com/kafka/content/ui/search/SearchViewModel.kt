@@ -27,14 +27,7 @@ class SearchViewModel @ViewModelInject constructor(
     init {
         viewModelScope.launchObserve(observeItems) { flow ->
             flow.distinctUntilChanged().collectAndSetState { list ->
-                var copy = this
-//                list.forEach {
-//                    if (items?.contains(it) != true) {
-//                        copy =  copy.copy(items = list)
-//                        return@forEach
-//                    }
-//                }
-                copy.copy(items = list)
+                copy(items = list)
             }
         }
 
@@ -55,8 +48,6 @@ class SearchViewModel @ViewModelInject constructor(
                 }
             }
         }
-
-//        submitAction(SearchAction.SubmitQueryAction(SearchQuery("Kafka")))
     }
 
     fun submitAction(action: SearchAction) {

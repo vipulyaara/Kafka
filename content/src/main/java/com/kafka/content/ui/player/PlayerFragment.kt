@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.content.R
-import com.kafka.player.domain.PlayerAction
-import com.kafka.player.domain.PlayerCommand
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -35,7 +33,6 @@ class PlayerFragment : BaseFragment() {
 
         requireArguments().getString("item_id")?.let {
             viewModel.observeItemDetail(it)
-            viewModel.submitAction(PlayerAction.Command(PlayerCommand.Play(it)))
         }
     }
 

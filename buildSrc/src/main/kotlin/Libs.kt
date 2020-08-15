@@ -2,7 +2,7 @@
 object Libs {
     const val groupId = "com.kafka"
     const val applicationId = "com.kafka.user"
-    const val versionCode = 1
+    const val versionCode = 2
     const val versionName = "1.0.0"
 
     const val publishVersion = "0.0.1"
@@ -80,7 +80,7 @@ object FolioReader{
 }
 
 object ExoPlayer {
-    private const val version = "2.9.6"
+    private const val version = "2.11.5"
     const val player = "com.google.android.exoplayer:exoplayer:$version"
 }
 

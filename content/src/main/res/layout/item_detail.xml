@@ -8,7 +8,6 @@
         <variable
             name="itemDetail"
             type="com.kafka.data.entities.ItemDetail" />
-
     </data>
 
     <LinearLayout
@@ -19,6 +18,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="196dp"
+            android:id="@+id/imageCard"
             android:layout_height="248dp"
             android:layout_margin="24dp"
             app:cardCornerRadius="4dp"

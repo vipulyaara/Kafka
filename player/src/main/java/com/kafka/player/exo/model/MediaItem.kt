@@ -1,9 +1,10 @@
 package com.kafka.player.exo.model
 
-internal data class MediaEntity(
+data class MediaItem(
     val id: String,
     val title: String,
     val subtitle: String,
     val duration: Long,
-    val url: String
+    val playbackUrl: String,
+    val coverImageUrl: String
 )

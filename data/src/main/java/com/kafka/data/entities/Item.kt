@@ -25,8 +25,7 @@ data class Item constructor(
 
 data class Creator(val id: String, val name: String)
 
-fun Item.asRecentlyVisited(visitedTime: Long) =
-    RecentItem(itemId, creator?.id, visitedTime)
+fun Item.asRecentlyVisited(visitedTime: Long) = RecentItem(itemId, visitedTime)
 
 fun Item.mediaType() = when (mediaType) {
     "texts" -> MediaType.Text

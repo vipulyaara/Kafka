@@ -27,7 +27,7 @@ import com.kafka.player.timber.playback.TimberMusicService.Companion.TYPE_SONG
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Song(
+data class Song constructor(
     var id: Long = 0,
     var albumId: Long = 0,
     var artistId: Long = 0,
@@ -35,7 +35,8 @@ data class Song(
     var artist: String = "Mirza Ghalib",
     var album: String = "",
     var duration: Int = 0,
-    var trackNumber: Int = 0
+    var trackNumber: Int = 0,
+    val coverImage: String? = null
 ) : MediaBrowserCompat.MediaItem(
         MediaDescriptionCompat.Builder()
                 .setMediaId(MediaID("$TYPE_SONG", "$id").asString())

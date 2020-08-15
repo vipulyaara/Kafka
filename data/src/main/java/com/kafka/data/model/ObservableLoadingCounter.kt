@@ -1,9 +1,6 @@
 package com.kafka.data.model
 
-import com.data.base.InvokeError
-import com.data.base.InvokeStarted
 import com.data.base.InvokeStatus
-import com.data.base.InvokeSuccess
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -26,7 +23,7 @@ class ObservableLoadingCounter @Inject constructor() {
 
 suspend fun Flow<InvokeStatus>.collectInto(counter: ObservableLoadingCounter) = collect {
     when (it) {
-        InvokeStarted -> counter.addLoader()
-        InvokeSuccess, is InvokeError -> counter.removeLoader()
+        InvokeStatus.InvokeStarted -> counter.addLoader()
+        InvokeStatus.InvokeSuccess, is InvokeStatus.InvokeError -> counter.removeLoader()
     }
 }

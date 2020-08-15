@@ -1,6 +1,5 @@
 package com.kafka.data.model
 
-import com.data.base.InvokeError
 import com.data.base.InvokeStatus
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -21,7 +20,7 @@ suspend fun ObservableErrorCounter.collectFrom(status: Flow<InvokeStatus>) {
         sendError(it)
     }.map {
         when (it) {
-            is InvokeError -> it.throwable
+            is InvokeStatus.InvokeError -> it.throwable
             else -> null
         }
     }.collect {

@@ -1,6 +1,7 @@
 package com.kafka.content.ui.detail
 
 import android.content.Context
+import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.data.base.extensions.debug
@@ -13,6 +14,7 @@ import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.content.domain.followed.UpdateFollowedItems
 import com.kafka.content.domain.item.ObserveItems
 import com.kafka.content.domain.item.UpdateItems
+import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ObservableErrorCounter
 import com.kafka.data.model.ObservableLoadingCounter
@@ -23,6 +25,8 @@ import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.extensions.showToast
+import com.pdftron.pdf.config.ViewerConfig
+import com.pdftron.pdf.controls.DocumentActivity
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -40,6 +44,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val mediaSessionConnection: MediaSessionConnection,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val updateFollowedItems: UpdateFollowedItems,
+    private val addRecentItem: AddRecentItem,
     private val loadingState: ObservableLoadingCounter,
     private val errorState: ObservableErrorCounter
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
@@ -112,6 +117,25 @@ class ItemDetailViewModel @ViewModelInject constructor(
         updateItemDetail(UpdateItemDetail.Param(contentId))
             .also { viewModelScope.launch { it.collectInto(loadingState) } }
             .also { viewModelScope.launch { errorState.collectFrom(it) } }
+    }
+
+    fun read(context: Context, readerUrl: String, title: String) {
+        addRecentItem()
+
+        val config = ViewerConfig.Builder()
+            .openUrlCachePath(context.cacheDir.absolutePath)
+            .fullscreenModeEnabled(true)
+            .multiTabEnabled(false)
+            .documentEditingEnabled(false)
+            .longPressQuickMenuEnabled(true)
+            .toolbarTitle(title)
+            .showSearchView(true)
+            .build()
+        DocumentActivity.openDocument(context, readerUrl.toUri(), config)
+    }
+
+    fun addRecentItem() {
+        addRecentItem(AddRecentItem.Params(currentState().itemDetail?.itemId!!))
     }
 
     fun sendAction(action: ItemDetailAction) {

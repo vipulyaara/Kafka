@@ -6,7 +6,7 @@ import com.data.base.model.getOrThrow
 import com.kafka.data.dao.ItemLocalDataSource
 import com.kafka.data.dao.RecentItemLocalDataSource
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.ItemWithRecentItem
 import com.kafka.data.entities.asRecentlyVisited
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,15 +25,13 @@ class ItemRepository @Inject constructor(
     fun observeQueryItems(archiveQuery: ArchiveQuery) =
         itemLocalDataSource.observeQueryItems(archiveQuery.asLocalQuery())
 
-    fun observeRecentlyVisitedItems(): Flow<List<RecentItem>> {
-        return recentItemLocalDataSource.observeRecentlyVisitedItems()
-    }
+    fun observeRecentlyVisitedItems() = recentItemLocalDataSource.observeRecentlyVisitedItems()
 
-    fun observeRecentlyVisitedItemsAsItems(): Flow<List<Item>> {
+    fun observeItemsWithRecentlyVisitedInfo(): Flow<List<ItemWithRecentItem>> {
         return observeRecentlyVisitedItems()
             .map { list ->
                 list.sortedByDescending { it.timeStamp }
-                    .map { getItemByItemId(it.itemId) }
+                    .map { ItemWithRecentItem(getItemByItemId(it.itemId), it) }
             }
     }
 
