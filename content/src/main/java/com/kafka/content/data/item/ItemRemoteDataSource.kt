@@ -3,9 +3,7 @@ package com.kafka.content.data.item
 import com.data.base.api.ArchiveService
 import com.data.base.extensions.executeWithRetry
 import com.data.base.extensions.toResult
-import com.data.base.model.ArchiveQuery
 import com.data.base.model.Result
-import com.data.base.model.asRemoteQuery
 import com.kafka.data.entities.Item
 import javax.inject.Inject
 
@@ -17,9 +15,9 @@ class ItemRemoteDataSource @Inject constructor(
     private val itemMapper: ItemMapper
 ) {
 
-    suspend fun fetchItemsByCreator(archiveQuery: ArchiveQuery): Result<List<Item>> {
+    suspend fun fetchItemsByCreator(query: String): Result<List<Item>> {
         return archiveService
-            .search(archiveQuery.asRemoteQuery())
+            .search(query)
             .executeWithRetry()
             .toResult(itemMapper)
     }

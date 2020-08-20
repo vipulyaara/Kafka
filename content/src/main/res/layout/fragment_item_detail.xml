@@ -18,28 +18,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_regular"
-        android:layout_marginBottom="@dimen/spacing_medium_2"
-        android:background="?selectableItemBackground"
-        android:src="@drawable/ic_heart_sign"
-        android:visibility="gone"
-        app:borderWidth="0dp"
-        app:elevation="10dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/shadowView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_medium"
+        android:src="@drawable/img_shadow_top_to_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="@color/surface_light"
         tools:ignore="ContentDescription" />
-
-    <include
-        android:id="@+id/endCard"
-        layout="@layout/item_dialog_view"
-        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

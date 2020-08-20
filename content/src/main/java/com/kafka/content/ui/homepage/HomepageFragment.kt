@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
 import com.kafka.content.ui.search.SearchAction
-import com.kafka.content.ui.search.SearchQuery
 import com.kafka.content.ui.search.SearchViewModel
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.addScrollbarElevationView
+import com.kafka.ui_common.extensions.showSnackbar
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,16 +40,18 @@ class HomepageFragment : BaseFragment() {
 
         recyclerView.apply {
             setController(homepageController)
+            addScrollbarElevationView(shadowView)
             homepageController.homepageActioner = homepageActioner
             homepageController.searchActioner = searchActioner
         }
 
         searchViewModel.liveData.observe(viewLifecycleOwner, Observer {
             homepageController.setSearchViewState(it)
+            it.error?.let { view.showSnackbar(it.message) }
         })
 
         homepageViewModel.liveData.observe(viewLifecycleOwner, Observer {
-            debug { "Homepage updated $it" }
+            debug { "Homepage updated" }
             homepageController.setHomepageViewState(it)
         })
 
@@ -59,12 +61,10 @@ class HomepageFragment : BaseFragment() {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
                     is SearchAction.ItemDetailWithSharedElement -> {
                         action.view.transitionName = action.item.itemId
-                        val extras: FragmentNavigator.Extras = FragmentNavigatorExtras(action.view to action.item.itemId)
-                        navController.navigate(Navigation.ItemDetail(action.item.itemId), extras)
-                    }
-                    is SearchAction.SubmitQueryAction -> {
-                        searchViewModel.submitAction(action)
-                        homepageViewModel.addTag(action.query.text ?: "")
+                        navController.navigate(
+                            Navigation.ItemDetail(action.item.itemId),
+                            FragmentNavigatorExtras(action.view to action.item.itemId)
+                        )
                     }
                 }
             }
@@ -76,7 +76,12 @@ class HomepageFragment : BaseFragment() {
                     is HomepageAction.SelectTag -> {
                         debug { "action $action" }
                         homepageViewModel.submitAction(action)
-                        searchViewModel.submitAction(SearchAction.SubmitQueryAction(SearchQuery(action.tag.title)))
+                        searchViewModel.submitAction(
+                            SearchAction.SubmitQueryAction(action.tag.searchQuery)
+                        )
+                    }
+                    is HomepageAction.OpenSearchFragment -> {
+                        parentFragment?.findNavController()?.navigate(Navigation.Search)
                     }
                 }
             }

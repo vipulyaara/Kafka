@@ -23,7 +23,7 @@ class ObservableLoadingCounter @Inject constructor() {
 
 suspend fun Flow<InvokeStatus>.collectInto(counter: ObservableLoadingCounter) = collect {
     when (it) {
-        InvokeStatus.InvokeStarted -> counter.addLoader()
-        InvokeStatus.InvokeSuccess, is InvokeStatus.InvokeError -> counter.removeLoader()
+        InvokeStatus.Loading -> counter.addLoader()
+        InvokeStatus.Success, is InvokeStatus.Error -> counter.removeLoader()
     }
 }

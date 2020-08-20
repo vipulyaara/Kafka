@@ -22,7 +22,7 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             creator = metadata.creator?.joinToString(),
             collection = metadata.collection?.joinToString(),
             mediaType = metadata.mediatype,
-            files = files.filter { it.title != null },
+            files = files,
             coverImageResource = 0,
             coverImage = "https://archive.org/services/img/${metadata.identifier}",
             metadata = metadata.collection
@@ -35,8 +35,9 @@ fun String?.format() = Html.fromHtml(this)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 
+//todo: remove spaces from url
 fun com.data.base.model.item.File.asFile(prefix: String) = File(
-    title = name,
+    title = title,
     creator = creator,
     time = (mtime ?: "0").toLong(),
     format = format,

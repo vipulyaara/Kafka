@@ -4,9 +4,9 @@ import android.app.Application
 import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
-import com.kafka.player.exo.Player
-import com.kafka.player.exo.PlayerLifecycle
-import com.kafka.player.exo.RealPlayer
+import com.kafka.player.playback.Player
+import com.kafka.player.playback.PlayerLifecycle
+import com.kafka.player.playback.RealPlayer
 import com.kafka.player.timber.db.QueueHelper
 import com.kafka.player.timber.db.RealQueueHelper
 import com.kafka.player.timber.notifications.Notifications

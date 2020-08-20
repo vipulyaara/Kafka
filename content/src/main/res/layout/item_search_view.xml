@@ -35,7 +35,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_search_24"
-                app:tint="@color/app_black"
+                app:tint="@color/icon_tint"
                 tools:ignore="ContentDescription" />
 
             <EditText

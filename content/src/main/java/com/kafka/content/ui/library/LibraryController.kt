@@ -3,7 +3,6 @@ package com.kafka.content.ui.library
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
-import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.ui.gridCarousel
 import com.kafka.ui_common.ui.withModelsFrom
@@ -26,11 +25,6 @@ class LibraryController : TypedEpoxyController<LibraryViewState>() {
         }
     }
 
-    private fun loading(searchViewState: SearchViewState) {
-        if (searchViewState.isLoading && searchViewState.items == null) {
-            loader { id("loading") }
-        }
-    }
     private fun favorites(favorites: List<Item>) {
         verticalSpacingMedium { id("favorites_spacing_top") }
         fancySectionHeader {

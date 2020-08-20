@@ -9,9 +9,12 @@ import androidx.annotation.MenuRes
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
+import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.kafka.ui_common.config.NightModeManager
 import java.lang.reflect.Field
 
@@ -29,7 +32,7 @@ fun Toolbar?.toggleNightMode(activity: Activity, itemId: Int) {
     this?.menuItemView(itemId)
         .springAnimation(DynamicAnimation.ROTATION)
         .doOnEnd { NightModeManager.toggleNightMode(activity) }
-        .animateToFinalPosition(90f)
+        .animateToFinalPosition(0f)
 }
 
 
@@ -65,4 +68,13 @@ fun Toolbar?.menuItemView(@IdRes menuItemId: Int): View? {
         }
     }
     return null
+}
+
+fun EpoxyRecyclerView.addScrollbarElevationView(view: View) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy);
+            view.isVisible = recyclerView.canScrollVertically(-1)
+        }
+    })
 }

@@ -26,6 +26,8 @@ fun <T> Result<T>.getOrThrow(
 ): T {
     return when (this) {
         is Success -> this.data
-        is ErrorResult -> block(this)
+        is ErrorResult -> {
+            block(this)
+        }
     }
 }

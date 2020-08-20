@@ -80,4 +80,7 @@ class DatabaseDaoModule {
 
     @Provides
     fun provideFollowedItemDao(db: KafkaRoomDatabase) = db.followedItemDao()
+
+    @Provides
+    fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.searchConfigurationDao()
 }

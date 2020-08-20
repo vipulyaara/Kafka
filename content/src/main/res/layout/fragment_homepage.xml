@@ -21,26 +21,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/shadow"
+        android:id="@+id/shadowView"
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:rotation="180"
+        android:layout_height="@dimen/spacing_medium"
         android:src="@drawable/img_shadow_top_to_bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/shared"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="@dimen/spacing_large"
-        android:transitionName="shared"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/app_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

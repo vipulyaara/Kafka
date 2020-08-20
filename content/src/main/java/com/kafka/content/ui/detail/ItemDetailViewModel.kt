@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
+import com.data.base.InvokeStatus
 import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.data.base.model.ArchiveQuery
@@ -18,16 +19,15 @@ import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ObservableErrorCounter
 import com.kafka.data.model.ObservableLoadingCounter
-import com.kafka.data.model.collectFrom
-import com.kafka.data.model.collectInto
-import com.kafka.player.timber.playback.MediaSessionConnection
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
+import com.kafka.ui_common.base.SnackbarManager
 import com.kafka.ui_common.extensions.showToast
 import com.pdftron.pdf.config.ViewerConfig
 import com.pdftron.pdf.controls.DocumentActivity
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -41,13 +41,14 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val observeItemDetail: ObserveItemDetail,
     private val observeItems: ObserveItems,
     private val updateItems: UpdateItems,
-    private val mediaSessionConnection: MediaSessionConnection,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val updateFollowedItems: UpdateFollowedItems,
     private val addRecentItem: AddRecentItem,
-    private val loadingState: ObservableLoadingCounter,
-    private val errorState: ObservableErrorCounter
+    private val errorState: ObservableErrorCounter,
+    private val snackbarManager: SnackbarManager
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
+    private val loadingState = ObservableLoadingCounter()
+
     private val pendingActions = RealActioner<ItemDetailAction>()
 
     init {
@@ -61,7 +62,10 @@ class ItemDetailViewModel @ViewModelInject constructor(
         }
 
         viewModelScope.launch {
-            loadingState.observable.distinctUntilChanged().debounce(500).collectAndSetState { copy(isLoading = it) }
+            loadingState.observable.distinctUntilChanged().collectAndSetState {
+                debug { "is loading $it" }
+                copy(isLoading = it)
+            }
         }
 
         viewModelScope.launch {
@@ -76,6 +80,12 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
         viewModelScope.launchObserve(observeItemFollowStatus) { flow ->
             flow.distinctUntilChanged().collectAndSetState { copy(isFavorite = it) }
+        }
+
+        snackbarManager.launchInScope(viewModelScope) { uiError, visible ->
+            viewModelScope.launchSetState {
+                copy(error = if (visible) uiError.message else null)
+            }
         }
 
         viewModelScope.launch {
@@ -100,7 +110,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
             debug { "observe query for creator ${itemDetail.creator}" }
 
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
-            ArchiveQuery("").booksByAuthor(itemDetail.creator).let {
+            itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeItems(ObserveItems.Params(it))
                 updateItems(UpdateItems.Params(it))
             }
@@ -114,12 +124,41 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
     fun updateItemDetail(contentId: String) {
         debug { "update item detail for $contentId" }
-        updateItemDetail(UpdateItemDetail.Param(contentId))
-            .also { viewModelScope.launch { it.collectInto(loadingState) } }
-            .also { viewModelScope.launch { errorState.collectFrom(it) } }
+        updateItemDetail(UpdateItemDetail.Param(contentId)).watchStatus()
     }
 
+    fun addRecentItem() {
+        addRecentItem(AddRecentItem.Params(currentState().itemDetail?.itemId!!))
+    }
+
+    fun sendAction(action: ItemDetailAction) {
+        viewModelScope.launch { pendingActions.sendAction(action) }
+    }
+
+
+    private fun Flow<InvokeStatus>.watchStatus() = viewModelScope.launch { collectStatus() }
+
+    private suspend fun Flow<InvokeStatus>.collectStatus() = collect { status ->
+        when (status) {
+            InvokeStatus.Loading -> {
+                loadingState.addLoader()
+                debug { "is status loading $status" }
+            }
+            InvokeStatus.Success -> {
+                loadingState.removeLoader()
+            }
+            is InvokeStatus.Error -> {
+                snackbarManager.sendError(status.throwable)
+                loadingState.removeLoader()
+                debug { "is status error $status" }
+            }
+        }
+    }
+
+
     fun read(context: Context, readerUrl: String, title: String) {
+        debug { "opening pdf with url $readerUrl" }
+
         addRecentItem()
 
         val config = ViewerConfig.Builder()
@@ -132,13 +171,5 @@ class ItemDetailViewModel @ViewModelInject constructor(
             .showSearchView(true)
             .build()
         DocumentActivity.openDocument(context, readerUrl.toUri(), config)
-    }
-
-    fun addRecentItem() {
-        addRecentItem(AddRecentItem.Params(currentState().itemDetail?.itemId!!))
-    }
-
-    fun sendAction(action: ItemDetailAction) {
-        viewModelScope.launch { pendingActions.sendAction(action) }
     }
 }

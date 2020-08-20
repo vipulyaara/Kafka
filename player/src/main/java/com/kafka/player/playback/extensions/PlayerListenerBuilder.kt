@@ -1,4 +1,4 @@
-package com.kafka.player.exo.extensions
+package com.kafka.player.playback.extensions
 
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.PlaybackParameters
@@ -58,7 +58,6 @@ class PlayerListenerBuilder {
     fun onPlayerState(callback: (Boolean, Int) -> Unit) {
         onPlayerState = callback
     }
-
 
     fun build(): Player.EventListener {
         return object : Player.EventListener {

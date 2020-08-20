@@ -15,9 +15,9 @@
     <color name="shadow_light">#575C70</color>
     <color name="shadow">#575C70</color>
 
-    <color name="background">#000</color>
+    <color name="background">#232323</color>
     <color name="surface">#000</color>
-    <color name="surface_light">#000</color>
+    <color name="surface_light">#121212</color>
     <color name="background_sep">#F8F7FA</color>
 
     <color name="icon_tint">#fff</color>

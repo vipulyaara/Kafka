@@ -1,4 +1,4 @@
-package com.kafka.player.exo
+package com.kafka.player.playback
 
 interface PlayerLifecycle {
     fun onStop()

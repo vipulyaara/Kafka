@@ -7,6 +7,7 @@ import coil.api.loadAny
 import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
+import com.kafka.content.R
 import com.kafka.ui_common.ui.SaturatingTransformation
 
 @BindingAdapter(
@@ -45,4 +46,14 @@ fun ImageView.loadImage(
 @BindingAdapter("image")
 fun ImageView.loadImage(image: Int?) {
     loadAny(image)
+}
+
+@BindingAdapter("playIcon")
+fun ImageView.playIcon(isPlaying: Boolean?) {
+    val icon = when (isPlaying) {
+        null -> 0
+        true -> R.drawable.ic_pause
+        false -> R.drawable.ic_play
+    }
+    setImageResource(icon)
 }

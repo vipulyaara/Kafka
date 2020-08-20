@@ -6,20 +6,26 @@ import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.kafka.player.domain.CommandPlayer
-import com.kafka.player.domain.ObservePlayer
+import com.kafka.player.domain.ObservePlayingItem
+import com.kafka.player.playback.PlayerLifecycle
 import com.kafka.ui_common.base.ReduxViewModel
 
 class MainViewModel @ViewModelInject constructor(
-    observePlayer: ObservePlayer,
+    private val playerLifecycle: PlayerLifecycle,
+    observePlayingItem: ObservePlayingItem,
     commandPlayer: CommandPlayer
 ) : ReduxViewModel<MainViewState>(MainViewState()) {
 
     init {
-        viewModelScope.launchObserve(observePlayer) {
-            it.collectAndSetState { copy(playerData = it, playerCommand = { commandPlayer(it) }) }
+        viewModelScope.launchObserve(observePlayingItem) {
+            it.collectAndSetState { copy(playerCommand = { commandPlayer(it) }) }
         }
 
-        observePlayer(Unit)
+        observePlayingItem(Unit)
+    }
+
+    fun init() {
+        playerLifecycle.onStart()
     }
 
     private fun showPlayStoreRatingDialog(context: Activity) {

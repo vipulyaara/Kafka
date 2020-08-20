@@ -5,7 +5,7 @@ import com.data.base.Interactor
 import com.data.base.extensions.debug
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.player.exo.Player
+import com.kafka.player.playback.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
@@ -24,7 +24,16 @@ class CommandPlayer @Inject constructor(
         debug { "player command invoked for $params" }
         when (params) {
             is PlayerCommand.Play -> {
-                player.playCurrent()
+                if (params.mediaId != null) {
+                    itemDetailDao.itemDetail(params.itemId).apply {
+                        player.play(
+                            files?.first { it.playbackUrl == params.mediaId }?.asMediaItem(this)!!,
+                            files?.indexOfFirst { it.playbackUrl == params.mediaId }!!
+                        )
+                    }
+                } else {
+                    player.playCurrent()
+                }
             }
         }
     }

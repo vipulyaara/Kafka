@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="playerData"
-            type="com.kafka.player.domain.PlayerData" />
+            name="mediaItem"
+            type="com.kafka.player.playback.model.MediaItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +59,7 @@
                     android:layout_marginTop="@dimen/spacing_mini"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{playerData.title}"
+                    android:text="@{mediaItem.title}"
                     android:textColor="@color/background"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textSize="15sp"
@@ -74,7 +74,7 @@
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{playerData.subtitle}"
+                    android:text="@{mediaItem.subtitle}"
                     android:textSize="12sp"
                     android:textColor="@color/surface"
                     android:textAppearance="@style/TextAppearance.Coyote.Body1"

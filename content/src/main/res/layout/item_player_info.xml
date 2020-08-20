@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="playerData"
-            type="com.kafka.player.domain.PlayerData" />
+            name="mediaItem"
+            type="com.kafka.player.playback.model.MediaItem" />
     </data>
 
     <LinearLayout
@@ -22,11 +22,13 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/background"
             app:cardCornerRadius="4dp"
-            app:cardElevation="4dp">
+            app:cardElevation="12dp"
+            app:contentPadding="@dimen/spacing_medium">
 
             <ImageView
-                image="@{playerData.coverImage}"
+                image="@{mediaItem.coverImageUrl}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -40,7 +42,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:text="@{playerData.title}"
+            android:text="@{mediaItem.title}"
             android:textAppearance="@style/TextAppearance.Coyote.Headline2"
             tools:text="Game of thrones" />
 
@@ -52,7 +54,7 @@
             android:layout_marginBottom="@dimen/spacing_large"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{playerData.subtitle}"
+            android:text="@{mediaItem.subtitle}"
             android:textAppearance="@style/TextAppearance.Coyote.Headline6"
             tools:text="Franz Kafka" />
     </LinearLayout>

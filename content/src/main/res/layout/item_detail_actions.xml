@@ -39,7 +39,7 @@
             android:backgroundTint="@{isFavorite ? @color/app_red : @color/background}"
             android:tint="@{isFavorite ? @color/background : @color/app_black}"
             android:onClick="@{favoriteClickListener}"
-            android:src="@drawable/ic_heart_sign"
+            android:src="@drawable/ic_heart"
             app:borderWidth="0dp"
             app:elevation="10dp"
             app:fabSize="normal"

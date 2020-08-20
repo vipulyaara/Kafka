@@ -1,4 +1,4 @@
-package com.kafka.player.exo.extensions
+package com.kafka.player.playback.extensions
 
 import android.net.Uri
 import androidx.core.net.toUri
@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
-import com.kafka.player.exo.model.MediaItem
+import com.kafka.player.playback.model.MediaItem
 
 operator fun MediaSource.plus(other: MediaSource): ConcatenatingMediaSource {
     val source = ConcatenatingMediaSource()
@@ -52,20 +52,12 @@ operator fun MutableList<Uri>.plus(otherUri: Uri): MutableList<Uri> {
     return this
 }
 
-fun List<Uri>.toMediaSource(factory: ProgressiveMediaSource.Factory): ConcatenatingMediaSource {
-    val source = ConcatenatingMediaSource()
-    this.forEach {
-        source += it.toMediaSource(factory)
-    }
-    return source
-}
-
-fun Uri.toMediaSource(factory: ProgressiveMediaSource.Factory): MediaSource {
-    return factory.setTag(this).createMediaSource(this)
+fun MediaItem.toMediaSource(factory: ProgressiveMediaSource.Factory): MediaSource {
+    return factory.setTag(this).createMediaSource(this.playbackUrl.toUri())
 }
 
 fun List<MediaItem>.toMediaSources(dataSourceFactory: DataSource.Factory) =
-    map { it.playbackUrl.toUri().toMediaSource(ProgressiveMediaSource.Factory(dataSourceFactory)) }
+    map { it.toMediaSource(dataSourceFactory) }
 
 fun MediaItem.toMediaSource(dataSourceFactory: DataSource.Factory) =
-    playbackUrl.toUri().toMediaSource(ProgressiveMediaSource.Factory(dataSourceFactory))
+    toMediaSource(ProgressiveMediaSource.Factory(dataSourceFactory))

@@ -12,9 +12,10 @@ import com.google.android.material.card.MaterialCardView
 import com.kafka.content.R
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.addScrollbarElevationView
+import com.kafka.ui_common.extensions.showSnackbar
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
-import com.kafka.ui_common.ui.transitions.TransitionManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_item_detail.*
 
@@ -29,11 +30,13 @@ class ItemDetailFragment : BaseFragment() {
 
         recyclerView.apply {
             setController(itemDetailController)
+            addScrollbarElevationView(shadowView)
             itemDetailController.actioner = pendingActions
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {
             itemDetailController.setData(it)
+            it.error?.let { view.showSnackbar(it) }
         })
 
         lifecycleScope.launchWhenCreated {
@@ -59,13 +62,6 @@ class ItemDetailFragment : BaseFragment() {
             getImageView()?.transitionName = it
             viewModel.observeItemDetail(it)
             viewModel.updateItemDetail(it)
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = TransitionManager.getMaterialContainerTransform().also { trnasition ->
-//            getImageView()?.let { trnasition.addTarget(it) }
         }
     }
 

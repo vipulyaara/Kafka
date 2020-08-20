@@ -1,15 +1,17 @@
 package com.kafka.content.data.item
 
-import com.data.base.model.ArchiveQuery
-import com.data.base.model.asLocalQuery
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.data.base.model.getOrThrow
 import com.kafka.data.dao.ItemLocalDataSource
 import com.kafka.data.dao.RecentItemLocalDataSource
+import com.kafka.data.dao.SearchConfigurationDao
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
+import com.kafka.data.entities.SearchConfiguration
 import com.kafka.data.entities.asRecentlyVisited
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 /**
@@ -18,14 +20,15 @@ import javax.inject.Inject
  */
 class ItemRepository @Inject constructor(
     private val itemLocalDataSource: ItemLocalDataSource,
+    private val searchConfigurationDao: SearchConfigurationDao,
     private val recentItemLocalDataSource: RecentItemLocalDataSource,
     private val remoteDataSource: ItemRemoteDataSource
 ) {
 
-    fun observeQueryItems(archiveQuery: ArchiveQuery) =
-        itemLocalDataSource.observeQueryItems(archiveQuery.asLocalQuery())
+    fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) =
+        itemLocalDataSource.observeQueryItems(simpleSQLiteQuery)
 
-    fun observeRecentlyVisitedItems() = recentItemLocalDataSource.observeRecentlyVisitedItems()
+    private fun observeRecentlyVisitedItems() = recentItemLocalDataSource.observeRecentlyVisitedItems()
 
     fun observeItemsWithRecentlyVisitedInfo(): Flow<List<ItemWithRecentItem>> {
         return observeRecentlyVisitedItems()
@@ -46,11 +49,30 @@ class ItemRepository @Inject constructor(
         )
     }
 
-    suspend fun updateQuery(archiveQuery: ArchiveQuery) {
-        remoteDataSource.fetchItemsByCreator(archiveQuery)
+    suspend fun updateQuery(query: String) {
+        remoteDataSource.fetchItemsByCreator(query)
             .getOrThrow()
             .let {
                 itemLocalDataSource.insertAll(it)
             }
     }
+
+    suspend fun addRecentSearch(keyword: String) = searchConfigurationDao.apply {
+        val searchConfiguration = getSearchConfiguration()
+        val config = searchConfiguration?.copy(
+            recentSearches = searchConfiguration.recentSearches?.toMutableList()?.also { it.add(keyword) } ?: listOf(keyword))
+            ?: SearchConfiguration(recentSearches = listOf(keyword))
+        insert(config)
+    }
+
+    suspend fun removeRecentSearch(keyword: String) = searchConfigurationDao.apply {
+        val searchConfiguration = getSearchConfiguration()!!
+        insert(
+            searchConfiguration.copy(recentSearches = searchConfiguration.recentSearches?.toMutableList()
+                ?.also { it.removeAll { it == keyword } })
+        )
+    }
+
+    fun observeRecentSearch() =
+        searchConfigurationDao.observeSearchConfiguration().mapNotNull { it?.recentSearches }
 }

@@ -10,6 +10,7 @@ import com.kafka.content.R
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_player.*
+import javax.inject.Inject
 
 /**
  * @author Vipul Kumar; dated 02/02/19.
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_player.*
 @AndroidEntryPoint
 class PlayerFragment : BaseFragment() {
     private val viewModel: PlayerViewModel by viewModels()
-    private val playerController = PlayerController()
+    @Inject lateinit var playerController: PlayerController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

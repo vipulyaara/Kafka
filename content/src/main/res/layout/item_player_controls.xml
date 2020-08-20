@@ -6,8 +6,16 @@
     <data>
 
         <variable
-            name="playerData"
-            type="com.kafka.player.domain.PlayerData" />
+            name="mediaItem"
+            type="com.kafka.player.playback.model.MediaItem" />
+
+        <variable
+            name="isFollowed"
+            type="Boolean" />
+
+        <variable
+            name="playIcon"
+            type="Integer" />
 
         <variable
             name="playerCommandListener"
@@ -30,10 +38,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:background="?selectableItemBackground"
+                android:background="@android:color/transparent"
                 android:backgroundTint="@android:color/transparent"
+                android:tint="@{isFollowed ? @color/app_red : @color/app_black}"
                 android:onClick="@{() -> playerCommandListener.favoriteClick()}"
-                android:src="@drawable/ic_heart_sign"
+                android:src="@{isFollowed ? @drawable/ic_heart_filled : @drawable/ic_heart}"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:rippleColor="@color/surface_light"
@@ -71,8 +80,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    playIcon="@{mediaItem.isPlaying()}"
                     android:layout_gravity="center"
-                    android:src="@{playerData.isPlaying ? @drawable/ic_pause : @drawable/ic_play}"
                     app:tint="@color/background" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -106,7 +115,6 @@
         <com.google.android.material.slider.Slider
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            seekFlow="@{playerData.seekFlow}"
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_large"
             app:labelStyle="@color/background"

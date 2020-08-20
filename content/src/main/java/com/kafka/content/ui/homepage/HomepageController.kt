@@ -5,6 +5,7 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
+import com.kafka.content.domain.homepage.HomepageTag
 import com.kafka.content.ui.search.SearchAction
 import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
@@ -24,7 +25,7 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         data?.apply {
             banner()
             recentItems.letEmpty { continueReading(it.map { it.item }) }
-            tags(tags)
+            tags?.let { it1 -> tags(it1) }
             searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
             loading(searchViewState)
         }
@@ -74,6 +75,11 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
                 clickListener { view -> sendAction(SearchAction.ItemDetailWithSharedElement(item, view)) }
             }
         }
+
+        searchBanner {
+            id("search_banner")
+            clickListener { _ -> sendAction(HomepageAction.OpenSearchFragment()) }
+        }
     }
 
     private fun tags(it: List<HomepageTag>) {
@@ -84,12 +90,12 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             }
             id("recent_search")
             padding(Carousel.Padding.dp(12, 0, 12, 0, 24))
-            withModelsFrom(it) {
+            withModelsFrom(it) { tag ->
                 HomepageTagBindingModel_().apply {
-                    id(it.title)
-                    text(it.title)
-                    isSelected(it.isSelected)
-                    clickListener { _ -> sendAction(HomepageAction.SelectTag(HomepageTag(it.title))) }
+                    id(tag.title)
+                    text(tag.title)
+                    isSelected(tag.isSelected)
+                    clickListener { _ -> sendAction(HomepageAction.SelectTag(it.first { it.title == tag.title })) }
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.kafka.data.entities
 
+import com.data.base.model._mediaTypeAudio
 import com.data.base.model._mediaTypeText
-import com.data.base.model._mediatypeAudio
 import com.kafka.data.extensions.formattedDuration
 import org.threeten.bp.Duration
 
@@ -15,7 +15,7 @@ data class File(
 )
 
 fun ItemDetail?.isText() = this?.mediaType == _mediaTypeText
-fun ItemDetail?.isAudio() = this?.mediaType == _mediatypeAudio
+fun ItemDetail?.isAudio() = this?.mediaType == _mediaTypeAudio
 
 fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
 fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null

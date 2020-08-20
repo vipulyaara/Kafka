@@ -14,6 +14,7 @@ interface KafkaDatabase {
     fun itemDao(): ItemDao
     fun queueDao(): QueueDao
     fun languageDao(): LanguageDao
+    fun searchConfigurationDao(): SearchConfigurationDao
 }
 
 @Database(
@@ -24,7 +25,8 @@ interface KafkaDatabase {
         RecentItem::class,
         FollowedItem::class,
         QueueEntity::class,
-        SongEntity::class
+        SongEntity::class,
+        SearchConfiguration::class
     ],
     version = 1,
     exportSchema = false

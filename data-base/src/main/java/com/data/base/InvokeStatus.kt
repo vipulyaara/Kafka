@@ -1,15 +1,22 @@
 package com.data.base
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+
 sealed class InvokeStatus {
-    object InvokeIdle : InvokeStatus()
-    object InvokeStarted : InvokeStatus()
-    object InvokeSuccess : InvokeStatus()
-    data class InvokeError(val throwable: Throwable) : InvokeStatus()
-    object InvokeTimeout : InvokeStatus()
+    object Loading : InvokeStatus()
+    object Success : InvokeStatus()
+    data class Error(val throwable: Throwable) : InvokeStatus()
 
     fun throwIfError() {
-        if (this is InvokeError) {
+        if (this is Error) {
             throw this.throwable
         }
+    }
+}
+
+suspend fun Flow<InvokeStatus>.onError(block: (Throwable) -> Unit) = collect { status ->
+    if (status is InvokeStatus.Error) {
+        block(status.throwable)
     }
 }

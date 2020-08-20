@@ -31,7 +31,7 @@ data class TextMenuItem(val icon: Int, val text: String) : MenuItem()
 object MenuSeparator : MenuItem()
 
 val menuItems = arrayListOf(
-    TextMenuItem(R.drawable.ic_heart_sign, "Favorites"),
+    TextMenuItem(R.drawable.ic_heart, "Favorites"),
     MenuSeparator,
     TextMenuItem(R.drawable.ic_feather, "Poets"),
     TextMenuItem(R.drawable.ic_book, "Sher"),

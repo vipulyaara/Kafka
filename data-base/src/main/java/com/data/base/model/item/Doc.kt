@@ -59,8 +59,9 @@ data class Doc(
     @SingleToArray
     @Json(name = "subject")
     val subject: List<String>,
+    @SingleToArray
     @Json(name = "title")
-    val title: String,
+    val title: List<String>,
     @Json(name = "week")
     val week: Int,
     @Json(name = "year")

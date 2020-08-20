@@ -1,11 +1,9 @@
 package com.kafka.content.ui.search
 
-import android.widget.EditText
 import coil.api.clear
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
-import com.kafka.content.ui.ActionListener
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
 import kotlinx.coroutines.channels.Channel
@@ -16,8 +14,23 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
 
     override fun buildModels(data: SearchViewState?) {
         data?.apply {
-            loading(data)
+            recentSearches(data)
             items?.letEmpty { searchResults(it) }
+            loading(data)
+        }
+    }
+
+    private fun recentSearches(data: SearchViewState) {
+        data.recentSearches?.forEach {
+            recentSearchItem {
+                id(it)
+                text(it)
+                clickListener { _ ->
+                    searchActioner.sendAction(
+                        SearchAction.SubmitQueryAction(SearchQuery(it, SearchQueryType.TitleOrCreator))
+                    )
+                }
+            }
         }
     }
 
@@ -33,17 +46,6 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
     private fun loading(searchViewState: SearchViewState) {
         if (searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
             loader { id("loading") }
-        }
-    }
-
-    private fun search() {
-        searchView {
-            id("search")
-            actionListener(object : ActionListener {
-                override fun onAction(editText: EditText) {
-                    searchActioner.sendAction(SearchAction.SubmitQueryAction(SearchQuery(editText.text.toString())))
-                }
-            })
         }
     }
 

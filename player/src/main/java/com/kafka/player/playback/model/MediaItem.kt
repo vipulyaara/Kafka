@@ -1,4 +1,4 @@
-package com.kafka.player.exo.model
+package com.kafka.player.playback.model
 
 data class MediaItem(
     val id: String,
@@ -6,5 +6,6 @@ data class MediaItem(
     val subtitle: String,
     val duration: Long,
     val playbackUrl: String,
-    val coverImageUrl: String
+    val coverImageUrl: String,
+    val isPlaying: Boolean? = null
 )

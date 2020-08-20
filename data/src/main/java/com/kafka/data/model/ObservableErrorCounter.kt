@@ -20,7 +20,7 @@ suspend fun ObservableErrorCounter.collectFrom(status: Flow<InvokeStatus>) {
         sendError(it)
     }.map {
         when (it) {
-            is InvokeStatus.InvokeError -> it.throwable
+            is InvokeStatus.Error -> it.throwable
             else -> null
         }
     }.collect {

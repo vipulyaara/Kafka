@@ -1,6 +1,7 @@
 package com.kafka.content.ui.homepage
 
 import com.kafka.content.R
+import com.kafka.content.domain.homepage.HomepageTag
 import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
@@ -13,16 +14,9 @@ data class HomepageViewState(
     val searchViewState: SearchViewState = SearchViewState(),
     var favorites: List<Item>? = null,
     var recentItems: List<ItemWithRecentItem>? = null,
-    var tags: List<HomepageTag> = suggestedTags
+    var tags: List<HomepageTag>? = null,
+    val error: Throwable? = null
 ) : BaseViewState
-
-val suggestedTags = listOf(
-    HomepageTag("Mirza Ghalib", true),
-    HomepageTag("Camus", false),
-    HomepageTag("Meer Taqi", false),
-    HomepageTag("Dostoyevsky", false),
-    HomepageTag("Kafka", false)
-)
 
 val bannerImages = listOf(
     R.drawable.img_banner_26,
@@ -32,4 +26,3 @@ val bannerImages = listOf(
     R.drawable.img_banner_33
 )
 
-data class HomepageTag(var title: String, var isSelected: Boolean = false)

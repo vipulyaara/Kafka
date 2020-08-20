@@ -30,6 +30,7 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainViewModel.init()
 
         toolbar?.setupToolbar(R.menu.menu_master) {
             when (it?.itemId) {

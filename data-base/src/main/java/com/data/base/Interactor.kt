@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 abstract class Interactor<in P> {
@@ -15,23 +16,28 @@ abstract class Interactor<in P> {
 
     operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
         val channel = ConflatedBroadcastChannel<InvokeStatus>(
-            InvokeStatus.InvokeIdle
+            InvokeStatus.Loading
         )
         scope.launch {
             try {
                 withTimeout(timeoutMs) {
-                    channel.send(InvokeStatus.InvokeStarted)
+                    channel.send(InvokeStatus.Loading)
                     try {
                         doWork(params)
-                        channel.send(InvokeStatus.InvokeSuccess)
+                        channel.send(InvokeStatus.Success)
                     } catch (t: Throwable) {
                         e(t) { t.localizedMessage ?: "exception" }
-                        channel.send(InvokeStatus.InvokeError(t))
+
+                        if (t is UnknownHostException) {
+                            channel.send(InvokeStatus.Error(RuntimeException("Please check your internet connection")))
+                        } else {
+                            channel.send(InvokeStatus.Error(t))
+                        }
                     }
                 }
             } catch (t: TimeoutCancellationException) {
                 e(t) { t.localizedMessage ?: "timeout handle" }
-                channel.send(InvokeStatus.InvokeTimeout)
+                channel.send(InvokeStatus.Error(t))
             }
         }
         return channel.asFlow()
@@ -53,8 +59,7 @@ interface ObservableInteractor<T> {
     fun observe(): Flow<T>
 }
 
-abstract class SuspendingWorkInteractor<P : Any, T : Any> :
-    ObservableInteractor<T> {
+abstract class SuspendingWorkInteractor<P : Any, T : Any> : ObservableInteractor<T> {
     private val channel = ConflatedBroadcastChannel<T>()
 
     suspend operator fun invoke(params: P) = channel.send(doWork(params))
@@ -62,6 +67,11 @@ abstract class SuspendingWorkInteractor<P : Any, T : Any> :
     abstract suspend fun doWork(params: P): T
 
     override fun observe(): Flow<T> = channel.asFlow().distinctUntilChanged()
+}
+
+abstract class SyncWorkUseCase<P : Any, T : Any> {
+    abstract fun doWork(params: P): T
+    operator fun invoke(params: P) = doWork(params)
 }
 
 abstract class SubjectInteractor<P : Any, T> : ObservableInteractor<T> {

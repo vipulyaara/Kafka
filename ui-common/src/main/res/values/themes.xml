@@ -8,6 +8,9 @@
 
         <item name="windowActionModeOverlay">true</item>
 
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
         <!-- Default widget styles -->
         <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
         <item name="android:shadowColor">@color/surface</item>
@@ -52,9 +55,6 @@
         <item name="colorOnSecondary">@color/text_heading</item>
 
         <item name="android:windowLightStatusBar">true</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Coyote.ThemeTransitionAnimation">

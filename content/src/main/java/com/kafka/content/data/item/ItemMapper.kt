@@ -15,7 +15,7 @@ class ItemMapper @Inject constructor(): Mapper<SearchResponse, List<Item>> {
     private fun Doc.toItem(index: Int) = Item(
         itemId = this.identifier,
         language = this.language,
-        title = this.title,
+        title = this.title.joinToString(),
         description = this.description?.get(0)?.trim(),
         creator = this.creator?.get(0)?.let { Creator(it, it) },
         mediaType = this.mediatype,
