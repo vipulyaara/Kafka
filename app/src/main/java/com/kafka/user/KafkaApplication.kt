@@ -1,9 +1,7 @@
 package com.kafka.user
 
 import android.app.Application
-import android.content.Context
 import com.data.base.extensions.debug
-import com.google.android.play.core.splitcompat.SplitCompat
 import com.kafka.data.injection.Initializers
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -19,11 +17,6 @@ class KafkaApplication : Application() {
     @Inject
     internal fun init(@Initializers initializers: Set<@JvmSuppressWildcards InitializerFunction>) {
         initializers.forEach { it() }
-    }
-
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        SplitCompat.install(this)
     }
 
     override fun onTrimMemory(level: Int) {

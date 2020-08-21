@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
     private val searchController = SearchController()
     private val navController by lazy { findNavController() }
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
@@ -37,7 +37,7 @@ class SearchFragment : BaseFragment() {
             searchController.searchActioner = searchActioner
         }
 
-        searchViewModel.liveData.observe(viewLifecycleOwner, Observer {
+        archiveQueryViewModel.liveData.observe(viewLifecycleOwner, Observer {
             searchController.setData(it)
             it.error?.let { view.showSnackbar(it.message) }
             recyclerView.scrollToPosition(0)
@@ -50,7 +50,7 @@ class SearchFragment : BaseFragment() {
                     is SearchAction.SubmitQueryAction -> {
                         etSearch.setText(action.query.text)
                         etSearch.setSelection(etSearch.text.length)
-                        searchViewModel.submitAction(action)
+                        archiveQueryViewModel.submitAction(action)
                     }
                 }
             }
@@ -63,7 +63,7 @@ class SearchFragment : BaseFragment() {
 
         etSearch.doOnTextChanged { text, _, _, _ ->
             lifecycleScope.launchWhenStarted {
-                searchViewModel.onKeywordChanged(text.toString())
+                archiveQueryViewModel.onKeywordChanged(text.toString())
             }
         }
 

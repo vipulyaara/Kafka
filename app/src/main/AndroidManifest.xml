@@ -61,6 +61,10 @@
                 android:value="androidx.startup" />
             <meta-data  android:name="com.kafka.user.injection.ThemeInitializer"
                 android:value="androidx.startup" />
+            <meta-data  android:name="com.kafka.user.injection.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data  android:name="com.kafka.user.injection.FirebaseInitializer"
+                android:value="androidx.startup" />
         </provider>
 
     </application>

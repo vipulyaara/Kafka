@@ -6,6 +6,10 @@ dependencies {
     implementation(Hilt.lifecycle)
     kapt(Hilt.lifecycle_compiler)
 
+
+    implementation(Firebase.analytics)
+    implementation(Firebase.crashlytics)
+
     common()
     arch()
     room()

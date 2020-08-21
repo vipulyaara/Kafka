@@ -8,6 +8,11 @@ import androidx.lifecycle.coroutineScope
 import com.kafka.data.injection.ApplicationId
 import com.kafka.data.injection.Initializers
 import com.kafka.data.injection.ProcessLifetime
+import com.kafka.logger.firebase.CrashlyticsCrashLogger
+import com.kafka.logger.firebase.FirebaseEventLogger
+import com.kafka.logger.loggers.CrashLogger
+import com.kafka.logger.loggers.Logger
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,4 +54,10 @@ abstract class AppModuleBinds {
     @Initializers
     @Multibinds
     abstract fun initializers(): Set<() -> Unit>
+
+    @Binds
+    abstract fun logger(firebaseEventLogger: FirebaseEventLogger): Logger
+
+    @Binds
+    abstract fun crashLogger(crashlyticsCrashLogger: CrashlyticsCrashLogger): CrashLogger
 }

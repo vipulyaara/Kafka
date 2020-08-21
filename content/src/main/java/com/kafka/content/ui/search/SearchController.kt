@@ -9,10 +9,10 @@ import com.kafka.data.extensions.letEmpty
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class SearchController @Inject constructor() : TypedEpoxyController<SearchViewState>() {
+class SearchController @Inject constructor() : TypedEpoxyController<ArchiveQueryViewState>() {
     lateinit var searchActioner: Channel<SearchAction>
 
-    override fun buildModels(data: SearchViewState?) {
+    override fun buildModels(data: ArchiveQueryViewState?) {
         data?.apply {
             recentSearches(data)
             items?.letEmpty { searchResults(it) }
@@ -20,7 +20,7 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
         }
     }
 
-    private fun recentSearches(data: SearchViewState) {
+    private fun recentSearches(data: ArchiveQueryViewState) {
         data.recentSearches?.forEach {
             recentSearchItem {
                 id(it)
@@ -34,8 +34,8 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
         }
     }
 
-    private fun empty(searchViewState: SearchViewState) {
-        if (!searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
+    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
+        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
             emptyState {
                 id("empty")
                 text("No results found")
@@ -43,8 +43,8 @@ class SearchController @Inject constructor() : TypedEpoxyController<SearchViewSt
         }
     }
 
-    private fun loading(searchViewState: SearchViewState) {
-        if (searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
+    private fun loading(archiveQueryViewState: ArchiveQueryViewState) {
+        if (archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
             loader { id("loading") }
         }
     }

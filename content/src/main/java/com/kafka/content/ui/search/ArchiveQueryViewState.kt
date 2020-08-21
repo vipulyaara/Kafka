@@ -7,7 +7,7 @@ import com.kafka.ui_common.base.BaseViewState
 /**
  * @author Vipul Kumar; dated 27/12/18.
  */
-data class SearchViewState(
+data class ArchiveQueryViewState(
     var items: List<Item>? = null,
     val recentSearches: List<String>? = null,
     var isLoading: Boolean = true,

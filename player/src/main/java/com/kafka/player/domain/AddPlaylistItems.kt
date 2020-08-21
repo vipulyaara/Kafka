@@ -34,7 +34,7 @@ class AddPlaylistItems @Inject constructor(
 
 fun File.asMediaItem(itemDetail: ItemDetail): MediaItem = MediaItem(
     id = playbackUrl!!,
-    title = title!!,
+    title = title ?: "",
     subtitle = creator ?: "",
     playbackUrl = playbackUrl!!,
     coverImageUrl = itemDetail.coverImage!!,

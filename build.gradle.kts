@@ -21,6 +21,7 @@ buildscript {
         classpath(Android.gradlePlugin)
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.28.3-alpha")
         classpath("com.google.gms:google-services:4.3.3")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.2.0")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.pluginVersion}")
     }
@@ -59,22 +60,18 @@ val libraryModules = listOf(
     Libs.BaseData.name,
     Libs.Player.name,
     Libs.UiCommon.name,
+    Libs.Reader.name,
     Libs.Content.name,
     Libs.Logger.name
 )
-val publishableModules = listOf(Libs.Player.name)
 val applicationModules = listOf("app")
-val dynamicFeatureModules = listOf(Libs.Reader.name)
 
 subprojects {
     val isLibrary = project.name in libraryModules
-    val isPublishable = project.name in publishableModules
-    val isAndroid = project.name in libraryModules || project.name in applicationModules || project.name in dynamicFeatureModules
+    val isAndroid = project.name in libraryModules || project.name in applicationModules
     val isApplication = project.name in applicationModules
-    val isDynamicFeature = project.name in dynamicFeatureModules
 
     if (isAndroid) {
-
         if (isLibrary) {
             apply {
                 plugin(Android.libPlugin)
@@ -87,65 +84,6 @@ subprojects {
             }
         }
 
-        if (isDynamicFeature) {
-            apply {
-                plugin("com.android.dynamic-feature")
-                plugin(Kotlin.androidPlugin)
-                plugin(Kotlin.androidExtensionsPlugin)
-                plugin(Kotlin.kapt)
-                plugin(Hilt.plugin)
-                plugin("androidx.navigation.safeargs.kotlin")
-            }
-        }
-
-        if (isPublishable) {
-            apply {
-                plugin(Release.MavenPublish.plugin)
-            }
-            fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
-                asNode().appendNode("dependencies").let { depNode ->
-                    configurations.implementation.allDependencies.forEach {
-                        depNode.appendNode("dependency").apply {
-                            appendNode("groupId", it.group)
-                            appendNode("artifactId", it.name)
-                            appendNode("version", it.version)
-                        }
-                    }
-                }
-            }
-
-            publishing {
-                publications {
-                    register(project.name, MavenPublication::class) {
-                        if (project.hasProperty("android")) {
-                            artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
-                                builtBy(tasks.getByPath("assemble"))
-                            }
-                        } else {
-                            from(components["java"])
-                        }
-//                        artifact(sourcesJar)
-                        groupId = Libs.groupId
-                        artifactId = project.name
-                        version = Libs.publishVersion
-
-                        pom {
-                            licenses {
-                                license {
-                                    name.set("MIT License")
-                                    url.set("http://www.opensource.org/licenses/mit-license.php")
-                                }
-                            }
-                        }
-
-                        if (project.hasProperty("android")) {
-                            pom.addDependencies()
-                        }
-                    }
-                }
-            }
-        }
-
         if (isApplication) {
             apply {
                 plugin(Android.appPlugin)
@@ -154,6 +92,7 @@ subprojects {
                 plugin(Kotlin.kapt)
                 plugin(Kotlin.androidExtensionsPlugin)
                 plugin("androidx.navigation.safeargs.kotlin")
+                plugin("com.google.firebase.crashlytics")
             }
         }
 

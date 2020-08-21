@@ -6,8 +6,8 @@ import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
 import com.kafka.content.domain.homepage.HomepageTag
+import com.kafka.content.ui.search.ArchiveQueryViewState
 import com.kafka.content.ui.search.SearchAction
-import com.kafka.content.ui.search.SearchViewState
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
 import com.kafka.ui_common.ui.kafkaCarousel
@@ -26,13 +26,13 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             banner()
             recentItems.letEmpty { continueReading(it.map { it.item }) }
             tags?.let { it1 -> tags(it1) }
-            searchViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
-            loading(searchViewState)
+            archiveQueryViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
+            loading(archiveQueryViewState)
         }
     }
 
-    private fun empty(searchViewState: SearchViewState) {
-        if (!searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
+    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
+        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
             emptyState {
                 id("empty")
                 text("No results found")
@@ -40,8 +40,8 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         }
     }
 
-    private fun loading(searchViewState: SearchViewState) {
-        if (searchViewState.isLoading && searchViewState.items.isNullOrEmpty()) {
+    private fun loading(archiveQueryViewState: ArchiveQueryViewState) {
+        if (archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
             loader { id("loading") }
         }
     }
@@ -142,10 +142,10 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         }
     }
 
-    fun setSearchViewState(searchViewState: SearchViewState) {
+    fun setSearchViewState(archiveQueryViewState: ArchiveQueryViewState) {
         setData(
-            currentData?.copy(searchViewState = searchViewState)
-                ?: HomepageViewState(searchViewState = searchViewState)
+            currentData?.copy(archiveQueryViewState = archiveQueryViewState)
+                ?: HomepageViewState(archiveQueryViewState = archiveQueryViewState)
         )
     }
 

@@ -5,8 +5,9 @@ dependencies {
     implementation(project(Libs.UiCommon.nameDependency))
     implementation(project(Libs.Content.nameDependency))
     implementation(project(Libs.Player.nameDependency))
+    implementation(project(Libs.Logger.nameDependency))
 
-//    debugImplementation(LeakCanary.core)
+    implementation(Firebase.analytics)
 
     implementation(Store.core)
     implementation(Retrofit.runtime)
@@ -22,9 +23,6 @@ dependencies {
     ui()
     navigation()
 
-    test()
-    androidTest()
-
     implementation("com.google.android.play:core:1.8.0")
 
     implementation(AndroidX.appStartup)
@@ -38,13 +36,11 @@ dependencies {
     implementation(Stetho.urlConnection)
 }
 
-//android {
-//    dynamicFeatures = mutableSetOf(":reader")
-//}
-
 configure<BaseExtension> {
     defaultConfig {
         applicationId = Libs.applicationId
     }
     dataBinding.isEnabled = true
 }
+
+apply(plugin = "com.google.gms.google-services")

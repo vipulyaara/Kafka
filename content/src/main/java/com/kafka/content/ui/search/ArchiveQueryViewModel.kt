@@ -18,14 +18,14 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class SearchViewModel @ViewModelInject constructor(
+class ArchiveQueryViewModel @ViewModelInject constructor(
     private val observeItems: ObserveItems,
     private val updateItems: UpdateItems,
     private val observeRecentSearch: ObserveRecentSearch,
     private val addRecentSearch: AddRecentSearch,
     private val loadingState: ObservableLoadingCounter,
     private val snackbarManager: SnackbarManager
-) : ReduxViewModel<SearchViewState>(SearchViewState()) {
+) : ReduxViewModel<ArchiveQueryViewState>(ArchiveQueryViewState()) {
     private val actioner = Channel<SearchAction>(Channel.BUFFERED)
     private var recentSearches = listOf<String>()
 
@@ -59,7 +59,7 @@ class SearchViewModel @ViewModelInject constructor(
 
     suspend fun onKeywordChanged(keyword: String) {
         if (keyword.length > 1) {
-            setState { copy(recentSearches = this@SearchViewModel.recentSearches
+            setState { copy(recentSearches = this@ArchiveQueryViewModel.recentSearches
                 .filter { it.startsWith(keyword, true) }.distinct()) }
         } else {
             setState { copy(recentSearches = null) }

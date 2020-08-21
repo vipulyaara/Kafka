@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.collect
 class MainFragment : BaseFragment() {
     private var currentNavController: LiveData<NavController>? = null
     private val mainViewModel: MainViewModel by viewModels()
-    private val dynamicFeatureViewModel: DynamicFeatureViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,16 +38,6 @@ class MainFragment : BaseFragment() {
         }
 
         setupBottomNavigationBar()
-//        initDynamicDelivery()
-    }
-
-    private fun initDynamicDelivery() {
-        lifecycleScope.launchWhenCreated {
-            dynamicFeatureViewModel.installReaderModule().collect {
-                debug { "installing reader module: state - $it" }
-                dynamicFeatureViewModel.showUserConfirmationDialog(requireActivity(), it)
-            }
-        }
     }
 
     private fun setupBottomNavigationBar() {

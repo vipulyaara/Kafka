@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
 import com.kafka.content.ui.search.SearchAction
-import com.kafka.content.ui.search.SearchViewModel
+import com.kafka.content.ui.search.ArchiveQueryViewModel
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.showSnackbar
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomepageFragment : BaseFragment() {
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
     private val homepageViewModel: HomepageViewModel by viewModels()
     private val navController by lazy { findNavController() }
 
@@ -45,7 +45,7 @@ class HomepageFragment : BaseFragment() {
             homepageController.searchActioner = searchActioner
         }
 
-        searchViewModel.liveData.observe(viewLifecycleOwner, Observer {
+        archiveQueryViewModel.liveData.observe(viewLifecycleOwner, Observer {
             homepageController.setSearchViewState(it)
             it.error?.let { view.showSnackbar(it.message) }
         })
@@ -76,7 +76,7 @@ class HomepageFragment : BaseFragment() {
                     is HomepageAction.SelectTag -> {
                         debug { "action $action" }
                         homepageViewModel.submitAction(action)
-                        searchViewModel.submitAction(
+                        archiveQueryViewModel.submitAction(
                             SearchAction.SubmitQueryAction(action.tag.searchQuery)
                         )
                     }
