@@ -50,7 +50,7 @@ class ItemRepository @Inject constructor(
     }
 
     suspend fun updateQuery(query: String) {
-        remoteDataSource.fetchItemsByCreator(query)
+        remoteDataSource.fetchItemsByQuery(query)
             .getOrThrow()
             .let {
                 itemLocalDataSource.insertAll(it)

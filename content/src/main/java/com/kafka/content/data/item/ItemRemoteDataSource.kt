@@ -15,7 +15,7 @@ class ItemRemoteDataSource @Inject constructor(
     private val itemMapper: ItemMapper
 ) {
 
-    suspend fun fetchItemsByCreator(query: String): Result<List<Item>> {
+    suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {
         return archiveService
             .search(query)
             .executeWithRetry()

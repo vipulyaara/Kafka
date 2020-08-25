@@ -2,7 +2,7 @@
 object Libs {
     const val groupId = "com.kafka"
     const val applicationId = "com.kafka.user"
-    const val versionCode = 4
+    const val versionCode = 5
     const val versionName = "1.0.0"
 
     const val publishVersion = "0.0.1"

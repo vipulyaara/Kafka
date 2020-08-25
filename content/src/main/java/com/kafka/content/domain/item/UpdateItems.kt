@@ -3,6 +3,7 @@ package com.kafka.content.domain.item
 import com.data.base.Interactor
 import com.data.base.model.ArchiveQuery
 import com.kafka.content.data.item.ItemRepository
+import com.kafka.content.domain.query.BuildRemoteQuery
 import com.kafka.data.injection.ProcessLifetime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus

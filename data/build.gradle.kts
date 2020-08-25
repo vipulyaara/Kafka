@@ -15,5 +15,4 @@ dependencies {
     room()
     coroutines()
     retrofit()
-    test()
 }

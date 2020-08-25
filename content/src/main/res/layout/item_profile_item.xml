@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_music"
             image="@{resource}"
-            app:tint="@color/app_black" />
+            app:tint="@color/icon_tint" />
 
         <TextView
             android:layout_width="match_parent"

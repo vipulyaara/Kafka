@@ -37,7 +37,7 @@
 <!--        <service android:name=".player.PlayerService"/>-->
 
         <service
-            android:name="com.kafka.player.timber.playback.TimberMusicService"
+            android:name="com.kafka.player.timber.playback.MusicService"
             android:enabled="true"
             android:exported="true">
 

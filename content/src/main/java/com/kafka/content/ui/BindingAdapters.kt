@@ -5,8 +5,10 @@ import android.widget.EditText
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import com.airbnb.lottie.LottieAnimationView
 import com.data.base.extensions.debug
 import com.google.android.material.slider.Slider
+import com.kafka.content.R
 import com.kafka.ui_common.extensions.onSearchIme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +37,15 @@ fun Slider.moveSeekBar(seekFlow: Flow<Int>?) {
             debug { "Progress is $it" }
             this@moveSeekBar.value = it.toFloat()
         }
+    }
+}
+
+@BindingAdapter("iconIfPlaying")
+fun LottieAnimationView.iconIfPlaying(isPlaying: Boolean) {
+    if (isPlaying) {
+        setAnimation(R.raw.playing)
+    } else {
+        setImageResource(R.drawable.ic_disc_padding)
     }
 }
 

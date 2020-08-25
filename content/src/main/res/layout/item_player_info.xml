@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="mediaItem"
-            type="com.kafka.player.playback.model.MediaItem" />
+            name="song"
+            type="com.kafka.data.entities.Song" />
     </data>
 
     <LinearLayout
@@ -28,7 +28,7 @@
             app:contentPadding="@dimen/spacing_medium">
 
             <ImageView
-                image="@{mediaItem.coverImageUrl}"
+                image="@{song.coverImage}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:text="@{mediaItem.title}"
+            android:text="@{song.title}"
             android:textAppearance="@style/TextAppearance.Coyote.Headline2"
             tools:text="Game of thrones" />
 
@@ -50,11 +50,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
+            android:gravity="center"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="@dimen/spacing_large"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{mediaItem.subtitle}"
+            android:maxLines="2"
+            android:text="@{song.subtitle}"
             android:textAppearance="@style/TextAppearance.Coyote.Headline6"
             tools:text="Franz Kafka" />
     </LinearLayout>

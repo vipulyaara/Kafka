@@ -1,4 +1,4 @@
-package com.kafka.content.ui.search
+package com.kafka.content.ui.query
 
 import com.data.base.model.*
 import com.kafka.data.entities.Item

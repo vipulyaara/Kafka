@@ -4,11 +4,13 @@
 
     <data>
 
-        <import type="com.kafka.data.entities.FileKt" />
-
         <variable
             name="song"
-            type="com.kafka.data.entities.File" />
+            type="com.kafka.data.entities.Song" />
+
+        <variable
+            name="isPlaying"
+            type="Boolean" />
 
         <variable
             name="clickListener"
@@ -20,9 +22,9 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:focusable="false"
-        android:onClick="@{clickListener}"
         android:focusableInTouchMode="false"
-        app:cardBackgroundColor="@color/background"
+        android:onClick="@{clickListener}"
+        app:cardBackgroundColor="@{isPlaying ? @color/surface : @color/background}"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,25 +40,16 @@
             android:paddingHorizontal="@dimen/spacing_large"
             android:paddingVertical="@dimen/spacing_medium">
 
-            <com.google.android.material.card.MaterialCardView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/imageCard"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/background"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                iconIfPlaying="@{isPlaying}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_music"
-                    app:tint="@color/text_body" />
-
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
 
             <TextView
                 android:id="@+id/tvBookTitle"
@@ -67,9 +60,10 @@
                 android:maxLines="1"
                 android:text="@{song.title}"
                 android:textAppearance="@style/TextAppearance.Coyote.Body1"
+                android:textColor="@{isPlaying ? @color/text_heading : @color/text_body}"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageCard"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,13 +73,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_large"
                 android:layout_marginTop="@dimen/spacing_mini"
-                android:visibility="gone"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{FileKt.formattedDuration(song)}"
+                android:text="@{song.title}"
                 android:textAppearance="@style/TextAppearance.Coyote.Caption"
                 android:textColor="@color/text_body"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageCard"
                 app:layout_constraintTop_toBottomOf="@id/tvBookTitle" />

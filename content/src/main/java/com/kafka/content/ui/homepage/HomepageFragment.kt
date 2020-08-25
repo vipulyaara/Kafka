@@ -11,8 +11,8 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
-import com.kafka.content.ui.search.SearchAction
-import com.kafka.content.ui.search.ArchiveQueryViewModel
+import com.kafka.content.ui.query.ArchiveQueryViewModel
+import com.kafka.content.ui.query.SearchAction
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.showSnackbar
@@ -75,10 +75,8 @@ class HomepageFragment : BaseFragment() {
                 when (action) {
                     is HomepageAction.SelectTag -> {
                         debug { "action $action" }
-                        homepageViewModel.submitAction(action)
-                        archiveQueryViewModel.submitAction(
-                            SearchAction.SubmitQueryAction(action.tag.searchQuery)
-                        )
+                        homepageViewModel.selectTag(action.tag)
+                        archiveQueryViewModel.submitQuery(action.tag.searchQuery)
                     }
                     is HomepageAction.OpenSearchFragment -> {
                         parentFragment?.findNavController()?.navigate(Navigation.Search)

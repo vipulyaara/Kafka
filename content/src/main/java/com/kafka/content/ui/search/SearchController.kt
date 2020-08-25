@@ -4,6 +4,10 @@ import coil.api.clear
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
+import com.kafka.content.ui.query.ArchiveQueryViewState
+import com.kafka.content.ui.query.SearchAction
+import com.kafka.content.ui.query.SearchQuery
+import com.kafka.content.ui.query.SearchQueryType
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
 import kotlinx.coroutines.channels.Channel
@@ -27,7 +31,12 @@ class SearchController @Inject constructor() : TypedEpoxyController<ArchiveQuery
                 text(it)
                 clickListener { _ ->
                     searchActioner.sendAction(
-                        SearchAction.SubmitQueryAction(SearchQuery(it, SearchQueryType.TitleOrCreator))
+                        SearchAction.SubmitQueryAction(
+                            SearchQuery(
+                                it,
+                                SearchQueryType.TitleOrCreator
+                            )
+                        )
                     )
                 }
             }
@@ -57,7 +66,11 @@ class SearchController @Inject constructor() : TypedEpoxyController<ArchiveQuery
                 }
                 id(item.itemId)
                 item(item)
-                clickListener { _ -> searchActioner.sendAction(SearchAction.ItemDetailAction(item)) }
+                clickListener { _ -> searchActioner.sendAction(
+                    SearchAction.ItemDetailAction(
+                        item
+                    )
+                ) }
             }
         }
     }

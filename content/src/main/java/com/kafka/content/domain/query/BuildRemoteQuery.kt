@@ -1,4 +1,4 @@
-package com.kafka.content.domain.item
+package com.kafka.content.domain.query
 
 import com.data.base.SyncWorkUseCase
 import com.data.base.extensions.debug

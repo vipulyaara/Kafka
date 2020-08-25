@@ -1,15 +1,3 @@
-fun org.gradle.api.publish.maven.MavenPom.addDependencies() = withXml {
-    asNode().appendNode("dependencies").let { depNode ->
-        configurations.implementation.allDependencies.forEach {
-            depNode.appendNode("dependency").apply {
-                appendNode("groupId", it.group)
-                appendNode("artifactId", it.name)
-                appendNode("version", it.version)
-            }
-        }
-    }
-}
-
 dependencies {
     implementation(project(Libs.Data.nameDependency))
     implementation(project(Libs.UiCommon.nameDependency))

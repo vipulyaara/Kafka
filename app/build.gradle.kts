@@ -9,10 +9,12 @@ dependencies {
 
     implementation(Firebase.analytics)
 
-    implementation(Store.core)
     implementation(Retrofit.runtime)
 
     mediaSession()
+
+    implementation(ExoPlayer.player)
+
 
     common()
     arch()

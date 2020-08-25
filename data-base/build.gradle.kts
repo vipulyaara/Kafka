@@ -1,6 +1,5 @@
 dependencies {
     implementation(Jsoup.core)
-    implementation(Store.core)
 
     implementation(KotlinX.Serialization.dependency)
     implementation(ThreeTenBp.core)
@@ -15,5 +14,4 @@ dependencies {
     room()
     coroutines()
     retrofit()
-    test()
 }

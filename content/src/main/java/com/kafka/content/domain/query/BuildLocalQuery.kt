@@ -1,4 +1,4 @@
-package com.kafka.content.domain.item
+package com.kafka.content.domain.query
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.data.base.SyncWorkUseCase

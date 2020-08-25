@@ -1,11 +1,13 @@
 package com.kafka.user
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
+import com.kafka.player.timber.playback.MusicService
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.toggleNightMode
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_dark_mode -> toolbar?.toggleNightMode(this, it.itemId)
             }
         }
+
+        startService(Intent(this, MusicService::class.java))
 
         supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
     }

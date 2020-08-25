@@ -6,7 +6,6 @@ dependencies {
     implementation(Hilt.lifecycle)
     kapt(Hilt.lifecycle_compiler)
 
-
     implementation(Firebase.analytics)
     implementation(Firebase.crashlytics)
 
@@ -15,8 +14,4 @@ dependencies {
     room()
     ktx()
     coroutines()
-
-    test()
-    androidTest()
-
 }

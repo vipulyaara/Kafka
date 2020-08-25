@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/nav_graph_library"
-        android:icon="@drawable/ic_book"
+        android:icon="@drawable/ic_heart"
         android:orderInCategory="2"
         android:title="@string/library"
         app:showAsAction="ifRoom" />

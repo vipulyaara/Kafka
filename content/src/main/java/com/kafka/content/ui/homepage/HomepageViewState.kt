@@ -2,7 +2,7 @@ package com.kafka.content.ui.homepage
 
 import com.kafka.content.R
 import com.kafka.content.domain.homepage.HomepageTag
-import com.kafka.content.ui.search.ArchiveQueryViewState
+import com.kafka.content.ui.query.ArchiveQueryViewState
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import com.kafka.ui_common.base.BaseViewState

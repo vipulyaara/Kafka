@@ -6,16 +6,16 @@
     <data>
 
         <variable
-            name="mediaItem"
-            type="com.kafka.player.playback.model.MediaItem" />
+            name="song"
+            type="com.kafka.data.entities.Song" />
 
         <variable
             name="isFollowed"
             type="Boolean" />
 
         <variable
-            name="playIcon"
-            type="Integer" />
+            name="isPlaying"
+            type="Boolean" />
 
         <variable
             name="playerCommandListener"
@@ -40,9 +40,9 @@
                 android:layout_margin="12dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="@android:color/transparent"
-                android:tint="@{isFollowed ? @color/app_red : @color/app_black}"
                 android:onClick="@{() -> playerCommandListener.favoriteClick()}"
                 android:src="@{isFollowed ? @drawable/ic_heart_filled : @drawable/ic_heart}"
+                android:tint="@{isFollowed ? @color/app_red : @color/icon_tint}"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:rippleColor="@color/surface_light"
@@ -59,6 +59,7 @@
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:rippleColor="@color/surface_light"
+                app:tint="@color/icon_tint"
                 tools:ignore="ContentDescription" />
 
             <com.google.android.material.card.MaterialCardView
@@ -80,9 +81,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    playIcon="@{mediaItem.isPlaying()}"
                     android:layout_gravity="center"
-                    app:tint="@color/background" />
+                    android:src="@{isPlaying ? @drawable/ic_pause : @drawable/ic_play}"
+                    app:tint="#ffffff" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -96,6 +97,7 @@
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:rippleColor="@color/surface_light"
+                app:tint="@color/icon_tint"
                 tools:ignore="ContentDescription" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -109,6 +111,7 @@
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:rippleColor="@color/surface_light"
+                app:tint="@color/icon_tint"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 

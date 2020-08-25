@@ -2,32 +2,29 @@ package com.kafka.content.ui.player
 
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
-import com.kafka.data.entities.mp3Files
-import com.kafka.player.domain.CommandPlayer
 import com.kafka.player.domain.PlayerAction
 import com.kafka.player.domain.PlayerCommand
 import com.kafka.player.domain.PlayerViewState
-import com.kafka.player.playback.Player
+import com.kafka.player.playback.player.Player
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
 class PlayerController @Inject constructor(
-    private val player: Player,
-    private val commandPlayer: CommandPlayer
+    private val player: Player
 ) : TypedEpoxyController<PlayerViewState>() {
-
     lateinit var playerActioner: Channel<PlayerAction>
 
     override fun buildModels(data: PlayerViewState?) {
 
         playerInfo {
             id("player_info")
-            mediaItem(data?.mediaItem)
+            song(data?.currentSong?.song)
         }
 
         playerControls {
             id("player_controls")
-            mediaItem(data?.mediaItem)
+            song(data?.currentSong?.song)
+            isPlaying(data?.currentSong?.isPlaying)
             isFollowed(data?.isFavorite)
             playerCommandListener(object : PlayerCommandListener {
                 override fun favoriteClick() {
@@ -58,13 +55,14 @@ class PlayerController @Inject constructor(
 
         verticalSpacingLarge { id("spacing") }
         bottomsheetHandle { id("handle") }
-        data?.itemDetail?.mp3Files()?.forEach {
+        data?.queueSongs?.forEach {
             song {
-                id(it.title)
+                id(it.id)
+                isPlaying(it.id == data.currentSong?.currentSongId)
                 song(it)
                 clickListener { _ ->
                     playerActioner.sendAction(
-                        PlayerAction.Command(PlayerCommand.Play(data.itemDetail?.itemId!!, it.playbackUrl!!))
+                        PlayerAction.Command(PlayerCommand.Play(data.itemDetail?.itemId!!, it.playbackUrl))
                     )
                 }
             }

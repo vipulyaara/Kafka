@@ -25,10 +25,10 @@ interface KafkaDatabase {
         RecentItem::class,
         FollowedItem::class,
         QueueEntity::class,
-        SongEntity::class,
+        Song::class,
         SearchConfiguration::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(AppTypeConverters::class)

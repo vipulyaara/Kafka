@@ -11,6 +11,8 @@
     <string name="playlists">Playlists</string>
     <string name="genres">Genres</string>
 
+    <string name="player_notification_title">Kafka Playing</string>
+    <string name="player_description_notification_title">Kafka Playing</string>
 
     <string name="play">Play</string>
     <string name="add_to_playlist">Add to Playlist</string>

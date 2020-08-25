@@ -37,10 +37,20 @@
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        app:backgroundTint="@color/surface"
+        app:backgroundTint="@color/background"
         app:itemRippleColor="@color/surface_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu_nav" />
+
+    <ImageView
+        android:id="@+id/shadowView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_medium"
+        android:src="@drawable/img_shadow_top_to_bottom"
+        android:rotationY="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bottom_navigation_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

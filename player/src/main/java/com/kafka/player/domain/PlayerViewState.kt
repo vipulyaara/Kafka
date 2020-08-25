@@ -1,7 +1,7 @@
 package com.kafka.player.domain
 
 import com.kafka.data.entities.ItemDetail
-import com.kafka.player.playback.model.MediaItem
+import com.kafka.data.entities.Song
 import com.kafka.ui_common.action.Action
 import com.kafka.ui_common.base.BaseViewState
 
@@ -10,7 +10,8 @@ import com.kafka.ui_common.base.BaseViewState
  */
 data class PlayerViewState(
     val isLoading: Boolean = false,
-    val mediaItem: MediaItem? = null,
+    val currentSong: CurrentSong? = null,
+    val queueSongs: List<Song>? = null,
     val isFavorite: Boolean = false,
     val itemDetail: ItemDetail? = null
 ) : BaseViewState

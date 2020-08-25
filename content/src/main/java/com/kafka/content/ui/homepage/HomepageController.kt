@@ -6,8 +6,8 @@ import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding
 import com.kafka.content.domain.homepage.HomepageTag
-import com.kafka.content.ui.search.ArchiveQueryViewState
-import com.kafka.content.ui.search.SearchAction
+import com.kafka.content.ui.query.ArchiveQueryViewState
+import com.kafka.content.ui.query.SearchAction
 import com.kafka.data.entities.Item
 import com.kafka.data.extensions.letEmpty
 import com.kafka.ui_common.ui.kafkaCarousel
@@ -62,9 +62,9 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
 
     private fun searchResults(it: List<Item>, favorites: List<Item>) {
         it.forEachIndexed { index, item ->
-            if (index == 5) {
-                favorites.letEmpty { favorite(it) }
-            }
+//            if (index == 15) {
+//                favorites.letEmpty { favorite(it) }
+//            }
 
             book {
                 onUnbind { _, view ->

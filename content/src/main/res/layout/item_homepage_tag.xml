@@ -41,7 +41,7 @@
             android:maxLines="1"
             android:text="@{text}"
             android:textAppearance="@style/TextAppearance.Coyote.Subtitle2"
-            android:textColor="@{isSelected ? @color/app_blue : @color/text_subheading}"
+            android:textColor="@{isSelected ? @color/app_blue : @color/text_body}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

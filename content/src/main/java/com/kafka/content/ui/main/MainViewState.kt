@@ -1,7 +1,6 @@
 package com.kafka.content.ui.main
 
 import com.kafka.data.entities.Language
-import com.kafka.player.domain.PlayerCommand
 import com.kafka.ui_common.base.BaseViewState
 
 /**
@@ -9,6 +8,5 @@ import com.kafka.ui_common.base.BaseViewState
  */
 data class MainViewState(
     val isLoading: Boolean = false,
-    var selectedLanguages: List<Language>? = null,
-    val playerCommand: (PlayerCommand) -> Unit = {}
+    var selectedLanguages: List<Language>? = null
 ) : BaseViewState

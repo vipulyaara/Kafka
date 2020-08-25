@@ -9,11 +9,7 @@ import com.kafka.content.domain.homepage.HomepageTag
 import com.kafka.content.domain.recent.ObserveRecentItems
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 
 class HomepageViewModel @ViewModelInject constructor(
     observeFollowedItems: ObserveFollowedItems,
@@ -21,7 +17,6 @@ class HomepageViewModel @ViewModelInject constructor(
     getHomepageTags: GetHomepageTags,
     snackbarManager: SnackbarManager
 ) : ReduxViewModel<HomepageViewState>(HomepageViewState(tags = getHomepageTags(Unit))) {
-    private val actioner = Channel<HomepageAction>(Channel.BUFFERED)
 
     init {
         viewModelScope.launchObserve(observeFollowedItems) { flow ->
@@ -38,29 +33,13 @@ class HomepageViewModel @ViewModelInject constructor(
             }
         }
 
-        viewModelScope.launch {
-            actioner.consumeAsFlow().collect {
-                when (it) {
-                    is HomepageAction.SelectTag -> selectTag(it.tag)
-                }
-            }
-        }
-
         observeFollowedItems(Unit)
         observeRecentItems(Unit)
     }
 
     fun getSelectedTag() = currentState().tags?.firstOrNull { it.isSelected }!!
 
-    fun submitAction(action: HomepageAction) {
-        viewModelScope.launch {
-            if (!actioner.isClosedForSend) {
-                actioner.send(action)
-            }
-        }
-    }
-
-    private fun selectTag(homepageTag: HomepageTag) {
+    fun selectTag(homepageTag: HomepageTag) {
         currentState().apply {
             tags = tags.apply {
                 this?.forEach { it.isSelected = false }

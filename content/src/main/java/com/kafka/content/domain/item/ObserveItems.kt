@@ -4,6 +4,7 @@ import com.data.base.AppCoroutineDispatchers
 import com.data.base.SubjectInteractor
 import com.data.base.model.ArchiveQuery
 import com.kafka.content.data.item.ItemRepository
+import com.kafka.content.domain.query.BuildLocalQuery
 import com.kafka.data.entities.Item
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

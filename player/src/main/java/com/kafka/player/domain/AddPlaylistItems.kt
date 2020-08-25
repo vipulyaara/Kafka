@@ -5,10 +5,10 @@ import com.data.base.Interactor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.Song
 import com.kafka.data.entities.mp3Files
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.player.playback.Player
-import com.kafka.player.playback.model.MediaItem
+import com.kafka.player.playback.player.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
@@ -23,21 +23,24 @@ class AddPlaylistItems @Inject constructor(
 
     override suspend fun doWork(params: Param) {
         val itemDetail = itemDetailDao.itemDetail(params.itemId)
-        val playlist = itemDetail.mp3Files()?.map { it.asMediaItem(itemDetail) }!!
-        player.addPlaylistItems(playlist)
+        val playlist = itemDetail.mp3Files()?.map { it.asSong(itemDetail) }
+            ?.filter { it.title.isNotEmpty() }?.distinctBy { it.title } ?: emptyList()
+        player.setQueue(playlist)
 
-        if (params.playFirst) player.play(playlist.first(), 0)
+        if (params.playFirst) player.play(playlist.first())
     }
 
     data class Param(val itemId: String, val playFirst: Boolean = false)
 }
 
-fun File.asMediaItem(itemDetail: ItemDetail): MediaItem = MediaItem(
+fun File.asSong(itemDetail: ItemDetail): Song = Song(
     id = playbackUrl!!,
+    itemId = itemDetail.itemId,
     title = title ?: "",
-    subtitle = creator ?: "",
+    subtitle = arrayOf(itemDetail.title, creator).joinToString(" $bulletSymbol "),
     playbackUrl = playbackUrl!!,
-    coverImageUrl = itemDetail.coverImage!!,
-    duration = time,
-    isPlaying = null
+    coverImage = itemDetail.coverImage!!,
+    duration = time.toInt()
 )
+
+const val bulletSymbol = " • "

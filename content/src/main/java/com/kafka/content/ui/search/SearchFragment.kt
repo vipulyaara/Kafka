@@ -10,6 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.content.ui.query.ArchiveQueryViewModel
+import com.kafka.content.ui.query.SearchAction
+import com.kafka.content.ui.query.SearchAction.SubmitQueryAction.Companion.titleOrCreatorAction
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.onSearchIme
 import com.kafka.ui_common.extensions.showSnackbar
@@ -25,6 +28,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
     private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private val searchController = SearchController()
     private val navController by lazy { findNavController() }
     private val searchActioner = Channel<SearchAction>(Channel.BUFFERED)
@@ -50,27 +54,19 @@ class SearchFragment : BaseFragment() {
                     is SearchAction.SubmitQueryAction -> {
                         etSearch.setText(action.query.text)
                         etSearch.setSelection(etSearch.text.length)
-                        archiveQueryViewModel.submitAction(action)
+                        archiveQueryViewModel.submitQuery(action.query)
+                        searchViewModel.addRecentSearch(action.query)
                     }
                 }
             }
         }
 
-//        lifecycleScope.launchWhenResumed {
-//            etSearch.requestFocus()
-//            requireContext().showKeyboard()
-//        }
-
         etSearch.doOnTextChanged { text, _, _, _ ->
-            lifecycleScope.launchWhenStarted {
-                archiveQueryViewModel.onKeywordChanged(text.toString())
-            }
+            searchViewModel.onKeywordChanged(text.toString())
         }
 
         etSearch.onSearchIme {
-            lifecycleScope.launchWhenCreated {
-                searchActioner.send(SearchAction.SubmitQueryAction(SearchQuery(it, SearchQueryType.TitleOrCreator)))
-            }
+            lifecycleScope.launchWhenCreated { searchActioner.send(titleOrCreatorAction(it)) }
         }
     }
 

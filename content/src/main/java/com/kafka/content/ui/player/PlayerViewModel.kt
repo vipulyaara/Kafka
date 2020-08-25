@@ -1,7 +1,9 @@
 package com.kafka.content.ui.player
 
+import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
+import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
@@ -10,6 +12,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.player.domain.*
 import com.kafka.ui_common.base.ReduxViewModel
+import com.kafka.ui_common.extensions.showToast
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -21,7 +24,8 @@ class PlayerViewModel @ViewModelInject constructor(
     private val observeItemDetail: ObserveItemDetail,
     private val updateFollowedItems: UpdateFollowedItems,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
-    observePlayingItem: ObservePlayingItem
+    observeCurrentSong: ObserveCurrentSong,
+    observeQueueSongs: ObserveQueueSongs
 ) : ReduxViewModel<PlayerViewState>(PlayerViewState()) {
     val pendingActions = Channel<PlayerAction>(Channel.BUFFERED)
 
@@ -39,28 +43,44 @@ class PlayerViewModel @ViewModelInject constructor(
                 copy(itemDetail = itemDetail)
             }
         }
-        viewModelScope.launchObserve(observePlayingItem) { it.collectAndSetState { copy(mediaItem = it) } }
+        viewModelScope.launchObserve(observeCurrentSong) {
+            it.collectAndSetState {
+                debug { "Current playing song $it" }
+                copy(currentSong = it)
+            }
+        }
+
+        viewModelScope.launchObserve(observeQueueSongs) { it.collectAndSetState { copy(queueSongs = it) } }
 
         viewModelScope.launchObserve(observeItemFollowStatus) { it.collectAndSetState { copy(isFavorite = it) } }
 
         viewModelScope.launch {
             for (action in pendingActions) when (action) {
                 is PlayerAction.Command -> commandPlayer(action)
-                is PlayerAction.FavoriteClick -> updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
+                is PlayerAction.FavoriteClick -> {
+                    updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
+                }
             }
         }
 
-        observePlayingItem(Unit)
+        observeCurrentSong(Unit)
+        observeQueueSongs(Unit)
+    }
+
+    private fun showFavoriteToast(context: Context) {
+        val message = if (!currentState().isFavorite) "Added to favorites" else "Removed from favorites"
+        context.showToast(message)
     }
 
     private fun updatePlaylistOnInit(itemDetail: ItemDetail) {
-        addPlaylistItems(AddPlaylistItems.Param(itemDetail.itemId, true))
-
+        viewModelScope.launch {
+            addPlaylistItems(AddPlaylistItems.Param(itemDetail.itemId, true))
+        }
     }
 
     fun play(itemDetail: ItemDetail?) {
         itemDetail?.apply {
-            submitAction(PlayerAction.Command(PlayerCommand.Play(itemId)))
+            commandPlayer(PlayerAction.Command(PlayerCommand.Play(itemId)))
         }
     }
 
@@ -68,7 +88,7 @@ class PlayerViewModel @ViewModelInject constructor(
         observeItemDetail(ObserveItemDetail.Param(it))
     }
 
-    fun submitAction(action: PlayerAction) {
+    private fun submitAction(action: PlayerAction) {
         viewModelScope.launch { pendingActions.send(action) }
     }
 

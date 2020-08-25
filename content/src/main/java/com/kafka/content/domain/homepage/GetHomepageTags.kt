@@ -1,8 +1,8 @@
 package com.kafka.content.domain.homepage
 
 import com.data.base.SyncWorkUseCase
-import com.kafka.content.ui.search.SearchQuery
-import com.kafka.content.ui.search.SearchQueryType
+import com.kafka.content.ui.query.SearchQuery
+import com.kafka.content.ui.query.SearchQueryType
 import com.kafka.data.*
 import javax.inject.Inject
 

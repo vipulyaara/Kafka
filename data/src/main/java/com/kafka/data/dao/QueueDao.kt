@@ -1,70 +1,51 @@
 package com.kafka.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.kafka.data.entities.QueueEntity
-import com.kafka.data.entities.SongEntity
+import com.kafka.data.entities.Song
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface QueueDao {
+interface QueueDao : EntityDao<Song> {
+    @Query("SELECT * FROM song order by title")
+    fun observeQueueSongs(): Flow<List<Song>>
 
-    @Query("SELECT * FROM queue_meta_data where id = 0")
-    fun getQueueData(): LiveData<QueueEntity>
+    @Query("SELECT * FROM song order by title")
+    suspend fun getQueueSongs(): List<Song?>
 
-    @Query("SELECT * FROM queue_meta_data where id = 0")
-    fun getQueueDataSync(): QueueEntity?
+    @Query("SELECT * FROM song where id = :id")
+    suspend fun getSongById(id: String): Song
 
-    @Query("SELECT current_id FROM queue_meta_data where id = 0")
-    fun getQueueCurrentId(): LiveData<Int>
+    @Query("SELECT currentSeekPos FROM queue_meta_data")
+    fun observeSeekPosition(): Flow<Long?>
 
-    @Query("SELECT current_id FROM queue_meta_data where id = 0")
-    fun getQueueCurrentIdSync(): Int
+    @Query("SELECT isPlaying FROM queue_meta_data")
+    fun observePlayingStatus(): Flow<Boolean?>
 
-    @Query("SELECT current_seek_pos FROM queue_meta_data where id = 0")
-    fun getQueueCurrentSeekPos(): LiveData<Int>
-
-    @Query("SELECT shuffle_mode FROM queue_meta_data where id = 0")
-    fun getQueueShuffleMode(): LiveData<Int>
-
-    @Query("SELECT repeat_mode FROM queue_meta_data where id = 0")
-    fun getQueueRepeatMode(): LiveData<Int>
-
-    @Query("UPDATE queue_meta_data SET repeat_mode  = :repeatMode where id = 0")
-    fun setRepeatMode(repeatMode: Int)
-
-    @Query("UPDATE queue_meta_data SET shuffle_mode  = :shuffleMode where id = 0")
-    fun setShuffleMode(shuffleMode: Int)
-
-    @Query("UPDATE queue_meta_data SET current_id  = :currentId where id = 0")
-    fun setCurrentId(currentId: Long)
-
-    @Query("UPDATE queue_meta_data SET current_seek_pos  = :currentSeekPos where id = 0")
-    fun setCurrentSeekPos(currentSeekPos: Int)
-
-    @Query("UPDATE queue_meta_data SET play_state  = :state where id = 0")
-    fun setPlayState(state: Int)
-
-    @Query("DELETE from queue_meta_data")
-    fun clearQueueData()
+    @Query("SELECT * FROM queue_meta_data")
+    fun observePlayingQueue(): Flow<QueueEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(queue: QueueEntity)
+    fun insertQueueEntity(queueEntity: QueueEntity)
 
-    @Query("SELECT * FROM queue_songs")
-    fun getQueueSongs(): LiveData<List<SongEntity>>
+    @Query("SELECT * FROM queue_meta_data")
+    fun getQueueEntity(): QueueEntity?
 
-    @Query("SELECT * FROM queue_songs")
-    fun getQueueSongsSync(): List<SongEntity>
+    @Query("SELECT currentSongId FROM queue_meta_data")
+    fun observeCurrentSongId(): Flow<String?>
 
-    @Query("DELETE from queue_songs")
-    fun clearQueueSongs()
+    @Query("UPDATE queue_meta_data SET currentSongId  = :currentSongId")
+    fun updateCurrentSong(currentSongId: String)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllSongs(songs: List<SongEntity>)
+    @Query("UPDATE queue_meta_data SET isPlaying = :isPlaying")
+    fun updatePlayingStatus(isPlaying: Boolean)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSong(song: SongEntity)
+    @Query("UPDATE queue_meta_data SET currentSeekPos = :seek")
+    fun updatePlayerSeekPosition(seek: Long)
+
+    @Query("DELETE from song")
+    fun clearSongs()
 
     @Delete
-    fun delete(song: SongEntity)
+    fun delete(song: Song)
 }

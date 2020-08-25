@@ -78,6 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_large"
+                android:layout_marginTop="@dimen/spacing_mini"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{item.creator.name}"
