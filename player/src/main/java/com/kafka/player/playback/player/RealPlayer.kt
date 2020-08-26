@@ -54,7 +54,7 @@ class RealPlayer @Inject constructor(
     private fun initializePlayer() {
         player.setup {
 //            onLoadingChange { debug { "$it" } }
-            onError { e(it) { "" } }
+            onError { e(it) { "error" } }
             onTracksChanged { tracks, selections ->
 //                debug { "track changed" }
             }
@@ -67,13 +67,15 @@ class RealPlayer @Inject constructor(
             }
             onPlayerState { playWhenReady, playbackState ->
                 val item = currentItem
+                val isPlaying = player.isPlaying
+                val duration = player.duration
+                val position = player.currentPosition
+
                 if (item?.id != null) {
                     launch {
-                        val duration = player.duration
-                        val position = player.currentPosition
                         val seek = (position / duration) * 100
-                        debug { "playing state changed $playbackState ${player.isPlaying} $duration $position" }
-                        queueDao.updatePlayingStatus(player.isPlaying)
+                        debug { "playing state changed $playbackState $isPlaying $duration $position" }
+                        queueDao.updatePlayingStatus(isPlaying)
                         queueDao.updatePlayerSeekPosition(seek)
                     }
                 }
@@ -89,8 +91,8 @@ class RealPlayer @Inject constructor(
 
     private fun onPositionDiscontinuity(reason: Int?) {
         debug { "onPositionDiscontinuity" }
-        launch {
-            currentItem?.id?.let { queueDao.updateCurrentSong(it) }
+        currentItem?.id?.let {
+            launch { queueDao.updateCurrentSong(it) }
         }
         when (reason) {
             DISCONTINUITY_REASON_PERIOD_TRANSITION -> {
@@ -110,8 +112,8 @@ class RealPlayer @Inject constructor(
         launch {
             var position = queueDao.getQueueSongs().indexOfFirst { it?.id == song.id }
             if (position == -1) position = 0
-            launch(Dispatchers.Main) {
 
+            launch(Dispatchers.Main) {
                 debug { "seek position $position" }
                 player.apply {
                     playWhenReady = false

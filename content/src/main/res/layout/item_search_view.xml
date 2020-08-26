@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:hint="@string/search"
+                android:hint="@string/search_for_books_and_authors"
                 android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textCapWords|textCapSentences"

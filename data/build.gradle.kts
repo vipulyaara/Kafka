@@ -5,6 +5,8 @@ dependencies {
     implementation(Store.core)
     implementation(ThreeTenBp.core)
 
+    implementation(Firebase.analytics)
+
     implementation(Hilt.android)
     kapt(Hilt.compiler)
     implementation(Hilt.lifecycle)

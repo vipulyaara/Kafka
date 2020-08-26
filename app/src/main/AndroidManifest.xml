@@ -24,17 +24,32 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="filter item deep links">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "app.kafka://item” -->
+                <data android:scheme="app.kafka"
+                    android:host="item" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="example.com/link" android:scheme="http"/>
+                <data android:host="example.com/link" android:scheme="https"/>
+            </intent-filter>
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.version"-->
-<!--            android:value="@integer/google_play_services_version" />-->
-
-<!--        <service android:name=".player.PlayerService"/>-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <service
             android:name="com.kafka.player.timber.playback.MusicService"
@@ -46,11 +61,11 @@
             </intent-filter>
         </service>
 
-<!--        <receiver android:name="androidx.media.session.MediaButtonReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

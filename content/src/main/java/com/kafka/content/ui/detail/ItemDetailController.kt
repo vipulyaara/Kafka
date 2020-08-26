@@ -19,35 +19,39 @@ class ItemDetailController : TypedEpoxyController<ItemDetailViewState>() {
 
         debug { "loading ${data?.isLoading} items ${data?.itemDetail}" }
 
-        if (data?.isLoading == true && data.itemDetail == null) {
-            loader { id("loading") }
-        }
-
         data?.itemDetail?.let { detail ->
             detail {
                 id(detail.itemId)
+                image(detail.coverImage)
                 itemDetail(detail)
             }
 
-            detailActions {
-                id("detail_actions")
-                isFavorite(data.isFavorite)
-                isAudio(detail.isAudio())
-                favoriteClickListener { _ -> sendAction(ItemDetailAction.FavoriteClick) }
-                playClickListener { _ ->
-                    if (detail.isAudio()) {
-                        sendAction(ItemDetailAction.Play(detail.itemId))
-                    } else {
-                        sendAction(ItemDetailAction.Read(detail.readerUrl(), detail.title ?: ""))
+            if (detail.itemId.isNotEmpty()) {
+                detailActions {
+                    id("detail_actions")
+                    isFavorite(data.isFavorite)
+                    isAudio(detail.isAudio())
+                    favoriteClickListener { _ -> sendAction(ItemDetailAction.FavoriteClick) }
+                    shareClickListener { _ -> sendAction(ItemDetailAction.Share(detail.itemId)) }
+                    playClickListener { _ ->
+                        if (detail.isAudio()) {
+                            sendAction(ItemDetailAction.Play(detail.itemId))
+                        } else {
+                            sendAction(ItemDetailAction.Read(detail.readerUrl(), detail.title ?: ""))
+                        }
                     }
                 }
-            }
 
-            detail.metadata?.let { tags(it) }
+                detail.metadata?.let { tags(it) }
 
-            data.itemsByCreator?.let {
-                itemsByCreator(it, data.itemDetail.creator)
+                data.itemsByCreator?.let {
+                    itemsByCreator(it, data.itemDetail.creator)
+                }
             }
+        }
+
+        if (data?.isLoading == true && data.itemDetail?.itemId.isNullOrEmpty()) {
+            loader { id("loading") }
         }
     }
 

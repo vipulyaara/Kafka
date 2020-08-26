@@ -53,7 +53,7 @@ class NotificationHandler @Inject constructor(
     }
 
     fun updateNotification() {
-        playerNotificationManager.invalidate()
+
     }
 
     override fun getCustomActions(player: Player): MutableList<String> {

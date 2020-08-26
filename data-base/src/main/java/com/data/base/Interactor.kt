@@ -4,10 +4,7 @@ import com.data.base.extensions.e
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
@@ -21,7 +18,6 @@ abstract class Interactor<in P> {
         scope.launch {
             try {
                 withTimeout(timeoutMs) {
-                    channel.send(InvokeStatus.Loading)
                     try {
                         doWork(params)
                         channel.send(InvokeStatus.Success)

@@ -8,6 +8,10 @@
         <variable
             name="itemDetail"
             type="com.kafka.data.entities.ItemDetail" />
+
+        <variable
+            name="image"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -17,15 +21,15 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="196dp"
             android:id="@+id/imageCard"
+            android:layout_width="196dp"
             android:layout_height="248dp"
             android:layout_margin="24dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="12dp">
 
             <ImageView
-                image="@{itemDetail.coverImage}"
+                image="@{image}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"

@@ -8,11 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.card.MaterialCardView
 import com.kafka.content.R
+import com.kafka.data.entities.ItemDetail
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
+import com.kafka.ui_common.extensions.shareText
 import com.kafka.ui_common.extensions.showSnackbar
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
@@ -27,6 +28,7 @@ class ItemDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         recyclerView.apply {
             setController(itemDetailController)
@@ -48,6 +50,9 @@ class ItemDetailFragment : BaseFragment() {
                         viewModel.addRecentItem()
                     }
                     is ItemDetailAction.Read -> viewModel.read(requireContext(), action.readerUrl, action.title)
+                    is ItemDetailAction.Share -> {
+                        requireContext().shareText(viewModel.shareItemText(action.itemId))
+                    }
                     is ItemDetailAction.FavoriteClick -> {
                         viewModel.sendAction(action)
                         viewModel.showFavoriteToast(requireContext())
@@ -59,15 +64,18 @@ class ItemDetailFragment : BaseFragment() {
         }
 
         requireArguments().getString("item_id")?.let {
-            getImageView()?.transitionName = it
             viewModel.observeItemDetail(it)
             viewModel.updateItemDetail(it)
         }
+
+        viewModel.setInitialData(
+            ItemDetail(
+                title = requireArguments().getString("title") ?: "",
+                creator = requireArguments().getString("creator") ?: "",
+                coverImage = requireArguments().getString("image_url") ?: ""
+            )
+        )
     }
-
-    private fun getImageView() = recyclerView.findViewHolderForLayoutPosition(0)
-        ?.itemView?.findViewById<MaterialCardView>(R.id.imageCard)
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_item_detail, container, false)

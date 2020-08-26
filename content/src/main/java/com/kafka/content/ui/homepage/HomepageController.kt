@@ -25,23 +25,20 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
         data?.apply {
             banner()
             recentItems.letEmpty { continueReading(it.map { it.item }) }
-            tags?.let { it1 -> tags(it1) }
-            archiveQueryViewState.items?.letEmpty { data.favorites?.let { it1 -> searchResults(it, it1) } }
-            loading(archiveQueryViewState)
-        }
-    }
+            tabs?.let { it1 -> tags(it1) }
 
-    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
-        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
-            emptyState {
-                id("empty")
-                text("No results found")
+            if (archiveQueryViewState.items.isNullOrEmpty()) {
+                loading(archiveQueryViewState)
+            } else {
+                favorites?.let { it ->
+                    searchResults(archiveQueryViewState.items!!, it)
+                }
             }
         }
     }
 
     private fun loading(archiveQueryViewState: ArchiveQueryViewState) {
-        if (archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
+        if (archiveQueryViewState.isLoading) {
             loader { id("loading") }
         }
     }
@@ -154,9 +151,18 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             currentData?.copy(
                 favorites = homepageViewState.favorites,
                 recentItems = homepageViewState.recentItems,
-                tags = homepageViewState.tags
+                tabs = homepageViewState.tabs
             )
         )
+    }
+
+    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
+        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
+            emptyState {
+                id("empty")
+                text("No results found")
+            }
+        }
     }
 
     private fun sendAction(homepageAction: HomepageAction) = GlobalScope.launch {

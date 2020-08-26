@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.content.R
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.addScrollbarElevationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_player.*
 import javax.inject.Inject
@@ -25,6 +26,7 @@ class PlayerFragment : BaseFragment() {
 
         recyclerView.apply {
             setController(playerController)
+            addScrollbarElevationView(shadowView)
             playerController.playerActioner = viewModel.pendingActions
         }
 

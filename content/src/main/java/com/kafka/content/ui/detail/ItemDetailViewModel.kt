@@ -19,11 +19,15 @@ import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ObservableErrorCounter
 import com.kafka.data.model.ObservableLoadingCounter
+import com.kafka.data.model.collectFrom
+import com.kafka.data.model.collectInto
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
 import com.kafka.ui_common.extensions.showToast
+import com.kafka.ui_common.navigation.DeepLinksNavigations
+import com.kafka.ui_common.navigation.Navigation
 import com.pdftron.pdf.config.ViewerConfig
 import com.pdftron.pdf.controls.DocumentActivity
 import kotlinx.coroutines.flow.Flow
@@ -48,28 +52,30 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val snackbarManager: SnackbarManager
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val loadingState = ObservableLoadingCounter()
-
     private val pendingActions = RealActioner<ItemDetailAction>()
 
     init {
         viewModelScope.launchObserve(observeItemDetail) { flow ->
             flow.distinctUntilChanged().collectAndSetState {
                 debug { "item detail fetched $it" }
-
-                observeByAuthor(it)
-                copy(itemDetail = it)
+                it?.let {
+                    observeByAuthor(it)
+                    copy(itemDetail = it)
+                } ?: this
             }
         }
 
         viewModelScope.launch {
-            loadingState.observable.distinctUntilChanged().collectAndSetState {
-                debug { "is loading $it" }
+            loadingState.observable.collectAndSetState {
+                debug { "is loading $it ${currentState().itemDetail}" }
                 copy(isLoading = it)
             }
         }
 
         viewModelScope.launch {
-            errorState.observable.distinctUntilChanged().collectAndSetState { copy(error = it?.message) }
+            errorState.observable.distinctUntilChanged().collect {
+                it?.let { snackbarManager.sendError(it) }
+            }
         }
 
         viewModelScope.launchObserve(observeItems) { flow ->
@@ -94,7 +100,8 @@ class ItemDetailViewModel @ViewModelInject constructor(
                     is ItemDetailAction.FavoriteClick -> {
                         updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
                     }
-                    else -> { }
+                    else -> {
+                    }
                 }
             }
         }
@@ -117,6 +124,16 @@ class ItemDetailViewModel @ViewModelInject constructor(
         }
     }
 
+    fun setInitialData(itemDetail: ItemDetail) {
+        viewModelScope.withState {
+            if (it.itemDetail == null) {
+                viewModelScope.launchSetState {
+                    copy(itemDetail = itemDetail)
+                }
+            }
+        }
+    }
+
     fun observeItemDetail(contentId: String) {
         debug { "observe item detail for $contentId" }
         observeItemDetail(ObserveItemDetail.Param(contentId))
@@ -124,7 +141,9 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
     fun updateItemDetail(contentId: String) {
         debug { "update item detail for $contentId" }
-        updateItemDetail(UpdateItemDetail.Param(contentId)).watchStatus()
+        updateItemDetail(UpdateItemDetail.Param(contentId))
+            .also { viewModelScope.launch { it.collectInto(loadingState) } }
+            .also { viewModelScope.launch { errorState.collectFrom(it) } }
     }
 
     fun addRecentItem() {
@@ -148,13 +167,22 @@ class ItemDetailViewModel @ViewModelInject constructor(
                 loadingState.removeLoader()
             }
             is InvokeStatus.Error -> {
-                snackbarManager.sendError(status.throwable)
                 loadingState.removeLoader()
                 debug { "is status error $status" }
             }
         }
     }
 
+    fun shareItemText(itemId: String): String {
+        val itemTitle = currentState().itemDetail?.title
+
+        return """
+            $itemTitle
+            I really liked this book on the Kafka app. I think you will enjoy it.
+            
+            ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
+        """.trimIndent()
+    }
 
     fun read(context: Context, readerUrl: String, title: String) {
         debug { "opening pdf with url $readerUrl" }

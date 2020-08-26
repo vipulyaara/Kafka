@@ -30,7 +30,6 @@ class ArchiveQueryViewModel @ViewModelInject constructor(
 
         viewModelScope.launch { loadingState.observable.collectAndSetState { copy(isLoading = it) } }
 
-
         snackbarManager.launchInScope(viewModelScope) { uiError, visible ->
             viewModelScope.launchSetState {
                 copy(error = if (visible) uiError else null)

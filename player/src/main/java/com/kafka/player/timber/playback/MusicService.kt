@@ -6,6 +6,7 @@ import android.os.IBinder
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.data.base.extensions.debug
 import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
 import com.kafka.player.domain.ObserveCurrentSong
@@ -40,11 +41,14 @@ class MusicService : Service(), LifecycleOwner, CoroutineScope by CustomScope() 
         super.onCreate()
         lifecycle.currentState = Lifecycle.State.RESUMED
 
+        debug { "Music service created" }
+
         launch(IO) {
             permissionsManager.requestStoragePermission(waitForGranted = true)
                 .collect { player.setQueue(queueDao.getQueueSongs().filterNotNull()) }
 
             observeCurrentSong.observe().collect {
+                debug { "Music service notification updated" }
                 notificationHandler.updateNotification()
             }
             observeCurrentSong(Unit)

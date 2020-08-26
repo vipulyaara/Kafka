@@ -12,6 +12,8 @@ import com.kafka.logger.firebase.CrashlyticsCrashLogger
 import com.kafka.logger.firebase.FirebaseEventLogger
 import com.kafka.logger.loggers.CrashLogger
 import com.kafka.logger.loggers.Logger
+import com.kafka.ui_common.navigation.DynamicDeepLinkHandler
+import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -60,4 +62,7 @@ abstract class AppModuleBinds {
 
     @Binds
     abstract fun crashLogger(crashlyticsCrashLogger: CrashlyticsCrashLogger): CrashLogger
+
+    @Binds
+    abstract fun deepLinkHandler(firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler): DynamicDeepLinkHandler
 }

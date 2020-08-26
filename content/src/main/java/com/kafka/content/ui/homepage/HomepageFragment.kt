@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
 import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.content.ui.query.SearchAction
+import com.kafka.data.entities.Item
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.showSnackbar
@@ -60,15 +61,12 @@ class HomepageFragment : BaseFragment() {
                 when (action) {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
                     is SearchAction.ItemDetailWithSharedElement -> {
-                        action.view.transitionName = action.item.itemId
-                        navController.navigate(
-                            Navigation.ItemDetail(action.item.itemId),
-                            FragmentNavigatorExtras(action.view to action.item.itemId)
-                        )
+                        navController.navigate(R.id.navigation_item_detail, action.item.itemDetailBundle())
                     }
                 }
             }
         }
+
 
         lifecycleScope.launchWhenCreated {
             homepageActioner.consumeAsFlow().collect { action ->
@@ -90,7 +88,15 @@ class HomepageFragment : BaseFragment() {
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_homepage, container, false)
     }
+
+    private fun Item.itemDetailBundle() = bundleOf(
+        "item_id" to itemId,
+        "title" to title,
+        "creator" to creator?.name,
+        "image_url" to coverImage
+    )
 }

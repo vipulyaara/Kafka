@@ -14,7 +14,7 @@ data class HomepageViewState(
     val archiveQueryViewState: ArchiveQueryViewState = ArchiveQueryViewState(),
     var favorites: List<Item>? = null,
     var recentItems: List<ItemWithRecentItem>? = null,
-    var tags: List<HomepageTag>? = null,
+    var tabs: List<HomepageTag>? = null,
     val error: Throwable? = null
 ) : BaseViewState
 

@@ -59,8 +59,7 @@
             app:argType="string" />
         <argument
             android:name="image_resource"
-            android:defaultValue="0"
-            app:argType="integer" />
+            app:argType="string" />
         <action
             android:id="@+id/to_item_detail"
             app:destination="@id/navigation_item_detail" />

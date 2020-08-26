@@ -2,6 +2,7 @@ package com.kafka.user
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -21,20 +22,36 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawable(ColorDrawable(getColor(R.color.background)))
-
         setContentView(R.layout.activity_main)
 
         permissionsManager.attach(this)
 
+        initToolbar()
+        startMusicService()
+        handleDeepLink()
+
+        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+    }
+
+    private fun handleDeepLink() {
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+    }
+
+    private fun startMusicService() {
+        startService(Intent(this, MusicService::class.java))
+    }
+
+    private fun initToolbar() {
         toolbar?.setupToolbar(R.menu.menu_master) {
             when (it?.itemId) {
                 R.id.menu_dark_mode -> toolbar?.toggleNightMode(this, it.itemId)
             }
         }
+    }
 
-        startService(Intent(this, MusicService::class.java))
+    private fun shareItemLink() {
 
-        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
     }
 }
 

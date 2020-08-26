@@ -8,6 +8,7 @@ dependencies {
     implementation(project(Libs.Logger.nameDependency))
 
     implementation(Firebase.analytics)
+    implementation(Firebase.dynamicLinks)
 
     implementation(Retrofit.runtime)
 

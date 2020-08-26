@@ -16,7 +16,7 @@ class HomepageViewModel @ViewModelInject constructor(
     observeRecentItems: ObserveRecentItems,
     getHomepageTags: GetHomepageTags,
     snackbarManager: SnackbarManager
-) : ReduxViewModel<HomepageViewState>(HomepageViewState(tags = getHomepageTags(Unit))) {
+) : ReduxViewModel<HomepageViewState>(HomepageViewState(tabs = getHomepageTags(Unit))) {
 
     init {
         viewModelScope.launchObserve(observeFollowedItems) { flow ->
@@ -37,11 +37,11 @@ class HomepageViewModel @ViewModelInject constructor(
         observeRecentItems(Unit)
     }
 
-    fun getSelectedTag() = currentState().tags?.firstOrNull { it.isSelected }!!
+    fun getSelectedTag() = currentState().tabs?.firstOrNull { it.isSelected }!!
 
     fun selectTag(homepageTag: HomepageTag) {
         currentState().apply {
-            tags = tags.apply {
+            tabs = tabs.apply {
                 this?.forEach { it.isSelected = false }
                 this?.first { it.title == homepageTag.title }?.isSelected = true
             }

@@ -31,23 +31,9 @@ class SearchController @Inject constructor() : TypedEpoxyController<ArchiveQuery
                 text(it)
                 clickListener { _ ->
                     searchActioner.sendAction(
-                        SearchAction.SubmitQueryAction(
-                            SearchQuery(
-                                it,
-                                SearchQueryType.TitleOrCreator
-                            )
-                        )
+                        SearchAction.SubmitQueryAction(SearchQuery(it, SearchQueryType.TitleOrCreator))
                     )
                 }
-            }
-        }
-    }
-
-    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
-        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
-            emptyState {
-                id("empty")
-                text("No results found")
             }
         }
     }
@@ -66,12 +52,18 @@ class SearchController @Inject constructor() : TypedEpoxyController<ArchiveQuery
                 }
                 id(item.itemId)
                 item(item)
-                clickListener { _ -> searchActioner.sendAction(
-                    SearchAction.ItemDetailAction(
-                        item
-                    )
-                ) }
+                clickListener { _ -> searchActioner.sendAction(SearchAction.ItemDetailAction(item)) }
             }
         }
     }
+
+    private fun empty(archiveQueryViewState: ArchiveQueryViewState) {
+        if (!archiveQueryViewState.isLoading && archiveQueryViewState.items.isNullOrEmpty()) {
+            emptyState {
+                id("empty")
+                text("No results found")
+            }
+        }
+    }
+
 }

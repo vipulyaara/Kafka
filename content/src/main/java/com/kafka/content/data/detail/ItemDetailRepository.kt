@@ -2,7 +2,6 @@ package com.kafka.content.data.detail
 
 import com.data.base.model.getOrThrow
 import com.kafka.data.dao.ItemDetailLocalDataSource
-import com.kafka.data.extensions.asyncOrAwait
 import javax.inject.Inject
 
 /**
@@ -16,13 +15,9 @@ class ItemDetailRepository @Inject constructor(
 
     fun observeItemDetail(itemId: String) = itemDetailLocalDataSource.itemDetailFlow(itemId)
 
-    fun getItemDetail(itemId: String) = itemDetailLocalDataSource.itemDetail(itemId)
-
     suspend fun updateItemDetail(contentId: String) {
-        asyncOrAwait(key = "updateContentDetail") {
-            itemDetailRemoteDataSource.fetchItemDetail(contentId)
-                .getOrThrow()
-                .let { itemDetailLocalDataSource.insert(it) }
-        }
+        itemDetailRemoteDataSource.fetchItemDetail(contentId)
+            .getOrThrow()
+            .let { itemDetailLocalDataSource.insert(it) }
     }
 }

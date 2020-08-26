@@ -2,12 +2,12 @@ package com.kafka.player.domain
 
 import com.data.base.AppCoroutineDispatchers
 import com.data.base.SubjectInteractor
-import com.data.base.extensions.debug
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.entities.Song
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class ObserveCurrentSong @Inject constructor(
@@ -22,10 +22,10 @@ class ObserveCurrentSong @Inject constructor(
             queueDao.observePlayingStatus(),
             queueDao.observeSeekPosition()
         ) { currentSongId, isPlaying, seekPosition ->
-            debug { "current item $currentSongId $isPlaying $seekPosition " }
+//            debug { "current item $currentSongId $isPlaying $seekPosition " }
             CurrentSong(currentSongId ?: "", isPlaying ?: false, seekPosition ?: 0,
                 currentSongId?.let { queueDao.getSongById(it) } ?: Song())
-        }
+        }.distinctUntilChanged()
     }
 }
 

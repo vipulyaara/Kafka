@@ -261,6 +261,7 @@ object Firebase {
     const val firestore = "com.google.firebase:firebase-firestore:18.0.1"
     const val analytics = "com.google.firebase:firebase-analytics-ktx:17.5.0"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
+    const val dynamicLinks = "com.google.firebase:firebase-dynamic-links-ktx:19.1.0"
     const val messaging = "com.google.firebase:firebase-messaging:20.1.4"
     const val perf = "com.google.firebase:firebase-perf:19.0.0"
     const val perfPlugin = "perf-plugin"

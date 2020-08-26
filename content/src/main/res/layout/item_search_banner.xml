@@ -41,7 +41,7 @@
                 android:alpha="0.3"
                 android:letterSpacing="0.2"
                 android:lineSpacingExtra="@dimen/spacing_mini"
-                android:text="Search for more books and authors"
+                android:text="Search for books and authors"
                 android:textAppearance="@style/TextAppearance.Coyote.Headline2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
