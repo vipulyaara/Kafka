@@ -20,13 +20,12 @@ class ItemDetailController : TypedEpoxyController<ItemDetailViewState>() {
         debug { "loading ${data?.isLoading} items ${data?.itemDetail}" }
 
         data?.itemDetail?.let { detail ->
-            detail {
-                id(detail.itemId)
-                image(detail.coverImage)
-                itemDetail(detail)
-            }
-
             if (detail.itemId.isNotEmpty()) {
+                detail {
+                    id(detail.itemId)
+                    image(detail.coverImage)
+                    itemDetail(detail)
+                }
                 detailActions {
                     id("detail_actions")
                     isFavorite(data.isFavorite)
