@@ -1,17 +1,3 @@
-///*
-// * Copyright (c) 2019 Naman Dwivedi.
-// *
-// * Licensed under the GNU General Public License v3
-// *
-// * This is free software: you can redistribute it and/or modify it
-// * under the terms of the GNU General Public License as published by
-// * the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-// *
-// * This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-// * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// * See the GNU General Public License for more details.
-// *
-// */
 //package com.kafka.player.timber.playback.players
 //
 //import android.os.Bundle
@@ -19,6 +5,7 @@
 //import android.support.v4.media.session.PlaybackStateCompat
 //import android.support.v4.media.session.PlaybackStateCompat.STATE_NONE
 //import com.kafka.data.dao.QueueDao
+//import com.kafka.player.playback.player.Player
 //import com.kafka.player.timber.constants.Constants.ACTION_PLAY_NEXT
 //import com.kafka.player.timber.constants.Constants.ACTION_QUEUE_REORDER
 //import com.kafka.player.timber.constants.Constants.ACTION_REPEAT_QUEUE
@@ -34,16 +21,14 @@
 //import com.kafka.player.timber.constants.Constants.SHUFFLE_MODE
 //import com.kafka.player.timber.constants.Constants.SONG
 //import com.kafka.player.timber.constants.Constants.SONGS_LIST
-//import com.kafka.player.timber.repository.SongsRepository
 //
 //class MediaSessionCallback(
 //    private val mediaSession: MediaSessionCompat,
-//    private val songPlayer: SongPlayer,
-//    private val songsRepository: SongsRepository,
+//    private val player: Player,
 //    private val queueDao: QueueDao
 //) : MediaSessionCompat.Callback() {
 //
-//    override fun onPause() = songPlayer.pause()
+//    override fun onPause() = player.pause()
 //
 //    override fun onPlay() = songPlayer.playSong()
 //

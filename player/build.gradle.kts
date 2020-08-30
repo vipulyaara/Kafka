@@ -19,4 +19,6 @@ dependencies {
     kapt(Hilt.compiler)
     implementation(Hilt.lifecycle)
     kapt(Hilt.lifecycle_compiler)
+
+    implementation(Coil.core)
 }

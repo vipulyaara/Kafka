@@ -24,12 +24,9 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
     private var currentNavController: LiveData<NavController>? = null
-    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mainViewModel.init()
 
         toolbar?.setupToolbar(R.menu.menu_master) {
             when (it?.itemId) {

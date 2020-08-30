@@ -3,16 +3,9 @@ package com.kafka.content.ui.main
 import android.app.Activity
 import androidx.hilt.lifecycle.ViewModelInject
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.kafka.player.playback.player.Player
 import com.kafka.ui_common.base.ReduxViewModel
 
-class MainViewModel @ViewModelInject constructor(
-    private val player: Player
-) : ReduxViewModel<MainViewState>(MainViewState()) {
-
-    fun init() {
-        player.start()
-    }
+class MainViewModel @ViewModelInject constructor() : ReduxViewModel<MainViewState>(MainViewState()) {
 
     private fun showPlayStoreRatingDialog(context: Activity) {
         val manager = ReviewManagerFactory.create(context)

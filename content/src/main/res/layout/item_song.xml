@@ -9,6 +9,10 @@
             type="com.kafka.data.entities.Song" />
 
         <variable
+            name="isCurrent"
+            type="Boolean" />
+
+        <variable
             name="isPlaying"
             type="Boolean" />
 
@@ -24,7 +28,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:onClick="@{clickListener}"
-        app:cardBackgroundColor="@{isPlaying ? @color/surface : @color/background}"
+        app:cardBackgroundColor="@{isCurrent ? @color/surface : @color/background}"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,10 +49,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                iconIfPlaying="@{isPlaying}"
+                isPlayingSong="@{isPlaying}"
+                isCurrentSong="@{isCurrent}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
                 app:lottie_loop="true"/>
 
             <TextView
@@ -60,7 +64,7 @@
                 android:maxLines="1"
                 android:text="@{song.title}"
                 android:textAppearance="@style/TextAppearance.Coyote.Body1"
-                android:textColor="@{isPlaying ? @color/text_heading : @color/text_body}"
+                android:textColor="@{isCurrent ? @color/text_heading : @color/text_body}"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

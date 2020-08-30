@@ -9,30 +9,18 @@ import androidx.lifecycle.LifecycleRegistry
 import com.data.base.extensions.debug
 import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
-import com.kafka.player.domain.ObserveCurrentSong
-import com.kafka.player.domain.ObserveQueueSongs
-import com.kafka.player.playback.notification.NotificationHandler
 import com.kafka.player.playback.player.Player
-import com.kafka.player.timber.permissions.PermissionsManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import timber.log.Timber.d as log
 
 @AndroidEntryPoint
 class MusicService : Service(), LifecycleOwner, CoroutineScope by CustomScope() {
 
-    @Inject lateinit var notificationHandler: NotificationHandler
     @Inject lateinit var player: Player
     @Inject lateinit var queueDao: QueueDao
-    @Inject lateinit var observeCurrentSong: ObserveCurrentSong
-    @Inject lateinit var observeQueueSongs: ObserveQueueSongs
-    @Inject lateinit var permissionsManager: PermissionsManager
-
-    private lateinit var becomingNoisyReceiver: BecomingNoisyReceiver
     private val lifecycle = LifecycleRegistry(this)
 
     override fun getLifecycle() = lifecycle
@@ -43,30 +31,11 @@ class MusicService : Service(), LifecycleOwner, CoroutineScope by CustomScope() 
 
         debug { "Music service created" }
 
+        player.start()
+
         launch(IO) {
-            permissionsManager.requestStoragePermission(waitForGranted = true)
-                .collect { player.setQueue(queueDao.getQueueSongs().filterNotNull()) }
-
-            observeCurrentSong.observe().collect {
-                debug { "Music service notification updated" }
-                notificationHandler.updateNotification()
-            }
-            observeCurrentSong(Unit)
+            player.setQueue(queueDao.getQueueSongs().filterNotNull())
         }
-
-//        becomingNoisyReceiver = BecomingNoisyReceiver(this, MediaSessionCompat.Token(5))
-
-//        GlobalScope.launch {
-//            player.addStateChangeListener {
-//                if (it.isPlaying) {
-//                    becomingNoisyReceiver.register()
-//                } else {
-//                    becomingNoisyReceiver.unregister()
-//                    saveCurrentData()
-//                }
-//                notificationHandler.updateNotification(player.cu)
-//            }
-//        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -79,7 +48,7 @@ class MusicService : Service(), LifecycleOwner, CoroutineScope by CustomScope() 
 
     override fun onDestroy() {
         lifecycle.currentState = Lifecycle.State.DESTROYED
-        log("onDestroy()")
+        debug { "onDestroy()" }
         player.release()
         super.onDestroy()
     }

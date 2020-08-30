@@ -58,7 +58,8 @@ class PlayerController @Inject constructor(
         data?.queueSongs?.forEach {
             song {
                 id(it.id)
-                isPlaying(it.id == data.currentSong?.currentSongId)
+                isPlaying(data.currentSong?.isPlaying)
+                isCurrent(it.id == data.currentSong?.currentSongId)
                 song(it)
                 clickListener { _ ->
                     playerActioner.sendAction(

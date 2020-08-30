@@ -40,12 +40,18 @@ fun Slider.moveSeekBar(seekFlow: Flow<Int>?) {
     }
 }
 
-@BindingAdapter("iconIfPlaying")
-fun LottieAnimationView.iconIfPlaying(isPlaying: Boolean) {
-    if (isPlaying) {
+@BindingAdapter("isPlayingSong", "isCurrentSong", requireAll = false)
+fun LottieAnimationView.onIsPlaying(isPlayingSong: Boolean, isCurrentSong: Boolean) {
+    if (isCurrentSong) {
         setAnimation(R.raw.playing)
     } else {
         setImageResource(R.drawable.ic_disc_padding)
+    }
+
+    if (isPlayingSong) {
+        playAnimation()
+    } else {
+        pauseAnimation()
     }
 }
 
