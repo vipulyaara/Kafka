@@ -1,5 +1,7 @@
 package com.kafka.content.ui.language
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.data.base.launchObserve
@@ -11,10 +13,12 @@ import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Named
 
 class LanguageViewModel @ViewModelInject constructor(
     observeSelectedLanguages: ObserveSelectedLanguages,
-    private val updateLanguages: UpdateLanguages
+    private val updateLanguages: UpdateLanguages,
+    @Named("app") private val sharedPreferences: SharedPreferences
 ) : ReduxViewModel<LanguageViewState>(LanguageViewState()) {
     private val actioner = Channel<HomepageAction>(Channel.BUFFERED)
 
@@ -25,6 +29,10 @@ class LanguageViewModel @ViewModelInject constructor(
 
         observeSelectedLanguages(Unit)
     }
+
+    fun areLanguagesSelected() = sharedPreferences.getBoolean("language_selected", false)
+
+    fun onDOneClicked() = sharedPreferences.edit {  putBoolean("language_selected", true) }
 
     fun submitAction(action: HomepageAction) {
         viewModelScope.launch {

@@ -4,8 +4,11 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import com.kafka.content.ui.language.LanguageFragment
+import com.kafka.content.ui.language.LanguageViewModel
 import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
@@ -18,6 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject lateinit var permissionsManager: PermissionsManager
+    private val languageViewModel: LanguageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +34,14 @@ class MainActivity : AppCompatActivity() {
         startMusicService()
         handleDeepLink()
 
-        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+        if (languageViewModel.areLanguagesSelected()) {
+            supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+        } else {
+            supportFragmentManager.commit {
+                replace(R.id.nav_host, LanguageFragment())
+                addToBackStack("")
+            }
+        }
     }
 
     private fun handleDeepLink() {
