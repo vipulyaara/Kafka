@@ -11,6 +11,4 @@ dependencies {
 
     implementation(Hilt.android)
     kapt(Hilt.compiler)
-    implementation(Hilt.lifecycle)
-    kapt(Hilt.lifecycle_compiler)
 }

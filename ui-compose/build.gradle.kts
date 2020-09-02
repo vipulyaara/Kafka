@@ -51,30 +51,16 @@ android {
 }
 
 dependencies {
-    api(platform(project(":data-base")))
+    api(platform(project(":data")))
+    api(platform(project(":ui-common")))
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)
-
-    implementation(Libs.Firebase.analytics)
 
     implementation(Libs.KotlinX.Coroutines.core)
     implementation(Libs.KotlinX.Coroutines.android)
 
     implementation(Libs.Coil.core)
-    implementation(Libs.Moshi.core)
-    implementation(Libs.ThreeTenBp.core)
-
-    implementation(Libs.Retrofit.runtime)
-    implementation(Libs.Retrofit.moshi)
-    implementation(Libs.OkHttp.core)
-    implementation(Libs.OkHttp.loggingInterceptor)
-
-    implementation(Libs.AndroidX.Room.runtime)
-    implementation(Libs.AndroidX.Room.ktx)
-    kapt(Libs.AndroidX.Room.compiler)
 
     implementation(Libs.Hilt.android)
     kapt(Libs.Hilt.compiler)
-    implementation(Libs.Hilt.lifecycle)
-    kapt(Libs.Hilt.lifecycle_compiler)
 }

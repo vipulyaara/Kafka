@@ -21,9 +21,6 @@ class MediaSessionManager @Inject constructor(@ApplicationContext private val co
         mediaSessionConnector.setPlayer(player, null)
     }
 
-    init {
-    }
-
     private fun createDefaultPlaybackState(): PlaybackStateCompat.Builder {
         return PlaybackStateCompat.Builder().setActions(
             PlaybackStateCompat.ACTION_PLAY
