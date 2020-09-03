@@ -1,10 +1,9 @@
 package com.kafka.user
 
-import com.kafka.data.data.config.Initializers
-import com.kafka.data.extensions.debug
-import com.kafka.user.config.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import com.data.base.extensions.debug
+import com.kafka.data.injection.Initializers
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 /**
@@ -12,15 +11,12 @@ import javax.inject.Inject
  */
 private typealias InitializerFunction = () -> @JvmSuppressWildcards Unit
 
-class KafkaApplication : DaggerApplication() {
+@HiltAndroidApp
+class KafkaApplication : Application() {
 
     @Inject
     internal fun init(@Initializers initializers: Set<@JvmSuppressWildcards InitializerFunction>) {
         initializers.forEach { it() }
-    }
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.factory().create(this)
     }
 
     override fun onTrimMemory(level: Int) {

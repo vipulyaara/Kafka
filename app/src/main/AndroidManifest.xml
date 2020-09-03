@@ -10,16 +10,36 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:usesCleartextTraffic="true"
+        android:extractNativeLibs="false"
         android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Coyote"
+        tools:replace="android:networkSecurityConfig"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.kafka.user.MainActivity">
+        <activity android:name="com.kafka.user.MainActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:label="filter item deep links">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "app.kafka://item” -->
+                <data android:scheme="app.kafka"
+                    android:host="item" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="example.com/link" android:scheme="http"/>
+                <data android:host="example.com/link" android:scheme="https"/>
             </intent-filter>
         </activity>
 
@@ -27,11 +47,40 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.version"-->
-<!--            android:value="@integer/google_play_services_version" />-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-<!--        <service android:name=".player.PlayerService"/>-->
+        <service
+            android:name="com.kafka.player.timber.playback.MusicService"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data  android:name="com.kafka.user.injection.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data  android:name="com.kafka.user.injection.ThemeInitializer"
+                android:value="androidx.startup" />
+            <meta-data  android:name="com.kafka.user.injection.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data  android:name="com.kafka.user.injection.FirebaseInitializer"
+                android:value="androidx.startup" />
+        </provider>
 
     </application>
 </manifest>

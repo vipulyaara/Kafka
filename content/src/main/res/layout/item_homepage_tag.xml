@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="closeClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="isSelected"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:onClick="@{clickListener}"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxWidth="130dp"
+            android:maxLines="1"
+            android:text="@{text}"
+            android:textAppearance="@style/TextAppearance.Coyote.Subtitle2"
+            android:textColor="@{isSelected ? @color/app_blue : @color/text_body}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Franz Kafka" />
+
+        <!--        <ImageView-->
+        <!--            visibleGone="@{isSelected}"-->
+        <!--            android:clickable="false"-->
+        <!--            android:layout_width="24dp"-->
+        <!--            android:layout_height="24dp"-->
+        <!--            android:layout_marginVertical="12dp"-->
+        <!--            android:layout_marginStart="4dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:background="?selectableItemBackgroundBorderless"-->
+        <!--            android:onClick="@{closeClickListener}"-->
+        <!--            android:padding="4dp"-->
+        <!--            android:src="@drawable/ic_close"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/label"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:tint="@color/icon_tint" />-->
+
+        <com.google.android.material.card.MaterialCardView
+            visibleInvisible="@{isSelected}"
+            android:layout_width="16dp"
+            android:layout_height="6dp"
+            android:layout_marginVertical="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_medium_2"
+            app:cardBackgroundColor="@color/app_blue"
+            app:cardCornerRadius="24dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/app_blue"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

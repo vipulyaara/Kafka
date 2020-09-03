@@ -1,57 +1,80 @@
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
+}
+
+android {
+    compileSdkVersion(Publishing.compileSdkVersion)
+
+    defaultConfig {
+        minSdkVersion(Publishing.minSdkVersion)
+        targetSdkVersion(Publishing.compileSdkVersion)
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+        versionCode = Publishing.versionCode
+        versionName = Publishing.versionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            consumerProguardFiles("proguard-rules.pro")
+        }
+    }
+
+    lintOptions {
+        isAbortOnError = false
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.txt")
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
-    implementation(AndroidX.Room.runtime)
-    implementation(AndroidX.Room.ktx)
-    kapt(AndroidX.Room.compiler)
+    api(platform(project(":data-base")))
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Timber.core)
 
-    implementation("org.jsoup:jsoup:1.12.1")
+    implementation(Libs.Firebase.analytics)
 
-    implementation(AndroidX.Arch.extensions)
-    implementation(AndroidX.Arch.reactive_streams)
-    kapt(AndroidX.Arch.compiler)
+    implementation(Libs.KotlinX.Coroutines.core)
+    implementation(Libs.KotlinX.Coroutines.android)
 
-    implementation(AndroidX.Paging.common)
-    implementation(AndroidX.Paging.runtime)
+    implementation(Libs.Coil.core)
+    implementation(Libs.Moshi.core)
+    implementation(Libs.ThreeTenBp.core)
 
-    implementation(AndroidX.Ktx.core)
-    implementation(AndroidX.Ktx.collection)
-    implementation(AndroidX.Ktx.palette)
-    implementation(AndroidX.Ktx.reactiveStreams)
-    implementation(AndroidX.Ktx.sqlite)
-    implementation(AndroidX.Ktx.viewmodel)
-    implementation(AndroidX.Ktx.lifecycle)
+    implementation(Libs.Retrofit.runtime)
+    implementation(Libs.Retrofit.moshi)
+    implementation(Libs.OkHttp.core)
+    implementation(Libs.OkHttp.loggingInterceptor)
 
-    implementation(Dagger.dagger)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
+    implementation(Libs.AndroidX.Room.runtime)
+    implementation(Libs.AndroidX.Room.ktx)
+    kapt(Libs.AndroidX.Room.compiler)
 
-    implementation(Store.core)
-
-    implementation(KotlinX.Coroutines.core)
-    implementation(KotlinX.Coroutines.android)
-
-    implementation(Timber.core)
-    implementation(Gson.dependency)
-
-    implementation(Retrofit.runtime)
-    implementation(Retrofit.moshi)
-    implementation(Retrofit.gson)
-
-    implementation(OkHttp.core)
-    implementation(OkHttp.loggingInterceptor)
-
-    implementation(Moshi.kotlin)
-    kapt(Moshi.compiler)
-
-    testImplementation(AndroidX.Test.core)
-    testImplementation(AndroidX.Test.junit)
-    testImplementation(AndroidX.Test.rules)
-    testImplementation(AndroidX.Arch.testing)
-    testImplementation(AndroidX.Room.testing)
-    testImplementation(Testing.Mockito.kotlin)
-    testImplementation(Testing.PowerMock.core)
-    testImplementation(Testing.PowerMock.api)
-    testImplementation(Testing.PowerMock.module)
-    testImplementation(RoboElectric.dependency)
-
-    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
+    implementation(Libs.Hilt.android)
+    kapt(Libs.Hilt.compiler)
+    implementation(Libs.Hilt.lifecycle)
+    kapt(Libs.Hilt.lifecycle_compiler)
 }

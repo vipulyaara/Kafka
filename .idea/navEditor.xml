@@ -8,52 +8,23 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="navigation_auth_fragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="navigation_content_detail">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="744" />
-                            <option name="y" value="410" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="navigation_homepage">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="76" />
+                            <option name="x" value="12" />
+                            <option name="y" value="503" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="to_auth_fragment">
+                            <entry key="to_item_detail">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="to_poet_detail">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="to_tabbed_fragment">
+                            <entry key="to_search">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -63,18 +34,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_poet_detail">
+                  <entry key="navigation_item_detail">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="724" />
+                            <option name="x" value="256" />
+                            <option name="y" value="418" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="to_content_detail">
+                            <entry key="to_item_detail">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -84,7 +55,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_search_fragment">
+                  <entry key="navigation_main">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -96,23 +67,102 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_tabbed_fragment">
+                  <entry key="navigation_player">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navigation_reader">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="500" />
-                            <option name="y" value="368" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="to_content_detail">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navigation_search">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="774" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </LayoutPositions>
+          </value>
+        </entry>
+        <entry key="nav_graph_main.xml">
+          <value>
+            <LayoutPositions>
+              <option name="myPositions">
+                <map>
+                  <entry key="nav">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph_c">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_graph_content">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navgr">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nested_nav_graph">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point />
                         </option>
                       </LayoutPositions>
                     </value>

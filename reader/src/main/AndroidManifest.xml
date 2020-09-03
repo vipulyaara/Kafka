@@ -1,5 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.kafka.reader">
 
-    /
+    <dist:module
+        dist:instant="false"
+        dist:title="PDF Reader">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="false" />
+    </dist:module>
+
+    <application tools:ignore="AllowBackup">
+        <activity
+            android:name="com.pdftron.pdf.controls.DocumentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:theme="@style/Theme.Coyote"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity android:name=".ui.ReaderActivity"/>
+    </application>
 </manifest>

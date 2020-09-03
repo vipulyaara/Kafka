@@ -1,59 +1,68 @@
 package com.kafka.user
 
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import com.kafka.user.common.BaseActivity
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import com.kafka.content.ui.language.LanguageFragment
+import com.kafka.content.ui.language.LanguageViewModel
+import com.kafka.content.ui.main.MainFragment
+import com.kafka.player.timber.permissions.PermissionsManager
+import com.kafka.player.timber.playback.MusicService
+import com.kafka.ui_common.extensions.setupToolbar
+import com.kafka.ui_common.extensions.toggleNightMode
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var navController: NavController
-    private var currentNavId = NAV_ID_NONE
-    private var checkedItem = NAV_ID_NONE
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+    @Inject lateinit var permissionsManager: PermissionsManager
+    private val languageViewModel: LanguageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setBackgroundDrawable(ColorDrawable(getColor(R.color.background)))
         setContentView(R.layout.activity_main)
 
-        toolbar?.apply {
-            inflateMenu(R.menu.menu_master)
-            navigationIcon = getDrawable(R.drawable.ic_data_usage_black_24dp)
-        }
+        permissionsManager.attach(this)
 
-        navController = findNavController(R.id.nav_host_fragment)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            currentNavId = destination.id
-        }
+        initToolbar()
+        startMusicService()
+        handleDeepLink()
 
-//        if (savedInstanceState == null) {
-//            // default to showing Home
-//            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_homepage)
-//            checkedItem = initialNavId
-//            navigateTo(initialNavId)
-//        }
+        if (languageViewModel.areLanguagesSelected()) {
+            supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+        } else {
+            supportFragmentManager.commit {
+                replace(R.id.nav_host, LanguageFragment())
+                addToBackStack("")
+            }
+        }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        currentNavId = checkedItem
+    private fun handleDeepLink() {
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
     }
 
-    private fun navigateTo(navId: Int) {
-        if (navId == currentNavId) {
-            return // user tapped the current item
+    private fun startMusicService() {
+        startService(Intent(this, MusicService::class.java))
+    }
+
+    private fun initToolbar() {
+        toolbar?.setupToolbar(R.menu.menu_master) {
+            when (it?.itemId) {
+                R.id.menu_dark_mode -> toolbar?.toggleNightMode(this, it.itemId)
+            }
         }
-        navController.navigate(navId)
     }
 
-    companion object {
-        /** Key for an int extra defining the initial navigation target. */
-        const val EXTRA_NAVIGATION_ID = "extra.NAVIGATION_ID"
+    private fun shareItemLink() {
 
-        private const val NAV_ID_NONE = -1
-
-        private val TOP_LEVEL_DESTINATIONS = setOf(
-            R.id.navigation_homepage
-        )
     }
 }
+

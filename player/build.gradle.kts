@@ -1,64 +1,76 @@
-import Kotlin.kapt
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
+}
+
+android {
+    compileSdkVersion(Publishing.compileSdkVersion)
+
+    defaultConfig {
+        minSdkVersion(Publishing.minSdkVersion)
+        targetSdkVersion(Publishing.compileSdkVersion)
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+        versionCode = Publishing.versionCode
+        versionName = Publishing.versionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            consumerProguardFiles("proguard-rules.pro")
+        }
+    }
+
+    lintOptions {
+        isAbortOnError = false
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.txt")
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 dependencies {
-    implementation(project(":data"))
+    api(platform(project(":data")))
+    api(platform(project(":ui-common")))
+    api(platform(project(":ui-compose")))
 
-    implementation(AndroidX.Room.runtime)
-    implementation(AndroidX.Room.ktx)
-    kapt(AndroidX.Room.compiler)
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Timber.core)
 
-    implementation("org.jsoup:jsoup:1.12.1")
+    implementation(Libs.KotlinX.Coroutines.core)
+    implementation(Libs.KotlinX.Coroutines.android)
 
-    implementation(AndroidX.Arch.extensions)
-    implementation(AndroidX.Arch.reactive_streams)
-    kapt(AndroidX.Arch.compiler)
+    implementation(Libs.Coil.core)
 
-    implementation(AndroidX.Paging.common)
-    implementation(AndroidX.Paging.runtime)
+    implementation(Libs.ExoPlayer.player)
+    implementation("com.google.android.exoplayer:extension-mediasession:2.9.4")
 
-    implementation(AndroidX.Ktx.core)
-    implementation(AndroidX.Ktx.collection)
-    implementation(AndroidX.Ktx.palette)
-    implementation(AndroidX.Ktx.reactiveStreams)
-    implementation(AndroidX.Ktx.sqlite)
-    implementation(AndroidX.Ktx.viewmodel)
-    implementation(AndroidX.Ktx.lifecycle)
+    implementation(Libs.AndroidX.Ktx.core)
 
-    implementation(Dagger.dagger)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
-
-    implementation(KotlinX.Coroutines.core)
-    implementation(KotlinX.Coroutines.android)
-
-    implementation(Timber.core)
-    implementation(Gson.dependency)
-
-    implementation(Retrofit.runtime)
-    implementation(Retrofit.moshi)
-    implementation(Retrofit.gson)
-
-    implementation(ExoPlayer.player)
-
-    implementation(OkHttp.core)
-    implementation(OkHttp.loggingInterceptor)
-
-    implementation(Moshi.kotlin)
-    kapt(Moshi.compiler)
-
-    testImplementation(AndroidX.Test.core)
-    testImplementation(AndroidX.Test.junit)
-    testImplementation(AndroidX.Test.rules)
-    testImplementation(AndroidX.Arch.testing)
-    testImplementation(AndroidX.Room.testing)
-    testImplementation(Testing.Mockito.kotlin)
-    testImplementation(Testing.PowerMock.core)
-    testImplementation(Testing.PowerMock.api)
-    testImplementation(Testing.PowerMock.module)
-    testImplementation(RoboElectric.dependency)
-
-    implementation("org.threeten:threetenbp:1.3.7:no-tzdb")
-
-    debugImplementation("com.amitshekhar.android:debug-db:1.0.5")
-    debugImplementation("com.amitshekhar.android:debug-db-encrypt:1.0.5")
+    implementation(Libs.material)
+    implementation(Libs.Hilt.android)
+    kapt(Libs.Hilt.compiler)
+    implementation(Libs.Hilt.lifecycle)
+    kapt(Libs.Hilt.lifecycle_compiler)
 }

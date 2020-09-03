@@ -1,91 +1,98 @@
-import Kotlin.kapt
-import com.android.build.gradle.BaseExtension
-
-dependencies {
-    implementation(project(":data"))
-    implementation(project(":ui"))
-
-    implementation(Kotlin.stdlib)
-    implementation(Jsoup.core)
-
-    implementation(Store.core)
-
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.fragment)
-    implementation(AndroidX.drawerLayout)
-    implementation(AndroidX.material)
-    implementation(AndroidX.recyclerView)
-    implementation(AndroidX.constraintLayout)
-    implementation(AndroidX.workManager)
-    implementation(AndroidX.viewPager2)
-    implementation(AndroidX.palette)
-    implementation(AndroidX.Paging.common)
-    implementation(AndroidX.Paging.runtime)
-
-    implementation(AndroidX.Navigation.fragment)
-    implementation(AndroidX.Navigation.ui)
-
-    implementation(AndroidX.Room.runtime)
-    kapt(AndroidX.Room.compiler)
-
-    implementation(Retrofit.runtime)
-
-    implementation(AndroidX.Arch.extensions)
-    implementation(AndroidX.Arch.reactive_streams)
-    kapt(AndroidX.Arch.compiler)
-
-    implementation(Dagger.dagger)
-    implementation(Dagger.androidSupport)
-    kapt(Dagger.compiler)
-    kapt(Dagger.androidProcessor)
-
-    compileOnly(AssistedInject.annotationDagger2)
-    kapt(AssistedInject.processorDagger2)
-
-    implementation(AndroidX.Ktx.core)
-    implementation(AndroidX.Ktx.collection)
-    implementation(AndroidX.Ktx.fragment)
-    implementation(AndroidX.Ktx.palette)
-    implementation(AndroidX.Ktx.reactiveStreams)
-    implementation(AndroidX.Ktx.sqlite)
-    implementation(AndroidX.Ktx.viewmodel)
-    implementation(AndroidX.Ktx.lifecycle)
-
-    implementation(KotlinX.Coroutines.core)
-    implementation(KotlinX.Coroutines.android)
-
-    implementation(MvRx.core)
-    implementation(Lottie.core)
-    implementation(Timber.core)
-    implementation(Easeinterpolator.core)
-    implementation(Coil.core)
-
-    implementation(Stetho.core)
-    implementation(Stetho.urlConnection)
-
-    androidTestImplementation(AndroidX.annotation)
-    androidTestImplementation(AndroidX.Test.junit)
-    androidTestImplementation(AndroidX.Test.rules)
-    androidTestImplementation(AndroidX.Espresso.core)
-    androidTestImplementation(AndroidX.Espresso.intents)
-    androidTestImplementation(AndroidX.Espresso.contrib)
-
-    testImplementation(AndroidX.Arch.testing)
-    testImplementation(AndroidX.Room.testing)
-    testImplementation(Testing.Mockito.kotlin)
-    testImplementation(Testing.PowerMock.core)
-    testImplementation(Testing.PowerMock.api)
-    testImplementation(Testing.PowerMock.module)
+plugins {
+    id("com.android.application")
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
+    id("com.google.firebase.crashlytics")
+    id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
 }
 
-configure<BaseExtension> {
-    dataBinding {
-        this.isEnabled = true
-    }
+android {
+    compileSdkVersion(Publishing.compileSdkVersion)
 
     defaultConfig {
-        applicationId = Kafka.applicationId
+        applicationId = Publishing.applicationId
+
+        minSdkVersion(Publishing.minSdkVersion)
+        targetSdkVersion(Publishing.compileSdkVersion)
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+        versionCode = Publishing.versionCode
+        versionName = Publishing.versionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding.isEnabled = true
+
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            consumerProguardFiles("proguard-rules.pro")
+        }
+    }
+
+    lintOptions {
+        isAbortOnError = false
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.txt")
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
-//apply(plugin = "com.google.gms.google-services")
+dependencies {
+    api(platform(project(":player")))
+    api(platform(project(":ui-common")))
+    api(platform(project(":content")))
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Timber.core)
+
+    implementation(Libs.KotlinX.Coroutines.core)
+    implementation(Libs.KotlinX.Coroutines.android)
+
+    implementation(Libs.Firebase.analytics)
+    implementation(Libs.Firebase.dynamicLinks)
+
+    implementation(Libs.Hilt.android)
+    kapt(Libs.Hilt.compiler)
+    implementation(Libs.Hilt.lifecycle)
+    kapt(Libs.Hilt.lifecycle_compiler)
+
+    implementation(Libs.Retrofit.runtime)
+    implementation(Libs.Retrofit.moshi)
+    implementation(Libs.OkHttp.core)
+    implementation(Libs.OkHttp.loggingInterceptor)
+
+    implementation(Libs.material)
+    implementation(Libs.AndroidX.appCompat)
+    implementation(Libs.AndroidX.fragment)
+    implementation(Libs.AndroidX.workManager)
+    implementation(Libs.AndroidX.palette)
+    implementation(Libs.AndroidX.appStartup)
+    implementation(Libs.AndroidX.constraintLayout)
+
+    implementation(Libs.AndroidX.Navigation.fragment)
+    implementation(Libs.AndroidX.Navigation.ui)
+
+    implementation(Libs.Lottie.core)
+    implementation(Libs.Epoxy.core)
+    implementation(Libs.Epoxy.databinding)
+    kapt(Libs.Epoxy.processor)
+}
+
+apply(plugin = "com.google.gms.google-services")
