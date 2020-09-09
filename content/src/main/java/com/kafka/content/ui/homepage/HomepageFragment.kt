@@ -21,6 +21,7 @@ import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_homepage.*
+import kotlinx.android.synthetic.main.view_shadow.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -40,6 +41,8 @@ class HomepageFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView.apply {
+            setHasFixedSize(true)
+
             setController(homepageController)
             addScrollbarElevationView(shadowView)
             homepageController.homepageActioner = homepageActioner

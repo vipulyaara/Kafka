@@ -24,7 +24,7 @@ class BuildLocalQuery @Inject constructor() : SyncWorkUseCase<ArchiveQuery, Simp
             where += "$newKey like '%${it.value.replace(' ', '%')}%'${it.joiner.toLocalJoiner()}"
         }
 
-        val orderBy = " ORDER BY position DESC"
+        val orderBy = if (isOrderBy) " ORDER BY position DESC" else " "
         val query = selectFrom + where.removeSuffix(queries.last().joiner.toLocalJoiner()) + orderBy
 
         debug { "Local query is $query" }

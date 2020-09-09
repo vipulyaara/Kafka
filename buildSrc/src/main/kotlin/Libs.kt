@@ -131,7 +131,7 @@ object Libs {
             const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
 
             const val snapshot = ""
-            const val version = "1.0.0-alpha01"
+            const val version = "1.0.0-alpha02"
 
             const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
 

@@ -46,12 +46,9 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
     private fun banner() {
         kafkaCarousel {
             id("banner")
-            padding(Carousel.Padding.dp(0, 4))
-            numViewsToShowOnScreen(1.1f)
             withModelsFrom(bannerImages) {
                 BannerBindingModel_().apply {
                     id("$it banner")
-                    resource(it)
                 }
             }
         }
@@ -73,10 +70,10 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             }
         }
 
-        searchBanner {
-            id("search_banner")
-            clickListener { _ -> sendAction(HomepageAction.OpenSearchFragment()) }
-        }
+//        searchBanner {
+//            id("search_banner")
+//            clickListener { _ -> sendAction(HomepageAction.OpenSearchFragment()) }
+//        }
     }
 
     private fun tags(it: List<HomepageTag>) {

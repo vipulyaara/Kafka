@@ -30,6 +30,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+//    buildFeatures {
+//        compose = true
+//    }
+//
+//    composeOptions {
+//        kotlinCompilerVersion = Libs.Kotlin.version
+//        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+//    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false

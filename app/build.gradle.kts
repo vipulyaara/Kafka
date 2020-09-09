@@ -65,6 +65,8 @@ dependencies {
     implementation(Libs.KotlinX.Coroutines.core)
     implementation(Libs.KotlinX.Coroutines.android)
 
+    implementation(Libs.ExoPlayer.player)
+
     implementation(Libs.Firebase.analytics)
     implementation(Libs.Firebase.dynamicLinks)
 
