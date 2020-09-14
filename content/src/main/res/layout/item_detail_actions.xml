@@ -91,7 +91,7 @@
                 android:src="@drawable/ic_download"
                 android:text="@{isAudio ? @string/play : @string/read}"
                 android:textAppearance="@style/TextAppearance.Coyote.Button"
-                tools:text="Play" />
+                tools:text="Download" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </layout>

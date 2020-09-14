@@ -29,15 +29,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    dataBinding.isEnabled = true
 
-//    buildFeatures {
-//        compose = true
-//    }
-//
-//    composeOptions {
-//        kotlinCompilerVersion = Libs.Kotlin.version
-//        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
-//    }
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+    }
 
     buildTypes {
         getByName("release") {
@@ -68,7 +69,14 @@ dependencies {
     implementation(Libs.KotlinX.Coroutines.core)
     implementation(Libs.KotlinX.Coroutines.android)
 
-    implementation(Libs.Coil.core)
+    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.material)
+    kapt(Libs.AndroidX.Compose.compiler)
+
+//    implementation(Libs.Coil.core)
 
     implementation(Libs.Hilt.android)
     kapt(Libs.Hilt.compiler)

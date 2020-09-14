@@ -8,7 +8,6 @@ import com.kafka.data.entities.Song
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class ObserveCurrentSong @Inject constructor(
@@ -25,12 +24,13 @@ class ObserveCurrentSong @Inject constructor(
         ) { currentSongId, isPlaying, seekPosition ->
             debug { "current item $currentSongId $isPlaying $seekPosition " }
             val song = currentSongId?.let { queueDao.getSongById(it) } ?: Song()
+            debug { "current song $song" }
             CurrentSong(
                 currentSongId ?: "",
                 isPlaying ?: false,
                 seekPosition ?: 0, song
             )
-        }.distinctUntilChanged()
+        }
     }
 }
 
