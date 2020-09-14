@@ -118,6 +118,7 @@ object Libs {
             "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
         const val workManager = "android.arch.work:work-runtime:1.0.0-alpha13"
         const val preference = "androidx.preference:preference:1.1.0"
+        const val lifecycle_process = "androidx.lifecycle:lifecycle-process:2.2.0"
 
         object Navigation {
             private const val version = "2.2.0-alpha01"

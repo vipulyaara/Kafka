@@ -87,6 +87,7 @@ dependencies {
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.appStartup)
     implementation(Libs.AndroidX.constraintLayout)
+    implementation(Libs.AndroidX.lifecycle_process)
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)
