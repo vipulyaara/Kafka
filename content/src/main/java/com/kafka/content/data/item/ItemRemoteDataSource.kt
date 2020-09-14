@@ -5,6 +5,7 @@ import com.data.base.extensions.executeWithRetry
 import com.data.base.extensions.toResult
 import com.data.base.model.Result
 import com.kafka.data.entities.Item
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 /**
@@ -21,4 +22,12 @@ class ItemRemoteDataSource @Inject constructor(
             .executeWithRetry()
             .toResult(itemMapper)
     }
+
+    suspend fun downloadFile(url: String): Result<ResponseBody> {
+        return archiveService
+            .downloadFileWithDynamicUrlSync(url)
+            .executeWithRetry()
+            .toResult { it }
+    }
+
 }

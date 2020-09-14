@@ -74,6 +74,7 @@ dependencies {
     kapt(Libs.Hilt.compiler)
     implementation(Libs.Hilt.lifecycle)
     kapt(Libs.Hilt.lifecycle_compiler)
+    implementation(Libs.Hilt.workManager)
 
     implementation(Libs.Retrofit.runtime)
     implementation(Libs.Retrofit.moshi)
@@ -83,7 +84,7 @@ dependencies {
     implementation(Libs.material)
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.fragment)
-    implementation(Libs.AndroidX.workManager)
+    implementation(Libs.AndroidX.Ktx.workManager)
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.appStartup)
     implementation(Libs.AndroidX.constraintLayout)

@@ -1,5 +1,6 @@
 package com.kafka.player.playback.extensions
 
+import com.data.base.extensions.debug
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
@@ -66,6 +67,7 @@ class PlayerListenerBuilder {
             }
 
             override fun onSeekProcessed() {
+                debug { "Seek is" }
                 onSeek?.invoke()
             }
 

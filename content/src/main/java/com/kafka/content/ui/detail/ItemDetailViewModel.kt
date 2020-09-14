@@ -11,6 +11,7 @@ import com.data.base.model.ArchiveQuery
 import com.data.base.model.booksByAuthor
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.detail.UpdateItemDetail
+import com.kafka.content.domain.download.StartFileDownload
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.content.domain.followed.UpdateFollowedItems
 import com.kafka.content.domain.item.ObserveItems
@@ -45,6 +46,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val observeItemDetail: ObserveItemDetail,
     private val observeItems: ObserveItems,
     private val updateItems: UpdateItems,
+    private val startFileDownload: StartFileDownload,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val updateFollowedItems: UpdateFollowedItems,
     private val addRecentItem: AddRecentItem,
@@ -52,6 +54,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val snackbarManager: SnackbarManager
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val loadingState = ObservableLoadingCounter()
+    private val downloadLoadingStatus = ObservableLoadingCounter()
     private val pendingActions = RealActioner<ItemDetailAction>()
 
     init {
@@ -155,9 +158,10 @@ class ItemDetailViewModel @ViewModelInject constructor(
     }
 
 
-    private fun Flow<InvokeStatus>.watchStatus() = viewModelScope.launch { collectStatus() }
+    private fun Flow<InvokeStatus>.watchStatus(loadingState: ObservableLoadingCounter) =
+        viewModelScope.launch { collectStatus(loadingState) }
 
-    private suspend fun Flow<InvokeStatus>.collectStatus() = collect { status ->
+    private suspend fun Flow<InvokeStatus>.collectStatus(loadingState: ObservableLoadingCounter) = collect { status ->
         when (status) {
             InvokeStatus.Loading -> {
                 loadingState.addLoader()
@@ -182,6 +186,14 @@ class ItemDetailViewModel @ViewModelInject constructor(
             
             ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
+    }
+
+    fun download(context: Context, readerUrl: String, title: String) {
+        debug { "downloading pdf with url $readerUrl" }
+
+        addRecentItem()
+
+        startFileDownload(readerUrl).watchStatus(downloadLoadingStatus)
     }
 
     fun read(context: Context, readerUrl: String, title: String) {

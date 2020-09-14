@@ -49,6 +49,7 @@ class HomepageController @Inject constructor() : TypedEpoxyController<HomepageVi
             withModelsFrom(bannerImages) {
                 BannerBindingModel_().apply {
                     id("$it banner")
+                    resource(it)
                 }
             }
         }

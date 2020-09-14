@@ -43,6 +43,7 @@ class PlayerViewModel @ViewModelInject constructor(
                 copy(itemDetail = itemDetail)
             }
         }
+
         viewModelScope.launchObserve(observeCurrentSong) {
             it.collectAndSetState {
                 debug { "Current playing song $it" }

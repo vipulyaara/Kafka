@@ -60,7 +60,9 @@ class ItemRepository @Inject constructor(
     suspend fun addRecentSearch(keyword: String) = searchConfigurationDao.apply {
         val searchConfiguration = getSearchConfiguration()
         val config = searchConfiguration?.copy(
-            recentSearches = searchConfiguration.recentSearches?.toMutableList()?.also { it.add(keyword) } ?: listOf(keyword))
+            recentSearches = searchConfiguration.recentSearches?.toMutableList()?.also { it.add(keyword) } ?: listOf(
+                keyword
+            ))
             ?: SearchConfiguration(recentSearches = listOf(keyword))
         insert(config)
     }

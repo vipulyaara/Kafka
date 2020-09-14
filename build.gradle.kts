@@ -9,7 +9,7 @@ buildscript {
         maven(url = "https://pdftron-maven.s3.amazonaws.com/release")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0-alpha09")
+        classpath("com.android.tools.build:gradle:4.2.0-alpha10")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.28.3-alpha")
         classpath("com.google.gms:google-services:4.3.3")

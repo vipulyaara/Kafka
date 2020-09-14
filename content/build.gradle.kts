@@ -20,7 +20,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding.isEnabled = true
+    buildFeatures {
+        dataBinding = true
+//        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
@@ -55,7 +63,7 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-    api(platform(project(":ui-compose")))
+//    api(platform(project(":ui-compose")))
     api(platform(project(":player")))
     api(platform(project(":logger")))
     implementation(Libs.Kotlin.stdlib)
@@ -83,13 +91,22 @@ dependencies {
     kapt(Libs.Hilt.compiler)
     implementation(Libs.Hilt.lifecycle)
     kapt(Libs.Hilt.lifecycle_compiler)
+    implementation(Libs.Hilt.workManager)
 
     implementation(Libs.material)
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.fragment)
-    implementation(Libs.AndroidX.workManager)
+    implementation(Libs.AndroidX.Ktx.workManager)
+    implementation(Libs.AndroidX.Ktx.sqlite)
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.constraintLayout)
+
+    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.material)
+    kapt(Libs.AndroidX.Compose.compiler)
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

@@ -37,6 +37,7 @@ object Libs {
         const val android = "com.google.dagger:hilt-android:2.28-alpha"
         const val compiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
         const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+        const val workManager = "androidx.hilt:hilt-work:1.0.0-alpha01"
         const val lifecycle_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
     }
 
@@ -116,7 +117,7 @@ object Libs {
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
-        const val workManager = "android.arch.work:work-runtime:1.0.0-alpha13"
+
         const val preference = "androidx.preference:preference:1.1.0"
 
         object Navigation {
@@ -128,7 +129,7 @@ object Libs {
         }
 
         object Compose {
-            const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+            const val kotlinCompilerVersion = "1.4.0"
 
             const val snapshot = ""
             const val version = "1.0.0-alpha02"
@@ -147,13 +148,14 @@ object Libs {
             const val tooling = "androidx.ui:ui-tooling:${version}"
             const val test = "androidx.ui:ui-test:${version}"
             const val animation = "androidx.ui:ui-animation:$version"
+            const val compiler = "androidx.compose:compose-compiler:$version"
         }
 
         object Ktx {
             private const val sqliteVersion = "2.0.0"
             private const val ktxVersion = "1.0.0"
             private const val ktxLifecycleVersion = "2.2.0"
-            private const val workManagerVersion = "2.3.2"
+            private const val workManagerVersion = "2.4.0"
             const val core = "androidx.core:core-ktx:$ktxVersion"
             const val fragment = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
             const val palette = "androidx.palette:palette-ktx:$ktxVersion"
