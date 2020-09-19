@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
@@ -29,7 +28,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    dataBinding.isEnabled = true
 
     buildFeatures {
         compose = true
@@ -73,8 +71,9 @@ dependencies {
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
-    kapt(Libs.AndroidX.Compose.compiler)
+    implementation(Libs.AndroidX.Compose.tooling)
 
 //    implementation(Libs.Coil.core)
 

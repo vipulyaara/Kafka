@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("com.google.firebase.crashlytics")
     id("androidx.navigation.safeargs.kotlin")
@@ -23,7 +22,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding.isEnabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
@@ -31,6 +33,8 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+//        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -97,6 +101,8 @@ dependencies {
     implementation(Libs.Epoxy.core)
     implementation(Libs.Epoxy.databinding)
     kapt(Libs.Epoxy.processor)
+
+//    coreLibraryDesugaring Libs.jdkDesugar
 }
 
 apply(plugin = "com.google.gms.google-services")

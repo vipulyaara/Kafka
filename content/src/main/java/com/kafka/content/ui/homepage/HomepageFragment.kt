@@ -11,17 +11,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.data.base.extensions.debug
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentHomepageBinding
 import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.content.ui.query.SearchAction
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.showSnackbar
+import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_homepage.*
-import kotlinx.android.synthetic.main.view_shadow.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -29,6 +29,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomepageFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentHomepageBinding::bind)
     private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
     private val homepageViewModel: HomepageViewModel by viewModels()
     private val navController by lazy { findNavController() }
@@ -40,11 +41,11 @@ class HomepageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setHasFixedSize(true)
 
             setController(homepageController)
-            addScrollbarElevationView(shadowView)
+            addScrollbarElevationView(binding.shadowView.shadowView)
             homepageController.homepageActioner = homepageActioner
             homepageController.searchActioner = searchActioner
         }

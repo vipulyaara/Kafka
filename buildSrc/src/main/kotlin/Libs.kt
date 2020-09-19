@@ -9,6 +9,7 @@ object Publishing {
     const val compileSdkVersion = 29
     const val minSdkVersion = 23
 }
+
 object Libs {
     const val material = "com.google.android.material:material:1.2.0"
     const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.0.9"
@@ -133,7 +134,7 @@ object Libs {
             const val kotlinCompilerVersion = "1.4.0"
 
             const val snapshot = ""
-            const val version = "1.0.0-alpha02"
+            const val version = "1.0.0-alpha03"
 
             const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
 
@@ -142,7 +143,7 @@ object Libs {
             const val layout = "androidx.compose.foundation:foundation-layout:${version}"
 
             const val ui = "androidx.compose.ui:ui:${version}"
-            const val livedata = "androidx.ui:ui-livedata:$version"
+//            const val livedata = "androidx.ui:ui-livedata:$version"
             const val material = "androidx.compose.material:material:${version}"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${version}"
 
@@ -309,7 +310,7 @@ object Libs {
 
     object KotlinX {
         object Coroutines {
-            private const val version = "1.3.7"
+            private const val version = "1.3.9"
             val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
             val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"

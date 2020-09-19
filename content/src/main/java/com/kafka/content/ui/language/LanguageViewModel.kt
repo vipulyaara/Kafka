@@ -32,7 +32,7 @@ class LanguageViewModel @ViewModelInject constructor(
 
     fun areLanguagesSelected() = sharedPreferences.getBoolean("language_selected", false)
 
-    fun onDOneClicked() = sharedPreferences.edit {  putBoolean("language_selected", true) }
+    fun onDoneClicked() = sharedPreferences.edit {  putBoolean("language_selected", true) }
 
     fun submitAction(action: HomepageAction) {
         viewModelScope.launch {

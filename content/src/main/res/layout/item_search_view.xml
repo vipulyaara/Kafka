@@ -4,10 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="actionListener"
-            type="com.kafka.content.ui.ActionListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -40,7 +36,6 @@
 
             <EditText
                 android:id="@+id/etSearch"
-                onImeAction="@{actionListener}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"

@@ -9,19 +9,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentItemDetailBinding
 import com.kafka.data.entities.ItemDetail
 import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.shareText
 import com.kafka.ui_common.extensions.showSnackbar
+import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_item_detail.*
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentItemDetailBinding::bind)
     private val viewModel: ItemDetailViewModel by viewModels()
     private val itemDetailController = ItemDetailController()
     private val pendingActions = RealActioner<ItemDetailAction>()
@@ -30,9 +32,9 @@ class ItemDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setController(itemDetailController)
-            addScrollbarElevationView(shadowView)
+            addScrollbarElevationView(binding.shadowView)
             itemDetailController.actioner = pendingActions
         }
 

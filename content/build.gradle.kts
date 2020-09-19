@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
@@ -22,7 +21,8 @@ android {
 
     buildFeatures {
         dataBinding = true
-//        compose = true
+        viewBinding = true
+        compose = true
     }
 
     composeOptions {
@@ -63,7 +63,7 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-//    api(platform(project(":ui-compose")))
+    api(platform(project(":ui-compose")))
     api(platform(project(":player")))
     api(platform(project(":logger")))
     implementation(Libs.Kotlin.stdlib)
@@ -105,8 +105,9 @@ dependencies {
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
-    kapt(Libs.AndroidX.Compose.compiler)
+    implementation(Libs.AndroidX.Compose.tooling)
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

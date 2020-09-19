@@ -4,24 +4,22 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import com.kafka.content.ui.language.LanguageFragment
-import com.kafka.content.ui.language.LanguageViewModel
 import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.toggleNightMode
+import com.kafka.ui_common.extensions.viewBinding
+import com.kafka.user.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val binding by viewBinding(ActivityMainBinding::inflate)
     @Inject lateinit var permissionsManager: PermissionsManager
-    private val languageViewModel: LanguageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +32,7 @@ class MainActivity : AppCompatActivity() {
         startMusicService()
         handleDeepLink()
 
-        if (languageViewModel.areLanguagesSelected()) {
-            supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
-        } else {
-            supportFragmentManager.commit {
-                replace(R.id.nav_host, LanguageFragment())
-                addToBackStack("")
-            }
-        }
+        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
     }
 
     private fun handleDeepLink() {
@@ -54,9 +45,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        toolbar?.setupToolbar(R.menu.menu_master) {
+        binding.toolbar.setupToolbar(R.menu.menu_master) {
             when (it?.itemId) {
-                R.id.menu_dark_mode -> toolbar?.toggleNightMode(this, it.itemId)
+                R.id.menu_dark_mode -> binding.toolbar.toggleNightMode(this, it.itemId)
             }
         }
     }
