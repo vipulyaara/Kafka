@@ -3,7 +3,7 @@ package com.kafka.content.ui
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.annotation.ExperimentalCoilApi
-import coil.api.loadAny
+import coil.loadAny
 import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation

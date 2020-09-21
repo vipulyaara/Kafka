@@ -1,6 +1,6 @@
 package com.kafka.content.ui.homepage
 
-import coil.api.clear
+import coil.clear
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*

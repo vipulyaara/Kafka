@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ContentItem(item: Item) {
@@ -25,7 +26,7 @@ fun ContentItem(item: Item) {
 @Composable
 fun ImageCard(item: Item) {
     Card(modifier = Modifier.size(96.dp)) {
-
+        item.coverImage?.let { CoilImage(data = it) }
     }
 }
 
