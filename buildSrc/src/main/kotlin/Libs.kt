@@ -136,7 +136,7 @@ object Libs {
             const val snapshot = ""
             const val version = "1.0.0-alpha03"
 
-            const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
+            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"

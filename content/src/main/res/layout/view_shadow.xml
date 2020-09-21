@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shadowView"
     android:layout_width="match_parent"
-    android:layout_height="2dp"
-    android:background="@color/surface"
+    android:layout_height="@dimen/spacing_medium"
+    android:src="@drawable/img_shadow_top_to_bottom"
     tools:ignore="ContentDescription" />

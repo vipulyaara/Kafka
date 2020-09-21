@@ -5,10 +5,12 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import com.kafka.content.ui.main.MainFragment
+import androidx.compose.ui.platform.setContent
+import com.kafka.content.compose.MainScreen
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
+import com.kafka.ui.ProvideDisplayInsets
+import com.kafka.ui.theme.AppTheme
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.toggleNightMode
 import com.kafka.ui_common.extensions.viewBinding
@@ -28,11 +30,20 @@ class MainActivity : AppCompatActivity() {
 
         permissionsManager.attach(this)
 
-        initToolbar()
+//        initToolbar()
         startMusicService()
         handleDeepLink()
 
-        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+        setContent {
+            AppTheme {
+                ProvideDisplayInsets {
+                    MainScreen()
+                }
+            }
+        }
+
+//        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+
     }
 
     private fun handleDeepLink() {

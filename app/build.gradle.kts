@@ -25,6 +25,12 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 
     sourceSets {
@@ -53,7 +59,10 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/ui-graphics_release.kotlin_module/")
+        exclude("META-INF/*")
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -93,6 +102,14 @@ dependencies {
     implementation(Libs.AndroidX.appStartup)
     implementation(Libs.AndroidX.constraintLayout)
     implementation(Libs.AndroidX.lifecycle_process)
+
+    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.tooling)
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

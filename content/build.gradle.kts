@@ -54,6 +54,8 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/ui-graphics_release.kotlin_module/")
+        exclude("META-INF/*")
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -108,6 +110,7 @@ dependencies {
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.AndroidX.Compose.accompanist)
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

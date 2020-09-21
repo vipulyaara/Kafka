@@ -43,6 +43,7 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/*")
     }
     kotlinOptions {
         jvmTarget = "1.8"
