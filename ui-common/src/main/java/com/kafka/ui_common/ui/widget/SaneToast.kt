@@ -43,9 +43,9 @@ fun Context.toast(message: String, length: Int): Toast {
 fun Context.toast(message: String, iconResource: Int?): Toast {
     val toast = toast(message)
     val view = toast.view
-    val imageView = view.findViewById<ImageView>(R.id.iv_toast_icon)
-    imageView.visibility = View.VISIBLE
-    imageView.setImageResource(iconResource ?: 0)
+    val imageView = view?.findViewById<ImageView>(R.id.iv_toast_icon)
+    imageView?.visibility = View.VISIBLE
+    imageView?.setImageResource(iconResource ?: 0)
     toast.view = view
     return toast
 }

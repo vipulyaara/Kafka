@@ -5,12 +5,13 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.ui.platform.setContent
-import com.kafka.content.compose.MainScreen
+import com.kafka.content.compose.MainWindow
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
 import com.kafka.ui.ProvideDisplayInsets
-import com.kafka.ui.theme.AppTheme
+import com.kafka.ui.theme.KafkaTheme
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.toggleNightMode
 import com.kafka.ui_common.extensions.viewBinding
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::inflate)
     @Inject lateinit var permissionsManager: PermissionsManager
 
+    @ExperimentalLazyDsl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawable(ColorDrawable(getColor(R.color.background)))
@@ -35,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         handleDeepLink()
 
         setContent {
-            AppTheme {
+            KafkaTheme {
                 ProvideDisplayInsets {
-                    MainScreen()
+                    MainWindow(onBackPressedDispatcher)
                 }
             }
         }

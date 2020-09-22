@@ -6,7 +6,7 @@ object Publishing {
 
     const val publishVersion = "0.0.1"
 
-    const val compileSdkVersion = 29
+    const val compileSdkVersion = 30
     const val minSdkVersion = 23
 }
 

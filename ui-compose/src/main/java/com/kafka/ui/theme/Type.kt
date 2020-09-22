@@ -15,7 +15,12 @@ private val Montserrat = fontFamily(
     font(R.font.roboto_bold, FontWeight.SemiBold)
 )
 
-val AppTypography = Typography(
+private val Karla = fontFamily(
+    font(R.font.karla, FontWeight.Normal),
+    font(R.font.karla_bold, FontWeight.Bold)
+)
+
+val Typography = Typography(
     h1 = TextStyle(
         fontFamily = Montserrat,
         fontSize = 96.sp,
@@ -44,9 +49,10 @@ val AppTypography = Typography(
     ),
     h5 = TextStyle(
         fontFamily = Montserrat,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.SemiBold,
-        lineHeight = 29.sp
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Medium,
+        lineHeight = 29.sp,
+        letterSpacing = 2.sp
     ),
     h6 = TextStyle(
         fontFamily = Montserrat,
@@ -56,30 +62,30 @@ val AppTypography = Typography(
     ),
     subtitle1 = TextStyle(
         fontFamily = Montserrat,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 20.sp,
-        letterSpacing = 0.5.sp
+        lineHeight = 24.sp,
+        letterSpacing = 0.15.sp
     ),
     subtitle2 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Karla,
         fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
-        lineHeight = 17.sp,
+        fontWeight = FontWeight.Bold,
+        lineHeight = 24.sp,
         letterSpacing = 0.1.sp
     ),
     body1 = TextStyle(
         fontFamily = Montserrat,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
-        lineHeight = 20.sp,
-        letterSpacing = 0.15.sp
+        lineHeight = 18.sp,
+        letterSpacing = 0.25.sp
     ),
     body2 = TextStyle(
         fontFamily = Montserrat,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.SemiBold,
-        lineHeight = 20.sp,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
+        lineHeight = 13.sp,
         letterSpacing = 0.25.sp
     ),
     button = TextStyle(
@@ -90,11 +96,11 @@ val AppTypography = Typography(
         letterSpacing = 1.25.sp
     ),
     caption = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Karla,
         fontSize = 12.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         lineHeight = 16.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.4.sp
     ),
     overline = TextStyle(
         fontFamily = Montserrat,

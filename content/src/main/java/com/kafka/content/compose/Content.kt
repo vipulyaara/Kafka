@@ -1,22 +1,28 @@
 package com.kafka.content.compose
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.kafka.ui.theme.KafkaTheme
 
 @Composable
-fun ContentItem(item: Item) {
-    Surface(color = MaterialTheme.colors.surface) {
-        Row {
+fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {
+    Surface(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
+            .clickable(onClick = { onItemClick(item) }),
+        color = KafkaTheme.colors.background,
+        shape = RoundedCornerShape(6.dp),
+        elevation = 0.dp
+    ) {
+        Row(modifier = Modifier.padding(16.dp)) {
             ImageCard(item)
             ItemDescription(item)
         }
@@ -25,23 +31,62 @@ fun ContentItem(item: Item) {
 
 @Composable
 fun ImageCard(item: Item) {
-    Card(modifier = Modifier.size(96.dp)) {
-        item.coverImage?.let { CoilImage(data = it) }
+    Card(
+        modifier = Modifier.size(84.dp, 96.dp),
+        backgroundColor = KafkaTheme.colors.surface,
+        shape = RoundedCornerShape(6.dp),
+        elevation = 0.dp
+    ) {
+        item.coverImage?.let { NetworkImage(url = it) }
     }
 }
 
 @Composable
 fun ItemDescription(item: Item) {
-    Column {
-        Text(
-            text = item.title.toString(),
-            maxLines = 2,
-            style = MaterialTheme.typography.subtitle1
-        )
-        Text(
-            text = item.creator?.name.toString(),
-            maxLines = 1,
-            style = MaterialTheme.typography.body2
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        ProvideEmphasis(EmphasisAmbient.current.high) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = item.title.toString(),
+                maxLines = 2,
+                style = MaterialTheme.typography.body1,
+                color = KafkaTheme.colors.textPrimary
+            )
+        }
+
+        ProvideEmphasis(EmphasisAmbient.current.medium) {
+            Text(
+                modifier = Modifier.padding(top = 4.dp),
+                text = item.creator?.name.orEmpty(),
+                maxLines = 1,
+                style = MaterialTheme.typography.body2,
+                color = KafkaTheme.colors.textSecondary
+            )
+        }
+
+        ProvideEmphasis(EmphasisAmbient.current.medium) {
+            Text(
+                text = item.mediaType.orEmpty(),
+                maxLines = 1,
+                style = MaterialTheme.typography.body2,
+                color = KafkaTheme.colors.secondary
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ContentItemPreview() {
+    KafkaTheme {
+        ContentItem(
+            item = Item(
+                itemId = "",
+                title = "Selected ghazals of Ghalib",
+                creator = Creator("", "Mirza Ghalib"),
+                mediaType = "audio"
+            ),
+            onItemClick = {}
         )
     }
 }
