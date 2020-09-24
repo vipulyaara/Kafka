@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.EmphasisAmbient
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
@@ -43,23 +42,34 @@ fun ItemDetail(itemDetail: ItemDetail) {
 
 @Composable
 fun ItemDetailDescription(itemDetail: ItemDetail) {
-    Column(modifier = Modifier.padding(24.dp)) {
+    Column(modifier = Modifier.padding(24.dp).fillMaxWidth()) {
         Card(
-            modifier = Modifier.size(196.dp, 264.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier.padding(top = 56.dp).size(196.dp, 256.dp).align(Alignment.CenterHorizontally),
             elevation = 8.dp,
-            shape = RoundedCornerShape(4.dp)
+            shape = RoundedCornerShape(8.dp)
         ) {
             CoilImage(data = itemDetail.coverImage.orEmpty(), contentScale = ContentScale.Crop)
         }
-
-        ProvideEmphasis(EmphasisAmbient.current.high) {
-            Text(
-                modifier = Modifier.fillMaxWidth().padding(top = 24.dp).align(Alignment.CenterHorizontally),
-                text = itemDetail.title.toString(),
-                style = MaterialTheme.typography.h5,
-                color = KafkaTheme.colors.textPrimary
-            )
-        }
+        Text(
+            modifier = Modifier.padding(top = 24.dp).align(Alignment.CenterHorizontally),
+            text = itemDetail.title.toString(),
+            style = MaterialTheme.typography.h5,
+            color = KafkaTheme.colors.textPrimary
+        )
+        Text(
+            modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally),
+            text = itemDetail.creator.toString(),
+            style = MaterialTheme.typography.body2,
+            color = KafkaTheme.colors.secondary
+        )
+        Text(
+            modifier = Modifier.padding(top = 12.dp).align(Alignment.CenterHorizontally),
+            text = itemDetail.description.toString(),
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.caption,
+            color = KafkaTheme.colors.textSecondary
+        )
     }
 }
 
@@ -67,8 +77,12 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
 @Composable
 fun ItemDetailPreview() {
     KafkaTheme {
-        ItemDetail(itemDetail = ItemDetail(
-            title = "Selected poems of Ghalib"
-        ))
+        ItemDetail(
+            itemDetail = ItemDetail(
+                title = "Selected poems of Ghalib",
+                creator = "Mirza Ghalib",
+                description = "New book as someone reads Ghazals"
+            )
+        )
     }
 }

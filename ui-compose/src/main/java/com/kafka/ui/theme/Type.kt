@@ -8,6 +8,13 @@ import androidx.compose.ui.text.font.fontFamily
 import androidx.compose.ui.unit.sp
 import com.kafka.ui.R
 
+private val Circular = fontFamily(
+    font(R.font.circular, FontWeight.Light),
+    font(R.font.circular_std_book, FontWeight.Normal),
+    font(R.font.circular_std_medium, FontWeight.Medium),
+    font(R.font.circular_std_black, FontWeight.SemiBold)
+)
+
 private val Montserrat = fontFamily(
     font(R.font.roboto_light, FontWeight.Light),
     font(R.font.roboto_regular, FontWeight.Normal),
@@ -48,11 +55,10 @@ val Typography = Typography(
         lineHeight = 37.sp
     ),
     h5 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Circular,
         fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
-        lineHeight = 29.sp,
-        letterSpacing = 2.sp
+        lineHeight = 29.sp
     ),
     h6 = TextStyle(
         fontFamily = Montserrat,
@@ -96,9 +102,9 @@ val Typography = Typography(
         letterSpacing = 1.25.sp
     ),
     caption = TextStyle(
-        fontFamily = Karla,
+        fontFamily = Montserrat,
         fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
     ),

@@ -1,10 +1,7 @@
 package com.kafka.player.playback.extensions
 
 import com.data.base.extensions.debug
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.PlaybackParameters
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 
@@ -19,6 +16,7 @@ class PlayerListenerBuilder {
     private var onRepeatModeChange: ((Int?) -> Unit)? = null
     private var onTimelineChange: ((Timeline?, Int) -> Unit)? = null
     private var onPlayerState: ((Boolean, Int) -> Unit)? = null
+    private var onMediaItemChanged: ((MediaItem?) -> Unit)? = null
 
     fun onPlaybackParameters(callback: ((PlaybackParameters?) -> Unit)) {
         onPlaybackParameters = callback
@@ -58,6 +56,10 @@ class PlayerListenerBuilder {
 
     fun onPlayerState(callback: (Boolean, Int) -> Unit) {
         onPlayerState = callback
+    }
+
+    fun onMediaItemChanged(callback: (MediaItem?) -> Unit) {
+        onMediaItemChanged = callback
     }
 
     fun build(): Player.EventListener {
@@ -101,6 +103,12 @@ class PlayerListenerBuilder {
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 onPlayerState?.invoke(playWhenReady, playbackState)
+            }
+
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                super.onMediaItemTransition(mediaItem, reason)
+                onMediaItemChanged?.invoke(mediaItem)
+
             }
         }
     }

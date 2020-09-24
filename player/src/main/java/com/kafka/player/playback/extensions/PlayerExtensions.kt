@@ -3,6 +3,7 @@ package com.kafka.player.playback.extensions
 import android.net.Uri
 import androidx.core.net.toUri
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -55,6 +56,10 @@ operator fun MutableList<Uri>.plus(otherUri: Uri): MutableList<Uri> {
 fun Song.toMediaSource(factory: ProgressiveMediaSource.Factory): MediaSource {
     return factory.setTag(this).createMediaSource(this.playbackUrl.toUri())
 }
+
+fun List<Song>.toMediaItems() = map { it.toMediaItem() }
+
+fun Song.toMediaItem() = MediaItem.Builder().setUri(playbackUrl).setMediaId(id).setTag(this).build()
 
 fun List<Song>.toMediaSources(dataSourceFactory: DataSource.Factory) =
     map { it.toMediaSource(dataSourceFactory) }

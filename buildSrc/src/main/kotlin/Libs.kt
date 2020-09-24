@@ -55,7 +55,7 @@ object Libs {
     }
 
     object ExoPlayer {
-        private const val version = "2.11.5"
+        private const val version = "2.12.0"
         const val player = "com.google.android.exoplayer:exoplayer:$version"
     }
 

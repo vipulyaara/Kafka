@@ -7,7 +7,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.ui.platform.setContent
+import androidx.fragment.app.commit
 import com.kafka.content.compose.MainWindow
+import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
 import com.kafka.ui.ProvideDisplayInsets
@@ -32,10 +34,17 @@ class MainActivity : AppCompatActivity() {
 
         permissionsManager.attach(this)
 
-//        initToolbar()
+        initToolbar()
         startMusicService()
         handleDeepLink()
 
+//        setCompose()
+
+        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
+    }
+
+    @ExperimentalLazyDsl
+    private fun setCompose() {
         setContent {
             KafkaTheme {
                 ProvideDisplayInsets {
@@ -43,9 +52,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
-
     }
 
     private fun handleDeepLink() {
