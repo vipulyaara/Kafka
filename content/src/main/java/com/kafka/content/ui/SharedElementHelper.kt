@@ -1,4 +1,4 @@
-//package com.kafka.content.ui
+package com.kafka.content.ui//package com.kafka.content.ui
 //
 //import android.view.ViewTreeObserver
 //import android.widget.ImageView

@@ -11,7 +11,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import coil.Coil
-import coil.request.LoadRequest
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.util.NotificationUtil.IMPORTANCE_LOW
@@ -22,6 +22,7 @@ import com.kafka.player.R
 import com.kafka.player.timber.constants.Constants
 import com.kafka.player.timber.playback.MusicService
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -102,14 +103,16 @@ class NotificationManager @Inject constructor(
     }
 
     override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback): Bitmap? {
-        Coil.imageLoader(context)
-            .execute(
-                LoadRequest.Builder(context)
-                    .data((player.currentTag as? Song)?.coverImage)
-                    .target {
-                        callback.onBitmap((it as BitmapDrawable).bitmap)
-                    }.build()
-            )
+        launch {
+            Coil.imageLoader(context)
+                .execute(
+                    ImageRequest.Builder(context)
+                        .data((player.currentTag as? Song)?.coverImage)
+                        .target {
+                            callback.onBitmap((it as BitmapDrawable).bitmap)
+                        }.build()
+                )
+        }
         return null
     }
 

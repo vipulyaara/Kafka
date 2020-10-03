@@ -69,17 +69,20 @@ dependencies {
     implementation(Libs.KotlinX.Coroutines.core)
     implementation(Libs.KotlinX.Coroutines.android)
 
-    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation("androidx.core:core-ktx:1.5.0-alpha04")
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.tooling)
-    implementation(Libs.AndroidX.Compose.accompanist)
+    implementation(Libs.Accompanist.coil)
+
+    implementation(Libs.AndroidX.palette)
 
 //    implementation(Libs.Coil.core)
 
     implementation(Libs.Hilt.android)
+
     kapt(Libs.Hilt.compiler)
 }

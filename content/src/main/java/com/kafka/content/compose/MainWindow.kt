@@ -1,7 +1,6 @@
 package com.kafka.content.compose
 
 import androidx.activity.OnBackPressedDispatcher
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -16,10 +15,8 @@ fun MainWindow(backDispatcher: OnBackPressedDispatcher) {
     }
     val actions = remember(navigator) { Actions(navigator) }
 
-    Crossfade(navigator.current) { destination ->
-        when (destination) {
-            Destination.Home -> MainScreen(actions)
-            is Destination.ItemDetail -> ItemDetail(itemId = destination.itemId)
-        }
+    when (val destination = navigator.current) {
+        Destination.Home -> MainScreen(actions)
+        is Destination.ItemDetail -> ItemDetail(itemId = destination.itemId)
     }
 }

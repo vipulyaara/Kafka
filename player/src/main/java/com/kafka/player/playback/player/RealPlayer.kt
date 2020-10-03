@@ -26,7 +26,7 @@ class RealPlayer @Inject constructor(
     private val notificationManager: NotificationManager,
     private val mediaSessionManager: MediaSessionManager
 ) : Player, CoroutineScope by CustomScope() {
-    val player by lazy { SimpleExoPlayer.Builder(context).setUseLazyPreparation(true).build() }
+    val player by lazy { SimpleExoPlayer.Builder(context).build() }
     private val becomingNoisyReceiver = BecomingNoisyReceiver(context, mediaSessionManager.mediaSession.sessionToken)
 
     private val currentItem
@@ -45,8 +45,10 @@ class RealPlayer @Inject constructor(
             queueDao.clearSongs()
             queueDao.insertAll(queue)
 
-            player.clearMediaItems()
-            player.addMediaItems(queue.toMediaItems())
+            launch(Dispatchers.Main) {
+                player.clearMediaItems()
+                player.addMediaItems(queue.toMediaItems())
+            }
         }
     }
 

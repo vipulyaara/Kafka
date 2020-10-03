@@ -75,7 +75,7 @@ object Libs {
     }
 
     object Coil {
-        private const val version = "0.11.0"
+        private const val version = "1.0.0-rc3"
         const val core = "io.coil-kt:coil:$version"
     }
 
@@ -100,7 +100,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.2.2"
+        private const val version = "0.3.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
     }
 
@@ -134,9 +134,9 @@ object Libs {
             const val kotlinCompilerVersion = "1.4.0"
 
             const val snapshot = ""
-            const val version = "1.0.0-alpha03"
+            const val version = "1.0.0-alpha04"
 
-            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
+//            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.3.0"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"

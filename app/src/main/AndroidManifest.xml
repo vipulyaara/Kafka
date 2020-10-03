@@ -17,8 +17,13 @@
         android:theme="@style/Theme.Coyote"
         tools:replace="android:networkSecurityConfig"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name=".MainActivityCompose">
+        </activity>
+
         <activity android:name="com.kafka.user.MainActivity"
             android:windowSoftInputMode="adjustNothing">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

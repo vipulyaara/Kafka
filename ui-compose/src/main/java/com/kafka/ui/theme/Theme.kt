@@ -34,7 +34,7 @@ fun KafkaTheme(
 
     ProvideKafkaColors(colors) {
         MaterialTheme(
-            colors = debugColors(darkTheme),
+            colors = debugColors(darkTheme, KafkaTheme.colors.surface),
             typography = Typography,
             shapes = Shapes,
             content = content

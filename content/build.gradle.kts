@@ -83,10 +83,10 @@ dependencies {
     implementation(Libs.OkHttp.core)
     implementation(Libs.OkHttp.loggingInterceptor)
 
-    implementation("com.google.android.play:core:1.8.0")
+    implementation("com.google.android.play:core:1.8.2")
 
-    implementation("com.pdftron:pdftron:7.1.4")
-    implementation("com.pdftron:tools:7.1.4")
+//    implementation("com.pdftron:pdftron:7.1.4")
+//    implementation("com.pdftron:tools:7.1.4")
 
     implementation(Libs.Firebase.dynamicLinks)
 
@@ -104,14 +104,13 @@ dependencies {
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.constraintLayout)
 
-    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation("androidx.core:core:1.5.0-alpha04")
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.tooling)
-    implementation(Libs.AndroidX.Compose.accompanist)
     implementation(Libs.Accompanist.coil)
 
     implementation(Libs.AndroidX.Navigation.fragment)

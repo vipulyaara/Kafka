@@ -90,9 +90,6 @@ dependencies {
     implementation(Libs.Hilt.workManager)
 
     implementation(Libs.Retrofit.runtime)
-    implementation(Libs.Retrofit.moshi)
-    implementation(Libs.OkHttp.core)
-    implementation(Libs.OkHttp.loggingInterceptor)
 
     implementation(Libs.material)
     implementation(Libs.AndroidX.appCompat)
@@ -103,7 +100,7 @@ dependencies {
     implementation(Libs.AndroidX.constraintLayout)
     implementation(Libs.AndroidX.lifecycle_process)
 
-    implementation("androidx.core:core:1.5.0-alpha02")
+    implementation("androidx.core:core:1.5.0-alpha04")
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
     implementation(Libs.AndroidX.Compose.layout)
@@ -115,10 +112,10 @@ dependencies {
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)
 
-    implementation(Libs.Lottie.core)
+//    implementation(Libs.Lottie.core)
     implementation(Libs.Epoxy.core)
-    implementation(Libs.Epoxy.databinding)
-    kapt(Libs.Epoxy.processor)
+//    implementation(Libs.Epoxy.databinding)
+//    kapt(Libs.Epoxy.processor)
 
 //    coreLibraryDesugaring Libs.jdkDesugar
 }

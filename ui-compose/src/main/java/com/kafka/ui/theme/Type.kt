@@ -15,101 +15,100 @@ private val Circular = fontFamily(
     font(R.font.circular_std_black, FontWeight.SemiBold)
 )
 
-private val Montserrat = fontFamily(
+private val Roboto = fontFamily(
     font(R.font.roboto_light, FontWeight.Light),
     font(R.font.roboto_regular, FontWeight.Normal),
     font(R.font.roboto_medium, FontWeight.Medium),
     font(R.font.roboto_bold, FontWeight.SemiBold)
 )
 
-private val Karla = fontFamily(
-    font(R.font.karla, FontWeight.Normal),
-    font(R.font.karla_bold, FontWeight.Bold)
+private val Alegreya = fontFamily(
+    font(R.font.alegreya_bold, FontWeight.Bold)
 )
 
 val Typography = Typography(
     h1 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 96.sp,
         fontWeight = FontWeight.Light,
         lineHeight = 117.sp,
         letterSpacing = (-1.5).sp
     ),
     h2 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 60.sp,
         fontWeight = FontWeight.Light,
         lineHeight = 73.sp,
         letterSpacing = (-0.5).sp
     ),
     h3 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 48.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 59.sp
     ),
     h4 = TextStyle(
-        fontFamily = Montserrat,
-        fontSize = 30.sp,
+        fontFamily = Circular,
+        fontSize = 24.sp,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 37.sp
+        lineHeight = 24.sp
     ),
     h5 = TextStyle(
         fontFamily = Circular,
         fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
-        lineHeight = 29.sp
+        lineHeight = 24.sp
     ),
     h6 = TextStyle(
-        fontFamily = Montserrat,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = Alegreya,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
         lineHeight = 24.sp
     ),
     subtitle1 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 14.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     subtitle2 = TextStyle(
-        fontFamily = Karla,
+        fontFamily = Alegreya,
         fontSize = 14.sp,
         fontWeight = FontWeight.Bold,
         lineHeight = 24.sp,
         letterSpacing = 0.1.sp
     ),
     body1 = TextStyle(
-        fontFamily = Montserrat,
-        fontSize = 14.sp,
+        fontFamily = Roboto,
+        fontSize = 15.sp,
         fontWeight = FontWeight.Medium,
         lineHeight = 18.sp,
-        letterSpacing = 0.25.sp
+        letterSpacing = 0.15.sp
     ),
     body2 = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 13.sp,
         fontWeight = FontWeight.Medium,
-        lineHeight = 13.sp,
+        lineHeight = 16.sp,
         letterSpacing = 0.25.sp
     ),
     button = TextStyle(
-        fontFamily = Montserrat,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = Roboto,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
         lineHeight = 16.sp,
         letterSpacing = 1.25.sp
     ),
     caption = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Circular,
         fontSize = 12.sp,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Light,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
     ),
     overline = TextStyle(
-        fontFamily = Montserrat,
+        fontFamily = Roboto,
         fontSize = 12.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 16.sp,

@@ -1,5 +1,6 @@
 package com.kafka.content.compose
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,25 +20,21 @@ fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -
         modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
             .clickable(onClick = { onItemClick(item) }),
         color = KafkaTheme.colors.background,
-        shape = RoundedCornerShape(6.dp),
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, KafkaTheme.colors.surface.copy(alpha = 0.3f)),
         elevation = 0.dp
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            ImageCard(item)
+            Card(
+                modifier = Modifier.size(84.dp, 96.dp),
+                backgroundColor = KafkaTheme.colors.surface,
+                shape = RoundedCornerShape(6.dp),
+                elevation = 0.dp
+            ) {
+                item.coverImage?.let { NetworkImage(url = it) }
+            }
             ItemDescription(item)
         }
-    }
-}
-
-@Composable
-fun ImageCard(item: Item) {
-    Card(
-        modifier = Modifier.size(84.dp, 96.dp),
-        backgroundColor = KafkaTheme.colors.surface,
-        shape = RoundedCornerShape(6.dp),
-        elevation = 0.dp
-    ) {
-        item.coverImage?.let { NetworkImage(url = it) }
     }
 }
 
@@ -46,7 +43,7 @@ fun ItemDescription(item: Item) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         ProvideEmphasis(EmphasisAmbient.current.high) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
                 text = item.title.toString(),
                 maxLines = 2,
                 style = MaterialTheme.typography.body1,
