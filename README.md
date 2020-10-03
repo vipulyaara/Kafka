@@ -21,7 +21,7 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 
 
 * [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (for thread switching; and streams with Flow)
-* Jetpack compose (the app is almost complete with compose in the branch [jetpack-compose](https://github.com/vipulyaara/Kafka/tree/develop-compose). But I had to move away from it in order to complete some features as the framework is not as mature (dev-14 as of now) 
+* [Jetpack compose](https://developer.android.com/jetpack/compose) (the app is almost complete with compose in the branch [jetpack-compose](https://github.com/vipulyaara/Kafka/tree/develop-compose). But I had to move away from it in order to complete some features as the framework is not as mature (dev-14 as of now) 
 * [Livedata](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * Retrofit2
