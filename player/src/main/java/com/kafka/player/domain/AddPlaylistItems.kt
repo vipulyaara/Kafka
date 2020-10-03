@@ -10,6 +10,7 @@ import com.kafka.data.entities.mp3Files
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.playback.player.Player
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -26,11 +27,11 @@ class AddPlaylistItems @Inject constructor(
         val playlist = itemDetail.mp3Files()?.map { it.asSong(itemDetail) }
             ?.filter { it.title.isNotEmpty() }?.distinctBy { it.title } ?: emptyList()
         player.setQueue(playlist)
-
-        if (params.playFirst) player.play(playlist.first())
+        delay(1000)
+        player.play(0)
     }
 
-    data class Param(val itemId: String, val playFirst: Boolean = false)
+    data class Param(val itemId: String)
 }
 
 fun File.asSong(itemDetail: ItemDetail): Song = Song(

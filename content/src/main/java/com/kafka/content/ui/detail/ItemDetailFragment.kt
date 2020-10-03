@@ -51,7 +51,7 @@ class ItemDetailFragment : BaseFragment() {
                         findNavController().navigate(Navigation.Player(action.itemId))
                         viewModel.addRecentItem()
                     }
-                    is ItemDetailAction.Read -> viewModel.download(requireContext(), action.readerUrl, action.title)
+                    is ItemDetailAction.Read -> viewModel.read(requireContext(), action.readerUrl, action.title)
                     is ItemDetailAction.Share -> {
                         requireContext().shareText(viewModel.shareItemText(action.itemId))
                     }

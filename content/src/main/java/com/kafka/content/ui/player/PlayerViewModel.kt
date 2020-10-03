@@ -75,13 +75,7 @@ class PlayerViewModel @ViewModelInject constructor(
 
     private fun updatePlaylistOnInit(itemDetail: ItemDetail) {
         viewModelScope.launch {
-            addPlaylistItems(AddPlaylistItems.Param(itemDetail.itemId, true))
-        }
-    }
-
-    fun play(itemDetail: ItemDetail?) {
-        itemDetail?.apply {
-            commandPlayer(PlayerAction.Command(PlayerCommand.Play(itemId)))
+            addPlaylistItems(AddPlaylistItems.Param(itemDetail.itemId))
         }
     }
 
@@ -95,8 +89,10 @@ class PlayerViewModel @ViewModelInject constructor(
 
     private fun commandPlayer(action: PlayerAction.Command) {
         when (val command = action.playerCommand) {
-            is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(command.itemId, command.mediaId))
+            is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(command.mediaId))
             is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
+            is PlayerCommand.Previous -> commandPlayer(PlayerCommand.Previous)
+            is PlayerCommand.Next -> commandPlayer(PlayerCommand.Next)
         }
     }
 }

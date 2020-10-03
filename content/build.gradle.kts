@@ -85,8 +85,8 @@ dependencies {
 
     implementation("com.google.android.play:core:1.8.2")
 
-//    implementation("com.pdftron:pdftron:7.1.4")
-//    implementation("com.pdftron:tools:7.1.4")
+    implementation("com.pdftron:pdftron:7.1.4")
+    implementation("com.pdftron:tools:7.1.4")
 
     implementation(Libs.Firebase.dynamicLinks)
 

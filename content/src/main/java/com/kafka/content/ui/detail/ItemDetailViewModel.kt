@@ -29,6 +29,8 @@ import com.kafka.ui_common.base.SnackbarManager
 import com.kafka.ui_common.extensions.showToast
 import com.kafka.ui_common.navigation.DeepLinksNavigations
 import com.kafka.ui_common.navigation.Navigation
+import com.pdftron.pdf.config.ViewerConfig
+import com.pdftron.pdf.controls.DocumentActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -199,15 +201,15 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
         addRecentItem()
 
-//        val config = ViewerConfig.Builder()
-//            .openUrlCachePath(context.cacheDir.absolutePath)
-//            .fullscreenModeEnabled(true)
-//            .multiTabEnabled(false)
-//            .documentEditingEnabled(false)
-//            .longPressQuickMenuEnabled(true)
-//            .toolbarTitle(title)
-//            .showSearchView(true)
-//            .build()
-//        DocumentActivity.openDocument(context, readerUrl.toUri(), config)
+        val config = ViewerConfig.Builder()
+            .openUrlCachePath(context.cacheDir.absolutePath)
+            .fullscreenModeEnabled(true)
+            .multiTabEnabled(false)
+            .documentEditingEnabled(false)
+            .longPressQuickMenuEnabled(true)
+            .toolbarTitle(title)
+            .showSearchView(true)
+            .build()
+        DocumentActivity.openDocument(context, readerUrl.toUri(), config)
     }
 }

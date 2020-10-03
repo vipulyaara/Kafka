@@ -4,7 +4,7 @@ import com.kafka.data.entities.Song
 
 interface Player {
     fun play()
-    fun play(song: Song)
+    suspend fun play(position: Int)
     fun pause()
     fun togglePlayPause()
     fun next()

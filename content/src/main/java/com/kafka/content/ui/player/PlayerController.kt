@@ -32,17 +32,14 @@ class PlayerController @Inject constructor(
                 }
 
                 override fun playClick() {
-                    player.togglePlayPause()
                     playerActioner.sendAction(PlayerAction.Command(PlayerCommand.ToggleCurrent))
                 }
 
                 override fun previousClick() {
-                    player.previous()
                     playerActioner.sendAction(PlayerAction.Command(PlayerCommand.Previous))
                 }
 
                 override fun nextClick() {
-                    player.next()
                     playerActioner.sendAction(PlayerAction.Command(PlayerCommand.Next))
                 }
 
@@ -63,7 +60,7 @@ class PlayerController @Inject constructor(
                 song(it)
                 clickListener { _ ->
                     playerActioner.sendAction(
-                        PlayerAction.Command(PlayerCommand.Play(data.itemDetail?.itemId!!, it.playbackUrl))
+                        PlayerAction.Command(PlayerCommand.Play(it.playbackUrl))
                     )
                 }
             }

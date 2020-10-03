@@ -3,6 +3,7 @@ package com.kafka.player.playback.player
 import android.content.Context
 import com.data.base.extensions.debug
 import com.data.base.extensions.e
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
@@ -15,6 +16,7 @@ import com.kafka.player.timber.playback.BecomingNoisyReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -45,10 +47,14 @@ class RealPlayer @Inject constructor(
             queueDao.clearSongs()
             queueDao.insertAll(queue)
 
+            debug { "Before" }
+
             launch(Dispatchers.Main) {
                 player.clearMediaItems()
                 player.addMediaItems(queue.toMediaItems())
+                debug { "Middle" }
             }
+            debug { "After" }
         }
     }
 
@@ -66,6 +72,7 @@ class RealPlayer @Inject constructor(
             }
 
             onMediaItemChanged {
+                debug { "media item changed" }
                 it?.mediaId?.let { launch { queueDao.updateCurrentSong(it) } }
             }
         }
@@ -95,18 +102,18 @@ class RealPlayer @Inject constructor(
     }
 
     override fun play() {
+        debug { "play current" }
         player.playWhenReady = true
     }
 
-    override fun play(song: Song) {
-        launch {
-            var position = queueDao.getQueueSongs().indexOfFirst { it?.id == song.id }
-            if (position == -1) position = 0
-
+    override suspend fun play(position: Int) {
+        coroutineScope {
+            debug { "play song" }
             launch(Dispatchers.Main) {
-                debug { "seek position $position" }
+                debug { "playing item from queue $position" }
+                player.seekTo(/* windowIndex= */ position, C.TIME_UNSET)
                 player.prepare()
-                player.play()
+                play()
             }
         }
     }
@@ -119,7 +126,7 @@ class RealPlayer @Inject constructor(
         if (player.isPlaying) {
             pause()
         } else {
-            play()
+            player.play()
         }
     }
 

@@ -108,7 +108,6 @@ class PlayerListenerBuilder {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
                 onMediaItemChanged?.invoke(mediaItem)
-
             }
         }
     }
