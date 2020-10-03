@@ -6,7 +6,7 @@ Kafka uses www.archive.org to serve millions of audiobooks and pdf books availab
 
 </br></br>
 
-<img src="https://user-images.githubusercontent.com/6247940/94991059-b1179e80-0580-11eb-87c5-9ecfaa8da75e.png">
+<img src="https://user-images.githubusercontent.com/6247940/94997211-f0a6b080-05a9-11eb-955b-b3b934f46e7f.png">
 
 <img src="https://user-images.githubusercontent.com/6247940/94997141-9dccf900-05a9-11eb-9685-e10fcbf9fe57.png">
 
