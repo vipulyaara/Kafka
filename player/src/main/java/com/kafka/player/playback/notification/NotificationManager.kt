@@ -7,11 +7,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import coil.Coil
 import coil.request.ImageRequest
+import com.google.android.exoplayer2.DefaultControlDispatcher
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.util.NotificationUtil.IMPORTANCE_LOW
@@ -54,16 +54,15 @@ class NotificationManager @Inject constructor(
             setColorized(true)
             setColor(Color.parseColor("#AF945C"))
             setUseChronometer(false)
-            setFastForwardIncrementMs(10_000L)
-            setRewindIncrementMs(10_000L)
+            setControlDispatcher(DefaultControlDispatcher(10_000L, 10_000L))
             setUseNavigationActionsInCompactView(true)
         }
     }
 
     init {
-        val mediaSession = MediaSessionCompat(context, "ExoPlayer")
-        mediaSession.isActive = true
-        playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken())
+//        val mediaSession = MediaSessionCompat(context, "ExoPlayer")
+//        mediaSession.isActive = true
+//        playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken())
     }
 
     fun attachPlayer(player: Player) {
