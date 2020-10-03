@@ -29,4 +29,4 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 * [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
 
 
-![final-architecture](https://user-images.githubusercontent.com/6247940/50480774-0e71d980-0a04-11e9-90fc-89c9fdfb4115.png)
+![final-architecture](https://user-images.githubusercontent.com/6247940/75632907-cb5f5780-5c00-11ea-974d-ff7a5e8b0a21.png)
