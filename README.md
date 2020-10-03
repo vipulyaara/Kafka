@@ -8,7 +8,7 @@ Currently in process of content curation in order to build a CMS. It will host m
 
 <img src="https://user-images.githubusercontent.com/6247940/94991059-b1179e80-0580-11eb-87c5-9ecfaa8da75e.png">
 
-<img src="https://user-images.githubusercontent.com/6247940/56097011-9f65b580-5f0c-11e9-92a6-cf0498f1532a.png">
+<img src="https://user-images.githubusercontent.com/6247940/94991424-65b2bf80-0583-11eb-8f20-8909301aab11.png">
 
 
 
