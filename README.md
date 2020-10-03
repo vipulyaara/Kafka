@@ -1,6 +1,6 @@
 # Kafka
 
-Currently in process of content curation in order to build a CMS. It will host more than 5 million audio content (about 20% is popular) available in more than 100 languages, all free.
+Kafka uses www.arhive.org to serve millions of audiobooks and pdf books available in more than 100 languages, all free.
 
 
 
