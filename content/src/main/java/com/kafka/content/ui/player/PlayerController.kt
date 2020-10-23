@@ -1,10 +1,14 @@
 package com.kafka.content.ui.player
 
+import androidx.databinding.BindingAdapter
 import com.airbnb.epoxy.TypedEpoxyController
+import com.airbnb.lottie.LottieAnimationView
+import com.data.base.extensions.debug
 import com.kafka.content.*
 import com.kafka.player.domain.PlayerAction
 import com.kafka.player.domain.PlayerCommand
 import com.kafka.player.domain.PlayerViewState
+import com.kafka.player.domain.PlayingState
 import com.kafka.player.playback.player.Player
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
@@ -22,9 +26,10 @@ class PlayerController @Inject constructor(
         }
 
         playerControls {
-            id("player_controls")
+            debug { "state ${data?.currentSong?.playingState}" }
+            id("player_controls ${data?.currentSong?.playingState}")
             song(data?.currentSong?.song)
-            isPlaying(data?.currentSong?.isPlaying)
+            isPlaying(data?.currentSong?.playingState)
             isFollowed(data?.isFavorite)
             playerCommandListener(object : PlayerCommandListener {
                 override fun favoriteClick() {
@@ -55,7 +60,7 @@ class PlayerController @Inject constructor(
         data?.queueSongs?.forEach {
             song {
                 id(it.id)
-                isPlaying(data.currentSong?.isPlaying)
+                isPlaying(data.currentSong?.playingState == PlayingState.Play)
                 isCurrent(it.id == data.currentSong?.currentSongId)
                 song(it)
                 clickListener { _ ->
@@ -74,4 +79,15 @@ interface PlayerCommandListener {
     fun previousClick()
     fun nextClick()
     fun seekTo(position: Int)
+}
+
+@BindingAdapter("playIcon")
+fun LottieAnimationView.playIcon(state: PlayingState?) {
+    debug { "state is $state" }
+    when (state) {
+        PlayingState.Play -> setAnimation(R.raw.loader_2)
+        PlayingState.Pause -> setAnimation(R.raw.loader_2)
+        else -> setAnimation(R.raw.loader_3)
+    }
+    playAnimation()
 }

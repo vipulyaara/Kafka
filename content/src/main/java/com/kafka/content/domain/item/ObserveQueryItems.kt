@@ -10,11 +10,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ObserveItems @Inject constructor(
+class ObserveQueryItems @Inject constructor(
     dispatchers: AppCoroutineDispatchers,
     private val buildLocalQuery: BuildLocalQuery,
     private val itemRepository: ItemRepository
-) : SubjectInteractor<ObserveItems.Params, List<Item>>() {
+) : SubjectInteractor<ObserveQueryItems.Params, List<Item>>() {
     override val dispatcher: CoroutineDispatcher = dispatchers.io
 
     override fun createObservable(params: Params): Flow<List<Item>> {

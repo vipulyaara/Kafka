@@ -134,7 +134,7 @@ object Libs {
             const val kotlinCompilerVersion = "1.4.0"
 
             const val snapshot = ""
-            const val version = "1.0.0-alpha04"
+            const val version = "1.0.0-alpha05"
 
 //            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.3.0"
 

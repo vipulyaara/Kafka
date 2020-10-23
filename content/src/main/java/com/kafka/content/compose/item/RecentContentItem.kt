@@ -1,4 +1,4 @@
-package com.kafka.content.compose
+package com.kafka.content.compose.item
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import com.kafka.data.entities.RecentItem
+import com.kafka.ui.theme.KafkaColors
 import com.kafka.ui.theme.KafkaTheme
 import decrementTextSize
 
@@ -29,8 +31,8 @@ fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier,
             Row(modifier = Modifier.padding(16.dp)) {
                 Card(
                     modifier = Modifier.size(76.dp, 88.dp),
-                    backgroundColor = KafkaTheme.colors.surface,
-                    border = BorderStroke(2.dp, KafkaTheme.colors.background),
+                    backgroundColor = KafkaColors.surface,
+                    border = BorderStroke(2.dp, KafkaColors.background),
                     shape = RoundedCornerShape(2.dp),
                     elevation = 0.dp
                 ) {
@@ -38,24 +40,20 @@ fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier,
                 }
 
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    ProvideEmphasis(EmphasisAmbient.current.high) {
                         Text(
                             modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
                             text = item.title.toString(),
                             maxLines = 2,
                             style = MaterialTheme.typography.body1.decrementTextSize(1),
-                            color = KafkaTheme.colors.textPrimary
+                            color = KafkaColors.textPrimary
                         )
-                    }
 
-                    ProvideEmphasis(EmphasisAmbient.current.medium) {
                         Text(
                             text = item.mediaType.orEmpty(),
                             maxLines = 1,
                             style = MaterialTheme.typography.body2,
-                            color = KafkaTheme.colors.secondary
+                            color = KafkaColors.secondary
                         )
-                    }
 
                     RecentProgressBar(modifier = Modifier.padding(top = 12.dp))
                 }
@@ -64,14 +62,14 @@ fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier,
             Surface(
                 modifier = Modifier.height(4.dp).fillMaxWidth().padding(vertical = 12.dp),
                 elevation = 8.dp,
-                color = KafkaTheme.colors.secondary,
+                color = KafkaColors.secondary,
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Text(
                     text = item.mediaType.orEmpty(),
                     maxLines = 1,
                     style = MaterialTheme.typography.body2,
-                    color = KafkaTheme.colors.secondary
+                    color = KafkaColors.secondary
                 )
             }
         }
@@ -82,7 +80,7 @@ fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier,
 fun RecentProgressBar(modifier: Modifier) {
     Box(
         modifier = modifier.fillMaxWidth().height(2.dp)
-            .background(color = KafkaTheme.colors.secondary, shape = RoundedCornerShape(12.dp))
+            .background(color = KafkaColors.secondary, shape = RoundedCornerShape(12.dp))
     )
 }
 

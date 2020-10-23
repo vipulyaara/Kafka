@@ -27,11 +27,31 @@ class ObserveCurrentSong @Inject constructor(
             debug { "current song $song" }
             CurrentSong(
                 currentSongId ?: "",
-                isPlaying ?: false,
+                isPlaying.asPlayingState(),
                 seekPosition ?: 0, song
             )
         }
     }
 }
 
-data class CurrentSong(val currentSongId: String, val isPlaying: Boolean, val seekPosition: Long, val song: Song)
+private fun Boolean?.asPlayingState() = when (this) {
+    true -> PlayingState.Play
+    false -> PlayingState.Pause
+    null -> PlayingState.Buffering
+}
+
+data class CurrentSong(
+    val currentSongId: String,
+    val playingState: PlayingState,
+    val seekPosition: Long,
+    val song: Song
+)
+
+val CurrentSong.isPlaying
+    get() = playingState == PlayingState.Play
+
+sealed class PlayingState {
+    object Play : PlayingState()
+    object Pause : PlayingState()
+    object Buffering : PlayingState()
+}

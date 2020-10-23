@@ -47,13 +47,3 @@ fun ImageView.loadImage(
 fun ImageView.loadImage(image: Int?) {
     loadAny(image)
 }
-
-@BindingAdapter("playIcon")
-fun ImageView.playIcon(isPlaying: Boolean?) {
-    val icon = when (isPlaying) {
-        null -> 0
-        true -> R.drawable.ic_pause
-        false -> R.drawable.ic_play
-    }
-    setImageResource(icon)
-}

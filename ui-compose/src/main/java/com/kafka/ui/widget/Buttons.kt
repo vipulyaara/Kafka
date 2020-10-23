@@ -1,78 +1,60 @@
-//import androidx.ui.core.Modifier
-//import androidx.ui.layout.InnerPadding
-//import androidx.ui.layout.padding
-//import androidx.ui.unit.dp
-//
-////package com.kafka.ui.widget
-////
-////import androidx.compose.Composable
-////import androidx.ui.core.Modifier
-////import androidx.ui.foundation.Border
-////import androidx.ui.foundation.Text
-////import androidx.ui.foundation.shape.RectangleShape
-////import androidx.ui.graphics.Color
-////import androidx.ui.graphics.Shape
-////import androidx.ui.layout.EdgeInsets
-////import androidx.ui.layout.InnerPadding
-////import androidx.ui.layout.LayoutPadding
-////import androidx.ui.material.Button
-////import androidx.ui.material.MaterialTheme
-////import androidx.ui.material.contentColorFor
-////import androidx.ui.unit.Dp
-////import androidx.ui.unit.dp
-////import com.kafka.ui.alignCenter
-////
-////@Composable
-////fun ButtonRegular(
-////    modifier: Modifier = Modifier.None,
-////    onClick: (() -> Unit) = {},
-////    text: String,
-////    backgroundColor: Color = MaterialTheme.colors.primary,
-////    contentColor: Color = contentColorFor(backgroundColor),
-////    shape: Shape = RectangleShape,
-////    elevation: Dp = 12.dp
-////) =
-////    Button(
-////        modifier = modifier,
-////        backgroundColor = backgroundColor,
-////        onClick = onClick,
-////        shape = shape,
-////        elevation = elevation,
-////        contentColor = contentColor,
-////        padding = regularButtonPadding
-////    ) {
-////        Text(text = text, style = MaterialTheme.typography.button.alignCenter())
-////    }
-////
-////@Composable
-////fun ButtonSmall(
-////    modifier: Modifier = Modifier.None,
-////    onClick: (() -> Unit) = {},
-////    text: String,
-////    backgroundColor: Color = MaterialTheme.colors.primary,
-////    contentColor: Color = contentColorFor(backgroundColor),
-////    shape: Shape = RectangleShape,
-////    elevation: Dp = 2.dp,
-////    border: Border? = Border(1.dp, MaterialTheme.colors.background),
-////    paddings: InnerPadding = smallButtonPadding
-////) =
-////    Button(
-////        modifier = modifier,
-////        backgroundColor = backgroundColor,
-////        onClick = onClick,
-////        shape = shape,
-////        contentColor = contentColor,
-////        border = border,
-////        elevation = elevation,
-////        padding = paddings
-////    ) {
-////        Text(text = text, style = MaterialTheme.typography.button.alignCenter(), maxLines = 1)
-////    }
-////
-//val regularButtonPadding =
-//    InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
-//
-//val smallButtonPadding =
-//    InnerPadding(top = 10.dp, bottom = 10.dp, start = 24.dp, end = 24.dp)
-////
-//val tinyButtonPadding = Modifier.padding(start = 2.dp, end = 12.dp, top = 4.dp, bottom = 4.dp)
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ProvideTextStyle
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonConstants
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import com.kafka.ui.theme.KafkaTheme
+
+@Composable
+fun PrimaryButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = ButtonShape,
+    border: BorderStroke? = null,
+    contentColor: Color = KafkaTheme.colors.primary,
+    disabledContentColor: Color = KafkaTheme.colors.primary,
+    contentPadding: PaddingValues = ButtonConstants.DefaultContentPadding,
+    content: @Composable RowScope.() -> Unit
+) {
+    Surface(
+        shape = shape,
+        color = Color.Transparent,
+        contentColor = if (enabled) contentColor else disabledContentColor,
+        border = border,
+        modifier = modifier
+            .clip(shape)
+            .clickable(
+                onClick = onClick,
+                enabled = enabled,
+            )
+    ) {
+        ProvideTextStyle(
+            value = MaterialTheme.typography.button
+        ) {
+            Row(
+                Modifier
+                    .defaultMinSizeConstraints(
+                        minWidth = ButtonConstants.DefaultMinWidth,
+                        minHeight = ButtonConstants.DefaultMinHeight
+                    )
+                    .fillMaxWidth()
+                    .padding(contentPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                children = content
+            )
+        }
+    }
+}
+
+private val ButtonShape = RoundedCornerShape(percent = 50)

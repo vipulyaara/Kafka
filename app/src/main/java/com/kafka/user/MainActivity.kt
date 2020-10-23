@@ -2,18 +2,13 @@ package com.kafka.user
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
-import androidx.compose.ui.platform.setContent
 import androidx.fragment.app.commit
-import com.kafka.content.compose.MainWindow
 import com.kafka.content.ui.main.MainFragment
 import com.kafka.player.timber.permissions.PermissionsManager
 import com.kafka.player.timber.playback.MusicService
-import com.kafka.ui.ProvideDisplayInsets
-import com.kafka.ui.theme.KafkaTheme
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.toggleNightMode
 import com.kafka.ui_common.extensions.viewBinding
@@ -36,27 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         initToolbar()
         startMusicService()
-        handleDeepLink()
-
-//        setCompose()
 
         supportFragmentManager.commit { replace(R.id.nav_host, MainFragment()) }
-    }
-
-    @ExperimentalLazyDsl
-    private fun setCompose() {
-        setContent {
-            KafkaTheme {
-                ProvideDisplayInsets {
-                    MainWindow(onBackPressedDispatcher)
-                }
-            }
-        }
-    }
-
-    private fun handleDeepLink() {
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
     }
 
     private fun startMusicService() {

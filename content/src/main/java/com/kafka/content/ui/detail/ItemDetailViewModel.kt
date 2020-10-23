@@ -14,15 +14,15 @@ import com.kafka.content.domain.detail.UpdateItemDetail
 import com.kafka.content.domain.download.StartFileDownload
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.content.domain.followed.UpdateFollowedItems
-import com.kafka.content.domain.item.ObserveItems
+import com.kafka.content.domain.item.ObserveQueryItems
 import com.kafka.content.domain.item.UpdateItems
 import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.isAudio
 import com.kafka.data.model.ObservableErrorCounter
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.data.model.collectFrom
 import com.kafka.data.model.collectInto
-import com.kafka.ui_common.action.RealActioner
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 class ItemDetailViewModel @ViewModelInject constructor(
     private val updateItemDetail: UpdateItemDetail,
     private val observeItemDetail: ObserveItemDetail,
-    private val observeItems: ObserveItems,
+    private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
     private val startFileDownload: StartFileDownload,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
@@ -55,7 +55,6 @@ class ItemDetailViewModel @ViewModelInject constructor(
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val loadingState = ObservableLoadingCounter()
     private val downloadLoadingStatus = ObservableLoadingCounter()
-    private val pendingActions = RealActioner<ItemDetailAction>()
 
     init {
         viewModelScope.launchObserve(observeItemDetail) { flow ->
@@ -81,7 +80,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
             }
         }
 
-        viewModelScope.launchObserve(observeItems) { flow ->
+        viewModelScope.launchObserve(observeQueryItems) { flow ->
             flow.distinctUntilChanged().collectAndSetState { list ->
                 copy(itemsByCreator = list.filterNot { it.itemId == itemDetail?.itemId })
             }
@@ -96,17 +95,11 @@ class ItemDetailViewModel @ViewModelInject constructor(
                 copy(error = if (visible) uiError.message else null)
             }
         }
+    }
 
+    fun updateFavorite() {
         viewModelScope.launch {
-            pendingActions.observe {
-                when (it) {
-                    is ItemDetailAction.FavoriteClick -> {
-                        updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
-                    }
-                    else -> {
-                    }
-                }
-            }
+            updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
         }
     }
 
@@ -121,7 +114,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
-                observeItems(ObserveItems.Params(it))
+                observeQueryItems(ObserveQueryItems.Params(it))
                 updateItems(UpdateItems.Params(it))
             }
         }
@@ -152,11 +145,6 @@ class ItemDetailViewModel @ViewModelInject constructor(
     fun addRecentItem() {
         addRecentItem(AddRecentItem.Params(currentState().itemDetail?.itemId!!))
     }
-
-    fun sendAction(action: ItemDetailAction) {
-        viewModelScope.launch { pendingActions.sendAction(action) }
-    }
-
 
     private fun Flow<InvokeStatus>.watchStatus(loadingState: ObservableLoadingCounter) =
         viewModelScope.launch { collectStatus(loadingState) }
@@ -194,6 +182,15 @@ class ItemDetailViewModel @ViewModelInject constructor(
         addRecentItem()
 
         startFileDownload(readerUrl).watchStatus(downloadLoadingStatus)
+    }
+
+    fun onPrimaryAction() {
+        val itemDetail = currentState().itemDetail!!
+        if (itemDetail.isAudio()) {
+
+        } else {
+
+        }
     }
 
     fun read(context: Context, readerUrl: String, title: String) {

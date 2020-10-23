@@ -45,9 +45,9 @@
         app:menu="@menu/bottom_menu_nav" />
 
     <include
-        layout="@layout/view_shadow"
+        layout="@layout/view_shadow_bottom_to_top"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="8dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

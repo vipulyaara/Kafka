@@ -1,4 +1,4 @@
-package com.kafka.content.compose
+package com.kafka.content.compose.item
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
@@ -12,11 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.dp
+import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Item
-import com.kafka.ui.theme.DynamicThemePrimaryColorsFromImage
-import com.kafka.ui.theme.KafkaTheme
-import com.kafka.ui.theme.constrastAgainst
-import com.kafka.ui.theme.rememberDominantColorState
+import com.kafka.ui.theme.*
 import com.kafka.ui.widget.Pager
 import com.kafka.ui.widget.PagerState
 import decrementTextSize
@@ -105,7 +103,7 @@ fun SuggestedItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item)
         Row(modifier = Modifier.padding(16.dp)) {
             Card(
                 modifier = Modifier.size(124.dp, 156.dp).padding(4.dp),
-                backgroundColor = KafkaTheme.colors.surface,
+                backgroundColor = KafkaColors.surface,
                 shape = RoundedCornerShape(6.dp),
                 elevation = 0.dp
             ) {
@@ -119,33 +117,28 @@ fun SuggestedItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item)
 @Composable
 fun SuggestedItemDescription(item: Item) {
     Column(modifier = Modifier.padding(start = 16.dp)) {
-        ProvideEmphasis(EmphasisAmbient.current.high) {
             Text(
                 modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
                 text = item.title.toString(),
                 maxLines = 2,
                 style = MaterialTheme.typography.h4.decrementTextSize(4),
-                color = KafkaTheme.colors.background
+                color = KafkaColors.background
             )
-        }
 
-        ProvideEmphasis(EmphasisAmbient.current.medium) {
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = item.creator?.name.orEmpty(),
                 maxLines = 1,
                 style = MaterialTheme.typography.h6,
-                color = KafkaTheme.colors.background.copy(alpha = 0.8f)
+                color = KafkaColors.background.copy(alpha = 0.8f)
             )
-        }
 
-        ProvideEmphasis(EmphasisAmbient.current.medium) {
             Text(
                 text = item.mediaType.orEmpty(),
                 maxLines = 1,
                 style = MaterialTheme.typography.body2,
-                color = KafkaTheme.colors.background.copy(alpha = 0.6f)
+                color = KafkaColors.background.copy(alpha = 0.6f)
             )
-        }
+
     }
 }

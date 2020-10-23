@@ -4,10 +4,7 @@ import com.data.base.model.item.ItemDetailResponse
 import com.data.base.model.item.SearchResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
@@ -21,6 +18,7 @@ interface ArchiveService {
     @GET("/metadata/{id}")
     fun getItemDetail(@Path("id") id: String?): Call<ItemDetailResponse>
 
+    @Streaming
     @GET
     fun downloadFileWithDynamicUrlSync(@Url fileUrl: String): Call<ResponseBody>
 }

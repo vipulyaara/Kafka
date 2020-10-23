@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.github.barteksc.pdfviewer.PDFView
 import com.kafka.reader.R
 import com.kafka.ui_common.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,8 +17,8 @@ class ReaderFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireArguments().getString("item_url")?.apply {
-            viewModel.read(requireContext(), this)
+        requireArguments().getString("url")?.apply {
+            viewModel.read(requireContext(), view.findViewById(R.id.pdfView), this)
         }
     }
 

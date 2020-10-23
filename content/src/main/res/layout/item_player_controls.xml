@@ -15,7 +15,7 @@
 
         <variable
             name="isPlaying"
-            type="Boolean" />
+            type="com.kafka.player.domain.PlayingState" />
 
         <variable
             name="playerCommandListener"
@@ -73,16 +73,19 @@
                 android:outlineAmbientShadowColor="@color/shadow"
                 android:outlineSpotShadowColor="@color/shadow"
                 app:borderWidth="0dp"
+                app:cardBackgroundColor="@color/app_red"
                 app:cardCornerRadius="50dp"
                 app:cardElevation="12dp"
                 app:rippleColor="@color/surface_light"
                 tools:ignore="ContentDescription">
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
+                    playIcon="@{isPlaying}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@{isPlaying ? @drawable/ic_pause : @drawable/ic_play}"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
                     app:tint="#ffffff" />
             </com.google.android.material.card.MaterialCardView>
 

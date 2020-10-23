@@ -57,12 +57,19 @@ interface ObservableInteractor<T> {
 
 abstract class SuspendingWorkInteractor<P : Any, T : Any> : ObservableInteractor<T> {
     private val channel = ConflatedBroadcastChannel<T>()
-
     suspend operator fun invoke(params: P) = channel.send(doWork(params))
-
     abstract suspend fun doWork(params: P): T
-
     override fun observe(): Flow<T> = channel.asFlow().distinctUntilChanged()
+}
+
+abstract class ResultInteractor<in P, R> {
+    operator fun invoke(params: P): Flow<R> {
+        return flow {
+            emit(doWork(params))
+        }
+    }
+
+    protected abstract suspend fun doWork(params: P): R
 }
 
 abstract class SyncWorkUseCase<P : Any, T : Any> {

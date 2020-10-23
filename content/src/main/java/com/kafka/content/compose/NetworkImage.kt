@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import com.kafka.ui.theme.KafkaTheme
+import com.kafka.ui.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -15,11 +15,12 @@ fun NetworkImage(
     url: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    placeholderColor: Color? = KafkaTheme.colors.surface
+    placeholderColor: Color? = KafkaColors.surface
 ) {
     CoilImage(
         data = url,
         modifier = modifier,
+        fadeIn = true,
         contentScale = contentScale,
         loading = {
             if (placeholderColor != null) {

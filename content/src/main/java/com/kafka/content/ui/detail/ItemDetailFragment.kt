@@ -51,12 +51,11 @@ class ItemDetailFragment : BaseFragment() {
                         findNavController().navigate(Navigation.Player(action.itemId))
                         viewModel.addRecentItem()
                     }
-                    is ItemDetailAction.Read -> viewModel.read(requireContext(), action.readerUrl, action.title)
+                    is ItemDetailAction.Read -> findNavController().navigate(Navigation.Reader(action.readerUrl))
                     is ItemDetailAction.Share -> {
                         requireContext().shareText(viewModel.shareItemText(action.itemId))
                     }
                     is ItemDetailAction.FavoriteClick -> {
-                        viewModel.sendAction(action)
                         viewModel.showFavoriteToast(requireContext())
                     }
                     else -> {

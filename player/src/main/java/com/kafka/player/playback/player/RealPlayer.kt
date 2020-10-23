@@ -26,7 +26,7 @@ class RealPlayer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val queueDao: QueueDao,
     private val notificationManager: NotificationManager,
-    private val mediaSessionManager: MediaSessionManager
+    mediaSessionManager: MediaSessionManager
 ) : Player, CoroutineScope by CustomScope() {
     val player by lazy { SimpleExoPlayer.Builder(context).build() }
     private val becomingNoisyReceiver = BecomingNoisyReceiver(context, mediaSessionManager.mediaSession.sessionToken)
@@ -103,7 +103,9 @@ class RealPlayer @Inject constructor(
 
     override fun play() {
         debug { "play current" }
-        player.playWhenReady = true
+        launch(Dispatchers.Main) {
+            player.playWhenReady = true
+        }
     }
 
     override suspend fun play(position: Int) {
@@ -123,19 +125,26 @@ class RealPlayer @Inject constructor(
     }
 
     override fun togglePlayPause() {
-        if (player.isPlaying) {
-            pause()
-        } else {
-            player.play()
+        debug { "toggle play pause ${player.playbackState}" }
+        launch(Dispatchers.Main) {
+            if (player.isPlaying) {
+                pause()
+            } else {
+                player.play()
+            }
         }
     }
 
     override fun next() {
-        player.next()
+        launch(Dispatchers.Main) {
+            player.next()
+        }
     }
 
     override fun previous() {
-        player.previous()
+        launch(Dispatchers.Main) {
+            player.previous()
+        }
     }
 
     override fun seekTo(position: Long) {

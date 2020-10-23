@@ -100,6 +100,8 @@ dependencies {
     implementation(Libs.AndroidX.constraintLayout)
     implementation(Libs.AndroidX.lifecycle_process)
 
+    implementation(Libs.AndroidX.Room.runtime)
+
     implementation("androidx.core:core:1.5.0-alpha04")
     implementation(Libs.AndroidX.Compose.runtime)
     implementation(Libs.AndroidX.Compose.foundation)
@@ -108,6 +110,7 @@ dependencies {
     implementation(Libs.AndroidX.Compose.material)
     implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.Accompanist.coil)
+    implementation("com.github.zsoltk:compose-router:0.20.0")
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

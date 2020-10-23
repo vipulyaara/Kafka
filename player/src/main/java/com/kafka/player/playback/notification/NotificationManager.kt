@@ -30,7 +30,6 @@ import javax.inject.Singleton
 class NotificationManager @Inject constructor(
     private val context: Application
 ) : CoroutineScope by CustomScope(),
-    PlayerNotificationManager.CustomActionReceiver,
     PlayerNotificationManager.MediaDescriptionAdapter {
 
     private val channelId = "1001"
@@ -73,22 +72,6 @@ class NotificationManager @Inject constructor(
         playerNotificationManager.setPlayer(null)
     }
 
-    override fun getCustomActions(player: Player): MutableList<String> {
-        return mutableListOf()
-    }
-
-    override fun createCustomActions(context: Context, instanceId: Int): MutableMap<String, NotificationCompat.Action> {
-        return mutableMapOf(
-            "play" to getPlayPauseAction(context, R.drawable.ic_pause),
-            "next" to getNextAction(context),
-            "previous" to getPreviousAction(context)
-        )
-    }
-
-    override fun onCustomAction(player: Player, action: String, intent: Intent) {
-        TODO("not implemented")
-    }
-
     override fun createCurrentContentIntent(player: Player): PendingIntent? {
         return null
     }
@@ -103,14 +86,13 @@ class NotificationManager @Inject constructor(
 
     override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback): Bitmap? {
         launch {
-            Coil.imageLoader(context)
-                .execute(
-                    ImageRequest.Builder(context)
-                        .data((player.currentTag as? Song)?.coverImage)
-                        .target {
-                            callback.onBitmap((it as BitmapDrawable).bitmap)
-                        }.build()
-                )
+            Coil.imageLoader(context).execute(
+                ImageRequest.Builder(context)
+                    .data((player.currentTag as? Song)?.coverImage)
+                    .target {
+                        callback.onBitmap((it as BitmapDrawable).bitmap)
+                    }.build()
+            )
         }
         return null
     }

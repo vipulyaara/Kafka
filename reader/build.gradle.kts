@@ -1,33 +1,86 @@
-dependencies {
-    implementation(project(Libs.App.nameDependency))
-    implementation(project(Libs.Data.nameDependency))
-    implementation(project(Libs.UiCommon.nameDependency))
-
-    implementation(Store.core)
-    implementation(FinestWebView.core)
-
-    room()
-    arch()
-    ktx()
-    coroutines()
-
-    ui()
-    navigation()
-
-    test()
-    androidTest()
-
-//    implementation("com.pdftron:pdftron:7.1.4")
-//    implementation("com.pdftron:tools:7.1.4")
-
-    implementation(Hilt.android)
-    kapt(Hilt.compiler)
-    implementation(Hilt.lifecycle)
-    kapt(Hilt.lifecycle_compiler)
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
 }
 
-configure<com.android.build.gradle.BaseExtension> {
+android {
+    compileSdkVersion(Publishing.compileSdkVersion)
+
     defaultConfig {
-        applicationId = "com.kafka.reader"
+        minSdkVersion(Publishing.minSdkVersion)
+        targetSdkVersion(Publishing.compileSdkVersion)
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+        versionCode = Publishing.versionCode
+        versionName = Publishing.versionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+        getByName("test").java.srcDirs("src/test/kotlin")
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            consumerProguardFiles("proguard-rules.pro")
+        }
+    }
+
+    lintOptions {
+        isAbortOnError = false
+    }
+
+    packagingOptions {
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/*")
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    api(platform(project(":data")))
+    api(platform(project(":ui-common")))
+    api(platform(project(":ui-compose")))
+
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Timber.core)
+
+    implementation(Libs.AndroidX.appCompat)
+    implementation(Libs.AndroidX.fragment)
+
+    implementation(Libs.KotlinX.Coroutines.core)
+    implementation(Libs.KotlinX.Coroutines.android)
+
+    implementation(Libs.Coil.core)
+    implementation(Libs.AndroidX.Ktx.fragment)
+
+    implementation(Libs.Retrofit.runtime)
+    implementation(Libs.Retrofit.moshi)
+    implementation(Libs.OkHttp.core)
+    implementation(Libs.OkHttp.loggingInterceptor)
+
+    implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
+
+    implementation("com.google.android.exoplayer:extension-mediasession:2.9.4")
+
+    implementation(Libs.AndroidX.Ktx.core)
+
+    implementation(Libs.material)
+    implementation(Libs.Hilt.android)
+    kapt(Libs.Hilt.compiler)
+    implementation(Libs.Hilt.lifecycle)
+    kapt(Libs.Hilt.lifecycle_compiler)
 }

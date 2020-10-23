@@ -51,13 +51,13 @@ class HomepageFragment : BaseFragment() {
         }
 
         archiveQueryViewModel.liveData.observe(viewLifecycleOwner, Observer {
-            homepageController.setSearchViewState(it)
+//            homepageController.setSearchViewState(it)
             it.error?.let { view.showSnackbar(it.message) }
         })
 
         homepageViewModel.liveData.observe(viewLifecycleOwner, Observer {
             debug { "Homepage updated" }
-            homepageController.setHomepageViewState(it)
+//            homepageController.setHomepageViewState(it)
         })
 
         lifecycleScope.launchWhenCreated {
@@ -77,7 +77,7 @@ class HomepageFragment : BaseFragment() {
                 when (action) {
                     is HomepageAction.SelectTag -> {
                         debug { "action $action" }
-                        homepageViewModel.selectTag(action.tag)
+//                        homepageViewModel.selectTag(action.tag)
                         archiveQueryViewModel.submitQuery(action.tag.searchQuery)
                     }
                     is HomepageAction.OpenSearchFragment -> {
@@ -88,7 +88,7 @@ class HomepageFragment : BaseFragment() {
         }
 
         lifecycleScope.launchWhenResumed {
-            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
+//            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
         }
     }
 

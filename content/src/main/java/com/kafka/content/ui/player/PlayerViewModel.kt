@@ -7,13 +7,11 @@ import com.data.base.extensions.debug
 import com.data.base.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
-import com.kafka.content.domain.followed.UpdateFollowedItems
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.player.domain.*
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.extensions.showToast
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -22,12 +20,10 @@ class PlayerViewModel @ViewModelInject constructor(
     private val addPlaylistItems: AddPlaylistItems,
     private val commandPlayer: CommandPlayer,
     private val observeItemDetail: ObserveItemDetail,
-    private val updateFollowedItems: UpdateFollowedItems,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     observeCurrentSong: ObserveCurrentSong,
     observeQueueSongs: ObserveQueueSongs
 ) : ReduxViewModel<PlayerViewState>(PlayerViewState()) {
-    val pendingActions = Channel<PlayerAction>(Channel.BUFFERED)
 
     init {
         viewModelScope.launch {
@@ -55,15 +51,6 @@ class PlayerViewModel @ViewModelInject constructor(
 
         viewModelScope.launchObserve(observeItemFollowStatus) { it.collectAndSetState { copy(isFavorite = it) } }
 
-        viewModelScope.launch {
-            for (action in pendingActions) when (action) {
-                is PlayerAction.Command -> commandPlayer(action)
-                is PlayerAction.FavoriteClick -> {
-                    updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
-                }
-            }
-        }
-
         observeCurrentSong(Unit)
         observeQueueSongs(Unit)
     }
@@ -83,12 +70,8 @@ class PlayerViewModel @ViewModelInject constructor(
         observeItemDetail(ObserveItemDetail.Param(it))
     }
 
-    private fun submitAction(action: PlayerAction) {
-        viewModelScope.launch { pendingActions.send(action) }
-    }
-
-    private fun commandPlayer(action: PlayerAction.Command) {
-        when (val command = action.playerCommand) {
+    fun command(command: PlayerCommand) {
+        when (command) {
             is PlayerCommand.Play -> commandPlayer(PlayerCommand.Play(command.mediaId))
             is PlayerCommand.ToggleCurrent -> commandPlayer(PlayerCommand.ToggleCurrent)
             is PlayerCommand.Previous -> commandPlayer(PlayerCommand.Previous)
@@ -96,4 +79,3 @@ class PlayerViewModel @ViewModelInject constructor(
         }
     }
 }
-

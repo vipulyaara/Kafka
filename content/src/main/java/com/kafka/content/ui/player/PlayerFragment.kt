@@ -30,7 +30,7 @@ class PlayerFragment : BaseFragment() {
         binding.recyclerView.apply {
             setController(playerController)
             addScrollbarElevationView(binding.shadowView)
-            playerController.playerActioner = viewModel.pendingActions
+//            playerController.playerActioner = viewModel.pendingActions
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {

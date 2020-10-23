@@ -1,45 +1,48 @@
-//package com.kafka.ui.player
+//import androidx.compose.material.DrawerState
+//import androidx.compose.runtime.Composable
 //
-//import android.view.ViewGroup
-//import androidx.compose.Composable
-//import androidx.compose.state
-//import androidx.lifecycle.LifecycleOwner
-//import androidx.lifecycle.LiveData
-//import androidx.ui.core.Alignment
-//import androidx.ui.core.ContentScale
-//import androidx.ui.core.Modifier
-//import androidx.ui.foundation.*
-//import androidx.ui.foundation.shape.corner.CircleShape
-//import androidx.ui.foundation.shape.corner.RoundedCornerShape
-//import androidx.ui.layout.*
-//import androidx.ui.layout.ColumnScope.gravity
-//import androidx.ui.material.Card
-//import androidx.ui.material.DrawerState
-//import androidx.ui.material.MaterialTheme
-//import androidx.ui.material.Surface
-//import androidx.ui.res.imageResource
-//import androidx.ui.text.style.TextOverflow
-//import androidx.ui.unit.dp
-//import com.kafka.data.extensions.getRandomAuthorResource
-//import com.kafka.ui.*
-//import com.kafka.ui.R
-//import com.kafka.content.ui.PlayerCommand
-//import com.kafka.ui.widget.FakeSeekBar
-//import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
-//
-//fun ViewGroup.composePlayerScreen(
-//    lifecycleOwner: LifecycleOwner,
-//    state: LiveData<com.kafka.content.ui.player.PlayerViewState>,
-//    actioner: (com.kafka.content.ui.PlayerCommand) -> Unit
-//): Any = setContentWithLifecycle(lifecycleOwner) {
-//    val viewState = observe(state)
-//    if (viewState != null) {
-//        MaterialThemeFromMdcTheme {
-//            PlayerScreen(viewState, actioner)
-//        }
-//    }
-//}
-//
+////package com.kafka.ui.player
+////
+////import android.view.ViewGroup
+////import androidx.compose.Composable
+////import androidx.compose.state
+////import androidx.lifecycle.LifecycleOwner
+////import androidx.lifecycle.LiveData
+////import androidx.ui.core.Alignment
+////import androidx.ui.core.ContentScale
+////import androidx.ui.core.Modifier
+////import androidx.ui.foundation.*
+////import androidx.ui.foundation.shape.corner.CircleShape
+////import androidx.ui.foundation.shape.corner.RoundedCornerShape
+////import androidx.ui.layout.*
+////import androidx.ui.layout.ColumnScope.gravity
+////import androidx.ui.material.Card
+////import androidx.ui.material.DrawerState
+////import androidx.ui.material.MaterialTheme
+////import androidx.ui.material.Surface
+////import androidx.ui.res.imageResource
+////import androidx.ui.text.style.TextOverflow
+////import androidx.ui.unit.dp
+////import com.kafka.data.extensions.getRandomAuthorResource
+////import com.kafka.ui.*
+////import com.kafka.ui.R
+////import com.kafka.content.ui.PlayerCommand
+////import com.kafka.ui.widget.FakeSeekBar
+////import dev.chrisbanes.accompanist.mdctheme.MaterialThemeFromMdcTheme
+////
+////fun ViewGroup.composePlayerScreen(
+////    lifecycleOwner: LifecycleOwner,
+////    state: LiveData<com.kafka.content.ui.player.PlayerViewState>,
+////    actioner: (com.kafka.content.ui.PlayerCommand) -> Unit
+////): Any = setContentWithLifecycle(lifecycleOwner) {
+////    val viewState = observe(state)
+////    if (viewState != null) {
+////        MaterialThemeFromMdcTheme {
+////            PlayerScreen(viewState, actioner)
+////        }
+////    }
+////}
+////
 //@Composable
 //fun PlayerScreen(viewState: com.kafka.content.ui.player.PlayerViewState, actioner: (com.kafka.content.ui.PlayerCommand) -> Unit) {
 //    val (state, onStateChange) = state { DrawerState.Closed }

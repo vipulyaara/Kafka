@@ -3,6 +3,7 @@ package com.kafka.content.data.detail
 import android.text.Html
 import com.data.base.mapper.Mapper
 import com.data.base.model.item.ItemDetailResponse
+import com.kafka.content.data.item.dismissUpperCase
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isMp3
@@ -17,8 +18,8 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
         return ItemDetail(
             itemId = metadata.identifier,
             language = metadata.licenseurl,
-            title = metadata.title,
-            description = "✪✪✪✪✪  " + (metadata.description?.joinToString()?.format() ?: ""),
+            title = metadata.title?.dismissUpperCase(),
+            description = (metadata.description?.joinToString()?.format() ?: ""),
             creator = metadata.creator?.joinToString(),
             collection = metadata.collection?.joinToString(),
             mediaType = metadata.mediatype,

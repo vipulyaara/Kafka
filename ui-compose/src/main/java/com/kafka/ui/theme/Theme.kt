@@ -6,6 +6,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 
+@Composable
+val KafkaColors
+    get() = KafkaTheme.colors
+
+@Composable
+val KafkaTypography
+    get() = MaterialTheme.typography
+
 private val LightColorPalette = KafkaColorPalette(
     primary = primary,
     secondary = secondary,
@@ -18,23 +26,34 @@ private val LightColorPalette = KafkaColorPalette(
     isDark = false
 )
 
+private val DarkColorPalette = KafkaColorPalette(
+    primary = primaryDark,
+    secondary = secondaryDark,
+    background = backgroundDark,
+    textPrimary = textPrimaryDark,
+    textSecondary = textSecondaryDark,
+    iconPrimary = iconPrimaryDark,
+    iconSecondary = iconPrimaryDark,
+    surface = surfaceDark,
+    isDark = true
+)
+
 @Composable
 fun KafkaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) LightColorPalette else LightColorPalette
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
 
     val sysUiController = SysUiController.current
     onCommit(sysUiController, colors.background) {
-        sysUiController.setSystemBarsColor(
-            color = colors.background.copy(alpha = 0.5f)
-        )
+        sysUiController.setSystemBarsColor(color = colors.background)
+        sysUiController.setNavigationBarColor(color = colors.primary)
     }
 
     ProvideKafkaColors(colors) {
         MaterialTheme(
-            colors = debugColors(darkTheme, KafkaTheme.colors.surface),
+            colors = debugColors(darkTheme, KafkaColors.surface),
             typography = Typography,
             shapes = Shapes,
             content = content
@@ -110,7 +129,7 @@ private val KafkaColorAmbient = staticAmbientOf<KafkaColorPalette> {
 
 /**
  * A Material [Colors] implementation which sets all colors to [debugColor] to discourage usage of
- * [MaterialTheme.colors] in preference to [KafkaTheme.colors].
+ * [MaterialTheme.colors] in preference to [KafkaColors].
  */
 fun debugColors(
     darkTheme: Boolean,

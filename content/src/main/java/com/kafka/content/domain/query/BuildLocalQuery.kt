@@ -14,7 +14,6 @@ class BuildLocalQuery @Inject constructor() : SyncWorkUseCase<ArchiveQuery, Simp
 
     private fun String.toLocalJoiner() = if (this.isEmpty()) "" else " $this "
 
-
     private fun ArchiveQuery.asLocalQuery(): SimpleSQLiteQuery {
         val selectFrom = "SELECT * FROM item WHERE"
         var where = " "
