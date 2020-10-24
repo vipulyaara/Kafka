@@ -24,7 +24,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version = "1.4.0"
+        const val version = "1.4.10"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
         const val plugin = "kotlin"
@@ -131,8 +131,6 @@ object Libs {
         }
 
         object Compose {
-            const val kotlinCompilerVersion = "1.4.0"
-
             const val snapshot = ""
             const val version = "1.0.0-alpha05"
 

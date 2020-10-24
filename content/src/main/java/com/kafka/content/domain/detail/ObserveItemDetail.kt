@@ -1,6 +1,7 @@
 package com.kafka.content.domain.detail
 
-import com.data.base.SubjectInteractor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
 import com.kafka.content.data.detail.ItemDetailRepository
 import com.kafka.data.entities.ItemDetail
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ import javax.inject.Inject
  *
  */
 class ObserveItemDetail @Inject constructor(
-    dispatchers: com.data.base.AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     private val repository: ItemDetailRepository
 ) : SubjectInteractor<ObserveItemDetail.Param, ItemDetail?>() {
     override val dispatcher: CoroutineDispatcher = dispatchers.io

@@ -2,7 +2,7 @@ package com.kafka.content.compose
 
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import com.kafka.ui.Navigator
+import com.kafka.ui_common.navigation.Navigator
 import kotlinx.android.parcel.Parcelize
 
 /**

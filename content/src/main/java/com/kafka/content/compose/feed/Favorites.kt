@@ -16,7 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 
@@ -62,7 +62,7 @@ private fun FavoriteItem(item: Item, onItemClick: (String) -> Unit) {
         )
 
         Text(
-            modifier = Modifier.padding(top = 4.dp),
+            modifier = Modifier.padding(top = 4.dp).widthIn(0.dp, size),
             text = item.creator?.name.orEmpty(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

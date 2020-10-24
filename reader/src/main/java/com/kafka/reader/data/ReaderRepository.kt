@@ -1,6 +1,6 @@
 package com.kafka.reader.data
 
-import com.data.base.model.getOrThrow
+import com.kafka.data.model.model.getOrThrow
 import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Singleton

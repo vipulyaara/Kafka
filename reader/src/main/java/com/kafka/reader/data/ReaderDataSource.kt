@@ -1,8 +1,8 @@
 package com.kafka.reader.data
 
-import com.data.base.api.ArchiveService
-import com.data.base.extensions.executeWithRetry
-import com.data.base.extensions.toResult
+import com.kafka.data.api.ArchiveService
+import com.kafka.data.extensions.executeWithRetry
+import com.kafka.data.extensions.toResult
 import javax.inject.Inject
 
 class ReaderDataSource @Inject constructor(private val archiveService: ArchiveService) {

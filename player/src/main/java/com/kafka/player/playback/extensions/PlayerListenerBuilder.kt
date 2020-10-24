@@ -1,6 +1,6 @@
 package com.kafka.player.playback.extensions
 
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray

@@ -1,7 +1,7 @@
 package com.kafka.content.domain.followed
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.Interactor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.Interactor
 import com.kafka.content.analytics.LogContentEvent
 import com.kafka.data.dao.FollowedItemDao
 import com.kafka.data.entities.FollowedItem

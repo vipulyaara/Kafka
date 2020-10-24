@@ -4,7 +4,7 @@ package com.kafka.content.ui//package com.kafka.content.ui
 //import android.widget.ImageView
 //import androidx.fragment.app.Fragment
 //import androidx.transition.TransitionInflater
-//import com.data.base.extensions.debug
+//import com.kafka.data.extensions.debug
 //import com.kafka.content.R
 //import com.kafka.content.ui.detail.ItemDetailFragment
 //import com.kafka.content.ui.homepage.HomepageFragment

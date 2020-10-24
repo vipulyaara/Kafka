@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.launchObserve
+import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.language.ObserveSelectedLanguages
 import com.kafka.content.domain.language.UpdateLanguages
 import com.kafka.content.ui.homepage.HomepageAction

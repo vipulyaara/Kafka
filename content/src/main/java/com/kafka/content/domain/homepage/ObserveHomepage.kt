@@ -1,8 +1,8 @@
 package com.kafka.content.domain.homepage
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.SubjectInteractor
-import com.data.base.model.ArchiveQuery
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
+import com.kafka.data.model.model.ArchiveQuery
 import com.kafka.content.data.Homepage
 import com.kafka.content.domain.followed.ObserveFollowedItems
 import com.kafka.content.domain.item.ObserveQueryItems

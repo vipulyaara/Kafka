@@ -1,8 +1,8 @@
 package com.kafka.content.domain.query
 
-import com.data.base.SyncWorkUseCase
-import com.data.base.extensions.debug
-import com.data.base.model.*
+import com.kafka.data.model.SyncWorkUseCase
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.model.*
 import javax.inject.Inject
 
 class BuildRemoteQuery @Inject constructor(): SyncWorkUseCase<ArchiveQuery, String>() {

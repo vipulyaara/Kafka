@@ -6,7 +6,7 @@ import androidx.hilt.work.WorkerInject
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
-import com.data.base.model.getOrThrow
+import com.kafka.data.model.model.getOrThrow
 import com.kafka.content.data.download.DownloadRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 

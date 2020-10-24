@@ -1,6 +1,5 @@
 package com.kafka.content.compose.detail
 
-import alignCenter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableRow
@@ -37,9 +36,10 @@ import com.kafka.data.entities.isAudio
 import com.kafka.data.entities.readerUrl
 import com.kafka.data.extensions.letEmpty
 import com.kafka.player.domain.PlayerCommand
-import com.kafka.ui.theme.KafkaColors
-import com.kafka.ui.theme.KafkaTheme
-import decrementTextSize
+import com.kafka.ui_common.extensions.alignCenter
+import com.kafka.ui_common.extensions.decrementTextSize
+import com.kafka.ui_common.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaTheme
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @ExperimentalLazyDsl
@@ -125,7 +125,7 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
             CoilImage(data = itemDetail.coverImage.orEmpty(), contentScale = ContentScale.Crop)
         }
         Text(
-            modifier = Modifier.padding(top = 24.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier.padding(top = 32.dp).align(Alignment.CenterHorizontally),
             text = itemDetail.title.toString(),
             style = MaterialTheme.typography.h5.alignCenter(),
             color = KafkaColors.textPrimary
@@ -150,7 +150,7 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
 @Composable
 private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailActions: ItemDetailActions) {
     val favoriteBackgroundColor = if (isFavorite) Color(0xFFff006a) else KafkaTheme.colors.surface
-    val favoriteIconColor = if (isFavorite) Color(0xFFFFFFFF) else KafkaTheme.colors.primary
+    val favoriteIconColor = if (isFavorite) Color(0xFFFFFFFF) else KafkaTheme.colors.textPrimary
 
     Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)) {
         FloatingActionButton(
@@ -169,7 +169,7 @@ private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailAc
             elevation = 24.dp,
             backgroundColor = KafkaColors.surface
         ) {
-            Icon(vectorResource(id = R.drawable.ic_share_2), tint = KafkaColors.primary)
+            Icon(vectorResource(id = R.drawable.ic_share_2), tint = KafkaColors.textPrimary)
         }
         Spacer(modifier = Modifier.width(24.dp))
 
@@ -189,12 +189,12 @@ private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailAc
         ) {
             Text(
                 text = if (itemDetail.isAudio()) {
-                    "Play"
+                    "PLAY"
                 } else {
-                    "Read"
+                    "READ"
                 },
                 style = MaterialTheme.typography.button,
-                color = KafkaColors.primary
+                color = KafkaColors.textPrimary
             )
         }
     }
@@ -217,9 +217,9 @@ fun Subjects(itemDetail: ItemDetail) {
         itemDetail.metadata?.forEach {
             Surface(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                color = KafkaColors.surface.copy(alpha = 0.3f),
+                color = KafkaColors.surface,
                 shape = RoundedCornerShape(percent = 50),
-                border = BorderStroke(1.5.dp, KafkaColors.surface)
+                border = BorderStroke(1.5.dp, KafkaColors.textSecondary.copy(alpha = 0.3f))
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),

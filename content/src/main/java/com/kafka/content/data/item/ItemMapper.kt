@@ -1,8 +1,8 @@
 package com.kafka.content.data.item
 
-import com.data.base.mapper.Mapper
-import com.data.base.model.item.Doc
-import com.data.base.model.item.SearchResponse
+import com.kafka.data.model.mapper.Mapper
+import com.kafka.data.model.model.item.Doc
+import com.kafka.data.model.model.item.SearchResponse
 import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import java.util.*

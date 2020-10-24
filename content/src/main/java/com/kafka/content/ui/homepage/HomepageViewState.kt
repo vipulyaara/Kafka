@@ -5,7 +5,7 @@ import com.kafka.content.data.Homepage
 import com.kafka.content.domain.homepage.HomepageTag
 import com.kafka.content.ui.query.SearchQuery
 import com.kafka.content.ui.query.SearchQueryType
-import com.kafka.data.*
+import com.kafka.data.db.*
 import com.kafka.ui_common.base.BaseViewState
 
 /**

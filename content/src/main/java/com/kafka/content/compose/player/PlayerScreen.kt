@@ -1,6 +1,5 @@
 package com.kafka.content.compose.player
 
-import alignCenter
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,8 @@ import com.kafka.data.entities.Song
 import com.kafka.player.domain.CurrentSong
 import com.kafka.player.domain.PlayerCommand
 import com.kafka.player.domain.isPlaying
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.extensions.alignCenter
+import com.kafka.ui_common.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable

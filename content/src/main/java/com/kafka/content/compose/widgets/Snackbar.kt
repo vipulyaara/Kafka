@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 
 @Composable
 fun Snackbar(text: String) {

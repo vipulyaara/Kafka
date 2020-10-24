@@ -16,8 +16,8 @@ import androidx.ui.tooling.preview.Preview
 import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
-import com.kafka.ui.theme.KafkaColors
-import com.kafka.ui.theme.KafkaTheme
+import com.kafka.ui_common.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaTheme
 
 @Composable
 fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {

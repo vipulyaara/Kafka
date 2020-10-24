@@ -66,7 +66,6 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-    api(platform(project(":ui-compose")))
     api(platform(project(":player")))
     api(platform(project(":logger")))
     api(platform(project(":reader")))

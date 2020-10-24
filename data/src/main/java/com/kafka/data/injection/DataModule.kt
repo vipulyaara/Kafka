@@ -1,6 +1,6 @@
 package com.kafka.data.injection
 
-import com.data.base.AppCoroutineDispatchers
+import com.kafka.data.model.AppCoroutineDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

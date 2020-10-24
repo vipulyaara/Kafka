@@ -3,7 +3,7 @@ package com.kafka.user
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.data.injection.Initializers
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject

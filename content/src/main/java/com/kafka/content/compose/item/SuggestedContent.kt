@@ -14,10 +14,13 @@ import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.dp
 import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Item
-import com.kafka.ui.theme.*
-import com.kafka.ui.widget.Pager
-import com.kafka.ui.widget.PagerState
-import decrementTextSize
+import com.kafka.ui_common.theme.DynamicThemePrimaryColorsFromImage
+import com.kafka.ui_common.theme.KafkaColors
+import com.kafka.ui_common.theme.constrastAgainst
+import com.kafka.ui_common.theme.rememberDominantColorState
+import com.kafka.ui_common.widget.Pager
+import com.kafka.ui_common.widget.PagerState
+import com.kafka.ui_common.extensions.decrementTextSize
 
 /**
  * This is the minimum amount of calculated constrast for a color to be used on top of the

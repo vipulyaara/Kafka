@@ -1,7 +1,7 @@
 package com.kafka.content.domain.language
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.SubjectInteractor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
 import com.kafka.content.data.language.LanguageRepository
 import com.kafka.data.entities.Language
 import kotlinx.coroutines.CoroutineDispatcher

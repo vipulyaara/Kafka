@@ -1,8 +1,9 @@
 package com.kafka.content.domain.recent
 
-import com.data.base.SubjectInteractor
+import com.kafka.data.model.SubjectInteractor
 import com.kafka.content.data.item.ItemRepository
 import com.kafka.data.entities.ItemWithRecentItem
+import com.kafka.data.model.AppCoroutineDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
  * Interactor for updating the homepage.
  * */
 class ObserveRecentItems @Inject constructor(
-    dispatchers: com.data.base.AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     private val itemRepository: ItemRepository
 ) : SubjectInteractor<Unit, List<ItemWithRecentItem>>() {
     override val dispatcher: CoroutineDispatcher = dispatchers.io

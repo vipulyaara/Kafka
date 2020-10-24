@@ -10,8 +10,8 @@ import androidx.compose.ui.platform.setContent
 import androidx.fragment.app.FragmentActivity
 import com.kafka.content.compose.main.MainWindow
 import com.kafka.player.timber.playback.MusicService
-import com.kafka.ui.theme.SysUiController
-import com.kafka.ui.theme.SystemUiController
+import com.kafka.ui_common.theme.SysUiController
+import com.kafka.ui_common.theme.SystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

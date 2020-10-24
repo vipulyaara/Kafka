@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.InvokeStatus
-import com.data.base.extensions.debug
-import com.data.base.launchObserve
-import com.data.base.model.ArchiveQuery
-import com.data.base.model.booksByAuthor
+import com.kafka.data.model.InvokeStatus
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.launchObserve
+import com.kafka.data.model.model.ArchiveQuery
+import com.kafka.data.model.model.booksByAuthor
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.detail.UpdateItemDetail
 import com.kafka.content.domain.download.StartFileDownload

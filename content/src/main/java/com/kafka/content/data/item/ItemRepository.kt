@@ -1,7 +1,7 @@
 package com.kafka.content.data.item
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.data.base.model.getOrThrow
+import com.kafka.data.model.model.getOrThrow
 import com.kafka.data.dao.ItemLocalDataSource
 import com.kafka.data.dao.RecentItemLocalDataSource
 import com.kafka.data.dao.SearchConfigurationDao

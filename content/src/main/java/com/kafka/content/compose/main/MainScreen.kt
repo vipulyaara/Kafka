@@ -23,8 +23,8 @@ import com.kafka.content.compose.Actions
 import com.kafka.content.compose.Destination
 import com.kafka.content.compose.detail.ItemDetail
 import com.kafka.content.compose.feed.Feed
-import com.kafka.ui.Navigator
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.navigation.Navigator
+import com.kafka.ui_common.theme.KafkaColors
 
 @ExperimentalMaterialApi
 @ExperimentalLazyDsl
@@ -76,10 +76,10 @@ fun TopBar() {
 
 @Composable
 private fun BottomBar(currentSection: MainTabItem, setCurrentSection: (MainTabItem) -> Unit) {
-    BottomNavigation(backgroundColor = KafkaColors.primary) {
+    BottomNavigation(backgroundColor = KafkaColors.surface, elevation = 24.dp) {
         MainTabItem.values().forEach {
             BottomNavigationItem(
-                icon = { Icon(vectorResource(id = it.icon), tint = KafkaColors.background) },
+                icon = { Icon(vectorResource(id = it.icon), tint = KafkaColors.textPrimary) },
                 selected = currentSection == it,
                 onClick = { setCurrentSection(it) },
                 selectedContentColor = Color(0xFF000000)

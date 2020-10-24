@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable

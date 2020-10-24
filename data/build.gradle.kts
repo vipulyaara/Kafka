@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-    api(platform(project(":data-base")))
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)
 

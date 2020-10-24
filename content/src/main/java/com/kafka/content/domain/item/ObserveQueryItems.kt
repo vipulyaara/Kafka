@@ -1,8 +1,8 @@
 package com.kafka.content.domain.item
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.SubjectInteractor
-import com.data.base.model.ArchiveQuery
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
+import com.kafka.data.model.model.ArchiveQuery
 import com.kafka.content.data.item.ItemRepository
 import com.kafka.content.domain.query.BuildLocalQuery
 import com.kafka.data.entities.Item

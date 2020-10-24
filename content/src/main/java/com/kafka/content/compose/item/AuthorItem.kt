@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.kafka.content.R
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 
 val authros = listOf(
     R.drawable.img_profile,

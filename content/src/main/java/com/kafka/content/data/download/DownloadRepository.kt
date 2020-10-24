@@ -1,7 +1,7 @@
 package com.kafka.content.data.download
 
 import android.os.Environment
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.content.data.item.ItemRemoteDataSource
 import com.kafka.data.dao.ItemLocalDataSource
 import okhttp3.ResponseBody

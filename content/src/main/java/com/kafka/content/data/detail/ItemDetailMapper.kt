@@ -1,8 +1,8 @@
 package com.kafka.content.data.detail
 
 import android.text.Html
-import com.data.base.mapper.Mapper
-import com.data.base.model.item.ItemDetailResponse
+import com.kafka.data.model.mapper.Mapper
+import com.kafka.data.model.model.item.ItemDetailResponse
 import com.kafka.content.data.item.dismissUpperCase
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
@@ -37,7 +37,7 @@ fun String?.format() = Html.fromHtml(this)?.toString()
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 
 //todo: remove spaces from url
-fun com.data.base.model.item.File.asFile(prefix: String) = File(
+fun com.kafka.data.model.model.item.File.asFile(prefix: String) = File(
     title = title,
     creator = creator,
     time = (mtime ?: "0").toLong(),

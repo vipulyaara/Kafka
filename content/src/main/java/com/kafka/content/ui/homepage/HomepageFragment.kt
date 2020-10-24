@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.content.R
 import com.kafka.content.databinding.FragmentHomepageBinding
 import com.kafka.content.ui.query.ArchiveQueryViewModel

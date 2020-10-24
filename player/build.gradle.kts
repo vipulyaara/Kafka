@@ -53,7 +53,6 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-    api(platform(project(":ui-compose")))
 
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)

@@ -4,7 +4,7 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import com.kafka.ui.theme.KafkaTheme
+import com.kafka.ui_common.theme.KafkaTheme
 
 @ExperimentalMaterialApi
 @ExperimentalLazyDsl

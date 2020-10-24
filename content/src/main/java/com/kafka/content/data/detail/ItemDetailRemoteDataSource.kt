@@ -1,9 +1,9 @@
 package com.kafka.content.data.detail
 
-import com.data.base.api.ArchiveService
-import com.data.base.extensions.executeWithRetry
-import com.data.base.extensions.toResult
-import com.data.base.model.Result
+import com.kafka.data.api.ArchiveService
+import com.kafka.data.extensions.executeWithRetry
+import com.kafka.data.extensions.toResult
+import com.kafka.data.model.model.Result
 import com.kafka.data.entities.ItemDetail
 import javax.inject.Inject
 

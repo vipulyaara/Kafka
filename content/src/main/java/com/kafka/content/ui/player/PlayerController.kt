@@ -3,7 +3,7 @@ package com.kafka.content.ui.player
 import androidx.databinding.BindingAdapter
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.lottie.LottieAnimationView
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.content.*
 import com.kafka.player.domain.PlayerAction
 import com.kafka.player.domain.PlayerCommand

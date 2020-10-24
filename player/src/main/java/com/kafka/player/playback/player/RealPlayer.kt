@@ -1,8 +1,8 @@
 package com.kafka.player.playback.player
 
 import android.content.Context
-import com.data.base.extensions.debug
-import com.data.base.extensions.e
+import com.kafka.data.extensions.debug
+import com.kafka.data.extensions.e
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.kafka.data.CustomScope

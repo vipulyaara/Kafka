@@ -3,8 +3,8 @@ package com.kafka.content.ui.player
 import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.extensions.debug
-import com.data.base.launchObserve
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.data.entities.ItemDetail

@@ -1,9 +1,9 @@
 package com.kafka.content.domain.homepage
 
-import com.data.base.SyncWorkUseCase
+import com.kafka.data.model.SyncWorkUseCase
 import com.kafka.content.ui.query.SearchQuery
 import com.kafka.content.ui.query.SearchQueryType
-import com.kafka.data.*
+import com.kafka.data.db.*
 import javax.inject.Inject
 
 class GetHomepageTags @Inject constructor() : SyncWorkUseCase<Unit, List<HomepageTag>>() {

@@ -2,8 +2,8 @@ package com.kafka.content.ui.query
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.InvokeStatus
-import com.data.base.launchObserve
+import com.kafka.data.model.InvokeStatus
+import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.item.ObserveQueryItems
 import com.kafka.content.domain.item.UpdateItems
 import com.kafka.data.model.ObservableLoadingCounter

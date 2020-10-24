@@ -2,8 +2,8 @@ package com.kafka.content.domain.download
 
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.Interactor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.Interactor
 import com.kafka.content.work.DownloadFileWorker
 import com.kafka.data.injection.ProcessLifetime
 import kotlinx.coroutines.CoroutineScope

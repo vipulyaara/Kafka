@@ -1,7 +1,7 @@
 package com.kafka.content.domain.query
 
-import com.data.base.SyncWorkUseCase
-import com.data.base.model._creator
+import com.kafka.data.model.SyncWorkUseCase
+import com.kafka.data.model.model._creator
 import javax.inject.Inject
 
 class BuildArchiveQuery @Inject constructor() : SyncWorkUseCase<BuildArchiveQuery.Params, BuildArchiveQuery.ArchiveQuery>() {

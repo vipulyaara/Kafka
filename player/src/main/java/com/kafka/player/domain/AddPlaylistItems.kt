@@ -1,7 +1,7 @@
 package com.kafka.player.domain
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.Interactor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.Interactor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail

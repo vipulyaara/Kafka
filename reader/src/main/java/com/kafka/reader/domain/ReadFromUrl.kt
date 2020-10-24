@@ -1,6 +1,6 @@
 package com.kafka.reader.domain
 
-import com.data.base.ResultInteractor
+import com.kafka.data.model.ResultInteractor
 import com.kafka.reader.data.ReaderRepository
 import java.io.InputStream
 import javax.inject.Inject

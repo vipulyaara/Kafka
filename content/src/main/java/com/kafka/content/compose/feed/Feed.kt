@@ -1,25 +1,22 @@
 package com.kafka.content.compose.feed
 
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import com.kafka.content.compose.Actions
@@ -29,7 +26,7 @@ import com.kafka.content.ui.homepage.HomepageViewModel
 import com.kafka.content.ui.homepage.bannerImages
 import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.data.entities.Item
-import com.kafka.ui.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaColors
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @ExperimentalLazyDsl
@@ -48,7 +45,7 @@ fun Feed(actions: Actions) {
 @Composable
 fun Feed(homepage: Homepage, actions: Actions) {
     val itemDetailAction: (Item) -> Unit = { actions.itemDetail(it.itemId) }
-    Surface(color = KafkaColors.surface.copy(alpha = 0.2f)) {
+    Surface(color = KafkaColors.background) {
         LazyColumn(content = {
             item { ContinueListening(items = homepage.recentItems, onItemClick = actions.itemDetail) }
             item { Favorites(favorites = homepage.followedItems, onItemClick = actions.itemDetail) }

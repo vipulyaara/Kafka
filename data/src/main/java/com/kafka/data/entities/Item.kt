@@ -3,7 +3,7 @@ package com.kafka.data.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.data.base.model.MediaType
+import com.kafka.data.model.model.MediaType
 
 /**
  * @author Vipul Kumar; dated 13/02/19.

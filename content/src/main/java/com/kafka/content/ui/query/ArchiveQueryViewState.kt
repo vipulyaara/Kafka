@@ -1,7 +1,7 @@
 package com.kafka.content.ui.query
 
-import com.data.base.model.*
 import com.kafka.data.entities.Item
+import com.kafka.data.model.model.*
 import com.kafka.ui_common.base.BaseViewState
 
 /**

@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.util.FitPolicy
 import com.kafka.reader.ReaderViewState

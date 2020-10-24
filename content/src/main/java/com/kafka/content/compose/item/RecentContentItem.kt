@@ -16,9 +16,9 @@ import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import com.kafka.data.entities.RecentItem
-import com.kafka.ui.theme.KafkaColors
-import com.kafka.ui.theme.KafkaTheme
-import decrementTextSize
+import com.kafka.ui_common.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaTheme
+import com.kafka.ui_common.extensions.decrementTextSize
 
 @Composable
 fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {

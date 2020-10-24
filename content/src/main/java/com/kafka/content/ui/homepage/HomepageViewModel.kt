@@ -2,7 +2,7 @@ package com.kafka.content.ui.homepage
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.launchObserve
+import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.homepage.GetHomepageTags
 import com.kafka.content.domain.homepage.ObserveHomepage
 import com.kafka.content.ui.query.asArchiveQuery

@@ -1,8 +1,8 @@
 package com.kafka.player.domain
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.Interactor
-import com.data.base.extensions.debug
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.Interactor
+import com.kafka.data.extensions.debug
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.playback.player.Player
