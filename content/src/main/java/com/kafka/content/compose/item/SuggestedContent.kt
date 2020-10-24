@@ -110,7 +110,7 @@ fun SuggestedItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item)
                 shape = RoundedCornerShape(6.dp),
                 elevation = 0.dp
             ) {
-                item.coverImage?.let { NetworkImage(url = it) }
+                item.coverImage?.let { NetworkImage(data = it) }
             }
             SuggestedItemDescription(item)
         }

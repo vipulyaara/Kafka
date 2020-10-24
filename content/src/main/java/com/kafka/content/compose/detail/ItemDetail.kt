@@ -1,5 +1,6 @@
 package com.kafka.content.compose.detail
 
+import androidx.compose.animation.animate
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableRow
@@ -101,7 +102,7 @@ fun ItemDetail(itemDetailViewState: ItemDetailViewState, actions: Actions, itemD
                     itemDetailActions = itemDetailActions
                 )
             }
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(32.dp)) }
             item { Subjects(itemDetail = itemDetail) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
             relatedItems?.letEmpty {
@@ -122,7 +123,7 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
             elevation = 24.dp,
             shape = RoundedCornerShape(4.dp)
         ) {
-            CoilImage(data = itemDetail.coverImage.orEmpty(), contentScale = ContentScale.Crop)
+            CoilImage(data = itemDetail.coverImageResource, contentScale = ContentScale.Crop)
         }
         Text(
             modifier = Modifier.padding(top = 32.dp).align(Alignment.CenterHorizontally),
@@ -149,7 +150,7 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
 
 @Composable
 private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailActions: ItemDetailActions) {
-    val favoriteBackgroundColor = if (isFavorite) Color(0xFFff006a) else KafkaTheme.colors.surface
+    val favoriteBackgroundColor = animate(if (isFavorite) Color(0xFFff006a) else KafkaTheme.colors.surface)
     val favoriteIconColor = if (isFavorite) Color(0xFFFFFFFF) else KafkaTheme.colors.textPrimary
 
     Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)) {
@@ -217,7 +218,7 @@ fun Subjects(itemDetail: ItemDetail) {
         itemDetail.metadata?.forEach {
             Surface(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                color = KafkaColors.surface,
+                color = KafkaColors.background,
                 shape = RoundedCornerShape(percent = 50),
                 border = BorderStroke(1.5.dp, KafkaColors.textSecondary.copy(alpha = 0.3f))
             ) {

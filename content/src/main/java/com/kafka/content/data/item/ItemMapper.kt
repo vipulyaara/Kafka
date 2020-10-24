@@ -1,10 +1,11 @@
 package com.kafka.content.data.item
 
+import com.kafka.data.entities.Creator
+import com.kafka.data.entities.Item
 import com.kafka.data.model.mapper.Mapper
 import com.kafka.data.model.model.item.Doc
 import com.kafka.data.model.model.item.SearchResponse
-import com.kafka.data.entities.Creator
-import com.kafka.data.entities.Item
+import com.kafka.ui_common.extensions.randomCoverResource
 import java.util.*
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class ItemMapper @Inject constructor() : Mapper<SearchResponse, List<Item>> {
         creator = this.creator?.get(0)?.let { Creator(it, it) },
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",
-        coverImageResource = 0,
+        coverImageResource = randomCoverResource,
         collection = this.collection,
         genre = this.subject,
         position = this.downloads

@@ -26,7 +26,7 @@ class SearchViewModel @ViewModelInject constructor(
     }
 
     fun onKeywordChanged(keyword: String) {
-        if (keyword.length > 1) {
+        if (keyword.length > 2) {
             viewModelScope.launchSetState {
                 copy(recentSearches = this@SearchViewModel.recentSearches
                     .filter { it.startsWith(keyword, true) }.distinct())

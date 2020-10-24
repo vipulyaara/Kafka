@@ -15,9 +15,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.theme.KafkaColors
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 
 @Composable
@@ -43,10 +43,9 @@ fun Favorites(favorites: List<Item>, onItemClick: (String) -> Unit) {
 private fun FavoriteItem(item: Item, onItemClick: (String) -> Unit) {
     val size = 164.dp
     Column(modifier = Modifier.padding(8.dp).clickable(onClick = { onItemClick(item.itemId) })) {
-        Card {
-            CoilImage(
-                data = item.coverImage ?: "",
-                fadeIn = true,
+        Card(elevation = 12.dp) {
+            NetworkImage(
+                data = item.coverImage.orEmpty(),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.size(size).clip(MaterialTheme.shapes.medium)
             )

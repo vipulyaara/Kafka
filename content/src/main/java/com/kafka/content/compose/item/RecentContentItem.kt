@@ -6,7 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,9 +18,9 @@ import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import com.kafka.data.entities.RecentItem
+import com.kafka.ui_common.extensions.decrementTextSize
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.theme.KafkaTheme
-import com.kafka.ui_common.extensions.decrementTextSize
 
 @Composable
 fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {
@@ -36,7 +38,7 @@ fun RecentContentItem(recent: ItemWithRecentItem, modifier: Modifier = Modifier,
                     shape = RoundedCornerShape(2.dp),
                     elevation = 0.dp
                 ) {
-                    item.coverImage?.let { NetworkImage(url = it) }
+                    item.coverImage?.let { NetworkImage(data = it) }
                 }
 
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {

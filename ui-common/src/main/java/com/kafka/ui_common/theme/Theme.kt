@@ -21,7 +21,7 @@ private val LightColorPalette = KafkaColorPalette(
     textPrimary = textPrimary,
     textSecondary = textSecondary,
     iconPrimary = iconPrimary,
-    iconSecondary = iconPrimary,
+    iconSecondary = iconSecondary,
     surface = surface,
     isDark = false
 )
@@ -33,7 +33,7 @@ private val DarkColorPalette = KafkaColorPalette(
     textPrimary = textPrimaryDark,
     textSecondary = textSecondaryDark,
     iconPrimary = iconPrimaryDark,
-    iconSecondary = iconPrimaryDark,
+    iconSecondary = iconSecondaryDark,
     surface = surfaceDark,
     isDark = true
 )

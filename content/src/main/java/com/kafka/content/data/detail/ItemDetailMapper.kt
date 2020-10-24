@@ -1,13 +1,14 @@
 package com.kafka.content.data.detail
 
 import android.text.Html
-import com.kafka.data.model.mapper.Mapper
-import com.kafka.data.model.model.item.ItemDetailResponse
 import com.kafka.content.data.item.dismissUpperCase
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isMp3
 import com.kafka.data.entities.isPdf
+import com.kafka.data.model.mapper.Mapper
+import com.kafka.data.model.model.item.ItemDetailResponse
+import com.kafka.ui_common.extensions.randomCoverResource
 import java.net.URL
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
             collection = metadata.collection?.joinToString(),
             mediaType = metadata.mediatype,
             files = files,
-            coverImageResource = 0,
+            coverImageResource = randomCoverResource,
             coverImage = "https://archive.org/services/img/${metadata.identifier}",
             metadata = metadata.collection
         )

@@ -16,7 +16,7 @@
 
 @file:Suppress("NOTHING_TO_INLINE", "unused")
 
-package com.kafka.ui_common
+package com.kafka.ui_common.theme
 
 import android.view.View
 import androidx.compose.foundation.layout.InnerPadding

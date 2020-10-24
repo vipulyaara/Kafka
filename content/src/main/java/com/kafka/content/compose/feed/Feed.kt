@@ -43,7 +43,7 @@ fun Feed(actions: Actions) {
 
 @ExperimentalLazyDsl
 @Composable
-fun Feed(homepage: Homepage, actions: Actions) {
+private fun Feed(homepage: Homepage, actions: Actions) {
     val itemDetailAction: (Item) -> Unit = { actions.itemDetail(it.itemId) }
     Surface(color = KafkaColors.background) {
         LazyColumn(content = {
@@ -63,7 +63,7 @@ fun Feed(homepage: Homepage, actions: Actions) {
 }
 
 @Composable
-fun Banner(it: Int) {
+private fun Banner(it: Int) {
     Row {
         Card(
             modifier = Modifier.size(396.dp, 196.dp).padding(12.dp),

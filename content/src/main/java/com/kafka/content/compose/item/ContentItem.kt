@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
@@ -18,25 +19,26 @@ import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.theme.KafkaTheme
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {
     Surface(
         modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
             .clickable(onClick = { onItemClick(item) }),
-        color = KafkaColors.background,
+        color = KafkaColors.surface,
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, KafkaColors.surface.copy(alpha = 0.3f)),
         elevation = 0.dp
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             Card(
-                modifier = Modifier.size(90.dp, 104.dp),
+                modifier = Modifier.size(108.dp, 108.dp),
                 backgroundColor = KafkaColors.surface,
                 shape = RoundedCornerShape(3.dp),
                 elevation = 0.dp
             ) {
-                item.coverImage?.let { NetworkImage(url = it) }
+                NetworkImage(data = item.coverImage.orEmpty(), contentScale = ContentScale.Crop)
             }
             ItemDescription(item)
         }
@@ -64,6 +66,7 @@ fun ItemDescription(item: Item) {
         )
 
         Text(
+            modifier = Modifier.padding(top = 4.dp),
             text = item.mediaType.orEmpty(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

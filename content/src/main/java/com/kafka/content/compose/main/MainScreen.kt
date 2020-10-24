@@ -9,13 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.kafka.content.R
@@ -23,8 +20,10 @@ import com.kafka.content.compose.Actions
 import com.kafka.content.compose.Destination
 import com.kafka.content.compose.detail.ItemDetail
 import com.kafka.content.compose.feed.Feed
+import com.kafka.content.compose.search.Search
 import com.kafka.ui_common.navigation.Navigator
 import com.kafka.ui_common.theme.KafkaColors
+import com.kafka.ui_common.theme.KafkaTheme
 
 @ExperimentalMaterialApi
 @ExperimentalLazyDsl
@@ -35,19 +34,17 @@ fun MainScreen(backDispatcher: OnBackPressedDispatcher) {
     }
     val actions = remember(navigator) { Actions(navigator) }
 
-    val selectedNavigation: MutableState<MainTabItem> = mutableStateOf(MainTabItem.Feed)
-
     val (currentSection, setCurrentSection) = savedInstanceState { MainTabItem.Feed }
 
     Scaffold(
         backgroundColor = KafkaColors.background,
         bottomBar = { BottomBar(currentSection, setCurrentSection) }
     ) {
-        Crossfade(navigator.current) { destination ->
+        Crossfade(modifier = Modifier.padding(it), current = navigator.current) { destination ->
             when (destination) {
-                Destination.Home -> when (selectedNavigation.value) {
-                    MainTabItem.Feed -> Feed(actions)
-                    MainTabItem.Search -> Empty()
+                Destination.Home -> when (currentSection) {
+                    MainTabItem.Feed -> Feed(actions = actions)
+                    MainTabItem.Search -> Search(actions = actions)
                     MainTabItem.Library -> Empty()
                     MainTabItem.Profile -> Empty()
                 }
@@ -79,10 +76,11 @@ private fun BottomBar(currentSection: MainTabItem, setCurrentSection: (MainTabIt
     BottomNavigation(backgroundColor = KafkaColors.surface, elevation = 24.dp) {
         MainTabItem.values().forEach {
             BottomNavigationItem(
-                icon = { Icon(vectorResource(id = it.icon), tint = KafkaColors.textPrimary) },
+                icon = { Icon(vectorResource(id = it.icon)) },
                 selected = currentSection == it,
                 onClick = { setCurrentSection(it) },
-                selectedContentColor = Color(0xFF000000)
+                unselectedContentColor = KafkaTheme.colors.iconPrimary,
+                selectedContentColor = KafkaTheme.colors.secondary
             )
         }
     }
