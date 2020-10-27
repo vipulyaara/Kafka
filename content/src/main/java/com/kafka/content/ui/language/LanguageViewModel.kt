@@ -1,26 +1,29 @@
 package com.kafka.content.ui.language
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
+import androidx.datastore.DataStore
+import androidx.datastore.preferences.edit
+import androidx.datastore.preferences.preferencesKey
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.language.ObserveSelectedLanguages
 import com.kafka.content.domain.language.UpdateLanguages
 import com.kafka.content.ui.homepage.HomepageAction
 import com.kafka.data.entities.Language
+import com.kafka.data.model.launchObserve
 import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Named
 
 class LanguageViewModel @ViewModelInject constructor(
     observeSelectedLanguages: ObserveSelectedLanguages,
     private val updateLanguages: UpdateLanguages,
-    @Named("app") private val sharedPreferences: SharedPreferences
+    @Named("app") private val dataStore: DataStore<androidx.datastore.preferences.Preferences>
 ) : ReduxViewModel<LanguageViewState>(LanguageViewState()) {
     private val actioner = Channel<HomepageAction>(Channel.BUFFERED)
+    private val languageSelectedKey = preferencesKey<Boolean>("language_selected")
 
     init {
         viewModelScope.launchObserve(observeSelectedLanguages) { flow ->
@@ -30,13 +33,15 @@ class LanguageViewModel @ViewModelInject constructor(
         observeSelectedLanguages(Unit)
     }
 
-    fun areLanguagesSelected() = sharedPreferences.getBoolean("language_selected", false)
+    fun areLanguagesSelected() = dataStore.data.map { it[languageSelectedKey] ?: false }
 
-    fun onDoneClicked() = sharedPreferences.edit {  putBoolean("language_selected", true) }
+    suspend fun onDoneClicked() = dataStore.edit { it[languageSelectedKey] = true }
 
     fun submitAction(action: HomepageAction) {
         viewModelScope.launch {
-            if (!actioner.isClosedForSend) { actioner.send(action) }
+            if (!actioner.isClosedForSend) {
+                actioner.send(action)
+            }
         }
     }
 

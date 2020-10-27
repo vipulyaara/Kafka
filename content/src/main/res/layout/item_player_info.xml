@@ -55,7 +55,6 @@
             android:layout_marginBottom="@dimen/spacing_large"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@{song.subtitle}"
             android:textAppearance="@style/TextAppearance.Coyote.Headline6"
             tools:text="Franz Kafka" />
     </LinearLayout>

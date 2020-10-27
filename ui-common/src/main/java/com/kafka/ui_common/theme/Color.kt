@@ -8,9 +8,9 @@ import kotlin.math.min
 
 val primary = Color(0xffAF945C)
 val secondary = Color(0xffAF945C)
-val background = Color(0xffF6F9FE)
+val background = Color(0xFFfbfcff)
 val surface = Color(0xffFFFFFF)
-val textPrimary = Color(0xff232323)
+val textPrimary = Color(0xdd232323)
 val textSecondary = Color(0xff7B8994)
 val iconPrimary = Color(0xff000000)
 val iconSecondary = Color(0xff7B8994)

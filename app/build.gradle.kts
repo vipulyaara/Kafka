@@ -99,6 +99,7 @@ dependencies {
     implementation(Libs.AndroidX.appStartup)
     implementation(Libs.AndroidX.constraintLayout)
     implementation(Libs.AndroidX.lifecycle_process)
+    implementation(Libs.AndroidX.datastore)
 
     implementation(Libs.AndroidX.Room.runtime)
 

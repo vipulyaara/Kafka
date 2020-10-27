@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.kafka.content.R
 import com.kafka.content.databinding.FragmentMainBinding
-import com.kafka.content.ui.language.LanguageFragment
 import com.kafka.content.ui.language.LanguageViewModel
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.setupToolbar
@@ -22,6 +20,7 @@ import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
@@ -69,12 +68,13 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onBackPressed()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        if (!languageViewModel.areLanguagesSelected()) {
-            currentNavController?.value!!.navigate(Navigation.LanguageSelection)
+        lifecycleScope.launchWhenResumed {
+            languageViewModel.areLanguagesSelected().collect {
+                if (it.not()) {
+                    currentNavController?.value!!.navigate(Navigation.LanguageSelection)
+                }
+            }
         }
     }
 

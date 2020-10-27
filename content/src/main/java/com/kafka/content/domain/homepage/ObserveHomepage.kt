@@ -1,12 +1,12 @@
 package com.kafka.content.domain.homepage
 
-import com.kafka.data.model.AppCoroutineDispatchers
-import com.kafka.data.model.SubjectInteractor
-import com.kafka.data.model.model.ArchiveQuery
 import com.kafka.content.data.Homepage
 import com.kafka.content.domain.followed.ObserveFollowedItems
 import com.kafka.content.domain.item.ObserveQueryItems
 import com.kafka.content.domain.recent.ObserveRecentItems
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
+import com.kafka.data.model.model.ArchiveQuery
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -27,12 +27,13 @@ class ObserveHomepage @Inject constructor(
         observeRecentItems(Unit)
         observeFollowedItems(Unit)
 
+//        return observeQueryItems.observe().map { Homepage(it, emptyList(), emptyList()) }
+
         return combine(
             observeQueryItems.observe(),
-            observeRecentItems.observe(),
             observeFollowedItems.observe()
-        ) { queryItems, recentItems, followedItems ->
-            Homepage(queryItems, recentItems, followedItems)
+        ) { queryItems, followedItems ->
+            Homepage(queryItems, emptyList(), followedItems)
         }
     }
 }

@@ -43,7 +43,7 @@ fun Favorites(favorites: List<Item>, onItemClick: (String) -> Unit) {
 private fun FavoriteItem(item: Item, onItemClick: (String) -> Unit) {
     val size = 164.dp
     Column(modifier = Modifier.padding(8.dp).clickable(onClick = { onItemClick(item.itemId) })) {
-        Card(elevation = 12.dp) {
+        Card(elevation = 1.dp) {
             NetworkImage(
                 data = item.coverImage.orEmpty(),
                 contentScale = ContentScale.Crop,

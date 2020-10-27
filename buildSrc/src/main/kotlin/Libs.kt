@@ -118,6 +118,7 @@ object Libs {
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+        const val datastore = "androidx.datastore:datastore-preferences:1.0.0-alpha02"
 
         const val preference = "androidx.preference:preference:1.1.0"
         const val lifecycle_process = "androidx.lifecycle:lifecycle-process:2.2.0"

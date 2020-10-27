@@ -2,6 +2,7 @@ package com.kafka.content.compose.search
 
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,6 +14,7 @@ import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.content.ui.query.SearchQuery
 import com.kafka.content.ui.search.SearchViewModel
 import com.kafka.data.entities.Item
+import com.kafka.ui_common.theme.KafkaTheme
 
 @ExperimentalLazyDsl
 @Composable
@@ -31,9 +33,12 @@ fun Search(actions: Actions) {
 @Composable
 fun SearchResults(items: List<Item>, actions: Actions) {
     val itemDetailAction: (Item) -> Unit = { actions.itemDetail(it.itemId) }
-    LazyColumn(content = {
-        items(items = items) {
-            ContentItem(item = it, onItemClick = itemDetailAction)
-        }
-    })
+
+    Surface(color = KafkaTheme.colors.background) {
+        LazyColumn(content = {
+            items(items = items) {
+                ContentItem(item = it, onItemClick = itemDetailAction)
+            }
+        })
+    }
 }

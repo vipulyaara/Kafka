@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.util.NotificationUtil.IMPORTANCE_LOW
 import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
 import com.kafka.data.CustomScope
 import com.kafka.data.entities.Song
+import com.kafka.data.entities.subtitle
 import com.kafka.player.R
 import com.kafka.player.timber.constants.Constants
 import com.kafka.player.timber.playback.MusicService

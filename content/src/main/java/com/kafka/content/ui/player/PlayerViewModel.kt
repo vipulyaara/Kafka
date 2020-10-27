@@ -3,12 +3,12 @@ package com.kafka.content.ui.player
 import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.extensions.debug
-import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.extensions.debug
 import com.kafka.data.model.ObservableLoadingCounter
+import com.kafka.data.model.launchObserve
 import com.kafka.player.domain.*
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.extensions.showToast
@@ -68,6 +68,10 @@ class PlayerViewModel @ViewModelInject constructor(
 
     fun observeItemDetail(it: String) {
         observeItemDetail(ObserveItemDetail.Param(it))
+    }
+
+    fun play(itemId: String) {
+        observeItemDetail(ObserveItemDetail.Param(itemId))
     }
 
     fun command(command: PlayerCommand) {

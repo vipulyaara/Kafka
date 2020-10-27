@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.kafka.content.R
 import com.kafka.content.databinding.FragmentLanguageBinding
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,11 +35,12 @@ class LanguageFragment : BaseFragment() {
         })
 
         binding.fabDone.setOnClickListener {
-            languageViewModel.onDoneClicked()
-            activity?.onBackPressedDispatcher?.onBackPressed()
+            lifecycleScope.launch {
+                languageViewModel.onDoneClicked()
+                activity?.onBackPressedDispatcher?.onBackPressed()
+            }
         }
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_language, container, false)

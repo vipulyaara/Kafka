@@ -20,6 +20,7 @@ import com.kafka.content.compose.Actions
 import com.kafka.content.compose.Destination
 import com.kafka.content.compose.detail.ItemDetail
 import com.kafka.content.compose.feed.Feed
+import com.kafka.content.compose.player.MiniPlayerScaffold
 import com.kafka.content.compose.search.Search
 import com.kafka.ui_common.navigation.Navigator
 import com.kafka.ui_common.theme.KafkaColors
@@ -40,17 +41,22 @@ fun MainScreen(backDispatcher: OnBackPressedDispatcher) {
         backgroundColor = KafkaColors.background,
         bottomBar = { BottomBar(currentSection, setCurrentSection) }
     ) {
-        Crossfade(modifier = Modifier.padding(it), current = navigator.current) { destination ->
-            when (destination) {
-                Destination.Home -> when (currentSection) {
-                    MainTabItem.Feed -> Feed(actions = actions)
-                    MainTabItem.Search -> Search(actions = actions)
-                    MainTabItem.Library -> Empty()
-                    MainTabItem.Profile -> Empty()
+//        PlayerScaffold {
+        MiniPlayerScaffold(modifier = Modifier.padding(it)) {
+            Crossfade(modifier = Modifier.padding(it), current = navigator.current) { destination ->
+                when (destination) {
+                    Destination.Home -> when (currentSection) {
+                        MainTabItem.Feed -> Feed(actions = actions)
+                        MainTabItem.Search -> Search(actions = actions)
+                        MainTabItem.Library -> Empty()
+                        MainTabItem.Profile -> Empty()
+                    }
+                    is Destination.ItemDetail -> ItemDetail(itemId = destination.itemId, actions = actions)
                 }
-                is Destination.ItemDetail -> ItemDetail(itemId = destination.itemId, actions = actions)
             }
-        }
+            }
+//        }
+
     }
 }
 

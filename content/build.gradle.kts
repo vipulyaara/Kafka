@@ -103,6 +103,7 @@ dependencies {
     implementation(Libs.AndroidX.Ktx.sqlite)
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.constraintLayout)
+    implementation(Libs.AndroidX.datastore)
 
     implementation("androidx.core:core:1.5.0-alpha04")
     implementation(Libs.AndroidX.Compose.runtime)

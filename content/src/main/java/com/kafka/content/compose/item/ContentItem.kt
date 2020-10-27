@@ -19,21 +19,20 @@ import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.theme.KafkaTheme
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -> Unit) {
     Surface(
         modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)
             .clickable(onClick = { onItemClick(item) }),
-        color = KafkaColors.surface,
+        color = KafkaColors.surface.copy(alpha = 1f),
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, KafkaColors.surface.copy(alpha = 0.3f)),
+        border = BorderStroke(0.dp, KafkaColors.surface.copy(alpha = 0.3f)),
         elevation = 0.dp
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             Card(
-                modifier = Modifier.size(108.dp, 108.dp),
+                modifier = Modifier.size(90.dp, 104.dp),
                 backgroundColor = KafkaColors.surface,
                 shape = RoundedCornerShape(3.dp),
                 elevation = 0.dp
@@ -47,7 +46,7 @@ fun ContentItem(item: Item, modifier: Modifier = Modifier, onItemClick: (Item) -
 
 @Composable
 fun ItemDescription(item: Item) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp).padding(top = 4.dp)) {
         Text(
             text = item.title.toString(),
             maxLines = 2,

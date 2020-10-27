@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import com.kafka.content.R
 import com.kafka.content.compose.Actions
+import com.kafka.content.compose.NetworkImage
 import com.kafka.content.compose.item.ContentItem
 import com.kafka.content.ui.detail.ItemDetailViewModel
 import com.kafka.content.ui.detail.ItemDetailViewState
@@ -36,12 +36,11 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isAudio
 import com.kafka.data.entities.readerUrl
 import com.kafka.data.extensions.letEmpty
-import com.kafka.player.domain.PlayerCommand
 import com.kafka.ui_common.extensions.alignCenter
 import com.kafka.ui_common.extensions.decrementTextSize
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.theme.KafkaTheme
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.kafka.ui_common.widget.FullScreenLoader
 
 @ExperimentalLazyDsl
 @Composable
@@ -64,24 +63,14 @@ fun ItemDetail(itemId: String, actions: Actions) {
                 onFavoriteClick = { itemDetailViewModel.updateFavorite() },
                 onPlayClicked = {
                     itemDetailViewModel.addRecentItem()
-                    playerViewModel.command(PlayerCommand.Play())
+                    playerViewModel.play(it.itemId)
                 },
                 onReadClicked = {
                     itemDetailViewModel.addRecentItem()
                     itemDetailViewModel.read(context, it.readerUrl(), "")
                 }
             ))
-    } ?: Loader()
-}
-
-@Composable
-fun Loader() {
-    Box(modifier = Modifier.fillMaxSize(), alignment = Alignment.Center) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(48.dp),
-            color = KafkaTheme.colors.secondary
-        )
-    }
+    } ?: FullScreenLoader()
 }
 
 @ExperimentalLazyDsl
@@ -123,7 +112,7 @@ fun ItemDetailDescription(itemDetail: ItemDetail) {
             elevation = 24.dp,
             shape = RoundedCornerShape(4.dp)
         ) {
-            CoilImage(data = itemDetail.coverImageResource, contentScale = ContentScale.Crop)
+            NetworkImage(data = itemDetail.coverImage.orEmpty())
         }
         Text(
             modifier = Modifier.padding(top = 32.dp).align(Alignment.CenterHorizontally),

@@ -1,11 +1,9 @@
 package com.kafka.user.injection
 
-import android.app.Application
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import android.content.Context
+import androidx.datastore.preferences.createDataStore
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.kafka.data.injection.ApplicationId
 import com.kafka.data.injection.Initializers
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.ui_common.navigation.DynamicDeepLinkHandler
@@ -15,6 +13,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.multibindings.Multibinds
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Named
@@ -27,17 +26,10 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 @Module
 class AppModule {
-
-    @ApplicationId
-    @Provides
-    fun provideApplicationId(application: Application): String = application.packageName
-
     @Named("app")
     @Provides
     @Singleton
-    fun provideAppPreferences(application: Application): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(application)
-    }
+    fun provideAppPreferences(@ApplicationContext context: Context) = context.createDataStore(name = "app")
 
     @Provides
     @ProcessLifetime

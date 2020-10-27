@@ -74,7 +74,6 @@
                     android:layout_marginHorizontal="@dimen/spacing_large"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{song.subtitle}"
                     android:textSize="12sp"
                     android:textColor="@color/surface"
                     android:textAppearance="@style/TextAppearance.Coyote.Body1"

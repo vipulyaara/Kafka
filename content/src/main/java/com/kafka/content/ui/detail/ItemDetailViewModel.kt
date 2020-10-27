@@ -4,11 +4,6 @@ import android.content.Context
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.model.InvokeStatus
-import com.kafka.data.extensions.debug
-import com.kafka.data.model.launchObserve
-import com.kafka.data.model.model.ArchiveQuery
-import com.kafka.data.model.model.booksByAuthor
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.detail.UpdateItemDetail
 import com.kafka.content.domain.download.StartFileDownload
@@ -19,10 +14,10 @@ import com.kafka.content.domain.item.UpdateItems
 import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isAudio
-import com.kafka.data.model.ObservableErrorCounter
-import com.kafka.data.model.ObservableLoadingCounter
-import com.kafka.data.model.collectFrom
-import com.kafka.data.model.collectInto
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.*
+import com.kafka.data.model.model.ArchiveQuery
+import com.kafka.data.model.model.booksByAuthor
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
@@ -98,8 +93,12 @@ class ItemDetailViewModel @ViewModelInject constructor(
     }
 
     fun updateFavorite() {
+        updateFavorite(currentState().itemDetail!!.itemId)
+    }
+
+    fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
+            updateFollowedItems(UpdateFollowedItems.Params(itemId))
         }
     }
 
@@ -208,5 +207,9 @@ class ItemDetailViewModel @ViewModelInject constructor(
             .showSearchView(true)
             .build()
         DocumentActivity.openDocument(context, readerUrl.toUri(), config)
+    }
+
+    fun addPlaylistItems(itemId: String) {
+
     }
 }

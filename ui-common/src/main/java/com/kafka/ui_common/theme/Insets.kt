@@ -19,16 +19,33 @@
 package com.kafka.ui_common.theme
 
 import android.view.View
-import androidx.compose.foundation.layout.InnerPadding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.onCommit
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.ui.LayoutModifier
+import androidx.compose.ui.Measurable
+import androidx.compose.ui.MeasureScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.layout.IntrinsicMeasurable
 import androidx.compose.ui.layout.IntrinsicMeasureScope
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.platform.LayoutDirectionAmbient
 import androidx.compose.ui.platform.ViewAmbient
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.offset
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
@@ -101,10 +118,10 @@ class Insets {
         internal set
 }
 
-val InsetsAmbient = staticAmbientOf<DisplayInsets>()
+val AmbientInsets = staticAmbientOf { DisplayInsets() }
 
 /**
- * Applies any [WindowInsetsCompat] values to [InsetsAmbient], which are then available
+ * Applies any [WindowInsetsCompat] values to [AmbientInsets], which are then available
  * within [content].
  *
  * @param consumeWindowInsets Whether to consume any [WindowInsetsCompat]s which are dispatched to
@@ -148,7 +165,7 @@ fun ProvideDisplayInsets(
         }
     }
 
-    Providers(InsetsAmbient provides displayInsets) {
+    Providers(AmbientInsets provides displayInsets) {
         content()
     }
 }
@@ -175,7 +192,7 @@ private fun Insets.updateFrom(windowInsets: WindowInsetsCompat, type: Int) {
  */
 fun Modifier.systemBarsPadding(enabled: Boolean = true) = composed {
     insetsPadding(
-        insets = InsetsAmbient.current.systemBars,
+        insets = AmbientInsets.current.systemBars,
         left = enabled,
         top = enabled,
         right = enabled,
@@ -188,7 +205,7 @@ fun Modifier.systemBarsPadding(enabled: Boolean = true) = composed {
  * of the content.
  */
 fun Modifier.statusBarsPadding() = composed {
-    insetsPadding(insets = InsetsAmbient.current.statusBars, top = true)
+    insetsPadding(insets = AmbientInsets.current.statusBars, top = true)
 }
 
 /**
@@ -209,7 +226,7 @@ fun Modifier.navigationBarsPadding(
     right: Boolean = true
 ) = composed {
     insetsPadding(
-        insets = InsetsAmbient.current.navigationBars,
+        insets = AmbientInsets.current.navigationBars,
         left = left,
         right = right,
         bottom = bottom
@@ -243,7 +260,7 @@ fun Modifier.navigationBarsPadding(
  */
 fun Modifier.statusBarsHeight(additional: Dp = 0.dp) = composed {
     InsetsSizeModifier(
-        insets = InsetsAmbient.current.statusBars,
+        insets = AmbientInsets.current.statusBars,
         heightSide = VerticalSide.Top,
         additionalHeight = additional
     )
@@ -295,7 +312,7 @@ inline fun Modifier.statusBarsHeight() = statusBarsHeightPlus(0.dp)
  */
 fun Modifier.statusBarsHeightPlus(additional: Dp) = composed {
     InsetsSizeModifier(
-        insets = InsetsAmbient.current.statusBars,
+        insets = AmbientInsets.current.statusBars,
         heightSide = VerticalSide.Top,
         additionalHeight = additional
     )
@@ -347,7 +364,7 @@ inline fun Modifier.navigationBarsHeight() = navigationBarsHeightPlus(0.dp)
  */
 fun Modifier.navigationBarsHeightPlus(additional: Dp) = composed {
     InsetsSizeModifier(
-        insets = InsetsAmbient.current.navigationBars,
+        insets = AmbientInsets.current.navigationBars,
         heightSide = VerticalSide.Bottom,
         additionalHeight = additional
     )
@@ -401,14 +418,14 @@ fun Modifier.navigationBarsWidthPlus(
     additional: Dp
 ) = composed {
     InsetsSizeModifier(
-        insets = InsetsAmbient.current.navigationBars,
+        insets = AmbientInsets.current.navigationBars,
         widthSide = side,
         additionalWidth = additional
     )
 }
 
 /**
- * Returns the current insets converted into a [InnerPadding].
+ * Returns the current insets converted into [PaddingValues].
  *
  * @param start Whether to apply the inset on the start dimension.
  * @param top Whether to apply the inset on the top dimension.
@@ -416,30 +433,30 @@ fun Modifier.navigationBarsWidthPlus(
  * @param bottom Whether to apply the inset on the bottom dimension.
  */
 @Composable
-fun Insets.toInnerPadding(
+fun Insets.toPaddingValues(
     start: Boolean = true,
     top: Boolean = true,
     end: Boolean = true,
     bottom: Boolean = true
-): InnerPadding = with(DensityAmbient.current) {
+): PaddingValues = with(DensityAmbient.current) {
     val layoutDirection = LayoutDirectionAmbient.current
-    InnerPadding(
+    PaddingValues(
         start = when {
-            start && layoutDirection == LayoutDirection.Ltr -> this@toInnerPadding.left.toDp()
-            start && layoutDirection == LayoutDirection.Rtl -> this@toInnerPadding.right.toDp()
+            start && layoutDirection == LayoutDirection.Ltr -> this@toPaddingValues.left.toDp()
+            start && layoutDirection == LayoutDirection.Rtl -> this@toPaddingValues.right.toDp()
             else -> 0.dp
         },
         top = when {
-            top -> this@toInnerPadding.top.toDp()
+            top -> this@toPaddingValues.top.toDp()
             else -> 0.dp
         },
         end = when {
-            end && layoutDirection == LayoutDirection.Ltr -> this@toInnerPadding.right.toDp()
-            end && layoutDirection == LayoutDirection.Rtl -> this@toInnerPadding.left.toDp()
+            end && layoutDirection == LayoutDirection.Ltr -> this@toPaddingValues.right.toDp()
+            end && layoutDirection == LayoutDirection.Rtl -> this@toPaddingValues.left.toDp()
             else -> 0.dp
         },
         bottom = when {
-            bottom -> this@toInnerPadding.bottom.toDp()
+            bottom -> this@toPaddingValues.bottom.toDp()
             else -> 0.dp
         }
     )
