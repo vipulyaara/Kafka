@@ -1,6 +1,6 @@
 package com.kafka.content.data.detail
 
-import com.data.base.model.getOrThrow
+import com.kafka.data.model.model.getOrThrow
 import com.kafka.data.dao.ItemDetailLocalDataSource
 import javax.inject.Inject
 

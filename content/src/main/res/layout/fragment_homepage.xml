@@ -20,13 +20,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <include
         android:id="@+id/shadowView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/spacing_medium"
-        android:src="@drawable/img_shadow_top_to_bottom"
+        layout="@layout/view_shadow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

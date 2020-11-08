@@ -7,21 +7,23 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import coil.Coil
-import coil.request.LoadRequest
+import coil.request.ImageRequest
+import com.google.android.exoplayer2.DefaultControlDispatcher
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.util.NotificationUtil.IMPORTANCE_LOW
 import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
 import com.kafka.data.CustomScope
 import com.kafka.data.entities.Song
+import com.kafka.data.entities.subtitle
 import com.kafka.player.R
 import com.kafka.player.timber.constants.Constants
 import com.kafka.player.timber.playback.MusicService
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +31,6 @@ import javax.inject.Singleton
 class NotificationManager @Inject constructor(
     private val context: Application
 ) : CoroutineScope by CustomScope(),
-    PlayerNotificationManager.CustomActionReceiver,
     PlayerNotificationManager.MediaDescriptionAdapter {
 
     private val channelId = "1001"
@@ -53,16 +54,15 @@ class NotificationManager @Inject constructor(
             setColorized(true)
             setColor(Color.parseColor("#AF945C"))
             setUseChronometer(false)
-            setFastForwardIncrementMs(10_000L)
-            setRewindIncrementMs(10_000L)
+            setControlDispatcher(DefaultControlDispatcher(10_000L, 10_000L))
             setUseNavigationActionsInCompactView(true)
         }
     }
 
     init {
-        val mediaSession = MediaSessionCompat(context, "ExoPlayer")
-        mediaSession.isActive = true
-        playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken())
+//        val mediaSession = MediaSessionCompat(context, "ExoPlayer")
+//        mediaSession.isActive = true
+//        playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken())
     }
 
     fun attachPlayer(player: Player) {
@@ -71,22 +71,6 @@ class NotificationManager @Inject constructor(
 
     fun detachPlayer() {
         playerNotificationManager.setPlayer(null)
-    }
-
-    override fun getCustomActions(player: Player): MutableList<String> {
-        return mutableListOf()
-    }
-
-    override fun createCustomActions(context: Context, instanceId: Int): MutableMap<String, NotificationCompat.Action> {
-        return mutableMapOf(
-            "play" to getPlayPauseAction(context, R.drawable.ic_pause),
-            "next" to getNextAction(context),
-            "previous" to getPreviousAction(context)
-        )
-    }
-
-    override fun onCustomAction(player: Player, action: String, intent: Intent) {
-        TODO("not implemented")
     }
 
     override fun createCurrentContentIntent(player: Player): PendingIntent? {
@@ -102,14 +86,15 @@ class NotificationManager @Inject constructor(
     }
 
     override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback): Bitmap? {
-        Coil.imageLoader(context)
-            .execute(
-                LoadRequest.Builder(context)
+        launch {
+            Coil.imageLoader(context).execute(
+                ImageRequest.Builder(context)
                     .data((player.currentTag as? Song)?.coverImage)
                     .target {
                         callback.onBitmap((it as BitmapDrawable).bitmap)
                     }.build()
             )
+        }
         return null
     }
 

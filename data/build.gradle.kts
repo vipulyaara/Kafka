@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
@@ -51,7 +50,6 @@ android {
 }
 
 dependencies {
-    api(platform(project(":data-base")))
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)
 

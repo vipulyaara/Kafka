@@ -6,7 +6,7 @@ import android.os.IBinder
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
 import com.kafka.player.playback.player.Player

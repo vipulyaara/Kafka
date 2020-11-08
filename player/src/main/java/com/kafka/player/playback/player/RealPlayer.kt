@@ -1,26 +1,22 @@
 package com.kafka.player.playback.player
 
 import android.content.Context
-import com.data.base.extensions.debug
-import com.data.base.extensions.e
+import com.kafka.data.extensions.debug
+import com.kafka.data.extensions.e
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.Player.*
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
 import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.Song
-import com.kafka.player.playback.extensions.prepare
 import com.kafka.player.playback.extensions.setup
-import com.kafka.player.playback.extensions.toMediaSources
+import com.kafka.player.playback.extensions.toMediaItems
 import com.kafka.player.playback.notification.NotificationManager
 import com.kafka.player.timber.playback.BecomingNoisyReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,18 +26,13 @@ class RealPlayer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val queueDao: QueueDao,
     private val notificationManager: NotificationManager,
-    private val mediaSessionManager: MediaSessionManager
+    mediaSessionManager: MediaSessionManager
 ) : Player, CoroutineScope by CustomScope() {
-
-    override val player: SimpleExoPlayer by lazy {
-        SimpleExoPlayer.Builder(context).setUseLazyPreparation(true).build()
-    }
+    val player by lazy { SimpleExoPlayer.Builder(context).build() }
     private val becomingNoisyReceiver = BecomingNoisyReceiver(context, mediaSessionManager.mediaSession.sessionToken)
-    private val concatenatingMediaSource by lazy { ConcatenatingMediaSource() }
-    private val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, context.packageName))
 
     private val currentItem
-        get() = (player.currentTag as? Song)
+        get() = player.currentMediaItem
 
     init {
         launch {
@@ -51,26 +42,38 @@ class RealPlayer @Inject constructor(
         }
     }
 
-    override suspend fun setQueue(queue: List<Song>) {
-        queueDao.clearSongs()
-        queueDao.insertAll(queue)
-        concatenatingMediaSource.clear()
-        concatenatingMediaSource.addMediaSources(queue.toMediaSources(dataSourceFactory))
+    override fun setQueue(queue: List<Song>) {
+        launch {
+            queueDao.clearSongs()
+            queueDao.insertAll(queue)
+
+            debug { "Before" }
+
+            launch(Dispatchers.Main) {
+                player.clearMediaItems()
+                player.addMediaItems(queue.toMediaItems())
+                debug { "Middle" }
+            }
+            debug { "After" }
+        }
     }
 
     private fun initializePlayer() {
         player.setup {
-            onLoadingChange { debug { "downloading changed $it" } }
+            onLoadingChange { debug { "loading changed $it" } }
             onError { e(it) { "error" } }
             onTracksChanged { tracks, selections -> debug { "track changed" } }
-            onPositionDiscontinuity { onPositionDiscontinuity(it) }
             onTimelineChange { timeline, any -> debug { "timeline changed" } }
             onSeek { debug { "seek changed" } }
             onPlayerState { playWhenReady, playbackState ->
                 debug { "playing state changed $playbackState" }
-
                 setNoisyReceiver()
                 updateSeek()
+            }
+
+            onMediaItemChanged {
+                debug { "media item changed" }
+                it?.mediaId?.let { launch { queueDao.updateCurrentSong(it) } }
             }
         }
     }
@@ -79,7 +82,7 @@ class RealPlayer @Inject constructor(
         val isPlaying = player.isPlaying
         val seek = (player.currentPosition / player.duration) * 100
 
-        if (currentItem?.id != null) {
+        if (currentItem?.mediaId != null) {
             launch { updateSeek(seek, isPlaying) }
         }
     }
@@ -98,38 +101,21 @@ class RealPlayer @Inject constructor(
         queueDao.updatePlayerSeekPosition(seek)
     }
 
-    private fun onPositionDiscontinuity(reason: Int?) {
-        debug { "onPositionDiscontinuity" }
-        currentItem?.id?.let { launch { queueDao.updateCurrentSong(it) } }
-        when (reason) {
-            DISCONTINUITY_REASON_PERIOD_TRANSITION -> {
-            }
-            DISCONTINUITY_REASON_SEEK -> {
-            }
-            TIMELINE_CHANGE_REASON_DYNAMIC -> {
-            }
+    override fun play() {
+        debug { "play current" }
+        launch(Dispatchers.Main) {
+            player.playWhenReady = true
         }
     }
 
-    override fun play() {
-        player.playWhenReady = true
-    }
-
-    override fun play(song: Song) {
-        launch {
-            var position = queueDao.getQueueSongs().indexOfFirst { it?.id == song.id }
-            if (position == -1) position = 0
-
+    override suspend fun play(position: Int) {
+        coroutineScope {
+            debug { "play song" }
             launch(Dispatchers.Main) {
-                debug { "seek position $position" }
-                player.prepare(concatenatingMediaSource) {
-                    shuffleModeEnabled = false
-                    repeatMode = REPEAT_MODE_ALL
-
-                    playWhenReady = false
-                    seekTo(position, C.TIME_UNSET)
-                    playWhenReady = true
-                }
+                debug { "playing item from queue $position" }
+                player.seekTo(/* windowIndex= */ position, C.TIME_UNSET)
+                player.prepare()
+                play()
             }
         }
     }
@@ -139,29 +125,36 @@ class RealPlayer @Inject constructor(
     }
 
     override fun togglePlayPause() {
-        if (player.isPlaying) {
-            pause()
-        } else {
-            play()
+        debug { "toggle play pause ${player.playbackState}" }
+        launch(Dispatchers.Main) {
+            if (player.isPlaying) {
+                pause()
+            } else {
+                player.play()
+            }
         }
     }
 
     override fun next() {
-        player.next()
+        launch(Dispatchers.Main) {
+            player.next()
+        }
     }
 
     override fun previous() {
-        player.previous()
+        launch(Dispatchers.Main) {
+            player.previous()
+        }
     }
 
     override fun seekTo(position: Long) {
         player.seekTo(position)
     }
 
-    override fun  start() {
+    override fun start() {
         initializePlayer()
         notificationManager.attachPlayer(player)
-        mediaSessionManager.connect(player)
+//        mediaSessionManager.connect(player)
     }
 
     override fun stop() {

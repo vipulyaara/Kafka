@@ -1,6 +1,5 @@
 package com.kafka.data.model
 
-import com.data.base.InvokeStatus
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 

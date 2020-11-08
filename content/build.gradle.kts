@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
+    id("kotlin-android-extensions")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
 }
@@ -20,7 +20,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding.isEnabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
@@ -46,6 +55,8 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/ui-graphics_release.kotlin_module/")
+        exclude("META-INF/*")
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -55,9 +66,9 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-    api(platform(project(":ui-compose")))
     api(platform(project(":player")))
     api(platform(project(":logger")))
+    api(platform(project(":reader")))
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)
 
@@ -72,7 +83,7 @@ dependencies {
     implementation(Libs.OkHttp.core)
     implementation(Libs.OkHttp.loggingInterceptor)
 
-    implementation("com.google.android.play:core:1.8.0")
+    implementation("com.google.android.play:core:1.8.2")
 
     implementation("com.pdftron:pdftron:7.1.4")
     implementation("com.pdftron:tools:7.1.4")
@@ -83,13 +94,26 @@ dependencies {
     kapt(Libs.Hilt.compiler)
     implementation(Libs.Hilt.lifecycle)
     kapt(Libs.Hilt.lifecycle_compiler)
+    implementation(Libs.Hilt.workManager)
 
     implementation(Libs.material)
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.fragment)
-    implementation(Libs.AndroidX.workManager)
+    implementation(Libs.AndroidX.Ktx.workManager)
+    implementation(Libs.AndroidX.Ktx.sqlite)
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.constraintLayout)
+    implementation(Libs.AndroidX.datastore)
+
+    implementation("androidx.core:core:1.5.0-alpha04")
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.Accompanist.coil)
+    implementation("com.github.zsoltk:compose-router:0.20.0")
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)

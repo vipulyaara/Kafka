@@ -3,7 +3,7 @@ package com.kafka.content.ui
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.annotation.ExperimentalCoilApi
-import coil.api.loadAny
+import coil.loadAny
 import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
@@ -46,14 +46,4 @@ fun ImageView.loadImage(
 @BindingAdapter("image")
 fun ImageView.loadImage(image: Int?) {
     loadAny(image)
-}
-
-@BindingAdapter("playIcon")
-fun ImageView.playIcon(isPlaying: Boolean?) {
-    val icon = when (isPlaying) {
-        null -> 0
-        true -> R.drawable.ic_pause
-        false -> R.drawable.ic_play
-    }
-    setImageResource(icon)
 }

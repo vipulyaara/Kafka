@@ -51,8 +51,8 @@
                 <ImageView
                     android:id="@+id/heroImage"
                     image="@{item.coverImage}"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="84dp"
+                    android:layout_height="96dp"
                     android:scaleType="centerCrop" />
 
             </com.google.android.material.card.MaterialCardView>

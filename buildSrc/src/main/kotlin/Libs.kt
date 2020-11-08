@@ -6,9 +6,10 @@ object Publishing {
 
     const val publishVersion = "0.0.1"
 
-    const val compileSdkVersion = 29
+    const val compileSdkVersion = 30
     const val minSdkVersion = 23
 }
+
 object Libs {
     const val material = "com.google.android.material:material:1.2.0"
     const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.0.9"
@@ -23,7 +24,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version = "1.4.0"
+        const val version = "1.4.10"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
         const val plugin = "kotlin"
@@ -37,6 +38,7 @@ object Libs {
         const val android = "com.google.dagger:hilt-android:2.28-alpha"
         const val compiler = "com.google.dagger:hilt-android-compiler:2.28-alpha"
         const val lifecycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+        const val workManager = "androidx.hilt:hilt-work:1.0.0-alpha01"
         const val lifecycle_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
     }
 
@@ -53,7 +55,7 @@ object Libs {
     }
 
     object ExoPlayer {
-        private const val version = "2.11.5"
+        private const val version = "2.12.0"
         const val player = "com.google.android.exoplayer:exoplayer:$version"
     }
 
@@ -73,7 +75,7 @@ object Libs {
     }
 
     object Coil {
-        private const val version = "0.11.0"
+        private const val version = "1.0.0-rc3"
         const val core = "io.coil-kt:coil:$version"
     }
 
@@ -98,7 +100,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.2.0"
+        private const val version = "0.3.2"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
     }
 
@@ -116,8 +118,10 @@ object Libs {
         const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0-beta01"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
-        const val workManager = "android.arch.work:work-runtime:1.0.0-alpha13"
+        const val datastore = "androidx.datastore:datastore-preferences:1.0.0-alpha02"
+
         const val preference = "androidx.preference:preference:1.1.0"
+        const val lifecycle_process = "androidx.lifecycle:lifecycle-process:2.2.0"
 
         object Navigation {
             private const val version = "2.2.0-alpha01"
@@ -128,32 +132,31 @@ object Libs {
         }
 
         object Compose {
-            const val kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
-
             const val snapshot = ""
-            const val version = "1.0.0-alpha01"
+            const val version = "1.0.0-alpha06"
 
-            const val extensions = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.6"
+//            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.3.0"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val foundation = "androidx.compose.foundation:foundation:${version}"
             const val layout = "androidx.compose.foundation:foundation-layout:${version}"
 
             const val ui = "androidx.compose.ui:ui:${version}"
-            const val livedata = "androidx.ui:ui-livedata:$version"
+//            const val livedata = "androidx.ui:ui-livedata:$version"
             const val material = "androidx.compose.material:material:${version}"
             const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${version}"
 
             const val tooling = "androidx.ui:ui-tooling:${version}"
             const val test = "androidx.ui:ui-test:${version}"
             const val animation = "androidx.ui:ui-animation:$version"
+            const val compiler = "androidx.compose:compose-compiler:$version"
         }
 
         object Ktx {
             private const val sqliteVersion = "2.0.0"
             private const val ktxVersion = "1.0.0"
             private const val ktxLifecycleVersion = "2.2.0"
-            private const val workManagerVersion = "2.3.2"
+            private const val workManagerVersion = "2.4.0"
             const val core = "androidx.core:core-ktx:$ktxVersion"
             const val fragment = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
             const val palette = "androidx.palette:palette-ktx:$ktxVersion"
@@ -306,7 +309,7 @@ object Libs {
 
     object KotlinX {
         object Coroutines {
-            private const val version = "1.3.7"
+            private const val version = "1.3.9"
             val rx = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
             val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
             val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"

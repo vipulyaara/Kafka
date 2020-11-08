@@ -1,7 +1,7 @@
 package com.kafka.player.domain
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.SubjectInteractor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.entities.Song
 import kotlinx.coroutines.CoroutineDispatcher

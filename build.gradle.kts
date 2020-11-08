@@ -9,12 +9,12 @@ buildscript {
         maven(url = "https://pdftron-maven.s3.amazonaws.com/release")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0-alpha09")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28.3-alpha")
-        classpath("com.google.gms:google-services:4.3.3")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.2.1")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0")
+        classpath("com.android.tools.build:gradle:4.2.0-alpha14")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.29.1-alpha")
+        classpath("com.google.gms:google-services:4.3.4")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1")
     }
 }
 
@@ -41,5 +41,6 @@ subprojects {
                     "kotlinx.coroutines.ExperimentalCoroutinesApi," +
                     "kotlinx.coroutines.InternalCoroutinesApi," +
                     "kotlinx.coroutines.FlowPreview"
+        kotlinOptions.freeCompilerArgs += "-Xallow-jvm-ir-dependencies"
     }
 }

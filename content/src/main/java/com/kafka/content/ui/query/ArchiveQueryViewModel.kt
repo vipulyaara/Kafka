@@ -2,9 +2,9 @@ package com.kafka.content.ui.query
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.InvokeStatus
-import com.data.base.launchObserve
-import com.kafka.content.domain.item.ObserveItems
+import com.kafka.data.model.InvokeStatus
+import com.kafka.data.model.launchObserve
+import com.kafka.content.domain.item.ObserveQueryItems
 import com.kafka.content.domain.item.UpdateItems
 import com.kafka.data.model.ObservableLoadingCounter
 import com.kafka.ui_common.base.ReduxViewModel
@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class ArchiveQueryViewModel @ViewModelInject constructor(
-    private val observeItems: ObserveItems,
+    private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
     private val loadingState: ObservableLoadingCounter,
     private val snackbarManager: SnackbarManager
 ) : ReduxViewModel<ArchiveQueryViewState>(ArchiveQueryViewState()) {
 
     init {
-        viewModelScope.launchObserve(observeItems) { flow ->
+        viewModelScope.launchObserve(observeQueryItems) { flow ->
             flow.distinctUntilChanged().collectAndSetState { list ->
                 copy(items = list)
             }
@@ -40,7 +40,7 @@ class ArchiveQueryViewModel @ViewModelInject constructor(
     fun submitQuery(searchQuery: SearchQuery) {
         val query = searchQuery.asArchiveQuery()
 
-        observeItems(ObserveItems.Params(query))
+        observeQueryItems(ObserveQueryItems.Params(query))
         viewModelScope.launch {
             updateItems(UpdateItems.Params(query)).watchStatus()
         }

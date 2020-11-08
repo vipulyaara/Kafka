@@ -9,18 +9,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentHomepageBinding
 import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.content.ui.query.SearchAction
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
 import com.kafka.ui_common.extensions.showSnackbar
+import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_homepage.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -28,6 +29,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomepageFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentHomepageBinding::bind)
     private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
     private val homepageViewModel: HomepageViewModel by viewModels()
     private val navController by lazy { findNavController() }
@@ -39,21 +41,23 @@ class HomepageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+
             setController(homepageController)
-            addScrollbarElevationView(shadowView)
+            addScrollbarElevationView(binding.shadowView.shadowView)
             homepageController.homepageActioner = homepageActioner
             homepageController.searchActioner = searchActioner
         }
 
         archiveQueryViewModel.liveData.observe(viewLifecycleOwner, Observer {
-            homepageController.setSearchViewState(it)
+//            homepageController.setSearchViewState(it)
             it.error?.let { view.showSnackbar(it.message) }
         })
 
         homepageViewModel.liveData.observe(viewLifecycleOwner, Observer {
             debug { "Homepage updated" }
-            homepageController.setHomepageViewState(it)
+//            homepageController.setHomepageViewState(it)
         })
 
         lifecycleScope.launchWhenCreated {
@@ -73,7 +77,7 @@ class HomepageFragment : BaseFragment() {
                 when (action) {
                     is HomepageAction.SelectTag -> {
                         debug { "action $action" }
-                        homepageViewModel.selectTag(action.tag)
+//                        homepageViewModel.selectTag(action.tag)
                         archiveQueryViewModel.submitQuery(action.tag.searchQuery)
                     }
                     is HomepageAction.OpenSearchFragment -> {
@@ -84,7 +88,7 @@ class HomepageFragment : BaseFragment() {
         }
 
         lifecycleScope.launchWhenResumed {
-            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
+//            homepageActioner.send(HomepageAction.SelectTag(homepageViewModel.getSelectedTag()))
         }
     }
 

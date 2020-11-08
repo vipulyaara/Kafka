@@ -3,8 +3,8 @@ package com.kafka.data.injection
 import android.content.Context
 import android.os.Debug
 import androidx.room.Room
-import com.kafka.data.KafkaDatabase
-import com.kafka.data.KafkaRoomDatabase
+import com.kafka.data.db.KafkaDatabase
+import com.kafka.data.db.KafkaRoomDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

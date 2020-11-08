@@ -1,7 +1,7 @@
 package com.kafka.content.data.item
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.data.base.model.getOrThrow
+import com.kafka.data.model.model.getOrThrow
 import com.kafka.data.dao.ItemLocalDataSource
 import com.kafka.data.dao.RecentItemLocalDataSource
 import com.kafka.data.dao.SearchConfigurationDao
@@ -60,7 +60,9 @@ class ItemRepository @Inject constructor(
     suspend fun addRecentSearch(keyword: String) = searchConfigurationDao.apply {
         val searchConfiguration = getSearchConfiguration()
         val config = searchConfiguration?.copy(
-            recentSearches = searchConfiguration.recentSearches?.toMutableList()?.also { it.add(keyword) } ?: listOf(keyword))
+            recentSearches = searchConfiguration.recentSearches?.toMutableList()?.also { it.add(keyword) } ?: listOf(
+                keyword
+            ))
             ?: SearchConfiguration(recentSearches = listOf(keyword))
         insert(config)
     }

@@ -9,17 +9,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentItemDetailBinding
+import com.kafka.content.databinding.FragmentLibraryBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_library.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
 class LibraryFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentLibraryBinding::bind)
     private val libraryViewModel: LibraryViewModel by viewModels()
     private val libraryController = LibraryController()
     private val navController by lazy { findNavController() }
@@ -28,7 +31,7 @@ class LibraryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setController(libraryController)
             libraryController.actioner = actioner
         }

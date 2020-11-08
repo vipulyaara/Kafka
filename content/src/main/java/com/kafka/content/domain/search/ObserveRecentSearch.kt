@@ -1,7 +1,7 @@
 package com.kafka.content.domain.search
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.SubjectInteractor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.SubjectInteractor
 import com.kafka.content.data.item.ItemRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

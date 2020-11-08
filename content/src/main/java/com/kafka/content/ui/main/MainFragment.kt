@@ -5,32 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import com.data.base.extensions.debug
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentMainBinding
+import com.kafka.content.ui.language.LanguageViewModel
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.setupToolbar
 import com.kafka.ui_common.extensions.setupWithNavController
 import com.kafka.ui_common.extensions.toggleNightMode
+import com.kafka.ui_common.extensions.viewBinding
+import com.kafka.ui_common.navigation.Navigation
+import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentMainBinding::bind)
     private var currentNavController: LiveData<NavController>? = null
+    private val languageViewModel: LanguageViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar?.setupToolbar(R.menu.menu_master) {
+        binding.toolbar.setupToolbar(R.menu.menu_master) {
             when (it?.itemId) {
-                R.id.menu_dark_mode -> toolbar?.toggleNightMode(requireActivity(), it.itemId)
+                R.id.menu_dark_mode -> binding.toolbar.toggleNightMode(requireActivity(), it.itemId)
             }
         }
 
@@ -45,14 +48,14 @@ class MainFragment : BaseFragment() {
             R.navigation.nav_graph_profile
         )
 
-        val controller = bottom_navigation_view.setupWithNavController(
+        val controller = binding.bottomNavigationView.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = childFragmentManager,
             containerId = R.id.nav_host_fragment,
             intent = requireActivity().intent
         )
 
-        controller.observe(viewLifecycleOwner, Observer { navController ->
+        controller.observe(viewLifecycleOwner, { navController ->
 //            setupActionBarWithNavController(requireActivity() as AppCompatActivity, navController)
         })
         currentNavController = controller
@@ -65,6 +68,14 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onBackPressed()
+
+        lifecycleScope.launchWhenResumed {
+            languageViewModel.areLanguagesSelected().collect {
+                if (it.not()) {
+                    currentNavController?.value!!.navigate(Navigation.LanguageSelection)
+                }
+            }
+        }
     }
 
     private fun onBackPressed() {
@@ -72,10 +83,10 @@ class MainFragment : BaseFragment() {
             override fun handleOnBackPressed() {
                 val navigationHandled = currentNavController?.value?.navigateUp() ?: false
                 if (!navigationHandled) {
-                    if (bottom_navigation_view?.selectedItemId == R.id.nav_graph_home) {
+                    if (binding.bottomNavigationView.selectedItemId == R.id.nav_graph_home) {
                         requireActivity().finish()
                     } else {
-                        bottom_navigation_view?.selectedItemId = R.id.nav_graph_home
+                        binding.bottomNavigationView.selectedItemId = R.id.nav_graph_home
                     }
                 }
             }

@@ -23,15 +23,15 @@
         <deepLink app:uri="app.kafka://player/{item_id}"/>
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@id/navigation_reader"-->
-<!--        android:name="com.kafka.reader.ui.ReaderFragment">-->
-<!--        <argument-->
-<!--            android:name="item_url"-->
-<!--            app:argType="string" />-->
+    <fragment
+        android:id="@id/navigation_reader"
+        android:name="com.kafka.reader.ui.ReaderFragment">
+        <argument
+            android:name="item_url"
+            app:argType="string" />
 
-<!--        <deepLink app:uri="app.kafka://reader/{item_url}"/>-->
-<!--    </fragment>-->
+        <deepLink app:uri="app.kafka://reader/{url}"/>
+    </fragment>
 
     <fragment
         android:id="@id/navigation_item_detail"

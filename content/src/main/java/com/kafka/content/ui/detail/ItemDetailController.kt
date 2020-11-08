@@ -2,7 +2,7 @@ package com.kafka.content.ui.detail
 
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.kafka.content.*
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.isAudio

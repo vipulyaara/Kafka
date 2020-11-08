@@ -12,6 +12,10 @@
         <variable
             name="image"
             type="String" />
+
+        <variable
+            name="color"
+            type="Integer" />
     </data>
 
     <LinearLayout

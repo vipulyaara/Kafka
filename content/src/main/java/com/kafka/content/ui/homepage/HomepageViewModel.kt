@@ -2,29 +2,24 @@ package com.kafka.content.ui.homepage
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.launchObserve
-import com.kafka.content.domain.followed.ObserveFollowedItems
 import com.kafka.content.domain.homepage.GetHomepageTags
-import com.kafka.content.domain.homepage.HomepageTag
-import com.kafka.content.domain.recent.ObserveRecentItems
+import com.kafka.content.domain.homepage.ObserveHomepage
+import com.kafka.content.ui.query.asArchiveQuery
+import com.kafka.data.model.launchObserve
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class HomepageViewModel @ViewModelInject constructor(
-    observeFollowedItems: ObserveFollowedItems,
-    observeRecentItems: ObserveRecentItems,
-    getHomepageTags: GetHomepageTags,
+    observeHomepage: ObserveHomepage,
+    private val getHomepageTags: GetHomepageTags,
     snackbarManager: SnackbarManager
-) : ReduxViewModel<HomepageViewState>(HomepageViewState(tabs = getHomepageTags(Unit))) {
+) : ReduxViewModel<HomepageViewState>(HomepageViewState()) {
 
     init {
-        viewModelScope.launchObserve(observeFollowedItems) { flow ->
-            flow.distinctUntilChanged().collectAndSetState { copy(favorites = it) }
-        }
-
-        viewModelScope.launchObserve(observeRecentItems) { flow ->
-            flow.distinctUntilChanged().collectAndSetState { copy(recentItems = it) }
+        viewModelScope.launchObserve(observeHomepage) { flow ->
+            flow.distinctUntilChanged().collectAndSetState { copy(homepage = it) }
         }
 
         snackbarManager.launchInScope(viewModelScope) { uiError, visible ->
@@ -33,18 +28,9 @@ class HomepageViewModel @ViewModelInject constructor(
             }
         }
 
-        observeFollowedItems(Unit)
-        observeRecentItems(Unit)
+        observeHomepage(selectedQuery.asArchiveQuery())
     }
 
-    fun getSelectedTag() = currentState().tabs?.firstOrNull { it.isSelected }!!
-
-    fun selectTag(homepageTag: HomepageTag) {
-        currentState().apply {
-            tabs = tabs.apply {
-                this?.forEach { it.isSelected = false }
-                this?.first { it.title == homepageTag.title }?.isSelected = true
-            }
-        }
-    }
+    val selectedQuery
+        get() = getHomepageTags(Unit).first { it.isSelected }.searchQuery
 }

@@ -1,6 +1,6 @@
 package com.kafka.logger.firebase
 
-import com.data.base.extensions.e
+import com.kafka.data.extensions.e
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.kafka.logger.loggers.CrashLogger

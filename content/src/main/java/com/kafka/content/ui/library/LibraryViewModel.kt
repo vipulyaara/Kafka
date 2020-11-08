@@ -2,7 +2,7 @@ package com.kafka.content.ui.library
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.launchObserve
+import com.kafka.data.model.launchObserve
 import com.kafka.content.domain.followed.ObserveFollowedItems
 import com.kafka.ui_common.base.ReduxViewModel
 import kotlinx.coroutines.channels.Channel

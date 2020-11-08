@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentItemDetailBinding
+import com.kafka.content.databinding.FragmentPlayerBinding
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.addScrollbarElevationView
+import com.kafka.ui_common.extensions.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_player.*
 import javax.inject.Inject
 
 /**
@@ -18,16 +20,17 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class PlayerFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentPlayerBinding::bind)
     private val viewModel: PlayerViewModel by viewModels()
     @Inject lateinit var playerController: PlayerController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setController(playerController)
-            addScrollbarElevationView(shadowView)
-            playerController.playerActioner = viewModel.pendingActions
+            addScrollbarElevationView(binding.shadowView)
+//            playerController.playerActioner = viewModel.pendingActions
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {

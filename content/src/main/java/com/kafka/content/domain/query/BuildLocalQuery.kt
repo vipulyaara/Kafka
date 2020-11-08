@@ -1,10 +1,10 @@
 package com.kafka.content.domain.query
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.data.base.SyncWorkUseCase
-import com.data.base.extensions.debug
-import com.data.base.model.ArchiveQuery
-import com.data.base.model._identifier
+import com.kafka.data.model.SyncWorkUseCase
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.model.ArchiveQuery
+import com.kafka.data.model.model._identifier
 import javax.inject.Inject
 
 class BuildLocalQuery @Inject constructor() : SyncWorkUseCase<ArchiveQuery, SimpleSQLiteQuery>() {
@@ -13,7 +13,6 @@ class BuildLocalQuery @Inject constructor() : SyncWorkUseCase<ArchiveQuery, Simp
     }
 
     private fun String.toLocalJoiner() = if (this.isEmpty()) "" else " $this "
-
 
     private fun ArchiveQuery.asLocalQuery(): SimpleSQLiteQuery {
         val selectFrom = "SELECT * FROM item WHERE"

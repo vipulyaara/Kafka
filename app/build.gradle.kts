@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("com.google.firebase.crashlytics")
     id("androidx.navigation.safeargs.kotlin")
@@ -23,7 +22,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding.isEnabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+    }
 
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin")
@@ -31,6 +39,8 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+//        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -49,7 +59,10 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/ui-graphics_release.kotlin_module/")
+        exclude("META-INF/*")
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -65,6 +78,8 @@ dependencies {
     implementation(Libs.KotlinX.Coroutines.core)
     implementation(Libs.KotlinX.Coroutines.android)
 
+    implementation(Libs.ExoPlayer.player)
+
     implementation(Libs.Firebase.analytics)
     implementation(Libs.Firebase.dynamicLinks)
 
@@ -72,27 +87,41 @@ dependencies {
     kapt(Libs.Hilt.compiler)
     implementation(Libs.Hilt.lifecycle)
     kapt(Libs.Hilt.lifecycle_compiler)
+    implementation(Libs.Hilt.workManager)
 
     implementation(Libs.Retrofit.runtime)
-    implementation(Libs.Retrofit.moshi)
-    implementation(Libs.OkHttp.core)
-    implementation(Libs.OkHttp.loggingInterceptor)
 
     implementation(Libs.material)
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.fragment)
-    implementation(Libs.AndroidX.workManager)
+    implementation(Libs.AndroidX.Ktx.workManager)
     implementation(Libs.AndroidX.palette)
     implementation(Libs.AndroidX.appStartup)
     implementation(Libs.AndroidX.constraintLayout)
+    implementation(Libs.AndroidX.lifecycle_process)
+    implementation(Libs.AndroidX.datastore)
+
+    implementation(Libs.AndroidX.Room.runtime)
+
+    implementation("androidx.core:core:1.5.0-alpha04")
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.Accompanist.coil)
+    implementation("com.github.zsoltk:compose-router:0.20.0")
 
     implementation(Libs.AndroidX.Navigation.fragment)
     implementation(Libs.AndroidX.Navigation.ui)
 
-    implementation(Libs.Lottie.core)
+//    implementation(Libs.Lottie.core)
     implementation(Libs.Epoxy.core)
-    implementation(Libs.Epoxy.databinding)
-    kapt(Libs.Epoxy.processor)
+//    implementation(Libs.Epoxy.databinding)
+//    kapt(Libs.Epoxy.processor)
+
+//    coreLibraryDesugaring Libs.jdkDesugar
 }
 
 apply(plugin = "com.google.gms.google-services")

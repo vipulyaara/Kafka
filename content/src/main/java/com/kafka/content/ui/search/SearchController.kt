@@ -1,6 +1,6 @@
 package com.kafka.content.ui.search
 
-import coil.api.clear
+import coil.clear
 import com.airbnb.epoxy.TypedEpoxyController
 import com.kafka.content.*
 import com.kafka.content.databinding.ItemBookBinding

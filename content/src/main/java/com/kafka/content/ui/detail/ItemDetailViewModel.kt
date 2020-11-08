@@ -4,24 +4,20 @@ import android.content.Context
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.data.base.InvokeStatus
-import com.data.base.extensions.debug
-import com.data.base.launchObserve
-import com.data.base.model.ArchiveQuery
-import com.data.base.model.booksByAuthor
 import com.kafka.content.domain.detail.ObserveItemDetail
 import com.kafka.content.domain.detail.UpdateItemDetail
+import com.kafka.content.domain.download.StartFileDownload
 import com.kafka.content.domain.followed.ObserveItemFollowStatus
 import com.kafka.content.domain.followed.UpdateFollowedItems
-import com.kafka.content.domain.item.ObserveItems
+import com.kafka.content.domain.item.ObserveQueryItems
 import com.kafka.content.domain.item.UpdateItems
 import com.kafka.content.domain.recent.AddRecentItem
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.model.ObservableErrorCounter
-import com.kafka.data.model.ObservableLoadingCounter
-import com.kafka.data.model.collectFrom
-import com.kafka.data.model.collectInto
-import com.kafka.ui_common.action.RealActioner
+import com.kafka.data.entities.isAudio
+import com.kafka.data.extensions.debug
+import com.kafka.data.model.*
+import com.kafka.data.model.model.ArchiveQuery
+import com.kafka.data.model.model.booksByAuthor
 import com.kafka.ui_common.base.BaseViewModel
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
@@ -43,8 +39,9 @@ import kotlinx.coroutines.launch
 class ItemDetailViewModel @ViewModelInject constructor(
     private val updateItemDetail: UpdateItemDetail,
     private val observeItemDetail: ObserveItemDetail,
-    private val observeItems: ObserveItems,
+    private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
+    private val startFileDownload: StartFileDownload,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val updateFollowedItems: UpdateFollowedItems,
     private val addRecentItem: AddRecentItem,
@@ -52,7 +49,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
     private val snackbarManager: SnackbarManager
 ) : ReduxViewModel<ItemDetailViewState>(ItemDetailViewState()) {
     private val loadingState = ObservableLoadingCounter()
-    private val pendingActions = RealActioner<ItemDetailAction>()
+    private val downloadLoadingStatus = ObservableLoadingCounter()
 
     init {
         viewModelScope.launchObserve(observeItemDetail) { flow ->
@@ -78,7 +75,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
             }
         }
 
-        viewModelScope.launchObserve(observeItems) { flow ->
+        viewModelScope.launchObserve(observeQueryItems) { flow ->
             flow.distinctUntilChanged().collectAndSetState { list ->
                 copy(itemsByCreator = list.filterNot { it.itemId == itemDetail?.itemId })
             }
@@ -93,17 +90,15 @@ class ItemDetailViewModel @ViewModelInject constructor(
                 copy(error = if (visible) uiError.message else null)
             }
         }
+    }
 
+    fun updateFavorite() {
+        updateFavorite(currentState().itemDetail!!.itemId)
+    }
+
+    fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            pendingActions.observe {
-                when (it) {
-                    is ItemDetailAction.FavoriteClick -> {
-                        updateFollowedItems(UpdateFollowedItems.Params(currentState().itemDetail!!.itemId))
-                    }
-                    else -> {
-                    }
-                }
-            }
+            updateFollowedItems(UpdateFollowedItems.Params(itemId))
         }
     }
 
@@ -118,7 +113,7 @@ class ItemDetailViewModel @ViewModelInject constructor(
 
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
-                observeItems(ObserveItems.Params(it))
+                observeQueryItems(ObserveQueryItems.Params(it))
                 updateItems(UpdateItems.Params(it))
             }
         }
@@ -150,14 +145,10 @@ class ItemDetailViewModel @ViewModelInject constructor(
         addRecentItem(AddRecentItem.Params(currentState().itemDetail?.itemId!!))
     }
 
-    fun sendAction(action: ItemDetailAction) {
-        viewModelScope.launch { pendingActions.sendAction(action) }
-    }
+    private fun Flow<InvokeStatus>.watchStatus(loadingState: ObservableLoadingCounter) =
+        viewModelScope.launch { collectStatus(loadingState) }
 
-
-    private fun Flow<InvokeStatus>.watchStatus() = viewModelScope.launch { collectStatus() }
-
-    private suspend fun Flow<InvokeStatus>.collectStatus() = collect { status ->
+    private suspend fun Flow<InvokeStatus>.collectStatus(loadingState: ObservableLoadingCounter) = collect { status ->
         when (status) {
             InvokeStatus.Loading -> {
                 loadingState.addLoader()
@@ -184,6 +175,23 @@ class ItemDetailViewModel @ViewModelInject constructor(
         """.trimIndent()
     }
 
+    fun download(context: Context, readerUrl: String, title: String) {
+        debug { "downloading pdf with url $readerUrl" }
+
+        addRecentItem()
+
+        startFileDownload(readerUrl).watchStatus(downloadLoadingStatus)
+    }
+
+    fun onPrimaryAction() {
+        val itemDetail = currentState().itemDetail!!
+        if (itemDetail.isAudio()) {
+
+        } else {
+
+        }
+    }
+
     fun read(context: Context, readerUrl: String, title: String) {
         debug { "opening pdf with url $readerUrl" }
 
@@ -199,5 +207,9 @@ class ItemDetailViewModel @ViewModelInject constructor(
             .showSearchView(true)
             .build()
         DocumentActivity.openDocument(context, readerUrl.toUri(), config)
+    }
+
+    fun addPlaylistItems(itemId: String) {
+
     }
 }

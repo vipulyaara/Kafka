@@ -6,7 +6,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
-import com.data.base.extensions.debug
+import com.kafka.data.extensions.debug
 import com.google.android.material.slider.Slider
 import com.kafka.content.R
 import com.kafka.ui_common.extensions.onSearchIme

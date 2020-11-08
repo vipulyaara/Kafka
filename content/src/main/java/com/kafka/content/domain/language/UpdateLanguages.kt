@@ -1,7 +1,7 @@
 package com.kafka.content.domain.language
 
-import com.data.base.AppCoroutineDispatchers
-import com.data.base.Interactor
+import com.kafka.data.model.AppCoroutineDispatchers
+import com.kafka.data.model.Interactor
 import com.kafka.content.data.language.LanguageRepository
 import com.kafka.data.entities.Language
 import com.kafka.data.injection.ProcessLifetime

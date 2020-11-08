@@ -1,9 +1,9 @@
 package com.kafka.data.injection
 
-import com.data.base.api.ArchiveService
-import com.data.base.api.interceptor.AcceptDialogInterceptor
-import com.data.base.api.interceptor.GenericInterceptor
-import com.data.base.mapper.SingleToArrayAdapter
+import com.kafka.data.api.ArchiveService
+import com.kafka.data.api.interceptor.AcceptDialogInterceptor
+import com.kafka.data.api.interceptor.GenericInterceptor
+import com.kafka.data.model.mapper.SingleToArrayAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

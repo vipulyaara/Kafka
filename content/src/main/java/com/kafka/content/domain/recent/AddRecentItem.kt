@@ -1,14 +1,15 @@
 package com.kafka.content.domain.recent
 
-import com.data.base.Interactor
+import com.kafka.data.model.Interactor
 import com.kafka.content.data.item.ItemRepository
 import com.kafka.data.injection.ProcessLifetime
+import com.kafka.data.model.AppCoroutineDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 class AddRecentItem @Inject constructor(
-    dispatchers: com.data.base.AppCoroutineDispatchers,
+    dispatchers: AppCoroutineDispatchers,
     @ProcessLifetime processScope: CoroutineScope,
     private val itemRepository: ItemRepository
 ) : Interactor<AddRecentItem.Params>() {

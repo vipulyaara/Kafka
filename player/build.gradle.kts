@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
@@ -44,6 +43,7 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/*")
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -53,7 +53,6 @@ android {
 dependencies {
     api(platform(project(":data")))
     api(platform(project(":ui-common")))
-    api(platform(project(":ui-compose")))
 
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Timber.core)

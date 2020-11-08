@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentProfileBinding
 import com.kafka.ui_common.base.BaseFragment
+import com.kafka.ui_common.extensions.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentProfileBinding::bind)
     @Inject lateinit var profileController: ProfileController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setController(profileController)
         }
 

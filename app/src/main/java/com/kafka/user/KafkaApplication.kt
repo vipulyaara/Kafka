@@ -1,7 +1,9 @@
 package com.kafka.user
 
 import android.app.Application
-import com.data.base.extensions.debug
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import com.kafka.data.extensions.debug
 import com.kafka.data.injection.Initializers
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -12,7 +14,8 @@ import javax.inject.Inject
 private typealias InitializerFunction = () -> @JvmSuppressWildcards Unit
 
 @HiltAndroidApp
-class KafkaApplication : Application() {
+class KafkaApplication : Application(), Configuration.Provider {
+    @Inject lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
     internal fun init(@Initializers initializers: Set<@JvmSuppressWildcards InitializerFunction>) {
@@ -30,5 +33,12 @@ class KafkaApplication : Application() {
             TRIM_MEMORY_COMPLETE,
             TRIM_MEMORY_RUNNING_CRITICAL -> debug { "onTrimMemory $level" }
         }
+    }
+
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
     }
 }

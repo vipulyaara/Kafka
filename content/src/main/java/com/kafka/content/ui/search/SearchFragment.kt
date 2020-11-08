@@ -10,23 +10,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kafka.content.R
+import com.kafka.content.databinding.FragmentSearchBinding
 import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.content.ui.query.SearchAction
 import com.kafka.content.ui.query.SearchAction.SubmitQueryAction.Companion.titleOrCreatorAction
 import com.kafka.ui_common.base.BaseFragment
 import com.kafka.ui_common.extensions.onSearchIme
 import com.kafka.ui_common.extensions.showSnackbar
+import com.kafka.ui_common.extensions.viewBinding
 import com.kafka.ui_common.navigation.Navigation
 import com.kafka.ui_common.navigation.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.item_search_view.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
+    private val binding by viewBinding(FragmentSearchBinding::bind)
     private val archiveQueryViewModel: ArchiveQueryViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
     private val searchController = SearchController()
@@ -36,7 +37,7 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             setController(searchController)
             searchController.searchActioner = searchActioner
         }
@@ -44,7 +45,7 @@ class SearchFragment : BaseFragment() {
         archiveQueryViewModel.liveData.observe(viewLifecycleOwner, Observer {
             searchController.setData(it)
             it.error?.let { view.showSnackbar(it.message) }
-            recyclerView.scrollToPosition(0)
+            binding.recyclerView.scrollToPosition(0)
         })
 
         lifecycleScope.launchWhenCreated {
@@ -52,8 +53,8 @@ class SearchFragment : BaseFragment() {
                 when (action) {
                     is SearchAction.ItemDetailAction -> navController.navigate(Navigation.ItemDetail(action.item.itemId))
                     is SearchAction.SubmitQueryAction -> {
-                        etSearch.setText(action.query.text)
-                        etSearch.setSelection(etSearch.text.length)
+                        binding.searchView.etSearch.setText(action.query.text)
+                        binding.searchView.etSearch.setSelection(binding.searchView.etSearch.text.length)
                         archiveQueryViewModel.submitQuery(action.query)
                         searchViewModel.addRecentSearch(action.query)
                     }
@@ -61,11 +62,11 @@ class SearchFragment : BaseFragment() {
             }
         }
 
-        etSearch.doOnTextChanged { text, _, _, _ ->
+        binding.searchView.etSearch.doOnTextChanged { text, _, _, _ ->
             searchViewModel.onKeywordChanged(text.toString())
         }
 
-        etSearch.onSearchIme {
+        binding.searchView.etSearch.onSearchIme {
             lifecycleScope.launchWhenCreated { searchActioner.send(titleOrCreatorAction(it)) }
         }
     }

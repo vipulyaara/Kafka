@@ -1,7 +1,7 @@
 package com.kafka.data.entities
 
-import com.data.base.model._mediaTypeAudio
-import com.data.base.model._mediaTypeText
+import com.kafka.data.model.model._mediaTypeAudio
+import com.kafka.data.model.model._mediaTypeText
 import com.kafka.data.extensions.formattedDuration
 import org.threeten.bp.Duration
 

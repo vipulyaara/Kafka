@@ -17,13 +17,19 @@
         android:theme="@style/Theme.Coyote"
         tools:replace="android:networkSecurityConfig"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.kafka.user.MainActivity"
-            android:windowSoftInputMode="adjustNothing">
+
+        <activity android:name=".ComposeMainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="com.kafka.user.MainActivity"
+            android:windowSoftInputMode="adjustNothing">
+
 
             <intent-filter android:label="filter item deep links">
                 <action android:name="android.intent.action.VIEW" />

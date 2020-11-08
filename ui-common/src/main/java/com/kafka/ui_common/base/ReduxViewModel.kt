@@ -32,7 +32,7 @@ import kotlin.reflect.KProperty1
 abstract class ReduxViewModel<S>(
     initialState: S
 ) : ViewModel() {
-    private val state = MutableStateFlow(initialState)
+    val state = MutableStateFlow(initialState)
     private val stateMutex = Mutex()
 
     /**
@@ -42,6 +42,9 @@ abstract class ReduxViewModel<S>(
 
     val liveData: LiveData<S>
         get() = state.asLiveData()
+
+    val stateFlow: StateFlow<S>
+        get() = state
 
     protected suspend fun <T> Flow<T>.collectAndSetState(reducer: S.(T) -> S) {
         return collectLatest { item -> setState { reducer(item) } }
