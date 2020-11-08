@@ -22,7 +22,7 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 
 * [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (for thread switching; and streams with Flow)
 * [Jetpack compose](https://developer.android.com/jetpack/compose) 
-the app is built with both compose and epoxy in 2 completely separate UI flows. The traditional flow is built using xmls and recyclerViews and works well. Compose still has some limitations but almost all the screens are built in compose too. I switch the flows using MainActivity and ComposeMainActivity.
+the app is built with both compose and epoxy in 2 completely separate UI flows. The traditional flow is built using xmls and recyclerViews and works well. Compose still has some limitations but almost all the screens are built in compose too. Switch the flows using MainActivity and ComposeMainActivity.
 * [Livedata](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * Retrofit2
