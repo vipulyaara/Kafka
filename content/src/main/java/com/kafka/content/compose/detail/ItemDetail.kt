@@ -146,7 +146,6 @@ private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailAc
         FloatingActionButton(
             modifier = Modifier.size(52.dp),
             onClick = { itemDetailActions.onFavoriteClick() },
-            elevation = 24.dp,
             backgroundColor = favoriteBackgroundColor
         ) {
             Icon(vectorResource(id = R.drawable.ic_heart), tint = favoriteIconColor)
@@ -156,7 +155,6 @@ private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailAc
         FloatingActionButton(
             modifier = Modifier.size(52.dp),
             onClick = { },
-            elevation = 24.dp,
             backgroundColor = KafkaColors.surface
         ) {
             Icon(vectorResource(id = R.drawable.ic_share_2), tint = KafkaColors.textPrimary)
@@ -172,9 +170,7 @@ private fun ActionsRow(itemDetail: ItemDetail, isFavorite: Boolean, itemDetailAc
                     itemDetailActions.onReadClicked()
                 }
             },
-            backgroundColor = KafkaColors.surface,
             shape = RoundedCornerShape(0.dp),
-            elevation = 24.dp,
             contentPadding = PaddingValues(all = 16.dp)
         ) {
             Text(

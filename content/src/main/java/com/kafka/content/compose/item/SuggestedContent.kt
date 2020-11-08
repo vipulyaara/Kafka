@@ -4,9 +4,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.launchInComposition
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,13 +15,13 @@ import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.dp
 import com.kafka.content.compose.NetworkImage
 import com.kafka.data.entities.Item
+import com.kafka.ui_common.extensions.decrementTextSize
 import com.kafka.ui_common.theme.DynamicThemePrimaryColorsFromImage
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.theme.constrastAgainst
 import com.kafka.ui_common.theme.rememberDominantColorState
 import com.kafka.ui_common.widget.Pager
 import com.kafka.ui_common.widget.PagerState
-import com.kafka.ui_common.extensions.decrementTextSize
 
 /**
  * This is the minimum amount of calculated constrast for a color to be used on top of the
@@ -44,13 +45,13 @@ fun SuggestedContent(items: List<Item>) {
         val selectedImageUrl = items.getOrNull(pagerState.currentPage)?.coverImage
 
         // When the selected image url changes, call updateColorsFromImageUrl() or reset()
-        if (selectedImageUrl != null) {
-            launchInComposition(selectedImageUrl) {
-                dominantColorState.updateColorsFromImageUrl(selectedImageUrl)
-            }
-        } else {
-            dominantColorState.reset()
-        }
+//        if (selectedImageUrl != null) {
+//            launchInComposition(selectedImageUrl) {
+//                dominantColorState.updateColorsFromImageUrl(selectedImageUrl)
+//            }
+//        } else {
+//            dominantColorState.reset()
+//        }
 
         if (items.isNotEmpty()) {
                 FollowedPodcasts(

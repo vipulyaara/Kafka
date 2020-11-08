@@ -40,7 +40,7 @@ const val miniPlayerHeight = 72
 fun MiniPlayerScaffold(modifier: Modifier, content: @Composable (PaddingValues) -> Unit) {
     WithConstraints {
         val dragRange = constraints.maxHeight - miniPlayerHeight
-        val sheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+        val sheetState = rememberBottomSheetState(BottomSheetValue.Expanded)
 
         backHandler(
             enabled = sheetState.value == BottomSheetValue.Expanded,

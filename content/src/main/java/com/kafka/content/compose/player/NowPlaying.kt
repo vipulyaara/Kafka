@@ -101,7 +101,6 @@ private fun PlayerControls(currentSong: CurrentSong, isFavorite: Boolean, action
         FloatingActionButton(
             modifier = iconModifier.size(64.dp),
             backgroundColor = KafkaColors.secondary,
-            elevation = 12.dp,
             onClick = { actions.togglePlayPause() }) {
             Icon(asset = vectorResource(playIcon), tint = KafkaColors.background)
         }

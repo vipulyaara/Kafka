@@ -41,7 +41,6 @@ fun MainScreen(backDispatcher: OnBackPressedDispatcher) {
         backgroundColor = KafkaColors.background,
         bottomBar = { BottomBar(currentSection, setCurrentSection) }
     ) {
-//        PlayerScaffold {
         MiniPlayerScaffold(modifier = Modifier.padding(it)) {
             Crossfade(modifier = Modifier.padding(it), current = navigator.current) { destination ->
                 when (destination) {
@@ -54,9 +53,7 @@ fun MainScreen(backDispatcher: OnBackPressedDispatcher) {
                     is Destination.ItemDetail -> ItemDetail(itemId = destination.itemId, actions = actions)
                 }
             }
-            }
-//        }
-
+        }
     }
 }
 

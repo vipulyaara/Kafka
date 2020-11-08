@@ -100,7 +100,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.3.0"
+        private const val version = "0.3.2"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
     }
 
@@ -133,7 +133,7 @@ object Libs {
 
         object Compose {
             const val snapshot = ""
-            const val version = "1.0.0-alpha05"
+            const val version = "1.0.0-alpha06"
 
 //            const val accompanist = "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.3.0"
 

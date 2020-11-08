@@ -9,6 +9,7 @@ import com.kafka.data.model.launchObserve
 import com.kafka.ui_common.base.ReduxViewModel
 import com.kafka.ui_common.base.SnackbarManager
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class HomepageViewModel @ViewModelInject constructor(
     observeHomepage: ObserveHomepage,
@@ -30,6 +31,6 @@ class HomepageViewModel @ViewModelInject constructor(
         observeHomepage(selectedQuery.asArchiveQuery())
     }
 
-    private val selectedQuery
+    val selectedQuery
         get() = getHomepageTags(Unit).first { it.isSelected }.searchQuery
 }

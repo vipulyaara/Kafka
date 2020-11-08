@@ -23,6 +23,7 @@ import com.kafka.content.compose.item.ContentItem
 import com.kafka.content.data.Homepage
 import com.kafka.content.ui.homepage.HomepageViewModel
 import com.kafka.content.ui.homepage.bannerImages
+import com.kafka.content.ui.query.ArchiveQueryViewModel
 import com.kafka.data.entities.Item
 import com.kafka.ui_common.theme.KafkaColors
 import com.kafka.ui_common.widget.FullScreenLoader
@@ -32,8 +33,10 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun Feed(actions: Actions) {
     val feedViewModel: HomepageViewModel = viewModel()
+    val archiveQueryViewModel: ArchiveQueryViewModel = viewModel()
     val feedViewState by feedViewModel.state.collectAsState()
 
+    archiveQueryViewModel.submitQuery(feedViewModel.selectedQuery)
     feedViewState.homepage?.let { Feed(it, actions) } ?: FullScreenLoader()
 }
 
