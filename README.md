@@ -1,14 +1,14 @@
 # Kafka
 
-Currently in process of content curation in order to build a CMS. It will host more than 5 million audio content (about 20% is popular) available in more than 100 languages, all free.
+Kafka uses www.archive.org to serve millions of audiobooks and pdf books available in more than 100 languages, all free.
+
+### [Video](https://vimeo.com/user68598793/review/472788300/8256f4487c)
+
+</br>
 
 
-
-</br></br>
-
-<img src="https://user-images.githubusercontent.com/6247940/66643361-22f22c00-ec3c-11e9-9710-c96f09c0e900.png">
-
-<img src="https://user-images.githubusercontent.com/6247940/56097011-9f65b580-5f0c-11e9-92a6-cf0498f1532a.png">
+<img src="https://user-images.githubusercontent.com/6247940/95682401-47813b00-0be5-11eb-86c5-ffaf425dadad.png">
+<img src="https://user-images.githubusercontent.com/6247940/95682455-95963e80-0be5-11eb-9a18-968620fd2a45.png">
 
 
 
@@ -21,7 +21,8 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 
 
 * [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (for thread switching; and streams with Flow)
-* Jetpack compose (the app is almost complete with compose in the branch [jetpack-compose](https://github.com/vipulyaara/Kafka/tree/develop-compose). But I had to move away from it in order to complete some features as the framework is not as mature (dev-14 as of now) 
+* [Jetpack compose](https://developer.android.com/jetpack/compose) 
+the app is built with both compose and epoxy in 2 completely separate UI flows. The traditional flow is built using xmls and recyclerViews and works well. Compose still has some limitations but almost all the screens are built in compose too. I switch the flows using MainActivity and ComposeMainActivity.
 * [Livedata](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * Retrofit2
@@ -29,4 +30,4 @@ It is a version of MVVM with interactors as an additional layer to enhance re-us
 * [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
 
 
-![final-architecture](https://user-images.githubusercontent.com/6247940/50480774-0e71d980-0a04-11e9-90fc-89c9fdfb4115.png)
+![final-architecture](https://user-images.githubusercontent.com/6247940/75632907-cb5f5780-5c00-11ea-974d-ff7a5e8b0a21.png)
