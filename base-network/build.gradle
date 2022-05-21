@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+android {
+    compileSdkVersion Publishing.compileSdk
+
+    defaultConfig {
+        minSdkVersion Publishing.minSdk
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental"   : "true"
+                ]
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api project(':base-domain')
+    api libs.androidx.core
+    api libs.androidx.collection
+
+    implementation libs.compose.runtime.runtime
+
+    implementation libs.jsoup
+    api libs.threeTenAbp
+
+    api libs.dataStore
+    kapt libs.androidx.room.compiler
+    api libs.androidx.paging.runtime
+
+    api libs.retrofit.serialization
+    api libs.kotlin.serialization
+    api libs.kotlin.coroutines.core
+
+    api libs.kotlin.stdlib
+}

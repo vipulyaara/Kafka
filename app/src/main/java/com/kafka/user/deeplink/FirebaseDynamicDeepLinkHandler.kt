@@ -8,9 +8,9 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.kafka.data.extensions.await
-import com.kafka.logger.loggers.CrashLogger
-import com.kafka.ui_common.navigation.DynamicDeepLinkHandler
 import dagger.Reusable
+import org.rekhta.analytics.CrashLogger
+import org.rekhta.navigation.DynamicDeepLinkHandler
 import javax.inject.Inject
 
 @Reusable
@@ -21,7 +21,7 @@ class FirebaseDynamicDeepLinkHandler @Inject constructor(
     override suspend fun handleDeepLink(intent: Intent) {
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
-            .await() {
+            .await {
                 crashLogger.logNonFatal(it)
             }?.let {
 

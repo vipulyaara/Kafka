@@ -1,0 +1,167 @@
+plugins {
+    id 'com.android.application'
+    id 'dagger.hilt.android.plugin'
+
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+android {
+    compileSdkVersion Publishing.compileSdk
+
+    defaultConfig {
+        applicationId Publishing.applicationId
+        minSdkVersion Publishing.minSdk
+        targetSdkVersion Publishing.targetSdk
+        versionCode Publishing.versionCode
+        versionName Publishing.publishVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument 'androidx.benchmark.suppressErrors', 'DEBUGGABLE,NOT-PROFILEABLE'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        // Disable lintVital. Not needed since lint is run on CI
+        checkReleaseBuilds false
+        // Ignore any tests
+        ignoreTestSources true
+        // Make the build fail on any lint errors
+        abortOnError true
+        // Allow lint to check dependencies
+        // TODO: re-enable this once https://issuetracker.google.com/issues/159733104 is fixed
+        checkDependencies false
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    }
+
+    packagingOptions {
+        // Exclude androidx version files
+        exclude 'META-INF/*.version'
+        // Exclude consumer proguard files
+        exclude 'META-INF/proguard/*'
+        // Exclude the Firebase/Fabric/other random properties files
+        exclude '/*.properties'
+        exclude 'fabric/*.properties'
+        exclude 'META-INF/*.properties'
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix ""
+            applicationIdSuffix ""
+        }
+        benchmark {
+            signingConfig signingConfigs.debug
+            debuggable false
+        }
+
+        release {
+            shrinkResources true
+            minifyEnabled true
+            signingConfig = signingConfigs.debug
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(':common:ui-common')
+    implementation project(':common:ui-common-theme')
+    implementation project(':common:ui-components')
+    implementation project(':base-domain')
+    implementation project(':data')
+    implementation project(':navigation')
+    implementation project(':analytics')
+    implementation project(':notifications')
+    implementation project(':navigation')
+
+    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
+
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.livedata.ktx
+
+    implementation libs.compose.foundation.foundation
+    implementation libs.compose.foundation.layout
+    implementation libs.compose.animation.animation
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.ui.ui
+    implementation libs.compose.ui.util
+    implementation libs.compose.livedata
+
+    implementation platform(libs.google.bom)
+
+    implementation libs.coil.coil
+    implementation libs.radiography
+//    implementation libs.proguard.snippets
+
+    implementation libs.androidx.activity.compose
+
+    implementation libs.retrofit.serialization
+    implementation libs.kotlin.serialization
+
+    implementation libs.threeTenAbp
+    implementation libs.dataStore
+
+    implementation libs.accompanist.navigation.animation
+    implementation libs.accompanist.navigation.material
+    api libs.accompanist.pager.core
+
+    implementation libs.timber
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:21.0.1'
+    debugImplementation libs.leakCanary
+    debugImplementation libs.leakCanary.process
+
+    api libs.tracing
+
+    implementation libs.kotlin.stdlib
+
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
+
+    implementation libs.hilt.library
+    kapt libs.hilt.compiler
+
+    implementation libs.androidx.hilt.navigation
+    implementation libs.androidx.hilt.compose
+    kapt libs.androidx.hilt.compiler
+
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
+
+    implementation libs.icons.feather
+    implementation libs.icons.tabler
+}
+
+android.applicationVariants.all { variant ->
+    task "open${variant.name.capitalize()}" {
+        dependsOn "install${variant.name.capitalize()}"
+
+        doLast {
+            exec {
+                commandLine "adb shell monkey -p -t ${variant.applicationId} -c android.intent.category.LAUNCHER 1".split(" ")
+            }
+        }
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

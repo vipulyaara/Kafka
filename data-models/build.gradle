@@ -1,0 +1,69 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+android {
+    compileSdkVersion Publishing.compileSdk
+
+    defaultConfig {
+        minSdkVersion Publishing.minSdk
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental"   : "true"
+                ]
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api project(':base-domain')
+    api project(':base-network')
+
+    implementation platform(libs.google.bom)
+
+    api "com.google.firebase:firebase-crashlytics-ktx"
+    api "com.google.firebase:firebase-analytics-ktx"
+
+    api libs.androidx.core
+    api libs.androidx.collection
+
+    implementation libs.jsoup
+    api libs.threeTenAbp
+
+    api libs.dataStore
+
+    api libs.hilt.library
+    kapt libs.hilt.compiler
+
+    api libs.androidx.room.runtime
+    api libs.androidx.room.ktx
+    api libs.androidx.room.paging
+    kapt libs.androidx.room.compiler
+    api libs.androidx.paging.runtime
+
+    api libs.retrofit.serialization
+    api libs.kotlin.serialization
+    api libs.kotlin.coroutines.core
+
+    api libs.kotlin.stdlib
+
+    debugApi libs.flipper.core
+    debugApi libs.flipper.soloader
+    debugApi libs.flipper.network
+    releaseApi libs.flipper.release
+}

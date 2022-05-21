@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile">پروفایل</string>
+    <string name="ghazal">غزل</string>
+    <string name="nazm">نزم</string>
+    <string name="sher">شعر</string>
+    <string name="next">اگلا</string>
+    <string name="search_relevant_content">نتیجے</string>
+    <string name="urdu">اردو</string>
+
+    <string name="sher_collection">شعر کلکشن</string>
+    <string name="shayri_collection">شاعری کلکشن</string>
+    <string name="prose_collection">نثری تحریریں</string>
+    <string name="image_shayari">تصویری شاعری</string>
+    <string name="did_you_know">کیا آپ جانتے ہیں</string>
+</resources>

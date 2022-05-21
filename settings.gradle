@@ -1,0 +1,49 @@
+plugins {
+    id 'com.gradle.enterprise' version '3.0'
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+
+include ':app'
+include ':base-domain'
+include ':base-network'
+include ':data'
+include ':data-models'
+include ':database'
+include ':navigation'
+include ':notifications'
+include ':navigation'
+include ':analytics'
+include ':common:ui-common'
+include ':common:ui-common-theme'
+include ':common:ui-components'
+include ':common:ui-common-compose'
+//include ':ui-common'
+//include ':domain'
+//include ':ui-homepage'
+//include ':ui-dictionary'
+//include ':ui-text'
+//include ':navigation'
+//include ':analytics'
+//include ':ui-search'
+//include ':ui-poet'
+//include ':common:ui-widgets'
+//include ':ui-favorites'
+////include ':macro-benchmark'
+//include ':notifications'
+//include ':ui-library'
+//include ':core-playback'
+//include ':ui-playback'
+
+
+enableFeaturePreview("VERSION_CATALOGS")
+//include ':ui-profile'
+//include ':database'
+//include ':ui-widgets'
+//include ':webview'
+////include ':benchmark'

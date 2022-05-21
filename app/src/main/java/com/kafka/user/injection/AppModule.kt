@@ -1,49 +1,123 @@
 package com.kafka.user.injection
 
+import android.app.Application
 import android.content.Context
-import androidx.datastore.preferences.createDataStore
+import androidx.core.app.NotificationManagerCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.coroutineScope
-import com.kafka.data.injection.Initializers
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.ui_common.navigation.DynamicDeepLinkHandler
+import com.kafka.user.PermissionsManager
+import com.kafka.user.RealPermissionsManager
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.multibindings.Multibinds
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import org.kafka.common.image.CoilAppInitializer
+import org.rekhta.analytics.CrashLogger
+import org.rekhta.analytics.FirebaseCrashLogger
+import org.rekhta.analytics.FirebaseLogger
+import org.rekhta.analytics.Logger
+import org.rekhta.base.AppCoroutineDispatchers
+import org.rekhta.navigation.DynamicDeepLinkHandler
+import org.rekhta.notifications.NotificationManagerImpl
+import org.rekhta.user.config.*
 import javax.inject.Named
 import javax.inject.Singleton
 
 /**
  * DI module that provides objects which will live during the application lifecycle.
  */
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 class AppModule {
-    @Named("app")
-    @Provides
-    @Singleton
-    fun provideAppPreferences(@ApplicationContext context: Context) = context.createDataStore(name = "app")
-
     @Provides
     @ProcessLifetime
     fun provideLongLifetimeScope(): CoroutineScope {
-        return ProcessLifecycleOwner.get().lifecycle.coroutineScope
+        return ProcessLifecycleOwner.get().lifecycleScope
     }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAnalytics(app: Application): FirebaseAnalytics {
+        return FirebaseAnalytics.getInstance(app).apply {
+            setUserId("")
+        }
+    }
+
+    @Named("app")
+    @Provides
+    @Singleton
+    fun provideDataStorePreferences(@ApplicationContext context: Context) = context.dataStore
+
+    @Singleton
+    @Provides
+    fun provideCoroutineDispatchers() = AppCoroutineDispatchers(
+        io = Dispatchers.IO,
+        computation = Dispatchers.Default,
+        main = Dispatchers.Main
+    )
+
+    @Singleton
+    @Provides
+    fun provideNotificationManagerImpl(application: Application) = NotificationManagerImpl(
+        application,
+        NotificationManagerCompat.from(application.applicationContext)
+    )
 }
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 abstract class AppModuleBinds {
-    @Initializers
-    @Multibinds
-    abstract fun initializers(): Set<() -> Unit>
+
+    @Binds
+    abstract fun bindLogger(firebaseLogger: FirebaseLogger): Logger
+
+    @Binds
+    abstract fun bindCrashLogger(firebaseCrashLogger: FirebaseCrashLogger): CrashLogger
+
+    @Binds
+    @IntoSet
+    abstract fun provideThreeTenAbpInitializer(bind: ThreeTenBpInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideFlipperInitializer(bind: FlipperInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideLoggerInitializer(bind: LoggerInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideFirebaseInitializer(bind: FirebaseInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideCoilAppInitializer(bind: CoilAppInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideRadiographyInitializer(bind: RadiographyInitializer): AppInitializer
+
+    @Binds
+    abstract fun providePermissionManager(bind: RealPermissionsManager): PermissionsManager
+
+    @Singleton
+    @Binds
+    abstract fun provideNotificationManager(bind: NotificationManagerImpl): org.rekhta.notifications.NotificationManager
 
     @Binds
     abstract fun deepLinkHandler(firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler): DynamicDeepLinkHandler

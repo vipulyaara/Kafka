@@ -1,7 +1,7 @@
 package com.kafka.data.api
 
-import com.kafka.data.model.model.item.ItemDetailResponse
-import com.kafka.data.model.model.item.SearchResponse
+import com.kafka.data.model.item.ItemDetailResponse
+import com.kafka.data.model.item.SearchResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

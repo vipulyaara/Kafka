@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
+    }
+
+    dependencies {
+        classpath libs.android.gradlePlug
+        classpath libs.kotlin.gradlePlug
+
+        classpath libs.google.gmsGoogleServices
+        classpath libs.google.crashlyticsGradle
+
+        classpath libs.hilt.gradlePlug
+    }
+}
+
+plugins {
+//    id 'com.diffplug.spotless' version '5.10.2'
+//    id 'com.github.ben-manes.versions' version '0.39.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.20'
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+
+        // Used for Accompanist snapshots
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
+
+        // Used for Roomigrant
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+subprojects {
+    configurations.configureEach {
+        // We forcefully exclude AppCompat + MDC from any transitive dependencies.
+        // This is a Compose app, so there's no need for these.
+//        exclude group: 'androidx.appcompat'
+        exclude group: 'com.google.android.material', module: 'material'
+        exclude group: 'com.google.android.material', module: 'material'
+
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def group = details.requested.group
+            def module = details.requested.module.name
+
+            if (group == 'org.jetbrains.kotlin' && module == 'kotlin-stdlib-jre7') {
+                // kotlin-stdlib-jre7 no longer exists in 1.4, so we force the
+                // kotlin-stdlib module instead
+                details.useTarget Libs.Kotlin.stdlib
+            }
+        }
+    }
+
+//    apply plugin: 'com.diffplug.spotless'
+//    spotless {
+//        kotlin {
+//            target '**/*.kt'
+//            targetExclude("$buildDir/**/*.kt")
+//            targetExclude('bin/**/*.kt')
+//
+//            ktlint(Versions.ktlint)
+//            licenseHeaderFile rootProject.file('spotless/copyright.kt')
+//        }
+//    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            // Treat all Kotlin warnings as errors
+            allWarningsAsErrors = false
+
+            // Enable experimental APIs
+            freeCompilerArgs += "-Xallow-kotlin-package"
+            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+            freeCompilerArgs += "-Xopt-in=kotlin.Experimental"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.material3.ExperimentalMaterialApi"
+            freeCompilerArgs += "-Xopt-in=coil.annotation.ExperimentalCoilApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.text.InternalFoundationTextApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
+            freeCompilerArgs += "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.ui.unit.ExperimentalUnitApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+            freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
+            freeCompilerArgs += "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+            freeCompilerArgs += "-Xopt-in=kotlin.annotation.AnnotationTarget.ExperimentalTime"
+            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+
+            // Set JVM target to 1.8
+            jvmTarget = "1.8"
+        }
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            if (project.findProperty("rekhta.enableComposeCompilerReports") == "true") {
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+            }
+        }
+    }
+}
+
+/**
+ * Update dependencyUpdates task to reject versions which are more 'unstable' than our
+ * current version.
+ */
+//tasks.named("dependencyUpdates").configure {
+//    rejectVersionIf {
+//        def current = DependencyUpdates.versionToRelease(it.currentVersion)
+//        // If we're using a SNAPSHOT, ignore since we must be doing so for a reason.
+//        if (current == ReleaseType.SNAPSHOT) return true
+//
+//        // Otherwise we reject if the candidate is more 'unstable' than our version
+//        def candidate = DependencyUpdates.versionToRelease(it.candidate.version)
+//        return candidate.isLessStableThan(current)
+//    }
+//}
+
+Object propOrDef(String propertyName, Object defaultValue) {
+    def propertyValue = project.properties[propertyName]
+    return propertyValue != null ? propertyValue : defaultValue
+}
