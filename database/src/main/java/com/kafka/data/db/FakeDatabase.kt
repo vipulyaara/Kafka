@@ -1,17 +1,7 @@
 package com.kafka.data.db
 
-const val urduPoetry =
-    """ghazals_ghalib_0809_librivox, DeewanGalib, ghalibmujmuanasrur, divaneghalib-v3, divaneghalib-v4, ghazaliyatifarsi, 
-gul-e-rana, KuliyatEMeerTaqi, KalaamEMirMirTaqiMir, 
-KuliyatESauda, 
-PehliBarishNasirKazmi, MirzaGhalib-AHundredMoods, ShaidByJaunElia, 
-YaniByJaunElia, LekinByJaunElia, FarnoodByJaunElia, Kulyat-e-Iqbal,
-dli.granth.78286, DeewaneKhwajaMirDard_201310, DeewaneKhwajaMirDard, in.ernet.dli.2015.409582, kulliyatizauq, Kulliyat-e-Dagh, 
-KulyaatEMajeedAmjadRozERafta, Majeed-Amjad-Intekhaab-By-Saad-Ullah-Shah,
-in.ernet.dli.2015.435939, in.ernet.dli.2015.398567, 
-PoemsByFaiz-Trans_VictorGKiernan-1971, in.ernet.dli.2015.551660, in.ernet.dli.2015.397992, naqshifaryadi00faizuoft, 
-UrduKiAakhriKitab, kullytiinshallhk00inshuoft, KulliyatEIqbalFarsiWithUrduTranslation, balijibril00iqba, 
-bangidara00iqbauoft, AksEKhushboo, Triveniyan-Hindi-Gulzar, in.ernet.dli.2015.493486, in.ernet.dli.2015.450541,  duniyamereaagenidafazli, in.ernet.dli.2015.424972"""
+val urduPoetry =
+    """ghazals_ghalib_0809_librivox, DeewanGalib, ghalibmujmuanasrur, divaneghalib-v3, divaneghalib-v4, ghazaliyatifarsi, gul-e-rana, KuliyatEMeerTaqi, KalaamEMirMirTaqiMir, KuliyatESauda, PehliBarishNasirKazmi, MirzaGhalib-AHundredMoods, ShaidByJaunElia, YaniByJaunElia, LekinByJaunElia, FarnoodByJaunElia, Kulyat-e-Iqbal, dli.granth.78286, DeewaneKhwajaMirDard_201310, DeewaneKhwajaMirDard, in.ernet.dli.2015.409582, kulliyatizauq, Kulliyat-e-Dagh, KulyaatEMajeedAmjadRozERafta, Majeed-Amjad-Intekhaab-By-Saad-Ullah-Shah, in.ernet.dli.2015.435939, in.ernet.dli.2015.398567, PoemsByFaiz-Trans_VictorGKiernan-1971, in.ernet.dli.2015.551660, in.ernet.dli.2015.397992, naqshifaryadi00faizuoft, UrduKiAakhriKitab, kullytiinshallhk00inshuoft, KulliyatEIqbalFarsiWithUrduTranslation, balijibril00iqba, bangidara00iqbauoft, AksEKhushboo, Triveniyan-Hindi-Gulzar, in.ernet.dli.2015.493486, in.ernet.dli.2015.450541, duniyamereaagenidafazli""".trimIndent()
 
 const val englishProse =
     "crime_and_punishment_0902_librivox, notes_from_the_underground, idiot_mg_librivox, crime_punishment_3_1708_librivox, gambler_1011_librivox, dostoyevskyshortstories_1310_librivox, crimepunishment00dostuoft, dostoevsky_short_stories_2001_librivox, shortstories00dost, metamorphosis_librivox, metamorphosis_1401_librivox, ACountryDoctor, goldenstoriesas00graygoog, annakarenina1_1011_librivox, whatibelieve_1101_librivox, what_men_live_by_librivox, war_and_peace_vol1_dole_mas_librivox, whatisart00tolsuoft, slavery_times_1102_librivox, plays00tolsgoog, essaysletters03tols, tale_two_cities_librivox, great_expectations_mfs_0812_librivox, christmascarol_librivox, TheHobbitEnhancedEditionJ.R.R.Tolkien, TheHobbit_201810, fellowshipofringtol00tolk, Orwell1984preywo, 12_creepytales_1206_librivox, twopoetales_ce_librivox, works_poe_raven_edition_2_1704_librivox, poe_poems_stl_librivox, in.ernet.dli.2015.68292"

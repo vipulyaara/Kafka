@@ -91,6 +91,10 @@ dependencies {
     implementation project(':analytics')
     implementation project(':notifications')
     implementation project(':navigation')
+    implementation project(':domain')
+    implementation project(':ui-homepage')
+    implementation project(':ui-search')
+    implementation project(':ui-item')
 
     implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
 

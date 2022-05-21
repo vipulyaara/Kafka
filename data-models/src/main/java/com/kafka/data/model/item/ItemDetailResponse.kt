@@ -1,7 +1,9 @@
 package com.kafka.data.model.item
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ItemDetailResponse(
     @SerialName("created")
     val created: Int,
@@ -16,7 +18,7 @@ data class ItemDetailResponse(
     @SerialName("files_count")
     val filesCount: Int,
     @SerialName("item_size")
-    val itemSize: Int,
+    val itemSize: Long,
     @SerialName("metadata")
     val metadata: Metadata,
     @SerialName("server")

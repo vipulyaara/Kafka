@@ -1,68 +1,44 @@
 package com.kafka.data.model.item
 
+import com.kafka.data.model.StringListSerializer
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Doc(
     @SerialName("backup_location")
-    val backupLocation: String,
-    @SerialName("btih")
-    val btih: String,
-    @SerialName("call_number")
-    val callNumber: String,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val backupLocation: String? = null,
     @SerialName("genre")
-    val collection: List<String>,
-//    @com.kafka.data.model.mapper.SingleToArray
-    @SerialName("contributor")
-    val contributor: List<String>,
-//    @com.kafka.data.model.mapper.SingleToArray
-    @SerialName("genre")
-    val creator: List<String>?,
+    val collection: List<String>? = null,
+    @SerialName("creator")
+    @Serializable(with = StringListSerializer::class)
+    val creator: List<String>? = null,
     @SerialName("date")
-    val date: String,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val date: String? = null,
     @SerialName("description")
-    val description: List<String>?,
+    val description: String? = null,
     @SerialName("downloads")
     val downloads: Int,
-    @SerialName("external-identifier")
-    val externalIdentifier: String,
-    @SerialName("foldoutcount")
-    val foldoutcount: Int,
-//    @com.kafka.data.model.mapper.SingleToArray
     @SerialName("format")
-    val format: List<String>,
+    val format: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,
-    @SerialName("imagecount")
-    val imagecount: Int,
-    @SerialName("indexflag")
-    val indexflag: List<String>,
     @SerialName("item_size")
-    val itemSize: Int,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val itemSize: Long,
     @SerialName("language")
-    val language: List<String>,
+    @Serializable(with = StringListSerializer::class)
+    val language: List<String>? = null,
     @SerialName("mediatype")
     val mediatype: String,
     @SerialName("month")
-    val month: Int,
-    @SerialName("oai_updatedate")
-    val oaiUpdatedate: List<String>,
-//    @SerialName("publicdate")
-//    val publicdate: String,
-//    @SerialName("publisher")
-//    val publisher: String,
-    @SerialName("stripped_tags")
-    val strippedTags: String,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val month: Int? = 0,
     @SerialName("subject")
-    val subject: List<String>,
-//    @com.kafka.data.model.mapper.SingleToArray
+    @Serializable(with = StringListSerializer::class)
+    val subject: List<String>? = null,
     @SerialName("title")
-    val title: List<String>,
+    val title: String,
     @SerialName("week")
-    val week: Int,
+    val week: Int? = 0,
     @SerialName("year")
-    val year: String
+    val year: String? = null
 )

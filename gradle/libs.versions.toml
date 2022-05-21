@@ -23,6 +23,7 @@ soloader = "0.10.1"
 icons = "1.0.0"
 serialization = "1.1.0"
 exoplayer = "2.15.0"
+media3 = "1.0.0-alpha03"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -63,6 +64,8 @@ androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref =
 androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "androidxhilt" }
 androidx-hilt-navigation = { module = "androidx.hilt:hilt-navigation", version.ref = "androidxhilt" }
+
+media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-gradlePlug = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }

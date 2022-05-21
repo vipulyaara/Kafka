@@ -1,53 +1,40 @@
 package com.kafka.data.model.item
 
+import com.kafka.data.model.StringListSerializer
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Metadata(
     @SerialName("addeddate")
-    val addeddate: String?,
-    @SerialName("backup_location")
-    val backupLocation: String?,
-    @SerialName("boxid")
-    val boxid: String?,
-//    @SerialName("genre")
-//    val genre: List<String?>,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val addeddate: String? = null,
     @SerialName("creator")
-    val creator: List<String>?,
-//    @com.kafka.data.model.mapper.SingleToArray
+    @Serializable(with = StringListSerializer::class)
+    val creator: List<String>? = null,
     @SerialName("collection")
-    val collection: List<String>?,
-    @SerialName("curation")
-    val curation: String?,
+    @Serializable(with = StringListSerializer::class)
+    val collection: List<String>? = null,
     @SerialName("date")
-    val date: String?,
-//    @com.kafka.data.model.mapper.SingleToArray
+    val date: String? = null,
     @SerialName("description")
-    val description: List<String>?,
+    @Serializable(with = StringListSerializer::class)
+    val description: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,
     @SerialName("licenseurl")
-    val licenseurl: String?,
+    val licenseurl: String? = null,
     @SerialName("mediatype")
-    val mediatype: String?,
+    val mediatype: String? = null,
     @SerialName("publicdate")
-    val publicdate: String?,
+    val publicdate: String? = null,
     @SerialName("runtime")
-    val runtime: String?,
+    val runtime: String? = null,
     @SerialName("source")
-    val source: String?,
-//    @SerialName("subject")
-//    val subject: String?,
+    val source: String? = null,
     @SerialName("taper")
-    val taper: String?,
+    val taper: String? = null,
     @SerialName("title")
-    val title: String?,
-//    @SerialName("updatedate")
-//    val updatedate: List<String?>,
-//    @SerialName("updater")
-//    val updater: List<String?>,
-//    @SerialName("uploader")
-//    val uploader: String?,
+    val title: String? = null,
     @SerialName("year")
-    val year: String?
+    val year: String? = null
 )

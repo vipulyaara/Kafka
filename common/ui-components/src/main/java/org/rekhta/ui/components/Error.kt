@@ -18,7 +18,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.alignCenter
 import ui.common.theme.theme.AppTheme
-import ui.common.theme.theme.type.body2
+import ui.common.theme.theme.body2
 
 @Composable
 fun DelayedErrorBox(

@@ -18,12 +18,8 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.rekhta.base.network.model.Language
 import ui.common.theme.DarkModePreference
 import ui.common.theme.ThemeState
-import ui.common.theme.theme.type.TypographyEnglish
-import ui.common.theme.theme.type.TypographyHindi
-import ui.common.theme.theme.type.TypographyUrdu
 
 val DefaultTheme = ThemeState()
 val DefaultThemeDark = ThemeState(DarkModePreference.ON)
@@ -72,14 +68,6 @@ fun AppTheme(
         }
     }
 }
-
-val Language.type
-    get() = when (this) {
-        Language.English -> TypographyEnglish
-        Language.Hindi -> TypographyHindi
-        Language.Urdu -> TypographyUrdu
-        else -> TypographyEnglish
-    }
 
 @Composable
 fun ProvideRipple(

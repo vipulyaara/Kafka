@@ -18,7 +18,7 @@ import org.kafka.common.UiError
 import org.kafka.common.UiMessage
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.alignCenter
-import ui.common.theme.theme.type.body2
+import ui.common.theme.theme.body2
 
 @Composable
 fun ErrorMessage(

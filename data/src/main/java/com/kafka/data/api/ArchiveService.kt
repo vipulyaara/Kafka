@@ -3,7 +3,6 @@ package com.kafka.data.api
 import com.kafka.data.model.item.ItemDetailResponse
 import com.kafka.data.model.item.SearchResponse
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.*
 
 /**
@@ -13,12 +12,18 @@ import retrofit2.http.*
  */
 interface ArchiveService {
     @GET("advancedsearch.php")
-    fun search(@Query("q", encoded = true) query: String?): Call<SearchResponse>
+    suspend fun search(
+        @Query("q", encoded = true) query: String?,
+        @Query("output") output: String = "json",
+        @Query("rows") rows: String = "40",
+        @Query("page") page: String = "1",
+        @Query("sort") sort: String = "-downloads",
+    ): SearchResponse
 
     @GET("/metadata/{id}")
-    fun getItemDetail(@Path("id") id: String?): Call<ItemDetailResponse>
+    suspend fun getItemDetail(@Path("id") id: String?): ItemDetailResponse
 
     @Streaming
     @GET
-    fun downloadFileWithDynamicUrlSync(@Url fileUrl: String): Call<ResponseBody>
+    suspend fun downloadFileWithDynamicUrlSync(@Url fileUrl: String): ResponseBody
 }

@@ -122,19 +122,6 @@ fun ViewModel.viewModelScoped(block: suspend () -> Unit) {
 fun ViewModel.collectScoped(block: suspend () -> Unit) {
     viewModelScope.launch { block() }
 }
-
-suspend fun Flow<InvokeStatus>.collectStatus(
-    uiMessageManager: UiMessageManager? = null,
-) = collect { status ->
-    when (status) {
-        is InvokeError -> {
-            debug(status.throwable) { "" }
-            uiMessageManager?.emitMessage(UiMessage(status.throwable))
-        }
-        else -> {}
-    }
-}
-
 suspend fun <T> Flow<T>.collect(reducer: suspend (T) -> Unit) {
     collect { item -> reducer(item) }
 }

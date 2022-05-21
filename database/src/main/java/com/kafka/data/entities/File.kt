@@ -1,8 +1,11 @@
 package com.kafka.data.entities
 
+import kotlinx.serialization.Serializable
+
 const val _mediaTypeText = "texts"
 const val _mediaTypeAudio = "audio"
 
+@Serializable
 data class File(
     val title: String?,
     val creator: String?,

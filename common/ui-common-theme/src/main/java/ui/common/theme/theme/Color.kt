@@ -20,6 +20,7 @@ val brandBlue200 = Color(0xbbCCD7F0)
 val brandBlue600 = Color(0xff7B8994)
 
 val darkGrey600 = Color(0xff212121)
+val surfaceLight = Color(0xFFfbfcff)
 val darkGrey700 = Color(0xff1A1B1C)
 val darkGrey800 = Color(0xff121212)
 val darkGrey900 = Color(0xFF0a0b0c)

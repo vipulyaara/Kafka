@@ -108,7 +108,7 @@ abstract class SubjectInteractor<P : Any, T> {
         paramState.tryEmit(params)
     }
 
-    protected abstract fun createObservable(params: P): Flow<T>
+    protected abstract suspend fun createObservable(params: P): Flow<T>
 
     protected fun onError(error: Throwable) {
         Timber.e(error)

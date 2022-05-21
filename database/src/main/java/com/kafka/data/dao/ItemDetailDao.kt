@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.Flow
 /**
  * @author Vipul Kumar; dated 29/11/18.
  */
-
-typealias ItemDetailLocalDataSource = ItemDetailDao
-
 @Dao
 abstract class ItemDetailDao : EntityDao<ItemDetail> {
 

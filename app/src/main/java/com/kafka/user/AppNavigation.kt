@@ -8,10 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
+import com.kafka.search.SearchScreen
 import org.kafka.common.extensions.CollectEvent
+import org.rekhta.homepage.Homepage
+import org.rekhta.item.detail.ItemDetail
 import org.rekhta.navigation.*
 import timber.log.Timber
 
@@ -51,6 +56,7 @@ private fun NavGraphBuilder.addHomeRoot() {
         startDestination = LeafScreen.Home.createRoute(Screen.Home)
     ) {
         addHome(Screen.Home)
+        addItemDetail(Screen.Home)
     }
 }
 
@@ -60,6 +66,7 @@ private fun NavGraphBuilder.addSearchRoot() {
         startDestination = LeafScreen.Search.createRoute(Screen.Search)
     ) {
         addSearch(Screen.Search)
+        addItemDetail(Screen.Search)
     }
 }
 
@@ -92,13 +99,13 @@ private fun NavGraphBuilder.addProfileRoot() {
 
 private fun NavGraphBuilder.addHome(root: Screen) {
     composable(LeafScreen.Home.createRoute(root)) {
-
+        Homepage()
     }
 }
 
 private fun NavGraphBuilder.addSearch(root: Screen) {
     composable(LeafScreen.Search.createRoute(root)) {
-
+        SearchScreen()
     }
 }
 
@@ -117,5 +124,16 @@ private fun NavGraphBuilder.addLibrary(root: Screen) {
 private fun NavGraphBuilder.addProfile(root: Screen) {
     composable(LeafScreen.Profile.createRoute(root)) {
 
+    }
+}
+
+private fun NavGraphBuilder.addItemDetail(root: Screen) {
+    composable(
+        route = LeafScreen.ContentDetail.createRoute(root),
+        arguments = listOf(
+            navArgument("item_id") { type = NavType.StringType }
+        )
+    ) {
+        ItemDetail()
     }
 }

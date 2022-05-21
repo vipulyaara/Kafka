@@ -8,15 +8,14 @@ class KeystoreProviderImpl @Inject constructor(
     private val keyEncryptionHandler: KeyEncryptionHandler,
     private val keyDecryptionHandler: KeyDecryptionHandler
 ) {
-
     private val aliasUsername = "ALIAS_USERNAME"
     private val aliasPassword = "ALIAS_PASSWORD"
     private val aliasToken = "ALIAS_TOKEN"
 
     fun getUsername() = keyDecryptionHandler.decryptData(
-            aliasUsername,
-    keyEncryptionHandler.encryption,
-    keyEncryptionHandler.iv
+        aliasUsername,
+        keyEncryptionHandler.encryption,
+        keyEncryptionHandler.iv
     )
 
     fun getPassword() = keyDecryptionHandler.decryptData(

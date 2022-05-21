@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
  * @author Vipul Kumar; dated 21/01/19.
  */
 class AppTypeConverters {
-    val json: Json by lazy {
+    private val json: Json by lazy {
         Json {
             ignoreUnknownKeys = true
             isLenient = true
@@ -18,14 +18,20 @@ class AppTypeConverters {
     }
 
     @TypeConverter
-    fun stringToList(data: String) = json.decodeFromString<List<String>>(data)
+    fun stringToList(data: String) = json.decodeFromString<List<String>?>(data)
 
     @TypeConverter
-    fun listToString(data: List<String>) = json.encodeToString(data)
+    fun listToString(data: List<String>?) = json.encodeToString(data)
 
     @TypeConverter
-    fun stringToFileList(data: String) = json.decodeFromString<List<File>>(data)
+    fun stringToFileList(data: String) = json.decodeFromString<List<File>?>(data)
 
     @TypeConverter
-    fun fileListToString(data: List<File>) = json.encodeToString(data)
+    fun fileListToString(data: List<File>?) = json.encodeToString(data)
+
+    @TypeConverter
+    fun stringToFile(data: String) = json.decodeFromString<File>(data)
+
+    @TypeConverter
+    fun fileToString(data: File) = json.encodeToString(data)
 }

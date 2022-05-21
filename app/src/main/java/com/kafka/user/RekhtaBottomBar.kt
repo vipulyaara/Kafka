@@ -26,6 +26,7 @@ import org.rekhta.navigation.Screen
 import org.rekhta.user.R
 import ui.common.theme.BottomBarElevation
 import ui.common.theme.theme.AppBarAlphas
+import ui.common.theme.theme.DisableRipple
 import ui.common.theme.theme.ProvideRipple
 import ui.common.theme.theme.textPrimary
 
@@ -39,32 +40,35 @@ fun RekhtaBottomBar(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
         HomeNavigationItems.forEach { item ->
-            NavigationBarItem(
-                icon = {
-                    if (currentSelectedItem != item.screen) {
+            DisableRipple {
+                NavigationBarItem(
+                    icon = {
                         HomeNavigationItemIcon(
                             item = item,
                             selected = currentSelectedItem == item.screen
                         )
-                    }
-                },
-                label = {
-                    if (currentSelectedItem == item.screen) {
-                        Text(text = stringResource(item.labelResId))
-                    }
-                },
-                selected = currentSelectedItem == item.screen,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        launchSingleTop = true
-                        restoreState = true
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(item.labelResId),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    alwaysShowLabel = false,
+                    selected = currentSelectedItem == item.screen,
+                    onClick = {
+                        navController.navigate(item.screen.route) {
+                            launchSingleTop = true
+                            restoreState = true
 
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
                         }
-                    }
-                },
-            )
+                    },
+                )
+            }
         }
     }
 }

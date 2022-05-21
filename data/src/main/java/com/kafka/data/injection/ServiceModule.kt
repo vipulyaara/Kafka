@@ -29,8 +29,10 @@ private val json = Json {
 class ServiceModule {
 
     @Provides
-    fun provideService(retrofitBuilder: Retrofit.Builder): ArchiveService {
-        return retrofitBuilder.build().create(ArchiveService::class.java)
+    fun provideService(
+        retrofit: Retrofit
+    ): ArchiveService {
+        return retrofit.create(ArchiveService::class.java)
     }
 
     @ImageLoading
@@ -56,7 +58,7 @@ class ServiceModule {
             readTimeout(60, TimeUnit.SECONDS)
             connectTimeout(60, TimeUnit.SECONDS)
 
-            addInterceptor(genericInterceptor)
+//            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
             addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
