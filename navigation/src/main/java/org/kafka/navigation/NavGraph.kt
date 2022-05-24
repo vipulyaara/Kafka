@@ -45,6 +45,6 @@ sealed class LeafScreen(val route: String) {
     }
 
     object Reader : LeafScreen("reader/{fileUrl}") {
-        fun createRoute(arg: String): String = "reader/$arg"
+        fun createRoute(arg: String): String = "reader/${arg.encodeUrl()}"
     }
 }

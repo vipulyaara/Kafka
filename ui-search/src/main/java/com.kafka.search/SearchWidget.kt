@@ -21,8 +21,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.kafka.common.Icons
 import org.kafka.common.widgets.IconResource
-import org.kafka.common.widgets.LoadImage
-import org.rekhta.homepage.R
 import ui.common.theme.theme.iconPrimary
 import ui.common.theme.theme.textSecondary
 

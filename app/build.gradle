@@ -16,6 +16,7 @@ android {
     compileSdkVersion Publishing.compileSdk
 
     defaultConfig {
+        multiDexEnabled true
         applicationId Publishing.applicationId
         minSdkVersion Publishing.minSdk
         targetSdkVersion Publishing.targetSdk
@@ -129,6 +130,8 @@ dependencies {
     implementation libs.coil.coil
     implementation libs.radiography
 //    implementation libs.proguard.snippets
+
+    implementation libs.pdftron
 
     implementation libs.androidx.activity.compose
 

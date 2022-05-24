@@ -42,6 +42,7 @@ import org.kafka.base.debug
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.Navigator
 import org.kafka.ui.components.progress.FullScreenProgressBar
 import org.kafka.ui_common_compose.shadowMaterial
 import ui.common.theme.theme.textPrimary
@@ -76,14 +77,22 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
                     shareText = { context.shareText(viewModel.shareItemText()) },
                     openItemDetail = { navigator.navigate(LeafScreen.ContentDetail.createRoute(it)) },
                     openReader = {
-                        val url2 = "https://drive.google.com/viewerng/viewer?embedded=true&url="
-                        debug { "Opening web view" }
-                        navigator.navigate(LeafScreen.WebView.createRoute(url2 + it))
+                        openReader(navigator, it)
                     }
                 )
             }
         }
     }
+}
+
+fun openGoogleReader(navigator: Navigator, it: String) {
+    val url2 = "https://drive.google.com/viewerng/viewer?embedded=true&url="
+    debug { "Opening web view" }
+    navigator.navigate(LeafScreen.WebView.createRoute(url2 + it))
+}
+
+fun openReader(navigator: Navigator, it: String) {
+    navigator.navigate(LeafScreen.Reader.createRoute(it))
 }
 
 @Composable

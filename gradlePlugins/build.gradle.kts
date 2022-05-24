@@ -4,8 +4,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(libs.com.android.tools.build.gradle)
-        classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.android.gradlePlug)
+        classpath(libs.kotlin.gradlePlug)
+        classpath(libs.google.gmsGoogleServices)
+        classpath(libs.google.crashlyticsGradle)
+        classpath(libs.hilt.gradlePlug)
     }
 }
 

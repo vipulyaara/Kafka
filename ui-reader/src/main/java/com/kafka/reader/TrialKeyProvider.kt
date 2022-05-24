@@ -8,7 +8,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 object TrialKeyProvider {
-    fun generateTrialKey(): String? {
+    suspend fun generateTrialKey(): String? {
         var urlConnection: HttpURLConnection? = null
         val var6: String
         try {

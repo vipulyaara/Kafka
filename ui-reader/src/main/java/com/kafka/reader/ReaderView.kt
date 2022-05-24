@@ -1,7 +1,7 @@
 package com.kafka.reader
 
 import android.annotation.SuppressLint
-import android.widget.LinearLayout
+import android.view.LayoutInflater
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.pdftron.pdf.PDFViewCtrl
+import org.kafka.reader.R
 
 //import org.rekhta.homepage.R
 
@@ -19,9 +20,9 @@ internal fun ReaderView(pdfUrl: String) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     AndroidView(factory = { context ->
-        val reader = LinearLayout(context)
-//            LayoutInflater.from(context).inflate(R.layout.view_reader, null, false) as PDFViewCtrl
-//        setupReader(reader, lifecycleOwner)
+        val reader =
+            LayoutInflater.from(context).inflate(R.layout.view_reader, null, false) as PDFViewCtrl
+//        SetupReader(reader, lifecycleOwner)
         reader
     }) { view ->
 //        view.openUrlAsync(pdfUrl, null, null, null)

@@ -1,4 +1,4 @@
-rootProject.name = "logistics-rider-gradle-plugin"
+rootProject.name = "kafka-gradle-plugin"
 
 dependencyResolutionManagement {
     versionCatalogs {

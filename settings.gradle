@@ -52,8 +52,5 @@ include ':common:ui-common-compose'
 
 
 enableFeaturePreview("VERSION_CATALOGS")
-//include ':ui-profile'
-//include ':database'
-//include ':ui-widgets'
-//include ':webview'
-////include ':benchmark'
+
+includeBuild("gradlePlugins")

@@ -19,7 +19,7 @@ class ReaderViewModel @Inject constructor(
     private val uiMessageManager = UiMessageManager()
 
     val state: StateFlow<ReaderViewState> = combine(
-        savedStateHandle.getStateFlow("fileUrl", null),
+        savedStateHandle.getStateFlow<String?>("fileUrl", null),
         loadingCounter.observable,
         uiMessageManager.message,
     ) { fileUrl, isLoading, message ->
