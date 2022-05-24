@@ -37,7 +37,7 @@ class ItemRepository @Inject constructor(
         }
     }
 
-    private fun getItemByItemId(itemId: String): Item {
+    private suspend fun getItemByItemId(itemId: String): Item {
         return itemLocalDataSource.getItemByItemId(itemId)
     }
 

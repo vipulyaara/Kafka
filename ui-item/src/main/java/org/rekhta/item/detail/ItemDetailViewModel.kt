@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -44,14 +45,15 @@ class ItemDetailViewModel @Inject constructor(
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { observeByAuthor(it) },
-        observeQueryItems.flow,
+        observeQueryItems.flow.onStart { emit(emptyList()) },
         observeItemFollowStatus.flow,
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
+        debug { "item detail results" }
         ItemDetailViewState(
             itemDetail = itemDetail,
-            itemsByCreator = itemsByCreator,
+            itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
             isFavorite = isFavorite,
             isLoading = isLoading,
             message = message
@@ -77,24 +79,25 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            toggleFavorite(ToggleFavorite.Params(itemId)).collect {  }
+            toggleFavorite(ToggleFavorite.Params(itemId)).collect { }
         }
     }
 
     fun addRecentItem() {
         viewModelScoped {
-            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect {  }
+            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect { }
         }
     }
 
     private fun observeByAuthor(itemDetail: ItemDetail?) {
         itemDetail?.let {
             debug { "observe query for creator ${itemDetail.creator}" }
-
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
-                updateItems(UpdateItems.Params(it))
+                viewModelScoped {
+                    updateItems(UpdateItems.Params(it)).collect { }
+                }
             }
         }
     }

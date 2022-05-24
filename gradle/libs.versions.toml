@@ -13,7 +13,7 @@ hilt = "2.41"
 kotlin = "1.6.21"
 ktlint = "0.40.0"
 material3 = "1.0.0-alpha11"
-okhttp = "4.9.1"
+okhttp = "4.9.3"
 paging = "3.1.1"
 retrofit = "2.9.0"
 room = "2.5.0-alpha01"
@@ -24,6 +24,7 @@ icons = "1.0.0"
 serialization = "1.1.0"
 exoplayer = "2.15.0"
 media3 = "1.0.0-alpha03"
+pdftron = "9.2.2"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -41,7 +42,7 @@ exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", versi
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
 android-r8 = "com.android.tools:r8:3.1.51"
-android-gradlePlug = "com.android.tools.build:gradle:7.1.0"
+android-gradlePlug = "com.android.tools.build:gradle:7.2.0"
 proguard-snippets = "com.infstory:proguard-snippets:1.0.0"
 media = "androidx.media:media:1.4.1"
 palette = "androidx.palette:palette-ktx:1.0.0"
@@ -128,14 +129,19 @@ compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts", ve
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:30.0.1"
+google-bom = "com.google.firebase:firebase-bom:30.0.2"
 google-analytics = "com.google.firebase:firebase-analytics-ktx:19.0.0"
 google-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.1.0"
 google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.7.1"
-google-gmsGoogleServices = "com.google.gms:google-services:4.3.8"
+google-gmsGoogleServices = "com.google.gms:google-services:4.3.10"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.1"
+google-dynamic_links = "com.google.firebase:firebase-dynamic-links-ktx:1.4.1"
 
 junit = "junit:junit:4.13.2"
+
+pdftron = { module = "com.pdftron:pdftron", version.ref = "pdftron" }
+pdftron-tools = { module = "com.pdftron:tools", version.ref = "pdftron" }
+pdftron-standard = { module = "com.pdftron:pdftron-standard", version.ref = "pdftron" }
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }

@@ -1,6 +1,7 @@
 package org.rekhta.navigation
 
-import androidx.navigation.NavOptionsBuilder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 sealed class Screen(val route: String) {
     object Home : Screen("home_root")
@@ -30,16 +31,10 @@ sealed class LeafScreen(val route: String) {
     object Tags : LeafScreen("tags")
 
     object WebView : LeafScreen("webview/{url}") {
-        fun createRoute(url: String): String = "webview/$url"
+        fun createRoute(url: String): String = "webview/${url.encodeUrl()}"
     }
 
-    object WordMeaning : LeafScreen("word/{word}") {
-        fun createRoute(word: String): String = "word/$word"
-    }
-
-    object Comments : LeafScreen("comments/{contentId}") {
-        fun createRoute(contentId: String): String = "comments/$contentId"
-    }
+    fun String.encodeUrl() = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
     object PoetDetail : LeafScreen("poet/{poetId}") {
         fun createRoute(poetId: String): String = "poet/$poetId"
@@ -49,41 +44,7 @@ sealed class LeafScreen(val route: String) {
         fun createRoute(contentId: String): String = "content/$contentId"
     }
 
-    data class ContentEntryParams(
-        val contentTypeId: String? = null,
-        val contentTypeName: String? = null,
-        val poetId: String? = null,
-        val targetId: String? = null,
-        val title: String? = null
-    )
-
-    object ContentEntry : LeafScreen(
-        "contentEntry/?contentTypeId={contentTypeId}&contentTypeName={contentTypeName}&poetId={poetId}&targetId={targetId}&title={title}",
-    ) {
-        fun createRoute(
-            contentTypeId: String? = null,
-            contentTypeName: String? = null,
-            poetId: String? = null,
-            targetId: String? = null,
-            title: String? = null
-        ): String =
-            "contentEntry/?contentTypeId=$contentTypeId&contentTypeName=$contentTypeName&poetId=$poetId&targetId=$targetId&title=$title"
-    }
-
-    object SpecialContent : LeafScreen(
-        "specialContent/?contentTypeId={contentTypeId}&poetId={poetId}&targetId={targetId}&title={title}"
-    ) {
-        fun createRoute(
-            contentTypeId: String? = null,
-            poetId: String? = null,
-            targetId: String? = null,
-            title: String? = null
-        ): String =
-            "specialContent/?contentTypeId=$contentTypeId&poetId=$poetId&targetId=$targetId&title=$title"
+    object Reader : LeafScreen("reader/{fileUrl}") {
+        fun createRoute(arg: String): String = "reader/$arg"
     }
 }
-
-fun Navigator.navigateToPoetDetail(id: String) = navigate(LeafScreen.PoetDetail.createRoute(id))
-
-fun Navigator.navigateToContentDetail(id: String, builder: NavOptionsBuilder.() -> Unit = {}) =
-    navigate(LeafScreen.ContentDetail.createRoute(id), builder)

@@ -84,8 +84,9 @@ fun <T> rememberFlowWithLifecycle(
 }
 
 @Composable
-fun <T> rememberStateWithLifecycle(flow: Flow<T>, default: T) =
+fun <T> rememberFlowStateWithLifecycle(flow: Flow<T>, default: T) =
     rememberFlowWithLifecycle(flow).collectAsState(default)
+
 
 @Composable
 fun <T> rememberStateWithLifecycle(
@@ -105,6 +106,7 @@ fun <T> rememberStateWithLifecycle(
         }
     }
 }
+
 
 @Composable
 fun <T> CollectEvent(

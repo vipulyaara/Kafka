@@ -21,7 +21,6 @@ data class ItemDetailViewState(
 
     val isFullScreenLoading
         get() = isLoading && itemDetail == null
-
 }
 
 fun ItemDetail.ratingText(color: Color): AnnotatedString {

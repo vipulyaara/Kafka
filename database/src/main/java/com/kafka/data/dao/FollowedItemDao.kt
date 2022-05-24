@@ -17,8 +17,8 @@ abstract class FollowedItemDao : EntityDao<FollowedItem> {
     abstract fun observeItemFollowed(itemId: String): Flow<Int>
 
     @Query("SELECT COUNT(*) FROM followed_item WHERE itemId = :itemId")
-    abstract fun isItemFollowed(itemId: String): Int
+    abstract suspend fun isItemFollowed(itemId: String): Int
 
     @Query("DELETE FROM followed_item WHERE itemId = :itemId")
-    abstract fun removeFromFollowedItems(itemId: String): Int
+    abstract suspend fun removeFromFollowedItems(itemId: String): Int
 }

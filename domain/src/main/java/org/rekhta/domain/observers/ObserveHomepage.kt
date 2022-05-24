@@ -16,7 +16,7 @@ class ObserveHomepage @Inject constructor(
     private val observeQueryItems: ObserveQueryItems
 ) : SubjectInteractor<ArchiveQuery, Homepage>() {
 
-    override suspend fun createObservable(params: ArchiveQuery): Flow<Homepage> {
+    override fun createObservable(params: ArchiveQuery): Flow<Homepage> {
         observeQueryItems(ObserveQueryItems.Params(params))
         observeRecentItems(Unit)
         observeFollowedItems(Unit)

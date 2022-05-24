@@ -1,8 +1,5 @@
 package com.kafka.user
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,11 +10,18 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
+import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
 import org.kafka.common.extensions.CollectEvent
+import org.rekhta.favorites.FavoriteScreen
 import org.rekhta.homepage.Homepage
 import org.rekhta.item.detail.ItemDetail
 import org.rekhta.navigation.*
+import org.rekhta.ui.components.defaultEnterTransition
+import org.rekhta.ui.components.defaultExitTransition
+import org.rekhta.ui.components.defaultPopEnterTransition
+import org.rekhta.ui.components.defaultPopExitTransition
+import org.rekhta.webview.WebView
 import timber.log.Timber
 
 @Composable
@@ -39,8 +43,10 @@ internal fun AppNavigation(
         modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = Screen.Home.route,
-        enterTransition = { fadeIn(animationSpec = tween(600)) },
-        exitTransition = { fadeOut(animationSpec = tween(600)) }
+        enterTransition = { defaultEnterTransition(initialState, targetState) },
+        exitTransition = { defaultExitTransition(initialState, targetState) },
+        popEnterTransition = { defaultPopEnterTransition() },
+        popExitTransition = { defaultPopExitTransition() }
     ) {
         addHomeRoot()
         addSearchRoot()
@@ -57,6 +63,8 @@ private fun NavGraphBuilder.addHomeRoot() {
     ) {
         addHome(Screen.Home)
         addItemDetail(Screen.Home)
+        addReader(Screen.Home)
+        addWebView(Screen.Home)
     }
 }
 
@@ -67,6 +75,7 @@ private fun NavGraphBuilder.addSearchRoot() {
     ) {
         addSearch(Screen.Search)
         addItemDetail(Screen.Search)
+        addReader(Screen.Search)
     }
 }
 
@@ -76,6 +85,8 @@ private fun NavGraphBuilder.addLibraryRoot() {
         startDestination = LeafScreen.Library.createRoute(Screen.Library)
     ) {
         addLibrary(Screen.Library)
+        addItemDetail(Screen.Library)
+        addReader(Screen.Library)
     }
 }
 
@@ -117,7 +128,7 @@ private fun NavGraphBuilder.addPlayer(root: Screen) {
 
 private fun NavGraphBuilder.addLibrary(root: Screen) {
     composable(LeafScreen.Library.createRoute(root)) {
-
+        FavoriteScreen()
     }
 }
 
@@ -135,5 +146,27 @@ private fun NavGraphBuilder.addItemDetail(root: Screen) {
         )
     ) {
         ItemDetail()
+    }
+}
+
+private fun NavGraphBuilder.addReader(root: Screen) {
+    composable(
+        route = LeafScreen.Reader.createRoute(root),
+        arguments = listOf(
+            navArgument("fileUrl") { type = NavType.StringType }
+        )
+    ) {
+        ReaderScreen()
+    }
+}
+
+private fun NavGraphBuilder.addWebView(root: Screen) {
+    composable(
+        route = LeafScreen.WebView.createRoute(root),
+        arguments = listOf(
+            navArgument("url") { type = NavType.StringType }
+        )
+    ) {
+        WebView(it.arguments?.getString("url").orEmpty())
     }
 }

@@ -3,14 +3,13 @@ package org.rekhta.domain.interactors.query
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model._identifier
-import kotlinx.coroutines.withContext
 import org.rekhta.base.AppCoroutineDispatchers
 import org.rekhta.base.debug
 import javax.inject.Inject
 
 class BuildLocalQuery @Inject constructor(private val dispatchers: AppCoroutineDispatchers) {
-    suspend operator fun invoke(params: ArchiveQuery): SimpleSQLiteQuery {
-        return withContext(dispatchers.computation) { params.asLocalQuery() }
+    operator fun invoke(params: ArchiveQuery): SimpleSQLiteQuery {
+        return params.asLocalQuery()
     }
 
     private fun String.toLocalJoiner() = if (this.isEmpty()) "" else " $this "

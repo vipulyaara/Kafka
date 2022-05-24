@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,7 @@ import org.rekhta.item.ArchiveQueryViewModel
 import org.rekhta.item.Item
 import org.rekhta.navigation.LeafScreen
 import org.rekhta.navigation.LocalNavigator
-import org.rekhta.ui.search.SearchWidget
+import org.rekhta.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.textSecondary
 
 @Composable
@@ -36,7 +35,12 @@ fun SearchScreen() {
     val navigator = LocalNavigator.current
     val searchViewModel: ArchiveQueryViewModel = hiltViewModel()
     val searchViewState by rememberStateWithLifecycle(searchViewModel.state)
-    var keyword by rememberSaveable { mutableStateOf("") }
+
+    var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(
+            TextFieldValue(text = "", selection = TextRange(0))
+        )
+    }
 
     DefaultScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -44,11 +48,10 @@ fun SearchScreen() {
     ) {
         Column {
             SearchWidget(
-                searchText = TextFieldValue(text = keyword, selection = TextRange(keyword.length)),
-                setSearchText = { keyword = it.text },
+                searchText = searchText,
+                setSearchText = { searchText = it },
                 onImeAction = {
-                    keyword = it
-                    searchViewModel.submitQuery(ArchiveQuery().apply { booksByAuthor(keyword) })
+                    searchViewModel.submitQuery(ArchiveQuery().apply { booksByAuthor(it) })
                 }
             )
 
@@ -57,6 +60,7 @@ fun SearchScreen() {
                     navigator.navigate(LeafScreen.ContentDetail.createRoute(it))
                 }
             }
+            InfiniteProgressBar(show = searchViewState.isLoading)
         }
     }
 }

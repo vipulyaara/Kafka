@@ -26,22 +26,22 @@ interface QueueDao : EntityDao<Song> {
     fun observePlayingQueue(): Flow<QueueEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertQueueEntity(queueEntity: QueueEntity)
+    suspend fun insertQueueEntity(queueEntity: QueueEntity)
 
     @Query("SELECT * FROM queue_meta_data")
-    fun getQueueEntity(): QueueEntity?
+    suspend fun getQueueEntity(): QueueEntity?
 
     @Query("SELECT currentSongId FROM queue_meta_data")
     fun observeCurrentSongId(): Flow<String?>
 
     @Query("UPDATE queue_meta_data SET currentSongId  = :currentSongId")
-    fun updateCurrentSong(currentSongId: String)
+    suspend fun updateCurrentSong(currentSongId: String)
 
     @Query("UPDATE queue_meta_data SET isPlaying = :isPlaying")
-    fun updatePlayingStatus(isPlaying: Boolean)
+    suspend fun updatePlayingStatus(isPlaying: Boolean)
 
     @Query("UPDATE queue_meta_data SET currentSeekPos = :seek")
-    fun updatePlayerSeekPosition(seek: Long)
+    suspend fun updatePlayerSeekPosition(seek: Long)
 
     @Query("DELETE from song")
     fun clearSongs()

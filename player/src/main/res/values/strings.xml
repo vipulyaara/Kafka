@@ -1,72 +1,72 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Player</string>
-    <string name="playing_notification_name">Player</string>
-    <string name="playing_notification_description">Player</string>
-    <string name="all_songs">Songs</string>
-    <string name="media_playback">Playback</string>
-    <string name="media_playback_controls">Controls</string>
-    <string name="artists">Artists</string>
-    <string name="albums">Albums</string>
-    <string name="songs">Songs</string>
-    <string name="playlists">Playlists</string>
-    <string name="genres">Genres</string>
+<!--<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">-->
+<!--    <string name="app_name">Player</string>-->
+<!--    <string name="playing_notification_name">Player</string>-->
+<!--    <string name="playing_notification_description">Player</string>-->
+<!--    <string name="all_songs">Songs</string>-->
+<!--    <string name="media_playback">Playback</string>-->
+<!--    <string name="media_playback_controls">Controls</string>-->
+<!--    <string name="artists">Artists</string>-->
+<!--    <string name="albums">Albums</string>-->
+<!--    <string name="songs">Songs</string>-->
+<!--    <string name="playlists">Playlists</string>-->
+<!--    <string name="genres">Genres</string>-->
 
-    <string name="player_notification_title">Kafka Playing</string>
-    <string name="player_description_notification_title">Kafka Playing</string>
+<!--    <string name="player_notification_title">Kafka Playing</string>-->
+<!--    <string name="player_description_notification_title">Kafka Playing</string>-->
 
-    <string name="play">Play</string>
-    <string name="add_to_playlist">Add to Playlist</string>
-    <string name="go_to_album">Go to Album</string>
-    <string name="go_to_artist">Go to Artist</string>
-    <string name="play_next">Play next</string>
-    <string name="delete_from_device">Delete from Device</string>
+<!--    <string name="play">Play</string>-->
+<!--    <string name="add_to_playlist">Add to Playlist</string>-->
+<!--    <string name="go_to_album">Go to Album</string>-->
+<!--    <string name="go_to_artist">Go to Artist</string>-->
+<!--    <string name="play_next">Play next</string>-->
+<!--    <string name="delete_from_device">Delete from Device</string>-->
 
-    <string name="sort_order_entry_az">A-Z</string>
-    <string name="sort_order_entry_za">Z-A</string>
-    <string name="sort_order_entry_year">Year</string>
-    <string name="sort_order_entry_duration">Duration</string>
-    <string name="sort_order_entry_number_of_songs">Number of songs</string>
+<!--    <string name="sort_order_entry_az">A-Z</string>-->
+<!--    <string name="sort_order_entry_za">Z-A</string>-->
+<!--    <string name="sort_order_entry_year">Year</string>-->
+<!--    <string name="sort_order_entry_duration">Duration</string>-->
+<!--    <string name="sort_order_entry_number_of_songs">Number of songs</string>-->
 
-    <string name="number_song_add_playlist"><xliff:g example="1" id="number">%d</xliff:g> song added to playlist.</string>
-    <string name="number_songs_add_playlist"><xliff:g example="1" id="number">%d</xliff:g> songs added to playlist.</string>
+<!--    <string name="number_song_add_playlist"><xliff:g example="1" id="number">%d</xliff:g> song added to playlist.</string>-->
+<!--    <string name="number_songs_add_playlist"><xliff:g example="1" id="number">%d</xliff:g> songs added to playlist.</string>-->
 
-    <string name="create">Create</string>
-    <string name="delete">Delete</string>
+<!--    <string name="create">Create</string>-->
+<!--    <string name="delete">Delete</string>-->
 
-    <string name="create_new_playlist">Create New Playlist</string>
-    <string name="delete_song_prompt">Delete Song?</string>
-    <string name="enter_playlist_name">Enter playlist name…</string>
-    <string name="playlist_created">Playlist created!</string>
-    <string name="unable_create_playlist">Unable to create playlist!</string>
+<!--    <string name="create_new_playlist">Create New Playlist</string>-->
+<!--    <string name="delete_song_prompt">Delete Song?</string>-->
+<!--    <string name="enter_playlist_name">Enter playlist name…</string>-->
+<!--    <string name="playlist_created">Playlist created!</string>-->
+<!--    <string name="unable_create_playlist">Unable to create playlist!</string>-->
 
-    <string name="casting_to_x">Casting to %1$s</string>
-    <string name="nothing_playing">Nothing playing</string>
-    <string name="now_playing_format">%1$s | %2$s</string>
+<!--    <string name="casting_to_x">Casting to %1$s</string>-->
+<!--    <string name="nothing_playing">Nothing playing</string>-->
+<!--    <string name="now_playing_format">%1$s | %2$s</string>-->
 
-    <string name="queue_ended">Queue ended</string>
-    <string name="no_song_next">No song up next</string>
+<!--    <string name="queue_ended">Queue ended</string>-->
+<!--    <string name="no_song_next">No song up next</string>-->
 
-    <string name="play_song_error">Unable to play song</string>
-    <string name="shuffle_no_songs_error">There\'s no songs to shuffle</string>
-    <string name="new_playlist">New Playlist</string>
-    <string name="lyrics">Lyrics</string>
-    <string name="up_next">Up Next</string>
-    <string name="no_results">No Results</string>
-    <string name="search_hint">Search for songs, artists, albums…</string>
+<!--    <string name="play_song_error">Unable to play song</string>-->
+<!--    <string name="shuffle_no_songs_error">There\'s no songs to shuffle</string>-->
+<!--    <string name="new_playlist">New Playlist</string>-->
+<!--    <string name="lyrics">Lyrics</string>-->
+<!--    <string name="up_next">Up Next</string>-->
+<!--    <string name="no_results">No Results</string>-->
+<!--    <string name="search">Search for songs, artists, albums…</string>-->
 
-    <string name="light">Light</string>
-    <string name="dark">Dark</string>
-    <string name="black">Black</string>
+<!--    <string name="light">Light</string>-->
+<!--    <string name="dark">Dark</string>-->
+<!--    <string name="black">Black</string>-->
 
-    <string name="settings">Settings</string>
-    <string name="choose_start_page">Choose the start page to be displayed on launch.</string>
-    <string name="start_page">Start page</string>
-    <string name="choose_theme">Select the theme to be used throughout the app</string>
-    <string name="theme">Theme</string>
+<!--    <string name="settings">Settings</string>-->
+<!--    <string name="choose_start_page">Choose the start page to be displayed on launch.</string>-->
+<!--    <string name="start_page">Start page</string>-->
+<!--    <string name="choose_theme">Select the theme to be used throughout the app</string>-->
+<!--    <string name="theme">Theme</string>-->
 
-    <string name="load_artist_image">Last.fm artist images</string>
-    <string name="load_album_image">Last.fm album images</string>
-    <string name="load_artist_image_summary">Load artist images from Last.fm</string>
-    <string name="load_album_image_summary">Load album images from Last.fm (only if not available locally)</string>
+<!--    <string name="load_artist_image">Last.fm artist images</string>-->
+<!--    <string name="load_album_image">Last.fm album images</string>-->
+<!--    <string name="load_artist_image_summary">Load artist images from Last.fm</string>-->
+<!--    <string name="load_album_image_summary">Load album images from Last.fm (only if not available locally)</string>-->
 
-</resources>
+<!--</resources>-->

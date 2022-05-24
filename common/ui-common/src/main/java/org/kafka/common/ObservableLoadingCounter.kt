@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import org.rekhta.base.debug
 import org.rekhta.base.domain.InvokeError
 import org.rekhta.base.domain.InvokeStarted
 import org.rekhta.base.domain.InvokeStatus
@@ -31,6 +32,7 @@ suspend fun Flow<InvokeStatus>.collectStatus(
     counter: ObservableLoadingCounter,
     uiMessageManager: UiMessageManager? = null,
 ) = collect { status ->
+    debug { "Loading status $status" }
     when (status) {
         InvokeStarted -> counter.addLoader()
         InvokeSuccess -> counter.removeLoader()

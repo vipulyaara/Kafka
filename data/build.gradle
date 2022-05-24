@@ -38,9 +38,6 @@ dependencies {
 
     implementation platform(libs.google.bom)
 
-    api "com.google.firebase:firebase-crashlytics-ktx"
-    api "com.google.firebase:firebase-analytics-ktx"
-
     api libs.androidx.core
     api libs.androidx.collection
 

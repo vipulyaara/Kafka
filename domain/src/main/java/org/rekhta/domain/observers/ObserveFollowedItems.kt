@@ -16,7 +16,7 @@ class ObserveFollowedItems @Inject constructor(
     private val itemDao: ItemDao
 ) : SubjectInteractor<Unit, List<Item>>() {
 
-    override suspend fun createObservable(params: Unit): Flow<List<Item>> {
+    override fun createObservable(params: Unit): Flow<List<Item>> {
         return followedItemDao.observeFollowedItems()
             .map { it.map { itemDao.getItemByItemId(it.itemId) } }.flowOn(dispatchers.io)
     }

@@ -39,12 +39,12 @@ fun AppTheme(
 
     val colorScheme = when {
         dynamicColor && isDarkTheme -> if (isAtLeastS()) {
-            dynamicDarkColorScheme(LocalContext.current).copy(background = Color(0xFF0a0b0c))
+            dynamicDarkColorScheme(LocalContext.current).copy(surface = Color(0xFF0a0b0c))
         } else {
             DarkAppColors
         }
         dynamicColor && !isDarkTheme -> if (isAtLeastS()) {
-            dynamicLightColorScheme(LocalContext.current).copy(background = Color.White)
+            dynamicLightColorScheme(LocalContext.current).copy(surface = Color.White)
         } else {
             LightAppColors
         }

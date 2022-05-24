@@ -16,7 +16,7 @@ class ObserveRecentItems @Inject constructor(
     private val itemRepository: ItemRepository
 ) : SubjectInteractor<Unit, List<ItemWithRecentItem>>() {
 
-    override suspend fun createObservable(params: Unit): Flow<List<ItemWithRecentItem>> {
+    override fun createObservable(params: Unit): Flow<List<ItemWithRecentItem>> {
         return itemRepository.observeItemsWithRecentlyVisitedInfo().flowOn(dispatchers.io)
     }
 }

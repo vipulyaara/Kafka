@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Homepage
@@ -23,7 +23,6 @@ import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.DefaultScaffold
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
-import org.rekhta.favorites.FavoriteViewModel
 import org.rekhta.homepage.ui.Carousels
 import org.rekhta.homepage.ui.ContinueReading
 import org.rekhta.homepage.ui.HomepageTopBar
@@ -47,12 +46,9 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun Homepage(viewState: HomepageViewState) {
     LogCompositions(tag = "Homepage Feed items")
 
-    val scrollState = rememberScrollState()
+    val lazyListState = rememberLazyListState()
     val snackbarState = SnackbarHostState()
-
-    val favoriteViewModel: FavoriteViewModel = hiltViewModel()
     val navigator = LocalNavigator.current
-    val context = LocalContext.current
 
     DefaultScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -64,6 +60,7 @@ private fun Homepage(viewState: HomepageViewState) {
             viewState.homepage?.let {
                 HomepageFeedItems(
                     homepage = viewState.homepage,
+                    lazyListState = lazyListState,
                     openItemDetail = { navigator.navigate(LeafScreen.ContentDetail.createRoute(it)) })
             }
 
@@ -74,13 +71,27 @@ private fun Homepage(viewState: HomepageViewState) {
 }
 
 @Composable
-private fun HomepageFeedItems(homepage: Homepage, openItemDetail: (String) -> Unit) {
-    LazyColumn(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+private fun HomepageFeedItems(
+    homepage: Homepage,
+    openItemDetail: (String) -> Unit,
+    lazyListState: LazyListState = rememberLazyListState()
+) {
+    LazyColumn(
+        state = lazyListState,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         item { Carousels() }
         item { Spacer(modifier = Modifier.height(24.dp)) }
-        item { ContinueReading(readingList = homepage.queryItems.asImmutable()) {} }
+        item {
+            ContinueReading(
+                readingList = homepage.queryItems.asImmutable(),
+                openItemDetail = openItemDetail
+            )
+        }
         item { Spacer(modifier = Modifier.height(24.dp)) }
-        items(homepage.queryItems) {
+        items(homepage.queryItems, key = { it.itemId }) {
             Item(item = it, openItemDetail = openItemDetail)
         }
     }

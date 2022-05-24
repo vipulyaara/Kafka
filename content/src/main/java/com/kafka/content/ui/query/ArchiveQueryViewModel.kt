@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class ArchiveQueryViewModel @ViewModelInject constructor(
+class ArchiveQueryVsdiewModel @ViewModelInject constructor(
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
     private val loadingState: ObservableLoadingCounter,
@@ -59,4 +59,3 @@ class ArchiveQueryViewModel @ViewModelInject constructor(
         }
     }
 }
-

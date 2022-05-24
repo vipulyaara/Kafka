@@ -10,10 +10,10 @@ fun ScrollState?.elevation(maxElevation: Int = 40) = this?.run {
     else 0f
 }?.dp ?: 0.dp
 
-fun LazyListState?.elevation(maxElevation: Int = 40, step: (Int) -> Int = { it }) = this?.run {
+fun LazyListState?.elevation(maxElevation: Int = 40, step: (Int) -> Int = { it / 4 }) = this?.run {
     step(firstVisibleItemScrollOffset).coerceAtMost(maxElevation)
 }?.dp ?: 0.dp
 
-fun LazyGridState?.elevation(maxElevation: Int = 40, step: (Int) -> Int = { it }) = this?.run {
+fun LazyGridState?.elevation(maxElevation: Int = 40, step: (Int) -> Int = { it / 4 }) = this?.run {
     step(firstVisibleItemScrollOffset).coerceAtMost(maxElevation)
 }?.dp ?: 0.dp

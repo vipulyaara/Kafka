@@ -4,7 +4,9 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.ItemDetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 import org.rekhta.base.AppCoroutineDispatchers
+import org.rekhta.base.debug
 import org.rekhta.base.domain.SubjectInteractor
 import javax.inject.Inject
 
@@ -20,8 +22,9 @@ class ObserveItemDetail @Inject constructor(
     private val repository: ItemDetailRepository
 ) : SubjectInteractor<ObserveItemDetail.Param, ItemDetail?>() {
 
-    override suspend fun createObservable(params: Param): Flow<ItemDetail?> {
-        return repository.observeItemDetail(params.contentId).flowOn(dispatchers.io)
+    override fun createObservable(params: Param): Flow<ItemDetail?> {
+        return repository.observeItemDetail(params.contentId)
+            .flowOn(dispatchers.io)
     }
 
     data class Param(val contentId: String)

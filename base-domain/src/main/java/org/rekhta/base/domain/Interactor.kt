@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 abstract class Interactor<in P> {
-    operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
+    suspend operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
         return flow {
             try {
                 withTimeout(timeoutMs) {
@@ -27,7 +27,7 @@ abstract class Interactor<in P> {
         }.catch { t ->
             Timber.e(t.localizedMessage ?: t.toString())
             emit(InvokeError(t))
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun executeSync(params: P) = doWork(params)
@@ -108,7 +108,7 @@ abstract class SubjectInteractor<P : Any, T> {
         paramState.tryEmit(params)
     }
 
-    protected abstract suspend fun createObservable(params: P): Flow<T>
+    protected abstract fun createObservable(params: P): Flow<T>
 
     protected fun onError(error: Throwable) {
         Timber.e(error)

@@ -48,6 +48,6 @@ class HomepageViewModel @Inject constructor(
         }
     }
 
-    val selectedQuery
+    private val selectedQuery
         get() = getHomepageTags().first { it.isSelected }.searchQuery.asArchiveQuery()
 }

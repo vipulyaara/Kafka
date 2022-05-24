@@ -5,6 +5,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
+        maven {url "https://pdftron-maven.s3.amazonaws.com/release"}
     }
 
     dependencies {
@@ -35,6 +36,7 @@ allprojects {
 
         // Used for Roomigrant
         maven { url 'https://jitpack.io' }
+        maven {url "https://pdftron-maven.s3.amazonaws.com/release"}
     }
 }
 
@@ -43,8 +45,8 @@ subprojects {
         // We forcefully exclude AppCompat + MDC from any transitive dependencies.
         // This is a Compose app, so there's no need for these.
 //        exclude group: 'androidx.appcompat'
-        exclude group: 'com.google.android.material', module: 'material'
-        exclude group: 'com.google.android.material', module: 'material'
+//        exclude group: 'com.google.android.material', module: 'material'
+//        exclude group: 'com.google.android.material', module: 'material'
 
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def group = details.requested.group

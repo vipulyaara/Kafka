@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import org.kafka.common.extensions.rememberStateWithLifecycle
+import org.kafka.common.extensions.rememberFlowStateWithLifecycle
 import org.rekhta.analytics.Logger
 import ui.common.theme.ThemeViewModel
 import ui.common.theme.theme.AppTheme
@@ -31,7 +31,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val themeViewModel: ThemeViewModel = hiltViewModel()
-            val themeState by rememberStateWithLifecycle(themeViewModel.themeState, DefaultTheme)
+            val themeState by rememberFlowStateWithLifecycle(
+                themeViewModel.themeState,
+                DefaultTheme
+            )
 
             AppTheme(themeState, themeState.isDynamicColorEnabled) {
                 MainScreen(analytics = analytics)

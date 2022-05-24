@@ -16,7 +16,7 @@ class ObserveQueryItems @Inject constructor(
     private val itemRepository: ItemRepository
 ) : SubjectInteractor<ObserveQueryItems.Params, List<Item>>() {
 
-    override suspend fun createObservable(params: Params): Flow<List<Item>> {
+    override fun createObservable(params: Params): Flow<List<Item>> {
         return itemRepository.observeQueryItems(buildLocalQuery(params.archiveQuery))
             .flowOn(dispatchers.io)
     }

@@ -9,6 +9,6 @@ import org.kafka.common.UiMessage
 data class ArchiveQueryViewState(
     var items: List<Item>? = null,
     val recentSearches: List<String>? = null,
-    var isLoading: Boolean = true,
+    var isLoading: Boolean = false,
     val message: UiMessage? = null
 )

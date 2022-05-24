@@ -6,8 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Doc(
-    @SerialName("backup_location")
-    val backupLocation: String? = null,
     @SerialName("genre")
     val collection: List<String>? = null,
     @SerialName("creator")
@@ -16,7 +14,8 @@ data class Doc(
     @SerialName("date")
     val date: String? = null,
     @SerialName("description")
-    val description: String? = null,
+    @Serializable(with = StringListSerializer::class)
+    val description: List<String>? = null,
     @SerialName("downloads")
     val downloads: Int,
     @SerialName("format")

@@ -31,6 +31,10 @@ dependencies {
     implementation project(':base-domain')
     implementation project(':data')
 
+    implementation platform(libs.google.bom)
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
+
     implementation libs.hilt.library
     kapt libs.hilt.compiler
 }

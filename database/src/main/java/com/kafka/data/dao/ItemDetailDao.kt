@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 abstract class ItemDetailDao : EntityDao<ItemDetail> {
 
     @Query("select * from ItemDetail where itemId = :itemId")
-    abstract fun itemDetailFlow(itemId: String): Flow<ItemDetail>
+    abstract fun itemDetailFlow(itemId: String): Flow<ItemDetail?>
 
     @Query("select * from ItemDetail where itemId = :itemId")
-    abstract fun itemDetail(itemId: String): ItemDetail
+    abstract suspend fun itemDetail(itemId: String): ItemDetail
 }

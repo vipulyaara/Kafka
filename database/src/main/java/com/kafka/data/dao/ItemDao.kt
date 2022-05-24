@@ -22,7 +22,7 @@ abstract class ItemDao : EntityDao<Item> {
     abstract fun observeQueryItems(buildLocalQuery: SimpleSQLiteQuery): Flow<List<Item>>
 
     @Query("select * from item where itemId = :itemId")
-    abstract fun getItemByItemId(itemId: String): Item
+    abstract suspend fun getItemByItemId(itemId: String): Item
 
     @Query("delete from item")
     abstract suspend fun deleteAll()
@@ -31,11 +31,11 @@ abstract class ItemDao : EntityDao<Item> {
     abstract fun observeItemFollowed(itemId: String): Flow<Int>
 
     @Query("SELECT COUNT(*) FROM followed_item WHERE itemId = :itemId")
-    abstract fun isItemFollowed(itemId: String): Int
+    abstract suspend fun isItemFollowed(itemId: String): Int
 
     @Query("DELETE FROM followed_item WHERE itemId = :itemId")
-    abstract fun removeFromFollowedItems(itemId: String): Int
+    abstract suspend fun removeFromFollowedItems(itemId: String): Int
 
     @Insert(entity = FollowedItem::class)
-    abstract fun insertFollowedItem(followedItem: FollowedItem)
+    abstract suspend fun insertFollowedItem(followedItem: FollowedItem)
 }

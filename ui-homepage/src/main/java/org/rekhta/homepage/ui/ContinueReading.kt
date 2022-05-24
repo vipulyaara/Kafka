@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import org.kafka.common.ImmutableList
@@ -24,7 +23,7 @@ import ui.common.theme.theme.textSecondary
 fun ContinueReading(
     readingList: ImmutableList<Item>,
     modifier: Modifier = Modifier,
-    onItemClicked: (Item) -> Unit
+    openItemDetail: (String) -> Unit
 ) {
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
@@ -36,8 +35,8 @@ fun ContinueReading(
             )
 
             LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
-                items(readingList.items.subList(0, 4)) {
-                    ContinueReadingItem(it) { onItemClicked(it) }
+                items(readingList.items.subList(0, 4), key = { it.itemId }) {
+                    ContinueReadingItem(it) { openItemDetail(it.itemId) }
                 }
             }
         }

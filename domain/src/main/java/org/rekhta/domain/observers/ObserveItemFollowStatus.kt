@@ -13,7 +13,7 @@ class ObserveItemFollowStatus @Inject constructor(
     private val followedItemDao: FollowedItemDao
 ) : SubjectInteractor<ObserveItemFollowStatus.Params, Boolean>() {
 
-    override suspend fun createObservable(params: Params): Flow<Boolean> {
+    override fun createObservable(params: Params): Flow<Boolean> {
         return followedItemDao.observeItemFollowed(params.itemId).map { it > 0 }
             .flowOn(dispatchers.io)
     }

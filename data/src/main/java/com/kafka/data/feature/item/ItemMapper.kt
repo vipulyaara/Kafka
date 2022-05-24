@@ -16,7 +16,7 @@ class ItemMapper @Inject constructor() : Mapper<SearchResponse, List<Item>> {
         itemId = this.identifier,
         language = this.language,
         title = this.title.dismissUpperCase(),
-        description = this.description?.trim(),
+        description = this.description?.get(0)?.trim(),
         creator = this.creator?.get(0)?.let { Creator(it, it) },
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",

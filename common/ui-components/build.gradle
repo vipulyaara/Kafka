@@ -29,6 +29,7 @@ dependencies {
     implementation project(':data')
     implementation project(':common:ui-common')
     implementation project(':common:ui-common-theme')
+    implementation project(':common:ui-common-compose')
 
     api libs.androidx.core
     api libs.palette
