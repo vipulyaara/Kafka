@@ -33,7 +33,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.dp
 import com.facebook.flipper.BuildConfig
 import kotlinx.coroutines.delay
-import org.rekhta.base.debug
+import org.kafka.base.debug
 import kotlin.math.min
 
 /**

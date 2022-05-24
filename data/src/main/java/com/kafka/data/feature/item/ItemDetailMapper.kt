@@ -6,7 +6,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isMp3
 import com.kafka.data.entities.isPdf
 import com.kafka.data.model.item.ItemDetailResponse
-import org.rekhta.base.Mapper
+import org.kafka.base.Mapper
 import java.net.URL
 import javax.inject.Inject
 

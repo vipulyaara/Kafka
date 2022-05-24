@@ -17,8 +17,8 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import org.kafka.common.common.collect
 import org.kafka.common.logging.recomposeHighlighter
-import org.rekhta.analytics.Logger
-import org.rekhta.navigation.NavigatorHost
+import org.kafka.analytics.Logger
+import org.kafka.navigation.NavigatorHost
 
 @Composable
 fun MainScreen(analytics: Logger) {

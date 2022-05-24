@@ -13,15 +13,15 @@ import com.google.accompanist.navigation.animation.navigation
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
 import org.kafka.common.extensions.CollectEvent
-import org.rekhta.favorites.FavoriteScreen
-import org.rekhta.homepage.Homepage
-import org.rekhta.item.detail.ItemDetail
-import org.rekhta.navigation.*
-import org.rekhta.ui.components.defaultEnterTransition
-import org.rekhta.ui.components.defaultExitTransition
-import org.rekhta.ui.components.defaultPopEnterTransition
-import org.rekhta.ui.components.defaultPopExitTransition
-import org.rekhta.webview.WebView
+import org.kafka.favorites.FavoriteScreen
+import org.kafka.homepage.Homepage
+import org.kafka.item.detail.ItemDetail
+import org.kafka.navigation.*
+import org.kafka.ui.components.defaultEnterTransition
+import org.kafka.ui.components.defaultExitTransition
+import org.kafka.ui.components.defaultPopEnterTransition
+import org.kafka.ui.components.defaultPopExitTransition
+import org.kafka.webview.WebView
 import timber.log.Timber
 
 @Composable

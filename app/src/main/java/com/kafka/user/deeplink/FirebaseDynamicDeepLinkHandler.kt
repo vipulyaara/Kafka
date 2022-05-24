@@ -7,8 +7,8 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import dagger.Reusable
-import org.rekhta.analytics.CrashLogger
-import org.rekhta.navigation.DynamicDeepLinkHandler
+import org.kafka.analytics.CrashLogger
+import org.kafka.navigation.DynamicDeepLinkHandler
 import javax.inject.Inject
 
 @Reusable

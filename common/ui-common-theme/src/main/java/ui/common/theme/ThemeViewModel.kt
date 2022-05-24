@@ -6,7 +6,7 @@ import com.kafka.data.PreferenceKeys
 import com.kafka.data.PreferencesStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.rekhta.analytics.Logger
+import org.kafka.analytics.Logger
 import ui.common.theme.theme.DefaultTheme
 import javax.inject.Inject
 

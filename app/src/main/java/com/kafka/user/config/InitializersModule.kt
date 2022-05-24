@@ -1,4 +1,4 @@
-package org.rekhta.user.config
+package org.kafka.user.config
 
 
 import android.app.Application
@@ -11,7 +11,7 @@ import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.rekhta.base.AppCoroutineDispatchers
+import org.kafka.base.AppCoroutineDispatchers
 import org.threeten.bp.zone.ZoneRulesProvider
 import radiography.Radiography
 import radiography.ViewStateRenderers.DefaultsIncludingPii

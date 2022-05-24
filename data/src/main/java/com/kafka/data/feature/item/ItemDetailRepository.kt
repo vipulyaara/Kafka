@@ -2,8 +2,8 @@ package com.kafka.data.feature.item
 
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.dao.ItemDetailDao
-import org.rekhta.base.AppCoroutineDispatchers
-import org.rekhta.base.network.resultApiCall
+import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.network.resultApiCall
 import javax.inject.Inject
 
 class ItemDetailRepository @Inject constructor(

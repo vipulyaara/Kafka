@@ -21,11 +21,11 @@ import com.kafka.data.model.booksByAuthor
 import org.kafka.common.LogCompositions
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.DefaultScaffold
-import org.rekhta.item.ArchiveQueryViewModel
-import org.rekhta.item.Item
-import org.rekhta.navigation.LeafScreen
-import org.rekhta.navigation.LocalNavigator
-import org.rekhta.ui.components.progress.InfiniteProgressBar
+import org.kafka.item.ArchiveQueryViewModel
+import org.kafka.item.Item
+import org.kafka.navigation.LeafScreen
+import org.kafka.navigation.LocalNavigator
+import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.textSecondary
 
 @Composable

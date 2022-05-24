@@ -7,10 +7,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.rekhta.base.extensions.delayFlow
-import org.rekhta.base.domain.InvokeResponse
-import org.rekhta.base.domain.InvokeStatus
-import org.rekhta.base.domain.errorMessageOrNull
+import org.kafka.base.extensions.delayFlow
+import org.kafka.base.domain.InvokeResponse
+import org.kafka.base.domain.InvokeStatus
+import org.kafka.base.domain.errorMessageOrNull
 import org.threeten.bp.Duration
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package com.kafka.data.model
 
 import kotlinx.coroutines.suspendCancellableCoroutine
-import org.rekhta.base.errorLog
+import org.kafka.base.errorLog
 import kotlin.coroutines.resumeWithException
 
 interface Callback<T> {

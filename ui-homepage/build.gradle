@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+//apply plugin: 'plugins.android.library'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 kapt {
     correctErrorTypes = true
     useBuildCache = true
 }
-
-apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion Publishing.compileSdk

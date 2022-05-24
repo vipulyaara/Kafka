@@ -77,19 +77,6 @@ fun SearchWidget(
 }
 
 @Composable
-private fun SearchIcon(text: String, onTextChange: (String) -> Unit) {
-    AnimatedVisibility(visible = text.isNotEmpty()) {
-        LoadImage(
-            modifier = Modifier
-                .clickable(onClick = { onTextChange(text) })
-                .padding(12.dp)
-                .size(24.dp),
-            data = R.drawable.ic_search
-        )
-    }
-}
-
-@Composable
 private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
     AnimatedVisibility(
         visible = text.isNotEmpty(),

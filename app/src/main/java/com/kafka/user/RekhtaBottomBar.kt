@@ -22,8 +22,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import org.kafka.common.Icons
-import org.rekhta.navigation.Screen
-import org.rekhta.user.R
+import org.kafka.navigation.Screen
+import org.kafka.user.R
 import ui.common.theme.BottomBarElevation
 import ui.common.theme.theme.AppBarAlphas
 import ui.common.theme.theme.DisableRipple

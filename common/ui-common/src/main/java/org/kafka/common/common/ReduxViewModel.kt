@@ -7,13 +7,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.kafka.common.UiMessage
-import org.kafka.common.UiMessageManager
-import org.rekhta.base.debug
-import org.rekhta.base.domain.InvokeError
-import org.rekhta.base.domain.InvokeResponse
-import org.rekhta.base.domain.InvokeStatus
-import org.rekhta.base.errorLog
+import org.kafka.base.domain.InvokeResponse
+import org.kafka.base.errorLog
 import kotlin.reflect.KProperty1
 
 abstract class ReduxViewModel<S>(

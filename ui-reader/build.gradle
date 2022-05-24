@@ -48,9 +48,10 @@ dependencies {
     implementation project(':common:ui-common')
     implementation project(':common:ui-components')
     implementation project(':common:ui-common-compose')
+    implementation files('libs/PDFNet.jar')
 
-    implementation libs.pdftron.standard
-    implementation libs.pdftron.tools
+//    implementation libs.pdftron.standard
+//    implementation libs.pdftron.tools
 
 //    implementation "androidx.appcompat:appcompat:1.4.1"
 //    implementation "androidx.legacy:legacy-support-v4:1.0.0"

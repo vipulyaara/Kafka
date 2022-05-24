@@ -22,7 +22,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import org.rekhta.base.debug
+import org.kafka.base.debug
 
 class Ref(var value: Int)
 

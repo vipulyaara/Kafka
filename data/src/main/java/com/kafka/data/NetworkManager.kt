@@ -8,7 +8,7 @@ import android.net.NetworkRequest
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.rekhta.base.debug
+import org.kafka.base.debug
 import javax.inject.Inject
 import javax.inject.Singleton
 

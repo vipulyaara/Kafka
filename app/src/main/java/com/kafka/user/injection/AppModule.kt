@@ -24,14 +24,14 @@ import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.kafka.common.image.CoilAppInitializer
-import org.rekhta.analytics.CrashLogger
-import org.rekhta.analytics.FirebaseCrashLogger
-import org.rekhta.analytics.FirebaseLogger
-import org.rekhta.analytics.Logger
-import org.rekhta.base.AppCoroutineDispatchers
-import org.rekhta.navigation.DynamicDeepLinkHandler
-import org.rekhta.notifications.NotificationManagerImpl
-import org.rekhta.user.config.*
+import org.kafka.analytics.CrashLogger
+import org.kafka.analytics.FirebaseCrashLogger
+import org.kafka.analytics.FirebaseLogger
+import org.kafka.analytics.Logger
+import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.notifications.NotificationManagerImpl
+import org.kafka.user.config.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -117,7 +117,7 @@ abstract class AppModuleBinds {
 
     @Singleton
     @Binds
-    abstract fun provideNotificationManager(bind: NotificationManagerImpl): org.rekhta.notifications.NotificationManager
+    abstract fun provideNotificationManager(bind: NotificationManagerImpl): org.kafka.notifications.NotificationManager
 
     @Binds
     abstract fun deepLinkHandler(firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler): DynamicDeepLinkHandler

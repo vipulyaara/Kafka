@@ -8,7 +8,7 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import org.kafka.common.extensions.rememberFlowStateWithLifecycle
-import org.rekhta.analytics.Logger
+import org.kafka.analytics.Logger
 import ui.common.theme.ThemeViewModel
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.DefaultTheme

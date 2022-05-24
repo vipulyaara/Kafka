@@ -4,11 +4,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import org.rekhta.base.debug
-import org.rekhta.base.domain.InvokeError
-import org.rekhta.base.domain.InvokeStarted
-import org.rekhta.base.domain.InvokeStatus
-import org.rekhta.base.domain.InvokeSuccess
+import org.kafka.base.debug
+import org.kafka.base.domain.InvokeError
+import org.kafka.base.domain.InvokeStarted
+import org.kafka.base.domain.InvokeStatus
+import org.kafka.base.domain.InvokeSuccess
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
 

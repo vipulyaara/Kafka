@@ -1,6 +1,6 @@
 package com.kafka.data.keystore
 
-import org.rekhta.base.errorLog
+import org.kafka.base.errorLog
 import java.io.IOException
 import java.nio.charset.Charset
 import java.security.*
