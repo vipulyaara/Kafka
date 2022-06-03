@@ -29,4 +29,5 @@ fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()
 
 fun ItemDetail?.mp3Files() = this?.files?.filterMp3()
 
-fun ItemDetail?.readerUrl() = this?.files?.firstOrNull { it.readerUrl != null }?.readerUrl ?: error("Null reader url")
+//fun ItemDetail?.readerUrl() = this?.files?.firstOrNull { it.readerUrl != null }?.readerUrl ?: error("Null reader url")
+fun ItemDetail?.readerUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

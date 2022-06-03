@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.sp
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isAudio
+import org.kafka.base.debug
 import org.kafka.common.UiMessage
 
 data class ItemDetailViewState(
@@ -19,8 +20,11 @@ data class ItemDetailViewState(
     val isFullScreenError
         get() = message != null && itemDetail == null
 
-    val isFullScreenLoading
-        get() = isLoading && itemDetail == null
+    val isFullScreenLoading: Boolean
+        get() {
+            debug { "isFullScreenLoading $isLoading $itemDetail" }
+            return isLoading && itemDetail == null
+        }
 }
 
 fun ItemDetail.ratingText(color: Color): AnnotatedString {

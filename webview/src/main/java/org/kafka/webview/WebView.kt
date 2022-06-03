@@ -9,12 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
+import org.kafka.base.debug
 import org.kafka.common.widgets.DefaultScaffold
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebView(url: String, title: String = "") {
     val webViewState = rememberWebViewState(url)
+
+    debug { "Opening web page with url $url" }
 
     DefaultScaffold(topBar = {
         Column {

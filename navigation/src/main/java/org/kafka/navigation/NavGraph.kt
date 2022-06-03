@@ -40,8 +40,12 @@ sealed class LeafScreen(val route: String) {
         fun createRoute(poetId: String): String = "poet/$poetId"
     }
 
-    object ContentDetail : LeafScreen("content/{item_id}") {
-        fun createRoute(contentId: String): String = "content/$contentId"
+    object ItemDetail : LeafScreen("item/{itemId}") {
+        fun createRoute(itemId: String): String = "item/$itemId"
+    }
+
+    object Files : LeafScreen("files/{itemId}") {
+        fun createRoute(itemId: String): String = "files/$itemId"
     }
 
     object Reader : LeafScreen("reader/{fileUrl}") {

@@ -48,6 +48,7 @@ media = "androidx.media:media:1.4.1"
 palette = "androidx.palette:palette-ktx:1.0.0"
 radiography = "com.squareup.radiography:radiography:2.4.1"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.2.0-alpha01"
+pdfkit = "com.pspdfkit:pspdfkit:8.2.1"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.6.0-alpha03"
 androidx-activity = "androidx.activity:activity:1.6.0"

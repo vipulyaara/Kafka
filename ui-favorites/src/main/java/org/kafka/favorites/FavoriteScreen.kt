@@ -41,7 +41,7 @@ private fun FavoriteItemGrid(viewState: FavoriteViewState) {
         viewState.items?.let { items ->
             items(items, key = { it.itemId }) {
                 FavoriteItem(item = it) {
-                    navigator.navigate(LeafScreen.ContentDetail.createRoute(it))
+                    navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
                 }
             }
         }

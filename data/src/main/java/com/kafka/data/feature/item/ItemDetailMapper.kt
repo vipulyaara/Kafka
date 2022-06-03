@@ -7,13 +7,18 @@ import com.kafka.data.entities.isMp3
 import com.kafka.data.entities.isPdf
 import com.kafka.data.model.item.ItemDetailResponse
 import org.kafka.base.Mapper
+import org.kafka.base.debug
 import java.net.URL
 import javax.inject.Inject
+
+private val supportedFiles = listOf("pdf", "mp3", "epub", "wav", "txt")
 
 class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDetail> {
     override suspend fun map(from: ItemDetailResponse): ItemDetail {
         val metadata = from.metadata
+        debug { "${from.files}" }
         val files = from.files.map { it.asFile(from.dirPrefix()) }
+            .filter { supportedFiles.contains(it.extension) }
         return ItemDetail(
             itemId = metadata.identifier,
             language = metadata.licenseurl,
@@ -30,14 +35,15 @@ class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDe
     }
 }
 
-
 fun String?.format() = Html.fromHtml(this)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 
-//todo: remove spaces from url
 fun com.kafka.data.model.item.File.asFile(prefix: String) = File(
-    title = title,
+    id = name.orEmpty(),
+    size = size?.toIntOrNull()?.run { this/1000_000 }.toString() + " MB",
+    title = title ?: "---",
+    extension = name?.split(".")?.last().orEmpty(),
     creator = creator,
     time = (mtime ?: "0").toLong(),
     format = format,

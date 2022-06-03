@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     LogCompositions(tag = "Homepage Feed")
 
     val viewState by rememberStateWithLifecycle(stateFlow = viewModel.state)
-    val navigator = LocalNavigator.current
 
     Homepage(viewState = viewState)
     FullScreenMessage(message = viewState.message, show = viewState.isFullScreenError)
@@ -59,14 +57,12 @@ private fun Homepage(viewState: HomepageViewState) {
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) {
         Box(Modifier.fillMaxSize()) {
-            viewState.homepage?.let {
+            viewState.homepage?.queryItems?.let {
                 HomepageFeedItems(
                     homepage = viewState.homepage,
                     lazyListState = lazyListState,
                     openItemDetail = {
-                        val url = "https://ia601601.us.archive.org/18/items/in.ernet.dli.2015.68292/2015.68292.Lolita.pdf"
-                        navigator.navigate(LeafScreen.Reader.createRoute(url))
-//                        navigator.navigate(LeafScreen.ContentDetail.createRoute(it))
+                        navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
                     })
             }
 

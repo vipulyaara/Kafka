@@ -2,7 +2,6 @@ package com.kafka.user
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -17,6 +16,7 @@ import org.kafka.common.extensions.CollectEvent
 import org.kafka.favorites.FavoriteScreen
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
+import org.kafka.item.files.Files
 import org.kafka.navigation.*
 import org.kafka.ui.components.defaultEnterTransition
 import org.kafka.ui.components.defaultExitTransition
@@ -64,6 +64,7 @@ private fun NavGraphBuilder.addHomeRoot() {
     ) {
         addHome(Screen.Home)
         addItemDetail(Screen.Home)
+        addFiles(Screen.Home)
         addReader(Screen.Home)
         addWebView(Screen.Home)
     }
@@ -76,7 +77,9 @@ private fun NavGraphBuilder.addSearchRoot() {
     ) {
         addSearch(Screen.Search)
         addItemDetail(Screen.Search)
+        addFiles(Screen.Search)
         addReader(Screen.Search)
+        addWebView(Screen.Search)
     }
 }
 
@@ -87,6 +90,7 @@ private fun NavGraphBuilder.addLibraryRoot() {
     ) {
         addLibrary(Screen.Library)
         addItemDetail(Screen.Library)
+        addFiles(Screen.Library)
         addReader(Screen.Library)
     }
 }
@@ -141,12 +145,23 @@ private fun NavGraphBuilder.addProfile(root: Screen) {
 
 private fun NavGraphBuilder.addItemDetail(root: Screen) {
     composable(
-        route = LeafScreen.ContentDetail.createRoute(root),
+        route = LeafScreen.ItemDetail.createRoute(root),
         arguments = listOf(
-            navArgument("item_id") { type = NavType.StringType }
+            navArgument("itemId") { type = NavType.StringType }
         )
     ) {
         ItemDetail()
+    }
+}
+
+private fun NavGraphBuilder.addFiles(root: Screen) {
+    composable(
+        route = LeafScreen.Files.createRoute(root),
+        arguments = listOf(
+            navArgument("itemId") { type = NavType.StringType }
+        )
+    ) {
+        Files()
     }
 }
 

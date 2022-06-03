@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         google()
@@ -5,7 +7,9 @@ buildscript {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
-        maven {url "https://pdftron-maven.s3.amazonaws.com/release"}
+        maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
+        maven { url "https://customers.pspdfkit.com/maven/" }
+
     }
 
     dependencies {
@@ -36,7 +40,8 @@ allprojects {
 
         // Used for Roomigrant
         maven { url 'https://jitpack.io' }
-        maven {url "https://pdftron-maven.s3.amazonaws.com/release"}
+        maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
+        maven { url "https://customers.pspdfkit.com/maven/" }
     }
 }
 
@@ -72,7 +77,7 @@ subprojects {
 //        }
 //    }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
             allWarningsAsErrors = false
@@ -101,7 +106,7 @@ subprojects {
         }
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             if (project.findProperty("rekhta.enableComposeCompilerReports") == "true") {
                 freeCompilerArgs += [

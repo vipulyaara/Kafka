@@ -48,6 +48,8 @@ object Icons {
         @Composable get() = FeatherIcons.Send
     val Heart
         @Composable get() = TablerIcons.Heart
+    val Download
+        @Composable get() = TablerIcons.Download
     val Like
         @Composable get() = TablerIcons.ThumbUp
     val Dislike

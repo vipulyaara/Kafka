@@ -26,5 +26,7 @@ dependencies {
     implementation project(':analytics')
     api project(':data')
 
+    implementation libs.pdfkit
+
     api libs.kotlin.coroutines.android
 }

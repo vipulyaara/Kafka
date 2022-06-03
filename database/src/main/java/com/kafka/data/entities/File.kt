@@ -7,7 +7,10 @@ const val _mediaTypeAudio = "audio"
 
 @Serializable
 data class File(
+    val id: String,
+    val size: String?,
     val title: String?,
+    val extension: String?,
     val creator: String?,
     val time: Long,
     val format: String?,

@@ -57,7 +57,7 @@ fun SearchScreen() {
 
             searchViewState.items?.let {
                 SearchResults(results = it) {
-                    navigator.navigate(LeafScreen.ContentDetail.createRoute(it))
+                    navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
                 }
             }
             InfiniteProgressBar(show = searchViewState.isLoading)

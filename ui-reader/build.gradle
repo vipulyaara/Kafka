@@ -1,4 +1,3 @@
-//apply plugin: 'plugins.android.library'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -9,13 +8,11 @@ kapt {
     useBuildCache = true
 }
 
-
 android {
     compileSdkVersion Publishing.compileSdk
 
     defaultConfig {
-        minSdkVersion Publishing.minSdk
-        manifestPlaceholders += ['appAuthRedirectScheme': 'empty']
+        minSdk Publishing.minSdk
     }
 
     compileOptions {
@@ -30,33 +27,16 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
-
-    sourceSets {
-        main { java.srcDirs = ['src/main/java'] }
-        test { java.srcDirs = ['src/test/java'] }
-        androidTest { java.srcDirs = ['src/androidTest/java'] }
-    }
 }
 
 dependencies {
     implementation project(':base-domain')
-    implementation project(':data')
-    implementation project(':domain')
     implementation project(':base-network')
     implementation project(':navigation')
-    implementation project(':ui-favorites')
-    implementation project(':ui-item')
+    implementation project(':domain')
     implementation project(':common:ui-common')
-    implementation project(':common:ui-components')
-    implementation project(':common:ui-common-compose')
-//    implementation files('libs/PDFNet.jar')
 
-    implementation libs.pdftron
-//    implementation libs.pdftron.tools
-
-//    implementation "androidx.appcompat:appcompat:1.4.1"
-//    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-//    implementation "com.google.android.material:material:1.6.0"
+    implementation libs.pdfkit
 
     implementation libs.hilt.library
     kapt libs.hilt.compiler

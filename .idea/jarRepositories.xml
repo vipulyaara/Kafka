@@ -66,5 +66,10 @@
       <option name="name" value="maven2" />
       <option name="url" value="https://androidx.dev/snapshots/latest/artifacts/repository" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="https://customers.pspdfkit.com/maven/" />
+    </remote-repository>
   </component>
 </project>

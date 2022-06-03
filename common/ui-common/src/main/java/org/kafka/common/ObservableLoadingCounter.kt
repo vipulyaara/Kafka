@@ -26,6 +26,14 @@ class ObservableLoadingCounter {
     fun removeLoader() {
         loadingState.value = count.decrementAndGet()
     }
+
+    fun toggleLoader(isLoading: Boolean) {
+        if (isLoading) {
+            addLoader()
+        } else {
+            removeLoader()
+        }
+    }
 }
 
 suspend fun Flow<InvokeStatus>.collectStatus(

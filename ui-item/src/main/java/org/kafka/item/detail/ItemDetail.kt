@@ -34,22 +34,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import kotlinx.coroutines.launch
+import org.kafka.base.debug
 import org.kafka.common.Icons
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.shareText
 import org.kafka.common.widgets.*
-import org.kafka.base.debug
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.Navigator
 import org.kafka.ui.components.progress.FullScreenProgressBar
+import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui_common_compose.shadowMaterial
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
 @Composable
 fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
+    debug { "Item Detail launch" }
+
     val state by rememberStateWithLifecycle(viewModel.state)
     val snackbarState = SnackbarHostState()
     val context = LocalContext.current
@@ -66,8 +68,11 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) {
         Box(Modifier.fillMaxSize()) {
+            InfiniteProgressBar(
+                show = state.isFullScreenLoading,
+                modifier = Modifier.fillMaxSize()
+            )
             FullScreenMessage(state.message, state.isFullScreenError)
-            FullScreenProgressBar(show = state.isFullScreenLoading)
             state.itemDetail?.let {
                 ItemDetail(
                     itemDetail = it,
@@ -75,24 +80,17 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
                     isFavorite = state.isFavorite,
                     toggleFavorite = { viewModel.updateFavorite() },
                     shareText = { context.shareText(viewModel.shareItemText()) },
-                    openItemDetail = { navigator.navigate(LeafScreen.ContentDetail.createRoute(it)) },
+                    openItemDetail = { navigator.navigate(LeafScreen.ItemDetail.createRoute(it)) },
+                    openFiles = {
+                        navigator.navigate(LeafScreen.Files.createRoute(it))
+                    },
                     openReader = {
-                        openReader(navigator, it)
+                        navigator.navigate(LeafScreen.WebView.createRoute(it))
                     }
                 )
             }
         }
     }
-}
-
-fun openGoogleReader(navigator: Navigator, it: String) {
-    val url2 = "https://drive.google.com/viewerng/viewer?embedded=true&url="
-    debug { "Opening web view" }
-    navigator.navigate(LeafScreen.WebView.createRoute(url2 + it))
-}
-
-fun openReader(navigator: Navigator, it: String) {
-    navigator.navigate(LeafScreen.Reader.createRoute(it))
 }
 
 @Composable
@@ -103,6 +101,7 @@ fun ItemDetail(
     toggleFavorite: () -> Unit,
     openItemDetail: (String) -> Unit,
     openReader: (String) -> Unit,
+    openFiles: (String) -> Unit,
     shareText: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -120,7 +119,16 @@ fun ItemDetail(
                 }
             }
 
-            item { Actions(itemDetail, openReader, isFavorite, shareText, toggleFavorite) }
+            item {
+                Actions(
+                    itemDetail = itemDetail,
+                    openReader = openReader,
+                    openFiles = openFiles,
+                    isFavorite = isFavorite,
+                    shareText = shareText,
+                    toggleFavorite = toggleFavorite
+                )
+            }
 
             relatedContent(relatedItems, openItemDetail)
         }
@@ -218,9 +226,8 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
     }
 }
 
-
 @Composable
-private fun TopBar() {
+fun TopBar() {
     val navigator = LocalNavigator.current
     org.kafka.ui.components.material.TopBar(
         navigationIcon = {

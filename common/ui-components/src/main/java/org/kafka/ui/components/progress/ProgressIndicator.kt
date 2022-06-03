@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,10 +18,8 @@ import org.kafka.ui.components.R
 
 @Composable
 fun FullScreenProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
-    val isVisible by rememberMutableState(init = { show })
-
-    if (isVisible) {
-        debug { "show loading $isVisible" }
+    if (show) {
+        debug { "show loading $show" }
         Box(
             modifier = modifier
                 .fillMaxSize()

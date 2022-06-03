@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.readerUrl
@@ -25,23 +26,40 @@ import ui.common.theme.theme.white
 fun Actions(
     itemDetail: ItemDetail,
     openReader: (String) -> Unit,
+    openFiles: (String) -> Unit,
     isFavorite: Boolean,
     shareText: () -> Unit,
     toggleFavorite: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        FavoriteIcon(isFavorite = isFavorite) { toggleFavorite() }
-        ShareIcon(onClicked = shareText)
-        FloatingButton(
-            text = itemDetail.callToAction.uppercase(),
-            modifier = Modifier.weight(0.5f)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            openReader(itemDetail.readerUrl())
+            FloatingButton(
+                text = "See Files",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.5f)
+            ) { openFiles(itemDetail.itemId) }
+
+            FloatingButton(
+                text = itemDetail.callToAction,
+                modifier = Modifier.weight(0.5f)
+            ) { openReader(itemDetail.readerUrl()) }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            FavoriteIcon(isFavorite = isFavorite) { toggleFavorite() }
+            Icon(icon = Icons.Share, onClicked = shareText)
+            Icon(icon = Icons.Clipboard, onClicked = shareText)
         }
     }
 }
@@ -70,7 +88,8 @@ private fun FavoriteIcon(
 }
 
 @Composable
-private fun ShareIcon(
+private fun Icon(
+    icon: ImageVector,
     modifier: Modifier = Modifier,
     onClicked: () -> Unit
 ) {
@@ -82,7 +101,7 @@ private fun ShareIcon(
             .clickable { onClicked() }
     ) {
         IconButton(onClick = onClicked, modifier = Modifier.align(Alignment.Center)) {
-            IconResource(imageVector = Icons.Share)
+            IconResource(imageVector = icon)
         }
     }
 }

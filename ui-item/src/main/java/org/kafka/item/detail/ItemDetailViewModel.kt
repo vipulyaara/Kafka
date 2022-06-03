@@ -41,7 +41,7 @@ class ItemDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    private val itemId: String = checkNotNull(savedStateHandle["item_id"])
+    private val itemId: String = checkNotNull(savedStateHandle["itemId"])
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { observeByAuthor(it) },
@@ -50,7 +50,7 @@ class ItemDetailViewModel @Inject constructor(
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
-        debug { "item detail results" }
+        debug { "item detail results $isLoading" }
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },

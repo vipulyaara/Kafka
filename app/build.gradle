@@ -131,12 +131,15 @@ dependencies {
     implementation libs.radiography
 //    implementation libs.proguard.snippets
 
-    implementation libs.pdftron
+    implementation libs.pdfkit
+    implementation libs.androidx.appcompat
 
     implementation libs.androidx.activity.compose
 
     implementation libs.retrofit.serialization
     implementation libs.kotlin.serialization
+    implementation libs.okhttp.okhttp
+    implementation libs.okhttp.loggingInterceptor
 
     implementation libs.threeTenAbp
     implementation libs.dataStore

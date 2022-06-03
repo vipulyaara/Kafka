@@ -57,13 +57,9 @@ dependencies {
     implementation(Libs.KotlinX.Coroutines.android)
 
     implementation(Libs.Coil.core)
-    implementation(Libs.Moshi.core)
     implementation(Libs.ThreeTenBp.core)
 
     implementation(Libs.Retrofit.runtime)
-    implementation(Libs.Retrofit.moshi)
-    implementation(Libs.OkHttp.core)
-    implementation(Libs.OkHttp.loggingInterceptor)
 
     implementation(Libs.AndroidX.Room.runtime)
     implementation(Libs.AndroidX.Room.ktx)

@@ -8,14 +8,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 const val baseUrl = "https://archive.org/"
 
@@ -27,6 +30,12 @@ private val json = Json {
 @InstallIn(SingletonComponent::class)
 @Module
 class ServiceModule {
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     @Provides
     fun provideService(
@@ -52,7 +61,8 @@ class ServiceModule {
     @Provides
     fun provideOkHttpClientBuilder(
         acceptDialogInterceptor: AcceptDialogInterceptor,
-        genericInterceptor: GenericInterceptor
+        genericInterceptor: GenericInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder().apply {
             readTimeout(60, TimeUnit.SECONDS)
@@ -60,9 +70,7 @@ class ServiceModule {
 
 //            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
-            addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+            addInterceptor(httpLoggingInterceptor)
         }
 
         return builder.build()

@@ -42,6 +42,7 @@ class HomepageViewModel @Inject constructor(
 
     init {
         observeHomepage(selectedQuery)
+
         viewModelScope.launch {
             updateItems(UpdateItems.Params(selectedQuery))
                 .collectStatus(loadingCounter, uiMessageManager)

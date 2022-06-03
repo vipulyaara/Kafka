@@ -1,80 +1,53 @@
 package com.kafka.reader
 
-import android.annotation.SuppressLint
-import android.view.LayoutInflater
+import android.content.Context
+import android.net.Uri
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import com.pdftron.pdf.PDFViewCtrl
-import org.kafka.reader.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.pspdfkit.configuration.activity.PdfActivityConfiguration
+import com.pspdfkit.configuration.activity.UserInterfaceViewMode
+import com.pspdfkit.jetpack.compose.DocumentView
+import com.pspdfkit.jetpack.compose.ExperimentalPSPDFKitApi
+import com.pspdfkit.jetpack.compose.rememberDocumentState
 
-//import org.rekhta.homepage.R
-
-@SuppressLint("InflateParams")
+@OptIn(ExperimentalPSPDFKitApi::class)
 @Composable
-internal fun ReaderView(pdfUrl: String) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+fun ReaderView(uri: Uri) {
+    Surface {
+        val hideInterfaceElements by remember { mutableStateOf(false) }
+        val context = LocalContext.current
 
-    AndroidView(factory = { context ->
-        val reader =
-            LayoutInflater.from(context).inflate(R.layout.view_reader, null, false) as PDFViewCtrl
-//        SetupReader(reader, lifecycleOwner)
-        reader
-    }) { view ->
-//        view.openUrlAsync(pdfUrl, null, null, null)
+        val pdfActivityConfiguration = getPdfConfiguration(hideInterfaceElements, context)
+
+        val documentState = rememberDocumentState(uri, pdfActivityConfiguration)
+
+        DocumentView(
+            documentState = documentState,
+            modifier = Modifier
+                .height(100.dp)
+                .padding(16.dp)
+        )
     }
 }
 
 @Composable
-fun SetupReader(reader: PDFViewCtrl, lifecycleOwner: LifecycleOwner) {
-    AttachLifecycle(reader, lifecycleOwner)
-}
+private fun getPdfConfiguration(
+    hideInterfaceElements: Boolean,
+    context: Context
+) = remember(hideInterfaceElements) {
+    val userInterfaceViewMode =
+        if (hideInterfaceElements) UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_HIDDEN
+        else UserInterfaceViewMode.USER_INTERFACE_VIEW_MODE_AUTOMATIC
 
-//@Composable
-//fun readerConfig(): ViewerConfig {
-//    val context = LocalContext.current
-//    val config = readerViewConfig()
-//    return remember {
-//        ViewerConfig.Builder().useStandardLibrary(true).pdfViewCtrlConfig(config).build()
-//    }
-//}
-//
-//@Composable
-//fun readerViewConfig(): PDFViewCtrlConfig {
-//    val context = LocalContext.current
-//    return remember {
-//        PDFViewCtrlConfig.getDefaultConfig(context).setClientBackgroundColor(R.color.yellow)
-//            .setClientBackgroundColorDark(R.color.dark_gray).setHighlightFields(true)
-//            .setImageSmoothing(true).setUrlExtraction(true).setMaintainZoomEnabled(true)
-//    }
-//}
-
-@Composable
-fun AttachLifecycle(reader: PDFViewCtrl, lifecycleOwner: LifecycleOwner) {
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_START -> {
-                    reader.pause()
-                    reader.purgeMemory()
-                }
-                Lifecycle.Event.ON_STOP -> {
-                    reader.resume()
-                }
-                Lifecycle.Event.ON_DESTROY -> {
-                    reader.destroy()
-                }
-                else -> {}
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
+    PdfActivityConfiguration.Builder(context)
+        .setUserInterfaceViewMode(userInterfaceViewMode)
+        .build()
 }
