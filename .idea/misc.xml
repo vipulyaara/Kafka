@@ -8,12 +8,15 @@
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.151" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2203125" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.151" />
+        <entry key="common/ui-common/src/main/res/drawable/ic_img_ill_bells.xml" value="0.1035" />
         <entry key="common/ui-common/src/main/res/drawable/ic_kafka_logo.xml" value="0.151" />
+        <entry key="common/ui-common/src/main/res/drawable/img_ill_books.xml" value="0.1035" />
+        <entry key="common/ui-common/src/main/res/drawable/img_ill_snowman.xml" value="0.1035" />
         <entry key="ui-reader/src/main/res/layout/df.xml" value="0.1609375" />
         <entry key="ui-reader/src/main/res/layout/view_reader.xml" value="0.2791666666666667" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

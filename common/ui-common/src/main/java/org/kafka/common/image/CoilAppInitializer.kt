@@ -26,7 +26,7 @@ class CoilAppInitializer @Inject constructor(
     override fun init(application: Application) {
         processScope.launch {
             val coilOkHttpClient = okHttpClient.newBuilder()
-                .cache(CoilUtils.createDefaultCache(context))
+//                .cache(CoilUtils.createDefaultCache(context))
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.NONE
                 })

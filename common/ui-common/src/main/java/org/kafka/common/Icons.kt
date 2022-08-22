@@ -60,6 +60,8 @@ object Icons {
         @Composable get() = Icons.Default.Favorite
     val Share
         @Composable get() = TablerIcons.Share
+    val Retweet
+        @Composable get() = TablerIcons.Repeat
     val Glasses
         @Composable get() = TablerIcons.Eyeglass
     val Next
