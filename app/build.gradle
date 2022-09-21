@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
+
+    id 'com.google.gms.google-services'
 }
 
 kapt {
@@ -49,7 +51,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.get()
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 
     packagingOptions {
@@ -185,5 +187,5 @@ android.applicationVariants.all { variant ->
     }
 }
 
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'

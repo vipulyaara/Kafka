@@ -68,10 +68,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) {
         Box(Modifier.fillMaxSize()) {
-            InfiniteProgressBar(
-                show = state.isFullScreenLoading,
-                modifier = Modifier.fillMaxSize()
-            )
+            InfiniteProgressBar(show = state.isFullScreenLoading, modifier = Modifier.fillMaxSize())
             FullScreenMessage(state.message, state.isFullScreenError)
             state.itemDetail?.let {
                 ItemDetail(

@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import androidx.annotation.VisibleForTesting
-import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -46,11 +44,9 @@ class RealPermissionsManager @Inject constructor(
 ) : PermissionsManager {
 
     companion object {
-        @VisibleForTesting(otherwise = PRIVATE)
         const val REQUEST_CODE_STORAGE = 69
     }
 
-    @VisibleForTesting(otherwise = PRIVATE)
     var activity: Activity? = null
     private val relay = ConflatedBroadcastChannel<GrantResult>()
 

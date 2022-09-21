@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         startMusicService()
 
         setContent {
-            MutableLiveData("").observeAsState()
-
             val themeViewModel: ThemeViewModel = hiltViewModel()
             val themeState by rememberFlowStateWithLifecycle(
                 themeViewModel.themeState,

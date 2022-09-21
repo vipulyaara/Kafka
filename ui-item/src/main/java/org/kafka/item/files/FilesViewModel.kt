@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.common.common.viewModelScoped
 import org.kafka.domain.interactors.DownloadFile
 import org.kafka.domain.observers.ObserveItemDetail
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class FilesViewModel @Inject constructor(
 
     fun downloadFile(fileId: String) {
         loadingState.addLoader()
-        viewModelScoped {
+        viewModelScope.launch {
             downloadFile.invoke(fileId).collect {
                 debug { "downloadFile $it" }
                 if (it.isFailure) {

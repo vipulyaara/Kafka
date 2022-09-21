@@ -1,7 +1,6 @@
 package org.kafka.common.extensions
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.runtime.*
@@ -27,7 +26,7 @@ operator fun TextUnit.plus(other: TextUnit) = (value + other.value).sp
 operator fun TextUnit.minus(other: TextUnit) = (value - other.value).sp
 
 @Composable
-inline fun <T> rememberMutableState(key: Any? = null, init: @DisallowComposableCalls () -> T) =
+inline fun <T> rememberMutableState(key: Any? = null, crossinline init: @DisallowComposableCalls () -> T) =
     remember(key) { mutableStateOf(init()) }
 
 @Composable
@@ -139,13 +138,6 @@ fun WithMediumAlpha(content: @Composable () -> Unit) {
 @Composable
 fun WithDisabledAlpha(content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
-        content()
-    }
-}
-
-@Composable
-fun NoScrollEffect(content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         content()
     }
 }

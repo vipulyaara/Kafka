@@ -2,6 +2,7 @@
 
 package com.kafka.user
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,14 +11,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
-import org.kafka.common.common.collect
-import org.kafka.common.logging.recomposeHighlighter
+import kotlinx.coroutines.flow.collectLatest
 import org.kafka.analytics.Logger
+import org.kafka.common.logging.recomposeHighlighter
 import org.kafka.navigation.NavigatorHost
 
 @Composable
@@ -25,7 +27,7 @@ fun MainScreen(analytics: Logger) {
     val navController = rememberAnimatedNavController()
 
     LaunchedEffect(navController, analytics) {
-        navController.currentBackStackEntryFlow.collect { entry ->
+        navController.currentBackStackEntryFlow.collectLatest { entry ->
             analytics.logScreenView(
                 label = entry.destination.displayName,
                 route = entry.destination.route,
@@ -53,7 +55,6 @@ private fun MainScreen(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
         ) {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController.navigatorProvider += bottomSheetNavigator

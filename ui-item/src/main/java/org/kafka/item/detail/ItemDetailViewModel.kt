@@ -14,13 +14,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import org.kafka.base.debug
+import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.common.common.collect
-import org.kafka.common.common.viewModelScoped
-import org.kafka.base.debug
-import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.*
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
@@ -64,7 +63,7 @@ class ItemDetailViewModel @Inject constructor(
     )
 
     init {
-        viewModelScoped {
+        viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, uiMessageManager)
         }
@@ -84,7 +83,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun addRecentItem() {
-        viewModelScoped {
+        viewModelScope.launch {
             addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect { }
         }
     }
@@ -95,7 +94,7 @@ class ItemDetailViewModel @Inject constructor(
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
-                viewModelScoped {
+                viewModelScope.launch {
                     updateItems(UpdateItems.Params(it)).collect { }
                 }
             }
