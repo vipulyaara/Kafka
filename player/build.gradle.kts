@@ -2,16 +2,15 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(Publishing.compileSdkVersion)
+    compileSdkVersion(Publishing.compileSdk)
 
     defaultConfig {
-        minSdkVersion(Publishing.minSdkVersion)
-        targetSdkVersion(Publishing.compileSdkVersion)
+        minSdkVersion(Publishing.minSdk)
+        targetSdkVersion(Publishing.compileSdk)
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -49,25 +48,26 @@ android {
 }
 
 dependencies {
-    api(platform(project(":data")))
-    api(platform(project(":ui-common")))
+    api platform(project(":data"))
 
-    implementation(Libs.Kotlin.stdlib)
-    implementation(Libs.Timber.core)
+    api libs.androidx.core
+            api libs.androidx.collection
 
-    implementation(Libs.KotlinX.Coroutines.core)
-    implementation(Libs.KotlinX.Coroutines.android)
+            implementation libs.jsoup
+            api libs.threeTenAbp
 
-    implementation(Libs.Coil.core)
+            api libs.dataStore
 
-    implementation(Libs.ExoPlayer.player)
-    implementation("com.google.android.exoplayer:extension-mediasession:2.9.4")
+            api libs.hilt.library
+            kapt libs.hilt.compiler
 
-    implementation(Libs.AndroidX.Ktx.core)
+            api libs.kotlin.serialization
+            api libs.kotlin.coroutines.core
 
-    implementation(Libs.material)
-    implementation(Libs.Hilt.android)
-    kapt(Libs.Hilt.compiler)
-    implementation(Libs.Hilt.lifecycle)
-    kapt(Libs.Hilt.lifecycle_compiler)
+            api libs.kotlin.stdlib
+
+    implementation libs.coil.core
+
+    implementation libs.ExoPlayer.player
+    implementation "com.google.android.exoplayer:extension-mediasession:2.9.4"
 }

@@ -1,6 +1,5 @@
 package com.kafka.data.api.interceptor
 
-import com.kafka.data.api.authorizationHeaderKey
 import com.kafka.data.keystore.KeystoreProvider
 import com.kafka.data.keystore.token
 import okhttp3.Interceptor
@@ -24,3 +23,5 @@ class AddTokenInterceptor @Inject constructor(
         return chain.proceed(requestBuilder.build())
     }
 }
+
+const val authorizationHeaderKey = "Authorization"

@@ -230,12 +230,12 @@ private val HomeNavigationItems = listOf(
         iconImageVector = Icons.Search,
         selectedImageVector = Icons.SearchActive,
     ),
-    HomeNavigationItem.ImageVectorIcon(
-        screen = Screen.PlayerLibrary,
-        labelResId = R.string.player_library,
-        contentDescriptionResId = R.string.player_library,
-        iconImageVector = Icons.PlayCircle,
-    ),
+//    HomeNavigationItem.ImageVectorIcon(
+//        screen = Screen.PlayerLibrary,
+//        labelResId = R.string.player_library,
+//        contentDescriptionResId = R.string.player_library,
+//        iconImageVector = Icons.PlayCircle,
+//    ),
     HomeNavigationItem.ImageVectorIcon(
         screen = Screen.Library,
         labelResId = R.string.library,

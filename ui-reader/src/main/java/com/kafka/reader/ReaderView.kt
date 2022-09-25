@@ -26,7 +26,6 @@ fun ReaderView(uri: Uri) {
         val context = LocalContext.current
 
         val pdfActivityConfiguration = getPdfConfiguration(hideInterfaceElements, context)
-
         val documentState = rememberDocumentState(uri, pdfActivityConfiguration)
 
         DocumentView(

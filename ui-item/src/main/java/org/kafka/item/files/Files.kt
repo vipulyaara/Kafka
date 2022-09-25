@@ -19,10 +19,9 @@ import org.kafka.common.Icons
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.DefaultScaffold
 import org.kafka.common.widgets.IconResource
-import org.kafka.navigation.LeafScreen
+import org.kafka.item.detail.TopBar
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
-import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.textPrimary
 
 @Composable
@@ -30,7 +29,7 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val viewState by rememberStateWithLifecycle(viewModel.state)
     val navigator = LocalNavigator.current
 
-    DefaultScaffold(topBar = { org.kafka.item.detail.TopBar() }) {
+    DefaultScaffold(topBar = { TopBar() }) {
         LazyColumn(modifier = Modifier) {
             items(viewState.files, key = { it.id }) {
                 File(

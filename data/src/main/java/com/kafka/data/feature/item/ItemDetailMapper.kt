@@ -6,15 +6,14 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isMp3
 import com.kafka.data.entities.isPdf
 import com.kafka.data.model.item.ItemDetailResponse
-import org.kafka.base.Mapper
 import org.kafka.base.debug
 import java.net.URL
 import javax.inject.Inject
 
 private val supportedFiles = listOf("pdf", "mp3", "epub", "wav", "txt")
 
-class ItemDetailMapper @Inject constructor() : Mapper<ItemDetailResponse, ItemDetail> {
-    override suspend fun map(from: ItemDetailResponse): ItemDetail {
+class ItemDetailMapper @Inject constructor() {
+    fun map(from: ItemDetailResponse): ItemDetail {
         val metadata = from.metadata
         debug { "${from.files}" }
         val files = from.files.map { it.asFile(from.dirPrefix()) }

@@ -42,6 +42,7 @@ import org.kafka.common.widgets.*
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.FullScreenProgressBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui_common_compose.shadowMaterial
@@ -226,7 +227,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
 @Composable
 fun TopBar() {
     val navigator = LocalNavigator.current
-    org.kafka.ui.components.material.TopBar(
+    TopBar(
         navigationIcon = {
             IconButton(onClick = { navigator.back() }) {
                 IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)

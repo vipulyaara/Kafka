@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
-import com.kafka.ui_common.navigation.DeepLinksNavigations
-import com.kafka.ui_common.navigation.Navigation
+import org.kafka.navigation.DeepLinksNavigations
+import org.kafka.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine

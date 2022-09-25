@@ -13,6 +13,7 @@ import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.user.PermissionsManager
 import com.kafka.user.RealPermissionsManager
+import com.kafka.user.config.*
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import dagger.Binds
 import dagger.Module
@@ -31,7 +32,6 @@ import org.kafka.analytics.Logger
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManagerImpl
-import org.kafka.user.config.*
 import javax.inject.Named
 import javax.inject.Singleton
 

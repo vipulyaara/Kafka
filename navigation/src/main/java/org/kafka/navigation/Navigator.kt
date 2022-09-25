@@ -38,9 +38,6 @@ class Navigator {
     private val navigationQueue = Channel<NavigationEvent>(Channel.CONFLATED)
     var navController: NavController? = null
 
-    val currentBundle
-        get() = navController?.currentBackStackEntry?.arguments
-
     private val lastRoot
         get() = navController?.currentBackStackEntry?.destination?.parent?.route
 
@@ -50,7 +47,7 @@ class Navigator {
     ) {
         val routeWithRoot = if (route.contains("root")) route else "${lastRoot}/$route"
         debug {
-            "Navigating to $routeWithRoot with navigation queue size ${navController}"
+            "Navigating to $routeWithRoot with navigation queue size $navController"
         }
         val result = navigationQueue.trySend(NavigationEvent.Destination(routeWithRoot, builder))
         if (result.isFailure) errorLog { "Navigation result is $result $routeWithRoot" }

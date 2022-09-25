@@ -38,8 +38,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     val viewState by rememberStateWithLifecycle(stateFlow = viewModel.state)
 
     Homepage(viewState = viewState)
-    FullScreenMessage(message = viewState.message, show = viewState.isFullScreenError)
-    FullScreenProgressBar(show = viewState.isFullScreenLoading)
 }
 
 @Composable

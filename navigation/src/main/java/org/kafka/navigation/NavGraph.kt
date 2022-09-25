@@ -19,26 +19,12 @@ sealed class LeafScreen(val route: String) {
     object PlayerLibrary : LeafScreen("player_library")
     object Library : LeafScreen("library")
     object Profile : LeafScreen("profile")
-    object Login : LeafScreen("login")
-
-    object LanguageMenu : LeafScreen("language")
-    object PlayerBottomSheet : LeafScreen("player_bottom_sheet")
-
-    object Poets : LeafScreen("poets")
-    object Settings : LeafScreen("settings")
-    object AboutUs : LeafScreen("aboutUs")
-    object Blog : LeafScreen("blog")
-    object Tags : LeafScreen("tags")
 
     object WebView : LeafScreen("webview/{url}") {
         fun createRoute(url: String): String = "webview/${url.encodeUrl()}"
     }
 
-    fun String.encodeUrl() = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
-
-    object PoetDetail : LeafScreen("poet/{poetId}") {
-        fun createRoute(poetId: String): String = "poet/$poetId"
-    }
+    fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
     object ItemDetail : LeafScreen("item/{itemId}") {
         fun createRoute(itemId: String): String = "item/$itemId"

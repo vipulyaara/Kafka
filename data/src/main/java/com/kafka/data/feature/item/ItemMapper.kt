@@ -4,11 +4,10 @@ import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.model.item.Doc
 import com.kafka.data.model.item.SearchResponse
-import org.kafka.base.Mapper
 import javax.inject.Inject
 
-class ItemMapper @Inject constructor() : Mapper<SearchResponse, List<Item>> {
-    override suspend fun map(from: SearchResponse): List<Item> {
+class ItemMapper @Inject constructor() {
+     fun map(from: SearchResponse): List<Item> {
         return from.response.docs.mapIndexed { index, doc -> doc.toItem(index) }
     }
 

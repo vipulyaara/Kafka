@@ -1,4 +1,4 @@
-package org.kafka.user.config
+package com.kafka.user.config
 
 
 import android.app.Application
