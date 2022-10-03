@@ -1,9 +1,18 @@
 package org.kafka.common.extensions
 
-import androidx.compose.animation.*
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.runtime.*
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisallowComposableCalls
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.autoSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,11 +46,6 @@ inline fun <T> rememberSavableMutableState(
 ) = rememberSaveable(key, saver) { mutableStateOf(init()) }
 
 @Composable
-fun ProvideContentAlpha(alpha: Float, content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalContentAlpha provides alpha, content = content)
-}
-
-@Composable
 fun AnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
@@ -56,18 +60,6 @@ fun AnimatedVisibility(
         exit = exit,
         content = content
     )
-}
-
-@Composable
-fun <T> Flow<T>.rememberAndCollectAsState(
-    initial: T,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
-): T {
-    val result by remember(lifecycle) {
-        flowWithLifecycle(lifecycle = lifecycle, minActiveState = minActiveState)
-    }.collectAsState(initial = initial)
-    return result
 }
 
 @Composable
@@ -118,26 +110,5 @@ fun <T> CollectEvent(
         flow.collect {
             collector(it)
         }
-    }
-}
-
-@Composable
-fun WithHighAlpha(content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-        content()
-    }
-}
-
-@Composable
-fun WithMediumAlpha(content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-        content()
-    }
-}
-
-@Composable
-fun WithDisabledAlpha(content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
-        content()
     }
 }

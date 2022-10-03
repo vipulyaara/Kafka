@@ -13,7 +13,11 @@ import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.user.PermissionsManager
 import com.kafka.user.RealPermissionsManager
-import com.kafka.user.config.*
+import com.kafka.user.config.FirebaseInitializer
+import com.kafka.user.config.FlipperInitializer
+import com.kafka.user.config.LoggerInitializer
+import com.kafka.user.config.RadiographyInitializer
+import com.kafka.user.config.ThreeTenBpInitializer
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import dagger.Binds
 import dagger.Module
@@ -24,12 +28,12 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.kafka.common.image.CoilAppInitializer
 import org.kafka.analytics.CrashLogger
 import org.kafka.analytics.FirebaseCrashLogger
 import org.kafka.analytics.FirebaseLogger
 import org.kafka.analytics.Logger
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManagerImpl
 import javax.inject.Named

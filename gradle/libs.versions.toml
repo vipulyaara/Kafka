@@ -25,7 +25,7 @@ icons = "1.0.0"
 serialization = "1.1.0"
 exoplayer = "2.15.0"
 media3 = "1.0.0-alpha03"
-pdftron = "9.2.2"
+pdftron = "9.3.1"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -83,8 +83,8 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
-lottie-core = "com.airbnb.android:lottie:4.2.0"
-lottie-compose = "com.airbnb.android:lottie-compose:4.2.0"
+lottie-core = "com.airbnb.android:lottie:5.2.0"
+lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }

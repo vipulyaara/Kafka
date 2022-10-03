@@ -2,7 +2,6 @@ package com.kafka.reader
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.kafka.base.debug
 import org.kafka.common.extensions.rememberStateWithLifecycle
@@ -15,6 +14,15 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
 
     viewState.readerUrl?.let {
         debug { "Opening reader with url $it" }
-        ReaderView(uri = it.toUri())
+//        ReaderView(uri = it.toUri())
+//        val config = ViewerConfig.Builder()
+//            .fullscreenModeEnabled(true)
+//            .multiTabEnabled(false)
+//            .documentEditingEnabled(false)
+//            .longPressQuickMenuEnabled(false)
+//            .toolbarTitle("")
+//            .showSearchView(false)
+//            .build()
+//        DocumentActivity.openDocument(LocalContext.current, it.toUri(), config)
     }
 }

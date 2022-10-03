@@ -6,10 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
-import org.kafka.navigation.DeepLinksNavigations
-import org.kafka.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -19,11 +18,16 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.common.common.collect
-import org.kafka.domain.interactors.*
+import org.kafka.domain.interactors.AddRecentItem
+import org.kafka.domain.interactors.StartFileDownload
+import org.kafka.domain.interactors.ToggleFavorite
+import org.kafka.domain.interactors.UpdateItemDetail
+import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
+import org.kafka.navigation.DeepLinksNavigations
+import org.kafka.navigation.Navigation
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,13 +82,13 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            toggleFavorite(ToggleFavorite.Params(itemId)).collect { }
+            toggleFavorite(ToggleFavorite.Params(itemId)).collect()
         }
     }
 
-    fun addRecentItem() {
+    private fun addRecentItem() {
         viewModelScope.launch {
-            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect { }
+            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect()
         }
     }
 
@@ -95,7 +99,7 @@ class ItemDetailViewModel @Inject constructor(
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
                 viewModelScope.launch {
-                    updateItems(UpdateItems.Params(it)).collect { }
+                    updateItems(UpdateItems.Params(it)).collect()
                 }
             }
         }
@@ -105,9 +109,7 @@ class ItemDetailViewModel @Inject constructor(
         val itemTitle = state.value.itemDetail!!.title
 
         return """
-            $itemTitle
-            I really liked this book on the Kafka app. I think you will enjoy it.
-            
+            Check out $itemTitle on Kafka
             ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
     }

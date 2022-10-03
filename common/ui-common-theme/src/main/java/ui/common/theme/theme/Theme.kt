@@ -18,36 +18,29 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import ui.common.theme.DarkModePreference
-import ui.common.theme.ThemeState
 
-val DefaultTheme = ThemeState()
-val DefaultThemeDark = ThemeState(DarkModePreference.ON)
 val DefaultSpecs = Specs()
 
 @Composable
 fun AppTheme(
-    theme: ThemeState = DefaultTheme,
     dynamicColor: Boolean = isAtLeastS(),
     content: @Composable () -> Unit
 ) {
-    val isDarkTheme = when (theme.darkModePreference) {
-        DarkModePreference.AUTO -> isSystemInDarkTheme()
-        DarkModePreference.ON -> true
-        DarkModePreference.OFF -> false
-    }
+    val isDarkTheme = isSystemInDarkTheme()
 
     val colorScheme = when {
         dynamicColor && isDarkTheme -> if (isAtLeastS()) {
-            dynamicDarkColorScheme(LocalContext.current).copy(surface = Color(0xFF0a0b0c))
+            dynamicDarkColorScheme(LocalContext.current)
         } else {
             DarkAppColors
         }
+
         dynamicColor && !isDarkTheme -> if (isAtLeastS()) {
-            dynamicLightColorScheme(LocalContext.current).copy(surface = Color.White)
+            dynamicLightColorScheme(LocalContext.current)
         } else {
             LightAppColors
         }
+
         isDarkTheme -> DarkAppColors
         else -> LightAppColors
     }
@@ -60,11 +53,9 @@ fun AppTheme(
         systemUiController.setNavigationBarColor(color = colorScheme.surface, darkIcons = isLight)
     }
 
-    ProvideAppTheme(theme, AppColors(colorScheme)) {
-        MaterialTheme(colorScheme = colorScheme, typography = TypographyEnglish) {
-            ProvideRipple {
-                content()
-            }
+    MaterialTheme(colorScheme = colorScheme, typography = TypographyEnglish) {
+        ProvideRipple {
+            content()
         }
     }
 }

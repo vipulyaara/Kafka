@@ -2,8 +2,6 @@ package org.kafka.common.widgets
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -16,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun DefaultScaffold(
     modifier: Modifier = Modifier,
-    state: ScaffoldState = rememberScaffoldState(),
     color: Color = MaterialTheme.colorScheme.background,
     topBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},

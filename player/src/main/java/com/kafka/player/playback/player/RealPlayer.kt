@@ -1,23 +1,21 @@
 package com.kafka.player.playback.player
 
 import android.content.Context
-import com.kafka.data.extensions.debug
-import com.kafka.data.extensions.e
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.kafka.data.CustomScope
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.Song
+import com.kafka.data.extensions.debug
+import com.kafka.data.extensions.e
 import com.kafka.player.playback.extensions.setup
 import com.kafka.player.playback.extensions.toMediaItems
 import com.kafka.player.playback.notification.NotificationManager
 import com.kafka.player.timber.playback.BecomingNoisyReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import org.kafka.base.debug
+import org.kafka.base.errorLog
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,7 +25,7 @@ class RealPlayer @Inject constructor(
     private val queueDao: QueueDao,
     private val notificationManager: NotificationManager,
     mediaSessionManager: MediaSessionManager
-) : Player, CoroutineScope by CustomScope() {
+) : Player, CoroutineScope by GlobalScope {
     val player by lazy { SimpleExoPlayer.Builder(context).build() }
     private val becomingNoisyReceiver = BecomingNoisyReceiver(context, mediaSessionManager.mediaSession.sessionToken)
 
@@ -61,7 +59,7 @@ class RealPlayer @Inject constructor(
     private fun initializePlayer() {
         player.setup {
             onLoadingChange { debug { "loading changed $it" } }
-            onError { e(it) { "error" } }
+            onError { errorLog(it) { "error" } }
             onTracksChanged { tracks, selections -> debug { "track changed" } }
             onTimelineChange { timeline, any -> debug { "timeline changed" } }
             onSeek { debug { "seek changed" } }

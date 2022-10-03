@@ -17,6 +17,7 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import kotlinx.coroutines.flow.collectLatest
 import org.kafka.analytics.Logger
+import org.kafka.base.debug
 import org.kafka.common.logging.recomposeHighlighter
 import org.kafka.navigation.NavigatorHost
 
@@ -46,14 +47,15 @@ private fun MainScreen(navController: NavHostController) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .recomposeHighlighter()
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .recomposeHighlighter(),
         bottomBar = { RekhtaBottomBar(navController) }
     ) {
+        debug { "Padding $it" }
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(bottom = it.calculateBottomPadding())
         ) {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController.navigatorProvider += bottomSheetNavigator

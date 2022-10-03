@@ -9,7 +9,6 @@ buildscript {
         maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
         maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
         maven { url "https://customers.pspdfkit.com/maven/" }
-
     }
 
     dependencies {

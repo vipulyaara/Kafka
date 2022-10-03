@@ -2,33 +2,32 @@ package com.kafka.user
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import org.kafka.common.Icons
 import org.kafka.navigation.Screen
 import org.kafka.user.R
-import ui.common.theme.BottomBarElevation
 import ui.common.theme.theme.AppBarAlphas
 import ui.common.theme.theme.DisableRipple
-import ui.common.theme.theme.ProvideRipple
-import ui.common.theme.theme.textPrimary
 
 @Composable
 fun RekhtaBottomBar(navController: NavController) {
@@ -68,90 +67,6 @@ fun RekhtaBottomBar(navController: NavController) {
                         }
                     },
                 )
-            }
-        }
-    }
-}
-
-@Composable
-internal fun HomeBottomNavigation(
-    selectedNavigation: Screen,
-    onNavigationSelected: (Screen) -> Unit,
-    modifier: Modifier = Modifier,
-    openLanguageMenu: () -> Unit
-) {
-    NavigationBar(
-        tonalElevation = BottomBarElevation,
-        containerColor = MaterialTheme.colorScheme.background,
-        modifier = modifier.height(56.dp)
-    ) {
-        HomeNavigationItems.forEach { item ->
-            val selected = selectedNavigation == item.screen
-            HomeNavigationItem(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                icon = { HomeNavigationItemIcon(item = item, selected = selected) },
-                label = {
-                    Text(
-                        text = stringResource(id = item.labelResId),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = if (selected)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.textPrimary
-                    )
-                },
-                selected = selected,
-                onClick = { onNavigationSelected(item.screen) },
-                onDoubleClick = {
-                    if (item.screen == Screen.Profile) {
-                        openLanguageMenu()
-                    }
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun HomeNavigationItem(
-    selected: Boolean,
-    onClick: () -> Unit,
-    icon: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-    onDoubleClick: () -> Unit = {},
-    label: @Composable () -> Unit
-) {
-    ProvideRipple(isBounded = false) {
-        Card(
-            modifier = modifier.padding(vertical = 8.dp),
-            colors = cardColors(containerColor = MaterialTheme.colorScheme.background),
-            shape = RoundedCornerShape(50)
-        ) {
-            Column(
-                modifier = Modifier
-                    .animateContentSize()
-                    .combinedClickable(
-                        onClick = onClick,
-                        onDoubleClick = onDoubleClick
-                    )
-                    .padding(horizontal = 20.dp, vertical = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (!selected) {
-                    icon()
-                }
-                if (selected) {
-                    label.invoke()
-                }
-                if (selected) {
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                    )
-                }
             }
         }
     }

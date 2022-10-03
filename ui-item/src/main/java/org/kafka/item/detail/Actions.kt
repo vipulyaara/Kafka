@@ -3,7 +3,13 @@ package org.kafka.item.detail
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,12 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.isAudio
 import com.kafka.data.entities.readerUrl
 import org.kafka.common.Icons
+import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.ui.components.material.FloatingButton
-import org.kafka.ui_common_compose.shadowMaterial
 import ui.common.theme.theme.iconPrimary
 import ui.common.theme.theme.white
 
@@ -26,6 +33,7 @@ import ui.common.theme.theme.white
 fun Actions(
     itemDetail: ItemDetail,
     openReader: (String) -> Unit,
+    playAudio: (String) -> Unit,
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
     shareText: () -> Unit,
@@ -48,7 +56,13 @@ fun Actions(
             FloatingButton(
                 text = itemDetail.callToAction,
                 modifier = Modifier.weight(0.5f)
-            ) { openReader(itemDetail.readerUrl()) }
+            ) {
+                if (itemDetail.isAudio()) {
+                    playAudio(itemDetail.readerUrl())
+                } else {
+                    openReader(itemDetail.itemId)
+                }
+            }
         }
 
         Row(

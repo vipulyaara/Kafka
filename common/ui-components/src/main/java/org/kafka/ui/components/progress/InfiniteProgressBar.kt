@@ -1,8 +1,20 @@
 package org.kafka.ui.components.progress
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.InfiniteTransition
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
+import androidx.compose.animation.core.StartOffsetType
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,7 +41,10 @@ fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
 }
 
 @Composable
-fun InfiniteTransition.BouncingDot(startOffset: StartOffset, modifier: Modifier = Modifier) {
+fun InfiniteTransition.BouncingDot(
+    startOffset: StartOffset,
+    modifier: Modifier = Modifier
+) {
     val bounce by animateFloat(
         0f,
         50f,
@@ -46,6 +61,6 @@ fun InfiniteTransition.BouncingDot(startOffset: StartOffset, modifier: Modifier 
             .graphicsLayer {
                 translationY = bounce
             }
-            .background(MaterialTheme.colorScheme.onSurface, shape = CircleShape)
+            .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
     )
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.kafka.ui_common_compose.shadowMaterial
+import org.kafka.common.shadowMaterial
 import ui.common.theme.theme.textPrimary
 
 @Composable

@@ -7,11 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.SearchQuery
+import org.kafka.domain.interactors.SearchQueryType
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.asArchiveQuery
 import org.kafka.domain.observers.ObserveQueryItems
@@ -39,6 +40,10 @@ class ArchiveQueryViewModel @Inject constructor(
         scope = viewModelScope,
         initialValue = ArchiveQueryViewState(),
     )
+
+    fun submitQuery(keyword: String) {
+        submitQuery(SearchQuery(keyword, SearchQueryType.Creator))
+    }
 
     fun submitQuery(searchQuery: SearchQuery) {
         submitQuery(searchQuery.asArchiveQuery())

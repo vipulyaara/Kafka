@@ -7,10 +7,10 @@ import com.kafka.data.entities.Item
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.observers.ObserveFollowedItems
 import javax.inject.Inject

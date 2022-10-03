@@ -8,8 +8,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.*
-import org.kafka.common.extensions.asString
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -73,7 +76,7 @@ class RealPermissionsManager @Inject constructor(
     ) {
         Timber.d(
             "processResult(): requestCode= %d, permissions: %s, grantResults: %s",
-            requestCode, permissions.asString(), grantResults.toString()
+            requestCode, permissions.joinToString(), grantResults.toString()
         )
         for ((index, permission) in permissions.withIndex()) {
             val granted = grantResults[index] == PERMISSION_GRANTED

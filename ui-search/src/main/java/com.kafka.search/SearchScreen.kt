@@ -1,6 +1,11 @@
 package com.kafka.search
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -16,8 +21,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Item
-import com.kafka.data.model.ArchiveQuery
-import com.kafka.data.model.booksByAuthor
 import org.kafka.common.LogCompositions
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.DefaultScaffold
@@ -33,8 +36,11 @@ fun SearchScreen() {
     LogCompositions(tag = "Search")
 
     val navigator = LocalNavigator.current
-    val searchViewModel: ArchiveQueryViewModel = hiltViewModel()
-    val searchViewState by rememberStateWithLifecycle(searchViewModel.state)
+    val queryViewModel: ArchiveQueryViewModel = hiltViewModel()
+    val searchViewModel: SearchViewModel = hiltViewModel()
+    val queryViewState by rememberStateWithLifecycle(queryViewModel.state)
+
+    val recentSearches by rememberStateWithLifecycle(searchViewModel.recentSearches)
 
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(
@@ -51,16 +57,29 @@ fun SearchScreen() {
                 searchText = searchText,
                 setSearchText = { searchText = it },
                 onImeAction = {
-                    searchViewModel.submitQuery(ArchiveQuery().apply { booksByAuthor(it) })
+                    queryViewModel.submitQuery(it)
+                    searchViewModel.addRecentSearch(it)
                 }
             )
 
-            searchViewState.items?.let {
+            queryViewState.items?.let {
                 SearchResults(results = it) {
                     navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
                 }
             }
-            InfiniteProgressBar(show = searchViewState.isLoading)
+
+            if (recentSearches.isNotEmpty()) {
+                RecentSearches(
+                    recentSearches = recentSearches.map { it.searchTerm },
+                    onSearchClicked = {
+                        queryViewModel.submitQuery(it)
+                        searchViewModel.addRecentSearch(it)
+                    },
+                    onRemoveSearch = { searchViewModel.removeRecentSearch(it) }
+                )
+            }
+
+            InfiniteProgressBar(show = queryViewState.isLoading)
         }
     }
 }

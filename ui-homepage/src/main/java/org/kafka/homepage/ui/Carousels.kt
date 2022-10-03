@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import org.kafka.common.banners
+import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.LoadImage
-import org.kafka.ui_common_compose.shadowMaterial
 
 private val images = banners.subList(0, 4)
 

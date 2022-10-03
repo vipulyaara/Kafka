@@ -2,7 +2,11 @@ package ui.common.theme.theme
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -13,6 +17,7 @@ import androidx.compose.ui.graphics.compositeOver
 val brandRed = Color(0xffff006a)
 val brandBlue = Color(0xff0067DD)
 val brandBlue_2 = Color(0xff24aaff)
+
 val white = Color(0xFFFFFFFF)
 val whiteCream = Color(0xFFFAFAFA)
 val brandBlue100 = Color(0xffDFE9FF)
@@ -83,6 +88,9 @@ val ColorScheme.blue
 
 val ColorScheme.yellowDark
     @Composable get() = Color(0xffCFA224)
+
+val ColorScheme.shadowMaterial
+    @Composable get() = if (isSystemInLightTheme()) Color(0xFFACB8D2) else Color(0xFF1E1E1E)
 
 @Composable
 fun isSystemInLightTheme() = !isSystemInDarkTheme()

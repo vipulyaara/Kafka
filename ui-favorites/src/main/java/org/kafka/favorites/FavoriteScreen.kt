@@ -2,7 +2,13 @@ package org.kafka.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -17,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Item
 import org.kafka.common.extensions.rememberStateWithLifecycle
+import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.DefaultScaffold
 import org.kafka.common.widgets.LoadImage
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.material.TopBar
-import org.kafka.ui_common_compose.shadowMaterial
 
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {

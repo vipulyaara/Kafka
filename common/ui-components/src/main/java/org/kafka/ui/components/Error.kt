@@ -1,6 +1,10 @@
 package org.kafka.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -17,7 +21,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.alignCenter
-import ui.common.theme.theme.AppTheme
+import ui.common.theme.theme.DefaultSpecs
 import ui.common.theme.theme.body2
 
 @Composable
@@ -45,7 +49,7 @@ fun ErrorBox(
     val wavesComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.sleepy_cat))
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(AppTheme.specs.paddingTiny),
+        verticalArrangement = Arrangement.spacedBy(DefaultSpecs.paddingTiny),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +68,7 @@ fun ErrorBox(
         if (retryVisible)
             TextButton(
                 onClick = onRetryClick,
-                modifier = Modifier.padding(top = AppTheme.specs.padding)
+                modifier = Modifier.padding(top = DefaultSpecs.padding)
             ) {
                 Text(text = "Retry")
             }
