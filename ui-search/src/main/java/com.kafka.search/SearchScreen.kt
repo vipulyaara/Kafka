@@ -1,5 +1,7 @@
 package com.kafka.search
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Item
 import org.kafka.common.LogCompositions
 import org.kafka.common.extensions.rememberStateWithLifecycle
-import org.kafka.common.widgets.DefaultScaffold
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
@@ -31,6 +33,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.textSecondary
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SearchScreen() {
     LogCompositions(tag = "Search")
@@ -48,11 +51,12 @@ fun SearchScreen() {
         )
     }
 
-    DefaultScaffold(
+    Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { Spacer(modifier = Modifier.height(56.dp)) }
     ) {
         Column {
+            Box(modifier = Modifier.height(24.dp))
             SearchWidget(
                 searchText = searchText,
                 setSearchText = { searchText = it },
@@ -68,7 +72,7 @@ fun SearchScreen() {
                 }
             }
 
-            if (recentSearches.isNotEmpty()) {
+            if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
                 RecentSearches(
                     recentSearches = recentSearches.map { it.searchTerm },
                     onSearchClicked = {
@@ -96,7 +100,7 @@ private fun SearchResults(results: List<Item>, openContentDetail: (String) -> Un
 @Composable
 fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(top = 24.dp, start = 12.dp, end = 24.dp, bottom = 12.dp),
+        modifier = modifier.padding(start = 12.dp, end = 24.dp, bottom = 12.dp),
         text = text,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.textSecondary

@@ -3,12 +3,12 @@ package com.kafka.user
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
@@ -20,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import org.kafka.common.Icons
 import org.kafka.navigation.Screen
 import org.kafka.user.R
-import ui.common.theme.theme.AppBarAlphas
 import ui.common.theme.theme.DisableRipple
 
 @Composable
@@ -34,9 +34,8 @@ fun RekhtaBottomBar(navController: NavController) {
     val currentSelectedItem by navController.currentScreenAsState()
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = AppBarAlphas.translucentBarAlpha()),
-        contentColor = contentColorFor(MaterialTheme.colorScheme.surface),
-        modifier = Modifier.fillMaxWidth()
+        containerColor = MaterialTheme.colorScheme.surface,
+        modifier = Modifier.fillMaxWidth().height(64.dp)
     ) {
         HomeNavigationItems.forEach { item ->
             DisableRipple {
@@ -45,13 +44,6 @@ fun RekhtaBottomBar(navController: NavController) {
                         HomeNavigationItemIcon(
                             item = item,
                             selected = currentSelectedItem == item.screen
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(item.labelResId),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
                         )
                     },
                     alwaysShowLabel = false,

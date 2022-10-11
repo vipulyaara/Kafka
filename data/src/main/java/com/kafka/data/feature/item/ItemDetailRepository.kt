@@ -14,10 +14,8 @@ class ItemDetailRepository @Inject constructor(
 ) {
     fun observeItemDetail(itemId: String) = itemDetailDao.itemDetailFlow(itemId)
 
-    suspend fun updateItemDetail(contentId: String) {
-        resultApiCall(dispatchers.io) {
-            itemDetailMapper.map(archiveService.getItemDetail(contentId))
-                .let { itemDetailDao.insert(it) }
-        }
+    suspend fun updateItemDetail(contentId: String) = resultApiCall(dispatchers.io) {
+        itemDetailMapper.map(archiveService.getItemDetail(contentId))
+            .let { itemDetailDao.insert(it) }
     }
 }

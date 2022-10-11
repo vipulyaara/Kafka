@@ -36,7 +36,7 @@ fun RecentSearches(
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
             .animateContentSize()
     ) {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.padding(vertical = 24.dp)) {
             recentSearches.takeIf { it.isNotEmpty() }?.let {
                 SearchResultLabel("Recent searches")
             }

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.LoadImage
@@ -33,7 +34,7 @@ import ui.common.theme.theme.textSecondary
 
 @Composable
 fun ContinueReading(
-    readingList: ImmutableList<Item>,
+    readingList: ImmutableList<ItemWithRecentItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
@@ -46,9 +47,11 @@ fun ContinueReading(
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
 
+            val list = readingList.items.subList(0, 4.coerceAtMost(readingList.items.size))
+
             LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
-                items(readingList.items.subList(0, 4), key = { it.itemId }) {
-                    ContinueReadingItem(it) { openItemDetail(it.itemId) }
+                items(list, key = { it.item.itemId }) {
+                    ContinueReadingItem(it.item) { openItemDetail(it.item.itemId) }
                 }
             }
         }
@@ -73,12 +76,12 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
 
         Spacer(
             modifier = Modifier
-                .width(328.dp)
+                .width(286.dp)
                 .height(12.dp)
                 .padding(horizontal = 4.dp)
                 .shadowMaterial(12.dp, clip = false)
                 .clip(RoundedCornerShape(2.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.onPrimary)
         )
     }
 }
@@ -120,7 +123,7 @@ private fun Progress() {
             progress = 0.2f,
             modifier = Modifier
                 .height(4.dp)
-                .width(156.dp)
+                .width(116.dp)
                 .clip(RoundedCornerShape(50))
         )
         Text(

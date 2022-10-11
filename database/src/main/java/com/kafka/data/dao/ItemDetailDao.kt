@@ -16,4 +16,7 @@ abstract class ItemDetailDao : EntityDao<ItemDetail> {
 
     @Query("select * from ItemDetail where itemId = :itemId")
     abstract suspend fun itemDetail(itemId: String): ItemDetail
+
+    @Query("select * from ItemDetail where itemId = :itemId")
+    abstract suspend fun itemDetailOrNull(itemId: String): ItemDetail?
 }

@@ -25,6 +25,8 @@ fun UiMessage(
     id = id,
 )
 
+fun String?.asUiMessage() = this?.let { UiMessage(it) } ?: UiMessage("Something went wrong")
+
 class UiMessageManager {
     private val mutex = Mutex()
 

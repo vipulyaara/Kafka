@@ -15,7 +15,8 @@ data class File(
     val time: Long,
     val format: String?,
     val playbackUrl: String?,
-    val readerUrl: String?
+    val readerUrl: String?,
+    val localUri: String? = null
 )
 
 fun ItemDetail?.isText() = this?.mediaType == _mediaTypeText
@@ -36,5 +37,7 @@ fun File.isCoverImage() = format?.contains("JPEG", true) ?: false ||
         format?.endsWith("Tile", true) ?: false
 
 fun String?.isPdf() = this?.contains("pdf", true) ?: false
+
+fun String?.isText() = this?.contains("txt", true) ?: false
 
 fun String?.isMp3() = this?.contains("mp3", true) ?: false

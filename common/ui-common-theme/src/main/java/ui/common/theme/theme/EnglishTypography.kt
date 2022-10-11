@@ -35,8 +35,8 @@ internal object EnglishTypography {
         letterSpacing = TypeScale.DisplayLargeTracking,
     )
     val ContentProse = TextStyle(
-        fontFamily = Circular,
-        fontWeight = FontWeight.Light,
+        fontFamily = Lora,
+        fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
     )
     val DisplaySmall = TextStyle(

@@ -1,6 +1,6 @@
 package org.kafka.common.widgets
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,15 +25,58 @@ import ui.common.theme.theme.body2
 
 @Composable
 fun FullScreenMessage(
-    message: UiMessage?,
-    show: Boolean = message != null,
+    uiError: UiMessage?,
+    show: Boolean = uiError != null,
     onRetry: (() -> Unit)? = null
 ) {
-    FullScreenError(
-        uiError = message?.let { UiMessage(it.message) },
-        show = show,
-        onRetry = onRetry
-    )
+    AnimatedVisibility(visible = show) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(vertical = 48.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            LoadImage(
+                data = R.drawable.img_absurd_error,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .weight(0.7f)
+                    .padding(48.dp),
+                tint = MaterialTheme.colorScheme.secondary
+            )
+
+            Column(
+                modifier = Modifier.weight(0.3f),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Something went wrong",
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = uiError?.message.orEmpty(),
+                    style = MaterialTheme.typography.bodyMedium.alignCenter()
+                )
+
+                onRetry?.let {
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    TextButton(onClick = onRetry) {
+                        Text(
+                            text = "Retry",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -54,58 +98,6 @@ fun ErrorMessage(
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colorScheme.onPrimary
             )
-        }
-    }
-}
-
-@Composable
-fun FullScreenError(
-    uiError: UiMessage?,
-    show: Boolean = uiError != null,
-    onRetry: (() -> Unit)? = null
-) {
-    AnimatedVisibility(visible = show) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxSize()
-                .padding(vertical = 48.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.weight(0.1f))
-            LoadImage(
-                data = R.drawable.img_absurd_error,
-                backgroundColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                    .weight(0.4f)
-                    .aspectRatio(1f)
-            )
-
-            Spacer(modifier = Modifier.weight(0.1f))
-            Text(
-                text = "Something went wrong",
-                style = MaterialTheme.typography.titleLarge.alignCenter()
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = uiError?.message.orEmpty(),
-                style = MaterialTheme.typography.bodyMedium.alignCenter()
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            onRetry?.let {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "Retry",
-                    style = MaterialTheme.typography.titleMedium.alignCenter(),
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { onRetry() }
-                )
-            }
-            Spacer(modifier = Modifier.weight(0.1f))
         }
     }
 }

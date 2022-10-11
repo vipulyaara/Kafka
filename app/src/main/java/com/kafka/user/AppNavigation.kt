@@ -173,7 +173,7 @@ private fun NavGraphBuilder.addReader(root: Screen) {
     composable(
         route = LeafScreen.Reader.createRoute(root),
         arguments = listOf(
-            navArgument("fileUrl") { type = NavType.StringType }
+            navArgument("itemId") { type = NavType.StringType }
         )
     ) {
         ReaderScreen()

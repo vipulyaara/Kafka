@@ -3,7 +3,6 @@ package org.kafka.common.widgets
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +15,7 @@ import coil.compose.rememberImagePainter
 fun LoadImage(
     modifier: Modifier = Modifier,
     data: Any? = null,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    backgroundColor: Color = Color.Transparent,
     contentScale: ContentScale = ContentScale.Crop,
     imagePainter: ImagePainter = rememberImagePainter(data, builder = {
         crossfade(true)

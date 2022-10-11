@@ -42,14 +42,14 @@ class ArchiveQueryViewModel @Inject constructor(
     )
 
     fun submitQuery(keyword: String) {
-        submitQuery(SearchQuery(keyword, SearchQueryType.Creator))
+        submitQuery(SearchQuery(keyword, SearchQueryType.Search))
     }
 
-    fun submitQuery(searchQuery: SearchQuery) {
+    private fun submitQuery(searchQuery: SearchQuery) {
         submitQuery(searchQuery.asArchiveQuery())
     }
 
-    fun submitQuery(query: ArchiveQuery) {
+    private fun submitQuery(query: ArchiveQuery) {
         observeQueryItems(ObserveQueryItems.Params(query))
         viewModelScope.launch {
             updateItems(UpdateItems.Params(query)).collectStatus(loadingState, uiMessageManager)

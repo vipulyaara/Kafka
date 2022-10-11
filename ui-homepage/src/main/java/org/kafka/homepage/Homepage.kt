@@ -5,25 +5,20 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Homepage
-import org.kafka.base.debug
 import org.kafka.common.LogCompositions
 import org.kafka.common.asImmutable
-import org.kafka.common.extensions.elevation
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
@@ -55,7 +50,6 @@ private fun Homepage(viewState: HomepageViewState) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar(elevation = 20.dp) },
-        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         Box(Modifier.fillMaxSize()) {
@@ -92,7 +86,7 @@ private fun HomepageFeedItems(
         item { Spacer(modifier = Modifier.height(24.dp)) }
         item {
             ContinueReading(
-                readingList = homepage.queryItems.asImmutable(),
+                readingList = homepage.recentItems.asImmutable(),
                 openItemDetail = openItemDetail
             )
         }

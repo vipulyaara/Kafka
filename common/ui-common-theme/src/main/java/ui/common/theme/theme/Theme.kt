@@ -49,7 +49,7 @@ fun AppTheme(
     val isLight = isSystemInLightTheme()
 
     SideEffect {
-        systemUiController.setSystemBarsColor(color = colorScheme.background, darkIcons = isLight)
+        systemUiController.setSystemBarsColor(color = colorScheme.surface, darkIcons = isLight)
         systemUiController.setNavigationBarColor(color = colorScheme.surface, darkIcons = isLight)
     }
 

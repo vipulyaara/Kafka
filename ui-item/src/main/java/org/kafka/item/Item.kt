@@ -2,6 +2,7 @@ package org.kafka.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +17,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
+import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.LoadImage
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
@@ -32,7 +35,7 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Card(shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(8.dp)) {
+        Box(modifier = Modifier.shadowMaterial(8.dp, shape = RoundedCornerShape(4.dp))) {
             LoadImage(
                 data = item.run { coverImage ?: coverImageResource },
                 modifier = Modifier.size(72.dp, 84.dp)

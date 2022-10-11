@@ -19,7 +19,7 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.domain.interactors.AddRecentItem
-import org.kafka.domain.interactors.StartFileDownload
+import org.kafka.domain.interactors.DownloadFile
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
@@ -33,10 +33,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(
     private val updateItemDetail: UpdateItemDetail,
-    observeItemDetail: ObserveItemDetail,
+    private val observeItemDetail: ObserveItemDetail,
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
-    private val startFileDownload: StartFileDownload,
+    private val downloadFile: DownloadFile,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val toggleFavorite: ToggleFavorite,
     private val addRecentItem: AddRecentItem,
@@ -53,7 +53,7 @@ class ItemDetailViewModel @Inject constructor(
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
-        debug { "item detail results $isLoading" }
+        debug { "item detail results $isLoading $message" }
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
@@ -67,6 +67,15 @@ class ItemDetailViewModel @Inject constructor(
     )
 
     init {
+        refresh()
+    }
+
+    fun retry() {
+        clearMessage()
+        refresh()
+    }
+
+    private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, uiMessageManager)
@@ -116,6 +125,18 @@ class ItemDetailViewModel @Inject constructor(
 
     suspend fun download(readerUrl: String) {
         addRecentItem()
-        startFileDownload(readerUrl).collectStatus(loadingState, uiMessageManager)
+
+        downloadFile(readerUrl).collect {
+            val downloadResult = it.getOrThrow()
+            if (downloadResult.progress == 100) {
+
+            }
+        }
+    }
+
+    private fun clearMessage() {
+        viewModelScope.launch {
+            state.value.message?.id?.let { uiMessageManager.clearMessage(it) }
+        }
     }
 }

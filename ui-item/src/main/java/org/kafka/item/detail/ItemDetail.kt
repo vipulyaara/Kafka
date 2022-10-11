@@ -3,6 +3,8 @@
 package org.kafka.item.detail
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -41,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,10 +53,9 @@ import com.kafka.data.entities.ItemDetail
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.common.Icons
-import org.kafka.common.extensions.elevation
+import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.shadowMaterial
-import org.kafka.common.shareText
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
@@ -76,35 +76,38 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     val state by rememberStateWithLifecycle(viewModel.state)
     val snackbarState = SnackbarHostState()
-    val context = LocalContext.current
     val navigator = LocalNavigator.current
     val lazyListState = rememberLazyListState()
 
     LaunchedEffect(state.message) {
-        state.message?.let { snackbarState.showSnackbar(it.message) }
+        if (state.isSnackbarError) {
+            snackbarState.showSnackbar(state.message!!.message)
+        }
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar(lazyListState) },
-        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
         Box(Modifier.fillMaxSize()) {
             InfiniteProgressBar(
                 show = state.isFullScreenLoading,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center)
             )
-            FullScreenMessage(state.message, state.isError)
-            state.itemDetail?.let {
+
+            FullScreenMessage(state.message, state.isFullScreenError, viewModel::retry)
+
+            AnimatedVisibility(
+                visible = state.itemDetail != null,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 ItemDetail(
-                    itemDetail = it,
+                    itemDetail = state.itemDetail!!,
                     relatedItems = state.itemsByCreator,
                     isFavorite = state.isFavorite,
                     toggleFavorite = { viewModel.updateFavorite() },
-                    shareText = { context.shareText(viewModel.shareItemText()) },
                     openItemDetail = { navigator.navigate(LeafScreen.ItemDetail.createRoute(it)) },
                     openFiles = {
                         navigator.navigate(LeafScreen.Files.createRoute(it))
@@ -124,7 +127,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun ItemDetail(
+private fun ItemDetail(
     itemDetail: ItemDetail,
     relatedItems: List<Item>?,
     isFavorite: Boolean,
@@ -133,7 +136,6 @@ fun ItemDetail(
     openReader: (String) -> Unit,
     playAudio: (String) -> Unit,
     openFiles: (String) -> Unit,
-    shareText: () -> Unit,
     lazyListState: LazyListState,
     padding: PaddingValues
 ) {
@@ -163,7 +165,6 @@ fun ItemDetail(
                     playAudio = playAudio,
                     openFiles = openFiles,
                     isFavorite = isFavorite,
-                    shareText = shareText,
                     toggleFavorite = toggleFavorite
                 )
             }
@@ -270,7 +271,6 @@ private fun TopBar(
     lazyListState: LazyListState,
     navigator: Navigator = LocalNavigator.current
 ) {
-    val elevation = remember { lazyListState.elevation }
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
 
     val containerColor by animateColorAsState(

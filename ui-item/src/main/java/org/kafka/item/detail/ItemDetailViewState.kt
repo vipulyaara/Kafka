@@ -17,7 +17,10 @@ data class ItemDetailViewState(
     val isLoading: Boolean = false,
     val message: UiMessage? = null
 ) {
-    val isError
+    val isSnackbarError
+        get() = message != null && itemDetail != null
+
+    val isFullScreenError
         get() = message != null && itemDetail == null
 
     val isFullScreenLoading: Boolean

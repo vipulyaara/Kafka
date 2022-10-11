@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.kafka.common.shadowMaterial
-import ui.common.theme.theme.textPrimary
+import ui.common.theme.theme.white
 
 @Composable
 fun FloatingButton(
     text: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.background,
+    containerColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClicked: () -> Unit
 ) {
     Box(
@@ -31,7 +31,6 @@ fun FloatingButton(
         Text(
             text = text,
             style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.textPrimary,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 14.dp)
                 .align(Alignment.Center)

@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
+import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
 import compose.icons.feathericons.Send
 import compose.icons.feathericons.User
@@ -63,6 +64,8 @@ object Icons {
         get() = TablerIcons.Book
     val Profile: ImageVector
         get() = FeatherIcons.User
+    val Files: ImageVector
+        get() = FeatherIcons.File
     val ProfileActive: ImageVector
         get() = FeatherIcons.User
     val GoToTop: ImageVector
