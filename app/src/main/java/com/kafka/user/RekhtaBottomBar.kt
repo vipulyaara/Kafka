@@ -8,7 +8,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
@@ -98,15 +97,19 @@ private fun NavController.currentScreenAsState(): State<Screen> {
                 destination.hierarchy.any { it.route == Screen.Home.route } -> {
                     selectedItem.value = Screen.Home
                 }
+
                 destination.hierarchy.any { it.route == Screen.Search.route } -> {
                     selectedItem.value = Screen.Search
                 }
+
                 destination.hierarchy.any { it.route == Screen.PlayerLibrary.route } -> {
                     selectedItem.value = Screen.PlayerLibrary
                 }
+
                 destination.hierarchy.any { it.route == Screen.Library.route } -> {
                     selectedItem.value = Screen.Library
                 }
+
                 destination.hierarchy.any { it.route == Screen.Profile.route } -> {
                     selectedItem.value = Screen.Profile
                 }

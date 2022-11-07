@@ -7,7 +7,7 @@ import com.kafka.data.dao.FollowedItemDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.LanguageDao
-import com.kafka.data.dao.QueueDao
+import com.kafka.data.dao.AudioDao
 import com.kafka.data.dao.RecentItemDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.SearchDao
@@ -18,7 +18,7 @@ import com.kafka.data.entities.Language
 import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentSearch
-import com.kafka.data.entities.Song
+import com.kafka.data.entities.Audio
 
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
@@ -26,7 +26,7 @@ interface KafkaDatabase {
     fun followedItemDao(): FollowedItemDao
     fun searchDao(): SearchDao
     fun itemDao(): ItemDao
-    fun queueDao(): QueueDao
+    fun queueDao(): AudioDao
     fun languageDao(): LanguageDao
     fun searchConfigurationDao(): RecentSearchDao
 }
@@ -39,7 +39,7 @@ interface KafkaDatabase {
         RecentItem::class,
         FollowedItem::class,
         QueueEntity::class,
-        Song::class,
+        Audio::class,
         RecentSearch::class
     ],
     version = 2,

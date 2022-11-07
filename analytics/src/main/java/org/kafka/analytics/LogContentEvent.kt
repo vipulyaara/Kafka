@@ -41,6 +41,9 @@ class ContentEventProvider @Inject constructor(
     ): EventInfo =
         "remove_from_favorites" to repository.toggleFavorites(itemId, itemDetailSource.toString())
 
+    fun playAudio(contentId: String, contentTitle: String): EventInfo =
+        "play_audio" to repository.playAudio(contentId, contentTitle)
+
     companion object {
         enum class ItemDetailSource { HOMEPAGE, SEARCH, FAVORITE, UNKNOWN }
     }

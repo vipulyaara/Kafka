@@ -83,7 +83,7 @@ private fun HomepageFeedItems(
         modifier = Modifier.fillMaxSize()
     ) {
         item { Carousels() }
-        item { Spacer(modifier = Modifier.height(24.dp)) }
+        item { Spacer(modifier = Modifier.height(12.dp)) }
         item {
             ContinueReading(
                 readingList = homepage.recentItems.asImmutable(),

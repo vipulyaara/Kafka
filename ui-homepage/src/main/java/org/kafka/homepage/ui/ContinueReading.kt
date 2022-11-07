@@ -3,6 +3,7 @@ package org.kafka.homepage.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,12 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.shadowMaterial
-import org.kafka.common.widgets.LoadImage
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -68,7 +68,7 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
             modifier = Modifier.padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            CoverImage(continueReading.run { coverImage ?: coverImageResource })
+            CoverImage(continueReading)
             Description(continueReading)
         }
 
@@ -87,9 +87,16 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
 }
 
 @Composable
-private fun CoverImage(it: Any) {
-    Card(shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(8.dp)) {
-        LoadImage(data = it, modifier = Modifier.size(64.dp, 76.dp))
+private fun CoverImage(item: Item) {
+    Box(modifier = Modifier.shadowMaterial(8.dp, shape = RoundedCornerShape(4.dp))) {
+        AsyncImage(
+            model = item.run { coverImage ?: coverImageResource },
+            contentDescription = "Cover",
+            modifier = Modifier
+                .size(64.dp, 76.dp)
+                .background(MaterialTheme.colorScheme.surface),
+            contentScale = ContentScale.Crop
+        )
     }
 }
 

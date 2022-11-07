@@ -20,6 +20,7 @@ private val images = banners.subList(0, 4)
 internal fun Carousels() {
     val pagerState = rememberPagerState()
     HorizontalPager(
+        modifier = Modifier.padding(vertical = 4.dp),
         count = images.size,
         state = pagerState,
         contentPadding = PaddingValues(end = 24.dp)

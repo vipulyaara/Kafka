@@ -90,7 +90,7 @@ val ColorScheme.yellowDark
     @Composable get() = Color(0xffCFA224)
 
 val ColorScheme.shadowMaterial
-    @Composable get() = primary.copy(alpha = 0.5f)
+    @Composable get() = if (isSystemInLightTheme()) primary.copy(alpha = 0.5f) else primary.copy(alpha = 0.2f)
 
 @Composable
 fun isSystemInLightTheme() = !isSystemInDarkTheme()

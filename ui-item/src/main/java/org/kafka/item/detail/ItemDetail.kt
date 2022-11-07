@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -87,10 +88,12 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(lazyListState) },
+        contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
         Box(Modifier.fillMaxSize()) {
+            TopBar(lazyListState)
+
             InfiniteProgressBar(
                 show = state.isFullScreenLoading,
                 modifier = Modifier.align(Alignment.Center)
@@ -200,7 +203,7 @@ fun DescriptionDialog(itemDetail: ItemDetail) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface)
             .padding(24.dp)
     ) {
         Box(
