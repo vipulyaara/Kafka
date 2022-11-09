@@ -3,7 +3,7 @@ package org.kafka.domain.interactors
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
-import com.kafka.data.dao.ItemDetailDao
+import com.kafka.data.dao.FileDao
 import com.pspdfkit.document.download.DownloadJob
 import com.pspdfkit.document.download.DownloadRequest
 import com.pspdfkit.document.download.Progress
@@ -25,12 +25,12 @@ import kotlin.Result.Companion.success
 class DownloadFile @Inject constructor(
     @ApplicationContext private val context: Context,
     private val updateFileDownload: UpdateFileDownload,
-    private val itemDetailDao: ItemDetailDao,
+    private val fileDao: FileDao,
     private val appCoroutineDispatchers: AppCoroutineDispatchers
 ) {
     suspend operator fun invoke(itemId: String): Flow<Result<DownloadResult>> {
-        val itemDetail = itemDetailDao.itemDetail(itemId)
-        val file = itemDetail.files?.firstOrNull { it.extension == "pdf" }
+        val files = fileDao.filesByItemId(itemId)
+        val file = files.firstOrNull { it.extension == "pdf" }
 
         return if (file?.localUri != null) {
             flowOf(success(DownloadResult(file.localUri?.toUri(), 100)))

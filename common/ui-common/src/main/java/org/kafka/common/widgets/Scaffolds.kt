@@ -28,7 +28,7 @@ fun DefaultScaffold(
         contentColor = contentColor,
         snackbarHost = snackbarHost
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(modifier = Modifier.padding(top = it.calculateTopPadding())) {
             content()
         }
     }

@@ -88,12 +88,11 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = { TopBar(lazyListState) },
         contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
         Box(Modifier.fillMaxSize()) {
-            TopBar(lazyListState)
-
             InfiniteProgressBar(
                 show = state.isFullScreenLoading,
                 modifier = Modifier.align(Alignment.Center)

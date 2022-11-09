@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.kafka.common.shadowMaterial
 
 @Composable
 fun TopBar(
@@ -31,7 +30,6 @@ fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
-            .shadowMaterial(elevation, shape)
             .background(containerColor)
     ) {
         Row(

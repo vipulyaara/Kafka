@@ -25,8 +25,8 @@ import ui.common.theme.theme.body2
 
 @Composable
 fun FullScreenMessage(
-    uiError: UiMessage?,
-    show: Boolean = uiError != null,
+    uiMessage: UiMessage?,
+    show: Boolean = uiMessage != null,
     onRetry: (() -> Unit)? = null
 ) {
     AnimatedVisibility(visible = show) {
@@ -53,15 +53,17 @@ fun FullScreenMessage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Something went wrong",
-                    style = MaterialTheme.typography.titleLarge
+                    text = uiMessage?.title.orEmpty(),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = uiError?.message.orEmpty(),
-                    style = MaterialTheme.typography.bodyMedium.alignCenter()
+                    text = uiMessage?.message.orEmpty(),
+                    style = MaterialTheme.typography.bodyMedium.alignCenter(),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f)
                 )
 
                 onRetry?.let {
@@ -70,7 +72,7 @@ fun FullScreenMessage(
                     TextButton(onClick = onRetry) {
                         Text(
                             text = "Retry",
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
                         )
                     }
                 }

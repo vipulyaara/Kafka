@@ -1,6 +1,5 @@
 package com.kafka.data.entities
 
-import android.text.Html
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -19,15 +18,8 @@ data class ItemDetail(
     val mediaType: String? = null,
     val coverImage: String? = null,
     val coverImageResource: Int = 0,
-    val files: List<File>? = null,
+    val files: List<String>? = null,
     val metadata: List<String>? = null
 ) : BaseEntity
 
-fun ItemDetail?.formattedDescription() = this?.description?.let { Html.fromHtml(it)?.toString() } ?: ""
-
-fun ItemDetail?.firstAudio() = this?.files?.filterMp3()?.firstOrNull()
-
-fun ItemDetail?.mp3Files() = this?.files?.filterMp3()
-
-//fun ItemDetail?.readerUrl() = this?.files?.firstOrNull { it.readerUrl != null }?.readerUrl ?: error("Null reader url")
 fun ItemDetail?.readerUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

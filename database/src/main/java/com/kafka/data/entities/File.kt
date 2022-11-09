@@ -1,13 +1,15 @@
 package com.kafka.data.entities
 
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-const val _mediaTypeText = "texts"
-const val _mediaTypeAudio = "audio"
+const val mediaTypeText = "texts"
+const val mediaTypeAudio = "audio"
 
-@Serializable
+@Entity
 data class File(
-    val id: String,
+    @PrimaryKey val fileId: String,
+    val itemId: String,
     val size: String?,
     val title: String?,
     val extension: String?,
@@ -17,11 +19,10 @@ data class File(
     val playbackUrl: String?,
     val readerUrl: String?,
     val localUri: String? = null
-)
+): BaseEntity
 
-fun ItemDetail?.isText() = this?.mediaType == _mediaTypeText
-fun ItemDetail?.isAudio() = this?.mediaType == _mediaTypeAudio
-
+fun ItemDetail?.isText() = this?.mediaType == mediaTypeText
+fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
 fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null
 

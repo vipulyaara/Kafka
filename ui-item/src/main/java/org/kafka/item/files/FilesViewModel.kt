@@ -12,15 +12,15 @@ import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
+import org.kafka.common.asUiMessage
 import org.kafka.domain.interactors.DownloadFile
-import org.kafka.domain.observers.ObserveItemDetail
+import org.kafka.domain.observers.ObserveFiles
 import javax.inject.Inject
 
 @HiltViewModel
 class FilesViewModel @Inject constructor(
-    observeItemDetail: ObserveItemDetail,
+    observeFiles: ObserveFiles,
     private val downloadFile: DownloadFile,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -30,12 +30,12 @@ class FilesViewModel @Inject constructor(
     val downloadState = mutableStateOf<Uri?>(null)
 
     val state: StateFlow<FilesViewState> = combine(
-        observeItemDetail.flow,
+        observeFiles.flow,
         loadingState.observable,
         uiMessageManager.message,
-    ) { itemDetail, isLoading, message ->
+    ) { files, isLoading, message ->
         FilesViewState(
-            files = itemDetail?.files.orEmpty(), isLoading = isLoading, message = message
+            files = files, isLoading = isLoading, message = message
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -43,7 +43,7 @@ class FilesViewModel @Inject constructor(
     )
 
     init {
-        observeItemDetail(ObserveItemDetail.Param(itemId))
+        observeFiles(ObserveFiles.Param(itemId))
     }
 
     fun downloadFile(fileId: String) {
@@ -52,7 +52,7 @@ class FilesViewModel @Inject constructor(
             downloadFile.invoke(fileId).collect {
                 debug { "downloadFile $it" }
                 if (it.isFailure) {
-                    uiMessageManager.emitMessage(UiMessage(it.exceptionOrNull()?.message.orEmpty()))
+                    uiMessageManager.emitMessage(it.exceptionOrNull()?.message.asUiMessage())
                 } else {
                     if (it.getOrNull()?.progress == 100) {
                         downloadState.value = it.getOrNull()?.data

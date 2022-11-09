@@ -11,25 +11,27 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.domain.interactors.ToggleFavorite
+import org.kafka.domain.observers.ObserveDownloadedItems
 import org.kafka.domain.observers.ObserveFollowedItems
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val toggleFavorite: ToggleFavorite,
-    private val observeFollowedItems: ObserveFollowedItems
+    observeDownloadedItems: ObserveDownloadedItems,
+    observeFollowedItems: ObserveFollowedItems
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
     val state: StateFlow<FavoriteViewState> = combine(
         observeFollowedItems.flow,
+        observeDownloadedItems.flow,
         loadingCounter.observable,
         uiMessageManager.message,
-    ) { items, isLoading, message ->
+    ) { favorites, downloaded, isLoading, message ->
         FavoriteViewState(
-            items = items,
+            favoriteItems = favorites,
+            downloadedItems = downloaded,
             message = message,
             isLoading = isLoading
         )
@@ -40,12 +42,14 @@ class FavoriteViewModel @Inject constructor(
 
     init {
         observeFollowedItems(Unit)
+        observeDownloadedItems(Unit)
     }
 }
 
 @Immutable
 data class FavoriteViewState(
-    val items: List<Item>? = null,
+    val favoriteItems: List<Item> = emptyList(),
+    val downloadedItems: List<Item> = emptyList(),
     val isLoading: Boolean = false,
     val message: UiMessage? = null
 )
