@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.data.entities.Homepage
 import org.kafka.common.LogCompositions
 import org.kafka.common.asImmutable
+import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
@@ -28,7 +29,6 @@ import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.material.TopBar
-import org.kafka.ui.components.progress.FullScreenProgressBar
 
 @Composable
 fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
@@ -49,13 +49,15 @@ private fun Homepage(viewState: HomepageViewState) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(elevation = 20.dp) },
+        topBar = { TopBar() },
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         Box(Modifier.fillMaxSize()) {
-            viewState.homepage?.queryItems?.let {
+//            FullScreenProgressBar(show = viewState.isFullScreenLoading)
+
+            AnimatedVisibility(viewState.homepage?.queryItems != null) {
                 HomepageFeedItems(
-                    homepage = viewState.homepage,
+                    homepage = viewState.homepage!!,
                     lazyListState = lazyListState,
                     openItemDetail = {
                         navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
@@ -64,7 +66,6 @@ private fun Homepage(viewState: HomepageViewState) {
                 )
             }
 
-            FullScreenProgressBar(show = viewState.isFullScreenLoading)
             FullScreenMessage(viewState.message, viewState.isFullScreenError)
         }
     }

@@ -24,6 +24,12 @@ interface NotificationManager {
     fun cancelNotification(notificationId: Int)
 
     fun cancelAllNotifications()
+
+    fun updateNotification(notificationBuilder: NotificationBuilder = {})
+
+    companion object {
+        const val NOTIFICATION_ID_DOWNLOAD_FILE = 101
+    }
 }
 
 data class Push(

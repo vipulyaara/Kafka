@@ -10,6 +10,6 @@ data class HomepageViewState(
     val isLoading: Boolean = false,
     val message: UiMessage? = null
 ) {
-    val isFullScreenLoading = isLoading && homepage?.queryItems == null && message == null
+    val isFullScreenLoading = isLoading && !homepage?.queryItems.isNullOrEmpty() && message == null
     val isFullScreenError = homepage == null && message != null
 }

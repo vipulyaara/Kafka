@@ -18,8 +18,6 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.domain.interactors.AddRecentItem
-import org.kafka.domain.interactors.DownloadFile
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
@@ -36,10 +34,8 @@ class ItemDetailViewModel @Inject constructor(
     private val observeItemDetail: ObserveItemDetail,
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
-    private val downloadFile: DownloadFile,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val toggleFavorite: ToggleFavorite,
-    private val addRecentItem: AddRecentItem,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
@@ -95,12 +91,6 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    private fun addRecentItem() {
-        viewModelScope.launch {
-            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect()
-        }
-    }
-
     private fun observeByAuthor(itemDetail: ItemDetail?) {
         itemDetail?.let {
             debug { "observe query for creator ${itemDetail.creator}" }
@@ -121,17 +111,6 @@ class ItemDetailViewModel @Inject constructor(
             Check out $itemTitle on Kafka
             ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
-    }
-
-    suspend fun download(readerUrl: String) {
-        addRecentItem()
-
-        downloadFile(readerUrl).collect {
-            val downloadResult = it.getOrThrow()
-            if (downloadResult.progress == 100) {
-
-            }
-        }
     }
 
     private fun clearMessage() {

@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,11 +38,11 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 
     Scaffold(topBar = { TopBar() }) { padding ->
         LazyColumn(modifier = Modifier, contentPadding = padding) {
-            items(viewState.files, key = { it.id }) {
+            items(viewState.files, key = { it.fileId }) {
                 File(
                     it = it,
                     isLoading = viewState.isLoading,
-                    startDownload = { viewModel.downloadFile(it.id) },
+                    startDownload = { viewModel.downloadFile(it.fileId) },
                     openReader = {
                         navigator.navigate(Reader.createRoute(viewModel.downloadState.value.toString()))
                     }
@@ -77,10 +76,6 @@ private fun File(it: File, isLoading: Boolean, startDownload: () -> Unit, openRe
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
             )
-
-            if (isLoading) {
-                LinearProgressIndicator()
-            }
         }
 
         IconButton(onClick = startDownload) {

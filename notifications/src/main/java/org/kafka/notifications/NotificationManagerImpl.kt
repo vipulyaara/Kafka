@@ -17,9 +17,14 @@ class NotificationManagerImpl(
 ) : NotificationManager {
 
     private val context = application.applicationContext
+    private lateinit var builder: NotificationCompat.Builder
 
     override fun showNotification(id: Int, notification: Notification?) {
         notification?.let { notificationManager.notify(id, it) }
+    }
+
+    override fun updateNotification(notificationBuilder: NotificationBuilder) {
+        notificationBuilder(builder)
     }
 
     override fun buildNotification(
@@ -32,7 +37,7 @@ class NotificationManagerImpl(
 
         createNotificationChannel(channel)
 
-        val builder = NotificationCompat.Builder(
+        builder = NotificationCompat.Builder(
             context, channel.id
         ).apply {
             setContentTitle(notification.title)

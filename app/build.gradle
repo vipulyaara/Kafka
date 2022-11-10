@@ -69,7 +69,9 @@ android {
         debug {
             versionNameSuffix "-debug"
             applicationIdSuffix ".debug"
+            debuggable true
         }
+
         benchmark {
             signingConfig signingConfigs.debug
             debuggable false
@@ -78,6 +80,7 @@ android {
         release {
             shrinkResources true
             minifyEnabled true
+            debuggable false
             signingConfig = signingConfigs.debug
             proguardFiles 'proguard-rules.pro'
         }

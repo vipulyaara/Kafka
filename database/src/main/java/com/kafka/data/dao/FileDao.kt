@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class FileDao : EntityDao<File> {
 
+    @Query("select * from File where localUri is not null")
+    abstract fun observeDownloadedFiles(): Flow<List<File>>
+
     @Query("select * from File where fileId = :fileId")
     abstract fun observeFile(fileId: String): Flow<File>
 
@@ -18,5 +21,11 @@ abstract class FileDao : EntityDao<File> {
     abstract fun observeFilesByItemId(itemId: String): Flow<List<File>>
 
     @Query("select * from File where itemId = :itemId")
-    abstract fun filesByItemId(itemId: String): List<File>
+    abstract suspend fun filesByItemId(itemId: String): List<File>
+
+    @Query("select * from File where fileId = :fileId")
+    abstract suspend fun file(fileId: String): File
+
+    @Query("select * from File where fileId = :fileId")
+    abstract suspend fun fileOrNull(fileId: String): File?
 }

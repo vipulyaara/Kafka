@@ -19,7 +19,11 @@ data class File(
     val playbackUrl: String?,
     val readerUrl: String?,
     val localUri: String? = null
-): BaseEntity
+): BaseEntity {
+    companion object {
+        val supportedFiles = listOf("pdf", "mp3", "epub", "wav", "txt")
+    }
+}
 
 fun ItemDetail?.isText() = this?.mediaType == mediaTypeText
 fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio

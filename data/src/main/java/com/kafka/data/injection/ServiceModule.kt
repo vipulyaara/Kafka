@@ -68,7 +68,10 @@ class ServiceModule {
 
 //            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
-            addInterceptor(httpLoggingInterceptor)
+//            addInterceptor(httpLoggingInterceptor)
+            addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            })
         }
 
         return builder.build()

@@ -11,10 +11,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -74,7 +76,7 @@ class ReaderViewModel @Inject constructor(
     }
 
     private suspend fun download(itemId: String) {
-        downloadFile(itemId).collect {
+        downloadFile.invokeByItemId(itemId).collect {
             val downloadResult = it.getOrThrow()
             this.progress = downloadResult.progress
 
@@ -91,7 +93,9 @@ class ReaderViewModel @Inject constructor(
             val r = BufferedReader(InputStreamReader(`in`))
             val total = StringBuilder()
             var line: String?
-            while (r.readLine().also { line = it } != null) {
+            while (withContext(Dispatchers.IO) {
+                    r.readLine()
+                }.also { line = it } != null) {
                 total.append(line).append('\n')
             }
             text.value = total.toString()
