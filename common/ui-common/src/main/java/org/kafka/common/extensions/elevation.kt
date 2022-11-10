@@ -21,7 +21,7 @@ val LazyListState.elevation
     }
 
 fun LazyGridState.elevation(maxElevation: Int = 40) = derivedStateOf {
-    this.run { firstVisibleItemScrollOffset.coerceAtMost(maxElevation) }?.dp ?: 0.dp
+    this.run { firstVisibleItemScrollOffset.coerceAtMost(maxElevation) }.dp
 }
 
 private const val MaxElevation = 20

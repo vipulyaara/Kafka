@@ -23,9 +23,9 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import org.kafka.common.LogCompositions
-import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
@@ -41,9 +41,9 @@ fun SearchScreen() {
     val navigator = LocalNavigator.current
     val queryViewModel: ArchiveQueryViewModel = hiltViewModel()
     val searchViewModel: SearchViewModel = hiltViewModel()
-    val queryViewState by rememberStateWithLifecycle(queryViewModel.state)
+    val queryViewState by queryViewModel.state.collectAsStateWithLifecycle()
 
-    val recentSearches by rememberStateWithLifecycle(searchViewModel.recentSearches)
+    val recentSearches by searchViewModel.recentSearches.collectAsStateWithLifecycle()
 
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(

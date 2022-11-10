@@ -94,6 +94,7 @@ subprojects {
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.unit.ExperimentalUnitApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+            freeCompilerArgs += "-Xopt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
             freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
             freeCompilerArgs += "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api"

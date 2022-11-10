@@ -42,8 +42,7 @@ android {
         // Make the build fail on any lint errors
         abortOnError true
         // Allow lint to check dependencies
-        // TODO: re-enable this once https://issuetracker.google.com/issues/159733104 is fixed
-        checkDependencies false
+        checkDependencies true
     }
 
     buildFeatures {
@@ -105,10 +104,9 @@ dependencies {
     implementation project(':ui-favorites')
     implementation project(':ui-player')
     implementation project(':ui-artist')
-//    implementation project(':core-player')
     implementation project(':webview')
 
-    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
+    implementation "androidx.metrics:metrics-performance:1.0.0-alpha03"
 
     implementation platform(libs.google.bom)
 
@@ -133,8 +131,6 @@ dependencies {
     implementation libs.compose.livedata
 
     implementation libs.coil.coil
-    implementation libs.radiography
-//    implementation libs.proguard.snippets
 
     implementation libs.pdfkit
     implementation libs.androidx.appcompat
@@ -170,9 +166,6 @@ dependencies {
     implementation libs.androidx.hilt.navigation
     implementation libs.androidx.hilt.compose
     kapt libs.androidx.hilt.compiler
-
-    implementation "com.google.firebase:firebase-crashlytics-ktx"
-    implementation "com.google.firebase:firebase-analytics-ktx"
 
     implementation libs.icons.feather
     implementation libs.icons.tabler

@@ -15,7 +15,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 const val baseUrl = "https://archive.org/"
@@ -66,12 +65,9 @@ class ServiceModule {
             readTimeout(60, TimeUnit.SECONDS)
             connectTimeout(60, TimeUnit.SECONDS)
 
-//            addInterceptor(genericInterceptor)
+            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
-//            addInterceptor(httpLoggingInterceptor)
-            addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
+            addInterceptor(httpLoggingInterceptor)
         }
 
         return builder.build()
@@ -88,13 +84,3 @@ class ServiceModule {
             .build()
     }
 }
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-@MustBeDocumented
-annotation class ImageLoading
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-@MustBeDocumented
-annotation class Player

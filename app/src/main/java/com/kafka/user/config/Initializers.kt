@@ -1,6 +1,5 @@
 package com.kafka.user.config
 
-
 import android.app.Application
 import android.util.Log
 import com.google.firebase.FirebaseApp
@@ -13,8 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.AppCoroutineDispatchers
 import org.threeten.bp.zone.ZoneRulesProvider
-import radiography.Radiography
-import radiography.ViewStateRenderers.DefaultsIncludingPii
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -52,24 +49,5 @@ class ThreeTenBpInitializer @Inject constructor(
             AndroidThreeTen.init(application)
             ZoneRulesProvider.getAvailableZoneIds()
         }
-    }
-}
-
-class FlipperInitializer @Inject constructor() : AppInitializer {
-    override fun init(application: Application) {
-//        SoLoader.init(application, false)
-//
-//        if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(application)) {
-//            val client = AndroidFlipperClient.getInstance(application)
-//            client.addPlugin(InspectorFlipperPlugin(application, DescriptorMapping.withDefaults()))
-//            client.addPlugin(DatabasesFlipperPlugin(application))
-//            client.start()
-//        }
-    }
-}
-
-class RadiographyInitializer @Inject constructor() : AppInitializer {
-    override fun init(application: Application) {
-        Radiography.scan(viewStateRenderers = DefaultsIncludingPii)
     }
 }

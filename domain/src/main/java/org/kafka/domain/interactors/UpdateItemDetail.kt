@@ -1,6 +1,6 @@
 package org.kafka.domain.interactors
 
-import com.kafka.data.feature.item.ItemDetailRepository
+import com.kafka.data.feature.item.ItemDetailDataSource
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.LogContentEvent
 import org.kafka.base.AppCoroutineDispatchers
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class UpdateItemDetail @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
-    private val repository: ItemDetailRepository,
+    private val repository: ItemDetailDataSource,
     private val logContentEvent: LogContentEvent,
 ) : Interactor<UpdateItemDetail.Param>() {
 

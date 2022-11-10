@@ -22,12 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.kafka.data.entities.Item
 import org.kafka.common.UiMessage
 import org.kafka.common.asImmutable
-import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
@@ -36,7 +36,7 @@ import org.kafka.navigation.LocalNavigator
 
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {
-    val viewState by rememberStateWithLifecycle(stateFlow = viewModel.state)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     val navigator = LocalNavigator.current
     val openItemDetail: (String) -> Unit = {

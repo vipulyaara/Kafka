@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
 package org.kafka.navigation
 
 import androidx.lifecycle.SavedStateHandle

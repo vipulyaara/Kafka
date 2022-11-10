@@ -49,13 +49,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.common.Icons
 import org.kafka.common.extensions.AnimatedVisibility
-import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.IconButton
@@ -75,7 +75,7 @@ import ui.common.theme.theme.textSecondary
 fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     debug { "Item Detail launch" }
 
-    val state by rememberStateWithLifecycle(viewModel.state)
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = SnackbarHostState()
     val navigator = LocalNavigator.current
     val lazyListState = rememberLazyListState()

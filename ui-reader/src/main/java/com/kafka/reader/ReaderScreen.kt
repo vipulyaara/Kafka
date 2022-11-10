@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,13 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.Icons
 import org.kafka.common.extensions.elevation
-import org.kafka.common.extensions.rememberFlowStateWithLifecycle
-import org.kafka.common.extensions.rememberFlowWithLifecycle
-import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LocalNavigator
@@ -35,7 +30,7 @@ import org.kafka.navigation.Navigator
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
-    val viewState by rememberStateWithLifecycle(viewModel.state)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
     Scaffold(

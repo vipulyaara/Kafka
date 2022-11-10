@@ -11,12 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.PermissionsManager
-import com.kafka.user.RealPermissionsManager
 import com.kafka.user.config.FirebaseInitializer
-import com.kafka.user.config.FlipperInitializer
 import com.kafka.user.config.LoggerInitializer
-import com.kafka.user.config.RadiographyInitializer
 import com.kafka.user.config.ThreeTenBpInitializer
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import dagger.Binds
@@ -35,6 +31,7 @@ import org.kafka.analytics.Logger
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.notifications.NotificationManager
 import org.kafka.notifications.NotificationManagerImpl
 import javax.inject.Named
 import javax.inject.Singleton
@@ -98,10 +95,6 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideFlipperInitializer(bind: FlipperInitializer): AppInitializer
-
-    @Binds
-    @IntoSet
     abstract fun provideLoggerInitializer(bind: LoggerInitializer): AppInitializer
 
     @Binds
@@ -112,16 +105,9 @@ abstract class AppModuleBinds {
     @IntoSet
     abstract fun provideCoilAppInitializer(bind: CoilAppInitializer): AppInitializer
 
-    @Binds
-    @IntoSet
-    abstract fun provideRadiographyInitializer(bind: RadiographyInitializer): AppInitializer
-
-    @Binds
-    abstract fun providePermissionManager(bind: RealPermissionsManager): PermissionsManager
-
     @Singleton
     @Binds
-    abstract fun provideNotificationManager(bind: NotificationManagerImpl): org.kafka.notifications.NotificationManager
+    abstract fun provideNotificationManager(bind: NotificationManagerImpl): NotificationManager
 
     @Binds
     abstract fun deepLinkHandler(firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler): DynamicDeepLinkHandler

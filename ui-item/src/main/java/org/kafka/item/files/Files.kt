@@ -21,10 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
 import org.kafka.common.Icons
 import org.kafka.common.extensions.elevation
-import org.kafka.common.extensions.rememberStateWithLifecycle
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
@@ -33,7 +33,7 @@ import ui.common.theme.theme.textPrimary
 
 @Composable
 fun Files(viewModel: FilesViewModel = hiltViewModel()) {
-    val viewState by rememberStateWithLifecycle(viewModel.state)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 
     Scaffold(topBar = { TopBar() }) { padding ->

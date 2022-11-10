@@ -24,7 +24,7 @@ import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
-import org.kafka.navigation.DeepLinksNavigations
+import org.kafka.navigation.DeepLinksNavigation
 import org.kafka.navigation.Navigation
 import javax.inject.Inject
 
@@ -109,7 +109,7 @@ class ItemDetailViewModel @Inject constructor(
 
         return """
             Check out $itemTitle on Kafka
-            ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
+            ${DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
     }
 

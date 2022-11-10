@@ -1,34 +1,32 @@
 package org.kafka.common.widgets
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.ImagePainter
-import coil.compose.rememberImagePainter
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.request.ImageRequest
 
 @Composable
 fun LoadImage(
+    data: Any?,
     modifier: Modifier = Modifier,
-    data: Any? = null,
-    backgroundColor: Color = Color.Transparent,
     contentScale: ContentScale = ContentScale.Crop,
-    imagePainter: ImagePainter = rememberImagePainter(data, builder = {
-        crossfade(true)
-    }),
-    tint: Color? = null
+    tint: Color? = null,
+    onState: ((AsyncImagePainter.State) -> Unit)? = null,
 ) {
-    Image(
-        modifier = modifier
-            .fillMaxSize()
-            .background(backgroundColor),
-        painter = imagePainter,
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(data)
+            .crossfade(true)
+            .build(),
+        modifier = modifier,
         contentScale = contentScale,
         contentDescription = null,
-        colorFilter = tint?.let { ColorFilter.tint(tint) }
+        onState = onState,
+        colorFilter = tint?.let { ColorFilter.tint(it) },
     )
 }

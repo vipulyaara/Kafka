@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * @author Vipul Kumar; dated 29/11/18.
  */
-class ItemRemoteDataSource @Inject constructor(
+class ItemDataSource @Inject constructor(
     private val archiveService: ArchiveService,
     private val itemMapper: ItemMapper,
     private val dispatchers: AppCoroutineDispatchers

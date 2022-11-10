@@ -82,7 +82,7 @@ fun FullScreenMessage(
 }
 
 @Composable
-fun ErrorMessage(
+fun InlineMessage(
     snackbarError: String?,
     modifier: Modifier = Modifier,
     show: Boolean = snackbarError != null,

@@ -52,10 +52,10 @@ private fun CoverImage(item: Item) {
 }
 
 @Composable
-private fun Description(continueReading: Item) {
+private fun Description(item: Item) {
     Column {
         Text(
-            text = continueReading.title.orEmpty(),
+            text = item.title.orEmpty(),
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -63,7 +63,7 @@ private fun Description(continueReading: Item) {
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
-            text = continueReading.creator?.name.orEmpty(),
+            text = item.creator?.name.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -71,7 +71,7 @@ private fun Description(continueReading: Item) {
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = continueReading.mediaType.orEmpty(),
+            text = item.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary
         )

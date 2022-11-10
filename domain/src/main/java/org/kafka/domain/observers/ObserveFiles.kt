@@ -2,7 +2,6 @@ package org.kafka.domain.observers
 
 import com.kafka.data.dao.FileDao
 import com.kafka.data.entities.File
-import com.kafka.data.feature.item.ItemDetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import org.kafka.base.AppCoroutineDispatchers
