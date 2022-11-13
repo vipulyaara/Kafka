@@ -29,6 +29,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.shadowMaterial
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -44,7 +45,7 @@ fun ContinueReading(
                 text = "Continue Reading",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.textSecondary,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
             val list = readingList.items.subList(0, 4.coerceAtMost(readingList.items.size))
@@ -61,26 +62,26 @@ fun ContinueReading(
 @Composable
 private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit) {
     Column(modifier = Modifier
-        .padding(12.dp)
+        .padding(Dimens.Spacing12)
         .clickable { onItemClicked() }
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(Dimens.Spacing12),
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             CoverImage(continueReading)
             Description(continueReading)
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing12))
 
         Spacer(
             modifier = Modifier
                 .width(286.dp)
-                .height(12.dp)
+                .height(Dimens.Spacing12)
                 .padding(horizontal = 4.dp)
-                .shadowMaterial(12.dp, clip = false)
-                .clip(RoundedCornerShape(2.dp))
+                .shadowMaterial(Dimens.Spacing12, clip = false)
+                .clip(RoundedCornerShape(Dimens.Spacing02))
                 .background(MaterialTheme.colorScheme.onPrimary)
         )
     }
@@ -88,7 +89,7 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
 
 @Composable
 private fun CoverImage(item: Item) {
-    Box(modifier = Modifier.shadowMaterial(8.dp, shape = RoundedCornerShape(4.dp))) {
+    Box(modifier = Modifier.shadowMaterial(Dimens.Spacing08, shape = RoundedCornerShape(Dimens.Spacing04))) {
         AsyncImage(
             model = item.run { coverImage ?: coverImageResource },
             contentDescription = "Cover",
@@ -108,13 +109,13 @@ private fun Description(continueReading: Item) {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.textPrimary
         )
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
             text = continueReading.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing08))
 
         Progress()
     }
@@ -123,13 +124,13 @@ private fun Description(continueReading: Item) {
 @Composable
 private fun Progress() {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
         verticalAlignment = Alignment.CenterVertically
     ) {
         LinearProgressIndicator(
             progress = 0.2f,
             modifier = Modifier
-                .height(4.dp)
+                .height(Dimens.Spacing04)
                 .width(116.dp)
                 .clip(RoundedCornerShape(50))
         )

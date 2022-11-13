@@ -33,6 +33,7 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {
@@ -75,7 +76,7 @@ private fun FavoriteItemGrid(favoriteItems: List<Item>, openItemDetail: (String)
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(Dimens.Spacing08)
         ) {
             items(favoriteItems, key = { it.itemId }) {
                 LibraryItem(item = it, openItemDetail = openItemDetail)
@@ -97,7 +98,7 @@ private fun DownloadedItemGrid(downloadedItems: List<Item>, openItemDetail: (Str
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(Dimens.Spacing08)
         ) {
             items(downloadedItems, key = { it.itemId }) {
                 LibraryItem(item = it, openItemDetail = openItemDetail)
@@ -112,8 +113,8 @@ private fun LibraryItem(item: Item, openItemDetail: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { openItemDetail(item.itemId) }
-            .padding(4.dp)
-            .shadowMaterial(12.dp, RoundedCornerShape(4.dp))
+            .padding(Dimens.Spacing04)
+            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
             .background(MaterialTheme.colorScheme.surface)
     ) {
         LoadImage(
@@ -125,7 +126,7 @@ private fun LibraryItem(item: Item, openItemDetail: (String) -> Unit) {
 
         Column(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(Dimens.Spacing12)
                 .height(72.dp)
         ) {
             Text(
@@ -134,7 +135,7 @@ private fun LibraryItem(item: Item, openItemDetail: (String) -> Unit) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(Dimens.Spacing02))
             Text(
                 text = item.creator?.name.orEmpty(),
                 style = MaterialTheme.typography.labelSmall,

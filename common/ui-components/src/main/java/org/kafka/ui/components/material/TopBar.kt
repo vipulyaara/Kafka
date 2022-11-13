@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun TopBar(
@@ -41,7 +42,7 @@ fun TopBar(
             Spacer(modifier = Modifier.weight(1f, false))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing02),
             ) {
                 actions()
             }

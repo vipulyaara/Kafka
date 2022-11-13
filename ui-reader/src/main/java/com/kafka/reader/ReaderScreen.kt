@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.Icons
@@ -26,6 +25,7 @@ import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import ui.common.theme.theme.Dimens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -59,7 +59,7 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
 fun TextReaderView(text: String) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(Dimens.Spacing16),
             text = text,
             textAlign = TextAlign.Justify,
             style = MaterialTheme.typography.displayMedium
@@ -76,7 +76,7 @@ private fun TopBar(
         navigationIcon = {
             IconButton(
                 onClick = { navigator.back() },
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(Dimens.Spacing08)
             ) {
                 IconResource(imageVector = Icons.Back)
             }

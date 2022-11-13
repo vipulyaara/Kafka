@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
@@ -57,10 +58,8 @@ fun InfiniteTransition.BouncingDot(
     Box(
         modifier
             .padding(3.dp)
-            .size(8.dp)
-            .graphicsLayer {
-                translationY = bounce
-            }
+            .size(Dimens.Spacing08)
+            .graphicsLayer { translationY = bounce }
             .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
     )
 }

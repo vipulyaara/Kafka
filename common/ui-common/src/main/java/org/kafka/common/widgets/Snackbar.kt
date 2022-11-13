@@ -13,7 +13,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun RekhtaSnackbarHost(
@@ -35,7 +35,7 @@ fun Snackbar(
     snackbar: @Composable (SnackbarData) -> Unit = {
         Snackbar(
             snackbarData = it,
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(Dimens.Spacing04),
             containerColor = MaterialTheme.colorScheme.primary
         )
     }

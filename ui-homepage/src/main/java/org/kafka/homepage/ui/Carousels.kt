@@ -13,6 +13,7 @@ import com.google.accompanist.pager.rememberPagerState
 import org.kafka.common.banners
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.LoadImage
+import ui.common.theme.theme.Dimens
 
 private val images = banners.subList(0, 4)
 
@@ -28,10 +29,10 @@ internal fun Carousels() {
         LoadImage(
             data = images[it],
             modifier = Modifier
-                .padding(2.dp)
+                .padding(Dimens.Spacing02)
                 .heightIn(124.dp, 188.dp)
                 .fillMaxWidth()
-                .shadowMaterial(elevation = 12.dp, shape = RoundedCornerShape(8.dp))
+                .shadowMaterial(elevation = Dimens.Spacing12, shape = RoundedCornerShape(Dimens.Spacing08))
         )
     }
 }

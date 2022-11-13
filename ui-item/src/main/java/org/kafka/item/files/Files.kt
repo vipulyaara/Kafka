@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
@@ -29,6 +28,7 @@ import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 
 @Composable
@@ -38,11 +38,10 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 
     Scaffold(topBar = { TopBar() }) { padding ->
         LazyColumn(modifier = Modifier, contentPadding = padding) {
-            items(viewState.files, key = { it.fileId }) {
+            items(viewState.files, key = { it.fileId }) { file ->
                 File(
-                    it = it,
-                    isLoading = viewState.isLoading,
-                    startDownload = { viewModel.downloadFile(it.fileId) },
+                    it = file,
+                    startDownload = { viewModel.downloadFile(file.fileId) },
                     openReader = {
                         navigator.navigate(Reader.createRoute(viewModel.downloadState.value.toString()))
                     }
@@ -53,13 +52,13 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun File(it: File, isLoading: Boolean, startDownload: () -> Unit, openReader: () -> Unit) {
+private fun File(it: File, startDownload: () -> Unit, openReader: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { openReader() }
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+            .padding(Dimens.Spacing16),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {

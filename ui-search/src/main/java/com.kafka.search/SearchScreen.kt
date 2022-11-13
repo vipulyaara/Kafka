@@ -31,6 +31,7 @@ import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.progress.InfiniteProgressBar
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textSecondary
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -100,7 +101,7 @@ private fun SearchResults(results: List<Item>, openContentDetail: (String) -> Un
 @Composable
 fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(start = 12.dp, end = 24.dp, bottom = 12.dp),
+        modifier = modifier.padding(start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12),
         text = text,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.textSecondary

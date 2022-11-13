@@ -7,9 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import org.kafka.item.Item
+import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun RelatedContent(items: List<Item>, openContentDetail: (String) -> Unit) {
@@ -18,7 +18,7 @@ internal fun RelatedContent(items: List<Item>, openContentDetail: (String) -> Un
             text = "More by author",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(Dimens.Spacing12)
         )
 
         items.forEach {

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.kafka.common.Icons
 import org.kafka.common.widgets.IconResource
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.iconPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -41,7 +42,7 @@ fun SearchWidget(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
-    Box(modifier = Modifier.padding(horizontal = 12.dp)) {
+    Box(modifier = Modifier.padding(horizontal = Dimens.Spacing12)) {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth(),
@@ -77,7 +78,7 @@ fun SearchWidget(
                 cursorColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onBackground
             ),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(Dimens.Spacing08)
         )
     }
 }
@@ -92,7 +93,7 @@ private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
         IconResource(
             modifier = Modifier
                 .clickable(onClick = { onTextCleared() })
-                .padding(12.dp)
+                .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.X,
             tint = MaterialTheme.colorScheme.iconPrimary
@@ -110,7 +111,7 @@ private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
         IconResource(
             modifier = Modifier
                 .clickable(onClick = { onTextCleared() })
-                .padding(12.dp)
+                .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.Mic,
             tint = MaterialTheme.colorScheme.iconPrimary

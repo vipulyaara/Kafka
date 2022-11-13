@@ -68,6 +68,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -187,7 +188,7 @@ private fun LazyListScope.relatedContent(
                 text = "More by author",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(Dimens.Spacing12)
             )
         }
         items(relatedItems, key = { it.itemId }) {
@@ -234,7 +235,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
             data = itemDetail.coverImage,
             modifier = Modifier
                 .size(196.dp, 248.dp)
-                .shadowMaterial(12.dp, RoundedCornerShape(4.dp))
+                .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
         )
         Spacer(Modifier.height(24.dp))
 
@@ -245,7 +246,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(Dimens.Spacing04))
 
         Text(
             text = itemDetail.creator.orEmpty(),
@@ -288,7 +289,7 @@ private fun TopBar(
             IconButton(
                 onClick = { navigator.back() },
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(Dimens.Spacing08)
                     .clip(CircleShape)
                     .background(containerColor)
             ) {

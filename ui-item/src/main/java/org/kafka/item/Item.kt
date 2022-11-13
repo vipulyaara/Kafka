@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import org.kafka.common.shadowMaterial
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -31,8 +32,8 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
         modifier = modifier
             .fillMaxWidth()
             .clickable { openItemDetail(item.itemId) }
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(Dimens.Spacing16),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
         CoverImage(item)
         Description(item)
@@ -41,11 +42,18 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
 
 @Composable
 private fun CoverImage(item: Item) {
-    Box(modifier = Modifier.shadowMaterial(8.dp, shape = RoundedCornerShape(4.dp))) {
+    Box(
+        modifier = Modifier.shadowMaterial(
+            elevation = Dimens.Spacing08,
+            shape = RoundedCornerShape(Dimens.Spacing04)
+        )
+    ) {
         AsyncImage(
             model = item.run { coverImage ?: coverImageResource },
             contentDescription = "Cover",
-            modifier = Modifier.size(72.dp, 84.dp).background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier
+                .size(72.dp, 84.dp)
+                .background(MaterialTheme.colorScheme.surface),
             contentScale = ContentScale.Crop
         )
     }
@@ -61,7 +69,7 @@ private fun Description(item: Item) {
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.textPrimary
         )
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
             text = item.creator?.name.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
@@ -69,7 +77,7 @@ private fun Description(item: Item) {
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.textSecondary
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing04))
         Text(
             text = item.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,

@@ -26,6 +26,7 @@ import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.ui.components.material.FloatingButton
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.iconPrimary
 
 @Composable
@@ -40,7 +41,7 @@ fun Actions(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 12.dp),
+            .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -85,7 +86,7 @@ private fun FavoriteIcon(
     Box(
         modifier = modifier
             .size(50.dp)
-            .shadowMaterial(12.dp, CircleShape)
+            .shadowMaterial(Dimens.Spacing12, CircleShape)
             .background(background)
             .clickable { onClicked() }
     ) {
@@ -104,7 +105,7 @@ private fun Icon(
     Box(
         modifier = modifier
             .size(50.dp)
-            .shadowMaterial(12.dp, CircleShape)
+            .shadowMaterial(Dimens.Spacing12, CircleShape)
             .background(MaterialTheme.colorScheme.onPrimary)
             .clickable { onClicked() }
     ) {

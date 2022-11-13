@@ -10,18 +10,19 @@ import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.kafka.analytics.CrashLogger
 import org.kafka.base.AppCoroutineDispatchers
 import org.threeten.bp.zone.ZoneRulesProvider
 import timber.log.Timber
 import javax.inject.Inject
 
-class LoggerInitializer @Inject constructor() : AppInitializer {
+class LoggerInitializer @Inject constructor(private val crashLogger: CrashLogger) : AppInitializer {
     override fun init(application: Application) {
         Timber.plant(Timber.DebugTree())
         Timber.plant(object : Timber.Tree() {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                if (priority == Log.ASSERT) {
-                    t?.let { throw it }
+                if (priority == Log.ERROR) {
+                    crashLogger.logFatal(t ?: Exception(message))
                 }
             }
         })

@@ -32,7 +32,7 @@ fun RecentSearches(
         tonalElevation = 1.dp,
         shape = RoundedCornerShape(0.dp),
         modifier = Modifier
-            .padding(vertical = 20.dp)
+            .padding(vertical = Dimens.Spacing20)
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
             .animateContentSize()
     ) {
@@ -75,7 +75,7 @@ private fun RecentSearchItem(
             modifier = Modifier
                 .clickable(onClick = { onRemoveSearch(searchTerm) })
                 .padding(10.dp)
-                .size(18.dp),
+                .size(24.dp),
             imageVector = Icons.XCircle
         )
     }

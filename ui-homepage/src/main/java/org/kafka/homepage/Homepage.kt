@@ -6,14 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
@@ -24,11 +23,11 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
-import org.kafka.homepage.ui.FeaturedItems
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.material.TopBar
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
@@ -79,23 +78,26 @@ private fun HomepageFeedItems(
         item { Carousels() }
 
         item {
-            FeaturedItems(
-                readingList = homepage.queryItems.asImmutable(),
-                modifier = Modifier.padding(vertical = 12.dp),
-                openItemDetail = openItemDetail
-            )
-        }
-
-        item {
             ContinueReading(
                 readingList = homepage.recentItems.asImmutable(),
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier.padding(vertical = Dimens.Spacing20),
                 openItemDetail = openItemDetail
             )
         }
 
-        items(homepage.queryItems, key = { it.itemId }) {
-            Item(item = it, openItemDetail = openItemDetail)
+        itemsIndexed(
+            items = homepage.queryItems,
+            key = { _, item -> item.itemId }
+        ) { index, item ->
+//            if (index == 5) {
+//                FeaturedItems(
+//                    readingList = homepage.queryItems.asImmutable(),
+//                    modifier = Modifier,
+//                    openItemDetail = openItemDetail
+//                )
+//            }
+
+            Item(item = item, openItemDetail = openItemDetail)
         }
     }
 }

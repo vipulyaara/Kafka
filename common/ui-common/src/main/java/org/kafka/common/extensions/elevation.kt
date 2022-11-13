@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.unit.dp
+import ui.common.theme.theme.Dimens
 
 val ScrollState.elevation
     get() = derivedStateOf {
@@ -16,7 +17,7 @@ val LazyListState.elevation
         if (firstVisibleItemIndex == 0) {
             minOf(firstVisibleItemScrollOffset.toFloat().dp, MaxElevation.dp)
         } else {
-            20.dp
+            Dimens.Spacing20
         }
     }
 
