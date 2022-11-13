@@ -35,10 +35,8 @@ fun MainScreen(analytics: Logger) {
     }
 
     NavigatorHost {
-//        PlaybackHost {
         MainScreen(navController)
     }
-//    }
 }
 
 @Composable
@@ -46,14 +44,14 @@ private fun MainScreen(navController: NavHostController) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .recomposeHighlighter()
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .recomposeHighlighter(),
         bottomBar = { RekhtaBottomBar(navController) }
-    ) {
+    ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(bottom = padding.calculateBottomPadding())
         ) {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController.navigatorProvider += bottomSheetNavigator

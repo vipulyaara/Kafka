@@ -8,16 +8,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 const val baseUrl = "https://archive.org/"
@@ -68,7 +65,7 @@ class ServiceModule {
             readTimeout(60, TimeUnit.SECONDS)
             connectTimeout(60, TimeUnit.SECONDS)
 
-//            addInterceptor(genericInterceptor)
+            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
             addInterceptor(httpLoggingInterceptor)
         }
@@ -87,8 +84,3 @@ class ServiceModule {
             .build()
     }
 }
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-@MustBeDocumented
-annotation class ImageLoading

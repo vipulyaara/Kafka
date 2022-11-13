@@ -8,7 +8,6 @@ package com.kafka.data.model
 const val _mediaType = "mediaType"
 const val _mediaTypeText = "texts"
 const val _mediaTypeAudio = "audio"
-const val _librivoxaudio = "librivoxaudio"
 const val _identifier = "identifier"
 const val _collection = "collection"
 

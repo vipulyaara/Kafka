@@ -9,5 +9,4 @@ data class RecentItem(
     val timeStamp: Long
 ) : BaseEntity
 
-
 data class ItemWithRecentItem(val item: Item, val recentItem: RecentItem)

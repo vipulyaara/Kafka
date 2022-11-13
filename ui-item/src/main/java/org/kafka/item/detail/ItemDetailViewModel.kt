@@ -6,10 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
-import org.kafka.navigation.DeepLinksNavigations
-import org.kafka.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -19,23 +18,24 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.common.common.collect
-import org.kafka.domain.interactors.*
+import org.kafka.domain.interactors.ToggleFavorite
+import org.kafka.domain.interactors.UpdateItemDetail
+import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
+import org.kafka.navigation.DeepLinksNavigation
+import org.kafka.navigation.Navigation
 import javax.inject.Inject
 
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(
     private val updateItemDetail: UpdateItemDetail,
-    observeItemDetail: ObserveItemDetail,
+    private val observeItemDetail: ObserveItemDetail,
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
-    private val startFileDownload: StartFileDownload,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val toggleFavorite: ToggleFavorite,
-    private val addRecentItem: AddRecentItem,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
@@ -49,7 +49,7 @@ class ItemDetailViewModel @Inject constructor(
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
-        debug { "item detail results $isLoading" }
+        debug { "item detail results $isLoading $message" }
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
@@ -63,6 +63,15 @@ class ItemDetailViewModel @Inject constructor(
     )
 
     init {
+        refresh()
+    }
+
+    fun retry() {
+        clearMessage()
+        refresh()
+    }
+
+    private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, uiMessageManager)
@@ -78,13 +87,7 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            toggleFavorite(ToggleFavorite.Params(itemId)).collect { }
-        }
-    }
-
-    fun addRecentItem() {
-        viewModelScope.launch {
-            addRecentItem(AddRecentItem.Params(state.value.itemDetail!!.itemId)).collect { }
+            toggleFavorite(ToggleFavorite.Params(itemId)).collect()
         }
     }
 
@@ -95,7 +98,7 @@ class ItemDetailViewModel @Inject constructor(
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
                 viewModelScope.launch {
-                    updateItems(UpdateItems.Params(it)).collect { }
+                    updateItems(UpdateItems.Params(it)).collect()
                 }
             }
         }
@@ -105,15 +108,14 @@ class ItemDetailViewModel @Inject constructor(
         val itemTitle = state.value.itemDetail!!.title
 
         return """
-            $itemTitle
-            I really liked this book on the Kafka app. I think you will enjoy it.
-            
-            ${DeepLinksNavigations.findUri(Navigation.ItemDetail(itemId))}
+            Check out $itemTitle on Kafka
+            ${DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
     }
 
-    suspend fun download(readerUrl: String) {
-        addRecentItem()
-        startFileDownload(readerUrl).collectStatus(loadingState, uiMessageManager)
+    private fun clearMessage() {
+        viewModelScope.launch {
+            state.value.message?.id?.let { uiMessageManager.clearMessage(it) }
+        }
     }
 }

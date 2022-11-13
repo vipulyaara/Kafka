@@ -9,7 +9,6 @@ buildscript {
         maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
         maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
         maven { url "https://customers.pspdfkit.com/maven/" }
-
     }
 
     dependencies {
@@ -95,11 +94,13 @@ subprojects {
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.unit.ExperimentalUnitApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+            freeCompilerArgs += "-Xopt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi"
             freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
             freeCompilerArgs += "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api"
             freeCompilerArgs += "-Xopt-in=kotlin.annotation.AnnotationTarget.ExperimentalTime"
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            freeCompilerArgs += "-Xopt-in=androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi"
 
             // Set JVM target to 1.8
             jvmTarget = "1.8"

@@ -1,8 +1,16 @@
 package com.kafka.search
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.kafka.common.Icons
 import org.kafka.common.widgets.IconResource
+import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.iconPrimary
 import ui.common.theme.theme.textSecondary
 
@@ -33,7 +42,7 @@ fun SearchWidget(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
-    Box(modifier = Modifier.padding(horizontal = 12.dp)) {
+    Box(modifier = Modifier.padding(horizontal = Dimens.Spacing12)) {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth(),
@@ -69,7 +78,7 @@ fun SearchWidget(
                 cursorColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onBackground
             ),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(Dimens.Spacing08)
         )
     }
 }
@@ -84,7 +93,7 @@ private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
         IconResource(
             modifier = Modifier
                 .clickable(onClick = { onTextCleared() })
-                .padding(12.dp)
+                .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.X,
             tint = MaterialTheme.colorScheme.iconPrimary
@@ -102,7 +111,7 @@ private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
         IconResource(
             modifier = Modifier
                 .clickable(onClick = { onTextCleared() })
-                .padding(12.dp)
+                .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.Mic,
             tint = MaterialTheme.colorScheme.iconPrimary

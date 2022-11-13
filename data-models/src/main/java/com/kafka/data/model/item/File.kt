@@ -30,7 +30,7 @@ data class File(
     @SerialName("mtime")
     val mtime: String? = null,
     @SerialName("name")
-    val name: String? = null,
+    val name: String,
     @SerialName("original")
     val original: String? = null,
     @SerialName("rotation")

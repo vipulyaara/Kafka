@@ -20,7 +20,7 @@ include ':navigation'
 include ':notifications'
 include ':navigation'
 include ':analytics'
-//include ':player'
+include ':core-playback'
 include ':ui-favorites'
 include ':ui-homepage'
 include ':ui-search'
@@ -32,8 +32,6 @@ include ':webview'
 include ':common:ui-common'
 include ':common:ui-common-theme'
 include ':common:ui-components'
-include ':common:ui-common-compose'
-
 
 enableFeaturePreview("VERSION_CATALOGS")
 

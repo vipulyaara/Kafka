@@ -13,7 +13,7 @@ sealed class Navigation {
     object Search : Navigation()
 }
 
-object DeepLinksNavigations {
+object DeepLinksNavigation {
     fun findUri(navigation: Navigation) = when (navigation) {
         Navigation.Homepage -> {
             "app.kafka://homepage".toUri()

@@ -9,8 +9,6 @@ data class ItemDetailResponse(
     val created: Int,
     @SerialName("d1")
     val d1: String,
-    @SerialName("d2")
-    val d2: String,
     @SerialName("dir")
     val dir: String,
     @SerialName("files")

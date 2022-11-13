@@ -1,6 +1,13 @@
 package org.kafka.domain.interactors.query
 
-import com.kafka.data.model.*
+import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.QueryItem
+import com.kafka.data.model._creator
+import com.kafka.data.model._creator_remote
+import com.kafka.data.model._mediaType
+import com.kafka.data.model._mediaTypeAudio
+import com.kafka.data.model._mediaTypeText
+import com.kafka.data.model.joinerAnd
 import org.kafka.base.debug
 import javax.inject.Inject
 

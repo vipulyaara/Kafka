@@ -1,13 +1,15 @@
 package com.kafka.data.entities
 
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-const val _mediaTypeText = "texts"
-const val _mediaTypeAudio = "audio"
+const val mediaTypeText = "texts"
+const val mediaTypeAudio = "audio"
 
-@Serializable
+@Entity
 data class File(
-    val id: String,
+    @PrimaryKey val fileId: String,
+    val itemId: String,
     val size: String?,
     val title: String?,
     val extension: String?,
@@ -15,12 +17,16 @@ data class File(
     val time: Long,
     val format: String?,
     val playbackUrl: String?,
-    val readerUrl: String?
-)
+    val readerUrl: String?,
+    val localUri: String? = null
+): BaseEntity {
+    companion object {
+        val supportedFiles = listOf("pdf", "mp3", "epub", "wav", "txt")
+    }
+}
 
-fun ItemDetail?.isText() = this?.mediaType == _mediaTypeText
-fun ItemDetail?.isAudio() = this?.mediaType == _mediaTypeAudio
-
+fun ItemDetail?.isText() = this?.mediaType == mediaTypeText
+fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
 fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null
 
@@ -36,5 +42,7 @@ fun File.isCoverImage() = format?.contains("JPEG", true) ?: false ||
         format?.endsWith("Tile", true) ?: false
 
 fun String?.isPdf() = this?.contains("pdf", true) ?: false
+
+fun String?.isText() = this?.contains("txt", true) ?: false
 
 fun String?.isMp3() = this?.contains("mp3", true) ?: false

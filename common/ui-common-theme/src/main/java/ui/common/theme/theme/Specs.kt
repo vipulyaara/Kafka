@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.dp
 import javax.annotation.concurrent.Immutable
 
 val ContentPaddingLarge = 28.dp
-val ContentPadding = 16.dp
+val ContentPadding = Dimens.Spacing16
 val ContentPaddingSmall = 8.dp
 val ContentPaddingTiny = 4.dp
 

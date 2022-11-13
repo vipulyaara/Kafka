@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
 package org.kafka.common
 
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +6,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.util.*
+import java.util.UUID
 
 data class UiMessage(
+    val title: String = "Something went wrong",
     val message: String,
     val id: Long = UUID.randomUUID().mostSignificantBits,
 )
@@ -24,6 +21,9 @@ fun UiMessage(
     message = t.message ?: "Error occurred: $t",
     id = id,
 )
+
+fun String?.asUiMessage() =
+    this?.let { UiMessage(message = it) } ?: UiMessage(message = "Something went wrong")
 
 class UiMessageManager {
     private val mutex = Mutex()

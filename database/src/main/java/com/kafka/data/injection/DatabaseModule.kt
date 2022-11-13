@@ -66,7 +66,10 @@ class DatabaseDaoModule {
     fun provideQueueDao(db: KafkaRoomDatabase) = db.queueDao()
 
     @Provides
-    fun providePoetEntryDao(db: KafkaRoomDatabase) = db.itemDetailDao()
+    fun provideItemDetailDao(db: KafkaRoomDatabase) = db.itemDetailDao()
+
+    @Provides
+    fun provideFileDao(db: KafkaRoomDatabase) = db.fileDao()
 
     @Provides
     fun provideContentDao(db: KafkaRoomDatabase) = db.languageDao()

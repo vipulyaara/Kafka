@@ -13,15 +13,8 @@ class KafkaApplication : Application() {
     @Inject
     lateinit var initializers: AppInitializers
 
-//    @Inject
-//    lateinit var readerInitializer: ReaderInitializer
-
     override fun onCreate() {
         super.onCreate()
         initializers.init(this)
-
-//        GlobalScope.launch {
-//            readerInitializer.initialize(this@KafkaApplication)
-//        }
     }
 }

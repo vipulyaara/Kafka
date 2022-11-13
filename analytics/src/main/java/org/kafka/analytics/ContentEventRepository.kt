@@ -17,4 +17,9 @@ class ContentEventRepository @Inject constructor(
         "item_id" to itemId,
         "source" to source
     )
+
+    fun playAudio(contentId: String, contentTitle: String) = mapOf(
+        "content_id" to contentId,
+        "content_title" to contentTitle
+    )
 }

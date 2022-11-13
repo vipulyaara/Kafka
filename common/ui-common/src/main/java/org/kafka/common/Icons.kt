@@ -10,13 +10,44 @@ import androidx.compose.ui.unit.LayoutDirection
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
+import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
 import compose.icons.feathericons.Send
 import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Video
 import compose.icons.fontawesomeicons.solid.VolumeUp
-import compose.icons.tablericons.*
+import compose.icons.tablericons.ArrowLeft
+import compose.icons.tablericons.ArrowRight
+import compose.icons.tablericons.Book
+import compose.icons.tablericons.Bookmark
+import compose.icons.tablericons.BrandFirefox
+import compose.icons.tablericons.ChevronLeft
+import compose.icons.tablericons.ChevronRight
+import compose.icons.tablericons.ChevronUpLeft
+import compose.icons.tablericons.CircleX
+import compose.icons.tablericons.ClipboardX
+import compose.icons.tablericons.Download
+import compose.icons.tablericons.Eye
+import compose.icons.tablericons.EyeOff
+import compose.icons.tablericons.Eyeglass
+import compose.icons.tablericons.Heart
+import compose.icons.tablericons.Home
+import compose.icons.tablericons.Home2
+import compose.icons.tablericons.Language
+import compose.icons.tablericons.Message
+import compose.icons.tablericons.Microphone
+import compose.icons.tablericons.PlayerPause
+import compose.icons.tablericons.PlayerPlay
+import compose.icons.tablericons.Repeat
+import compose.icons.tablericons.Search
+import compose.icons.tablericons.Share
+import compose.icons.tablericons.Sun
+import compose.icons.tablericons.ThumbDown
+import compose.icons.tablericons.ThumbUp
+import compose.icons.tablericons.UserPlus
+import compose.icons.tablericons.World
+import compose.icons.tablericons.X
 
 object Icons {
     val Home: ImageVector
@@ -33,6 +64,8 @@ object Icons {
         get() = TablerIcons.Book
     val Profile: ImageVector
         get() = FeatherIcons.User
+    val Files: ImageVector
+        get() = FeatherIcons.File
     val ProfileActive: ImageVector
         get() = FeatherIcons.User
     val GoToTop: ImageVector

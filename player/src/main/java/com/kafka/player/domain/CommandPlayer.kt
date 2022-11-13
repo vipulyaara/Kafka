@@ -1,22 +1,19 @@
 package com.kafka.player.domain
 
-import com.kafka.data.model.AppCoroutineDispatchers
-import com.kafka.data.model.Interactor
-import com.kafka.data.extensions.debug
 import com.kafka.data.dao.QueueDao
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.player.playback.player.Player
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.plus
+import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.debug
+import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class CommandPlayer @Inject constructor(
     dispatchers: AppCoroutineDispatchers,
-    @ProcessLifetime private val processScope: CoroutineScope,
     private val queueDao: QueueDao,
     private val player: Player
 ) : Interactor<PlayerCommand>() {
-    override val scope: CoroutineScope = processScope + dispatchers.io
 
     override suspend fun doWork(params: PlayerCommand) {
         debug { "player command invoked for $params" }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 object AppBarAlphas {
     @Composable
     fun translucentBarAlpha(): Float = when {
-        isSystemInDarkTheme() -> 0.95f
-        else -> 0.97f
+        isSystemInDarkTheme() -> 0.65f
+        else -> 0.56f
     }
 }

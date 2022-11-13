@@ -17,7 +17,11 @@ import org.kafka.favorites.FavoriteScreen
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.files.Files
-import org.kafka.navigation.*
+import org.kafka.navigation.LeafScreen
+import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.NavigationEvent
+import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.defaultEnterTransition
 import org.kafka.ui.components.defaultExitTransition
 import org.kafka.ui.components.defaultPopEnterTransition
@@ -169,7 +173,7 @@ private fun NavGraphBuilder.addReader(root: Screen) {
     composable(
         route = LeafScreen.Reader.createRoute(root),
         arguments = listOf(
-            navArgument("fileUrl") { type = NavType.StringType }
+            navArgument("itemId") { type = NavType.StringType }
         )
     ) {
         ReaderScreen()

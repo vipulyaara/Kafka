@@ -11,7 +11,7 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile_root")
 }
 
-sealed class LeafScreen(val route: String) {
+sealed class LeafScreen(private val route: String) {
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     object Home : LeafScreen("home")
@@ -34,7 +34,7 @@ sealed class LeafScreen(val route: String) {
         fun createRoute(itemId: String): String = "files/$itemId"
     }
 
-    object Reader : LeafScreen("reader/{fileUrl}") {
-        fun createRoute(arg: String): String = "reader/${arg.encodeUrl()}"
+    object Reader : LeafScreen("reader/{itemId}") {
+        fun createRoute(arg: String): String = "reader/$arg"
     }
 }

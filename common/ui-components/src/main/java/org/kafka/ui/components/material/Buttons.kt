@@ -12,26 +12,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.kafka.ui_common_compose.shadowMaterial
-import ui.common.theme.theme.textPrimary
+import org.kafka.common.shadowMaterial
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun FloatingButton(
     text: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.background,
+    containerColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClicked: () -> Unit
 ) {
     Box(
         modifier = modifier
-            .shadowMaterial(12.dp, RoundedCornerShape(2.dp))
+            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing02))
             .background(containerColor)
             .clickable { onClicked() }
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.textPrimary,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 14.dp)
                 .align(Alignment.Center)
