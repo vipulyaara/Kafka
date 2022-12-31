@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,18 +25,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.shadowMaterial
+import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
 
 @Composable
-fun ContinueReading(
+internal fun ContinueReading(
     readingList: ImmutableList<ItemWithRecentItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
@@ -42,16 +47,14 @@ fun ContinueReading(
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
-                text = "Continue Reading",
+                text = stringResource(id = R.string.continue_reading),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.textSecondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
-            val list = readingList.items.subList(0, 4.coerceAtMost(readingList.items.size))
-
             LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
-                items(list, key = { it.item.itemId }) {
+                items(readingList.items, key = { it.item.itemId }) {
                     ContinueReadingItem(it.item) { openItemDetail(it.item.itemId) }
                 }
             }
@@ -64,20 +67,21 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
     Column(modifier = Modifier
         .padding(Dimens.Spacing12)
         .clickable { onItemClicked() }
+        .widthIn(100.dp, 286.dp)
     ) {
         Row(
             modifier = Modifier.padding(Dimens.Spacing12),
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             CoverImage(continueReading)
-            Description(continueReading)
+            Description(continueReading, Modifier.width(286.dp))
         }
 
         Spacer(modifier = Modifier.height(Dimens.Spacing12))
 
         Spacer(
             modifier = Modifier
-                .width(286.dp)
+                .fillMaxWidth()
                 .height(Dimens.Spacing12)
                 .padding(horizontal = 4.dp)
                 .shadowMaterial(Dimens.Spacing12, clip = false)
@@ -89,10 +93,15 @@ private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit
 
 @Composable
 private fun CoverImage(item: Item) {
-    Box(modifier = Modifier.shadowMaterial(Dimens.Spacing08, shape = RoundedCornerShape(Dimens.Spacing04))) {
+    Box(
+        modifier = Modifier.shadowMaterial(
+            elevation = Dimens.Spacing08,
+            shape = RoundedCornerShape(Dimens.Spacing04)
+        )
+    ) {
         AsyncImage(
             model = item.run { coverImage ?: coverImageResource },
-            contentDescription = "Cover",
+            contentDescription = stringResource(id = R.string.cd_cover_image),
             modifier = Modifier
                 .size(64.dp, 76.dp)
                 .background(MaterialTheme.colorScheme.surface),
@@ -102,12 +111,14 @@ private fun CoverImage(item: Item) {
 }
 
 @Composable
-private fun Description(continueReading: Item) {
-    Column {
+private fun Description(continueReading: Item, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         Text(
             text = continueReading.title.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.textPrimary
+            color = MaterialTheme.colorScheme.textPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
@@ -141,3 +152,4 @@ private fun Progress() {
         )
     }
 }
+

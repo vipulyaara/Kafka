@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import org.kafka.common.banners
@@ -21,18 +21,27 @@ private val images = banners.subList(0, 4)
 internal fun Carousels() {
     val pagerState = rememberPagerState()
     HorizontalPager(
-        modifier = Modifier.padding(vertical = 4.dp),
+        modifier = Modifier.padding(vertical = Dimens.Spacing04),
         count = images.size,
         state = pagerState,
-        contentPadding = PaddingValues(end = 24.dp)
+        contentPadding = PaddingValues(horizontal = Dimens.Spacing12)
     ) {
         LoadImage(
             data = images[it],
             modifier = Modifier
                 .padding(Dimens.Spacing02)
-                .heightIn(124.dp, 188.dp)
+                .heightIn(Dimens.CarouselMinHeight, Dimens.CarouselMaxHeight)
                 .fillMaxWidth()
-                .shadowMaterial(elevation = Dimens.Spacing12, shape = RoundedCornerShape(Dimens.Spacing08))
+                .shadowMaterial(
+                    elevation = Dimens.Spacing12,
+                    shape = RoundedCornerShape(Dimens.Spacing08)
+                )
         )
     }
+}
+
+@Preview
+@Composable
+private fun CarouselsPreview() {
+    Carousels()
 }

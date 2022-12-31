@@ -30,17 +30,6 @@ fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
 fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null
 
-//fun File.formattedDuration() = Duration.ofMillis(time).formattedDuration()
-
-fun List<File>.filterMp3() = this.filter { it.isMp3() }
-
-fun File.isPdf() = format?.isPdf() ?: false
-
-fun File.isMp3() = format?.isMp3() ?: false
-
-fun File.isCoverImage() = format?.contains("JPEG", true) ?: false ||
-        format?.endsWith("Tile", true) ?: false
-
 fun String?.isPdf() = this?.contains("pdf", true) ?: false
 
 fun String?.isText() = this?.contains("txt", true) ?: false

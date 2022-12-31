@@ -11,8 +11,3 @@ annotation class ProcessLifetime
 @Qualifier
 @MustBeDocumented
 annotation class ImageLoading
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-@MustBeDocumented
-annotation class Player

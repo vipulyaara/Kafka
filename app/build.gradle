@@ -102,9 +102,10 @@ dependencies {
     implementation project(':ui-item')
     implementation project(':ui-reader')
     implementation project(':ui-favorites')
-    implementation project(':ui-player')
     implementation project(':ui-artist')
     implementation project(':webview')
+    implementation project(':playback-core')
+    implementation project(':playback-ui')
 
     implementation "androidx.metrics:metrics-performance:1.0.0-alpha03"
 

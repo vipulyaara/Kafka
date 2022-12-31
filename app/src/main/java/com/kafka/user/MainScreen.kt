@@ -15,6 +15,8 @@ import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import com.sarahang.playback.ui.audio.AudioActionHost
+import com.sarahang.playback.ui.audio.PlaybackHost
 import kotlinx.coroutines.flow.collectLatest
 import org.kafka.analytics.Logger
 import org.kafka.common.logging.recomposeHighlighter
@@ -35,7 +37,11 @@ fun MainScreen(analytics: Logger) {
     }
 
     NavigatorHost {
-        MainScreen(navController)
+        PlaybackHost {
+            AudioActionHost {
+                MainScreen(navController)
+            }
+        }
     }
 }
 
