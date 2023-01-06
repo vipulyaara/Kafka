@@ -15,9 +15,10 @@ kapt {
 }
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
+        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
         multiDexEnabled true
         applicationId Publishing.applicationId
         minSdkVersion Publishing.minSdk
@@ -26,7 +27,6 @@ android {
         versionName Publishing.publishVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument 'androidx.benchmark.suppressErrors', 'DEBUGGABLE,NOT-PROFILEABLE'
     }
 
     compileOptions {
@@ -34,16 +34,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    lintOptions {
-        // Disable lintVital. Not needed since lint is run on CI
-        checkReleaseBuilds false
-        // Ignore any tests
-        ignoreTestSources true
-        // Make the build fail on any lint errors
-        abortOnError true
-        // Allow lint to check dependencies
-        checkDependencies true
-    }
 
     buildFeatures {
         compose true
@@ -52,17 +42,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
-
     packagingOptions {
-        // Exclude androidx version files
-        exclude 'META-INF/*.version'
-        // Exclude consumer proguard files
-        exclude 'META-INF/proguard/*'
-        // Exclude the Firebase/Fabric/other random properties files
-        exclude '/*.properties'
-        exclude 'fabric/*.properties'
-        exclude 'META-INF/*.properties'
+        jniLibs {
+            excludes += ['META-INF/proguard/*']
+        }
+        resources {
+            excludes += ['META-INF/*.version', 'META-INF/proguard/*', '/*.properties', 'fabric/*.properties', 'META-INF/*.properties']
+        }
     }
+
 
     buildTypes {
         debug {
@@ -83,6 +71,13 @@ android {
             signingConfig = signingConfigs.debug
             proguardFiles 'proguard-rules.pro'
         }
+    }
+    namespace 'org.kafka.user'
+    lint {
+        abortOnError true
+        checkDependencies true
+        checkReleaseBuilds false
+        ignoreTestSources true
     }
 }
 

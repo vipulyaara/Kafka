@@ -9,7 +9,7 @@ kapt {
 }
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         multiDexEnabled true
@@ -30,6 +30,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
+    namespace 'org.kafka.reader'
 }
 
 dependencies {

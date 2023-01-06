@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         minSdkVersion Publishing.minSdk
@@ -22,6 +22,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
+    namespace 'ui.common.theme'
 }
 
 dependencies {
