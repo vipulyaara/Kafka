@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets
 sealed class RootScreen(val route: String, val startScreen: LeafScreen) {
     object Home : RootScreen("home_root", LeafScreen.Home)
     object Search : RootScreen("search_root", LeafScreen.Search)
-    object PlayerLibrary : RootScreen("player_library_root", LeafScreen.PlayerLibrary)
+    object PlayerLibrary : RootScreen("player_library_root", LeafScreen.PlayerLibrary())
     object Library : RootScreen("library_root", LeafScreen.Library)
     object Profile : RootScreen("profile_root", LeafScreen.Profile)
 }
@@ -39,7 +39,7 @@ sealed class LeafScreen(
 
     object Home : LeafScreen("home")
     object Search : LeafScreen("search")
-    object PlayerLibrary : LeafScreen("player_library")
+    data class PlayerLibrary(override val route: String = "player_library") : LeafScreen(route)
     object Library : LeafScreen("library")
     object Profile : LeafScreen("profile")
 

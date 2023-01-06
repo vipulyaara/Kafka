@@ -20,6 +20,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
+import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.common.extensions.CollectEvent
 import org.kafka.favorites.FavoriteScreen
 import org.kafka.homepage.Homepage
@@ -31,6 +32,7 @@ import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.bottomSheetScreen
 import org.kafka.navigation.composableScreen
 import org.kafka.ui.components.defaultEnterTransition
 import org.kafka.ui.components.defaultExitTransition
@@ -77,7 +79,7 @@ internal fun AppNavigation(
     ) {
         addHomeRoot()
         addSearchRoot()
-        addPlayerLibraryRoot()
+        addPlayerLibraryRoot(navigator)
         addLibraryRoot()
         addProfileRoot()
     }
@@ -121,12 +123,12 @@ private fun NavGraphBuilder.addLibraryRoot() {
     }
 }
 
-private fun NavGraphBuilder.addPlayerLibraryRoot() {
+private fun NavGraphBuilder.addPlayerLibraryRoot(navigator: Navigator) {
     navigation(
         route = RootScreen.PlayerLibrary.route,
-        startDestination = LeafScreen.PlayerLibrary.createRoute(RootScreen.PlayerLibrary)
+        startDestination = LeafScreen.PlayerLibrary().route
     ) {
-        addPlayer(RootScreen.PlayerLibrary)
+        addPlayer(RootScreen.PlayerLibrary, navigator)
     }
 }
 
@@ -151,9 +153,9 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addPlayer(root: RootScreen) {
-    composable(LeafScreen.PlayerLibrary.createRoute(root)) {
-
+private fun NavGraphBuilder.addPlayer(root: RootScreen, navigator: Navigator) {
+    bottomSheetScreen(LeafScreen.PlayerLibrary()) {
+        PlaybackSheet { navigator.goBack() }
     }
 }
 

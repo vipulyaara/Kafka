@@ -21,7 +21,6 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.player.mini.MiniPlayer
-import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -36,7 +35,6 @@ internal fun Home(
     val playbackState by playbackConnection.playbackState.collectAsStateWithLifecycle()
     val nowPlaying by playbackConnection.nowPlaying.collectAsStateWithLifecycle()
     val isPlayerActive = (playbackState to nowPlaying).isActive
-    val navigator = LocalNavigator.current
 
     Scaffold(
         modifier = modifier.fillMaxWidth(),
