@@ -2,7 +2,15 @@ package com.kafka.user
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -21,33 +29,47 @@ import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.ROOT_SCREENS
+import org.kafka.navigation.RootScreen
+import org.kafka.navigation.composableScreen
 import org.kafka.ui.components.defaultEnterTransition
 import org.kafka.ui.components.defaultExitTransition
 import org.kafka.ui.components.defaultPopEnterTransition
 import org.kafka.ui.components.defaultPopExitTransition
 import org.kafka.webview.WebView
-import timber.log.Timber
 
 @Composable
 internal fun AppNavigation(
     navController: NavHostController,
+    modifier: Modifier = Modifier,
     navigator: Navigator = LocalNavigator.current
 ) {
-    navigator.attachNavController(navController)
     CollectEvent(navigator.queue) { event ->
-        Timber.i("Navigation event: $event")
         when (event) {
-            is NavigationEvent.Destination -> navController.navigate(event.route, event.builder)
+            is NavigationEvent.Destination -> {
+                // switch tabs first because of a bug in navigation that doesn't allow
+                // changing tabs when destination is opened from a different tab
+                event.root?.let {
+                    navController.navigate(it) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+                navController.navigate(event.route)
+            }
+
             is NavigationEvent.Back -> navController.navigateUp()
             else -> Unit
         }
     }
 
     AnimatedNavHost(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = Screen.Home.route,
+        startDestination = RootScreen.Home.route,
         enterTransition = { defaultEnterTransition(initialState, targetState) },
         exitTransition = { defaultExitTransition(initialState, targetState) },
         popEnterTransition = { defaultPopEnterTransition() },
@@ -63,124 +85,109 @@ internal fun AppNavigation(
 
 private fun NavGraphBuilder.addHomeRoot() {
     navigation(
-        route = Screen.Home.route,
-        startDestination = LeafScreen.Home.createRoute(Screen.Home)
+        route = RootScreen.Home.route,
+        startDestination = LeafScreen.Home.createRoute(RootScreen.Home)
     ) {
-        addHome(Screen.Home)
-        addItemDetail(Screen.Home)
-        addFiles(Screen.Home)
-        addReader(Screen.Home)
-        addWebView(Screen.Home)
+        addHome(RootScreen.Home)
+        addItemDetail(RootScreen.Home)
+        addFiles(RootScreen.Home)
+        addReader(RootScreen.Home)
+        addWebView(RootScreen.Home)
     }
 }
 
 private fun NavGraphBuilder.addSearchRoot() {
     navigation(
-        route = Screen.Search.route,
-        startDestination = LeafScreen.Search.createRoute(Screen.Search)
+        route = RootScreen.Search.route,
+        startDestination = LeafScreen.Search.createRoute(RootScreen.Search)
     ) {
-        addSearch(Screen.Search)
-        addItemDetail(Screen.Search)
-        addFiles(Screen.Search)
-        addReader(Screen.Search)
-        addWebView(Screen.Search)
+        addSearch(RootScreen.Search)
+        addItemDetail(RootScreen.Search)
+        addFiles(RootScreen.Search)
+        addReader(RootScreen.Search)
+        addWebView(RootScreen.Search)
     }
 }
 
 private fun NavGraphBuilder.addLibraryRoot() {
     navigation(
-        route = Screen.Library.route,
-        startDestination = LeafScreen.Library.createRoute(Screen.Library)
+        route = RootScreen.Library.route,
+        startDestination = LeafScreen.Library.createRoute(RootScreen.Library)
     ) {
-        addLibrary(Screen.Library)
-        addItemDetail(Screen.Library)
-        addFiles(Screen.Library)
-        addReader(Screen.Library)
+        addLibrary(RootScreen.Library)
+        addItemDetail(RootScreen.Library)
+        addFiles(RootScreen.Library)
+        addReader(RootScreen.Library)
     }
 }
 
 private fun NavGraphBuilder.addPlayerLibraryRoot() {
     navigation(
-        route = Screen.PlayerLibrary.route,
-        startDestination = LeafScreen.PlayerLibrary.createRoute(Screen.PlayerLibrary)
+        route = RootScreen.PlayerLibrary.route,
+        startDestination = LeafScreen.PlayerLibrary.createRoute(RootScreen.PlayerLibrary)
     ) {
-        addPlayer(Screen.PlayerLibrary)
+        addPlayer(RootScreen.PlayerLibrary)
     }
 }
 
 private fun NavGraphBuilder.addProfileRoot() {
     navigation(
-        route = Screen.Profile.route,
-        startDestination = LeafScreen.Profile.createRoute(Screen.Profile)
+        route = RootScreen.Profile.route,
+        startDestination = LeafScreen.Profile.createRoute(RootScreen.Profile)
     ) {
-        addProfile(Screen.Profile)
+        addProfile(RootScreen.Profile)
     }
 }
 
-private fun NavGraphBuilder.addHome(root: Screen) {
+private fun NavGraphBuilder.addHome(root: RootScreen) {
     composable(LeafScreen.Home.createRoute(root)) {
         Homepage()
     }
 }
 
-private fun NavGraphBuilder.addSearch(root: Screen) {
+private fun NavGraphBuilder.addSearch(root: RootScreen) {
     composable(LeafScreen.Search.createRoute(root)) {
         SearchScreen()
     }
 }
 
-private fun NavGraphBuilder.addPlayer(root: Screen) {
+private fun NavGraphBuilder.addPlayer(root: RootScreen) {
     composable(LeafScreen.PlayerLibrary.createRoute(root)) {
 
     }
 }
 
-private fun NavGraphBuilder.addLibrary(root: Screen) {
+private fun NavGraphBuilder.addLibrary(root: RootScreen) {
     composable(LeafScreen.Library.createRoute(root)) {
         FavoriteScreen()
     }
 }
 
-private fun NavGraphBuilder.addProfile(root: Screen) {
+private fun NavGraphBuilder.addProfile(root: RootScreen) {
     composable(LeafScreen.Profile.createRoute(root)) {
 
     }
 }
 
-private fun NavGraphBuilder.addItemDetail(root: Screen) {
-    composable(
-        route = LeafScreen.ItemDetail.createRoute(root),
-        arguments = listOf(
-            navArgument("itemId") { type = NavType.StringType }
-        )
-    ) {
+private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
+    composableScreen(LeafScreen.ItemDetail(rootRoute = root.route)) {
         ItemDetail()
     }
 }
 
-private fun NavGraphBuilder.addFiles(root: Screen) {
-    composable(
-        route = LeafScreen.Files.createRoute(root),
-        arguments = listOf(
-            navArgument("itemId") { type = NavType.StringType }
-        )
-    ) {
+private fun NavGraphBuilder.addFiles(root: RootScreen) {
+    composableScreen(LeafScreen.Files(rootRoute = root.route)) {
         Files()
     }
 }
 
-private fun NavGraphBuilder.addReader(root: Screen) {
-    composable(
-        route = LeafScreen.Reader.createRoute(root),
-        arguments = listOf(
-            navArgument("itemId") { type = NavType.StringType }
-        )
-    ) {
+private fun NavGraphBuilder.addReader(root: RootScreen) {
+    composableScreen(LeafScreen.Reader(rootRoute = root.route)) {
         ReaderScreen()
     }
 }
 
-private fun NavGraphBuilder.addWebView(root: Screen) {
+private fun NavGraphBuilder.addWebView(root: RootScreen) {
     composable(
         route = LeafScreen.WebView.createRoute(root),
         arguments = listOf(
@@ -189,4 +196,25 @@ private fun NavGraphBuilder.addWebView(root: Screen) {
     ) {
         WebView(it.arguments?.getString("url").orEmpty())
     }
+}
+
+@Stable
+@Composable
+internal fun NavController.currentScreenAsState(): State<RootScreen> {
+    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Search) }
+    val rootScreens = ROOT_SCREENS
+    DisposableEffect(this) {
+        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+            rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.route } }?.let {
+                selectedItem.value = it
+            }
+        }
+        addOnDestinationChangedListener(listener)
+
+        onDispose {
+            removeOnDestinationChangedListener(listener)
+        }
+    }
+
+    return selectedItem
 }

@@ -45,7 +45,7 @@ private fun CoverImage(item: Item) {
     Box(
         modifier = Modifier.shadowMaterial(
             elevation = Dimens.Spacing08,
-            shape = RoundedCornerShape(Dimens.Spacing04)
+            shape = RoundedCornerShape(Dimens.RadiusSmall)
         )
     ) {
         AsyncImage(

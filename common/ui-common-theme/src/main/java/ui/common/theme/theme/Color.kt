@@ -92,6 +92,10 @@ val ColorScheme.yellowDark
 val ColorScheme.shadowMaterial
     @Composable get() = if (isSystemInLightTheme()) primary.copy(alpha = 0.5f) else primary.copy(alpha = 0.2f)
 
+
+@Composable
+fun translucentSurfaceColor() = MaterialTheme.colorScheme.surface.copy(alpha = AppBarAlphas.translucentBarAlpha())
+
 @Composable
 fun isSystemInLightTheme() = !isSystemInDarkTheme()
 
@@ -139,9 +143,5 @@ fun Color.disabledAlpha(condition: Boolean): Color =
 @Composable
 fun Color.contrastComposite(alpha: Float = 0.1f) =
     contentColorFor(this).copy(alpha = alpha).compositeOver(this)
-
-@Composable
-fun translucentSurfaceColor() =
-    MaterialTheme.colorScheme.surface.copy(alpha = AppBarAlphas.translucentBarAlpha())
 
 fun Modifier.translucentSurface() = composed { background(translucentSurfaceColor()) }

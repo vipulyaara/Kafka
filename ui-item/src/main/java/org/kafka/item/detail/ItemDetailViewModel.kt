@@ -95,6 +95,7 @@ class ItemDetailViewModel @Inject constructor(
         itemDetail?.let {
             debug { "observe query for creator ${itemDetail.creator}" }
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
+
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
                 viewModelScope.launch {

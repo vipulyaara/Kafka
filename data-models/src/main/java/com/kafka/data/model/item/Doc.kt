@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Doc(
     @SerialName("genre")
+    @Serializable(with = StringListSerializer::class)
     val collection: List<String>? = null,
     @SerialName("creator")
     @Serializable(with = StringListSerializer::class)

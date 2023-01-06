@@ -22,12 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
+import com.kafka.data.entities.isAudio
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import org.kafka.common.Icons
 import org.kafka.common.extensions.elevation
 import org.kafka.common.widgets.IconResource
+import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 
@@ -35,10 +38,8 @@ import ui.common.theme.theme.textPrimary
 fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
+    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
     val playbackConnection = LocalPlaybackConnection.current
-    fun playAudio(file: File) {
-        playbackConnection.playAudio(file.asAudio())
-    }
 
     Scaffold(topBar = { TopBar() }) { padding ->
         LazyColumn(modifier = Modifier, contentPadding = padding) {
@@ -47,8 +48,15 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
                     file = file,
                     startDownload = { viewModel.downloadFile(file.fileId) },
                     openReader = {
-                        playAudio(file)
-//                        navigator.navigate(Reader.createRoute(viewModel.downloadState.value.toString()))
+                        navigator.navigate(
+                            Reader.buildRoute(
+                                viewModel.downloadState.value.toString(),
+                                currentRoot
+                            )
+                        )
+                    },
+                    playAudio = {
+                        playbackConnection.playAudio(file.asAudio())
                     }
                 )
             }
@@ -57,11 +65,22 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun File(file: File, startDownload: () -> Unit, openReader: () -> Unit) {
+private fun File(
+    file: File,
+    startDownload: () -> Unit,
+    openReader: () -> Unit,
+    playAudio: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { openReader() }
+            .clickable {
+                if (file.isAudio()) {
+                    playAudio()
+                } else {
+                    openReader()
+                }
+            }
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         verticalAlignment = Alignment.CenterVertically
@@ -94,9 +113,9 @@ private fun TopBar(
     lazyListState: LazyListState = rememberLazyListState(),
     navigator: Navigator = LocalNavigator.current
 ) {
-    org.kafka.ui.components.material.TopBar(
+    TopBar(
         navigationIcon = {
-            IconButton(onClick = { navigator.back() }) {
+            IconButton(onClick = { navigator.goBack() }) {
                 IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)
             }
         },

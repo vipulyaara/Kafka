@@ -10,6 +10,7 @@ const val mediaTypeAudio = "audio"
 data class File(
     @PrimaryKey val fileId: String,
     val itemId: String,
+    val itemTitle: String?,
     val size: String?,
     val title: String?,
     val extension: String?,
@@ -18,6 +19,7 @@ data class File(
     val format: String?,
     val playbackUrl: String?,
     val readerUrl: String?,
+    val coverImage: String?,
     val localUri: String? = null
 ): BaseEntity {
     companion object {
@@ -25,13 +27,13 @@ data class File(
     }
 }
 
-fun ItemDetail?.isText() = this?.mediaType == mediaTypeText
 fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
-fun ItemDetail?.hasAudio() = this?.files?.firstOrNull { it.isMp3() } != null
-fun ItemDetail?.hasText() = this?.files?.firstOrNull { it.isPdf() } != null
 
 fun String?.isPdf() = this?.contains("pdf", true) ?: false
 
 fun String?.isText() = this?.contains("txt", true) ?: false
 
 fun String?.isMp3() = this?.contains("mp3", true) ?: false
+
+fun File.isAudio() = this.format.isMp3()
+

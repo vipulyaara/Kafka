@@ -15,8 +15,6 @@ import com.kafka.data.model.item.File as FileResponse
 
 class ItemDetailMapper @Inject constructor(private val fileDao: FileDao) {
     suspend fun map(from: ItemDetailResponse): ItemDetail {
-        insertFiles(from)
-
         return ItemDetail(
             itemId = from.metadata.identifier,
             language = from.metadata.licenseurl,
@@ -29,15 +27,19 @@ class ItemDetailMapper @Inject constructor(private val fileDao: FileDao) {
             coverImageResource = 0,
             coverImage = "https://archive.org/services/img/${from.metadata.identifier}",
             metadata = from.metadata.collection
-        )
+        ).also {
+            insertFiles(from, it)
+        }
     }
 
-    private suspend fun insertFiles(from: ItemDetailResponse) {
+    private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
         val files = from.files.map {
             it.asFile(
                 itemId = from.metadata.identifier,
+                itemTitle = item.title,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.fileOrNull(it.name)?.localUri
+                localUri = fileDao.fileOrNull(it.name)?.localUri,
+                coverImage = item.coverImage
             )
         }.filter { supportedFiles.contains(it.extension) }
 
@@ -49,9 +51,16 @@ fun String?.format() = Html.fromHtml(this, 0)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 
-fun FileResponse.asFile(itemId: String, prefix: String, localUri: String?) = File(
+fun FileResponse.asFile(
+    itemId: String,
+    itemTitle: String?,
+    coverImage: String?,
+    prefix: String,
+    localUri: String?
+) = File(
     fileId = name,
     itemId = itemId,
+    itemTitle = itemTitle,
     size = size?.toIntOrNull()?.run { this / 1000_000 }.toString() + " MB",
     title = title ?: "---",
     extension = name.split(".").last(),
@@ -60,5 +69,6 @@ fun FileResponse.asFile(itemId: String, prefix: String, localUri: String?) = Fil
     format = format,
     playbackUrl = if (format.isMp3()) URL("$prefix/$name").toString() else null,
     readerUrl = if (format.isPdf() || format.isText()) URL("$prefix/$name").toString() else null,
+    coverImage = coverImage,
     localUri = localUri
 )

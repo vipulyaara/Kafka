@@ -42,10 +42,13 @@ fun SearchWidget(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
-    Box(modifier = Modifier.padding(horizontal = Dimens.Spacing12)) {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = Dimens.Spacing12)
+            .padding(top = Dimens.Spacing12)
+    ) {
         OutlinedTextField(
-            modifier = modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             value = searchText,
             placeholder = {
                 Row {
@@ -112,7 +115,7 @@ private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
             modifier = Modifier
                 .clickable(onClick = { onTextCleared() })
                 .padding(Dimens.Spacing12)
-                .size(24.dp),
+                .size(Dimens.Spacing24),
             imageVector = Icons.Mic,
             tint = MaterialTheme.colorScheme.iconPrimary
         )

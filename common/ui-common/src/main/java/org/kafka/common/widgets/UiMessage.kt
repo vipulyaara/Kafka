@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.contentColorFor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,13 +44,13 @@ fun FullScreenMessage(
                 data = R.drawable.img_absurd_error,
                 modifier = Modifier
                     .aspectRatio(1f)
-                    .weight(0.7f)
+                    .weight(0.6f)
                     .padding(48.dp),
-                tint = MaterialTheme.colorScheme.secondary
+                tint = contentColorFor(MaterialTheme.colorScheme.primaryContainer)
             )
 
             Column(
-                modifier = Modifier.weight(0.3f),
+                modifier = Modifier.weight(0.4f),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -59,7 +60,7 @@ fun FullScreenMessage(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
-                Spacer(modifier = Modifier.height(Dimens.Spacing12))
+                Spacer(modifier = Modifier.height(Dimens.Spacing08))
 
                 Text(
                     text = uiMessage?.message.orEmpty(),

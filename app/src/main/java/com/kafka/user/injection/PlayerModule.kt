@@ -1,13 +1,14 @@
 package com.kafka.user.injection
 
-import com.kafka.data.dao.AudioDao
-import com.kafka.data.entities.Audio
+import com.kafka.data.dao.FileDao
+import com.kafka.data.entities.isAudio
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.apis.PlayerEventLogger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.kafka.item.files.asAudio
 import com.sarahang.playback.core.models.Audio as PlayerAudio
 
 @InstallIn(SingletonComponent::class)
@@ -15,21 +16,25 @@ import com.sarahang.playback.core.models.Audio as PlayerAudio
 class PlayerModule {
 
     @Provides
-    fun audioDataSource(audioDao: AudioDao): AudioDataSource = object : AudioDataSource {
+    fun audioDataSource(fileDao: FileDao): AudioDataSource = object : AudioDataSource {
         override suspend fun getByMediaIds(mediaIds: List<String>): List<PlayerAudio> {
-            return audioDao.findAudios(mediaIds).map { it.asPlayerAudio() }
+            return fileDao.filesByIds(mediaIds).map { it.asAudio() }
         }
 
         override suspend fun getByIds(ids: List<String>): List<PlayerAudio> {
-            return audioDao.findAudios(ids).map { it.asPlayerAudio() }
+            return fileDao.filesByIds(ids).map { it.asAudio() }
         }
 
         override suspend fun findAudio(id: String): PlayerAudio? {
-            return audioDao.findAudio(id)?.asPlayerAudio()
+            return fileDao.fileOrNull(id)?.asAudio()
         }
 
         override suspend fun findAudioList(id: String): List<PlayerAudio> {
-            return listOf(audioDao.findAudio(id)).map { it?.asPlayerAudio() ?: PlayerAudio.unknown }
+            return listOf(fileDao.fileOrNull(id)).map { it?.asAudio() ?: PlayerAudio.unknown }
+        }
+
+        override suspend fun findAudiosByItemId(id: String): List<PlayerAudio> {
+            return fileDao.filesByItemId(id).filter { it.isAudio() }.map { it.asAudio() }
         }
     }
 
@@ -38,13 +43,3 @@ class PlayerModule {
 
     }
 }
-
-fun Audio.asPlayerAudio() = PlayerAudio(
-    id = id,
-    title = title,
-    artist = artistId,
-    album = creator,
-    playbackUrl = playbackUrl,
-    duration = duration,
-    coverImage = coverImage
-)

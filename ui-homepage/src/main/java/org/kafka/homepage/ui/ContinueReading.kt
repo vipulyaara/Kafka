@@ -59,6 +59,8 @@ internal fun ContinueReading(
                 }
             }
         }
+    } else {
+        Spacer(modifier = Modifier.height(Dimens.Spacing12))
     }
 }
 

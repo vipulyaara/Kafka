@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -45,21 +44,22 @@ class ReaderViewModel @Inject constructor(
     private var uri by mutableStateOf<String?>(null)
     private var progress by mutableStateOf(0)
 
-    val state: StateFlow<ReaderViewState> = combine(
-        itemId,
+    val downloadState = combine(
         snapshotFlow { progress },
         snapshotFlow { uri },
+    ) { progress, uri ->
+        DownloadProgressState(progress = progress.toFloat() / 100, uri = uri?.toUri())
+    }.stateInDefault(
+        scope = viewModelScope,
+        initialValue = DownloadProgressState(),
+    )
+
+    val state: StateFlow<ReaderViewState> = combine(
+        itemId,
         loadingCounter.observable,
         uiMessageManager.message,
-    ) { fileUrl, progress, uri, isLoading, message ->
-        debug { "Progress is $progress ${progress.toFloat() / 100}" }
-        ReaderViewState(
-            readerUrl = fileUrl,
-            progress = progress.toFloat() / 100,
-            uri = uri?.toUri(),
-            message = message,
-            isLoading = isLoading
-        )
+    ) { fileUrl, isLoading, message ->
+        ReaderViewState(readerUrl = fileUrl, message = message, isLoading = isLoading)
     }.stateInDefault(
         scope = viewModelScope,
         initialValue = ReaderViewState(),

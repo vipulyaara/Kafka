@@ -1,17 +1,13 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package org.kafka.item.detail
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,8 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +49,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import com.sarahang.playback.core.PlaybackConnection
+import com.sarahang.playback.core.models.LocalPlaybackConnection
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.common.Icons
@@ -66,8 +66,11 @@ import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
+import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 import ui.common.theme.theme.textSecondary
@@ -78,8 +81,9 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = SnackbarHostState()
-    val navigator = LocalNavigator.current
     val lazyListState = rememberLazyListState()
+    val navigator = LocalNavigator.current
+    val playbackConnection = LocalPlaybackConnection.current
 
     LaunchedEffect(state.message) {
         if (state.isSnackbarError) {
@@ -90,41 +94,51 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar(lazyListState) },
-        contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
-        Box(Modifier.fillMaxSize()) {
-            InfiniteProgressBar(
-                show = state.isFullScreenLoading,
-                modifier = Modifier.align(Alignment.Center)
+        ProvideScaffoldPadding(padding = padding) {
+            ItemDetail(state, viewModel, navigator, playbackConnection, lazyListState)
+        }
+    }
+}
+
+@Composable
+private fun ItemDetail(
+    state: ItemDetailViewState,
+    viewModel: ItemDetailViewModel,
+    navigator: Navigator,
+    playbackConnection: PlaybackConnection,
+    lazyListState: LazyListState
+) {
+    Box(Modifier.fillMaxSize()) {
+        InfiniteProgressBar(
+            show = state.isFullScreenLoading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+
+        FullScreenMessage(state.message, state.isFullScreenError, viewModel::retry)
+
+        AnimatedVisibility(visible = state.itemDetail != null) {
+            val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
+            ItemDetail(
+                itemDetail = state.itemDetail!!,
+                relatedItems = state.itemsByCreator,
+                isFavorite = state.isFavorite,
+                toggleFavorite = { viewModel.updateFavorite() },
+                openItemDetail = { itemId ->
+                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(itemId, currentRoot))
+                },
+                openFiles = { itemId ->
+                    navigator.navigate(LeafScreen.Files.buildRoute(itemId, currentRoot))
+                },
+                openReader = { itemId ->
+                    navigator.navigate(LeafScreen.Reader.buildRoute(itemId, currentRoot))
+                },
+                playAudio = { itemId ->
+                    playbackConnection.playAudios(itemId)
+                },
+                lazyListState = lazyListState
             )
-
-            FullScreenMessage(state.message, state.isFullScreenError, viewModel::retry)
-
-            AnimatedVisibility(
-                visible = state.itemDetail != null,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                ItemDetail(
-                    itemDetail = state.itemDetail!!,
-                    relatedItems = state.itemsByCreator,
-                    isFavorite = state.isFavorite,
-                    toggleFavorite = { viewModel.updateFavorite() },
-                    openItemDetail = { navigator.navigate(LeafScreen.ItemDetail.createRoute(it)) },
-                    openFiles = {
-                        navigator.navigate(LeafScreen.Files.createRoute(it))
-                    },
-                    openReader = {
-                        navigator.navigate(LeafScreen.Reader.createRoute(it))
-                    },
-                    playAudio = {
-                        navigator.navigate(LeafScreen.WebView.createRoute(it))
-                    },
-                    lazyListState = lazyListState,
-                    padding = padding
-                )
-            }
         }
     }
 }
@@ -139,21 +153,26 @@ private fun ItemDetail(
     openReader: (String) -> Unit,
     playAudio: (String) -> Unit,
     openFiles: (String) -> Unit,
-    lazyListState: LazyListState,
-    padding: PaddingValues
+    lazyListState: LazyListState
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState =
-        rememberModalBottomSheetState(ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+
+    HandleBackPress(bottomSheetState, coroutineScope)
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetContent = { DescriptionDialog(itemDetail = itemDetail) }
+        sheetContent = {
+            DescriptionDialog(itemDetail = itemDetail)
+        }
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState,
-            contentPadding = padding
+            contentPadding = scaffoldPadding()
         ) {
             item {
                 ItemDescription(itemDetail) {
@@ -177,6 +196,7 @@ private fun ItemDetail(
     }
 }
 
+
 private fun LazyListScope.relatedContent(
     relatedItems: List<Item>?,
     openItemDetail: (String) -> Unit
@@ -198,13 +218,14 @@ private fun LazyListScope.relatedContent(
 }
 
 @Composable
-fun DescriptionDialog(itemDetail: ItemDetail) {
+private fun DescriptionDialog(itemDetail: ItemDetail, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(24.dp)
+            .padding(Dimens.Spacing24)
+            .padding(bottom = bottomScaffoldPadding())
     ) {
         Box(
             modifier = Modifier
@@ -212,7 +233,7 @@ fun DescriptionDialog(itemDetail: ItemDetail) {
                 .clip(RoundedCornerShape(50))
                 .background(MaterialTheme.colorScheme.tertiary)
         )
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing36))
         Text(
             text = itemDetail.ratingText(MaterialTheme.colorScheme.secondary) +
                     AnnotatedString(itemDetail.description.orEmpty()),
@@ -228,7 +249,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 48.dp),
+            .padding(top = Dimens.Spacing24),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LoadImage(
@@ -237,13 +258,14 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
                 .size(196.dp, 248.dp)
                 .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
         )
-        Spacer(Modifier.height(24.dp))
+
+        Spacer(Modifier.height(Dimens.Spacing24))
 
         Text(
             text = itemDetail.title.orEmpty(),
             style = MaterialTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
             color = MaterialTheme.colorScheme.textPrimary,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = Dimens.Spacing24)
         )
 
         Spacer(Modifier.height(Dimens.Spacing04))
@@ -252,7 +274,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
             text = itemDetail.creator.orEmpty(),
             style = MaterialTheme.typography.titleSmall.copy(textAlign = TextAlign.Center),
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = Dimens.Spacing24)
         )
 
         Text(
@@ -263,7 +285,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .padding(24.dp)
+                .padding(Dimens.Spacing24)
                 .clickable { showDescription() }
         )
     }
@@ -287,7 +309,7 @@ private fun TopBar(
         containerColor = Color.Transparent,
         navigationIcon = {
             IconButton(
-                onClick = { navigator.back() },
+                onClick = { navigator.goBack() },
                 modifier = Modifier
                     .padding(Dimens.Spacing08)
                     .clip(CircleShape)
@@ -297,4 +319,24 @@ private fun TopBar(
             }
         }
     )
+}
+
+@Composable
+private fun HandleBackPress(
+    bottomSheetState: ModalBottomSheetState,
+    coroutineScope: CoroutineScope
+) {
+    val backPressDispatcher = LocalOnBackPressedDispatcherOwner.current
+    backPressDispatcher?.onBackPressedDispatcher
+        ?.addCallback(LocalLifecycleOwner.current, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (bottomSheetState.isVisible) {
+                    isEnabled = true
+                    coroutineScope.launch { bottomSheetState.hide() }
+                } else {
+                    isEnabled = false
+                    backPressDispatcher.onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
 }

@@ -1,12 +1,8 @@
 package com.kafka.search
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,17 +20,21 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.RecentSearch
 import org.kafka.common.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
+import org.kafka.item.ArchiveQueryViewState
 import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.Navigator
+import org.kafka.navigation.RootScreen
+import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
+import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textSecondary
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SearchScreen() {
     LogCompositions(tag = "Search")
@@ -47,54 +47,77 @@ fun SearchScreen() {
     val recentSearches by searchViewModel.recentSearches.collectAsStateWithLifecycle()
 
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(
-            TextFieldValue(text = "", selection = TextRange(0))
-        )
+        mutableStateOf(TextFieldValue(text = "", selection = TextRange(0)))
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = { Spacer(modifier = Modifier.height(56.dp)) }
-    ) {
-        Column {
-            Box(modifier = Modifier.height(24.dp))
-            SearchWidget(
+    Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+        ProvideScaffoldPadding(padding = padding) {
+            Search(
                 searchText = searchText,
                 setSearchText = { searchText = it },
-                onImeAction = {
-                    queryViewModel.submitQuery(it)
-                    searchViewModel.addRecentSearch(it)
-                }
+                queryViewModel = queryViewModel,
+                searchViewModel = searchViewModel,
+                queryViewState = queryViewState,
+                navigator = navigator,
+                recentSearches = recentSearches
             )
-
-            queryViewState.items?.let {
-                SearchResults(results = it) {
-                    navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
-                }
-            }
-
-            if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
-                RecentSearches(
-                    recentSearches = recentSearches.map { it.searchTerm },
-                    onSearchClicked = {
-                        queryViewModel.submitQuery(it)
-                        searchViewModel.addRecentSearch(it)
-                    },
-                    onRemoveSearch = { searchViewModel.removeRecentSearch(it) }
-                )
-            }
-
-            InfiniteProgressBar(show = queryViewState.isLoading)
         }
     }
 }
 
 @Composable
-private fun SearchResults(results: List<Item>, openContentDetail: (String) -> Unit) {
-    LazyColumn(contentPadding = PaddingValues(vertical = 24.dp)) {
-        items(results) {
-            Item(item = it, openItemDetail = openContentDetail)
+private fun Search(
+    searchText: TextFieldValue,
+    setSearchText: (TextFieldValue) -> Unit,
+    queryViewModel: ArchiveQueryViewModel,
+    searchViewModel: SearchViewModel,
+    queryViewState: ArchiveQueryViewState,
+    navigator: Navigator,
+    recentSearches: List<RecentSearch>
+) {
+    Column {
+        SearchWidget(
+            searchText = searchText,
+            setSearchText = setSearchText,
+            onImeAction = {
+                queryViewModel.submitQuery(it)
+                searchViewModel.addRecentSearch(it)
+            }
+        )
+
+        queryViewState.items?.let { results ->
+            val padding = PaddingValues(bottom = scaffoldPadding().calculateBottomPadding())
+            LazyColumn(contentPadding = padding) {
+                items(results) {
+                    Item(item = it) { itemId ->
+                        navigator.navigate(LeafScreen.ItemDetail.buildRoute(itemId, RootScreen.Search))
+                    }
+                }
+            }
         }
+
+        RecentSearches(recentSearches, queryViewState, queryViewModel, searchViewModel)
+
+        InfiniteProgressBar(show = queryViewState.isLoading)
+    }
+}
+
+@Composable
+private fun RecentSearches(
+    recentSearches: List<RecentSearch>,
+    queryViewState: ArchiveQueryViewState,
+    queryViewModel: ArchiveQueryViewModel,
+    searchViewModel: SearchViewModel
+) {
+    if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
+        RecentSearches(
+            recentSearches = recentSearches.map { it.searchTerm },
+            onSearchClicked = {
+                queryViewModel.submitQuery(it)
+                searchViewModel.addRecentSearch(it)
+            },
+            onRemoveSearch = { searchViewModel.removeRecentSearch(it) }
+        )
     }
 }
 

@@ -1,6 +1,5 @@
 package com.kafka.reader
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,10 +26,10 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import ui.common.theme.theme.Dimens
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val progressViewState by viewModel.downloadState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -43,11 +42,11 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
                 .fillMaxSize()
                 .padding(top = it.calculateTopPadding())
         ) {
-            if (viewState.uri != null) {
-                ReaderView(uri = viewState.uri!!)
+            if (progressViewState.uri != null) {
+                ReaderView(uri = progressViewState.uri!!)
             } else {
                 LinearProgressIndicator(
-                    progress = viewState.progress,
+                    progress = progressViewState.progress,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -75,7 +74,7 @@ private fun TopBar(
     org.kafka.ui.components.material.TopBar(
         navigationIcon = {
             IconButton(
-                onClick = { navigator.back() },
+                onClick = { navigator.goBack() },
                 modifier = Modifier.padding(Dimens.Spacing08)
             ) {
                 IconResource(imageVector = Icons.Back)

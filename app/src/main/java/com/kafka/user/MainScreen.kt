@@ -3,6 +3,7 @@
 package com.kafka.user
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -17,10 +18,12 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
+import com.sarahang.playback.ui.player.mini.MiniPlayer
 import kotlinx.coroutines.flow.collectLatest
 import org.kafka.analytics.Logger
 import org.kafka.common.logging.recomposeHighlighter
 import org.kafka.navigation.NavigatorHost
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun MainScreen(analytics: Logger) {
@@ -39,7 +42,7 @@ fun MainScreen(analytics: Logger) {
     NavigatorHost {
         PlaybackHost {
             AudioActionHost {
-                MainScreen(navController)
+                Home(navController)
             }
         }
     }
@@ -52,7 +55,12 @@ private fun MainScreen(navController: NavHostController) {
             .fillMaxSize()
             .systemBarsPadding()
             .recomposeHighlighter(),
-        bottomBar = { RekhtaBottomBar(navController) }
+        bottomBar = {
+            Column {
+                MiniPlayer(modifier = Modifier.padding(Dimens.Spacing04))
+                RekhtaBottomBar(navController)
+            }
+        }
     ) { padding ->
         Box(
             modifier = Modifier
@@ -65,6 +73,7 @@ private fun MainScreen(navController: NavHostController) {
             ModalBottomSheetLayout(bottomSheetNavigator, Modifier.fillMaxSize()) {
                 AppNavigation(navController)
             }
+
         }
     }
 }

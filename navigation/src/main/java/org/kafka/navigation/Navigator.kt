@@ -4,62 +4,66 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.kafka.base.debug
-import org.kafka.base.errorLog
+
+interface Navigator {
+    fun navigate(route: String)
+    fun goBack()
+    val queue: Flow<NavigationEvent>
+    val currentRoot: StateFlow<RootScreen>
+}
 
 val LocalNavigator = staticCompositionLocalOf<Navigator> {
     error("No LocalNavigator given")
 }
 
 @Composable
-fun NavigatorHost(
-    viewModel: NavigatorViewModel = hiltViewModel(),
+fun NavigatorHost(content: @Composable () -> Unit) {
+    NavigatorHost(
+        navigator = hiltViewModel<NavigatorViewModel>().navigator,
+        content = content,
+    )
+}
+
+@Composable
+private fun NavigatorHost(
+    navigator: Navigator,
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalNavigator provides viewModel.navigator, content = content)
+    CompositionLocalProvider(LocalNavigator provides navigator, content = content)
 }
 
-sealed class NavigationEvent(
-    open val route: String,
-    open val builder: NavOptionsBuilder.() -> Unit
-) {
-    object Back : NavigationEvent("Back", {})
-    data class Destination(
-        override val route: String,
-        override val builder: NavOptionsBuilder.() -> Unit
-    ) : NavigationEvent(route, builder)
+sealed class NavigationEvent(open val route: String) {
+    object Back : NavigationEvent("Back")
+    data class Destination(override val route: String, val root: String? = null) :
+        NavigationEvent(route)
+
+    override fun toString() = route
 }
 
-class Navigator {
+class NavigatorImpl : Navigator {
     private val navigationQueue = Channel<NavigationEvent>(Channel.CONFLATED)
-    var navController: NavController? = null
+    private val currentRootChannel = MutableStateFlow<RootScreen>(RootScreen.Home)
+    override val queue = navigationQueue.receiveAsFlow()
+    override val currentRoot = currentRootChannel
 
-    private val lastRoot
-        get() = navController?.currentBackStackEntry?.destination?.parent?.route
+    override fun navigate(route: String) {
+        val basePath = route.split("/").firstOrNull()
+        val rootScreen = ROOT_SCREENS.firstOrNull { it.route == basePath }
+        val root = if (rootScreen != null) basePath else null
 
-    fun navigate(
-        route: String,
-        builder: NavOptionsBuilder.() -> Unit = {}
-    ) {
-        val routeWithRoot = if (route.contains("root")) route else "${lastRoot}/$route"
-        debug {
-            "Navigating to $routeWithRoot with navigation queue size $navController"
+        if (rootScreen != null) {
+            currentRootChannel.tryEmit(rootScreen)
         }
-        val result = navigationQueue.trySend(NavigationEvent.Destination(routeWithRoot, builder))
-        if (result.isFailure) errorLog { "Navigation result is $result $routeWithRoot" }
+
+        navigationQueue.trySend(NavigationEvent.Destination(route, root))
     }
 
-    fun back() {
+    override fun goBack() {
         navigationQueue.trySend(NavigationEvent.Back)
     }
-
-    fun attachNavController(navController: NavController) {
-        this.navController = navController
-    }
-
-    val queue = navigationQueue.receiveAsFlow()
 }

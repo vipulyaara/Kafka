@@ -1,18 +1,41 @@
 package org.kafka.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.runtime.Composable
+import androidx.core.net.toUri
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.bottomSheet
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-sealed class Screen(val route: String) {
-    object Home : Screen("home_root")
-    object Search : Screen("search_root")
-    object PlayerLibrary : Screen("player_library_root")
-    object Library : Screen("library_root")
-    object Profile : Screen("profile_root")
+sealed class RootScreen(val route: String, val startScreen: LeafScreen) {
+    object Home : RootScreen("home_root", LeafScreen.Home)
+    object Search : RootScreen("search_root", LeafScreen.Search)
+    object PlayerLibrary : RootScreen("player_library_root", LeafScreen.PlayerLibrary)
+    object Library : RootScreen("library_root", LeafScreen.Library)
+    object Profile : RootScreen("profile_root", LeafScreen.Profile)
 }
 
-sealed class LeafScreen(private val route: String) {
-    fun createRoute(root: Screen) = "${root.route}/$route"
+sealed class LeafScreen(
+    open val route: String,
+    open val rootRoute: String? = null,
+    val arguments: List<NamedNavArgument> = emptyList(),
+    val deepLinks: List<NavDeepLink> = emptyList(),
+) {
+    fun createRoute(root: RootScreen? = null) = when (val rootPath = root?.route ?: this.rootRoute) {
+        is String -> "$rootPath/$route"
+        else -> route
+    }
 
     object Home : LeafScreen("home")
     object Search : LeafScreen("search")
@@ -26,15 +49,97 @@ sealed class LeafScreen(private val route: String) {
 
     fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
-    object ItemDetail : LeafScreen("item/{itemId}") {
-        fun createRoute(itemId: String): String = "item/$itemId"
+    data class ItemDetail(
+        override val route: String = "item/{itemId}",
+        override val rootRoute: String = "home_root"
+    ) : LeafScreen(
+        route = route,
+        rootRoute = rootRoute,
+        arguments = listOf(
+            navArgument("itemId") {
+                type = NavType.StringType
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}item/{itemId}"
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(id: String, root: RootScreen) = "${root.route}/item/$id"
+
+            fun buildUri(id: String) = "${Config.BASE_URL}item/$id".toUri()
+        }
     }
 
-    object Files : LeafScreen("files/{itemId}") {
-        fun createRoute(itemId: String): String = "files/$itemId"
+    data class Files(
+        override val route: String = "files/{itemId}",
+        override val rootRoute: String
+    ) : LeafScreen(
+        route = route,
+        rootRoute = rootRoute,
+        arguments = listOf(
+            navArgument("itemId") {
+                type = NavType.StringType
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}files/{itemId}"
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(id: String, root: RootScreen) = "${root.route}/files/$id"
+            fun buildUri(id: String) = "${Config.BASE_URL}files/$id".toUri()
+        }
     }
 
-    object Reader : LeafScreen("reader/{itemId}") {
-        fun createRoute(arg: String): String = "reader/$arg"
+    data class Reader(
+        override val route: String = "reader/{itemId}",
+        override val rootRoute: String
+    ) : LeafScreen(
+        route = route,
+        rootRoute = rootRoute,
+        arguments = listOf(
+            navArgument("itemId") {
+                type = NavType.StringType
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}reader/{itemId}"
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(id: String, root: RootScreen) = "${root.route}/reader/$id"
+            fun buildUri(id: String) = "${Config.BASE_URL}reader/$id".toUri()
+        }
     }
+}
+
+val ROOT_SCREENS =
+    listOf(RootScreen.Home, RootScreen.Search, RootScreen.Library, RootScreen.PlayerLibrary, RootScreen.Profile)
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.composableScreen(
+    screen: LeafScreen,
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(screen.createRoute(), screen.arguments, screen.deepLinks, content = content)
+}
+
+@OptIn(ExperimentalMaterialNavigationApi::class)
+fun NavGraphBuilder.bottomSheetScreen(
+    screen: LeafScreen,
+    content: @Composable ColumnScope.(NavBackStackEntry) -> Unit
+) =
+    bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
+
+
+object Config {
+    const val BASE_HOST = "datmusic.xyz"
+    const val BASE_URL = "https://$BASE_HOST/"
 }

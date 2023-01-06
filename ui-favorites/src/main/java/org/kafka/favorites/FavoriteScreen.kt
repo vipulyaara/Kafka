@@ -13,14 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.pager.HorizontalPager
@@ -28,11 +28,15 @@ import com.google.accompanist.pager.rememberPagerState
 import com.kafka.data.entities.Item
 import org.kafka.common.UiMessage
 import org.kafka.common.asImmutable
+import org.kafka.common.plus
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.RootScreen
+import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.bottomScaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -41,12 +45,24 @@ fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {
 
     val navigator = LocalNavigator.current
     val openItemDetail: (String) -> Unit = {
-        navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
+        navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Library))
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        val pagerState = rememberPagerState()
+    Scaffold { padding ->
+        ProvideScaffoldPadding(padding = padding) {
+            Favorites(viewState, openItemDetail)
+        }
+    }
+}
 
+@Composable
+private fun Favorites(
+    viewState: FavoriteViewState,
+    openItemDetail: (String) -> Unit
+) {
+    val pagerState = rememberPagerState()
+
+    Column(modifier = Modifier.fillMaxSize()) {
         Tabs(
             pagerState = pagerState,
             tabs = listOf("Favorites", "Downloaded").asImmutable(),
@@ -64,7 +80,6 @@ fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {
 
 @Composable
 private fun FavoriteItemGrid(favoriteItems: List<Item>, openItemDetail: (String) -> Unit) {
-
     if (favoriteItems.isEmpty()) {
         FullScreenMessage(
             uiMessage = UiMessage(
@@ -73,10 +88,12 @@ private fun FavoriteItemGrid(favoriteItems: List<Item>, openItemDetail: (String)
             )
         )
     } else {
+        val padding =
+            PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(Dimens.Spacing08)
+            contentPadding = padding
         ) {
             items(favoriteItems, key = { it.itemId }) {
                 LibraryItem(item = it, openItemDetail = openItemDetail)
@@ -95,10 +112,12 @@ private fun DownloadedItemGrid(downloadedItems: List<Item>, openItemDetail: (Str
             )
         )
     } else {
+        val padding =
+            PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(Dimens.Spacing08)
+            contentPadding = padding
         ) {
             items(downloadedItems, key = { it.itemId }) {
                 LibraryItem(item = it, openItemDetail = openItemDetail)
@@ -113,21 +132,22 @@ private fun LibraryItem(item: Item, openItemDetail: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { openItemDetail(item.itemId) }
-            .padding(Dimens.Spacing04)
-            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
-            .background(MaterialTheme.colorScheme.surface)
+            .padding(Dimens.Spacing08)
     ) {
         LoadImage(
             data = item.coverImage,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
+                .shadowMaterial(Dimens.Elevation04, RectangleShape)
+                .background(MaterialTheme.colorScheme.surface)
         )
 
         Column(
-            modifier = Modifier
-                .padding(Dimens.Spacing12)
-                .height(72.dp)
+            modifier = Modifier.padding(
+                vertical = Dimens.Spacing08,
+                horizontal = Dimens.Spacing04
+            )
         ) {
             Text(
                 text = item.title.orEmpty(),
