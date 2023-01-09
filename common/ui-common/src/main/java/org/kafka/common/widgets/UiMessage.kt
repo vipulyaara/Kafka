@@ -23,7 +23,6 @@ import org.kafka.common.UiMessage
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.alignCenter
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.body2
 
 @Composable
 fun FullScreenMessage(
@@ -99,7 +98,7 @@ fun InlineMessage(
             Text(
                 modifier = Modifier.padding(Dimens.Spacing12),
                 text = snackbarError.orEmpty(),
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }

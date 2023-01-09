@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile">پروفایل</string>
+    <string name="bottom_bar_profile">پروفایل</string>
     <string name="ghazal">غزل</string>
     <string name="nazm">نزم</string>
     <string name="sher">شعر</string>

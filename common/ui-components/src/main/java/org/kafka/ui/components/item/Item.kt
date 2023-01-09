@@ -1,4 +1,4 @@
-package org.kafka.item
+package org.kafka.ui.components.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

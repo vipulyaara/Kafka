@@ -15,6 +15,7 @@ import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
+import org.kafka.navigation.LeafScreen.Home.encodeUrl
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -42,10 +43,6 @@ sealed class LeafScreen(
     data class PlayerLibrary(override val route: String = "player_library") : LeafScreen(route)
     object Library : LeafScreen("library")
     object Profile : LeafScreen("profile")
-
-    object WebView : LeafScreen("webview/{url}") {
-        fun createRoute(url: String): String = "webview/${url.encodeUrl()}"
-    }
 
     fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
@@ -93,6 +90,30 @@ sealed class LeafScreen(
         companion object {
             fun buildRoute(id: String, root: RootScreen) = "${root.route}/files/$id"
             fun buildUri(id: String) = "${Config.BASE_URL}files/$id".toUri()
+        }
+    }
+
+    data class WebView(
+        override val route: String = "webview/{url}",
+        override val rootRoute: String? = null
+    ) : LeafScreen(
+        route = route,
+        rootRoute = rootRoute,
+        arguments = listOf(
+            navArgument("url") {
+                type = NavType.StringType
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}webview/{url}"
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(url: String, root: RootScreen) = "${root.route}/webview/${url.encodeUrl()}"
+
+            fun buildUri(id: String) = "${Config.BASE_URL}webview/$id".toUri()
         }
     }
 

@@ -5,7 +5,6 @@
     <string name="review_1">⍟⍟⍟⍟⍟“Young friend,” I say, “your mistake is that you have no perspective. I’ve already been in all the sick rooms, far and wide, and I tell you your wound is not so bad. Made in a tight corner with two blows from an axe. Many people offer their side and hardly hear the axe in the forest, to say nothing of the fact that it’s coming closer to them.”</string>
     <string name="cancel">Cancel</string>
     <string name="see_reviews">See Reviews</string>
-    <string name="read_now">Read Now</string>
     <string name="bullet">%1$s \u2022 %2$s</string>
 
     <string name="pause">Pause</string>
@@ -13,7 +12,6 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="dark_mode">Dark mode</string>
-    <string name="profile">Profile</string>
     <string name="library">Library</string>
     <string name="title_dynamicfeature">Module Title</string>
 </resources>

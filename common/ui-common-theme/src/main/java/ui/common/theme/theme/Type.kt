@@ -1,17 +1,11 @@
 package ui.common.theme.theme
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import ui.common.theme.R
-
-val Typography.body1
-    get() = this.bodyMedium
-val Typography.body2
-    get() = this.bodySmall
 
 @ExperimentalTextApi
 internal fun createSingleGoogleFontFamily(
@@ -51,12 +45,5 @@ internal fun createFontFamily(id: String, additionalWeights: List<FontWeight> = 
     )
 
 val Lora = createFontFamily("Lora")
-
-val MerriweatherSans = createFontFamily("Merriweather Sans")
-val Laila = createFontFamily("Laila")
-val NotoDevnagri = createFontFamily("Noto Sans Devanagari")
-val NotoNastaliq = createFontFamily("Noto Nastaliq Urdu")
-val Lato = createFontFamily("Lato")
-val Rozha = createFontFamily("Rozha One")
 val Circular = createFontFamily("Circular Flow")
 val Inter = Circular

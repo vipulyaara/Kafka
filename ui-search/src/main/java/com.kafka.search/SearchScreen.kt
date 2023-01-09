@@ -24,7 +24,7 @@ import com.kafka.data.entities.RecentSearch
 import org.kafka.common.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
-import org.kafka.item.Item
+import org.kafka.ui.components.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator

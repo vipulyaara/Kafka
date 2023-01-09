@@ -21,6 +21,9 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +47,8 @@ internal fun ContinueReading(
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
+    val removeFromRecent by rememberSaveable { mutableStateOf(false) }
+
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(

@@ -1,0 +1,42 @@
+/*
+* Copyright (C) 2021, Alashov Berkeli
+* All rights reserved.
+*/
+
+plugins {
+	id "com.android.library"
+	id "dagger.hilt.android.plugin"
+	id "kotlin-android"
+	id "kotlin-kapt"
+}
+
+android {
+	compileSdk Publishing.compileSdk
+
+	defaultConfig {
+		minSdkVersion Publishing.minSdk
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	namespace 'org.kafka.downloader'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(':base-domain')
+	implementation project(':data')
+	implementation project(':domain')
+	implementation project(':base-network')
+
+	api libs.hilt.library
+	kapt libs.hilt.compiler
+
+//	testImplementation project(":modules:common-testing")
+//	kaptTest Deps.Dagger.hiltCompiler
+}

@@ -91,8 +91,8 @@ internal val HomeNavigationItems = listOf(
     ),
     HomeNavigationItem.ImageVectorIcon(
         rootScreen = RootScreen.Search,
-        labelResId = R.string.search,
-        contentDescriptionResId = R.string.search,
+        labelResId = R.string.bottom_bar_search,
+        contentDescriptionResId = R.string.bottom_bar_search,
         iconImageVector = Icons.Search,
         selectedImageVector = Icons.SearchActive,
     ),
@@ -111,8 +111,8 @@ internal val HomeNavigationItems = listOf(
     ),
     HomeNavigationItem.ImageVectorIcon(
         rootScreen = RootScreen.Profile,
-        labelResId = R.string.profile,
-        contentDescriptionResId = R.string.profile,
+        labelResId = R.string.bottom_bar_profile,
+        contentDescriptionResId = R.string.bottom_bar_profile,
         iconImageVector = Icons.Profile,
         selectedImageVector = Icons.ProfileActive,
     ),

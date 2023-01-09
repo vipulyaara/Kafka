@@ -49,6 +49,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.webUrl
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import kotlinx.coroutines.CoroutineScope
@@ -62,12 +63,13 @@ import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.common.widgets.LoadImage
 import org.kafka.common.widgets.RekhtaSnackbarHost
-import org.kafka.item.Item
 import org.kafka.navigation.LeafScreen
+import org.kafka.navigation.LeafScreen.WebView
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -83,6 +85,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     val snackbarState = SnackbarHostState()
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
+    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
     val playbackConnection = LocalPlaybackConnection.current
 
     LaunchedEffect(state.message) {
@@ -93,7 +96,14 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(lazyListState) },
+        topBar = {
+            TopBar(
+                lazyListState = lazyListState,
+                onShareClicked = {
+                    navigator.navigate(WebView.buildRoute(state.itemDetail.webUrl(), currentRoot))
+                }
+            )
+        },
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
@@ -294,6 +304,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
 @Composable
 private fun TopBar(
     lazyListState: LazyListState,
+    onShareClicked: () -> Unit,
     navigator: Navigator = LocalNavigator.current
 ) {
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
@@ -316,6 +327,19 @@ private fun TopBar(
                     .background(containerColor)
             ) {
                 IconResource(imageVector = Icons.Back, tint = contentColor)
+            }
+        },
+        actions = {
+            AnimatedVisibility(!isRaised) {
+                IconButton(
+                    onClick = { onShareClicked() },
+                    modifier = Modifier.padding(Dimens.Spacing08)
+                ) {
+                    IconResource(
+                        imageVector = Icons.Web,
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
         }
     )

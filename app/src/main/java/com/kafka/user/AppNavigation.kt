@@ -5,28 +5,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
+import com.kafka.user.playback.PlaybackViewModel
+import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
+import kotlinx.coroutines.launch
 import org.kafka.common.extensions.CollectEvent
 import org.kafka.favorites.FavoriteScreen
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.files.Files
 import org.kafka.navigation.LeafScreen
+import org.kafka.navigation.LeafScreen.ItemDetail
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
@@ -128,7 +133,7 @@ private fun NavGraphBuilder.addPlayerLibraryRoot(navigator: Navigator) {
         route = RootScreen.PlayerLibrary.route,
         startDestination = LeafScreen.PlayerLibrary().route
     ) {
-        addPlayer(RootScreen.PlayerLibrary, navigator)
+        addPlayer(navigator)
     }
 }
 
@@ -153,9 +158,25 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addPlayer(root: RootScreen, navigator: Navigator) {
+private fun NavGraphBuilder.addPlayer(navigator: Navigator) {
     bottomSheetScreen(LeafScreen.PlayerLibrary()) {
-        PlaybackSheet { navigator.goBack() }
+        val playbackViewModel = activityHiltViewModel<PlaybackViewModel>()
+        val coroutineScope = rememberCoroutineScope()
+        val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
+
+        PlaybackSheet(
+            onClose = { navigator.goBack() },
+            goToItem = {
+                coroutineScope.launch {
+                    navigator.navigate(
+                        ItemDetail.buildRoute(
+                            id = playbackViewModel.getCurrentItemId(),
+                            root = currentRoot
+                        )
+                    )
+                }
+            }
+        )
     }
 }
 
@@ -172,7 +193,7 @@ private fun NavGraphBuilder.addProfile(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
-    composableScreen(LeafScreen.ItemDetail(rootRoute = root.route)) {
+    composableScreen(ItemDetail(rootRoute = root.route)) {
         ItemDetail()
     }
 }
@@ -190,12 +211,7 @@ private fun NavGraphBuilder.addReader(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addWebView(root: RootScreen) {
-    composable(
-        route = LeafScreen.WebView.createRoute(root),
-        arguments = listOf(
-            navArgument("url") { type = NavType.StringType }
-        )
-    ) {
+    composableScreen(LeafScreen.WebView(rootRoute = root.route)) {
         WebView(it.arguments?.getString("url").orEmpty())
     }
 }

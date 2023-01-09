@@ -30,6 +30,7 @@ import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
@@ -42,23 +43,25 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val playbackConnection = LocalPlaybackConnection.current
 
     Scaffold(topBar = { TopBar() }) { padding ->
-        LazyColumn(modifier = Modifier, contentPadding = padding) {
-            items(viewState.files, key = { it.fileId }) { file ->
-                File(
-                    file = file,
-                    startDownload = { viewModel.downloadFile(file.fileId) },
-                    openReader = {
-                        navigator.navigate(
-                            Reader.buildRoute(
-                                viewModel.downloadState.value.toString(),
-                                currentRoot
+        ProvideScaffoldPadding(padding = padding) {
+            LazyColumn(modifier = Modifier, contentPadding = padding) {
+                items(viewState.files, key = { it.fileId }) { file ->
+                    File(
+                        file = file,
+                        startDownload = { viewModel.downloadFile(file.fileId) },
+                        openReader = {
+                            navigator.navigate(
+                                Reader.buildRoute(
+                                    viewModel.downloadState.value.toString(),
+                                    currentRoot
+                                )
                             )
-                        )
-                    },
-                    playAudio = {
-                        playbackConnection.playAudio(file.asAudio())
-                    }
-                )
+                        },
+                        playAudio = {
+                            playbackConnection.playAudio(file.asAudio())
+                        }
+                    )
+                }
             }
         }
     }
@@ -94,7 +97,7 @@ private fun File(
             )
 
             Text(
-                text = file.extension + " - " + file.size.orEmpty(),
+                text = file.subtitle,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier

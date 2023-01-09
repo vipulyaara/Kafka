@@ -2,18 +2,15 @@ package com.kafka.data.feature.item
 
 import android.text.Html
 import com.kafka.data.dao.FileDao
-import com.kafka.data.entities.File
 import com.kafka.data.entities.File.Companion.supportedFiles
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.isMp3
-import com.kafka.data.entities.isPdf
-import com.kafka.data.entities.isText
 import com.kafka.data.model.item.ItemDetailResponse
-import java.net.URL
 import javax.inject.Inject
-import com.kafka.data.model.item.File as FileResponse
 
-class ItemDetailMapper @Inject constructor(private val fileDao: FileDao) {
+class ItemDetailMapper @Inject constructor(
+    private val fileDao: FileDao,
+    private val fileMapper: FileMapper
+) {
     suspend fun map(from: ItemDetailResponse): ItemDetail {
         return ItemDetail(
             itemId = from.metadata.identifier,
@@ -34,7 +31,8 @@ class ItemDetailMapper @Inject constructor(private val fileDao: FileDao) {
 
     private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
         val files = from.files.map {
-            it.asFile(
+            fileMapper.map(
+                file = it,
                 itemId = from.metadata.identifier,
                 itemTitle = item.title,
                 prefix = from.dirPrefix(),
@@ -51,24 +49,3 @@ fun String?.format() = Html.fromHtml(this, 0)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
 
-fun FileResponse.asFile(
-    itemId: String,
-    itemTitle: String?,
-    coverImage: String?,
-    prefix: String,
-    localUri: String?
-) = File(
-    fileId = name,
-    itemId = itemId,
-    itemTitle = itemTitle,
-    size = size?.toIntOrNull()?.run { this / 1000_000 }.toString() + " MB",
-    title = title ?: "---",
-    extension = name.split(".").last(),
-    creator = creator,
-    time = (mtime ?: "0").toLong(),
-    format = format,
-    playbackUrl = if (format.isMp3()) URL("$prefix/$name").toString() else null,
-    readerUrl = if (format.isPdf() || format.isText()) URL("$prefix/$name").toString() else null,
-    coverImage = coverImage,
-    localUri = localUri
-)

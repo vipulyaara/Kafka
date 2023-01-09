@@ -23,7 +23,7 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
-import org.kafka.item.Item
+import org.kafka.ui.components.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
