@@ -8,7 +8,7 @@ Kafka uses www.archive.org to serve millions of audiobooks and pdf books availab
 
 
 <img src="https://user-images.githubusercontent.com/6247940/95682401-47813b00-0be5-11eb-86c5-ffaf425dadad.png">
-<img src="https://user-images.githubusercontent.com/6247940/95682455-95963e80-0be5-11eb-9a18-968620fd2a45.png">
+<img src="https://user-images.githubusercontent.com/6247940/212389424-f44196ce-0579-4501-b718-af506f0e513c.png">
 
 
 The audio player is separated into another library https://github.com/vipulyaara/Sarahang
