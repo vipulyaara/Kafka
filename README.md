@@ -11,7 +11,7 @@ Kafka uses www.archive.org to serve millions of audiobooks and pdf books availab
 <img src="https://user-images.githubusercontent.com/6247940/95682455-95963e80-0be5-11eb-9a18-968620fd2a45.png">
 
 
-
+The audio player is separated into another library https://github.com/vipulyaara/Sarahang
 
 ## Architecture
 
