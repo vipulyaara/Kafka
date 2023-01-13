@@ -63,9 +63,6 @@ class DatabaseDaoModule {
     fun provideItemDao(db: KafkaRoomDatabase) = db.itemDao()
 
     @Provides
-    fun provideQueueDao(db: KafkaRoomDatabase) = db.queueDao()
-
-    @Provides
     fun provideItemDetailDao(db: KafkaRoomDatabase) = db.itemDetailDao()
 
     @Provides

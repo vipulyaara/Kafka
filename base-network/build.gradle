@@ -9,7 +9,7 @@ kapt {
 }
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         minSdkVersion Publishing.minSdk
@@ -28,6 +28,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'org.kafka.base.network'
 }
 
 dependencies {

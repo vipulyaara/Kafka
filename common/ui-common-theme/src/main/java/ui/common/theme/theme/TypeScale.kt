@@ -76,7 +76,7 @@ internal object TypeScale {
     val TitleMediumTracking = 0.2.sp
     val TitleMediumWeight = Typeface.WeightMedium
     val TitleSmallFont = Typeface.PlainMedium
-    val TitleSmallLineHeight = 20.0.sp
+    val TitleSmallLineHeight = 16.0.sp
     val TitleSmallSize = 14.sp
     val TitleSmallTracking = 0.1.sp
     val TitleSmallWeight = Typeface.WeightMedium

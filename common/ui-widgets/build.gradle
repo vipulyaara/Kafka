@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         minSdkVersion Publishing.minSdk

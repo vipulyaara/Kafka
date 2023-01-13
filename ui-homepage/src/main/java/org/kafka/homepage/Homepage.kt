@@ -1,7 +1,6 @@
 package org.kafka.homepage
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,10 +23,14 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
-import org.kafka.item.Item
+import org.kafka.ui.components.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.RootScreen
+import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.material.TopBar
+import org.kafka.ui.components.progress.InfiniteProgressBar
+import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -34,32 +38,39 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     LogCompositions(tag = "Homepage Feed items")
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-
-    val lazyListState = rememberLazyListState()
     val snackbarState = SnackbarHostState()
-    val navigator = LocalNavigator.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
-        Box(Modifier.fillMaxSize()) {
-//            FullScreenProgressBar(show = viewState.isFullScreenLoading)
-
-            AnimatedVisibility(viewState.homepage?.queryItems != null) {
-                HomepageFeedItems(
-                    homepage = viewState.homepage!!,
-                    lazyListState = lazyListState,
-                    openItemDetail = {
-                        navigator.navigate(LeafScreen.ItemDetail.createRoute(it))
-                    },
-                    paddingValues = padding
-                )
-            }
-
-            FullScreenMessage(viewState.message, viewState.isFullScreenError)
+        ProvideScaffoldPadding(padding = padding) {
+            Homepage(viewState)
         }
+    }
+}
+
+@Composable
+private fun Homepage(viewState: HomepageViewState) {
+    val lazyListState = rememberLazyListState()
+    val navigator = LocalNavigator.current
+
+    Box(Modifier.fillMaxSize()) {
+        AnimatedVisibility(viewState.hasQueryItems) {
+            HomepageFeedItems(
+                homepage = viewState.homepage!!,
+                lazyListState = lazyListState,
+                openItemDetail = {
+                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Home))
+                }
+            )
+        }
+        InfiniteProgressBar(
+            show = viewState.isFullScreenLoading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        FullScreenMessage(viewState.message, viewState.isFullScreenError)
     }
 }
 
@@ -67,19 +78,18 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     openItemDetail: (String) -> Unit,
-    lazyListState: LazyListState,
-    paddingValues: PaddingValues
+    lazyListState: LazyListState
 ) {
     LazyColumn(
         state = lazyListState,
-        contentPadding = paddingValues,
+        contentPadding = scaffoldPadding(),
         modifier = Modifier.fillMaxSize()
     ) {
         item { Carousels() }
 
         item {
             ContinueReading(
-                readingList = homepage.recentItems.asImmutable(),
+                readingList = homepage.continueReadingItems.asImmutable(),
                 modifier = Modifier.padding(vertical = Dimens.Spacing20),
                 openItemDetail = openItemDetail
             )
@@ -88,15 +98,7 @@ private fun HomepageFeedItems(
         itemsIndexed(
             items = homepage.queryItems,
             key = { _, item -> item.itemId }
-        ) { index, item ->
-//            if (index == 5) {
-//                FeaturedItems(
-//                    readingList = homepage.queryItems.asImmutable(),
-//                    modifier = Modifier,
-//                    openItemDetail = openItemDetail
-//                )
-//            }
-
+        ) { _, item ->
             Item(item = item, openItemDetail = openItemDetail)
         }
     }

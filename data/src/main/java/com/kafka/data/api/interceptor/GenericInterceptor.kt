@@ -12,7 +12,7 @@ class GenericInterceptor @Inject constructor() : Interceptor {
         var request = chain.request()
         val url = request.url.newBuilder()
             .addQueryParameter("output", "json")
-            .addQueryParameter("rows", "40")
+            .addQueryParameter("rows", "100")
             .addQueryParameter("page", "1")
             .addQueryParameter("sort", "-downloads")
             .build()

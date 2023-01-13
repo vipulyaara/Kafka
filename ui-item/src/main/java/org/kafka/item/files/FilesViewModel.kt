@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.File
+import com.sarahang.playback.core.models.Audio
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -92,3 +94,13 @@ class FilesViewModel @Inject constructor(
         }
     }
 }
+
+fun File.asAudio() = Audio(
+    id = fileId,
+    title = title.orEmpty(),
+    artist = creator,
+    album = itemTitle,
+    duration = duration,
+    playbackUrl = playbackUrl.orEmpty(),
+    coverImage = coverImage
+)

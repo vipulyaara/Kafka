@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Publishing.compileSdkVersion)
+    compileSdk(Publishing.compileSdk)
 
     defaultConfig {
         minSdkVersion(Publishing.minSdkVersion)
-        targetSdkVersion(Publishing.compileSdkVersion)
+        targetSdkVersion(Publishing.compileSdk)
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

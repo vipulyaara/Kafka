@@ -2,6 +2,7 @@ package org.kafka.favorites
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -13,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.launch
 import org.kafka.common.ImmutableList
 import org.kafka.common.extensions.alignCenter

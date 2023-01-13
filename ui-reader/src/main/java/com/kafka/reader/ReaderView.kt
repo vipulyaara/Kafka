@@ -4,15 +4,12 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.pspdfkit.configuration.activity.PdfActivityConfiguration
 import com.pspdfkit.configuration.activity.UserInterfaceViewMode
@@ -29,7 +26,7 @@ import org.kafka.common.animation.Delayed
 @Composable
 fun ReaderView(uri: Uri) {
     Surface {
-        val hideInterfaceElements by remember { mutableStateOf(false) }
+        val hideInterfaceElements by remember { mutableStateOf(true) }
         val context = LocalContext.current
 
         val pdfActivityConfiguration = getPdfConfiguration(hideInterfaceElements, context)
@@ -48,7 +45,6 @@ fun ReaderView(uri: Uri) {
 private fun getPdfConfiguration(
     hideInterfaceElements: Boolean,
     context: Context,
-    containerColor: Color = MaterialTheme.colorScheme.primary,
     theme: ThemeMode = if (isSystemInDarkTheme()) ThemeMode.NIGHT else ThemeMode.DEFAULT
 ) = remember(hideInterfaceElements) {
     val userInterfaceViewMode =

@@ -23,8 +23,6 @@ buildscript {
 }
 
 plugins {
-//    id 'com.diffplug.spotless' version '5.10.2'
-//    id 'com.github.ben-manes.versions' version '0.39.0'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.20'
 }
 
@@ -101,6 +99,7 @@ subprojects {
             freeCompilerArgs += "-Xopt-in=kotlin.annotation.AnnotationTarget.ExperimentalTime"
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
             freeCompilerArgs += "-Xopt-in=androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
 
             // Set JVM target to 1.8
             jvmTarget = "1.8"

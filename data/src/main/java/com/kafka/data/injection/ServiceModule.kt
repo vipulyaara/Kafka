@@ -12,6 +12,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
@@ -64,8 +65,8 @@ class ServiceModule {
         val builder = OkHttpClient.Builder().apply {
             readTimeout(60, TimeUnit.SECONDS)
             connectTimeout(60, TimeUnit.SECONDS)
-
-            addInterceptor(genericInterceptor)
+            protocols(listOf(Protocol.HTTP_1_1))
+//            addInterceptor(genericInterceptor)
             addInterceptor(acceptDialogInterceptor)
             addInterceptor(httpLoggingInterceptor)
         }

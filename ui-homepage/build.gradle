@@ -9,7 +9,7 @@ kapt {
 }
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         minSdkVersion Publishing.minSdk
@@ -34,6 +34,7 @@ android {
         test { java.srcDirs = ['src/test/java'] }
         androidTest { java.srcDirs = ['src/androidTest/java'] }
     }
+    namespace 'org.kafka.homepage'
 }
 
 dependencies {

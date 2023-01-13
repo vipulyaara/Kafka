@@ -20,6 +20,8 @@ class ObserveDownloadedItems @Inject constructor(
         return fileDao.observeDownloadedFiles()
             .map { files ->
                 files.map { itemDao.getItemByItemId(it.itemId) }
+                    .distinctBy { it.itemId }
+                    .asReversed()
             }.flowOn(dispatchers.io)
     }
 }

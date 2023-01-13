@@ -22,12 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
+import com.kafka.data.entities.isAudio
+import com.sarahang.playback.core.models.LocalPlaybackConnection
 import org.kafka.common.Icons
 import org.kafka.common.extensions.elevation
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
 
@@ -35,42 +39,65 @@ import ui.common.theme.theme.textPrimary
 fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
+    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
+    val playbackConnection = LocalPlaybackConnection.current
 
     Scaffold(topBar = { TopBar() }) { padding ->
-        LazyColumn(modifier = Modifier, contentPadding = padding) {
-            items(viewState.files, key = { it.fileId }) { file ->
-                File(
-                    it = file,
-                    startDownload = { viewModel.downloadFile(file.fileId) },
-                    openReader = {
-                        navigator.navigate(Reader.createRoute(viewModel.downloadState.value.toString()))
-                    }
-                )
+        ProvideScaffoldPadding(padding = padding) {
+            LazyColumn(modifier = Modifier, contentPadding = padding) {
+                items(viewState.files, key = { it.fileId }) { file ->
+                    File(
+                        file = file,
+                        startDownload = { viewModel.downloadFile(file.fileId) },
+                        openReader = {
+                            navigator.navigate(
+                                Reader.buildRoute(
+                                    viewModel.downloadState.value.toString(),
+                                    currentRoot
+                                )
+                            )
+                        },
+                        playAudio = {
+                            playbackConnection.playAudio(file.asAudio())
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun File(it: File, startDownload: () -> Unit, openReader: () -> Unit) {
+private fun File(
+    file: File,
+    startDownload: () -> Unit,
+    openReader: () -> Unit,
+    playAudio: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { openReader() }
+            .clickable {
+                if (file.isAudio()) {
+                    playAudio()
+                } else {
+                    openReader()
+                }
+            }
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = it.title.orEmpty(),
+                text = file.title.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.textPrimary,
                 modifier = Modifier
             )
 
             Text(
-                text = it.extension + " - " + it.size.orEmpty(),
+                text = file.subtitle,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
@@ -89,9 +116,9 @@ private fun TopBar(
     lazyListState: LazyListState = rememberLazyListState(),
     navigator: Navigator = LocalNavigator.current
 ) {
-    org.kafka.ui.components.material.TopBar(
+    TopBar(
         navigationIcon = {
-            IconButton(onClick = { navigator.back() }) {
+            IconButton(onClick = { navigator.goBack() }) {
                 IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)
             }
         },

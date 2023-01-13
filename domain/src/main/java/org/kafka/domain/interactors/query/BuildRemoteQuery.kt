@@ -30,7 +30,7 @@ class BuildRemoteQuery @Inject constructor() {
         query += "$_mediaType:($_mediaTypeText OR $_mediaTypeAudio)"
 
 //    query = query.plus(keyValueRemoteQuery(_mediaType, _mediaTypeText, joinerOr.toRemoteJoiner()))
-//    query = query.plus(keyValueRemoteQuery(_mediaType, _mediatypeAudio, ""))
+//    query = query.plus(keyValueRemoteQuery(_mediaType, _mediaTypeAudio, ""))
 
         debug { "Remote query is $query" }
 

@@ -9,30 +9,34 @@ gradleEnterprise {
     }
 }
 
+include ':analytics'
 include ':app'
 include ':base-domain'
 include ':base-network'
+include ':common:ui-common'
+include ':common:ui-common-theme'
+include ':common:ui-components'
+//include ':core-downloader'
 include ':data'
-include ':data-models'
 include ':database'
+include ':data-models'
 include ':domain'
 include ':navigation'
 include ':notifications'
-include ':navigation'
-include ':analytics'
-include ':core-playback'
 include ':ui-favorites'
 include ':ui-homepage'
 include ':ui-search'
 include ':ui-item'
-include ':ui-player'
 include ':ui-reader'
 include ':ui-artist'
 include ':webview'
-include ':common:ui-common'
-include ':common:ui-common-theme'
-include ':common:ui-components'
+
+include ':playback-core'
+include ':playback-ui'
+project(':playback-core').projectDir = new File(settingsDir, '../Sarahang/playback-core')
+project(':playback-ui').projectDir = new File(settingsDir, '../Sarahang/playback-ui')
 
 enableFeaturePreview("VERSION_CATALOGS")
 
 includeBuild("gradlePlugins")
+include ':ui-text-reader'

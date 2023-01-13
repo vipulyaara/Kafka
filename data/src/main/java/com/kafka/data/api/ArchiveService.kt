@@ -19,7 +19,7 @@ interface ArchiveService {
     suspend fun search(
         @Query("q", encoded = true) query: String?,
         @Query("output") output: String = "json",
-        @Query("rows") rows: String = "40",
+        @Query("rows") rows: String = "200",
         @Query("page") page: String = "1",
         @Query("sort") sort: String = "-downloads",
     ): SearchResponse

@@ -11,7 +11,7 @@ kapt {
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion Publishing.compileSdk
+    compileSdk Publishing.compileSdk
 
     defaultConfig {
         minSdkVersion Publishing.minSdk
@@ -30,6 +30,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
+    namespace 'org.kafka.favorites'
 }
 
 dependencies {

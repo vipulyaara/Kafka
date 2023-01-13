@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.kafka.data.entities.Item
-import org.kafka.item.Item
+import org.kafka.ui.components.item.Item
 import ui.common.theme.theme.Dimens
 
 @Composable

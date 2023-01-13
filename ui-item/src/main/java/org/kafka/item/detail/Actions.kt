@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isAudio
-import com.kafka.data.entities.readerUrl
 import org.kafka.common.Icons
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.IconButton
@@ -65,7 +64,7 @@ fun Actions(
             modifier = Modifier.weight(0.8f)
         ) {
             if (itemDetail.isAudio()) {
-                playAudio(itemDetail.readerUrl())
+                playAudio(itemDetail.itemId)
             } else {
                 openReader(itemDetail.itemId)
             }

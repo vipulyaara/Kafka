@@ -7,8 +7,11 @@ import org.kafka.common.UiMessage
 @Immutable
 data class ReaderViewState(
     val readerUrl: String? = null,
-    val progress: Float = 0f,
-    val uri: Uri? = null,
     val isLoading: Boolean = false,
     val message: UiMessage? = null,
+)
+
+data class DownloadProgressState(
+    val progress: Float = 0f,
+    val uri: Uri? = null,
 )

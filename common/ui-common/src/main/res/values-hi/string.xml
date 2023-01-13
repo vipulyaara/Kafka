@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile">प्रोफ़ायल</string>
+    <string name="bottom_bar_profile">प्रोफ़ायल</string>
     <string name="ghazal">ग़ज़ल</string>
     <string name="nazm">नज़्म</string>
     <string name="sher">शेर</string>

@@ -22,4 +22,4 @@ data class ItemDetail(
     val metadata: List<String>? = null
 ) : BaseEntity
 
-fun ItemDetail?.readerUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"
+fun ItemDetail?.webUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

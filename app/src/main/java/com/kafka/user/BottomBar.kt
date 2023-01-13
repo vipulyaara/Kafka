@@ -2,53 +2,49 @@ package com.kafka.user
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import org.kafka.common.Icons
-import org.kafka.navigation.Screen
+import org.kafka.navigation.RootScreen
 import org.kafka.user.R
-import ui.common.theme.theme.DisableRipple
+import ui.common.theme.theme.translucentSurfaceColor
 
 @Composable
 fun RekhtaBottomBar(navController: NavController) {
     val currentSelectedItem by navController.currentScreenAsState()
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier.fillMaxWidth().height(64.dp)
+        containerColor = translucentSurfaceColor(),
+        contentColor = contentColorFor(MaterialTheme.colorScheme.surface),
+        windowInsets = WindowInsets.navigationBars,
+        modifier = Modifier.fillMaxWidth()
     ) {
         HomeNavigationItems.forEach { item ->
-            DisableRipple {
                 NavigationBarItem(
                     icon = {
                         HomeNavigationItemIcon(
                             item = item,
-                            selected = currentSelectedItem == item.screen
+                            selected = currentSelectedItem == item.rootScreen
                         )
                     },
                     alwaysShowLabel = false,
-                    selected = currentSelectedItem == item.screen,
+                    selected = currentSelectedItem == item.rootScreen,
                     onClick = {
-                        navController.navigate(item.screen.route) {
+                        navController.navigate(item.rootScreen.route) {
                             launchSingleTop = true
                             restoreState = true
 
@@ -60,7 +56,6 @@ fun RekhtaBottomBar(navController: NavController) {
                 )
             }
         }
-    }
 }
 
 @Composable
@@ -86,57 +81,18 @@ private fun HomeNavigationItemIcon(item: HomeNavigationItem, selected: Boolean) 
     }
 }
 
-@Stable
-@Composable
-private fun NavController.currentScreenAsState(): State<Screen> {
-    val selectedItem = remember { mutableStateOf<Screen>(Screen.Home) }
-
-    DisposableEffect(this) {
-        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-            when {
-                destination.hierarchy.any { it.route == Screen.Home.route } -> {
-                    selectedItem.value = Screen.Home
-                }
-
-                destination.hierarchy.any { it.route == Screen.Search.route } -> {
-                    selectedItem.value = Screen.Search
-                }
-
-                destination.hierarchy.any { it.route == Screen.PlayerLibrary.route } -> {
-                    selectedItem.value = Screen.PlayerLibrary
-                }
-
-                destination.hierarchy.any { it.route == Screen.Library.route } -> {
-                    selectedItem.value = Screen.Library
-                }
-
-                destination.hierarchy.any { it.route == Screen.Profile.route } -> {
-                    selectedItem.value = Screen.Profile
-                }
-            }
-        }
-        addOnDestinationChangedListener(listener)
-
-        onDispose {
-            removeOnDestinationChangedListener(listener)
-        }
-    }
-
-    return selectedItem
-}
-
-private val HomeNavigationItems = listOf(
+internal val HomeNavigationItems = listOf(
     HomeNavigationItem.ImageVectorIcon(
-        screen = Screen.Home,
+        rootScreen = RootScreen.Home,
         labelResId = R.string.home,
         contentDescriptionResId = R.string.home,
         iconImageVector = Icons.Home,
         selectedImageVector = Icons.HomeActive,
     ),
     HomeNavigationItem.ImageVectorIcon(
-        screen = Screen.Search,
-        labelResId = R.string.search,
-        contentDescriptionResId = R.string.search,
+        rootScreen = RootScreen.Search,
+        labelResId = R.string.bottom_bar_search,
+        contentDescriptionResId = R.string.bottom_bar_search,
         iconImageVector = Icons.Search,
         selectedImageVector = Icons.SearchActive,
     ),
@@ -147,31 +103,31 @@ private val HomeNavigationItems = listOf(
 //        iconImageVector = Icons.PlayCircle,
 //    ),
     HomeNavigationItem.ImageVectorIcon(
-        screen = Screen.Library,
+        rootScreen = RootScreen.Library,
         labelResId = R.string.library,
         contentDescriptionResId = R.string.library,
         iconImageVector = Icons.Library,
         selectedImageVector = Icons.LibraryActive,
     ),
     HomeNavigationItem.ImageVectorIcon(
-        screen = Screen.Profile,
-        labelResId = R.string.profile,
-        contentDescriptionResId = R.string.profile,
+        rootScreen = RootScreen.Profile,
+        labelResId = R.string.bottom_bar_profile,
+        contentDescriptionResId = R.string.bottom_bar_profile,
         iconImageVector = Icons.Profile,
         selectedImageVector = Icons.ProfileActive,
     ),
 )
 
 internal sealed class HomeNavigationItem(
-    val screen: Screen,
+    val rootScreen: RootScreen,
     @StringRes val labelResId: Int,
     @StringRes val contentDescriptionResId: Int,
 ) {
     class ImageVectorIcon(
-        screen: Screen,
+        rootScreen: RootScreen,
         @StringRes labelResId: Int,
         @StringRes contentDescriptionResId: Int,
         val iconImageVector: ImageVector,
         val selectedImageVector: ImageVector? = null,
-    ) : HomeNavigationItem(screen, labelResId, contentDescriptionResId)
+    ) : HomeNavigationItem(rootScreen, labelResId, contentDescriptionResId)
 }

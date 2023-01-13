@@ -19,8 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-val DefaultSpecs = Specs()
-
 @Composable
 fun AppTheme(
     dynamicColor: Boolean = isAtLeastS(),
@@ -49,8 +47,8 @@ fun AppTheme(
     val isLight = isSystemInLightTheme()
 
     SideEffect {
-        systemUiController.setSystemBarsColor(color = colorScheme.surface, darkIcons = isLight)
-        systemUiController.setNavigationBarColor(color = colorScheme.surface, darkIcons = isLight)
+        systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = isLight)
+        systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = isLight)
     }
 
     MaterialTheme(colorScheme = colorScheme, typography = TypographyEnglish) {
