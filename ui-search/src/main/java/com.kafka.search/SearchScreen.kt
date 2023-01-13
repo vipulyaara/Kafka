@@ -24,12 +24,12 @@ import com.kafka.data.entities.RecentSearch
 import org.kafka.common.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
-import org.kafka.ui.components.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -76,14 +76,10 @@ private fun Search(
     recentSearches: List<RecentSearch>
 ) {
     Column {
-        SearchWidget(
-            searchText = searchText,
-            setSearchText = setSearchText,
-            onImeAction = {
-                queryViewModel.submitQuery(it)
-                searchViewModel.addRecentSearch(it)
-            }
-        )
+        SearchWidget(searchText = searchText, setSearchText = setSearchText, onImeAction = {
+            queryViewModel.submitQuery(it)
+            searchViewModel.addRecentSearch(it)
+        })
 
         queryViewState.items?.let { results ->
             val padding = PaddingValues(bottom = scaffoldPadding().calculateBottomPadding())
@@ -96,7 +92,9 @@ private fun Search(
             }
         }
 
-        RecentSearches(recentSearches, queryViewState, queryViewModel, searchViewModel)
+        if (queryViewState.items == null) {
+            RecentSearches(recentSearches, queryViewState, queryViewModel, searchViewModel)
+        }
 
         InfiniteProgressBar(show = queryViewState.isLoading)
     }
@@ -110,21 +108,19 @@ private fun RecentSearches(
     searchViewModel: SearchViewModel
 ) {
     if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
-        RecentSearches(
-            recentSearches = recentSearches.map { it.searchTerm },
-            onSearchClicked = {
-                queryViewModel.submitQuery(it)
-                searchViewModel.addRecentSearch(it)
-            },
-            onRemoveSearch = { searchViewModel.removeRecentSearch(it) }
-        )
+        RecentSearches(recentSearches = recentSearches.map { it.searchTerm }, onSearchClicked = {
+            queryViewModel.submitQuery(it)
+            searchViewModel.addRecentSearch(it)
+        }, onRemoveSearch = { searchViewModel.removeRecentSearch(it) })
     }
 }
 
 @Composable
 fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12),
+        modifier = modifier.padding(
+            start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12
+        ),
         text = text,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.textSecondary

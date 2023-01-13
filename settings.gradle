@@ -39,3 +39,4 @@ project(':playback-ui').projectDir = new File(settingsDir, '../Sarahang/playback
 enableFeaturePreview("VERSION_CATALOGS")
 
 includeBuild("gradlePlugins")
+include ':ui-text-reader'

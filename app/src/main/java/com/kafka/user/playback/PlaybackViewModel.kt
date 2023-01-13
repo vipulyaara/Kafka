@@ -18,7 +18,7 @@ class PlaybackViewModel @Inject constructor(
     suspend fun getCurrentItemId(): String {
         val nowPlaying = playbackConnection.nowPlaying.value
         return withContext(Dispatchers.IO) {
-            fileDao.file(nowPlaying.id!!).itemId
+            fileDao.filesByItemId(nowPlaying.id!!).first().itemId
         }
     }
 }

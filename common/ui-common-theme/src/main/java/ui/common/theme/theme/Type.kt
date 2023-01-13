@@ -45,5 +45,5 @@ internal fun createFontFamily(id: String, additionalWeights: List<FontWeight> = 
     )
 
 val Lora = createFontFamily("Lora")
-val Circular = createFontFamily("Circular Flow")
+val Circular = createFontFamily("Sofia Sans")
 val Inter = Circular

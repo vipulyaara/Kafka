@@ -3,14 +3,14 @@ package org.kafka.favorites
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import org.kafka.common.asImmutable
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
@@ -51,7 +51,7 @@ private fun Favorites(
 
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            count = LibraryTab.values().size,
+            pageCount = LibraryTab.values().size,
             state = pagerState
         ) { page ->
             Column {

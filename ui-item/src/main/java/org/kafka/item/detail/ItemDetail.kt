@@ -145,7 +145,7 @@ private fun ItemDetail(
                     navigator.navigate(LeafScreen.Reader.buildRoute(itemId, currentRoot))
                 },
                 playAudio = { itemId ->
-                    playbackConnection.playAudios(itemId)
+                    playbackConnection.playAlbum(itemId)
                 },
                 lazyListState = lazyListState
             )
@@ -234,7 +234,8 @@ private fun DescriptionDialog(itemDetail: ItemDetail, modifier: Modifier = Modif
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(Dimens.Spacing24)
+            .padding(horizontal = Dimens.Spacing24)
+            .padding(top = Dimens.Spacing24)
             .padding(bottom = bottomScaffoldPadding())
     ) {
         Box(

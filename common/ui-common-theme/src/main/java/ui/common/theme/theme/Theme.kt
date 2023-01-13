@@ -19,8 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-val DefaultSpecs = Specs()
-
 @Composable
 fun AppTheme(
     dynamicColor: Boolean = isAtLeastS(),
