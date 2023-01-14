@@ -22,7 +22,8 @@ class ItemMapper @Inject constructor() {
         coverImageResource = 0,
         collection = this.collection,
         genre = this.subject,
-        position = this.downloads
+        position = this.downloads,
+        uploader = this.uploader
     )
 }
 

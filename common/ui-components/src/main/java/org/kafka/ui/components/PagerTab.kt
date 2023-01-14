@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
+import java.lang.Integer.max
 import kotlin.math.absoluteValue
-
 
 /**
  * This indicator syncs up a [TabRow] or [ScrollableTabRow] tab indicator with a
@@ -39,7 +39,8 @@ fun Modifier.pagerTabIndicatorOffset(
         // items this could be > 1
         val targetDistance = (targetPage - pagerState.currentPage).absoluteValue
         // Our normalized fraction over the target distance
-        val fraction = pagerState.currentPageOffsetFraction
+        val fraction = (pagerState.currentPageOffsetFraction / max(targetDistance, 1)).absoluteValue
+//        val fraction = pagerState.currentPageOffsetFraction
 
         targetIndicatorOffset = lerp(currentTab.left, targetTab.left, fraction)
         indicatorWidth = lerp(currentTab.width, targetTab.width, fraction).absoluteValue

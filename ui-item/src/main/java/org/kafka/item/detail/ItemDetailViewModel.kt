@@ -18,6 +18,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
+import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
@@ -34,6 +35,7 @@ class ItemDetailViewModel @Inject constructor(
     private val observeItemDetail: ObserveItemDetail,
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
+    private val addRecentItem: AddRecentItem,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val toggleFavorite: ToggleFavorite,
     savedStateHandle: SavedStateHandle
@@ -102,6 +104,12 @@ class ItemDetailViewModel @Inject constructor(
                     updateItems(UpdateItems.Params(it)).collect()
                 }
             }
+        }
+    }
+
+    fun addRecentItem(itemId: String) {
+        viewModelScope.launch {
+            addRecentItem(AddRecentItem.Params(itemId)).collect()
         }
     }
 

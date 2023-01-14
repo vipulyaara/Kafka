@@ -23,11 +23,11 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
-import org.kafka.ui.components.item.Item
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -46,13 +46,13 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            Homepage(viewState)
+            Homepage(viewState) { viewModel.removeRecentItem(it) }
         }
     }
 }
 
 @Composable
-private fun Homepage(viewState: HomepageViewState) {
+private fun Homepage(viewState: HomepageViewState, removeRecentItem: (String) -> Unit) {
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
 
@@ -63,7 +63,8 @@ private fun Homepage(viewState: HomepageViewState) {
                 lazyListState = lazyListState,
                 openItemDetail = {
                     navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Home))
-                }
+                },
+                removeRecentItem = removeRecentItem
             )
         }
         InfiniteProgressBar(
@@ -78,6 +79,7 @@ private fun Homepage(viewState: HomepageViewState) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     openItemDetail: (String) -> Unit,
+    removeRecentItem: (String) -> Unit,
     lazyListState: LazyListState
 ) {
     LazyColumn(
@@ -91,7 +93,8 @@ private fun HomepageFeedItems(
             ContinueReading(
                 readingList = homepage.continueReadingItems.asImmutable(),
                 modifier = Modifier.padding(vertical = Dimens.Spacing20),
-                openItemDetail = openItemDetail
+                openItemDetail = openItemDetail,
+                removeRecentItem = removeRecentItem
             )
         }
 

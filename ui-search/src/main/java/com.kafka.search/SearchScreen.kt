@@ -93,7 +93,13 @@ private fun Search(
         }
 
         if (queryViewState.items == null) {
-            RecentSearches(recentSearches, queryViewState, queryViewModel, searchViewModel)
+            RecentSearches(
+                recentSearches = recentSearches,
+                queryViewState = queryViewState,
+                queryViewModel = queryViewModel,
+                searchViewModel = searchViewModel,
+                setSearchText = setSearchText
+            )
         }
 
         InfiniteProgressBar(show = queryViewState.isLoading)
@@ -105,10 +111,12 @@ private fun RecentSearches(
     recentSearches: List<RecentSearch>,
     queryViewState: ArchiveQueryViewState,
     queryViewModel: ArchiveQueryViewModel,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    setSearchText: (TextFieldValue) -> Unit
 ) {
     if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
         RecentSearches(recentSearches = recentSearches.map { it.searchTerm }, onSearchClicked = {
+            setSearchText(TextFieldValue(text = it, selection = TextRange(it.lastIndex)))
             queryViewModel.submitQuery(it)
             searchViewModel.addRecentSearch(it)
         }, onRemoveSearch = { searchViewModel.removeRecentSearch(it) })

@@ -20,6 +20,7 @@ data class Item constructor(
     var coverImageResource: Int = 0,
     val collection: List<String>? = null,
     val genre: List<String>? = null,
+    val uploader: String? = null,
     val position: Int = 0
 ) : BaseEntity
 

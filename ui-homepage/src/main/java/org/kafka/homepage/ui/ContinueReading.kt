@@ -1,9 +1,17 @@
 package org.kafka.homepage.ui
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,16 +25,21 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
+import org.kafka.common.Icons
 import org.kafka.common.ImmutableList
 import org.kafka.common.shadowMaterial
 import org.kafka.homepage.R
@@ -45,9 +59,9 @@ import ui.common.theme.theme.textSecondary
 internal fun ContinueReading(
     readingList: ImmutableList<ItemWithRecentItem>,
     modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
+    removeRecentItem: (String) -> Unit
 ) {
-    val removeFromRecent by rememberSaveable { mutableStateOf(false) }
 
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
@@ -58,9 +72,16 @@ internal fun ContinueReading(
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
-            LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
+            LazyRow(
+                contentPadding = PaddingValues(end = 60.dp)
+            ) {
                 items(readingList.items, key = { it.item.itemId }) {
-                    ContinueReadingItem(it.item) { openItemDetail(it.item.itemId) }
+                    ContinueReadingItem(
+                        continueReading = it.item,
+                        onItemClicked = { openItemDetail(it.item.itemId) },
+                        onItemRemoved = { removeRecentItem(it) },
+                        modifier = Modifier.animateItemPlacement()
+                    )
                 }
             }
         }
@@ -70,31 +91,97 @@ internal fun ContinueReading(
 }
 
 @Composable
-private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit) {
-    Column(modifier = Modifier
-        .padding(Dimens.Spacing12)
-        .clickable { onItemClicked() }
-        .widthIn(100.dp, 286.dp)
+private fun ContinueReadingItem(
+    continueReading: Item,
+    modifier: Modifier = Modifier,
+    onItemRemoved: (String) -> Unit,
+    onItemClicked: () -> Unit
+) {
+    var isInEditMode by rememberSaveable(continueReading) { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier.combinedClickable(
+            onLongClick = { isInEditMode = !isInEditMode },
+            onClick = {
+                isInEditMode = false
+                onItemClicked()
+            },
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null
+        )
     ) {
-        Row(
-            modifier = Modifier.padding(Dimens.Spacing12),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        Column(
+            modifier = Modifier
+                .padding(Dimens.Spacing12)
+                .widthIn(100.dp, 286.dp)
         ) {
-            CoverImage(continueReading)
-            Description(continueReading, Modifier.width(286.dp))
+            Row(
+                modifier = Modifier.padding(Dimens.Spacing12),
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                CoverImage(continueReading)
+                Description(continueReading, Modifier.width(286.dp))
+            }
+
+            Spacer(modifier = Modifier.height(Dimens.Spacing12))
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.Spacing12)
+                    .padding(horizontal = 4.dp)
+                    .shadowMaterial(Dimens.Spacing12, clip = false)
+                    .clip(RoundedCornerShape(Dimens.Spacing02))
+                    .background(MaterialTheme.colorScheme.onPrimary)
+            )
         }
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
+        RemoveRecentItemButton(isInEditMode, onItemRemoved, continueReading)
+    }
+}
 
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.Spacing12)
-                .padding(horizontal = 4.dp)
-                .shadowMaterial(Dimens.Spacing12, clip = false)
-                .clip(RoundedCornerShape(Dimens.Spacing02))
-                .background(MaterialTheme.colorScheme.onPrimary)
+@Composable
+private fun BoxScope.RemoveRecentItemButton(
+    isInEditMode: Boolean,
+    onItemRemoved: (String) -> Unit,
+    continueReading: Item
+) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = .75f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
         )
+    )
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = -20f,
+        targetValue = 20f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    if (isInEditMode) {
+        IconButton(
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.TopEnd)
+                .padding(end = Dimens.Spacing24)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    rotationZ = rotation
+                },
+            onClick = { onItemRemoved(continueReading.itemId) }) {
+            Icon(
+                imageVector = Icons.XCircle,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null
+            )
+        }
     }
 }
 

@@ -40,5 +40,7 @@ data class Doc(
     @SerialName("week")
     val week: Int? = 0,
     @SerialName("year")
-    val year: String? = null
+    val year: String? = null,
+    @SerialName("uploader")
+    val uploader: String? = null
 )

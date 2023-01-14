@@ -15,7 +15,7 @@ import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.LoadImage
 import ui.common.theme.theme.Dimens
 
-private val images = banners.subList(0, 4)
+private val images = banners.subList(0, 5)
 
 @Composable
 internal fun Carousels() {

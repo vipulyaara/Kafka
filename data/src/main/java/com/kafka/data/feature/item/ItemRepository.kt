@@ -44,6 +44,10 @@ class ItemRepository @Inject constructor(
         )
     }
 
+    suspend fun removeRecentlyVisitedItem(itemId: String) {
+        recentItemLocalDataSource.delete(itemId)
+    }
+
     suspend fun updateQuery(query: String) {
         remoteDataSource.fetchItemsByQuery(query).getOrThrow().let {
             itemLocalDataSource.insertAll(it)

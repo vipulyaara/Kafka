@@ -145,6 +145,7 @@ private fun ItemDetail(
                     navigator.navigate(LeafScreen.Reader.buildRoute(itemId, currentRoot))
                 },
                 playAudio = { itemId ->
+                    viewModel.addRecentItem(itemId)
                     playbackConnection.playAlbum(itemId)
                 },
                 lazyListState = lazyListState

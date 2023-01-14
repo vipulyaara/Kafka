@@ -19,3 +19,15 @@ class AddRecentItem @Inject constructor(
 
     data class Params(val itemId: String)
 }
+
+class RemoveRecentItem @Inject constructor(
+    private val itemRepository: ItemRepository,
+    private val dispatchers: AppCoroutineDispatchers,
+) : Interactor<String>() {
+
+    override suspend fun doWork(params: String) {
+        withContext(dispatchers.io) {
+            itemRepository.removeRecentlyVisitedItem(params)
+        }
+    }
+}

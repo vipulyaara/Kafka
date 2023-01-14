@@ -15,4 +15,7 @@ abstract class RecentItemDao : EntityDao<RecentItem> {
 
     @Query("select * from recentitem order by timeStamp desc limit :number")
     abstract fun getTopVisitedAuthors(number: Int): Flow<List<RecentItem>>
+
+    @Query("delete from recentitem where itemId = :itemId")
+    abstract suspend fun delete(itemId: String)
 }
