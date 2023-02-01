@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.Icons
@@ -28,8 +29,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val progressViewState by viewModel.downloadState.collectAsStateWithLifecycle()
+    val downloadItem by viewModel.downloadItem.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -42,13 +42,15 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
                 .fillMaxSize()
                 .padding(top = it.calculateTopPadding())
         ) {
-            if (progressViewState.uri != null) {
-                ReaderView(uri = progressViewState.uri!!)
-            } else {
-                LinearProgressIndicator(
-                    progress = progressViewState.progress,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            if (downloadItem != null) {
+                if (downloadItem!!.file.localUri != null) {
+                    ReaderView(uri = downloadItem!!.file.localUri?.toUri()!!)
+                } else {
+                    LinearProgressIndicator(
+                        progress = downloadItem!!.downloadInfo.progress,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }

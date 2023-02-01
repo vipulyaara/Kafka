@@ -14,8 +14,10 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
+import org.threeten.bp.Duration
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 const val baseUrl = "https://archive.org/"
@@ -73,6 +75,19 @@ class ServiceModule {
 
         return builder.build()
     }
+
+    @Provides
+    @Named("downloader")
+    fun downloaderOkHttp(
+        acceptDialogInterceptor: AcceptDialogInterceptor,
+    ) = OkHttpClient.Builder()
+        .readTimeout(Duration.ofMinutes(3).toMillis(), TimeUnit.MILLISECONDS)
+        .writeTimeout(Duration.ofMinutes(3).toMillis(), TimeUnit.MILLISECONDS)
+        .addInterceptor(acceptDialogInterceptor)
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.HEADERS
+        })
+        .build()
 
     @ExperimentalSerializationApi
     @Provides

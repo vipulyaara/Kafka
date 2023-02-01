@@ -156,9 +156,7 @@ fun NavGraphBuilder.composableScreen(
 fun NavGraphBuilder.bottomSheetScreen(
     screen: LeafScreen,
     content: @Composable ColumnScope.(NavBackStackEntry) -> Unit
-) =
-    bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
-
+) = bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
 
 object Config {
     const val BASE_HOST = "datmusic.xyz"

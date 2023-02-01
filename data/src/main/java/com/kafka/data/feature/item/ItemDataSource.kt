@@ -4,6 +4,7 @@ import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
 import okhttp3.ResponseBody
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.debug
 import org.kafka.base.network.resultApiCall
 import javax.inject.Inject
 
@@ -18,7 +19,9 @@ class ItemDataSource @Inject constructor(
 
     suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {
         return resultApiCall(dispatchers.io) {
-            itemMapper.map(archiveService.search(query))
+            val response = archiveService.search(query)
+            debug { "Search results is $response" }
+            itemMapper.map(response)
         }
     }
 

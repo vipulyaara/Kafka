@@ -82,4 +82,7 @@ class DatabaseDaoModule {
 
     @Provides
     fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.searchConfigurationDao()
+
+    @Provides
+    fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
 }

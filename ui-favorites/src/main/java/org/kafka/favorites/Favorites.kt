@@ -21,27 +21,17 @@ import org.kafka.ui.components.item.LayoutType
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun LibraryItems(
+internal fun Favorites(
     items: List<Item>,
-    libraryTab: LibraryTab,
     layoutType: LayoutType,
     changeLayoutType: (LayoutType) -> Unit,
     openItemDetail: (String) -> Unit
 ) {
     if (items.isEmpty()) {
-        val title = when (libraryTab) {
-            LibraryTab.Favorites -> R.string.no_favorites_items_title
-            LibraryTab.Downloads -> R.string.no_favorites_items_title
-        }
-        val message = when (libraryTab) {
-            LibraryTab.Favorites -> R.string.no_favorites_items_message
-            LibraryTab.Downloads -> R.string.no_downloads_items_message
-        }
-
         FullScreenMessage(
             uiMessage = UiMessage(
-                title = stringResource(id = title),
-                message = stringResource(id = message)
+                title = stringResource(id = R.string.no_favorites_items_title),
+                message = stringResource(id = R.string.no_favorites_items_message)
             )
         )
     } else {

@@ -1,5 +1,6 @@
 package com.kafka.search
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,12 +82,17 @@ private fun Search(
             searchViewModel.addRecentSearch(it)
         })
 
-        queryViewState.items?.let { results ->
+        AnimatedVisibility(visible = queryViewState.items != null) {
             val padding = PaddingValues(bottom = scaffoldPadding().calculateBottomPadding())
             LazyColumn(contentPadding = padding) {
-                items(results) {
+                items(queryViewState.items!!) {
                     Item(item = it) { itemId ->
-                        navigator.navigate(LeafScreen.ItemDetail.buildRoute(itemId, RootScreen.Search))
+                        navigator.navigate(
+                            LeafScreen.ItemDetail.buildRoute(
+                                itemId,
+                                RootScreen.Search
+                            )
+                        )
                     }
                 }
             }

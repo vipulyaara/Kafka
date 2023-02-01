@@ -48,8 +48,11 @@ dependencies {
     implementation project(':ui-favorites')
     implementation project(':common:ui-common')
     implementation project(':common:ui-components')
-    implementation project(':playback-core')
-    implementation project(':playback-ui')
+    implementation project(':core-ui-downloader')
+    implementation project(':core-playback')
+    implementation project(':ui-playback')
+
+    implementation libs.fetch
 
     implementation libs.hilt.library
     kapt libs.hilt.compiler

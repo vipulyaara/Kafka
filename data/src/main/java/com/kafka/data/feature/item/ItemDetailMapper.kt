@@ -21,7 +21,6 @@ class ItemDetailMapper @Inject constructor(
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
             files = from.files.filter { it.name.isNotEmpty() }.map { it.name },
-            coverImageResource = 0,
             coverImage = "https://archive.org/services/img/${from.metadata.identifier}",
             metadata = from.metadata.collection
         ).also {

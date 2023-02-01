@@ -1,12 +1,16 @@
 package org.kafka.base.domain
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -39,7 +43,8 @@ abstract class Interactor<in P> {
     }
 }
 
-abstract class SubjectInteractor<P : Any, T> {
+@OptIn(ExperimentalCoroutinesApi::class)
+abstract class SubjectInteractor<P, T> {
     // Ideally this would be buffer = 0, since we use flatMapLatest below, BUT invoke is not
     // suspending. This means that we can't suspend while flatMapLatest cancels any
     // existing flows. The buffer of 1 means that we can use tryEmit() and buffer the value
@@ -50,22 +55,40 @@ abstract class SubjectInteractor<P : Any, T> {
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
+    operator fun invoke(params: P): Flow<T> {
+        paramState.tryEmit(params)
+        return flow
+    }
+
+    suspend fun execute(params: P): T = createObservable(params).first()
+
+    abstract fun createObservable(params: P): Flow<T>
+
     val flow: Flow<T> = paramState
         .distinctUntilChanged()
         .flatMapLatest { createObservable(it) }
         .distinctUntilChanged()
 
-    fun observe() = flow
+    val asyncFlow: Flow<Async<T>> = paramState
+        .distinctUntilChanged()
+        .flatMapLatest { createObservable(it).asAsyncFlow() }
+        .distinctUntilChanged()
 
-    operator fun invoke(params: P) {
-        paramState.tryEmit(params)
-    }
+    suspend fun get(): T = flow.first()
+    suspend fun getOrNull(): T? = flow.firstOrNull()
 
-    protected abstract fun createObservable(params: P): Flow<T>
+    private val errorState = MutableSharedFlow<Throwable>(
+        replay = 1,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     protected fun onError(error: Throwable) {
-        Timber.e(error)
+        errorState.tryEmit(error)
     }
+
+    fun errors(): Flow<Throwable> = errorState.asSharedFlow()
 }
+
 
 operator fun <T> SubjectInteractor<Unit, T>.invoke() = invoke(Unit)

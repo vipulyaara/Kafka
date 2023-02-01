@@ -10,6 +10,9 @@ interface Logger {
     fun logScreenView(label: String, route: String?, arguments: Any?)
 }
 
+fun Logger.event(name: String, map: Map<String, Any> = emptyMap()) =
+    log(EventInfo(name, map.mapValues { it.toString() }))
+
 interface CrashLogger {
     fun initialize(userData: UserData)
     fun logFatal(throwable: Throwable)

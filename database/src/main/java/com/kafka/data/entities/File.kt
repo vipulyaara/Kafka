@@ -3,7 +3,6 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val mediaTypeText = "texts"
 const val mediaTypeAudio = "audio"
 
 @Entity
@@ -12,13 +11,14 @@ data class File(
     val itemId: String,
     val itemTitle: String?,
     val size: Long?,
-    val title: String?,
+    val name: String,
     val extension: String?,
     val creator: String?,
     val time: String?,
-    val format: String?,
+    val format: String,
     val playbackUrl: String?,
     val readerUrl: String?,
+    val downloadUrl: String?,
     val coverImage: String?,
     val localUri: String? = null
 ): BaseEntity {
@@ -26,12 +26,11 @@ data class File(
         val supportedFiles = listOf("pdf", "mp3", "epub", "wav", "txt")
     }
 
-    val subtitle: String
-        get() = listOf(extension, mapSize(), time).joinToString(" - ")
+    val title: String
+        get() = name.removeSuffix(".$extension")
 
     val duration: Long
         get() = time?.let { mapDuration(it) } ?: 0L
-
 
     private fun mapDuration(duration: String): Long {
         var durationInSeconds = 0L
@@ -45,19 +44,15 @@ data class File(
         return durationInSeconds
     }
 
-
     fun mapSize(): String {
-        val gap = 1_000
-//        val size = this.toIntOrNull()
-//            ?.run { this / 1000_000 }.toString()
-//
-//        val seconds = (this / 1000).toInt() % gap
-//        val minutes = (this / (1000 * 60) % 60).toInt()
-//        val hours = (this / (1000 * 60 * 60) % 24).toInt()
-//        "${timeAddZeros(hours)}:${timeAddZeros(minutes, "0")}:${timeAddZeros(seconds, "00")}".apply {
-//            return if (startsWith(":")) replaceFirst(":", "") else this
-//        }
-        return ""
+        val gap = 1000L
+        val sizeKb = this.size?.run { this / gap } ?: 0L
+        val sizeMb = sizeKb / (gap)
+        val sizeGb = sizeMb / (gap)
+        val size = if (sizeGb > 1L) sizeGb else if (sizeMb > 1) sizeMb else sizeKb
+        val label = if (sizeGb > 1L) "GB" else if (sizeMb > 1) "MB" else "KB"
+
+        return "$size $label"
     }
 }
 
@@ -70,4 +65,6 @@ fun String?.isText() = this?.contains("txt", true) ?: false
 fun String?.isMp3() = this?.contains("mp3", true) ?: false
 
 fun File.isAudio() = this.format.isMp3()
+
+fun File.isPdf() = format.isPdf()
 

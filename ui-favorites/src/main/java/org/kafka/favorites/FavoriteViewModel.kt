@@ -14,14 +14,12 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.domain.observers.ObserveDownloadedItems
 import org.kafka.domain.observers.ObserveFollowedItems
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    observeDownloadedItems: ObserveDownloadedItems,
     observeFollowedItems: ObserveFollowedItems,
     preferencesStore: PreferencesStore
 ) : ViewModel() {
@@ -35,14 +33,12 @@ class FavoriteViewModel @Inject constructor(
 
     val state: StateFlow<FavoriteViewState> = combine(
         observeFollowedItems.flow,
-        observeDownloadedItems.flow,
         layoutType.map { LayoutType.valueOf(it) },
         loadingCounter.observable,
         uiMessageManager.message,
-    ) { favorites, downloaded, layout, isLoading, message ->
+    ) { favorites, layout, isLoading, message ->
         FavoriteViewState(
             favoriteItems = favorites,
-            downloadedItems = downloaded,
             message = message,
             isLoading = isLoading,
             layoutType = layout
@@ -58,14 +54,12 @@ class FavoriteViewModel @Inject constructor(
 
     init {
         observeFollowedItems(Unit)
-        observeDownloadedItems(Unit)
     }
 }
 
 @Immutable
 data class FavoriteViewState(
     val favoriteItems: List<Item> = emptyList(),
-    val downloadedItems: List<Item> = emptyList(),
     val isLoading: Boolean = false,
     val message: UiMessage? = null,
     val layoutType: LayoutType = LayoutType.List

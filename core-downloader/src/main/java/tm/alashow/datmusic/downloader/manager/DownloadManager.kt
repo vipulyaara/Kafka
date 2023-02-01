@@ -14,7 +14,7 @@ interface DownloadManager<ID, RequestType, StatusType, DownloadType> {
     suspend fun getDownload(id: ID): DownloadType?
 
     suspend fun getDownloads(): List<DownloadType>
-    suspend fun getDownloadsWithIdsAndStatuses(ids: Set<ID>, statuses: List<StatusType>): List<DownloadType>
+    suspend fun getDownloadsWithIdsAndStatuses(ids: Set<ID>): List<DownloadType>
     suspend fun getDownloadsWithStatuses(statuses: List<StatusType>): List<DownloadType>
 
     suspend fun pause(id: ID)

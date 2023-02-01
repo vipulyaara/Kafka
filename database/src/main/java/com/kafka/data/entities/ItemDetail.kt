@@ -17,7 +17,6 @@ data class ItemDetail(
     val collection: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
-    val coverImageResource: Int = 0,
     val files: List<String>? = null,
     val metadata: List<String>? = null
 ) : BaseEntity

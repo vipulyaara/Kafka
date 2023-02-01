@@ -28,7 +28,7 @@ class PreferencesStore @Inject constructor(@ApplicationContext private val conte
         }
     }
 
-    private suspend fun <T> save(key: Preferences.Key<T>, value: T) {
+    suspend fun <T> save(key: Preferences.Key<T>, value: T) {
         context.dataStore.edit { settings ->
             settings[key] = value
         }

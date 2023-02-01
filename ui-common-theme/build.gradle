@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+
+android {
+    compileSdk Publishing.compileSdk
+
+    defaultConfig {
+        minSdkVersion Publishing.minSdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+    }
+    namespace 'ui.common.theme'
+}
+
+dependencies {
+    implementation project(':base-domain')
+    implementation project(':data')
+    implementation project(':analytics')
+
+    api libs.androidx.core
+    api libs.palette
+
+    api libs.compose.runtime.runtime
+    api libs.compose.foundation.foundation
+    api libs.compose.foundation.layout
+    api libs.compose.animation.animation
+    api libs.compose.ui.tooling
+    api libs.compose.ui.ui
+    api libs.compose.ui.util
+//    api libs.compose.livedata
+    api libs.compose.material.material3
+    api libs.compose.ui.textfonts
+
+    api libs.accompanist.systemuicontroller
+
+    api libs.kotlin.serialization
+
+    api libs.androidx.hilt.compose
+    api libs.androidx.hilt.navigation
+
+    implementation libs.hilt.library
+    kapt libs.hilt.compiler
+
+    api libs.lottie.core
+    api libs.lottie.compose
+
+    implementation libs.kotlin.stdlib
+}

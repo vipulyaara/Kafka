@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.kafka.base.extensions.stateInDefault
@@ -22,7 +23,8 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.asUiMessage
 import org.kafka.domain.interactors.AddRecentItem
-import org.kafka.domain.interactors.DownloadFile
+import org.kafka.domain.interactors.EnqueueTextDownload
+import org.kafka.domain.observers.ObserveDownloadedItems
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -30,7 +32,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReaderViewModel @Inject constructor(
-    private val downloadFile: DownloadFile,
+    private val observeDownloadedItems: ObserveDownloadedItems,
+    private val enqueueTextDownload: EnqueueTextDownload,
     private val addRecentItem: AddRecentItem,
     private val application: Application,
     savedStateHandle: SavedStateHandle
@@ -43,6 +46,13 @@ class ReaderViewModel @Inject constructor(
     private val text = mutableStateOf("")
     private var uri by mutableStateOf<String?>(null)
     private var progress by mutableStateOf(0)
+
+    val downloadItem = observeDownloadedItems.flow
+        .map { downloads -> downloads.first { it.file.itemId == itemId.value } }
+        .stateInDefault(
+            scope = viewModelScope,
+            initialValue = null,
+        )
 
     val downloadState = combine(
         snapshotFlow { progress },
@@ -66,26 +76,26 @@ class ReaderViewModel @Inject constructor(
     )
 
     init {
-        viewModelScope.launch {
-            download(itemId.value)
-        }
+        viewModelScope.launch { enqueueTextDownload(itemId.value) }
 
         viewModelScope.launch {
             addRecentItem(AddRecentItem.Params(itemId.value)).collect()
         }
+
+        observeDownloadedItems(Unit)
     }
 
-    private suspend fun download(itemId: String) {
-        downloadFile.invokeByItemId(itemId).collect {
-            val downloadResult = it.getOrThrow()
-            this.progress = downloadResult.progress
-
-            if (downloadResult.data != null) {
-                this.uri = downloadResult.data.toString()
-                readFile(downloadResult.data!!)
-            }
-        }
-    }
+//    private suspend fun download(itemId: String) {
+//        downloadFile.invokeByItemId(itemId).collect {
+//            val downloadResult = it.getOrThrow()
+//            this.progress = downloadResult.progress
+//
+//            if (downloadResult.data != null) {
+//                this.uri = downloadResult.data.toString()
+//                readFile(downloadResult.data!!)
+//            }
+//        }
+//    }
 
     private suspend fun readFile(uri: Uri) {
         try {

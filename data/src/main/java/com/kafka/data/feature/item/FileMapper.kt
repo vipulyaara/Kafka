@@ -16,18 +16,20 @@ class FileMapper @Inject constructor() {
         prefix: String,
         localUri: String?
     ) = file.run {
+        val extension = name.split(".").last()
         com.kafka.data.entities.File(
             fileId = name,
             itemId = itemId,
             itemTitle = itemTitle,
             size = size?.toLongOrNull(),
-            title = title?.dismissUpperCase() ?: "---",
-            extension = name.split(".").last(),
+            name = (title ?: name).dismissUpperCase(),
+            extension = extension,
             creator = creator,
             time = length,
-            format = format,
+            format = format.orEmpty(),
             playbackUrl = if (format.isMp3()) URL("$prefix/$name").toString() else null,
             readerUrl = if (format.isPdf() || format.isText()) URL("$prefix/$name").toString() else null,
+            downloadUrl = URL("$prefix/$name").toString(),
             coverImage = coverImage,
             localUri = localUri
         )

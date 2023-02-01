@@ -24,18 +24,22 @@ class ObserveHomepage @Inject constructor(
         observeFollowedItems(Unit)
 
         return combine(
-            observeQueryItems.observe(),
-            observeRecentItems.observe(),
-            observeFollowedItems.observe(),
+            observeQueryItems.flow,
+            observeRecentItems.flow,
+            observeFollowedItems.flow,
         ) { queryItems, recentItems, followedItems ->
             Homepage(queryItems.mapQueryItems(), recentItems, followedItems)
         }.flowOn(appCoroutineDispatchers.io)
     }
 
     private fun List<Item>.mapQueryItems(): List<Item> {
-        val filteredItems = filter { it.uploader == "vipulyaara@gmail.com" }
-        debug { "Filtered items" + filteredItems.size.toString() }
-        toMutableList().removeAll { filteredItems.contains(it) }
-        return filteredItems + this
+        val kafkaArchives =
+            filter { it.subjects.orEmpty().map { it.lowercase() }.contains("kafka archives") }
+        val adbiDuniya =
+            filter { it.subjects.orEmpty().map { it.lowercase() }.contains("adbi-duniya") }
+        debug { "Filtered items" + kafkaArchives.size.toString() }
+
+        return kafkaArchives + adbiDuniya + toMutableList()
+            .apply { removeAll { kafkaArchives.contains(it) || adbiDuniya.contains(it) } }
     }
 }

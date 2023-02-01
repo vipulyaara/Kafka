@@ -26,7 +26,7 @@ import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
 import kotlinx.coroutines.launch
 import org.kafka.common.extensions.CollectEvent
-import org.kafka.favorites.FavoriteScreen
+import org.kafka.favorites.LibraryScreen
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.files.Files
@@ -182,7 +182,7 @@ private fun NavGraphBuilder.addPlayer(navigator: Navigator) {
 
 private fun NavGraphBuilder.addLibrary(root: RootScreen) {
     composable(LeafScreen.Library.createRoute(root)) {
-        FavoriteScreen()
+        LibraryScreen()
     }
 }
 

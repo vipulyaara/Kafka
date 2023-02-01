@@ -3,6 +3,7 @@ package com.kafka.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.FollowedItemDao
 import com.kafka.data.dao.ItemDao
@@ -11,6 +12,7 @@ import com.kafka.data.dao.LanguageDao
 import com.kafka.data.dao.RecentItemDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.SearchDao
+import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.entities.File
 import com.kafka.data.entities.FollowedItem
 import com.kafka.data.entities.Item
@@ -29,6 +31,7 @@ interface KafkaDatabase {
     fun itemDao(): ItemDao
     fun languageDao(): LanguageDao
     fun searchConfigurationDao(): RecentSearchDao
+    fun downloadRequestsDao(): DownloadRequestsDao
 }
 
 @Database(
@@ -40,7 +43,8 @@ interface KafkaDatabase {
         RecentItem::class,
         FollowedItem::class,
         QueueEntity::class,
-        RecentSearch::class
+        RecentSearch::class,
+        DownloadRequest::class
     ],
     version = 2,
     exportSchema = false

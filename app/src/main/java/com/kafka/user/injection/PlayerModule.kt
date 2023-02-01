@@ -32,7 +32,7 @@ class PlayerModule {
         override suspend fun findAudiosByItemId(itemId: String): List<PlayerAudio> {
             return fileDao.filesByItemId(itemId).filter { it.isAudio() }
                 .reversed()
-                .distinctBy { it.title }
+                .distinctBy { it.name }
                 .reversed()
                 .map { it.asAudio() }
         }

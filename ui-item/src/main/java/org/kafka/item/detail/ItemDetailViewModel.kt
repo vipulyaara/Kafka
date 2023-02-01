@@ -101,7 +101,10 @@ class ItemDetailViewModel @Inject constructor(
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
                 viewModelScope.launch {
-                    updateItems(UpdateItems.Params(it)).collect()
+                    updateItems(UpdateItems.Params(it)).collectStatus(
+                        counter = loadingState,
+                        uiMessageManager = uiMessageManager
+                    )
                 }
             }
         }

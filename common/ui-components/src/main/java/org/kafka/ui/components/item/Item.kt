@@ -36,12 +36,12 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
         CoverImage(item)
-        Description(item)
+        ItemDescription(item)
     }
 }
 
 @Composable
-private fun CoverImage(item: Item) {
+fun CoverImage(item: Item) {
     Box(
         modifier = Modifier.shadowMaterial(
             elevation = Dimens.Spacing08,
@@ -49,7 +49,7 @@ private fun CoverImage(item: Item) {
         )
     ) {
         AsyncImage(
-            model = item.run { coverImage ?: coverImageResource },
+            model = item.coverImage,
             contentDescription = "Cover",
             modifier = Modifier
                 .size(72.dp, 84.dp)
@@ -60,28 +60,43 @@ private fun CoverImage(item: Item) {
 }
 
 @Composable
-private fun Description(item: Item) {
+fun ItemDescription(item: Item) {
     Column {
-        Text(
-            text = item.title.orEmpty(),
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.textPrimary
-        )
+        ItemTitle(item.title)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        Text(
-            text = item.creator?.name.orEmpty(),
-            style = MaterialTheme.typography.bodySmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.textSecondary
-        )
+        ItemCreator(item.creator?.name)
         Spacer(modifier = Modifier.height(Dimens.Spacing04))
-        Text(
-            text = item.mediaType.orEmpty(),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary
-        )
+        ItemType(item.mediaType)
     }
+}
+
+@Composable
+fun ItemType(mediaType: String?) {
+    Text(
+        text = mediaType.orEmpty(),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary
+    )
+}
+
+@Composable
+fun ItemCreator(creator: String?) {
+    Text(
+        text = creator.orEmpty(),
+        style = MaterialTheme.typography.bodySmall,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        color = MaterialTheme.colorScheme.textSecondary
+    )
+}
+
+@Composable
+fun ItemTitle(title: String?) {
+    Text(
+        text = title.orEmpty(),
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        color = MaterialTheme.colorScheme.textPrimary
+    )
 }

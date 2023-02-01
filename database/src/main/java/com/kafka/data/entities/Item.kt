@@ -17,9 +17,9 @@ data class Item constructor(
     val description: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
-    var coverImageResource: Int = 0,
     val collection: List<String>? = null,
     val genre: List<String>? = null,
+    val subjects: List<String>? = null,
     val uploader: String? = null,
     val position: Int = 0
 ) : BaseEntity

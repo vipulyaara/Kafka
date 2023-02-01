@@ -19,11 +19,10 @@ class ItemMapper @Inject constructor() {
         creator = this.creator?.get(0)?.let { Creator(it, it) },
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",
-        coverImageResource = 0,
         collection = this.collection,
         genre = this.subject,
         position = this.downloads,
-        uploader = this.uploader
+        subjects = subject
     )
 }
 

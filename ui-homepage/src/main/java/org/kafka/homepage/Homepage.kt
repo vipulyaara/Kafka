@@ -92,7 +92,9 @@ private fun HomepageFeedItems(
         item {
             ContinueReading(
                 readingList = homepage.continueReadingItems.asImmutable(),
-                modifier = Modifier.padding(vertical = Dimens.Spacing20),
+                modifier = Modifier
+                    .padding(vertical = Dimens.Spacing20)
+                    .animateItemPlacement(),
                 openItemDetail = openItemDetail,
                 removeRecentItem = removeRecentItem
             )
@@ -102,7 +104,11 @@ private fun HomepageFeedItems(
             items = homepage.queryItems,
             key = { _, item -> item.itemId }
         ) { _, item ->
-            Item(item = item, openItemDetail = openItemDetail)
+            Item(
+                item = item,
+                modifier = Modifier,
+                openItemDetail = openItemDetail
+            )
         }
     }
 }

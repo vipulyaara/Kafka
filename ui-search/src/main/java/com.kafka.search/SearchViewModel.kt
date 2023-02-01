@@ -17,7 +17,7 @@ class SearchViewModel @Inject constructor(
     private val addRecentSearch: AddRecentSearch,
     private val removeRecentSearch: RemoveRecentSearch
 ) : ViewModel() {
-    val recentSearches = observeRecentSearch.observe().stateInDefault(viewModelScope, emptyList())
+    val recentSearches = observeRecentSearch.flow.stateInDefault(viewModelScope, emptyList())
 
     init {
         observeRecentSearch(Unit)

@@ -14,9 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -69,7 +67,6 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
-import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -133,6 +130,7 @@ private fun ItemDetail(
             ItemDetail(
                 itemDetail = state.itemDetail!!,
                 relatedItems = state.itemsByCreator,
+                isLoading = state.isLoading,
                 isFavorite = state.isFavorite,
                 toggleFavorite = { viewModel.updateFavorite() },
                 openItemDetail = { itemId ->
@@ -158,6 +156,7 @@ private fun ItemDetail(
 private fun ItemDetail(
     itemDetail: ItemDetail,
     relatedItems: List<Item>?,
+    isLoading: Boolean,
     isFavorite: Boolean,
     toggleFavorite: () -> Unit,
     openItemDetail: (String) -> Unit,
@@ -203,27 +202,10 @@ private fun ItemDetail(
             }
 
             relatedContent(relatedItems, openItemDetail)
-        }
-    }
-}
 
-
-private fun LazyListScope.relatedContent(
-    relatedItems: List<Item>?,
-    openItemDetail: (String) -> Unit
-) {
-    relatedItems?.takeIf { it.isNotEmpty() }?.let {
-        item {
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "More by author",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(Dimens.Spacing12)
-            )
-        }
-        items(relatedItems, key = { it.itemId }) {
-            Item(it, openItemDetail = openItemDetail)
+            if (isLoading) {
+                item { InfiniteProgressBar(modifier = Modifier.animateItemPlacement()) }
+            }
         }
     }
 }

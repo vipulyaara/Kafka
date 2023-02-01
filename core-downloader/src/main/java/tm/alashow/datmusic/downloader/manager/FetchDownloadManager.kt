@@ -12,16 +12,17 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import tm.alashow.base.util.extensions.simpleName
-import tm.alashow.datmusic.data.db.SQLITE_MAX_VARIABLES
+
+const val SQLITE_MAX_VARIABLES = 900
 
 class FetchDownloadManager @Inject constructor(
     private val fetch: Fetch,
 ) : DownloadManager<Int, Request, Status, Download> {
 
-    private suspend fun Fetch.getDownloadsByIds(ids: List<Int>): List<Download> = suspendCoroutine { continuation ->
-        getDownloads(ids) { continuation.resume(it) }
-    }
+    private suspend fun Fetch.getDownloadsByIds(ids: List<Int>): List<Download> =
+        suspendCoroutine { continuation ->
+            getDownloads(ids) { continuation.resume(it) }
+        }
 
     private suspend fun Fetch.getDownloadsByIdsChunked(
         ids: List<Int>,
@@ -33,12 +34,6 @@ class FetchDownloadManager @Inject constructor(
         }.flatten()
     }
 
-    private suspend fun Fetch.getDownloadsByIdsAndStatus(ids: Set<Int>, statuses: List<Status>): List<Download> = suspendCoroutine { continuation ->
-        getDownloadsWithStatus(statuses) {
-            continuation.resume(it.filter { dl -> dl.id in ids })
-        }
-    }
-
     override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> = suspendCoroutine { continuation ->
         fetch.enqueue(
             request,
@@ -46,7 +41,12 @@ class FetchDownloadManager @Inject constructor(
                 continuation.resume(DownloadEnqueueSuccessful(request))
             },
             { error ->
-                continuation.resume(DownloadEnqueueFailed(error.throwable ?: IOException("Download error: ${error.simpleName}, code=${error.value}")))
+                continuation.resume(
+                    DownloadEnqueueFailed(
+                        error.throwable
+                            ?: IOException("Download error: ${error.name}, code=${error.value}")
+                    )
+                )
             }
         )
     }
@@ -59,13 +59,8 @@ class FetchDownloadManager @Inject constructor(
         fetch.getDownloads { continuation.resume(it) }
     }
 
-    override suspend fun getDownloadsWithIdsAndStatuses(ids: Set<Int>, statuses: List<Status>): List<Download> {
-        return if (ids.isEmpty())
-            emptyList()
-        else when (statuses.isEmpty()) {
-            true -> fetch.getDownloadsByIdsChunked(ids.toList())
-            else -> fetch.getDownloadsByIdsAndStatus(ids, statuses)
-        }
+    override suspend fun getDownloadsWithIdsAndStatuses(ids: Set<Int>): List<Download> {
+        return fetch.getDownloadsByIdsChunked(ids.toList())
     }
 
     override suspend fun getDownloadsWithStatuses(statuses: List<Status>): List<Download> =

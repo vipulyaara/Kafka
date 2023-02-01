@@ -9,53 +9,46 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import com.kafka.data.dao.DownloadRequestsDao
+import com.kafka.data.dao.FileDao
+import com.kafka.data.entities.DownloadRequest
+import com.kafka.data.prefs.PreferencesStore
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
-import java.io.FileNotFoundException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
+import org.kafka.analytics.Logger
+import org.kafka.analytics.event
+import org.kafka.common.UiMessageManager
+import org.kafka.common.asUiMessage
 import timber.log.Timber
-import tm.alashow.base.ui.SnackbarManager
-import tm.alashow.base.util.Analytics
-import tm.alashow.data.PreferencesStore
-import tm.alashow.datmusic.data.repos.audio.AudioSaveType
-import tm.alashow.datmusic.data.repos.audio.AudiosRepo
-import tm.alashow.datmusic.domain.DownloadsSongsGrouping
-import tm.alashow.datmusic.domain.entities.Audio
-import tm.alashow.datmusic.domain.entities.AudioDownloadItem
-import tm.alashow.datmusic.domain.entities.DownloadItem
-import tm.alashow.datmusic.domain.entities.DownloadRequest
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
-import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_SONGS_GROUPING
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueSuccessful
 import tm.alashow.datmusic.downloader.manager.FetchDownloadManager
-import tm.alashow.domain.models.None
-import tm.alashow.domain.models.Optional
-import tm.alashow.domain.models.orNone
-import tm.alashow.domain.models.orNull
-import tm.alashow.domain.models.some
-import tm.alashow.i18n.UiMessage
+import java.io.File
+import java.io.FileNotFoundException
+import java.util.Optional
+import javax.inject.Inject
+import javax.inject.Singleton
+import com.kafka.data.entities.File as FileEntity
 
 @Singleton
 internal class DownloaderImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val fetcher: FetchDownloadManager,
     private val preferences: PreferencesStore,
-    private val repo: DownloadRequestsRepo,
-    private val audiosRepo: AudiosRepo,
-    private val analytics: Analytics,
-    private val snackbarManager: SnackbarManager,
+    private val repo: DownloadRequestsDao,
+    private val fileDao: FileDao,
+    private val analytics: Logger,
 ) : Downloader {
+    private val uiMessageManager: UiMessageManager = UiMessageManager()
 
     companion object {
         private const val INTENT_READ_WRITE_FLAG = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -76,17 +69,18 @@ internal class DownloaderImpl @Inject constructor(
         downloaderEventsHistory.add(event)
     }
 
-    private fun downloaderMessage(message: UiMessage<*>) = snackbarManager.addMessage(message)
+    private suspend fun downloaderMessage(message: DownloadMessage<*>) =
+        uiMessageManager.emitMessage("message".asUiMessage())
 
     /**
      * Audio item pending for download. Used when waiting for download location.
      */
-    private var pendingEnqueableAudio: Audio? = null
+    private var pendingEnqueableAudio: FileEntity? = null
 
-    override suspend fun enqueueAudio(audioId: String): Boolean {
-        Timber.d("Enqueue requested for: $audioId")
-        audiosRepo.entry(audioId).firstOrNull()?.apply {
-            return enqueueAudio(this)
+    override suspend fun enqueueFile(fileId: String): Boolean {
+        Timber.d("Enqueue requested for: $fileId")
+        fileDao.entry(fileId).firstOrNull()?.apply {
+            return enqueueFile(this)
         }
         return false
     }
@@ -94,27 +88,27 @@ internal class DownloaderImpl @Inject constructor(
     /**
      * Tries to enqueue given audio or issues error events in case of failure.
      */
-    override suspend fun enqueueAudio(audio: Audio): Boolean {
-        Timber.d("Enqueue audio: $audio")
-        val downloadRequest = DownloadRequest.fromAudio(audio)
+    override suspend fun enqueueFile(file: FileEntity): Boolean {
+        Timber.d("Enqueue audio: $file")
+        val downloadRequest = DownloadRequest.fromAudio(file)
         if (!validateNewAudioRequest(downloadRequest))
             return false
 
         // save audio to db so Downloads won't depend on given audios existence in audios table
-        audiosRepo.saveAudios(AudioSaveType.Download, audio)
+        fileDao.insert(file)
 
-        val fileDestination = getAudioDownloadFileDestination(audio)
+        val fileDestination = getAudioDownloadFileDestination(file)
         if (fileDestination == null) {
-            pendingEnqueableAudio = audio
+            pendingEnqueableAudio = file
             return false
         }
 
-        if (audio.downloadUrl == null) {
+        if (file.downloadUrl == null) {
             downloaderMessage(AudioDownloadErrorInvalidUrl)
             return false
         }
 
-        val downloadUrl = Uri.parse(audio.downloadUrl).buildUpon()
+        val downloadUrl = Uri.parse(file.downloadUrl).buildUpon()
             .appendQueryParameter("redirect", "")
             .build()
             .toString()
@@ -142,8 +136,8 @@ internal class DownloaderImpl @Inject constructor(
     private suspend fun validateNewAudioRequest(downloadRequest: DownloadRequest): Boolean {
         val existingRequest = repo.exists(downloadRequest.id)
 
-        if (existingRequest) {
-            val oldRequest = repo.entryNotNull(downloadRequest.id).first()
+        if (existingRequest > 0) {
+            val oldRequest = repo.entry(downloadRequest.id).first()
             val downloadInfo = fetcher.getDownload(oldRequest.requestId)
             if (downloadInfo != null) {
                 when (downloadInfo.status) {
@@ -168,7 +162,7 @@ internal class DownloaderImpl @Inject constructor(
                         val fileExists = downloadInfo.fileUri.toDocumentFile(appContext).exists()
                         return if (!fileExists) {
                             fetcher.delete(downloadInfo.id)
-                            repo.delete(oldRequest)
+                            repo.delete(oldRequest.id)
                             Timber.i("Completed status but file doesn't exist, allowing enqueue.")
                             true
                         } else {
@@ -185,7 +179,7 @@ internal class DownloaderImpl @Inject constructor(
                 }
             } else {
                 Timber.d("Download request exists but there's no download info, deleting old request and allowing enqueue.")
-                repo.delete(oldRequest)
+                repo.delete(oldRequest.id)
                 return true
             }
         }
@@ -201,69 +195,71 @@ internal class DownloaderImpl @Inject constructor(
                 repo.insert(downloadRequest.copy(requestId = newRequest.id))
             } catch (e: Exception) {
                 Timber.e(e, "Failed to insert audio request")
-                downloaderMessage(UiMessage.Error(e))
+                downloaderMessage(DownloadMessage.Error(e))
             }
         }
         return enqueueResult
     }
 
-    override suspend fun pause(vararg downloadItems: DownloadItem) {
-        fetcher.pause(downloadItems.map { it.downloadInfo.id })
+    override suspend fun pause(vararg downloadInfoIds: Int) {
+        fetcher.pause(downloadInfoIds.toList())
     }
 
-    override suspend fun resume(vararg downloadItems: DownloadItem) {
-        fetcher.resume(downloadItems.map { it.downloadInfo.id })
+    override suspend fun resume(vararg downloadInfoIds: Int) {
+        fetcher.resume(downloadInfoIds.toList())
     }
 
     override suspend fun cancel(vararg downloadItems: DownloadItem) {
         fetcher.cancel(downloadItems.map { it.downloadInfo.id })
     }
 
-    override suspend fun retry(vararg downloadItems: DownloadItem) {
-        fetcher.retry(downloadItems.map { it.downloadInfo.id })
+    override suspend fun retry(vararg downloadInfoIds: Int) {
+        fetcher.retry(downloadInfoIds.toList())
     }
 
     override suspend fun remove(vararg downloadItems: DownloadItem) {
         fetcher.remove(downloadItems.map { it.downloadInfo.id })
         downloadItems.forEach {
-            repo.delete(it.downloadRequest)
+            repo.delete(it.downloadRequest.id)
         }
     }
 
     override suspend fun delete(vararg downloadItems: DownloadItem) {
         fetcher.delete(downloadItems.map { it.downloadInfo.id })
         downloadItems.forEach {
-            repo.delete(it.downloadRequest)
+            repo.delete(it.downloadRequest.id)
         }
     }
 
-    override suspend fun findAudioDownload(audioId: String): Optional<Audio> = audiosRepo.find(audioId)
-        ?.apply { audioDownloadItem = getAudioDownload(id).orNull() }
-        .orNone()
+    override suspend fun findAudioDownload(fileId: String): FileEntity? = fileDao.fileOrNull(fileId)
+        ?.apply { getAudioDownload(this.fileId) }
 
     /**
-     * Builds [AudioDownloadItem] from given audio id if it exists and satisfies [allowedStatuses].
+     * Builds [FileDownloadItem] from given audio id if it exists and satisfies [allowedStatuses].
      */
-    override suspend fun getAudioDownload(audioId: String, vararg allowedStatuses: Status): Optional<AudioDownloadItem> {
-        if (repo.exists(audioId)) {
-            val request = repo.entryNotNull(audioId).first()
+    override suspend fun getAudioDownload(
+        audioId: String,
+        vararg allowedStatuses: Status
+    ): Optional<FileDownloadItem> {
+        if (repo.exists(audioId) > 0) {
+            val request = repo.entry(audioId).first()
             val downloadInfo = fetcher.getDownload(request.requestId)
             if (downloadInfo != null) {
                 if (downloadInfo.status in allowedStatuses)
-                    return some(AudioDownloadItem.from(request, request.audio, downloadInfo))
+                    return Optional.of(FileDownloadItem.from(request, downloadInfo))
             }
         }
-        return None
+        return Optional.empty()
     }
 
     private val downloadsLocationUri = preferences.get(DOWNLOADS_LOCATION, "").map {
         when {
-            it.isEmpty() -> None
-            else -> some(it.toUri())
+            it.isEmpty() -> Optional.empty()
+            else -> Optional.of(it.toUri())
         }
     }
 
-    override val hasDownloadsLocation = downloadsLocationUri.map { it.isSome() }
+    override val hasDownloadsLocation = downloadsLocationUri.map { it.isPresent }
 
     override fun requestNewDownloadsLocation() = downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
 
@@ -288,7 +284,7 @@ internal class DownloaderImpl @Inject constructor(
 
         pendingEnqueableAudio?.apply {
             Timber.d("Consuming pending enqueuable audio download")
-            enqueueAudio(this)
+            enqueueFile(this)
             pendingEnqueableAudio = null
         }
     }
@@ -296,42 +292,35 @@ internal class DownloaderImpl @Inject constructor(
     override suspend fun resetDownloadsLocation() {
         analytics.event("downloads.resetDownloadsLocation")
         val current = downloadsLocationUri.first()
-        if (current is Optional.Some) {
-            appContext.contentResolver.releasePersistableUriPermission(current.value, INTENT_READ_WRITE_FLAG)
+        if (current.isPresent) {
+            appContext.contentResolver.releasePersistableUriPermission(current.get(), INTENT_READ_WRITE_FLAG)
         }
         preferences.save(DOWNLOADS_LOCATION, "")
     }
 
-    override val downloadsSongsGrouping = preferences.get(DOWNLOADS_SONGS_GROUPING, "")
-        .map { DownloadsSongsGrouping.from(it) }
-
-    override suspend fun setDownloadsSongsGrouping(songsGrouping: DownloadsSongsGrouping) {
-        analytics.event("downloads.setSongsGrouping", mapOf("type" to songsGrouping.name))
-        preferences.save(DOWNLOADS_SONGS_GROUPING, songsGrouping.name)
-    }
-
     private suspend fun verifyAndGetDownloadsLocationUri(): Uri? {
-        when (val downloadLocation = downloadsLocationUri.first()) {
-            is None -> requestNewDownloadsLocation()
-            is Optional.Some -> {
-                val uri = downloadLocation()
-                val writeableAndReadable =
-                    appContext.contentResolver.persistedUriPermissions.firstOrNull { it.uri == uri && it.isWritePermission && it.isReadPermission } != null
-                if (!writeableAndReadable) {
-                    requestNewDownloadsLocation()
-                } else return uri
-            }
+        val downloadLocation = downloadsLocationUri.first()
+        if (!downloadLocation.isPresent) {
+            requestNewDownloadsLocation()
+        } else {
+            val uri = downloadLocation.get()
+            val writeableAndReadable =
+                appContext.contentResolver.persistedUriPermissions
+                    .firstOrNull { it.uri == uri && it.isWritePermission && it.isReadPermission } != null
+            if (!writeableAndReadable) {
+                requestNewDownloadsLocation()
+            } else return uri
         }
+
         return null
     }
 
-    private suspend fun getAudioDownloadFileDestination(audio: Audio): DocumentFile? {
+    private suspend fun getAudioDownloadFileDestination(audio: FileEntity): DocumentFile? {
         val downloadsLocationUri = verifyAndGetDownloadsLocationUri() ?: return null
-        val songsGrouping = downloadsSongsGrouping.first()
 
         val file = try {
             val downloadsLocationFolder = downloadsLocationUri.toDocumentFile(appContext)
-            audio.documentFile(downloadsLocationFolder, songsGrouping)
+            audio.documentFile(downloadsLocationFolder)
         } catch (e: Exception) {
             Timber.e(e, "Error while creating new audio file")
             when (e) {

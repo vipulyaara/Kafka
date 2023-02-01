@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.kafka.analytics.Logger
 import org.kafka.navigation.NavigatorHost
 import org.kafka.navigation.rememberBottomSheetNavigator
+import tm.alashow.datmusic.ui.downloader.DownloaderHost
 
 @Composable
 fun MainScreen(analytics: Logger) {
@@ -31,12 +32,14 @@ fun MainScreen(analytics: Logger) {
     }
 
     NavigatorHost {
-        PlaybackHost {
-            AudioActionHost {
-                val bottomSheetNavigator = rememberBottomSheetNavigator()
-                navController.navigatorProvider += bottomSheetNavigator
-                ModalBottomSheetLayout(bottomSheetNavigator, Modifier.fillMaxSize()) {
-                    Home(navController)
+        DownloaderHost {
+            PlaybackHost {
+                AudioActionHost {
+                    val bottomSheetNavigator = rememberBottomSheetNavigator()
+                    navController.navigatorProvider += bottomSheetNavigator
+                    ModalBottomSheetLayout(bottomSheetNavigator, Modifier.fillMaxSize()) {
+                        Home(navController)
+                    }
                 }
             }
         }

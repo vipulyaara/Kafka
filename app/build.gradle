@@ -83,9 +83,11 @@ android {
 
 dependencies {
     implementation project(':common:ui-common')
-    implementation project(':common:ui-common-theme')
+    implementation project(':ui-common-theme')
     implementation project(':common:ui-components')
     implementation project(':base-domain')
+    implementation project(':core-downloader')
+    implementation project(':core-ui-downloader')
     implementation project(':data')
     implementation project(':navigation')
     implementation project(':analytics')
@@ -99,8 +101,8 @@ dependencies {
     implementation project(':ui-favorites')
     implementation project(':ui-artist')
     implementation project(':webview')
-    implementation project(':playback-core')
-    implementation project(':playback-ui')
+    implementation project(':core-playback')
+    implementation project(':ui-playback')
 
     implementation "androidx.metrics:metrics-performance:1.0.0-alpha03"
 
@@ -124,7 +126,6 @@ dependencies {
     implementation libs.compose.ui.tooling
     implementation libs.compose.ui.ui
     implementation libs.compose.ui.util
-    implementation libs.compose.livedata
 
     implementation libs.coil.coil
 

@@ -8,7 +8,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -33,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,7 +60,6 @@ internal fun ContinueReading(
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit
 ) {
-
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
@@ -103,11 +100,9 @@ private fun ContinueReadingItem(
         modifier = modifier.combinedClickable(
             onLongClick = { isInEditMode = !isInEditMode },
             onClick = {
-                isInEditMode = false
+//                isInEditMode = false
                 onItemClicked()
-            },
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null
+            }
         )
     ) {
         Column(
@@ -194,7 +189,7 @@ private fun CoverImage(item: Item) {
         )
     ) {
         AsyncImage(
-            model = item.run { coverImage ?: coverImageResource },
+            model = item.coverImage,
             contentDescription = stringResource(id = R.string.cd_cover_image),
             modifier = Modifier
                 .size(64.dp, 76.dp)

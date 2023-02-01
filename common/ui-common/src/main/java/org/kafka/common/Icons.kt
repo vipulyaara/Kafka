@@ -16,7 +16,9 @@ import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.ChevronUpLeft
+import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
+import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
@@ -24,6 +26,8 @@ import compose.icons.tablericons.Home2
 import compose.icons.tablericons.LayoutGrid
 import compose.icons.tablericons.LayoutList
 import compose.icons.tablericons.Microphone
+import compose.icons.tablericons.PlayerPause
+import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
@@ -58,6 +62,16 @@ object Icons {
     val Heart
         @Composable get() = TablerIcons.Heart
     val Download
+        @Composable get() = TablerIcons.Download
+    val Downloaded
+        @Composable get() = TablerIcons.CircleCheck
+    val Pause
+        @Composable get() = TablerIcons.PlayerPause
+    val Play
+        @Composable get() = TablerIcons.PlayerPlay
+    val Queue
+        @Composable get() = TablerIcons.Clock
+    val Retry
         @Composable get() = TablerIcons.Download
     val HeartFilled
         @Composable get() = Icons.Default.Favorite
