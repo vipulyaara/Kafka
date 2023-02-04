@@ -118,19 +118,19 @@ sealed class LeafScreen(
     }
 
     data class Reader(
-        override val route: String = "reader/{itemId}",
+        override val route: String = "reader/{fileId}",
         override val rootRoute: String
     ) : LeafScreen(
         route = route,
         rootRoute = rootRoute,
         arguments = listOf(
-            navArgument("itemId") {
+            navArgument("fileId") {
                 type = NavType.StringType
             }
         ),
         deepLinks = listOf(
             navDeepLink {
-                uriPattern = "${Config.BASE_URL}reader/{itemId}"
+                uriPattern = "${Config.BASE_URL}reader/{fileId}"
             }
         )
     ) {

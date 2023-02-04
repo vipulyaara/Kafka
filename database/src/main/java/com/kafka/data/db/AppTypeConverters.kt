@@ -1,7 +1,7 @@
 package com.kafka.data.db
 
 import androidx.room.TypeConverter
-import com.kafka.data.entities.File
+import com.kafka.data.entities.TextFile
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -28,16 +28,10 @@ class AppTypeConverters {
     fun listToString(data: List<String>?) = json.encodeToString(data)
 
     @TypeConverter
-    fun stringToFileList(data: String) = json.decodeFromString<List<File>?>(data)
+    fun stringToPageList(data: String) = json.decodeFromString<List<TextFile.Page>>(data)
 
     @TypeConverter
-    fun fileListToString(data: List<File>?) = json.encodeToString(data)
-
-    @TypeConverter
-    fun stringToFile(data: String) = json.decodeFromString<File>(data)
-
-    @TypeConverter
-    fun fileToString(data: File) = json.encodeToString(data)
+    fun pageListToString(data: List<TextFile.Page>) = json.encodeToString(data)
 
     @TypeConverter
     fun toLocalDateTime(value: String): LocalDateTime = when (value.isBlank()) {

@@ -86,7 +86,6 @@ internal fun AppNavigation(
         addSearchRoot()
         addPlayerLibraryRoot(navigator)
         addLibraryRoot()
-        addProfileRoot()
     }
 }
 
@@ -137,15 +136,6 @@ private fun NavGraphBuilder.addPlayerLibraryRoot(navigator: Navigator) {
     }
 }
 
-private fun NavGraphBuilder.addProfileRoot() {
-    navigation(
-        route = RootScreen.Profile.route,
-        startDestination = LeafScreen.Profile.createRoute(RootScreen.Profile)
-    ) {
-        addProfile(RootScreen.Profile)
-    }
-}
-
 private fun NavGraphBuilder.addHome(root: RootScreen) {
     composable(LeafScreen.Home.createRoute(root)) {
         Homepage()
@@ -183,12 +173,6 @@ private fun NavGraphBuilder.addPlayer(navigator: Navigator) {
 private fun NavGraphBuilder.addLibrary(root: RootScreen) {
     composable(LeafScreen.Library.createRoute(root)) {
         LibraryScreen()
-    }
-}
-
-private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    composable(LeafScreen.Profile.createRoute(root)) {
-
     }
 }
 

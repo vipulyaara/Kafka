@@ -18,15 +18,16 @@ android {
     compileSdk Publishing.compileSdk
 
     defaultConfig {
-        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
-        multiDexEnabled true
         applicationId Publishing.applicationId
         minSdkVersion Publishing.minSdk
         targetSdkVersion Publishing.targetSdk
         versionCode Publishing.versionCode
         versionName Publishing.publishVersion
 
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
     }
 
     compileOptions {
@@ -98,6 +99,7 @@ dependencies {
     implementation project(':ui-search')
     implementation project(':ui-item')
     implementation project(':ui-reader')
+    implementation project(':ui-text-reader')
     implementation project(':ui-favorites')
     implementation project(':ui-artist')
     implementation project(':webview')
@@ -111,9 +113,6 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-dynamic-links-ktx"
-
-//    implementation libs.pdftron.standard
-//    implementation libs.pdftron.tools
 
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.viewmodel.compose
@@ -129,7 +128,6 @@ dependencies {
 
     implementation libs.coil.coil
 
-    implementation libs.pdfkit
     implementation libs.androidx.appcompat
 
     implementation libs.androidx.activity.compose
@@ -166,6 +164,9 @@ dependencies {
 
     implementation libs.icons.feather
     implementation libs.icons.tabler
+
+    implementation libs.rive
+    implementation libs.startup
 }
 
 android.applicationVariants.all { variant ->

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import org.kafka.base.AppCoroutineDispatchers
-import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
@@ -33,13 +32,20 @@ class ObserveHomepage @Inject constructor(
     }
 
     private fun List<Item>.mapQueryItems(): List<Item> {
-        val kafkaArchives =
-            filter { it.subjects.orEmpty().map { it.lowercase() }.contains("kafka archives") }
-        val adbiDuniya =
-            filter { it.subjects.orEmpty().map { it.lowercase() }.contains("adbi-duniya") }
-        debug { "Filtered items" + kafkaArchives.size.toString() }
+        val kafkaArchives = filter { it.isKafkaArchive() }
+        val adbiDuniya = filter { it.isAdbiDuniya() }
 
         return kafkaArchives + adbiDuniya + toMutableList()
             .apply { removeAll { kafkaArchives.contains(it) || adbiDuniya.contains(it) } }
+    }
+
+    private fun Item.isKafkaArchive(): Boolean {
+        val subjects = subjects.orEmpty().map { it.lowercase() }
+        return subjects.contains("kafka archives") || subjects.contains("kafka-archives")
+    }
+
+    private fun Item.isAdbiDuniya(): Boolean {
+        val subjects = subjects.orEmpty().map { it.lowercase() }
+        return subjects.contains("adbi-duniya")
     }
 }

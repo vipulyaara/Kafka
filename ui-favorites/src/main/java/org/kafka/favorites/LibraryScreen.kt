@@ -3,6 +3,7 @@ package org.kafka.favorites
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.LayoutType
+import org.kafka.ui.components.scaffoldPadding
 
 @Composable
 fun LibraryScreen(
@@ -52,7 +54,11 @@ private fun Favorites(
 ) {
     val pagerState = rememberPagerState()
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = scaffoldPadding().calculateTopPadding())
+    ) {
         Tabs(
             pagerState = pagerState,
             tabs = LibraryTab.values().map { it.name }.asImmutable(),

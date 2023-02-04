@@ -38,12 +38,11 @@ dependencies {
     implementation project(':base-network')
     implementation project(':navigation')
     implementation project(':domain')
+    implementation project(':core-downloader')
+    implementation project(':core-ui-downloader')
     implementation project(':common:ui-common')
     implementation project(':common:ui-components')
-
-    implementation libs.pdfkit
-//    implementation libs.pdftron.standard
-//    implementation libs.pdftron.tools
+    implementation project(':ui-text-reader')
 
     implementation libs.hilt.library
     kapt libs.hilt.compiler

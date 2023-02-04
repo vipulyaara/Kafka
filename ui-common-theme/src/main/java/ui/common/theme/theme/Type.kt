@@ -55,3 +55,4 @@ val ProductSans = FontFamily(
 
 val Inter = createFontFamily("Roboto")
 val DefaultFont = Inter
+val ProseFont = createFontFamily("Lora")

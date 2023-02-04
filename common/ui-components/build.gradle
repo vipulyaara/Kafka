@@ -57,6 +57,7 @@ dependencies {
 
     api libs.lottie.core
     api libs.lottie.compose
+    api libs.rive
 
     implementation libs.kotlin.stdlib
 }

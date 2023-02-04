@@ -4,8 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.getTextFile
+import com.kafka.data.entities.isAudio
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
+import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -17,6 +20,7 @@ import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
+import org.kafka.common.asUiMessage
 import org.kafka.common.collectStatus
 import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.interactors.ToggleFavorite
@@ -26,7 +30,9 @@ import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
 import org.kafka.navigation.DeepLinksNavigation
+import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigation
+import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +44,8 @@ class ItemDetailViewModel @Inject constructor(
     private val addRecentItem: AddRecentItem,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
     private val toggleFavorite: ToggleFavorite,
+    private val playbackConnection: PlaybackConnection,
+    private val navigator: Navigator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
@@ -83,6 +91,25 @@ class ItemDetailViewModel @Inject constructor(
         observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
     }
 
+    fun onPrimaryAction(itemId: String) {
+        val itemDetail = state.value.itemDetail
+        if (itemDetail.isAudio()) {
+            addRecentItem(itemId)
+            playbackConnection.playAlbum(itemId)
+        } else {
+            openReader(itemDetail, itemId)
+        }
+    }
+
+    private fun openReader(itemDetail: ItemDetail?, itemId: String) {
+        itemDetail?.getTextFile()?.let {
+            addRecentItem(itemId)
+            navigator.navigate(LeafScreen.Reader.buildRoute(it, navigator.currentRoot.value))
+        } ?: viewModelScope.launch {
+            uiMessageManager.emitMessage("PDFs are not supported".asUiMessage())
+        }
+    }
+
     fun updateFavorite() {
         updateFavorite(state.value.itemDetail!!.itemId)
     }
@@ -95,7 +122,6 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun observeByAuthor(itemDetail: ItemDetail?) {
         itemDetail?.let {
-            debug { "observe query for creator ${itemDetail.creator}" }
             observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
 
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
@@ -110,7 +136,7 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    fun addRecentItem(itemId: String) {
+    private fun addRecentItem(itemId: String) {
         viewModelScope.launch {
             addRecentItem(AddRecentItem.Params(itemId)).collect()
         }

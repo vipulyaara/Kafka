@@ -48,13 +48,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.webUrl
-import com.sarahang.playback.core.PlaybackConnection
-import com.sarahang.playback.core.models.LocalPlaybackConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
-import org.kafka.common.Icons
 import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.IconButton
@@ -83,7 +81,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-    val playbackConnection = LocalPlaybackConnection.current
 
     LaunchedEffect(state.message) {
         if (state.isSnackbarError) {
@@ -104,7 +101,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel, navigator, playbackConnection, lazyListState)
+            ItemDetail(state, viewModel, navigator, lazyListState)
         }
     }
 }
@@ -114,7 +111,6 @@ private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
     navigator: Navigator,
-    playbackConnection: PlaybackConnection,
     lazyListState: LazyListState
 ) {
     Box(Modifier.fillMaxSize()) {
@@ -139,12 +135,8 @@ private fun ItemDetail(
                 openFiles = { itemId ->
                     navigator.navigate(LeafScreen.Files.buildRoute(itemId, currentRoot))
                 },
-                openReader = { itemId ->
-                    navigator.navigate(LeafScreen.Reader.buildRoute(itemId, currentRoot))
-                },
-                playAudio = { itemId ->
-                    viewModel.addRecentItem(itemId)
-                    playbackConnection.playAlbum(itemId)
+                onPrimaryAction = { itemId ->
+                    viewModel.onPrimaryAction(itemId)
                 },
                 lazyListState = lazyListState
             )
@@ -160,8 +152,7 @@ private fun ItemDetail(
     isFavorite: Boolean,
     toggleFavorite: () -> Unit,
     openItemDetail: (String) -> Unit,
-    openReader: (String) -> Unit,
-    playAudio: (String) -> Unit,
+    onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     lazyListState: LazyListState
 ) {
@@ -193,8 +184,7 @@ private fun ItemDetail(
             item {
                 Actions(
                     itemDetail = itemDetail,
-                    openReader = openReader,
-                    playAudio = playAudio,
+                    onPrimaryAction = onPrimaryAction,
                     openFiles = openFiles,
                     isFavorite = isFavorite,
                     toggleFavorite = toggleFavorite

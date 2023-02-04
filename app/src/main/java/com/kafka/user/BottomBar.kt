@@ -2,7 +2,7 @@ package com.kafka.user
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import org.kafka.common.Icons
+import org.kafka.common.image.Icons
 import org.kafka.navigation.RootScreen
 import org.kafka.user.R
 

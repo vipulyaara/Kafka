@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import org.kafka.common.Icons
+import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.iconPrimary

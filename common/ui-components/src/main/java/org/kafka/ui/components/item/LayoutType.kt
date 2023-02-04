@@ -7,7 +7,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.kafka.common.Icons
+import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 
 @Composable

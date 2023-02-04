@@ -13,7 +13,8 @@ class DownloadInfoMapper @Inject constructor() {
     fun map(download: Download): DownloadInfo {
         return DownloadInfo(
             id = download.id,
-            progress = download.progress / 100f,
+            progress = download.progress.coerceAtLeast(0) / 100f,
+            fileUri = download.fileUri,
             status = download.status.toDownloadStatus(),
             sizeStatus = download.fileSizeStatus(),
         )

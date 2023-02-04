@@ -3,11 +3,10 @@ package org.kafka.domain.interactors.query
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model._identifier
-import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.debug
 import javax.inject.Inject
 
-class BuildLocalQuery @Inject constructor(private val dispatchers: AppCoroutineDispatchers) {
+class BuildLocalQuery @Inject constructor() {
     operator fun invoke(params: ArchiveQuery): SimpleSQLiteQuery {
         return params.asLocalQuery()
     }

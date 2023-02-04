@@ -55,7 +55,7 @@ const val urduProse =
             "lughaterozmarrahshamsurrahmanfaruqi, shabkhoon271aug2003, shabkhoon-v1, ghalibkechandpehlu, in.ernet.dli.2015.415434, " +
             "YaadgarEGhalibHali, DeewanHaliMuqadamaShearOShaeri, FarnoodByJaunElia, qabaisaaz"
 const val kafkaArchives =
-    "unmasking-a-confident-trickster, kafka-short-stories, poe-short-stories, poems-by-pb-shelly"
+    "unmasking-a-confident-trickster, kafka-short-stories, poe-short-stories, poems-by-pb-shelly, existentialism_202302, dualism_202302, beauty_202302, enlightenment_202302"
 const val notUsed =
     "kafka-short-stories, poe-short-stories, the-tell-tale-heart_202301, the-black-cat_202301, the-premature-burial_202301, " +
             "a-hunger-artist_202301, a-report-for-an-academy, a-country-doctor, lajwanti-l-l-l-rajinder-singh-bedi, the-raven_202301, " +

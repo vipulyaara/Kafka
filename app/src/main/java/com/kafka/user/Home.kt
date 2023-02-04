@@ -3,7 +3,6 @@ package com.kafka.user
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,7 +60,7 @@ internal fun Home(
         ProvideScaffoldPadding(paddings) {
             AppNavigation(
                 navController = navController,
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier
             )
         }
     }

@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(indices = [Index(value = ["itemId"], unique = true)])
 data class ItemDetail(
-    @PrimaryKey val itemId: String = "",
+    @PrimaryKey val itemId: String,
     val language: String? = null,
     val title: String? = null,
     val description: String? = null,

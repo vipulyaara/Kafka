@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentSearch
-import org.kafka.common.LogCompositions
+import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
 import org.kafka.navigation.LeafScreen
@@ -76,22 +76,20 @@ private fun Search(
     navigator: Navigator,
     recentSearches: List<RecentSearch>
 ) {
-    Column {
+    val scaffoldPadding = scaffoldPadding()
+    Column(modifier = Modifier.padding(top = scaffoldPadding.calculateTopPadding())) {
         SearchWidget(searchText = searchText, setSearchText = setSearchText, onImeAction = {
             queryViewModel.submitQuery(it)
             searchViewModel.addRecentSearch(it)
         })
 
         AnimatedVisibility(visible = queryViewState.items != null) {
-            val padding = PaddingValues(bottom = scaffoldPadding().calculateBottomPadding())
+            val padding = PaddingValues(bottom = scaffoldPadding.calculateBottomPadding())
             LazyColumn(contentPadding = padding) {
                 items(queryViewState.items!!) {
                     Item(item = it) { itemId ->
                         navigator.navigate(
-                            LeafScreen.ItemDetail.buildRoute(
-                                itemId,
-                                RootScreen.Search
-                            )
+                            LeafScreen.ItemDetail.buildRoute(itemId, RootScreen.Search)
                         )
                     }
                 }

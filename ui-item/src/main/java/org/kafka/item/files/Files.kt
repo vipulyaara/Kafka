@@ -32,9 +32,9 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.common.Icons
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.elevation
+import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LeafScreen.Reader
 import org.kafka.navigation.LocalNavigator
@@ -56,7 +56,7 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val playbackConnection = LocalPlaybackConnection.current
     val lazyListState = rememberLazyListState()
 
-    Scaffold(topBar = { TopBar(lazyListState = lazyListState) }) { padding ->
+    Scaffold(topBar = { TopBar(viewState.title, lazyListState = lazyListState) }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Files(padding, viewState, navigator, currentRoot, lazyListState, playbackConnection)
         }
@@ -79,7 +79,7 @@ private fun Files(
         if (it.isAudio()) {
             playbackConnection.playAudio(it.asAudio())
         } else {
-            navigator.navigate(Reader.buildRoute(it.itemId, currentRoot))
+            navigator.navigate(Reader.buildRoute(it.fileId, currentRoot))
         }
     }
 
@@ -165,10 +165,12 @@ private fun File(
 
 @Composable
 private fun TopBar(
+    title: String,
     lazyListState: LazyListState = rememberLazyListState(),
     navigator: Navigator = LocalNavigator.current
 ) {
     TopBar(
+        title = title,
         navigationIcon = {
             IconButton(onClick = { navigator.goBack() }) {
                 IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)

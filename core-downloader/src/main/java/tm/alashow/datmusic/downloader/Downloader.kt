@@ -32,7 +32,7 @@ interface Downloader {
 
     suspend fun pause(vararg downloadInfoIds: Int)
     suspend fun resume(vararg downloadInfoIds: Int)
-    suspend fun cancel(vararg downloadItems: DownloadItem)
+    suspend fun cancel(vararg downloadInfoIds: Int)
     suspend fun retry(vararg downloadInfoIds: Int)
     suspend fun remove(vararg downloadItems: DownloadItem)
     suspend fun delete(vararg downloadItems: DownloadItem)

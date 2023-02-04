@@ -56,6 +56,10 @@ data class File(
     }
 }
 
+fun ItemDetail.getTextFile() =
+    files?.firstOrNull { it.endsWith("pdf", true) }
+        ?: files?.firstOrNull { it.endsWith("txt", true) }
+
 fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 
 fun String?.isPdf() = this?.contains("pdf", true) ?: false

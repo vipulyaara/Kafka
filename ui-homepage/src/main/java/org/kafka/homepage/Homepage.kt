@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
-import org.kafka.common.LogCompositions
 import org.kafka.common.asImmutable
 import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
@@ -28,7 +28,6 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
-import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -42,7 +41,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar() },
+        topBar = { },
         snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
@@ -87,7 +86,7 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding(),
         modifier = Modifier.fillMaxSize()
     ) {
-        item { Carousels() }
+        item { Carousels(modifier = Modifier.padding(top = Dimens.Spacing12)) }
 
         item {
             ContinueReading(

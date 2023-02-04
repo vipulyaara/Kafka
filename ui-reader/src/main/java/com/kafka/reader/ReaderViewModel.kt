@@ -1,116 +1,70 @@
 package com.kafka.reader
 
-import android.app.Application
-import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.TextFile
+import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.ObservableLoadingCounter
+import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.common.asUiMessage
-import org.kafka.domain.interactors.AddRecentItem
-import org.kafka.domain.interactors.EnqueueTextDownload
-import org.kafka.domain.observers.ObserveDownloadedItems
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
+import org.kafka.domain.observers.ObserveDownloadItem
+import org.kafka.domain.observers.ObserveTextFile
+import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
 @HiltViewModel
 class ReaderViewModel @Inject constructor(
-    private val observeDownloadedItems: ObserveDownloadedItems,
-    private val enqueueTextDownload: EnqueueTextDownload,
-    private val addRecentItem: AddRecentItem,
-    private val application: Application,
+    private val observeDownloadItem: ObserveDownloadItem,
+    private val observeTextFile: ObserveTextFile,
+    private val downloader: Downloader,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
+    private var fileId = savedStateHandle.getStateFlow("fileId", "")
 
-    private var itemId = savedStateHandle.getStateFlow("itemId", "")
-
-    private val text = mutableStateOf("")
-    private var uri by mutableStateOf<String?>(null)
-    private var progress by mutableStateOf(0)
-
-    val downloadItem = observeDownloadedItems.flow
-        .map { downloads -> downloads.first { it.file.itemId == itemId.value } }
-        .stateInDefault(
-            scope = viewModelScope,
-            initialValue = null,
-        )
-
-    val downloadState = combine(
-        snapshotFlow { progress },
-        snapshotFlow { uri },
-    ) { progress, uri ->
-        DownloadProgressState(progress = progress.toFloat() / 100, uri = uri?.toUri())
-    }.stateInDefault(
-        scope = viewModelScope,
-        initialValue = DownloadProgressState(),
-    )
-
-    val state: StateFlow<ReaderViewState> = combine(
-        itemId,
-        loadingCounter.observable,
+    val readerState = combine(
+        observeDownloadItem.flow,
+        observeTextFile.flow,
         uiMessageManager.message,
-    ) { fileUrl, isLoading, message ->
-        ReaderViewState(readerUrl = fileUrl, message = message, isLoading = isLoading)
+    ) { download, textFile, message ->
+        ReaderViewState(
+            textFile = textFile,
+            download = download,
+            message = message
+        )
     }.stateInDefault(
         scope = viewModelScope,
         initialValue = ReaderViewState(),
     )
 
     init {
-        viewModelScope.launch { enqueueTextDownload(itemId.value) }
+        viewModelScope.launch(Dispatchers.IO) {
+            downloader.enqueueFile(fileId.value)
+        }
 
         viewModelScope.launch {
-            addRecentItem(AddRecentItem.Params(itemId.value)).collect()
+            observeDownloadItem(fileId.value)
         }
 
-        observeDownloadedItems(Unit)
-    }
-
-//    private suspend fun download(itemId: String) {
-//        downloadFile.invokeByItemId(itemId).collect {
-//            val downloadResult = it.getOrThrow()
-//            this.progress = downloadResult.progress
-//
-//            if (downloadResult.data != null) {
-//                this.uri = downloadResult.data.toString()
-//                readFile(downloadResult.data!!)
-//            }
-//        }
-//    }
-
-    private suspend fun readFile(uri: Uri) {
-        try {
-            val `in`: InputStream? = application.contentResolver.openInputStream(uri)
-            val r = BufferedReader(InputStreamReader(`in`))
-            val total = StringBuilder()
-            var line: String?
-            while (withContext(Dispatchers.IO) {
-                    r.readLine()
-                }.also { line = it } != null) {
-                total.append(line).append('\n')
-            }
-            text.value = total.toString()
-        } catch (e: Exception) {
-            uiMessageManager.emitMessage(e.message.asUiMessage())
+        viewModelScope.launch {
+            observeTextFile(fileId.value)
         }
     }
+}
+
+data class ReaderViewState(
+    val textFile: TextFile? = null,
+    val download: ItemWithDownload? = null,
+    val message: UiMessage? = null,
+) {
+    val progress: Float
+        get() = download?.downloadInfo?.progress?.coerceAtLeast(0f) ?: 0f
+
+    val progressText: String?
+        get() = download?.downloadInfo?.sizeStatus
 }

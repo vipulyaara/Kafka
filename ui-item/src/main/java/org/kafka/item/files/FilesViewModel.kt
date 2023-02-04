@@ -35,6 +35,7 @@ class FilesViewModel @Inject constructor(
         debug { "OItems $downloads" }
         FilesViewState(
             files = files,
+            title = files.firstOrNull()?.itemTitle.orEmpty(),
             downloads = downloads,
             isLoading = isLoading,
             message = message

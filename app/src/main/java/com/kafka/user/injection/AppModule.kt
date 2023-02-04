@@ -11,10 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.config.FirebaseInitializer
-import com.kafka.user.config.LoggerInitializer
-import com.kafka.user.config.ThreeTenBpInitializer
+import com.kafka.textreader.DownloadInitializer
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
+import com.kafka.user.initializer.FirebaseInitializer
+import com.kafka.user.initializer.LoggerInitializer
+import com.kafka.user.initializer.ThreeTenBpInitializer
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -96,6 +97,10 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideLoggerInitializer(bind: LoggerInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideDownloadInitializer(bind: DownloadInitializer): AppInitializer
 
     @Binds
     @IntoSet

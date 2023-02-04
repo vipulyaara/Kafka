@@ -16,11 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.isAudio
-import org.kafka.common.Icons
+import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
@@ -31,8 +29,7 @@ import ui.common.theme.theme.iconPrimary
 @Composable
 fun Actions(
     itemDetail: ItemDetail,
-    openReader: (String) -> Unit,
-    playAudio: (String) -> Unit,
+    onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
     toggleFavorite: () -> Unit
@@ -61,14 +58,9 @@ fun Actions(
 
         FloatingButton(
             text = itemDetail.callToAction,
-            modifier = Modifier.weight(0.8f)
-        ) {
-            if (itemDetail.isAudio()) {
-                playAudio(itemDetail.itemId)
-            } else {
-                openReader(itemDetail.itemId)
-            }
-        }
+            modifier = Modifier.weight(0.8f),
+            onClicked = { onPrimaryAction(itemDetail.itemId) }
+        )
     }
 }
 
@@ -112,17 +104,4 @@ private fun Icon(
             IconResource(imageVector = icon)
         }
     }
-}
-
-@Preview
-@Composable
-private fun ActionsPreview() {
-    Actions(
-        itemDetail = ItemDetail(),
-        openReader = {},
-        playAudio = {},
-        openFiles = {},
-        isFavorite = false,
-        toggleFavorite = {}
-    )
 }

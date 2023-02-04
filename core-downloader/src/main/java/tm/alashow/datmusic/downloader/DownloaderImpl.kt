@@ -209,8 +209,8 @@ internal class DownloaderImpl @Inject constructor(
         fetcher.resume(downloadInfoIds.toList())
     }
 
-    override suspend fun cancel(vararg downloadItems: DownloadItem) {
-        fetcher.cancel(downloadItems.map { it.downloadInfo.id })
+    override suspend fun cancel(vararg downloadInfoIds: Int) {
+        fetcher.cancel(downloadInfoIds.toList())
     }
 
     override suspend fun retry(vararg downloadInfoIds: Int) {

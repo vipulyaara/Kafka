@@ -8,16 +8,16 @@ import android.content.Context
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchNotificationManager
-import com.tonyodev.fetch2core.Downloader as FetchDownloader
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
+import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -42,7 +42,7 @@ class DownloaderModule {
     ): Fetch {
         val fetcherConfig = FetchConfiguration.Builder(context)
             .setNamespace("downloads")
-            .setDownloadConcurrentLimit(1)
+            .setDownloadConcurrentLimit(2)
             .setAutoRetryMaxAttempts(4)
             .enableRetryOnNetworkGain(true)
             .enableAutoStart(true)

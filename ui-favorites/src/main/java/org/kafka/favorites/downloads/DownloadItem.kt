@@ -1,5 +1,6 @@
 package org.kafka.favorites.downloads
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,12 +14,12 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
-import com.kafka.data.feature.item.toMessage
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
 import org.kafka.ui.components.item.ItemCreator
@@ -57,13 +58,14 @@ fun DownloadItemDescription(item: ItemWithDownload, modifier: Modifier = Modifie
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
 
         if (item.downloadInfo.status != DownloadStatus.COMPLETED) {
-            Progress(item.downloadInfo.progress, item.downloadInfo.status.toMessage())
+            val progress by animateFloatAsState(targetValue = item.downloadInfo.progress)
+            Progress(progress)
         }
     }
 }
 
 @Composable
-private fun Progress(progress: Float, status: String) {
+private fun Progress(progress: Float) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
         verticalAlignment = Alignment.CenterVertically

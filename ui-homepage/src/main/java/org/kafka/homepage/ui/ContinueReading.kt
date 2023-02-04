@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
-import org.kafka.common.Icons
 import org.kafka.common.ImmutableList
+import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
 import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens

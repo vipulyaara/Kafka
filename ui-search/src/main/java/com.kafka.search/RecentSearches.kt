@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.kafka.common.Icons
+import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary

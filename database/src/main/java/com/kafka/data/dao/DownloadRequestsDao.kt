@@ -27,6 +27,10 @@ abstract class DownloadRequestsDao : EntityDao<DownloadRequest> {
     abstract suspend fun getById(id: List<String>): DownloadRequest
 
     @Transaction
+    @Query("SELECT * FROM download_requests WHERE request_id == :id ORDER BY created_at DESC, id ASC")
+    abstract suspend fun getByRequestId(id: Int): DownloadRequest
+
+    @Transaction
     @Query("SELECT * FROM download_requests WHERE entity_type = :type ORDER BY created_at DESC, id ASC")
     abstract suspend fun getByType(type: DownloadRequest.Type): List<DownloadRequest>
 
