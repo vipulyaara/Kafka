@@ -51,10 +51,12 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
 
 @Composable
 fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
-    RiveAnimation(resource = R.raw.liquid_download_2, modifier = modifier) { view ->
-        val percentage = ((progress + 0.18f) * 100).coerceIn(0f, 100f)
+    val percentage = ((progress + 0.08f) * 100).coerceIn(0f, 100f)
+    val percentageState by animateFloatAsState(targetValue = percentage)
+
+    RiveAnimation(resource = R.raw.liquid_download_12, modifier = modifier) { view ->
         view.setBooleanState("State machine 1", "Downloading", true)
-        view.setNumberState("State machine 1", "Progress", percentage)
+        view.setNumberState("State machine 1", "Progress", percentageState)
     }
 }
 

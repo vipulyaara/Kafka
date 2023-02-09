@@ -17,7 +17,7 @@ class FileMapper @Inject constructor() {
     ) = file.run {
         val extension = name.split(".").last()
         com.kafka.data.entities.File(
-            fileId = name,
+            fileId = fileId,
             itemId = itemId,
             itemTitle = itemTitle,
             size = size?.toLongOrNull(),

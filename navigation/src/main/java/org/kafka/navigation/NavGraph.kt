@@ -135,7 +135,7 @@ sealed class LeafScreen(
         )
     ) {
         companion object {
-            fun buildRoute(id: String, root: RootScreen) = "${root.route}/reader/$id"
+            fun buildRoute(fileId: String, root: RootScreen) = "${root.route}/reader/$fileId"
             fun buildUri(id: String) = "${Config.BASE_URL}reader/$id".toUri()
         }
     }

@@ -1,7 +1,5 @@
 package com.kafka.reader.pdf
 
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,8 +25,6 @@ class PdfReaderViewModel @Inject constructor(
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     var showControls by mutableStateOf(false)
-    val lazyListState = LazyListState()
-    val currentPage by derivedStateOf { lazyListState.firstVisibleItemIndex }
 
     val readerState = combine(
         observeTextFile.flow,
@@ -49,9 +45,8 @@ class PdfReaderViewModel @Inject constructor(
         }
     }
 
-    fun goToPage(page: Int) {
-        showControls = false
-        viewModelScope.launch { lazyListState.scrollToItem(page) }
+    fun showControls(show: Boolean) {
+        showControls = show
     }
 
     fun toggleControls() {

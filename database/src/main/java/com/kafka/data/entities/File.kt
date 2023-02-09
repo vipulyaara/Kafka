@@ -41,7 +41,9 @@ data class File(
             ?.reversed()
             ?.forEachIndexed { index, time ->
                 durationInSeconds += time.toInt() * (index * 60).coerceAtLeast(1)
-            }
+            } ?: run {
+            durationInSeconds = duration.toDouble().toLong()
+        }
 
         return durationInSeconds
     }
@@ -57,11 +59,6 @@ data class File(
         return "$size $label"
     }
 }
-
-fun ItemDetail.getTextFile() =
-    files?.firstOrNull { it.endsWith("pdf", true) }
-        ?: files?.firstOrNull { it.endsWith("epub", true) }
-        ?: files?.firstOrNull { it.endsWith("txt", true) }
 
 fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 

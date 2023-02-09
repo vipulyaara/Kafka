@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.getTextFile
 import com.kafka.data.entities.isAudio
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
@@ -102,11 +101,11 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     private fun openReader(itemDetail: ItemDetail?, itemId: String) {
-        itemDetail?.getTextFile()?.let {
+        itemDetail?.primaryTextFile?.let {
             addRecentItem(itemId)
             navigator.navigate(LeafScreen.Reader.buildRoute(it, navigator.currentRoot.value))
         } ?: viewModelScope.launch {
-            uiMessageManager.emitMessage("PDFs are not supported".asUiMessage())
+            uiMessageManager.emitMessage("File type is not supported".asUiMessage())
         }
     }
 

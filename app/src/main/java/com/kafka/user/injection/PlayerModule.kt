@@ -18,7 +18,9 @@ class PlayerModule {
     @Provides
     fun audioDataSource(fileDao: FileDao): AudioDataSource = object : AudioDataSource {
         override suspend fun getByIds(ids: List<String>): List<PlayerAudio> {
-            return fileDao.filesByIds(ids).map { it.asAudio() }
+            return fileDao.filesByIds(ids)
+                .sortedBy { it.format }
+                .map { it.asAudio() }
         }
 
         override suspend fun findAudio(id: String): PlayerAudio? {
@@ -30,10 +32,9 @@ class PlayerModule {
         }
 
         override suspend fun findAudiosByItemId(itemId: String): List<PlayerAudio> {
-            return fileDao.audioFilesByItemId(itemId)
+            return fileDao.playerFilesByItemId(itemId)
                 .filter { it.isPlayable() }
-                .distinctBy { it.name }
-                .reversed()
+                .distinctBy { it.title }
                 .map { it.asAudio() }
         }
     }

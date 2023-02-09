@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import org.kafka.base.debug
 
 interface Navigator {
     fun navigate(route: String)
@@ -60,6 +61,7 @@ class NavigatorImpl : Navigator {
             currentRootChannel.tryEmit(rootScreen)
         }
 
+        debug { "Navigating to $route with root $root" }
         navigationQueue.trySend(NavigationEvent.Destination(route, root))
     }
 

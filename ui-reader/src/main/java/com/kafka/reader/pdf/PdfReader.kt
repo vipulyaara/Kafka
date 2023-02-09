@@ -2,11 +2,12 @@ package com.kafka.reader.pdf
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +17,7 @@ import com.kafka.reader.controls.GoToPage
 import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
 import com.kafka.textreader.bouquet.rememberVerticalPdfReaderState
+import kotlinx.coroutines.launch
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.rememberMutableState
@@ -29,27 +31,18 @@ internal fun PdfReader(
     viewModel: PdfReaderViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.readerState.collectAsStateWithLifecycle()
-
-    val currentPage = viewModel.currentPage
     val showControls = viewModel.showControls
 
-    LaunchedEffect(fileId) {
-        viewModel.observeTextFile(fileId)
-    }
-
-    LaunchedEffect(fileId, currentPage) {
-        viewModel.onPageChanged(fileId, currentPage)
-    }
+    LaunchedEffect(fileId) { viewModel.observeTextFile(fileId) }
 
     AnimatedVisibility(viewState.textFile != null) {
         Delayed {
             PdfReaderWithControls(
                 textFile = viewState.textFile!!,
-                currentPage = currentPage,
                 modifier = modifier.simpleClickable { viewModel.toggleControls() },
-                listState = viewModel.lazyListState,
-                goToPage = viewModel::goToPage,
-                showControls = showControls
+                setControls = viewModel::showControls,
+                showControls = showControls,
+                onPageChanged = { viewModel.onPageChanged(fileId, it) }
             )
         }
     }
@@ -58,26 +51,34 @@ internal fun PdfReader(
 @Composable
 private fun PdfReaderWithControls(
     textFile: TextFile,
-    currentPage: Int,
-    goToPage: (Int) -> Unit,
     modifier: Modifier = Modifier,
     showControls: Boolean = false,
-    listState: LazyListState = rememberLazyListState()
+    setControls: (Boolean) -> Unit = {},
+    onPageChanged: (Int) -> Unit = {},
 ) {
     val scaffoldPadding = scaffoldPadding()
+    val scope = rememberCoroutineScope()
     val uri by rememberMutableState(textFile) { textFile.localUri.toUri() }
+    val pdfState = rememberVerticalPdfReaderState(
+        resource = ResourceType.Local(uri),
+        startPage = (textFile.currentPage - 1).coerceAtLeast(0)
+    )
+    val currentPage by remember { derivedStateOf { pdfState.currentPage } }
+
+    LaunchedEffect(textFile, currentPage) {
+        onPageChanged(currentPage)
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
-        val pdfState = rememberVerticalPdfReaderState(
-            resource = ResourceType.Local(uri),
-            lazyListState = listState
-        )
         VerticalPdfReader(state = pdfState, contentPadding = scaffoldPadding)
 
         GoToPage(
             showControls = showControls,
             currentPage = currentPage,
-            goToPage = goToPage,
+            goToPage = {
+                scope.launch { pdfState.lazyState.animateScrollToItem(it) }
+                setControls(false)
+            },
             scaffoldPadding = scaffoldPadding
         )
     }

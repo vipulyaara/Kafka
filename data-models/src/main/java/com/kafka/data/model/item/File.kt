@@ -47,4 +47,7 @@ data class File(
     val track: String? = null,
     @SerialName("width")
     val width: String? = null
-)
+) {
+    val fileId: String
+        get() = (name + format).hashCode().toString()
+}

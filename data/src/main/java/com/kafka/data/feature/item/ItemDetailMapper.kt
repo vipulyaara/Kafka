@@ -4,6 +4,7 @@ import android.text.Html
 import com.kafka.data.dao.FileDao
 import com.kafka.data.entities.File.Companion.supportedExtensions
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
 import org.kafka.base.debug
 import javax.inject.Inject
@@ -22,13 +23,19 @@ class ItemDetailMapper @Inject constructor(
             creator = from.metadata.creator?.joinToString(),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
-            files = from.files.filter { it.name.isNotEmpty() }.map { it.name },
+            files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },
             coverImage = from.findCoverImage(),
-            metadata = from.metadata.collection
+            metadata = from.metadata.collection,
+            primaryTextFile = from.files.getTextFile()?.fileId
         ).also {
             insertFiles(from, it)
         }
     }
+
+    private fun List<File>.getTextFile() = firstOrNull { it.name.endsWith("pdf", true) }
+        ?: firstOrNull { it.name.endsWith("epub", true) }
+        ?: firstOrNull { it.name.endsWith("txt", true) }
+
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
         it.name.startsWith("cover_1")

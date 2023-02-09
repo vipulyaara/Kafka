@@ -61,10 +61,4 @@ data class ReaderViewState(
     val textFile: TextFile? = null,
     val download: ItemWithDownload? = null,
     val message: UiMessage? = null,
-) {
-    val progress: Float
-        get() = download?.downloadInfo?.progress?.coerceAtLeast(0f) ?: 0f
-
-    val progressText: String?
-        get() = download?.downloadInfo?.sizeStatus
-}
+)

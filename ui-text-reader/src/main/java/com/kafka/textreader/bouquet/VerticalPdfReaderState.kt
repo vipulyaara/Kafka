@@ -1,7 +1,6 @@
 package com.kafka.textreader.bouquet
 
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
@@ -10,10 +9,11 @@ import androidx.core.net.toUri
 
 class VerticalPdfReaderState(
     resource: ResourceType,
-    isZoomEnable: Boolean = false
+    isZoomEnable: Boolean = false,
+    startPage: Int = 0
 ) : PdfReaderState(resource, isZoomEnable) {
 
-    internal var lazyState: LazyListState = LazyListState()
+    var lazyState: LazyListState = LazyListState(startPage)
         private set
 
     override val currentPage: Int
@@ -75,10 +75,10 @@ class VerticalPdfReaderState(
 @Composable
 fun rememberVerticalPdfReaderState(
     resource: ResourceType,
-    lazyListState: LazyListState = rememberLazyListState(),
+    startPage: Int,
     isZoomEnable: Boolean = true
 ): VerticalPdfReaderState {
     return remember {
-        VerticalPdfReaderState(resource, isZoomEnable)
+        VerticalPdfReaderState(resource, isZoomEnable, startPage)
     }
 }
