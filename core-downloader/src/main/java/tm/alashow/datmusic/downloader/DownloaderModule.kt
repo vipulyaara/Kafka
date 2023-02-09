@@ -32,7 +32,6 @@ class DownloaderModule {
         @ApplicationContext context: Context
     ): FetchNotificationManager = DownloaderNotificationManager(context)
 
-    // TODO: when are we going to close the fetch created in here? on App.onDestroy?
     @Provides
     @Singleton
     fun provideFetch(
@@ -42,7 +41,7 @@ class DownloaderModule {
     ): Fetch {
         val fetcherConfig = FetchConfiguration.Builder(context)
             .setNamespace("downloads")
-            .setDownloadConcurrentLimit(2)
+            .setDownloadConcurrentLimit(1)
             .setAutoRetryMaxAttempts(4)
             .enableRetryOnNetworkGain(true)
             .enableAutoStart(true)
@@ -52,4 +51,6 @@ class DownloaderModule {
         Fetch.Impl.setDefaultInstanceConfiguration(fetcherConfig)
         return Fetch.Impl.getInstance(fetcherConfig)
     }
+
+
 }

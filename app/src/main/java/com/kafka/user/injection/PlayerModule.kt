@@ -1,7 +1,7 @@
 package com.kafka.user.injection
 
 import com.kafka.data.dao.FileDao
-import com.kafka.data.entities.isAudio
+import com.kafka.data.entities.isPlayable
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.apis.PlayerEventLogger
 import dagger.Module
@@ -30,8 +30,8 @@ class PlayerModule {
         }
 
         override suspend fun findAudiosByItemId(itemId: String): List<PlayerAudio> {
-            return fileDao.filesByItemId(itemId).filter { it.isAudio() }
-                .reversed()
+            return fileDao.audioFilesByItemId(itemId)
+                .filter { it.isPlayable() }
                 .distinctBy { it.name }
                 .reversed()
                 .map { it.asAudio() }

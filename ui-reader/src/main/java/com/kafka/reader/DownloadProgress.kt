@@ -1,5 +1,7 @@
 package com.kafka.reader
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,12 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.kafka.data.feature.item.DownloadInfo
-import com.kafka.data.feature.item.DownloadStatus
 import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.ui.components.R
+import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.rive.RiveAnimation
-import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textSecondary
@@ -36,15 +38,23 @@ import ui.common.theme.theme.textSecondary
 internal fun DownloadProgress(downloadInfo: DownloadInfo) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
-            modifier = Modifier
-                .padding(Dimens.Spacing24),
+            modifier = Modifier.padding(Dimens.Spacing24),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RiveAnimation(progress = downloadInfo.progress)
+            DownloadingAnimation(progress = downloadInfo.progress)
             Progress(downloadInfo.progress)
             Spacer(modifier = Modifier.height(Dimens.Spacing24))
             Actions(downloadInfo)
         }
+    }
+}
+
+@Composable
+fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
+    RiveAnimation(resource = R.raw.liquid_download_2, modifier = modifier) { view ->
+        val percentage = ((progress + 0.18f) * 100).coerceIn(0f, 100f)
+        view.setBooleanState("State machine 1", "Downloading", true)
+        view.setNumberState("State machine 1", "Progress", percentage)
     }
 }
 
@@ -56,43 +66,38 @@ private fun Actions(downloadInfo: DownloadInfo) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.Spacing24),
-        horizontalArrangement = Arrangement.SpaceAround
+            .padding(horizontal = Dimens.Spacing24)
+            .animateContentSize(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.weight(0.5f)) {
+        Box(modifier = Modifier.weight(0.6f)) {
             if (downloadInfo.sizeStatus != null) {
                 Text(
                     text = downloadInfo.sizeStatus!!,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
         }
 
-        Row(modifier = Modifier.weight(0.5f), horizontalArrangement = Arrangement.SpaceAround) {
-            IconResource(
-                imageVector = if (downloadInfo.status.isPaused()) Icons.Play else Icons.Pause,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable {
-                    scope.launch { downloader.togglePlayPause(downloadInfo) }
-                }
-            )
-            IconResource(
-                imageVector = Icons.XCircle,
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.clickable {
-                    scope.launch { downloader.cancel(downloadInfo.id) }
-                }
-            )
-        }
-    }
-}
+        Row(
+            modifier = Modifier.weight(0.4f),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DownloadStatusIcons(downloadInfo = downloadInfo)
 
-suspend fun Downloader.togglePlayPause(downloadInfo: DownloadInfo) {
-    if (downloadInfo.status == DownloadStatus.PAUSED) {
-        resume(downloadInfo.id)
-    } else {
-        pause(downloadInfo.id)
+            AnimatedVisibility(visible = downloadInfo.status.isActive()) {
+                IconResource(
+                    imageVector = Icons.XCircle,
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.clickable {
+                        scope.launch { downloader.cancel(downloadInfo.id) }
+                    }
+                )
+            }
+        }
     }
 }
 

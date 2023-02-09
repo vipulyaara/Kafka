@@ -2,7 +2,7 @@ package com.kafka.data.feature.item
 
 import android.text.Html
 import com.kafka.data.dao.FileDao
-import com.kafka.data.entities.File.Companion.supportedFiles
+import com.kafka.data.entities.File.Companion.supportedExtensions
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.item.ItemDetailResponse
 import org.kafka.base.debug
@@ -46,7 +46,7 @@ class ItemDetailMapper @Inject constructor(
                 localUri = fileDao.fileOrNull(it.name)?.localUri,
                 coverImage = item.coverImage
             )
-        }.filter { supportedFiles.contains(it.extension) }
+        }.filter { supportedExtensions.contains(it.extension) }
 
         fileDao.insertAll(files)
     }

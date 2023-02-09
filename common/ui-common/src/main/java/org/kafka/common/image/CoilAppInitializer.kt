@@ -1,38 +1,31 @@
 package org.kafka.common.image
 
 import android.app.Application
+import android.content.Context
 import coil.Coil
 import coil.ImageLoader
+import coil.disk.DiskCache
 import com.kafka.data.AppInitializer
-import com.kafka.data.injection.ImageLoading
-import com.kafka.data.injection.ProcessLifetime
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import java.util.logging.Level
-import java.util.logging.Logger
+import org.kafka.base.AppCoroutineDispatchers
+import java.io.File
 import javax.inject.Inject
 
-class CoilAppInitializer @Inject constructor(
-    @ImageLoading private val okHttpClient: OkHttpClient,
-    @ProcessLifetime private val processScope: CoroutineScope
+class CoilAppInitializer
+@Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val dispatchers: AppCoroutineDispatchers,
+    private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
-
     override fun init(application: Application) {
-        processScope.launch {
-            val coilOkHttpClient = okHttpClient.newBuilder()
-                .addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.NONE
-                })
+        Coil.setImageLoader {
+            ImageLoader.Builder(application)
+                .okHttpClient(okHttpClient)
+                .dispatcher(dispatchers.io)
+                .fetcherDispatcher(dispatchers.io)
+                .diskCache(DiskCache.Builder().directory(File(context.cacheDir, "images_cache")).build())
                 .build()
-
-            Logger.getLogger(OkHttpClient::class.java.name).level = Level.OFF
-            Coil.setImageLoader {
-                ImageLoader.Builder(application)
-                    .okHttpClient(coilOkHttpClient)
-                    .build()
-            }
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,29 +26,32 @@ import ui.common.theme.theme.textSecondary
 
 @Composable
 fun FeaturedItems(
-    readingList: ImmutableList<Item>,
+    items: ImmutableList<Item>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
-    if (readingList.items.isNotEmpty()) {
+    if (items.items.isNotEmpty()) {
         Column(
             modifier = modifier
+                .fillMaxWidth()
                 .padding(vertical = Dimens.Spacing12)
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f))
                 .padding(vertical = Dimens.Spacing24)
         ) {
             Text(
-                text = "Featured Items",
+                text = "Favorites",
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.textSecondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
             LazyRow(
-                modifier = Modifier.padding(top = Dimens.Spacing12),
+                modifier = Modifier.padding(top = Dimens.Spacing08),
                 contentPadding = PaddingValues(horizontal = Dimens.Spacing12)
             ) {
-                val items = readingList.items.subList(0, readingList.size.coerceAtMost(10))
-                items(items = items, key = { it.itemId }) {
+                items(
+                    items = items.items.subList(0, items.size.coerceAtMost(10)),
+                    key = { it.itemId }
+                ) {
                     FeaturedItem(item = it, openItemDetail = openItemDetail)
                 }
             }
@@ -59,14 +63,14 @@ fun FeaturedItems(
 private fun FeaturedItem(item: Item, openItemDetail: (String) -> Unit) {
     Column(
         modifier = Modifier
-            .width(164.dp)
-            .padding(Dimens.Spacing04)
+            .width(148.dp)
+            .padding(Dimens.Spacing08)
             .clickable { openItemDetail(item.itemId) }
     ) {
         LoadImage(
             data = item.coverImage,
             modifier = Modifier
-                .size(164.dp)
+                .size(148.dp)
                 .aspectRatio(1f)
                 .padding(bottom = Dimens.Spacing04),
         )
@@ -81,7 +85,7 @@ private fun FeaturedItem(item: Item, openItemDetail: (String) -> Unit) {
 
         Text(
             text = item.creator?.name.orEmpty(),
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.secondary,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = Dimens.Spacing02),

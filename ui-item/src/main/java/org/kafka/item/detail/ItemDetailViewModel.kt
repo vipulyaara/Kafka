@@ -142,14 +142,16 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    fun shareItemText(): String {
-        val itemTitle = state.value.itemDetail!!.title
+    val shareItemText: String
+        get() {
+            val itemTitle = state.value.itemDetail!!.title
 
-        return """
+            return """
             Check out $itemTitle on Kafka
+            
             ${DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId))}
         """.trimIndent()
-    }
+        }
 
     private fun clearMessage() {
         viewModelScope.launch {

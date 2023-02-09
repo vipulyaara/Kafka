@@ -24,6 +24,12 @@ abstract class FileDao : EntityDao<File> {
     @Query("select * from File where itemId = :itemId ORDER BY name")
     abstract suspend fun filesByItemId(itemId: String): List<File>
 
+    suspend fun audioFilesByItemId(itemId: String): List<File> {
+        return filesByItemId(itemId).groupBy { it.format }
+            .filter { it.key.contains("mp3", true) }
+            .values.flatten()
+    }
+
     @Query("select * from File where fileId = :fileId")
     abstract suspend fun file(fileId: String): File
 

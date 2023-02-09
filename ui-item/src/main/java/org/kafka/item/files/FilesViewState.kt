@@ -5,9 +5,11 @@ import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.common.UiMessage
 
 data class FilesViewState(
-    val downloads: List<ItemWithDownload> = emptyList(),
     val title: String = "",
+    val downloads: List<ItemWithDownload> = emptyList(),
     val files: List<File> = emptyList(),
+    val filteredFiles: List<File> = emptyList(),
+    val actionLabels: List<String> = emptyList(),
     val isLoading: Boolean = false,
     val message: UiMessage? = null
 )

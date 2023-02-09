@@ -29,6 +29,7 @@ import compose.icons.tablericons.Microphone
 import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
+import compose.icons.tablericons.Share
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 
@@ -59,6 +60,8 @@ object Icons {
         get() = TablerIcons.LayoutGrid
     val Web: ImageVector
         get() = TablerIcons.World
+    val Share: ImageVector
+        get() = TablerIcons.Share
     val Heart
         @Composable get() = TablerIcons.Heart
     val Download

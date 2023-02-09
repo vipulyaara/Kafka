@@ -23,6 +23,7 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
+import org.kafka.homepage.ui.FeaturedItems
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
@@ -86,7 +87,7 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding(),
         modifier = Modifier.fillMaxSize()
     ) {
-        item { Carousels(modifier = Modifier.padding(top = Dimens.Spacing12)) }
+        item { Carousels(modifier = Modifier.padding(top = Dimens.Spacing24)) }
 
         item {
             ContinueReading(
@@ -102,12 +103,21 @@ private fun HomepageFeedItems(
         itemsIndexed(
             items = homepage.queryItems,
             key = { _, item -> item.itemId }
-        ) { _, item ->
-            Item(
-                item = item,
-                modifier = Modifier,
-                openItemDetail = openItemDetail
-            )
+        ) { index, item ->
+            if (index == FavoriteRowIndex) {
+                FeaturedItems(
+                    items = homepage.followedItems.asImmutable(),
+                    openItemDetail = openItemDetail
+                )
+            } else {
+                Item(
+                    item = item,
+                    modifier = Modifier,
+                    openItemDetail = openItemDetail
+                )
+            }
         }
     }
 }
+
+private const val FavoriteRowIndex = 15

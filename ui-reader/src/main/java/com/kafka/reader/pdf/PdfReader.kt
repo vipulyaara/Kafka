@@ -16,6 +16,7 @@ import com.kafka.reader.controls.GoToPage
 import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
 import com.kafka.textreader.bouquet.rememberVerticalPdfReaderState
+import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.simpleClickable
@@ -41,14 +42,16 @@ internal fun PdfReader(
     }
 
     AnimatedVisibility(viewState.textFile != null) {
-        PdfReaderWithControls(
-            textFile = viewState.textFile!!,
-            currentPage = currentPage,
-            modifier = modifier.simpleClickable { viewModel.toggleControls() },
-            listState = viewModel.lazyListState,
-            goToPage = viewModel::goToPage,
-            showControls = showControls
-        )
+        Delayed {
+            PdfReaderWithControls(
+                textFile = viewState.textFile!!,
+                currentPage = currentPage,
+                modifier = modifier.simpleClickable { viewModel.toggleControls() },
+                listState = viewModel.lazyListState,
+                goToPage = viewModel::goToPage,
+                showControls = showControls
+            )
+        }
     }
 }
 

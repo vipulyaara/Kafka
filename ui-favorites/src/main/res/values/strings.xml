@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_favorites_items_title" translatable="false">No favorite items</string>
-    <string name="no_favorites_items_message" translatable="false">The items you favorite will appear here</string>
+    <string name="no_favorites_items_message" translatable="false">Your favorite items will appear here</string>
     <string name="no_downloads_items_title" translatable="false">No downloaded items</string>
-    <string name="no_downloads_items_message" translatable="false">The items you downloads will appear here</string>
+    <string name="no_downloads_items_message" translatable="false">Your downloaded items will appear here</string>
 </resources>

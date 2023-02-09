@@ -7,6 +7,8 @@ import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.TextFileDao
 import com.kafka.data.entities.File
 import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.isText
+import com.kafka.data.entities.isTxt
 import com.kafka.data.injection.ProcessLifetime
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
@@ -19,6 +21,9 @@ import org.kafka.domain.interactors.ReadTextFromUri
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
 
+/**
+ * Listen to the downloads and save the text files to the database when download is completed
+ * */
 class DownloadInitializer @Inject constructor(
     private val fetch: Fetch,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
@@ -36,10 +41,13 @@ class DownloadInitializer @Inject constructor(
                 if (download?.status == Status.COMPLETED) {
                     val downloadRequest = downloadRequestsDao.getByRequestId(download.id)
                     val file = fileDao.file(downloadRequest.id)
-                    val pages = readTextFromUri(download.fileUri).getOrNull() ?: emptyList()
-                    val textFile = textFileMapper.map(download, emptyList(), file)
+                    if (file.isText()) {
+                        val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
+                            .getOrElse { emptyList() } else emptyList()
+                        val textFile = textFileMapper.map(download, pages, file)
 
-                    textFileDao.insert(textFile)
+                        textFileDao.insert(textFile)
+                    }
                 }
             }
         }

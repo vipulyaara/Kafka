@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -47,20 +48,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.webUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
+import org.kafka.common.shareText
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.common.widgets.LoadImage
 import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.navigation.LeafScreen
-import org.kafka.navigation.LeafScreen.WebView
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding
@@ -80,7 +80,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     val snackbarState = SnackbarHostState()
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
-    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(state.message) {
         if (state.isSnackbarError) {
@@ -94,11 +94,15 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
             TopBar(
                 lazyListState = lazyListState,
                 onShareClicked = {
-                    navigator.navigate(WebView.buildRoute(state.itemDetail.webUrl(), currentRoot))
+                    context.shareText(text = viewModel.shareItemText)
                 }
             )
         },
-        snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) }
+        snackbarHost = {
+            RekhtaSnackbarHost(
+                hostState = snackbarState, modifier = Modifier.padding(scaffoldPadding())
+            )
+        }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             ItemDetail(state, viewModel, navigator, lazyListState)
@@ -215,7 +219,7 @@ private fun DescriptionDialog(itemDetail: ItemDetail, modifier: Modifier = Modif
             modifier = Modifier
                 .size(48.dp, 4.dp)
                 .clip(RoundedCornerShape(50))
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(MaterialTheme.colorScheme.primary)
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing36))
         Text(
@@ -293,30 +297,44 @@ private fun TopBar(
     TopBar(
         containerColor = Color.Transparent,
         navigationIcon = {
-            IconButton(
-                onClick = { navigator.goBack() },
-                modifier = Modifier
-                    .padding(Dimens.Spacing08)
-                    .clip(CircleShape)
-                    .background(containerColor)
-            ) {
-                IconResource(imageVector = Icons.Back, tint = contentColor)
-            }
+            BackIcon(navigator, containerColor, contentColor)
         },
         actions = {
-            AnimatedVisibility(!isRaised) {
-                IconButton(
-                    onClick = { onShareClicked() },
-                    modifier = Modifier.padding(Dimens.Spacing08)
-                ) {
-                    IconResource(
-                        imageVector = Icons.Web,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            ShareIcon(isRaised, onShareClicked)
         }
     )
+}
+
+@Composable
+private fun ShareIcon(isRaised: Boolean, onShareClicked: () -> Unit) {
+    AnimatedVisibility(!isRaised) {
+        IconButton(
+            onClick = { onShareClicked() },
+            modifier = Modifier.padding(Dimens.Spacing08)
+        ) {
+            IconResource(
+                imageVector = Icons.Share,
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+private fun BackIcon(
+    navigator: Navigator,
+    containerColor: Color,
+    contentColor: Color
+) {
+    IconButton(
+        onClick = { navigator.goBack() },
+        modifier = Modifier
+            .padding(Dimens.Spacing08)
+            .clip(CircleShape)
+            .background(containerColor)
+    ) {
+        IconResource(imageVector = Icons.Back, tint = contentColor)
+    }
 }
 
 @Composable
