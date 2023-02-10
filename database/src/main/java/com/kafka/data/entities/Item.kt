@@ -19,7 +19,7 @@ data class Item constructor(
     val coverImage: String? = null,
     val collection: List<String>? = null,
     val genre: List<String>? = null,
-    val subjects: List<String>? = null,
+    val subject: String? = null,
     val uploader: String? = null,
     val position: Int = 0
 ) : BaseEntity

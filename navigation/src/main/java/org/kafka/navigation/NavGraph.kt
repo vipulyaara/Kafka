@@ -19,9 +19,12 @@ import org.kafka.navigation.LeafScreen.Home.encodeUrl
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-sealed class RootScreen(val route: String, val startScreen: LeafScreen) {
+sealed class RootScreen(
+    open val route: String,
+    open val startScreen: LeafScreen
+) {
     object Home : RootScreen("home_root", LeafScreen.Home)
-    object Search : RootScreen("search_root", LeafScreen.Search)
+    object Search : RootScreen("search_root", LeafScreen.Search())
     object PlayerLibrary : RootScreen("player_library_root", LeafScreen.PlayerLibrary())
     object Library : RootScreen("library_root", LeafScreen.Library)
     object Profile : RootScreen("profile_root", LeafScreen.Profile)
@@ -33,18 +36,39 @@ sealed class LeafScreen(
     val arguments: List<NamedNavArgument> = emptyList(),
     val deepLinks: List<NavDeepLink> = emptyList(),
 ) {
-    fun createRoute(root: RootScreen? = null) = when (val rootPath = root?.route ?: this.rootRoute) {
-        is String -> "$rootPath/$route"
-        else -> route
-    }
+    fun createRoute(root: RootScreen? = null) =
+        when (val rootPath = root?.route ?: this.rootRoute) {
+            is String -> "$rootPath/$route"
+            else -> route
+        }
 
     object Home : LeafScreen("home")
-    object Search : LeafScreen("search")
+
+    //    object Search : LeafScreen("search")
     data class PlayerLibrary(override val route: String = "player_library") : LeafScreen(route)
     object Library : LeafScreen("library")
     object Profile : LeafScreen("profile")
 
     fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
+
+    data class Search(
+        override val route: String = "search/?keyword={keyword}",
+        override val rootRoute: String = "search_root"
+    ) : LeafScreen(
+        route = route,
+        rootRoute = rootRoute,
+        arguments = listOf(
+            navArgument("keyword") {
+                type = NavType.StringType
+                nullable = true
+            }
+        )
+    ) {
+        companion object {
+            fun buildRoute(keyword: String? = "Kaf", root: RootScreen = RootScreen.Search) =
+                "${root.route}/search/?keyword=$keyword"
+        }
+    }
 
     data class ItemDetail(
         override val route: String = "item/{itemId}",
@@ -65,7 +89,6 @@ sealed class LeafScreen(
     ) {
         companion object {
             fun buildRoute(id: String, root: RootScreen) = "${root.route}/item/$id"
-
             fun buildUri(id: String) = "${Config.BASE_URL}item/$id".toUri()
         }
     }

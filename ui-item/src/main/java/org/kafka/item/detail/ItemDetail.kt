@@ -54,7 +54,6 @@ import org.kafka.base.debug
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
-import org.kafka.common.shareText
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
@@ -93,9 +92,8 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         topBar = {
             TopBar(
                 lazyListState = lazyListState,
-                onShareClicked = {
-                    context.shareText(text = viewModel.shareItemText)
-                }
+                isShareVisible = state.itemDetail != null,
+                onShareClicked = { viewModel.shareItemText(context) }
             )
         },
         snackbarHost = {
@@ -283,6 +281,7 @@ private fun ItemDescription(itemDetail: ItemDetail, showDescription: () -> Unit)
 private fun TopBar(
     lazyListState: LazyListState,
     onShareClicked: () -> Unit,
+    isShareVisible: Boolean = false,
     navigator: Navigator = LocalNavigator.current
 ) {
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
@@ -300,7 +299,9 @@ private fun TopBar(
             BackIcon(navigator, containerColor, contentColor)
         },
         actions = {
-            ShareIcon(isRaised, onShareClicked)
+            if (isShareVisible) {
+                ShareIcon(isRaised, onShareClicked)
+            }
         }
     )
 }

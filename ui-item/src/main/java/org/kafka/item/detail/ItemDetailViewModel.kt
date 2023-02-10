@@ -1,5 +1,6 @@
 package org.kafka.item.detail
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +22,7 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.asUiMessage
 import org.kafka.common.collectStatus
+import org.kafka.common.shareText
 import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
@@ -29,6 +31,7 @@ import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
 import org.kafka.navigation.DeepLinksNavigation
+import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigation
 import org.kafka.navigation.Navigator
@@ -45,6 +48,7 @@ class ItemDetailViewModel @Inject constructor(
     private val toggleFavorite: ToggleFavorite,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
+    private val dynamicDeepLinkHandler: DynamicDeepLinkHandler,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
@@ -141,16 +145,19 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    val shareItemText: String
-        get() {
-            val itemTitle = state.value.itemDetail!!.title
+    fun shareItemText(context: Context) {
+        val itemTitle = state.value.itemDetail!!.title
 
-            return """
+        val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
+        val deepLink = dynamicDeepLinkHandler.createDeepLinkUri(link)
+        val text = """
             Check out $itemTitle on Kafka
             
-            ${DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId))}
+            $deepLink
         """.trimIndent()
-        }
+
+        context.shareText(text)
+    }
 
     private fun clearMessage() {
         viewModelScope.launch {

@@ -4,6 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,3 +74,26 @@ class NavigatorImpl : Navigator {
         navigationQueue.trySend(NavigationEvent.Back)
     }
 }
+
+fun NavController.selectRootScreen(tab: RootScreen) {
+    navigate(tab.route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+
+        val currentEntry = currentBackStackEntry
+        val currentDestination = currentEntry?.destination
+        val hostGraphRoute = currentDestination?.hostNavGraph?.route
+        val isReselected = hostGraphRoute == tab.route
+        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute(RootScreen.PlayerLibrary)
+
+        if (isReselected && !isRootReselected) {
+            navigateUp()
+        }
+    }
+}
+
+internal val NavDestination.hostNavGraph: NavGraph
+    get() = hierarchy.first { it is NavGraph } as NavGraph

@@ -3,6 +3,7 @@ package org.kafka.common
 data class CarouselItem(val image: Int, val itemId: String)
 
 val carousels = listOf(
+    CarouselItem(image = R.drawable.img_banner_26, itemId = "ibne-insha-OK_compressed"),
     CarouselItem(image = R.drawable.img_chand_nagar_insha, itemId = "ibne-insha-OK_compressed"),
     CarouselItem(image = R.drawable.img_short_stories_kafka, itemId = "kafka-short-stories"),
     CarouselItem(image = R.drawable.img_ghalib, itemId = "ghazals_ghalib_0809_librivox"),

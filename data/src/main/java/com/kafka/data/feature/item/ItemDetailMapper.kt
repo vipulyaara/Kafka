@@ -26,7 +26,8 @@ class ItemDetailMapper @Inject constructor(
             files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },
             coverImage = from.findCoverImage(),
             metadata = from.metadata.collection,
-            primaryTextFile = from.files.getTextFile()?.fileId
+            primaryTextFile = from.files.getTextFile()?.fileId,
+            subject = from.metadata.subject
         ).also {
             insertFiles(from, it)
         }

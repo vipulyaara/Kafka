@@ -19,7 +19,8 @@ data class ItemDetail(
     val coverImage: String? = null,
     val files: List<String>? = null,
     val metadata: List<String>? = null,
-    val primaryTextFile: String? = null
+    val primaryTextFile: String? = null,
+    val subject: List<String>? = null,
 ) : BaseEntity
 
 fun ItemDetail?.webUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

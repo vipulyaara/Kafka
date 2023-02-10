@@ -22,7 +22,7 @@ class ItemMapper @Inject constructor() {
         collection = this.collection,
         genre = this.subject,
         position = this.downloads,
-        subjects = subject
+        subject = subject?.joinToString(",")
     )
 }
 

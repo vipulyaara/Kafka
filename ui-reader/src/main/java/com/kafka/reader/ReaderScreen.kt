@@ -55,8 +55,6 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
     }
 }
 
-
-
 @Composable
 private fun TopBar(
     scrollState: ScrollState,

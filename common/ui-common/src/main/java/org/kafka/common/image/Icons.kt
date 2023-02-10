@@ -40,6 +40,8 @@ object Icons {
         get() = TablerIcons.Home2
     val Search: ImageVector
         get() = TablerIcons.Search
+    val Check: ImageVector
+        get() = TablerIcons.CircleCheck
     val SearchActive: ImageVector
         get() = FeatherIcons.Search
     val Library: ImageVector

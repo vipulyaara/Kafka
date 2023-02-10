@@ -40,12 +40,12 @@ class ObserveHomepage @Inject constructor(
     }
 
     private fun Item.isKafkaArchive(): Boolean {
-        val subjects = subjects.orEmpty().map { it.lowercase() }
+        val subjects = subject.orEmpty().lowercase()
         return subjects.contains("kafka archives") || subjects.contains("kafka-archives")
     }
 
     private fun Item.isAdbiDuniya(): Boolean {
-        val subjects = subjects.orEmpty().map { it.lowercase() }
+        val subjects = subject.orEmpty().lowercase()
         return subjects.contains("adbi-duniya")
     }
 }

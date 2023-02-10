@@ -9,11 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.kafka.user.bottombar.HomeNavigationBar
 import com.sarahang.playback.core.PlaybackConnection
@@ -21,6 +16,7 @@ import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.selectRootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import ui.common.theme.theme.Dimens
 
@@ -66,25 +62,3 @@ internal fun Home(
     }
 }
 
-internal fun NavController.selectRootScreen(tab: RootScreen) {
-    navigate(tab.route) {
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
-
-        val currentEntry = currentBackStackEntry
-        val currentDestination = currentEntry?.destination
-        val hostGraphRoute = currentDestination?.hostNavGraph?.route
-        val isReselected = hostGraphRoute == tab.route
-        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute(RootScreen.PlayerLibrary)
-
-        if (isReselected && !isRootReselected) {
-            navigateUp()
-        }
-    }
-}
-
-internal val NavDestination.hostNavGraph: NavGraph
-    get() = hierarchy.first { it is NavGraph } as NavGraph

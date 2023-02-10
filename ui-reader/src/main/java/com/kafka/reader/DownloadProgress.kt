@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,15 +42,14 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
         ) {
             DownloadingAnimation(progress = downloadInfo.progress)
             Progress(downloadInfo.progress)
-            Spacer(modifier = Modifier.height(Dimens.Spacing24))
-            Actions(downloadInfo)
+            Actions(downloadInfo, modifier = Modifier.padding(top = Dimens.Spacing24))
         }
     }
 }
 
 @Composable
 fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
-    val percentage = ((progress + 0.08f) * 100).coerceIn(0f, 100f)
+    val percentage = if (progress > 0.95f) 100f else progress.coerceIn(0.1f, 0.9f).run { this * 100 }
     val percentageState by animateFloatAsState(targetValue = percentage)
 
     RiveAnimation(resource = R.raw.liquid_download_12, modifier = modifier) { view ->
@@ -61,12 +59,12 @@ fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Actions(downloadInfo: DownloadInfo) {
+private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier  ) {
     val downloader = LocalDownloader.current
     val scope = rememberCoroutineScope()
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = Dimens.Spacing24)
             .animateContentSize(),

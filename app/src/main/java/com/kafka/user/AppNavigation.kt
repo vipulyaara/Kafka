@@ -5,12 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,7 +21,6 @@ import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
 import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
-import kotlinx.coroutines.launch
 import org.kafka.common.extensions.CollectEvent
 import org.kafka.favorites.LibraryScreen
 import org.kafka.homepage.Homepage
@@ -105,9 +101,9 @@ private fun NavGraphBuilder.addHomeRoot() {
 private fun NavGraphBuilder.addSearchRoot() {
     navigation(
         route = RootScreen.Search.route,
-        startDestination = LeafScreen.Search.createRoute(RootScreen.Search)
+        startDestination = LeafScreen.Search().createRoute()
     ) {
-        addSearch(RootScreen.Search)
+        addSearch()
         addItemDetail(RootScreen.Search)
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
@@ -142,8 +138,8 @@ private fun NavGraphBuilder.addHome(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addSearch(root: RootScreen) {
-    composable(LeafScreen.Search.createRoute(root)) {
+private fun NavGraphBuilder.addSearch() {
+    composableScreen(LeafScreen.Search()) {
         SearchScreen()
     }
 }
@@ -151,21 +147,10 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
 private fun NavGraphBuilder.addPlayer(navigator: Navigator) {
     bottomSheetScreen(LeafScreen.PlayerLibrary()) {
         val playbackViewModel = activityHiltViewModel<PlaybackViewModel>()
-        val coroutineScope = rememberCoroutineScope()
-        val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
 
         PlaybackSheet(
             onClose = { navigator.goBack() },
-            goToItem = {
-                coroutineScope.launch {
-                    navigator.navigate(
-                        ItemDetail.buildRoute(
-                            id = playbackViewModel.getCurrentItemId(),
-                            root = currentRoot
-                        )
-                    )
-                }
-            }
+            goToItem = { playbackViewModel.goToAlbum() }
         )
     }
 }

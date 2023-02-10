@@ -7,6 +7,7 @@ object Dimens {
     val Spacing01 = 1.dp
     val Spacing02 = 2.dp
     val Spacing04 = 4.dp
+    val Spacing06 = 6.dp
     val Spacing08 = 8.dp
     val Spacing12 = 12.dp
     val Spacing16 = 16.dp
@@ -35,6 +36,6 @@ object Dimens {
     val RadiusSmall = Radius04
     val RadiusMedium = Radius08
 
-    val CarouselMinHeight = 124.dp
-    val CarouselMaxHeight = 206.dp
+    val CarouselMinHeight = 156.dp
+    val CarouselMaxHeight = 236.dp
 }

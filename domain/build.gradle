@@ -28,7 +28,6 @@ dependencies {
     implementation project(':core-downloader')
     api project(':data')
 
-    implementation libs.pdfkit
     implementation libs.fetch
 
     api libs.kotlin.coroutines.android
