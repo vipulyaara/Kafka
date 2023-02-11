@@ -87,9 +87,8 @@ fun NavController.selectRootScreen(tab: RootScreen) {
         val currentDestination = currentEntry?.destination
         val hostGraphRoute = currentDestination?.hostNavGraph?.route
         val isReselected = hostGraphRoute == tab.route
-        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute(RootScreen.PlayerLibrary)
 
-        if (isReselected && !isRootReselected) {
+        if (isReselected) {
             navigateUp()
         }
     }

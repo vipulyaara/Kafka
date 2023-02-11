@@ -20,7 +20,7 @@ class ItemDetailMapper @Inject constructor(
             language = from.metadata.licenseurl,
             title = from.metadata.title?.dismissUpperCase(),
             description = (from.metadata.description?.joinToString()?.format() ?: ""),
-            creator = from.metadata.creator?.joinToString(),
+            creator = from.metadata.creator?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
             files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },

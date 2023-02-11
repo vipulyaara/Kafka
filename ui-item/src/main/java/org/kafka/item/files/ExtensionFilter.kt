@@ -1,6 +1,9 @@
 package org.kafka.item.files
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
@@ -34,9 +37,14 @@ internal fun ExtensionFilter(
     ) {
         OutlinedButton(
             onClick = { expanded = true },
-            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+            modifier = Modifier
         ) {
-            Text(text = selectedFilter ?: "all", color = MaterialTheme.colorScheme.primary)
+            Text(
+                text = selectedFilter ?: "all",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.animateContentSize()
+            )
         }
 
         Box {
@@ -46,10 +54,15 @@ internal fun ExtensionFilter(
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .align(Alignment.Center)
+                    .background(MaterialTheme.colorScheme.background)
+                    .border(2.dp, MaterialTheme.colorScheme.primary)
             ) {
                 actionLabels.forEach { item ->
+                    val color =
+                        if (item == selectedFilter) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+
                     DropdownMenuItem(
-                        text = { Text(text = item) },
+                        text = { Text(text = item, color = color) },
                         onClick = {
                             expanded = false
                             if (item == "all") onItemSelected(null) else onItemSelected(item)

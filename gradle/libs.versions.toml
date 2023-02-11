@@ -140,12 +140,13 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
 google-bom = "com.google.firebase:firebase-bom:30.0.2"
-google-analytics = "com.google.firebase:firebase-analytics-ktx:19.0.0"
-google-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.1.0"
 google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.7.1"
 google-gmsGoogleServices = "com.google.gms:google-services:4.3.14"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.1"
-google-dynamic_links = "com.google.firebase:firebase-dynamic-links-ktx:1.4.1"
+
+google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
+google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 
 junit = "junit:junit:4.13.2"
 

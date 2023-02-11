@@ -1,6 +1,5 @@
 package com.kafka.search
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentSearch
+import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState

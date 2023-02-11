@@ -114,6 +114,9 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-dynamic-links-ktx"
 
+    implementation libs.google.crashlytics
+    implementation libs.google.analytics
+
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.viewmodel.compose
     implementation libs.androidx.lifecycle.viewmodel.ktx

@@ -45,15 +45,18 @@ fun VerticalPdfReader(
         val lazyState = state.lazyState
 
         DisposableEffect(key1 = Unit) {
-            load(
-                coroutineScope,
-                ctx,
-                state,
-                constraints.maxWidth,
-                constraints.maxHeight,
-                true
-            )
+            val job = coroutineScope.launch(Dispatchers.IO) {
+                load(
+                    coroutineScope,
+                    ctx,
+                    state,
+                    constraints.maxWidth,
+                    constraints.maxHeight,
+                    true
+                )
+            }
             onDispose {
+                job.cancel()
                 state.close()
             }
         }
@@ -76,7 +79,6 @@ fun VerticalPdfReader(
                     }
                     val height = bitmapState.value.height * state.scale
                     val width = constraints.maxWidth * state.scale
-//                    Zoomable(state = rememberZoomableState()) {
                         PdfImage(
                             graphicsLayerData = {
                                 GraphicsLayerData(
@@ -95,7 +97,6 @@ fun VerticalPdfReader(
                                 )
                             }
                         )
-//                    }
                 }
             }
         }
@@ -116,15 +117,18 @@ fun HorizontalPDFReader(
         val coroutineScope = rememberCoroutineScope()
         val density = LocalDensity.current
         DisposableEffect(key1 = Unit) {
-            load(
-                coroutineScope,
-                ctx,
-                state,
-                constraints.maxWidth,
-                constraints.maxHeight,
-                constraints.maxHeight > constraints.maxWidth
-            )
+            val job = coroutineScope.launch(Dispatchers.IO) {
+                load(
+                    coroutineScope,
+                    ctx,
+                    state,
+                    constraints.maxWidth,
+                    constraints.maxHeight,
+                    constraints.maxHeight > constraints.maxWidth
+                )
+            }
             onDispose {
+                job.cancel()
                 state.close()
             }
         }
@@ -203,7 +207,7 @@ fun HorizontalPDFReader(
 }
 
 
-private fun load(
+private suspend fun load(
     coroutineScope: CoroutineScope,
     context: Context,
     state: PdfReaderState,

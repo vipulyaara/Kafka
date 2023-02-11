@@ -30,6 +30,7 @@ abstract class FileDao : EntityDao<File> {
             .filter { it.key.contains("mp3", true) }
             .filterKeys { it.contains("mp3", true) }
             .values.flatten()
+            .sortedBy { it.name }
     }
 
     @Query("select * from File where fileId = :fileId")

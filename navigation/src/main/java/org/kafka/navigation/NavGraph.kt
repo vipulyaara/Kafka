@@ -182,6 +182,6 @@ fun NavGraphBuilder.bottomSheetScreen(
 ) = bottomSheet(screen.createRoute(), screen.arguments, screen.deepLinks, content)
 
 object Config {
-    const val BASE_HOST = "datmusic.xyz"
+    const val BASE_HOST = "kafka.xyz"
     const val BASE_URL = "https://$BASE_HOST/"
 }

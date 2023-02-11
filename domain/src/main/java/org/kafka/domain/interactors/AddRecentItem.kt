@@ -16,7 +16,6 @@ class AddRecentItem @Inject constructor(
             itemRepository.addRecentlyVisitedItem(params.itemId)
         }
     }
-
     data class Params(val itemId: String)
 }
 

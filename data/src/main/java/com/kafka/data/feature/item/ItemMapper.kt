@@ -16,7 +16,7 @@ class ItemMapper @Inject constructor() {
         language = this.language,
         title = this.title.dismissUpperCase(),
         description = this.description?.get(0)?.trim(),
-        creator = this.creator?.get(0)?.let { Creator(it, it) },
+        creator = this.creator?.get(0)?.sanitizeForRoom()?.let { Creator(it, it) },
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",
         collection = this.collection,
@@ -31,5 +31,7 @@ fun String.dismissUpperCase() = if (this.isUpperCase()) {
 } else {
     this
 }
+
+fun String.sanitizeForRoom() = this.replace("'", "")
 
 fun String.isUpperCase() = toCharArray().all { it.isUpperCase() }

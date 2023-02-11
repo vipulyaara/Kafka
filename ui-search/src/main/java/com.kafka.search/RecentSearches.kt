@@ -3,10 +3,11 @@ package com.kafka.search
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,14 +37,18 @@ fun RecentSearches(
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
             .animateContentSize()
     ) {
-        Column(modifier = modifier.padding(vertical = 24.dp)) {
-            recentSearches.takeIf { it.isNotEmpty() }?.let {
-                SearchResultLabel("Recent searches")
+        LazyColumn(modifier = modifier.padding(vertical = 24.dp)) {
+
+            item {
+                recentSearches.takeIf { it.isNotEmpty() }?.let {
+                    SearchResultLabel("Recent searches")
+                }
             }
 
-            recentSearches.forEach {
+            items(recentSearches) {
                 RecentSearchItem(
                     searchTerm = it,
+                    modifier = Modifier.animateItemPlacement(),
                     onSearchClicked = onSearchClicked,
                     onRemoveSearch = onRemoveSearch
                 )
@@ -55,11 +60,12 @@ fun RecentSearches(
 @Composable
 private fun RecentSearchItem(
     searchTerm: String,
+    modifier: Modifier = Modifier,
     onSearchClicked: (String) -> Unit,
     onRemoveSearch: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable(onClick = { onSearchClicked(searchTerm) })
             .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing08),
         verticalAlignment = Alignment.CenterVertically

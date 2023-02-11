@@ -24,7 +24,6 @@ import com.kafka.data.entities.Item
 import org.kafka.common.shadowMaterial
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
-import ui.common.theme.theme.textSecondary
 
 @Composable
 fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
@@ -75,7 +74,7 @@ fun ItemType(mediaType: String?) {
     Text(
         text = mediaType.orEmpty(),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.secondary
     )
 }
 
@@ -86,7 +85,7 @@ fun ItemCreator(creator: String?) {
         style = MaterialTheme.typography.bodySmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.textSecondary
+        color = MaterialTheme.colorScheme.primary
     )
 }
 

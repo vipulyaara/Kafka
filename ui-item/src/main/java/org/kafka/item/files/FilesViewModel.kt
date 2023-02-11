@@ -13,10 +13,13 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.Audio
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
+import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.observers.ObserveDownloadedItems
 import org.kafka.domain.observers.ObserveFiles
 import org.kafka.navigation.LeafScreen
@@ -28,6 +31,7 @@ class FilesViewModel @Inject constructor(
     observeFiles: ObserveFiles,
     savedStateHandle: SavedStateHandle,
     observeDownloadedItems: ObserveDownloadedItems,
+    private val addRecentItem: AddRecentItem,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
 ) : ViewModel() {
@@ -63,6 +67,10 @@ class FilesViewModel @Inject constructor(
     }
 
     fun onFileClicked(file: File) {
+        viewModelScope.launch {
+            addRecentItem(AddRecentItem.Params(file.itemId)).collect()
+        }
+
         if (file.isAudio()) {
             playbackConnection.playAudio(file.asAudio())
         } else {

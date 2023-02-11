@@ -32,7 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +60,8 @@ internal fun ContinueReading(
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit
 ) {
+    var isInEditMode by remember { mutableStateOf(false) }
+
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
@@ -72,12 +74,14 @@ internal fun ContinueReading(
             LazyRow(
                 contentPadding = PaddingValues(end = 60.dp)
             ) {
-                items(readingList.items, key = { it.item.itemId }) {
+                items(readingList.items, key = { it.item.itemId }) { continueReading ->
                     ContinueReadingItem(
-                        continueReading = it.item,
-                        onItemClicked = { openItemDetail(it.item.itemId) },
+                        continueReading = continueReading.item,
+                        onItemClicked = { openItemDetail(continueReading.item.itemId) },
                         onItemRemoved = { removeRecentItem(it) },
-                        modifier = Modifier.animateItemPlacement()
+                        modifier = Modifier.animateItemPlacement(),
+                        isInEditMode = isInEditMode,
+                        changeEditMode = { isInEditMode = it }
                     )
                 }
             }
@@ -91,27 +95,29 @@ internal fun ContinueReading(
 private fun ContinueReadingItem(
     continueReading: Item,
     modifier: Modifier = Modifier,
+    isInEditMode: Boolean = false,
+    changeEditMode: (Boolean) -> Unit = {},
     onItemRemoved: (String) -> Unit,
     onItemClicked: () -> Unit
 ) {
-    var isInEditMode by rememberSaveable(continueReading) { mutableStateOf(false) }
 
-    Box(
-        modifier = modifier.combinedClickable(
-            onLongClick = { isInEditMode = !isInEditMode },
-            onClick = {
-//                isInEditMode = false
-                onItemClicked()
-            }
-        )
-    ) {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .padding(Dimens.Spacing12)
                 .widthIn(100.dp, 286.dp)
         ) {
             Row(
-                modifier = Modifier.padding(Dimens.Spacing12),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(Dimens.Spacing08))
+                    .combinedClickable(
+                        onLongClick = { changeEditMode(!isInEditMode) },
+                        onClick = {
+                            changeEditMode(false)
+                            onItemClicked()
+                        }
+                    )
+                    .padding(Dimens.Spacing12),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 CoverImage(continueReading)
@@ -144,7 +150,7 @@ private fun BoxScope.RemoveRecentItemButton(
     val infiniteTransition = rememberInfiniteTransition()
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = .75f,
+        targetValue = .85f,
         animationSpec = infiniteRepeatable(
             animation = tween(500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -162,9 +168,8 @@ private fun BoxScope.RemoveRecentItemButton(
     if (isInEditMode) {
         IconButton(
             modifier = Modifier
-                .size(24.dp)
+                .size(Dimens.Spacing44)
                 .align(Alignment.TopEnd)
-                .padding(end = Dimens.Spacing24)
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale

@@ -5,10 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
+import com.sarahang.playback.ui.components.WIDE_LAYOUT_MIN_WIDTH
 import org.kafka.common.image.Icons
 import org.kafka.common.shadowMaterial
 import org.kafka.common.widgets.IconButton
@@ -34,34 +37,38 @@ fun Actions(
     isFavorite: Boolean,
     toggleFavorite: () -> Unit
 ) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(0.2f)) {
-            FavoriteIcon(
-                isFavorite = isFavorite,
-                modifier = Modifier.align(Alignment.Center)
-            ) { toggleFavorite() }
-        }
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        Row(
+            Modifier
+                .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
+                .align(Alignment.Center)
+                .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.weight(0.2f)) {
+                FavoriteIcon(
+                    isFavorite = isFavorite,
+                    modifier = Modifier.align(Alignment.Center)
+                ) { toggleFavorite() }
+            }
 
-        Box(modifier = Modifier.weight(0.2f)) {
-            Icon(
-                icon = Icons.Download,
-                modifier = Modifier.align(Alignment.Center),
-                onClicked = { openFiles(itemDetail.itemId) }
+            Box(modifier = Modifier.weight(0.2f)) {
+                Icon(
+                    icon = Icons.Download,
+                    modifier = Modifier.align(Alignment.Center),
+                    onClicked = { openFiles(itemDetail.itemId) }
+                )
+            }
+
+            FloatingButton(
+                text = itemDetail.callToAction,
+                modifier = Modifier.weight(0.8f),
+                onClicked = { onPrimaryAction(itemDetail.itemId) }
             )
         }
-
-        FloatingButton(
-            text = itemDetail.callToAction,
-            modifier = Modifier.weight(0.8f),
-            onClicked = { onPrimaryAction(itemDetail.itemId) }
-        )
     }
+
 }
 
 @Composable
