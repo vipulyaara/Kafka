@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Delayed(
     modifier: Modifier = Modifier,
-    delayMillis: Long = 500,
+    delayMillis: Long = 220,
     content: @Composable () -> Unit
 ) {
     TimedVisibility(

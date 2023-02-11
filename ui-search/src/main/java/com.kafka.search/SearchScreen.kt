@@ -12,10 +12,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -46,16 +48,15 @@ fun SearchScreen() {
     val queryViewState by queryViewModel.state.collectAsStateWithLifecycle()
     val recentSearches by searchViewModel.recentSearches.collectAsStateWithLifecycle()
     val keywordState by searchViewModel.keyword.collectAsStateWithLifecycle()
-
-    val searchText by remember {
-        derivedStateOf { TextFieldValue(text = keywordState, selection = TextRange(0)) }
+    var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(text = keywordState, selection = TextRange(0)))
     }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Search(
                 searchText = searchText,
-                setSearchText = { searchViewModel.updateKeyword(it.text) },
+                setSearchText = { searchText = it },
                 queryViewModel = queryViewModel,
                 searchViewModel = searchViewModel,
                 queryViewState = queryViewState,
@@ -76,7 +77,11 @@ private fun Search(
 ) {
     val navigator = LocalNavigator.current
     val scaffoldPadding = scaffoldPadding()
-    val selectedFilters = remember { mutableStateListOf(*SearchFilter.values()) }
+    val selectedFilters = rememberSaveable(
+        saver = listSaver(
+            save = { it.toList() },
+            restore = { mutableStateListOf(*it.toTypedArray()) })
+    ) { mutableStateListOf(*SearchFilter.values()) }
 
     LaunchedEffect(Unit) {
         if (searchText.text.isNotEmpty()) {

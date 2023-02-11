@@ -18,6 +18,7 @@ import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
 import com.kafka.textreader.bouquet.rememberVerticalPdfReaderState
 import kotlinx.coroutines.launch
+import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibility
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.simpleClickable
@@ -35,6 +36,7 @@ internal fun PdfReader(
     LaunchedEffect(fileId) { viewModel.observeTextFile(fileId) }
 
     AnimatedVisibility(viewState.textFile != null) {
+        Delayed {
             PdfReaderWithControls(
                 textFile = viewState.textFile!!,
                 modifier = modifier.simpleClickable { viewModel.toggleControls() },
@@ -42,6 +44,7 @@ internal fun PdfReader(
                 showControls = showControls,
                 onPageChanged = { viewModel.onPageChanged(fileId, it) }
             )
+        }
     }
 }
 

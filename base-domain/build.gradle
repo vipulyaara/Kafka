@@ -37,4 +37,5 @@ dependencies {
     api libs.store
 
     implementation libs.androidx.paging.common
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1'
 }

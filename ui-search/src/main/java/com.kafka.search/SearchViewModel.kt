@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
@@ -18,18 +17,13 @@ class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
     private val addRecentSearch: AddRecentSearch,
     private val removeRecentSearch: RemoveRecentSearch,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val keyword = savedStateHandle.getStateFlow("keyword", "")
+    var keyword = savedStateHandle.getStateFlow("keyword", "")
     val recentSearches = observeRecentSearch.flow.stateInDefault(viewModelScope, emptyList())
 
     init {
         observeRecentSearch(Unit)
-        debug { "SearchViewModel created ${keyword.value}" }
-    }
-
-    fun updateKeyword(keyword: String) {
-        savedStateHandle["keyword"] = keyword
     }
 
     fun addRecentSearch(keyword: String) {
