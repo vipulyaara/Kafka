@@ -18,8 +18,8 @@ import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.asArchiveQuery
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,13 +71,13 @@ class HomepageViewModel @Inject constructor(
 
     fun loginClicked() {
         analytics.log { this.loginClicked() }
-        navigator.navigate(LeafScreen.Login.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 
-    fun logout() {
+    fun openProfile() {
         viewModelScope.launch {
             analytics.log { this.logoutClicked() }
-            navigator.navigate(LeafScreen.Profile().createRoute())
+            navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
         }
     }
 

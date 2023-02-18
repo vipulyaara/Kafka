@@ -46,7 +46,7 @@ private fun NavigatorHost(
 
 sealed class NavigationEvent(open val route: String) {
     object Back : NavigationEvent("Back")
-    data class Destination(override val route: String, val root: String? = null) :
+    data class Destination(override val route: String, val root: RootScreen? = null) :
         NavigationEvent(route)
 
     override fun toString() = route
@@ -60,16 +60,13 @@ class NavigatorImpl : Navigator {
 
     override fun navigate(route: String) {
         debug { "Navigating to $route" }
-        val basePath = route.split("/").firstOrNull()
-        val rootScreen = ROOT_SCREENS.firstOrNull { it.route == basePath }
-        val root = if (rootScreen != null) basePath else null
 
-        if (rootScreen != null) {
-            currentRootChannel.tryEmit(rootScreen)
-        }
+        val rootPath = route.split("/").firstOrNull()
+        val rootScreen = ROOT_SCREENS.firstOrNull { it.route == rootPath }
+        val root = if (rootScreen != null) rootPath else null
 
         debug { "Navigating to $route with root $root" }
-        navigationQueue.trySend(NavigationEvent.Destination(route, root))
+        navigationQueue.trySend(NavigationEvent.Destination(route, rootScreen))
     }
 
     override fun updateRoot(root: RootScreen) {
@@ -82,24 +79,48 @@ class NavigatorImpl : Navigator {
 }
 
 fun NavController.selectRootScreen(tab: RootScreen) {
+    debug { "Selecting root screen $tab" }
     navigate(tab.route) {
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
-        }
         launchSingleTop = true
         restoreState = true
 
-        val currentEntry = currentBackStackEntry
-        val currentDestination = currentEntry?.destination
-        val hostGraphRoute = currentDestination?.hostNavGraph?.route
-        val isReselected = hostGraphRoute == tab.route
-        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute()
-
-        if (isReselected && !isRootReselected) {
-            navigateUp()
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
         }
+
+//        val currentEntry = currentBackStackEntry
+//        val currentDestination = currentEntry?.destination
+//        val hostGraphRoute = currentDestination?.hostNavGraph?.route
+//        val isReselected = hostGraphRoute == tab.route
+/////////////////
+//        if (isReselected) {
+//            navigateUp()
+//        }
     }
+
+
+//    
+//    navigate(tab.route) {
+//        popUpTo(graph.findStartDestination().id) {
+//            saveState = true
+//        }
+//        launchSingleTop = true
+//        restoreState = true
+//
+//        val currentEntry = currentBackStackEntry
+//        val currentDestination = currentEntry?.destination
+//        val hostGraphRoute = currentDestination?.hostNavGraph?.route
+//        val isReselected = hostGraphRoute == tab.route
+//        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute()
+//
+//        if (isReselected && !isRootReselected) {
+//            navigateUp()
+//        }
+//    }
 }
+
+val ROOT_SCREENS =
+    listOf(RootScreen.Home, RootScreen.Search, RootScreen.Library, RootScreen.Profile)
 
 internal val NavDestination.hostNavGraph: NavGraph
     get() = hierarchy.first { it is NavGraph } as NavGraph

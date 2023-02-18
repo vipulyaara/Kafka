@@ -10,11 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
@@ -25,16 +26,13 @@ import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.files.Files
 import org.kafka.library.LibraryScreen
-import org.kafka.navigation.LeafScreen
-import org.kafka.navigation.LeafScreen.ItemDetail
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
-import org.kafka.navigation.bottomSheetScreen
-import org.kafka.navigation.composableScreen
-import org.kafka.webview.WebView
+import org.kafka.navigation.Screen
+import org.kafka.navigation.selectRootScreen
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
 
@@ -50,13 +48,7 @@ internal fun AppNavigation(
                 // switch tabs first because of a bug in navigation that doesn't allow
                 // changing tabs when destination is opened from a different tab
                 event.root?.let {
-                    navController.navigate(it) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.selectRootScreen(it)
                 }
                 navController.navigate(event.route)
             }
@@ -73,39 +65,36 @@ internal fun AppNavigation(
     ) {
         addHomeRoot()
         addSearchRoot()
-        addPlayerLibraryRoot()
         addLibraryRoot()
-        addLogin()
     }
 }
 
 private fun NavGraphBuilder.addHomeRoot() {
     navigation(
         route = RootScreen.Home.route,
-        startDestination = LeafScreen.Home().createRoute()
+        startDestination = Screen.Home.createRoute(RootScreen.Home)
     ) {
         addHome(RootScreen.Home)
         addItemDetail(RootScreen.Home)
         addFiles(RootScreen.Home)
         addReader(RootScreen.Home)
-        addWebView(RootScreen.Home)
         addLibrary(RootScreen.Home)
         addProfile(RootScreen.Home)
         addSearch(RootScreen.Home)
         addPlayer(RootScreen.Home)
+        addLogin(RootScreen.Home)
     }
 }
 
 private fun NavGraphBuilder.addSearchRoot() {
     navigation(
         route = RootScreen.Search.route,
-        startDestination = LeafScreen.Search().createRoute()
+        startDestination = Screen.Search.createRoute(RootScreen.Search)
     ) {
         addSearch(RootScreen.Search)
         addItemDetail(RootScreen.Search)
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
-        addWebView(RootScreen.Search)
         addPlayer(RootScreen.Search)
     }
 }
@@ -113,7 +102,7 @@ private fun NavGraphBuilder.addSearchRoot() {
 private fun NavGraphBuilder.addLibraryRoot() {
     navigation(
         route = RootScreen.Library.route,
-        startDestination = LeafScreen.Library().createRoute(RootScreen.Library)
+        startDestination = Screen.Library.createRoute(RootScreen.Library)
     ) {
         addLibrary(RootScreen.Library)
         addItemDetail(RootScreen.Library)
@@ -124,30 +113,20 @@ private fun NavGraphBuilder.addLibraryRoot() {
     }
 }
 
-private fun NavGraphBuilder.addPlayerLibraryRoot() {
-    navigation(
-        route = RootScreen.PlayerLibrary.route,
-        startDestination = LeafScreen.PlayerLibrary().route
-    ) {
-        addPlayer(RootScreen.PlayerLibrary)
-        addSearch(RootScreen.PlayerLibrary)
-    }
-}
-
 private fun NavGraphBuilder.addHome(root: RootScreen) {
-    composableScreen(LeafScreen.Home(rootRoute = root.route)) {
+    composable(Screen.Home.createRoute(root)) {
         Homepage()
     }
 }
 
 private fun NavGraphBuilder.addSearch(root: RootScreen) {
-    composableScreen(LeafScreen.Search(rootRoute = root.route)) {
+    composable(Screen.Search.createRoute(root)) {
         SearchScreen()
     }
 }
 
 private fun NavGraphBuilder.addPlayer(root: RootScreen) {
-    bottomSheetScreen(LeafScreen.PlayerLibrary(rootRoute = root.route)) {
+    bottomSheet(Screen.Player.createRoute(root)) {
         val navigator = LocalNavigator.current
         val playbackViewModel = activityHiltViewModel<PlaybackViewModel>()
 
@@ -160,43 +139,37 @@ private fun NavGraphBuilder.addPlayer(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addLibrary(root: RootScreen) {
-    composableScreen(LeafScreen.Library(rootRoute = root.route)) {
+    composable(Screen.Library.createRoute(root)) {
         LibraryScreen()
     }
 }
 
 private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
-    composableScreen(ItemDetail(rootRoute = root.route)) {
+    composable(Screen.ItemDetail.createRoute(root)) {
         ItemDetail()
     }
 }
 
 private fun NavGraphBuilder.addFiles(root: RootScreen) {
-    composableScreen(LeafScreen.Files(rootRoute = root.route)) {
+    composable(Screen.Files.createRoute(root)) {
         Files()
     }
 }
 
 private fun NavGraphBuilder.addReader(root: RootScreen) {
-    composableScreen(LeafScreen.Reader(rootRoute = root.route)) {
+    composable(Screen.Reader.createRoute(root)) {
         ReaderScreen()
     }
 }
 
-private fun NavGraphBuilder.addWebView(root: RootScreen) {
-    composableScreen(LeafScreen.WebView(rootRoute = root.route)) {
-        WebView(it.arguments?.getString("url").orEmpty())
-    }
-}
-
-private fun NavGraphBuilder.addLogin() {
-    composableScreen(LeafScreen.Login) {
+private fun NavGraphBuilder.addLogin(root: RootScreen) {
+    composable(Screen.Login.createRoute(root)) {
         LoginScreen()
     }
 }
 
 private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    bottomSheetScreen(LeafScreen.Profile(rootRoute = root.route)) {
+    bottomSheet(Screen.Profile.createRoute(root)) {
         ProfileScreen()
     }
 }

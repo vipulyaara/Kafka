@@ -22,8 +22,8 @@ import org.kafka.common.UiMessageManager
 import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.observers.ObserveDownloadedItems
 import org.kafka.domain.observers.ObserveFiles
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -75,7 +75,7 @@ class FilesViewModel @Inject constructor(
             playbackConnection.playAudio(file.asAudio())
         } else {
             navigator.navigate(
-                LeafScreen.Reader.buildRoute(file.fileId, navigator.currentRoot.value)
+                Screen.Reader.createRoute(navigator.currentRoot.value, file.fileId)
             )
         }
     }

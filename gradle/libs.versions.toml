@@ -1,5 +1,5 @@
 [versions]
-accompanist = "0.29.0-alpha"
+accompanist = "0.29.1-alpha"
 androidxhilt = "1.0.0"
 androidxlifecycle = "2.6.0-alpha02"
 navigation = "2.6.0-alpha01"

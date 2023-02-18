@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,8 +19,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.simpleClickable
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import org.rekhta.ui.auth.AuthViewModel
 import ui.common.theme.theme.Dimens
 
@@ -28,7 +29,6 @@ import ui.common.theme.theme.Dimens
 fun ProfileScreen(authViewModel: AuthViewModel = hiltViewModel()) {
     val viewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
-    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
 
     Surface {
         if (viewState.currentUser != null) {
@@ -42,7 +42,7 @@ fun ProfileScreen(authViewModel: AuthViewModel = hiltViewModel()) {
                     modifier = Modifier.padding(Dimens.Spacing24),
                     displayName = viewState.currentUser!!.displayName
                 ) {
-                    navigator.navigate(LeafScreen.Library().createRoute(currentRoot))
+                    navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
                 }
                 Divider(
                     thickness = Dimens.Spacing01,

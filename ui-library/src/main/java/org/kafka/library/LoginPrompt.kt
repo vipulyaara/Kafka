@@ -15,15 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.kafka.common.image.Icons
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun LoginPrompt(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.current
     val openLogin: () -> Unit = {
-        navigator.navigate(LeafScreen.Login.createRoute())
+        navigator.navigate(Screen.Login.createRoute(RootScreen.Home))
     }
 
     Surface(

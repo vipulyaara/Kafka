@@ -8,15 +8,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.contentColorFor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import org.kafka.common.R
 import org.kafka.common.UiMessage
@@ -78,29 +76,6 @@ fun FullScreenMessage(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun InlineMessage(
-    snackbarError: String?,
-    modifier: Modifier = Modifier,
-    show: Boolean = snackbarError != null,
-) {
-    if (show) {
-        Card(
-            modifier = modifier,
-            elevation = 1.dp,
-            shape = RectangleShape,
-            backgroundColor = MaterialTheme.colorScheme.error
-        ) {
-            Text(
-                modifier = Modifier.padding(Dimens.Spacing12),
-                text = snackbarError.orEmpty(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
         }
     }
 }

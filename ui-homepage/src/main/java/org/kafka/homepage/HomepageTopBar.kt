@@ -13,12 +13,12 @@ import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun HomeTopBar(user: User?, login: () -> Unit, logout: () -> Unit) {
+internal fun HomeTopBar(user: User?, login: () -> Unit, openProfile: () -> Unit) {
     TopBar(
         containerColor = Color.Transparent,
         actions = {
             IconButton(
-                onClick = { if (user == null) login() else logout() },
+                onClick = { if (user == null) login() else openProfile() },
                 modifier = Modifier
                     .padding(horizontal = Dimens.Spacing16)
                     .size(Dimens.Spacing24)

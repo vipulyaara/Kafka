@@ -34,9 +34,9 @@ import org.kafka.domain.observers.ObserveQueryItems
 import org.kafka.item.R
 import org.kafka.navigation.DeepLinksNavigation
 import org.kafka.navigation.DynamicDeepLinkHandler
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigation
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -109,14 +109,14 @@ class ItemDetailViewModel @Inject constructor(
 
     fun openFiles(itemId: String) {
         analytics.log { this.openFiles(itemId) }
-        navigator.navigate(LeafScreen.Files.buildRoute(itemId, navigator.currentRoot.value))
+        navigator.navigate(Screen.Files.createRoute(navigator.currentRoot.value, itemId))
     }
 
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
         itemDetail?.primaryTextFile?.let {
             addRecentItem(itemId)
-            navigator.navigate(LeafScreen.Reader.buildRoute(it, navigator.currentRoot.value))
+            navigator.navigate(Screen.Reader.createRoute(navigator.currentRoot.value, it))
         } ?: viewModelScope.launch {
             snackbarManager.addMessage(UiMessage(R.string.file_type_is_not_supported))
         }

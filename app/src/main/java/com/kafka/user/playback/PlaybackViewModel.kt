@@ -10,8 +10,8 @@ import com.sarahang.playback.core.models.toMediaId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,10 +29,7 @@ class PlaybackViewModel @Inject constructor(
             nowPlaying.id.toMediaId().value.let { id ->
                 fileDao.getOrNull(id)!!.let { file ->
                     navigator.navigate(
-                        LeafScreen.ItemDetail.buildRoute(
-                            id = file.itemId,
-                            root = currentRoot
-                        )
+                        Screen.ItemDetail.createRoute(currentRoot, file.itemId)
                     )
                 }
             }
@@ -43,7 +40,7 @@ class PlaybackViewModel @Inject constructor(
         viewModelScope.launch {
             val currentRoot = navigator.currentRoot.value
             val creator = playbackConnection.nowPlaying.value.artist
-            navigator.navigate(LeafScreen.Search.buildRoute(creator, currentRoot))
+            navigator.navigate(Screen.Search.createRoute(currentRoot, creator))
         }
     }
 }

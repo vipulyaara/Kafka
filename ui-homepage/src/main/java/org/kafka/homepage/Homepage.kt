@@ -27,8 +27,8 @@ import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
 import org.kafka.homepage.ui.FeaturedItems
 import org.kafka.item.preloadImages
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -49,7 +49,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { HomeTopBar(viewState.user, viewModel::loginClicked, viewModel::logout) },
+        topBar = { HomeTopBar(viewState.user, viewModel::loginClicked, viewModel::openProfile) },
         snackbarHost = { KafkaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
@@ -70,7 +70,7 @@ private fun Homepage(viewState: HomepageViewState, removeRecentItem: (String) ->
                 homepage = viewState.homepage!!,
                 lazyListState = lazyListState,
                 openItemDetail = {
-                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, currentRoot))
+                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, it))
                 },
                 removeRecentItem = removeRecentItem
             )
@@ -94,7 +94,7 @@ private fun HomepageFeedItems(
         state = lazyListState,
         contentPadding = scaffoldPadding()
     ) {
-        item { Carousels(modifier = Modifier) }
+        item { Carousels() }
 
         item {
             ContinueReading(

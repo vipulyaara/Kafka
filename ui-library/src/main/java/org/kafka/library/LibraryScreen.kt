@@ -19,9 +19,9 @@ import org.kafka.library.downloads.DownloadsViewModel
 import org.kafka.library.favorites.FavoriteViewModel
 import org.kafka.library.favorites.FavoriteViewState
 import org.kafka.library.favorites.Favorites
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.LayoutType
 import org.kafka.ui.components.scaffoldPadding
@@ -36,7 +36,7 @@ fun LibraryScreen(
 
     val navigator = LocalNavigator.current
     val openItemDetail: (String) -> Unit = {
-        navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Library))
+        navigator.navigate(Screen.ItemDetail.createRoute(RootScreen.Library, it))
     }
 
     Scaffold { padding ->

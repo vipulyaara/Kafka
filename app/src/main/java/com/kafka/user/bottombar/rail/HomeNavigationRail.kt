@@ -48,10 +48,10 @@ import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.PlaybackArtworkPagerWithNowPlayingAndControls
 import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import ui.common.theme.theme.Dimens
 
 internal object HomeNavigationRailDefaults {
@@ -166,7 +166,7 @@ internal fun HomeNavigationRail(
                             nowPlaying = nowPlaying,
                             playbackState = playbackState,
                             onArtworkClick = {
-                                navigator.navigate(LeafScreen.PlayerLibrary().createRoute(currentRoot))
+                                navigator.navigate(Screen.Player.createRoute(currentRoot))
                             },
                             titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize),
                             artistTextStyle = PlaybackNowPlayingDefaults.artistTextStyle.copy(
@@ -181,7 +181,7 @@ internal fun HomeNavigationRail(
                             .padding(Dimens.Spacing08)
                             .zIndex(2f),
                         openPlaybackSheet = {
-                            navigator.navigate(LeafScreen.PlayerLibrary().createRoute(currentRoot))
+                            navigator.navigate(Screen.Player.createRoute(currentRoot))
                         }
                     )
                 }

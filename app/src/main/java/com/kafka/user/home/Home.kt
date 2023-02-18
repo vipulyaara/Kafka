@@ -28,9 +28,9 @@ import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import org.kafka.common.widgets.LocalSnackbarHostState
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import org.kafka.navigation.selectRootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.snackbar.DismissableSnackbarHost
@@ -102,7 +102,7 @@ private fun BottomBar(
                     .padding(Dimens.Spacing08)
                     .zIndex(2f),
                 openPlaybackSheet = {
-                    navigator.navigate(LeafScreen.PlayerLibrary().createRoute(currentRoot))
+                    navigator.navigate(Screen.Player.createRoute(currentRoot))
                 }
             )
 
@@ -129,7 +129,9 @@ private fun RowScope.HomeNavigationRail(
             availableWidth = maxWidth,
             selectedTab = selectedTab,
             navController = navController,
-            onPlayingArtistClick = { navController.navigate(LeafScreen.Search.buildRoute(artist)) },
+            onPlayingArtistClick = {
+                navController.navigate(Screen.Search.createRoute(RootScreen.Search, artist))
+            },
         )
     }
 }

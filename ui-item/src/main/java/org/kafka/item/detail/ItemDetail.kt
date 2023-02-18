@@ -53,9 +53,10 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.item.preloadImages
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -116,7 +117,7 @@ private fun ItemDetail(
                 isFavorite = state.isFavorite,
                 toggleFavorite = { viewModel.updateFavorite() },
                 openItemDetail = { itemId ->
-                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(itemId, currentRoot))
+                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
                 },
                 openFiles = { itemId ->
                     viewModel.openFiles(itemId)
@@ -125,7 +126,7 @@ private fun ItemDetail(
                     viewModel.onPrimaryAction(itemId)
                 },
                 goToCreator = { creator ->
-                    navigator.navigate(LeafScreen.Search.buildRoute(creator, currentRoot))
+                    navigator.navigate(Screen.Search.createRoute(RootScreen.Search, creator))
                 },
                 lazyListState = lazyListState
             )

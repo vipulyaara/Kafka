@@ -26,8 +26,8 @@ import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
 import org.kafka.item.SearchFilter
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
@@ -104,9 +104,7 @@ private fun Search(
             LazyColumn(contentPadding = PaddingValues(bottom = bottomScaffoldPadding())) {
                 items(queryViewState.items!!) {
                     Item(item = it) { itemId ->
-                        navigator.navigate(
-                            LeafScreen.ItemDetail.buildRoute(itemId, currentRoot)
-                        )
+                        navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
                     }
                 }
             }

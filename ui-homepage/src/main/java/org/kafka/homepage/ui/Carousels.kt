@@ -19,10 +19,10 @@ import coil.compose.AsyncImage
 import org.kafka.common.CarouselItem
 import org.kafka.common.carousels
 import org.kafka.common.widgets.shadowMaterial
-import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
+import org.kafka.navigation.Screen
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -63,11 +63,11 @@ private fun CarouselItem(item: CarouselItem, page: Int, navigator: Navigator) {
             .clickable {
                 if (page == 0) {
                     navigator.navigate(
-                        LeafScreen.Search.buildRoute("kafka%20archives", currentRoot)
+                        Screen.Search.createRoute(RootScreen.Search, "kafka%20archives")
                     )
                 } else {
                     navigator.navigate(
-                        LeafScreen.ItemDetail.buildRoute(item.itemId, RootScreen.Home)
+                        Screen.ItemDetail.createRoute(currentRoot, item.itemId)
                     )
                 }
             }
