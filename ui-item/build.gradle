@@ -39,15 +39,16 @@ android {
 }
 
 dependencies {
+    implementation project(':analytics')
     implementation project(':base-domain')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':base-network')
     implementation project(':navigation')
     implementation project(':notifications')
-    implementation project(':ui-favorites')
-    implementation project(':common:ui-common')
-    implementation project(':common:ui-components')
+    implementation project(':ui-library')
+    implementation project(':ui-common')
+    implementation project(':ui-components')
     implementation project(':core-ui-downloader')
     implementation project(':core-playback')
     implementation project(':ui-playback')

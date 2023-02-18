@@ -47,11 +47,10 @@ import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.image.Icons
-import org.kafka.common.shadowMaterial
+import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
-import ui.common.theme.theme.textSecondary
 
 @Composable
 internal fun ContinueReading(
@@ -67,7 +66,7 @@ internal fun ContinueReading(
             Text(
                 text = stringResource(id = R.string.continue_reading),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.textSecondary,
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
@@ -79,7 +78,6 @@ internal fun ContinueReading(
                         continueReading = continueReading.item,
                         onItemClicked = { openItemDetail(continueReading.item.itemId) },
                         onItemRemoved = { removeRecentItem(it) },
-                        modifier = Modifier.animateItemPlacement(),
                         isInEditMode = isInEditMode,
                         changeEditMode = { isInEditMode = it }
                     )
@@ -132,8 +130,8 @@ private fun ContinueReadingItem(
                     .height(Dimens.Spacing12)
                     .padding(horizontal = 4.dp)
                     .shadowMaterial(Dimens.Spacing12, clip = false)
-                    .clip(RoundedCornerShape(Dimens.Spacing02))
-                    .background(MaterialTheme.colorScheme.onPrimary)
+                    .clip(RoundedCornerShape(Dimens.Spacing04))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
         }
 
@@ -216,13 +214,19 @@ private fun Description(continueReading: Item, modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
+            text = continueReading.creator?.name.orEmpty(),
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(Dimens.Spacing02))
+        Text(
             text = continueReading.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.tertiary
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing08))
-
-        Progress()
     }
 }
 
@@ -242,7 +246,7 @@ private fun Progress() {
         Text(
             text = "20%",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.textSecondary
+            color = MaterialTheme.colorScheme.secondary
         )
     }
 }

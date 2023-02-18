@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
-import org.kafka.analytics.Logger
+import org.kafka.analytics.Analytics
 import org.kafka.analytics.event
 import org.kafka.common.UiMessageManager
 import org.kafka.common.asUiMessage
@@ -46,7 +46,7 @@ internal class DownloaderImpl @Inject constructor(
     private val preferences: PreferencesStore,
     private val repo: DownloadRequestsDao,
     private val fileDao: FileDao,
-    private val analytics: Logger,
+    private val analytics: Analytics,
 ) : Downloader {
     private val uiMessageManager: UiMessageManager = UiMessageManager()
 
@@ -231,7 +231,7 @@ internal class DownloaderImpl @Inject constructor(
         }
     }
 
-    override suspend fun findAudioDownload(fileId: String): FileEntity? = fileDao.fileOrNull(fileId)
+    override suspend fun findAudioDownload(fileId: String): FileEntity? = fileDao.getOrNull(fileId)
         ?.apply { getAudioDownload(this.fileId) }
 
     /**

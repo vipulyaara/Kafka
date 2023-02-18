@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-	api(project(":common:ui-common"))
+	api(project(":ui-common"))
 	api(project(":ui-common-theme"))
 	api(project(":core-downloader"))
 

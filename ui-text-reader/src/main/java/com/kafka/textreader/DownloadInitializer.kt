@@ -40,7 +40,7 @@ class DownloadInitializer @Inject constructor(
                 val download = it?.download
                 if (download?.status == Status.COMPLETED) {
                     val downloadRequest = downloadRequestsDao.getByRequestId(download.id)
-                    val file = fileDao.file(downloadRequest.id)
+                    val file = fileDao.get(downloadRequest.id)
                     if (file.isText()) {
                         val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
                             .getOrElse { emptyList() } else emptyList()

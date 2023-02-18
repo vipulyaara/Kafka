@@ -2,8 +2,6 @@ package org.kafka.item.files
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.kafka.common.widgets.dropdownStroke
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -54,8 +53,7 @@ internal fun ExtensionFilter(
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .align(Alignment.Center)
-                    .background(MaterialTheme.colorScheme.background)
-                    .border(2.dp, MaterialTheme.colorScheme.primary)
+                    .dropdownStroke()
             ) {
                 actionLabels.forEach { item ->
                     val color =

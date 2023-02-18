@@ -7,7 +7,6 @@ package tm.alashow.datmusic.ui.downloader
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -16,14 +15,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.ui.downloader.R
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.CollectEvent
+import org.kafka.common.extensions.collectEvent
 import timber.log.Timber
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
@@ -42,7 +39,7 @@ private fun DownloaderHost(
     content: @Composable () -> Unit
 ) {
     var downloadsLocationDialogShown by remember { mutableStateOf(false) }
-    CollectEvent(downloader.downloaderEvents) { event ->
+    collectEvent(downloader.downloaderEvents) { event ->
         when (event) {
             DownloaderEvent.ChooseDownloadsLocation -> {
                 downloadsLocationDialogShown = true
@@ -61,7 +58,6 @@ private fun DownloaderHost(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun DownloadsLocationDialog(
     dialogShown: Boolean,
@@ -81,25 +77,22 @@ private fun DownloadsLocationDialog(
         }
 
     if (dialogShown) {
-        // [ColorPalettePreference.Black] theme needs at least 1.dp dialog surfaces
-        CompositionLocalProvider(LocalAbsoluteTonalElevation provides 1.dp) {
-            AlertDialog(
-                properties = DialogProperties(usePlatformDefaultWidth = true),
-                onDismissRequest = { onDismiss() },
-                title = { Text(stringResource(R.string.downloader_downloadsLocationSelect_title)) },
-                text = { Text(stringResource(R.string.downloader_downloadsLocationSelect_text)) },
-                dismissButton = {
-                    Button(
-                        onClick = {
-                            onDismiss()
-                            documentTreeLauncher.launch(null)
-                        },
-                    ) {
-                        Text(stringResource(R.string.downloader_downloadsLocationSelect_next))
-                    }
-                },
-                confirmButton = {},
-            )
-        }
+        AlertDialog(
+            properties = DialogProperties(usePlatformDefaultWidth = true),
+            onDismissRequest = { onDismiss() },
+            title = { Text(stringResource(R.string.downloader_downloadsLocationSelect_title)) },
+            text = { Text(stringResource(R.string.downloader_downloadsLocationSelect_text)) },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        onDismiss()
+                        documentTreeLauncher.launch(null)
+                    },
+                ) {
+                    Text(stringResource(R.string.downloader_downloadsLocationSelect_next))
+                }
+            },
+            confirmButton = {},
+        )
     }
 }

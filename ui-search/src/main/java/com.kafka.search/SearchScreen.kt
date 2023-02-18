@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,24 +18,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentSearch
-import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
 import org.kafka.item.SearchFilter
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
-import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textSecondary
 
 @Composable
 fun SearchScreen() {
@@ -76,11 +71,13 @@ private fun Search(
     recentSearches: List<RecentSearch>,
 ) {
     val navigator = LocalNavigator.current
+    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
     val scaffoldPadding = scaffoldPadding()
     val selectedFilters = rememberSaveable(
         saver = listSaver(
             save = { it.toList() },
-            restore = { mutableStateListOf(*it.toTypedArray()) })
+            restore = { mutableStateListOf(*it.toTypedArray()) }
+        )
     ) { mutableStateListOf(*SearchFilter.values()) }
 
     LaunchedEffect(Unit) {
@@ -91,7 +88,7 @@ private fun Search(
 
     val onSearchClicked: (String) -> Unit = {
         queryViewModel.submitQuery(it, selectedFilters)
-        searchViewModel.addRecentSearch(it)
+        searchViewModel.addRecentSearch(it, selectedFilters)
     }
 
     Column(modifier = Modifier.padding(top = scaffoldPadding.calculateTopPadding())) {
@@ -103,23 +100,23 @@ private fun Search(
 
         SearchFilterChips(selectedFilters)
 
-        AnimatedVisibility(visible = queryViewState.items != null) {
-            val padding = PaddingValues(bottom = scaffoldPadding.calculateBottomPadding())
-            LazyColumn(contentPadding = padding) {
+        AnimatedVisibilityFade(visible = queryViewState.items != null) {
+            LazyColumn(contentPadding = PaddingValues(bottom = bottomScaffoldPadding())) {
                 items(queryViewState.items!!) {
                     Item(item = it) { itemId ->
                         navigator.navigate(
-                            LeafScreen.ItemDetail.buildRoute(itemId, RootScreen.Search)
+                            LeafScreen.ItemDetail.buildRoute(itemId, currentRoot)
                         )
                     }
                 }
             }
         }
 
-        if (queryViewState.items == null) {
+        val isResultEmpty = queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading
+
+        if (isResultEmpty && recentSearches.isNotEmpty()) {
             RecentSearches(
                 recentSearches = recentSearches,
-                queryViewState = queryViewState,
                 searchViewModel = searchViewModel,
                 setSearchText = setSearchText,
                 onSearchClicked = onSearchClicked
@@ -133,27 +130,12 @@ private fun Search(
 @Composable
 private fun RecentSearches(
     recentSearches: List<RecentSearch>,
-    queryViewState: ArchiveQueryViewState,
     searchViewModel: SearchViewModel,
     setSearchText: (TextFieldValue) -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
-    if (recentSearches.isNotEmpty() && queryViewState.items.isNullOrEmpty() && !queryViewState.isLoading) {
-        RecentSearches(recentSearches = recentSearches.map { it.searchTerm }, onSearchClicked = {
-            setSearchText(TextFieldValue(text = it, selection = TextRange(it.lastIndex)))
-            onSearchClicked(it)
-        }, onRemoveSearch = { searchViewModel.removeRecentSearch(it) })
-    }
-}
-
-@Composable
-fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
-    Text(
-        modifier = modifier.padding(
-            start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12
-        ),
-        text = text,
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.textSecondary
-    )
+    RecentSearches(recentSearches = recentSearches.map { it.searchTerm }, onSearchClicked = {
+        setSearchText(TextFieldValue(text = it, selection = TextRange(it.lastIndex)))
+        onSearchClicked(it)
+    }, onRemoveSearch = { searchViewModel.removeRecentSearch(it) })
 }

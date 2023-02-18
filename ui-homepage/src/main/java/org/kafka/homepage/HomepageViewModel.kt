@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -16,6 +17,9 @@ import org.kafka.domain.interactors.RemoveRecentItem
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.asArchiveQuery
 import org.kafka.domain.observers.ObserveHomepage
+import org.kafka.domain.observers.ObserveUser
+import org.kafka.navigation.LeafScreen
+import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,17 +28,22 @@ class HomepageViewModel @Inject constructor(
     private val getHomepageTags: GetHomepageTags,
     private val updateItems: UpdateItems,
     private val removeRecentItem: RemoveRecentItem,
+    observeUser: ObserveUser,
+    private val navigator: Navigator,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
+        observeUser.flow,
         loadingCounter.observable,
         uiMessageManager.message,
-    ) { homepage, isLoading, message ->
+    ) { homepage, user, isLoading, message ->
         HomepageViewState(
             homepage = homepage,
+            user = user,
             message = message,
             isLoading = isLoading
         )
@@ -45,6 +54,7 @@ class HomepageViewModel @Inject constructor(
 
     init {
         observeHomepage(selectedQuery)
+        observeUser(Unit)
 
         viewModelScope.launch {
             updateItems(UpdateItems.Params(selectedQuery))
@@ -54,7 +64,20 @@ class HomepageViewModel @Inject constructor(
 
     fun removeRecentItem(itemId: String) {
         viewModelScope.launch {
+            analytics.log { this.removeRecentItem(itemId) }
             removeRecentItem.invoke(itemId).collect()
+        }
+    }
+
+    fun loginClicked() {
+        analytics.log { this.loginClicked() }
+        navigator.navigate(LeafScreen.Login.createRoute(navigator.currentRoot.value))
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            analytics.log { this.logoutClicked() }
+            navigator.navigate(LeafScreen.Profile().createRoute())
         }
     }
 

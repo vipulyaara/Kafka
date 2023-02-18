@@ -15,7 +15,7 @@ class ObserveFiles @Inject constructor(
 ) : SubjectInteractor<ObserveFiles.Param, List<File>>() {
 
     override fun createObservable(params: Param): Flow<List<File>> {
-        return fileDao.observeFilesByItemId(params.contentId)
+        return fileDao.observeByItemId(params.contentId)
             .map { it.sortedBy { it.format } }
             .flowOn(dispatchers.io)
     }

@@ -31,7 +31,6 @@ import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.rive.RiveAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textSecondary
 
 @Composable
 internal fun DownloadProgress(downloadInfo: DownloadInfo) {
@@ -120,7 +119,7 @@ private fun Progress(progress: Float) {
         Text(
             text = "${(progressState * 100).toInt()}%",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.textSecondary
+            color = MaterialTheme.colorScheme.secondary
         )
     }
 }

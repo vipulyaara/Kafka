@@ -9,7 +9,7 @@ import org.kafka.base.extensions.stateInDefault
 import javax.inject.Inject
 
 class MediaTypeManager @Inject constructor(
-    private val preferencesStore: PreferencesStore,
+    preferencesStore: PreferencesStore,
     @ProcessLifetime private val coroutineScope: CoroutineScope
 ) {
     private val preferenceKey get() = stringPreferencesKey("media_type")

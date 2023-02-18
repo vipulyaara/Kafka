@@ -23,7 +23,7 @@ import com.kafka.textreader.bouquet.VerticalPdfReader
 import com.kafka.textreader.bouquet.ZoomableImage
 import com.kafka.textreader.bouquet.rememberVerticalPdfReaderState
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.simpleClickable
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -40,16 +40,14 @@ internal fun PdfReader(
 
     LaunchedEffect(fileId) { viewModel.observeTextFile(fileId) }
 
-    AnimatedVisibility(viewState.textFile != null) {
-//        Delayed {
-            PdfReaderWithControls(
-                textFile = viewState.textFile!!,
-                modifier = modifier.simpleClickable { viewModel.toggleControls() },
-                setControls = viewModel::showControls,
-                showControls = showControls,
-                onPageChanged = { viewModel.onPageChanged(fileId, it) }
-            )
-//        }
+    AnimatedVisibilityFade(viewState.textFile != null) {
+        PdfReaderWithControls(
+            textFile = viewState.textFile!!,
+            modifier = modifier.simpleClickable { viewModel.toggleControls() },
+            setControls = viewModel::showControls,
+            showControls = showControls,
+            onPageChanged = { viewModel.onPageChanged(fileId, it) }
+        )
     }
 }
 
@@ -79,7 +77,10 @@ private fun PdfReaderWithControls(
     Box(modifier = modifier.fillMaxSize()) {
         InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
         ZoomableImage(panEnabled = panEnabled) {
-            VerticalPdfReader(state = pdfState, contentPadding = scaffoldPadding)
+            VerticalPdfReader(
+                state = pdfState,
+                contentPadding = scaffoldPadding
+            )
         }
 
         GoToPage(

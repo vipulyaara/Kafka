@@ -53,6 +53,7 @@ val ProductSans = FontFamily(
     Font(R.font.product_sans_bold, FontWeight.Bold)
 )
 
-val Inter = createFontFamily("Roboto")
-val DefaultFont = Inter
+val Roboto = createFontFamily("Roboto")
 val ProseFont = createFontFamily("Lora")
+val Poppins = createFontFamily("Poppins")
+val DefaultFont = Roboto

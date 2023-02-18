@@ -22,7 +22,6 @@ import org.kafka.common.ImmutableList
 import org.kafka.common.widgets.LoadImage
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
-import ui.common.theme.theme.textSecondary
 
 @Composable
 fun FeaturedItems(
@@ -41,7 +40,7 @@ fun FeaturedItems(
             Text(
                 text = "Favorites",
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.textSecondary,
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
             LazyRow(

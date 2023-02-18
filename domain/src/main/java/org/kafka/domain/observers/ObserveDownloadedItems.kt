@@ -23,7 +23,7 @@ class ObserveDownloadedItems @Inject constructor(
     override fun createObservable(params: Unit): Flow<List<ItemWithDownload>> {
         return observeDownloads.createObservable(ObserveDownloads.Params()).map {
             it.files.map { fileDownloadItem ->
-                val file = fileDao.file(fileDownloadItem.downloadRequest.id)
+                val file = fileDao.get(fileDownloadItem.downloadRequest.id)
                 ItemWithDownload(
                     downloadRequest = fileDownloadItem.downloadRequest,
                     downloadInfo = downloadInfoMapper.map(fileDownloadItem.downloadInfo),

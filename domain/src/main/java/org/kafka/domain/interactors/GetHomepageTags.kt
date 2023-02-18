@@ -30,7 +30,7 @@ class GetHomepageTags @Inject constructor() {
                     urduPoetry.split(" ,").sublistSuggested(),
                     devnagri.split(" ,").sublistSuggested(),
                     englishProse.split(" ,").sublistSuggested(),
-//                    urduProse.split(" ,").sublistSuggested()
+                    urduProse.split(" ,").sublistSuggested()
                 ).joinToString().toQuery(),
                 true
             )
@@ -64,6 +64,7 @@ data class HomepageTag(
     val title: String, val searchQuery: SearchQuery, var isSelected: Boolean = false
 )
 
-private const val suggestedItemsSize = 20
+private const val suggestedItemsSize = 40
+
 private fun <E> List<E>.sublistSuggested() =
     subList(0, size.coerceAtMost(suggestedItemsSize)).joinToString()

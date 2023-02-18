@@ -16,13 +16,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import org.kafka.base.debug
+import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
-import org.kafka.common.asUiMessage
 import org.kafka.common.collectStatus
 import org.kafka.common.shareText
+import org.kafka.common.snackbar.SnackbarManager
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
@@ -30,6 +31,7 @@ import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
+import org.kafka.item.R
 import org.kafka.navigation.DeepLinksNavigation
 import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.navigation.LeafScreen
@@ -49,6 +51,8 @@ class ItemDetailViewModel @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
     private val dynamicDeepLinkHandler: DynamicDeepLinkHandler,
+    private val snackbarManager: SnackbarManager,
+    private val analytics: Analytics,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
@@ -62,13 +66,12 @@ class ItemDetailViewModel @Inject constructor(
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
-        debug { "item detail results $isLoading $message" }
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
             isFavorite = isFavorite,
             isLoading = isLoading,
-            message = message
+            message = message,
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -80,14 +83,13 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun retry() {
-        clearMessage()
         refresh()
     }
 
     private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
-                .collectStatus(loadingState, uiMessageManager)
+                .collectStatus(loadingState, snackbarManager)
         }
 
         observeItemDetail(ObserveItemDetail.Param(itemId))
@@ -100,16 +102,23 @@ class ItemDetailViewModel @Inject constructor(
             addRecentItem(itemId)
             playbackConnection.playAlbum(itemId)
         } else {
-            openReader(itemDetail, itemId)
+            openReader(itemId)
         }
     }
 
-    private fun openReader(itemDetail: ItemDetail?, itemId: String) {
+
+    fun openFiles(itemId: String) {
+        analytics.log { this.openFiles(itemId) }
+        navigator.navigate(LeafScreen.Files.buildRoute(itemId, navigator.currentRoot.value))
+    }
+
+    private fun openReader(itemId: String) {
+        val itemDetail = state.value.itemDetail
         itemDetail?.primaryTextFile?.let {
             addRecentItem(itemId)
             navigator.navigate(LeafScreen.Reader.buildRoute(it, navigator.currentRoot.value))
         } ?: viewModelScope.launch {
-            uiMessageManager.emitMessage("File type is not supported".asUiMessage())
+            snackbarManager.addMessage(UiMessage(R.string.file_type_is_not_supported))
         }
     }
 
@@ -130,10 +139,7 @@ class ItemDetailViewModel @Inject constructor(
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))
                 viewModelScope.launch {
-                    updateItems(UpdateItems.Params(it)).collectStatus(
-                        counter = loadingState,
-                        uiMessageManager = uiMessageManager
-                    )
+                    updateItems(UpdateItems.Params(it)).collectStatus(loadingState, snackbarManager)
                 }
             }
         }
@@ -141,11 +147,13 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun addRecentItem(itemId: String) {
         viewModelScope.launch {
+            analytics.log { this.addRecentItem(itemId) }
             addRecentItem(AddRecentItem.Params(itemId)).collect()
         }
     }
 
     fun shareItemText(context: Context) {
+        analytics.log { this.shareItem(itemId) }
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
@@ -157,11 +165,5 @@ class ItemDetailViewModel @Inject constructor(
         """.trimIndent()
 
         context.shareText(text)
-    }
-
-    private fun clearMessage() {
-        viewModelScope.launch {
-            state.value.message?.id?.let { uiMessageManager.clearMessage(it) }
-        }
     }
 }

@@ -1,18 +1,12 @@
 package ui.common.theme.theme
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.DefaultAlpha
-import androidx.compose.ui.graphics.compositeOver
 
 val brandRed = Color(0xffff006a)
 val brandBlue = Color(0xff0067DD)
@@ -59,49 +53,17 @@ val ColorScheme.divider
 val ColorScheme.ripple
     @Composable get() = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
 
-val ColorScheme.dividerVariant
-    @Composable get() = MaterialTheme.colorScheme.surfaceVariant
-
 val ColorScheme.textPrimary
     @Composable get() = if (isSystemInLightTheme()) Color(0xff000000) else whiteCream
 
-val ColorScheme.textSecondary
-    @Composable get() = MaterialTheme.colorScheme.secondary
-
-val ColorScheme.iconPrimary
-    @Composable get() = if (isSystemInLightTheme()) darkGrey800 else whiteCream
-
-val ColorScheme.yellow
-    @Composable get() = Color(0xfff6bf26)
-
-val ColorScheme.brandRed
-    @Composable get() = Color(0xffff006a)
-
-val ColorScheme.black
-    @Composable get() = Color(0xff000000)
-
-val ColorScheme.white
-    @Composable get() = Color(0xffffffff)
-
-val ColorScheme.blue
-    @Composable get() = Color(0xff3D84FD)
-
-val ColorScheme.yellowDark
-    @Composable get() = Color(0xffCFA224)
-
 val ColorScheme.shadowMaterial
     @Composable get() = if (isSystemInLightTheme()) primary.copy(alpha = 0.5f) else primary.copy(alpha = 0.2f)
-
 
 @Composable
 fun translucentSurfaceColor() = MaterialTheme.colorScheme.surface.copy(alpha = AppBarAlphas.translucentBarAlpha())
 
 @Composable
 fun isSystemInLightTheme() = !isSystemInDarkTheme()
-
-fun parseColor(hexColor: String) = Color(android.graphics.Color.parseColor(hexColor))
-
-fun Int.toColor() = Color(this)
 
 internal val DarkAppColors = darkColorScheme(
     primary = brandBlue,
@@ -135,13 +97,3 @@ internal val LightAppColors = lightColorScheme(
     onError = white,
     outline = darkGrey800
 )
-
-@Composable
-fun Color.disabledAlpha(condition: Boolean): Color =
-    copy(alpha = if (condition) alpha else DefaultAlpha)
-
-@Composable
-fun Color.contrastComposite(alpha: Float = 0.1f) =
-    contentColorFor(this).copy(alpha = alpha).compositeOver(this)
-
-fun Modifier.translucentSurface() = composed { background(translucentSurfaceColor()) }

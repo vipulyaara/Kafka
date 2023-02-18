@@ -30,8 +30,6 @@ import androidx.compose.ui.unit.dp
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.iconPrimary
-import ui.common.theme.theme.textSecondary
 
 @Composable
 fun SearchWidget(
@@ -55,7 +53,7 @@ fun SearchWidget(
                     Text(
                         "Search...",
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.textSecondary
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
             },
@@ -99,7 +97,7 @@ private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
                 .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.X,
-            tint = MaterialTheme.colorScheme.iconPrimary
+            tint = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -117,7 +115,7 @@ private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
                 .padding(Dimens.Spacing12)
                 .size(Dimens.Spacing24),
             imageVector = Icons.Mic,
-            tint = MaterialTheme.colorScheme.iconPrimary
+            tint = MaterialTheme.colorScheme.onSurface
         )
     }
 }

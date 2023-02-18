@@ -1,5 +1,6 @@
 package org.kafka.notifications
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
@@ -19,6 +20,7 @@ class NotificationManagerImpl(
     private val context = application.applicationContext
     private lateinit var builder: NotificationCompat.Builder
 
+    @SuppressLint("MissingPermission")
     override fun showNotification(id: Int, notification: Notification?) {
         notification?.let { notificationManager.notify(id, it) }
     }
@@ -62,10 +64,10 @@ class NotificationManagerImpl(
             mapIntent.setPackage("com.google.android.apps.maps")
 
             return PendingIntent.getActivity(
-                context,
-                100,
-                mapIntent,
-                0
+                /* context = */ context,
+                /* requestCode = */ 100,
+                /* intent = */ mapIntent,
+                /* flags = */ 0
             )
         }
 

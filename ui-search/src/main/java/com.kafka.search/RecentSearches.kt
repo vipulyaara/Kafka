@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 fun RecentSearches(
@@ -74,7 +73,7 @@ private fun RecentSearchItem(
             modifier = Modifier.weight(1f),
             text = searchTerm,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         IconResource(
@@ -85,4 +84,16 @@ private fun RecentSearchItem(
             imageVector = Icons.XCircle
         )
     }
+}
+
+@Composable
+private fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
+    Text(
+        modifier = modifier.padding(
+            start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12
+        ),
+        text = text,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.secondary
+    )
 }

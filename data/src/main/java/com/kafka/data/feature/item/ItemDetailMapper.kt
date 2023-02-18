@@ -33,10 +33,13 @@ class ItemDetailMapper @Inject constructor(
         }
     }
 
-    private fun List<File>.getTextFile() = firstOrNull { it.name.endsWith("pdf", true) }
-        ?: firstOrNull { it.name.endsWith("epub", true) }
-        ?: firstOrNull { it.name.endsWith("txt", true) }
+    private fun List<File>.getTextFile() =
+        firstOrNull { it.name.extension() == "pdf" }
+        ?: firstOrNull { it.name.extension() == "epub" }
+        ?: firstOrNull { it.name.extension() == "txt" }
 
+
+    fun String.extension() = split(".").last()
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
         it.name.startsWith("cover_1")
@@ -51,7 +54,7 @@ class ItemDetailMapper @Inject constructor(
                 itemId = from.metadata.identifier,
                 itemTitle = item.title,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.fileOrNull(it.name)?.localUri,
+                localUri = fileDao.getOrNull(it.name)?.localUri,
                 coverImage = item.coverImage
             )
         }.filter { supportedExtensions.contains(it.extension) }

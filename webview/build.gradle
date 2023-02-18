@@ -28,8 +28,8 @@ dependencies {
     implementation project(':base-domain')
     implementation project(':data')
     api project(':ui-common-theme')
-    api project(':common:ui-common')
-    api project(':common:ui-components')
+    api project(':ui-common')
+    api project(':ui-components')
 
     api libs.androidx.core
     api libs.androidx.lifecycle.runtime

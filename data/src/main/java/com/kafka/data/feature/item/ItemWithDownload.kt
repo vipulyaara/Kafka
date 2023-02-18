@@ -31,23 +31,5 @@ enum class DownloadStatus {
     DELETED,
     UNKNOWN;
 
-    fun isDownloading() = this == DOWNLOADING
-
     fun isActive() = this == DOWNLOADING || this == PAUSED
-
-    fun isCompleted() = this == COMPLETED
-
-    fun isPaused() = this == PAUSED
-}
-
-fun DownloadStatus.toMessage() = when (this) {
-    DownloadStatus.QUEUED -> "Queued"
-    DownloadStatus.DOWNLOADING -> "Downloading"
-    DownloadStatus.PAUSED -> "Paused"
-    DownloadStatus.COMPLETED -> ""
-    DownloadStatus.CANCELLED -> "Cancelled"
-    DownloadStatus.FAILED -> "Failed"
-    DownloadStatus.REMOVED -> "Removed"
-    DownloadStatus.DELETED -> "Deleted"
-    else -> "Unknown"
 }

@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.extensions.rememberMutableState
-import org.kafka.common.shadowMaterial
+import org.kafka.common.widgets.shadowMaterial
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
@@ -35,7 +35,7 @@ internal fun BoxScope.GoToPage(
     modifier: Modifier = Modifier,
     scaffoldPadding: PaddingValues = scaffoldPadding()
 ) {
-    AnimatedVisibility(
+    AnimatedVisibilityFade(
         visible = showControls,
         modifier = modifier.align(Alignment.BottomCenter)
     ) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_email_message" translatable="false">Please enter a valid email</string>
+    <string name="invalid_password_message" translatable="false">Please enter a valid password</string>
+    <string name="password_reset_link_sent" translatable="false">Password reset link has been sent to your email</string>
+</resources>

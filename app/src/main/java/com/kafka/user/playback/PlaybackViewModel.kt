@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.dao.FileDao
 import com.sarahang.playback.core.PlaybackConnection
-import com.sarahang.playback.core.album
+import com.sarahang.playback.core.artist
+import com.sarahang.playback.core.id
+import com.sarahang.playback.core.models.toMediaId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.Navigator
 import javax.inject.Inject
@@ -21,18 +22,28 @@ class PlaybackViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun goToAlbum() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val currentRoot = navigator.currentRoot.value
-            getCurrentItemId()?.let {
-                navigator.navigate(LeafScreen.ItemDetail.buildRoute(id = it, root = currentRoot))
+            val nowPlaying = playbackConnection.nowPlaying.value
+
+            nowPlaying.id.toMediaId().value.let { id ->
+                fileDao.getOrNull(id)!!.let { file ->
+                    navigator.navigate(
+                        LeafScreen.ItemDetail.buildRoute(
+                            id = file.itemId,
+                            root = currentRoot
+                        )
+                    )
+                }
             }
         }
     }
 
-    private suspend fun getCurrentItemId(): String? {
-        val nowPlaying = playbackConnection.nowPlaying.value
-        return withContext(Dispatchers.IO) {
-            nowPlaying.album?.let { fileDao.filesByItemId(it).firstOrNull()?.itemId }
+    fun goToCreator() {
+        viewModelScope.launch {
+            val currentRoot = navigator.currentRoot.value
+            val creator = playbackConnection.nowPlaying.value.artist
+            navigator.navigate(LeafScreen.Search.buildRoute(creator, currentRoot))
         }
     }
 }

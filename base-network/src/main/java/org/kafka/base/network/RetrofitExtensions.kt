@@ -14,7 +14,7 @@ suspend fun <T> resultApiCall(
             debug { "api call success" }
             Result.success(apiCall.invoke())
         } catch (throwable: Throwable) {
-            errorLog(throwable) { "HTTP ERROR" }
+            errorLog(throwable) { "Server Error" }
             Result.failure(throwable)
         }
     }

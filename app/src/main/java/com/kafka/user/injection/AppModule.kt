@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.textreader.DownloadInitializer
@@ -25,10 +26,9 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.kafka.analytics.Analytics
 import org.kafka.analytics.CrashLogger
 import org.kafka.analytics.FirebaseCrashLogger
-import org.kafka.analytics.FirebaseLogger
-import org.kafka.analytics.Logger
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.DynamicDeepLinkHandler
@@ -74,10 +74,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideNotificationManagerImpl(application: Application) = NotificationManagerImpl(
+    fun provideNotificationManager(application: Application) = NotificationManagerImpl(
         application,
         NotificationManagerCompat.from(application.applicationContext)
     )
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 }
 
 @InstallIn(SingletonComponent::class)
@@ -85,7 +89,7 @@ class AppModule {
 abstract class AppModuleBinds {
 
     @Binds
-    abstract fun bindLogger(firebaseLogger: FirebaseLogger): Logger
+    abstract fun bindLogger(firebaseLogger: org.kafka.analytics.FirebaseAnalytics): Analytics
 
     @Binds
     abstract fun bindCrashLogger(firebaseCrashLogger: FirebaseCrashLogger): CrashLogger

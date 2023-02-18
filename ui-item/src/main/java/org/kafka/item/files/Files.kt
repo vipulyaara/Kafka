@@ -18,10 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
 import kotlinx.coroutines.CoroutineScope
-import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.elevation
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.common.widgets.shadowMaterial
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding
@@ -37,7 +37,6 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 
     Scaffold(topBar = { TopBar(viewState.title, lazyListState = lazyListState) }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            Delayed(delayMillis = 200) {
                 Files(
                     viewState = viewState,
                     selectedExtension = viewModel.selectedExtension,
@@ -46,7 +45,6 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
                     lazyListState = lazyListState
                 )
             }
-        }
     }
 }
 
@@ -102,6 +100,6 @@ private fun TopBar(
                 IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)
             }
         },
-        elevation = remember { lazyListState.elevation }
+        modifier = Modifier.shadowMaterial(lazyListState.elevation)
     )
 }

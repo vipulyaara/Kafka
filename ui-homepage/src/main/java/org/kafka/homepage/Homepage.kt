@@ -10,23 +10,25 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
 import org.kafka.common.asImmutable
-import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
-import org.kafka.common.widgets.RekhtaSnackbarHost
+import org.kafka.common.widgets.KafkaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
 import org.kafka.homepage.ui.FeaturedItems
+import org.kafka.item.preloadImages
 import org.kafka.navigation.LeafScreen
 import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.RootScreen
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -39,11 +41,16 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = SnackbarHostState()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewState.homepage?.queryItems) {
+        preloadImages(context, viewState.homepage?.queryItems)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { },
-        snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
+        topBar = { HomeTopBar(viewState.user, viewModel::loginClicked, viewModel::logout) },
+        snackbarHost = { KafkaSnackbarHost(hostState = snackbarState) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Homepage(viewState) { viewModel.removeRecentItem(it) }
@@ -55,14 +62,15 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun Homepage(viewState: HomepageViewState, removeRecentItem: (String) -> Unit) {
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
+    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
 
-    Box(Modifier.fillMaxSize()) {
-        AnimatedVisibility(viewState.hasQueryItems) {
+    Box {
+        AnimatedVisibilityFade(viewState.hasQueryItems) {
             HomepageFeedItems(
                 homepage = viewState.homepage!!,
                 lazyListState = lazyListState,
                 openItemDetail = {
-                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Home))
+                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, currentRoot))
                 },
                 removeRecentItem = removeRecentItem
             )
@@ -84,10 +92,9 @@ private fun HomepageFeedItems(
 ) {
     LazyColumn(
         state = lazyListState,
-        contentPadding = scaffoldPadding(),
-        modifier = Modifier.fillMaxSize()
+        contentPadding = scaffoldPadding()
     ) {
-        item { Carousels(modifier = Modifier.padding(top = Dimens.Spacing24)) }
+        item { Carousels(modifier = Modifier) }
 
         item {
             ContinueReading(

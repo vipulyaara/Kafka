@@ -69,11 +69,6 @@ abstract class SubjectInteractor<P, T> {
         .flatMapLatest { createObservable(it) }
         .distinctUntilChanged()
 
-    val asyncFlow: Flow<Async<T>> = paramState
-        .distinctUntilChanged()
-        .flatMapLatest { createObservable(it).asAsyncFlow() }
-        .distinctUntilChanged()
-
     suspend fun get(): T = flow.first()
     suspend fun getOrNull(): T? = flow.firstOrNull()
 

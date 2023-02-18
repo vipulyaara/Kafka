@@ -19,6 +19,7 @@ import org.kafka.base.debug
 interface Navigator {
     fun navigate(route: String)
     fun goBack()
+    fun updateRoot(root: RootScreen)
     val queue: Flow<NavigationEvent>
     val currentRoot: StateFlow<RootScreen>
 }
@@ -58,6 +59,7 @@ class NavigatorImpl : Navigator {
     override val currentRoot = currentRootChannel
 
     override fun navigate(route: String) {
+        debug { "Navigating to $route" }
         val basePath = route.split("/").firstOrNull()
         val rootScreen = ROOT_SCREENS.firstOrNull { it.route == basePath }
         val root = if (rootScreen != null) basePath else null
@@ -68,6 +70,10 @@ class NavigatorImpl : Navigator {
 
         debug { "Navigating to $route with root $root" }
         navigationQueue.trySend(NavigationEvent.Destination(route, root))
+    }
+
+    override fun updateRoot(root: RootScreen) {
+        currentRootChannel.tryEmit(root)
     }
 
     override fun goBack() {
@@ -87,8 +93,9 @@ fun NavController.selectRootScreen(tab: RootScreen) {
         val currentDestination = currentEntry?.destination
         val hostGraphRoute = currentDestination?.hostNavGraph?.route
         val isReselected = hostGraphRoute == tab.route
+        val isRootReselected = currentDestination?.route == tab.startScreen.createRoute()
 
-        if (isReselected) {
+        if (isReselected && !isRootReselected) {
             navigateUp()
         }
     }

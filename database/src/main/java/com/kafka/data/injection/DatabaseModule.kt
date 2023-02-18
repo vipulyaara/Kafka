@@ -85,4 +85,7 @@ class DatabaseDaoModule {
 
     @Provides
     fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
+
+    @Provides
+    fun provideAuthDao(db: KafkaRoomDatabase) = db.authDao()
 }

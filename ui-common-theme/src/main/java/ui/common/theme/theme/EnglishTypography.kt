@@ -61,10 +61,11 @@ internal object EnglishTypography {
         lineHeight = TypeScale.HeadlineMediumLineHeight,
     )
     val HeadlineSmall = TextStyle(
-        fontFamily = DefaultFont,
+        fontFamily = Poppins,
         fontWeight = TypeScale.HeadlineSmallWeight,
-        fontSize = TypeScale.HeadlineSmallSize,
+        fontSize = 20.sp,
         lineHeight = TypeScale.HeadlineSmallLineHeight,
+        letterSpacing = TypeScale.HeadlineSmallTracking,
     )
     val LabelLarge = TextStyle(
         fontFamily = DefaultFont,
