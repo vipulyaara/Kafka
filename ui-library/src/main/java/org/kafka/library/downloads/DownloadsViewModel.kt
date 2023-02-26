@@ -43,7 +43,7 @@ class DownloadsViewModel @Inject constructor(
 
 @Immutable
 data class DownloadViewState(
-    val downloadedItems: List<ItemWithDownload> = emptyList(),
-    val isLoading: Boolean = false,
+    val downloadedItems: List<ItemWithDownload>? = null,
+    val isLoading: Boolean = true,
     val message: UiMessage? = null,
 )

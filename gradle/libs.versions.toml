@@ -5,15 +5,15 @@ androidxlifecycle = "2.6.0-alpha02"
 navigation = "2.6.0-alpha01"
 androidxtest = "1.4.0"
 coil = "2.1.0"
-compose = "1.4.0-alpha04"
+compose = "1.4.0-beta01"
 compose-bom = "2023.02.00-beta01"
 constraintlayout = "1.1.0-alpha05"
-composeCompiler = "1.4.0"
+composeCompiler = "1.4.2"
 composesnapshot = "-" # a single character = no snapshot
 coroutines = "1.5.2"
 dagger = "2.44.2"
 hilt = "2.44.2"
-kotlin = "1.8.0"
+kotlin = "1.8.10"
 ktlint = "0.40.0"
 material3 = "1.1.0-alpha04"
 okhttp = "4.10.0"
@@ -45,7 +45,7 @@ exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", versi
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
 android-r8 = "com.android.tools:r8:3.1.51"
-android-gradlePlug = "com.android.tools.build:gradle:7.3.1"
+android-gradlePlug = "com.android.tools.build:gradle:7.4.1"
 proguard-snippets = "com.infstory:proguard-snippets:1.0.0"
 media = "androidx.media:media:1.4.1"
 palette = "androidx.palette:palette-ktx:1.0.0"
@@ -129,7 +129,7 @@ compose-material-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-compose-ui-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
@@ -139,14 +139,15 @@ fetch = "com.github.alashow:Fetch:3.1.62"
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:30.0.2"
-google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.7.1"
-google-gmsGoogleServices = "com.google.gms:google-services:4.3.14"
-google-perfPlug = "com.google.firebase:perf-plugin:1.4.1"
+google-bom = "com.google.firebase:firebase-bom:31.2.2"
+google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.4"
+google-gmsGoogleServices = "com.google.gms:google-services:4.3.15"
+google-perfPlug = "com.google.firebase:perf-plugin:1.4.2"
 google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-auth-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 
 junit = "junit:junit:4.13.2"

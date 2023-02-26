@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Platform.Theme.Rekhta" parent="android:Theme.Material.Light" />
+    <style name="Platform.Theme.Kafka" parent="android:Theme.Material.Light" />
 
-    <style name="Base.Theme.Rekhta" parent="Platform.Theme.Rekhta">
+    <style name="Base.Theme.Kafka" parent="Platform.Theme.Kafka">
         <item name="android:windowActionModeOverlay">true</item>
 
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Rekhta" parent="Base.Theme.Rekhta">
+    <style name="Theme.Kafka" parent="Base.Theme.Kafka">
 
     </style>
 
-    <style name="Theme.Rekhta.NoActionBar">
+    <style name="Theme.Kafka.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Rekhta.Immerse" parent="Theme.Rekhta.NoActionBar">
+    <style name="Theme.Kafka.Immerse" parent="Theme.Kafka.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.Rekhta.Home" parent="Theme.Rekhta.Immerse">
+    <style name="Theme.Kafka.Home" parent="Theme.Kafka.Immerse">
         <item name="android:windowLightStatusBar">@bool/use_light_status_bar</item>
     </style>
 

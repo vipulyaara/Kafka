@@ -3,7 +3,6 @@ package com.kafka.data.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kafka.data.model.MediaType
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -27,10 +26,3 @@ data class Item constructor(
 data class Creator(val id: String, val name: String)
 
 fun Item.asRecentlyVisited(visitedTime: Long) = RecentItem(itemId, visitedTime)
-
-fun Item.mediaType() = when (mediaType) {
-    "texts" -> MediaType.Text
-    "audio" -> MediaType.Audio
-    "video" -> MediaType.Video
-    else -> MediaType.Text
-}

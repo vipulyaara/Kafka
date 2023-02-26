@@ -4,15 +4,31 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
+//interface RecentItem {
+//    val id: String
+//    val itemId: String
+//    val createdAt: Long
+//}
+
+////@Entity
+//data class RecentAudioItem(
+//    override val id: String,
+//    override val itemId: String,
+//    override val createdAt: Long,
+//    val currentAudio: Int,
+//) : RecentItem {
+//    data class Current(val fileId: String, val timestamp: Long)
+//}
+
 @Entity
-data class TextFile(
+data class RecentTextItem(
     @PrimaryKey val id: String,
     val itemId: String,
+    val createdAt: Long,
     val title: String,
     val localUri: String,
     val pages: List<Page>,
-    val totalPages: Int,
-    val currentPage: Int,
+    val currentPage: Int
 ) : BaseEntity {
     @Serializable
     data class Page(val index: Int, val text: String)

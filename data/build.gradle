@@ -38,6 +38,8 @@ dependencies {
     api project(':database')
 
     implementation platform(libs.google.bom)
+    implementation libs.google.auth
+    implementation libs.google.firestore
 
     api libs.androidx.core
     api libs.androidx.collection

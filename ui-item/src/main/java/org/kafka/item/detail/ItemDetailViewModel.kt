@@ -25,9 +25,9 @@ import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.AddRecentItem
-import org.kafka.domain.interactors.ToggleFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
+import org.kafka.domain.interactors.account.UpdateFavorite
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
@@ -47,7 +47,7 @@ class ItemDetailViewModel @Inject constructor(
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
     private val observeItemFollowStatus: ObserveItemFollowStatus,
-    private val toggleFavorite: ToggleFavorite,
+    private val updateFavorite: UpdateFavorite,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
     private val dynamicDeepLinkHandler: DynamicDeepLinkHandler,
@@ -94,6 +94,7 @@ class ItemDetailViewModel @Inject constructor(
 
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
+        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
     }
 
     fun onPrimaryAction(itemId: String) {
@@ -123,12 +124,8 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun updateFavorite() {
-        updateFavorite(state.value.itemDetail!!.itemId)
-    }
-
-    private fun updateFavorite(itemId: String) {
         viewModelScope.launch {
-            toggleFavorite(ToggleFavorite.Params(itemId)).collect()
+            updateFavorite(UpdateFavorite.Params(itemId, !state.value.isFavorite)).collect()
         }
     }
 

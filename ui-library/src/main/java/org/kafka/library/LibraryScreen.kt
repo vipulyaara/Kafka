@@ -76,23 +76,40 @@ private fun Library(
             pageCount = LibraryTab.values().size,
             state = pagerState
         ) { page ->
-            Column {
-                when (LibraryTab.values()[page]) {
-                    LibraryTab.Favorites -> Favorites(
-                        items = favoriteViewState.favoriteItems,
-                        layoutType = favoriteViewState.layoutType,
-                        changeLayoutType = changeLayoutType,
-                        openItemDetail = openItemDetail
-                    )
+            LibraryPage(
+                tab = LibraryTab.values()[page],
+                favoriteViewState = favoriteViewState,
+                changeLayoutType = changeLayoutType,
+                openItemDetail = openItemDetail,
+                downloadViewState = downloadViewState
+            )
+        }
+    }
+}
 
-                    LibraryTab.Downloads -> Downloads(
-                        items = downloadViewState.downloadedItems,
-                        layoutType = favoriteViewState.layoutType,
-                        changeLayoutType = changeLayoutType,
-                        openItemDetail = openItemDetail
-                    )
-                }
-            }
+@Composable
+private fun LibraryPage(
+    tab: LibraryTab,
+    favoriteViewState: FavoriteViewState,
+    changeLayoutType: (LayoutType) -> Unit,
+    openItemDetail: (String) -> Unit,
+    downloadViewState: DownloadViewState
+) {
+    when (tab) {
+        LibraryTab.Favorites -> favoriteViewState.favoriteItems?.let {
+            Favorites(
+                items = favoriteViewState.favoriteItems,
+                layoutType = favoriteViewState.layoutType,
+                changeLayoutType = changeLayoutType,
+                openItemDetail = openItemDetail
+            )
+        }
+
+        LibraryTab.Downloads -> downloadViewState.downloadedItems?.let {
+            Downloads(
+                items = downloadViewState.downloadedItems,
+                openItemDetail = openItemDetail
+            )
         }
     }
 }

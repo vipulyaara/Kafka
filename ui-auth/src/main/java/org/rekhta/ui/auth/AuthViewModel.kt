@@ -15,21 +15,23 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.LoginUser
-import org.kafka.domain.interactors.LogoutUser
-import org.kafka.domain.interactors.RegisterUser
-import org.kafka.domain.interactors.ResetPassword
+import org.kafka.domain.interactors.account.SignInUser
+import org.kafka.domain.interactors.account.LogoutUser
+import org.kafka.domain.interactors.account.SignUpUser
+import org.kafka.domain.interactors.account.ResetPassword
 import org.kafka.domain.observers.ObserveUser
+import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val loginUser: LoginUser,
-    private val registerUser: RegisterUser,
+    private val signInUser: SignInUser,
+    private val signUpUser: SignUpUser,
     private val resetPassword: ResetPassword,
     private val snackbarManager: SnackbarManager,
     private val logoutUser: LogoutUser,
     private val analytics: Analytics,
+    private val navigator: Navigator,
     observeUser: ObserveUser
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
@@ -58,8 +60,9 @@ class AuthViewModel @Inject constructor(
 
             else -> {
                 viewModelScope.launch {
-                    loginUser(LoginUser.Params(email, password))
+                    signInUser(SignInUser.Params(email, password))
                         .collectStatus(loadingCounter, snackbarManager)
+                    navigator.goBack()
                 }
             }
         }
@@ -75,8 +78,9 @@ class AuthViewModel @Inject constructor(
                     snackbarManager.addMessage(UiMessage(R.string.invalid_password_message))
 
                 else -> {
-                    registerUser(RegisterUser.Params(email, password, name))
+                    signUpUser(SignUpUser.Params(email, password, name))
                         .collectStatus(loadingCounter, snackbarManager)
+                    navigator.goBack()
                 }
             }
         }

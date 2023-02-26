@@ -12,7 +12,12 @@ class EventRepository @Inject constructor(
 
     fun removeRecentSearch(keyword: String) = "remove_recent_search" to mapOf("keyword" to keyword)
 
-    fun itemDetailClick(itemId: String, source: String? = null) = "item_detail_click" to mapOf(
+    fun openItemDetail(itemId: String, source: String? = null) = "open_item_detail" to mapOf(
+        "item_id" to itemId,
+        "source" to source
+    )
+
+    fun updateItemDetail(itemId: String, source: String? = null) = "update_item_detail" to mapOf(
         "item_id" to itemId,
         "source" to source
     )
@@ -31,12 +36,12 @@ class EventRepository @Inject constructor(
         "item_id" to itemId
     )
 
-    fun playAudio(itemId: String, contentTitle: String) = "item_detail_click" to mapOf(
+    fun addRecentItem(itemId: String, title: String? = null) = "add_to_recent" to mapOf(
         "item_id" to itemId,
-        "content_title" to contentTitle
+        "title" to title
     )
 
-    fun addRecentItem(itemId: String, title: String? = null) = "add_to_recent" to mapOf(
+    fun openRecentItem(itemId: String, title: String? = null) = "open_recent_item" to mapOf(
         "item_id" to itemId,
         "title" to title
     )

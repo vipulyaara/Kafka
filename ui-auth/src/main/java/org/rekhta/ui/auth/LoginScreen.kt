@@ -53,13 +53,15 @@ fun LoginScreen() {
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            Login(
-                modifier = Modifier.padding(scaffoldPadding()),
-                login = authViewModel::login,
-                signup = authViewModel::signup,
-                forgotPassword = authViewModel::forgotPassword,
-                loginByGmail = authViewModel::loginByGmail,
-            )
+            if (authViewState.currentUser == null) {
+                Login(
+                    modifier = Modifier.padding(scaffoldPadding()),
+                    login = authViewModel::login,
+                    signup = authViewModel::signup,
+                    forgotPassword = authViewModel::forgotPassword,
+                    loginByGmail = authViewModel::loginByGmail,
+                )
+            }
 
             AnimatedVisibilityFade(visible = authViewState.isLoading) {
                 FullScreenProgressBar()

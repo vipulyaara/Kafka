@@ -26,7 +26,11 @@ data class ArchiveQuery(
 )
 
 fun ArchiveQuery.booksByIdentifiers(identifiers: String): ArchiveQuery {
-    identifiers.split(", ").forEach {
+    return booksByIdentifiers(identifiers.split(", "))
+}
+
+fun ArchiveQuery.booksByIdentifiers(identifiers: List<String>): ArchiveQuery {
+    identifiers.forEach {
         queries.add(QueryItem(_identifier, it, joinerOr))
     }
     queries = queries.mapIndexed { index, queryItem ->

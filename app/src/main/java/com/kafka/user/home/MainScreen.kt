@@ -10,6 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.sarahang.playback.ui.audio.AudioActionHost
@@ -26,6 +27,8 @@ import tm.alashow.datmusic.ui.downloader.DownloaderHost
 fun MainScreen(analytics: Analytics) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
+    val mainViewModel = hiltViewModel<MainViewModel>()
+    mainViewModel.signInAnonymously()
 
     LaunchedEffect(navController, analytics) {
         navController.currentBackStackEntryFlow.collectLatest { entry ->
@@ -41,8 +44,6 @@ fun MainScreen(analytics: Analytics) {
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
         SnackbarMessagesHost()
         CompositionHosts {
-//            val bottomSheetNavigator = rememberBottomSheetNavigator()
-//            navController.navigatorProvider += bottomSheetNavigator
             ModalBottomSheetLayout(
                 bottomSheetNavigator = bottomSheetNavigator,
                 sheetShape = MaterialTheme.shapes.large.copy(

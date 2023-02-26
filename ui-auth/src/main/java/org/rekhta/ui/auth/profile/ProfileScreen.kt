@@ -6,16 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.simpleClickable
@@ -26,46 +24,39 @@ import org.rekhta.ui.auth.AuthViewModel
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ProfileScreen(authViewModel: AuthViewModel = hiltViewModel()) {
+fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = hiltViewModel()) {
     val viewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 
-    Surface {
+    Surface(modifier = modifier) {
         if (viewState.currentUser != null) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(Dimens.Spacing20)
                     .navigationBarsPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 UserProfileHeader(
-                    modifier = Modifier.padding(Dimens.Spacing24),
+                    modifier = Modifier,
                     displayName = viewState.currentUser!!.displayName
                 ) {
                     navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
                 }
-                Divider(
-                    thickness = Dimens.Spacing01,
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                )
-                LogoutButton(authViewModel)
+
+                LogoutButton(modifier = Modifier.align(Alignment.End)) {
+                    authViewModel.logout()
+                    navigator.goBack()
+                }
             }
         }
     }
 }
 
 @Composable
-private fun LogoutButton(authViewModel: AuthViewModel) {
-    TextButton(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape,
-        onClick = authViewModel::logout
-    ) {
-        Text(
-            text = "Logout",
-            modifier = Modifier.padding(Dimens.Spacing12),
-            style = MaterialTheme.typography.titleMedium
-        )
+private fun LogoutButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    OutlinedButton(modifier = modifier, onClick = onClick) {
+        Text(text = "Logout")
     }
 }
 

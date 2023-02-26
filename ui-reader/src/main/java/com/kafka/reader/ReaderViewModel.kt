@@ -3,7 +3,7 @@ package com.kafka.reader
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +33,7 @@ class ReaderViewModel @Inject constructor(
         uiMessageManager.message,
     ) { download, textFile, message ->
         ReaderViewState(
-            textFile = textFile,
+            recentTextItem = textFile,
             download = download,
             message = message
         )
@@ -58,7 +58,7 @@ class ReaderViewModel @Inject constructor(
 }
 
 data class ReaderViewState(
-    val textFile: TextFile? = null,
+    val recentTextItem: RecentTextItem? = null,
     val download: ItemWithDownload? = null,
     val message: UiMessage? = null,
 )

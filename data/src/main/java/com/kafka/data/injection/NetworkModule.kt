@@ -52,23 +52,25 @@ class NetworkModule {
     @Singleton
     fun okHttp(
         cache: Cache,
-        loggingInterceptor: HttpLoggingInterceptor,
         acceptDialogInterceptor: AcceptDialogInterceptor,
         rewriteCachesInterceptor: RewriteCachesInterceptor
     ) = getBaseBuilder(cache)
         .addInterceptor(acceptDialogInterceptor)
         .addInterceptor(rewriteCachesInterceptor)
-        .addInterceptor(loggingInterceptor)
         .build()
 
     @Provides
     @Singleton
     @ExperimentalSerializationApi
-    fun retrofit(client: OkHttpClient, json: Json): Retrofit =
+    fun retrofit(
+        client: OkHttpClient,
+        json: Json,
+        loggingInterceptor: HttpLoggingInterceptor
+    ): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .client(client)
+            .client(client.run { newBuilder().addInterceptor(loggingInterceptor).build() })
             .build()
 
     @Provides

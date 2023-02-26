@@ -1,14 +1,11 @@
 package com.kafka.search
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,25 +26,16 @@ fun RecentSearches(
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
-        tonalElevation = 1.dp,
-        shape = RoundedCornerShape(0.dp),
-        modifier = Modifier
-            .padding(vertical = Dimens.Spacing20)
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
-            .animateContentSize()
+        modifier = Modifier.background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
     ) {
-        LazyColumn(modifier = modifier.padding(vertical = 24.dp)) {
-
-            item {
-                recentSearches.takeIf { it.isNotEmpty() }?.let {
-                    SearchResultLabel("Recent searches")
-                }
+        Column(modifier = modifier) {
+            recentSearches.takeIf { it.isNotEmpty() }?.let {
+                SearchResultLabel("Recent searches")
             }
 
-            items(recentSearches) {
+            recentSearches.forEach {
                 RecentSearchItem(
                     searchTerm = it,
-                    modifier = Modifier.animateItemPlacement(),
                     onSearchClicked = onSearchClicked,
                     onRemoveSearch = onRemoveSearch
                 )
@@ -80,7 +68,7 @@ private fun RecentSearchItem(
             modifier = Modifier
                 .clickable(onClick = { onRemoveSearch(searchTerm) })
                 .padding(10.dp)
-                .size(24.dp),
+                .size(Dimens.Spacing24),
             imageVector = Icons.XCircle
         )
     }
@@ -89,9 +77,7 @@ private fun RecentSearchItem(
 @Composable
 private fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(
-            start = Dimens.Spacing12, end = 24.dp, bottom = Dimens.Spacing12
-        ),
+        modifier = modifier.padding(Dimens.Spacing12),
         text = text,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.secondary

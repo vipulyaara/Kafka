@@ -56,4 +56,6 @@ const val urduProse =
             "lughaterozmarrahshamsurrahmanfaruqi, shabkhoon271aug2003, shabkhoon-v1, ghalibkechandpehlu, in.ernet.dli.2015.415434, " +
             "YaadgarEGhalibHali, DeewanHaliMuqadamaShearOShaeri, FarnoodByJaunElia, qabaisaaz"
 const val kafkaArchives =
-    "unmasking-a-confident-trickster, kafka-short-stories, poe-short-stories, poems-by-pb-shelly, existentialism_202302, dualism_202302, beauty_202302, enlightenment_202302, hegels-aesthetics"
+    "unmasking-a-confident-trickster, kafka-short-stories, poe-short-stories, " +
+            "poems-by-pb-shelly, existentialism_202302, dualism_202302, beauty_202302, " +
+            "enlightenment_202302, hegels-aesthetics, mysticism-in-arabic-and-islamic-philosophy"

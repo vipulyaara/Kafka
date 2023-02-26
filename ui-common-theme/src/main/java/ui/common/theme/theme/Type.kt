@@ -54,6 +54,7 @@ val ProductSans = FontFamily(
 )
 
 val Roboto = createFontFamily("Roboto")
+val OpenSans = createFontFamily("Open Sans")
 val ProseFont = createFontFamily("Lora")
 val Poppins = createFontFamily("Poppins")
 val DefaultFont = Roboto

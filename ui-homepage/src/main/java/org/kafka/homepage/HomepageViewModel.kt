@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -30,7 +31,7 @@ class HomepageViewModel @Inject constructor(
     private val removeRecentItem: RemoveRecentItem,
     observeUser: ObserveUser,
     private val navigator: Navigator,
-    private val analytics: Analytics,
+    private val analytics: Analytics
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
@@ -41,6 +42,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
+        debug { "User is $user" }
         HomepageViewState(
             homepage = homepage,
             user = user,
@@ -69,16 +71,25 @@ class HomepageViewModel @Inject constructor(
         }
     }
 
-    fun loginClicked() {
+    fun openLogin() {
         analytics.log { this.loginClicked() }
         navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 
     fun openProfile() {
         viewModelScope.launch {
-            analytics.log { this.logoutClicked() }
             navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
         }
+    }
+
+    fun openItemDetail(itemId: String) {
+        analytics.log { this.openItemDetail(itemId, "homepage") }
+        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+    }
+
+    fun openRecentItemDetail(itemId: String) {
+        analytics.log { this.openRecentItem(itemId) }
+        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 
     private val selectedQuery

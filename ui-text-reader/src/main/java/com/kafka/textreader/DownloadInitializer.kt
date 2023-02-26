@@ -6,7 +6,7 @@ import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.TextFileDao
 import com.kafka.data.entities.File
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.isText
 import com.kafka.data.entities.isTxt
 import com.kafka.data.injection.ProcessLifetime
@@ -31,7 +31,7 @@ class DownloadInitializer @Inject constructor(
     private val readTextFromUri: ReadTextFromUri,
     private val downloadRequestsDao: DownloadRequestsDao,
     private val fileDao: FileDao,
-    private val textFileMapper: TextFileMapper,
+    private val recentTextItemMapper: RecentTextItemMapper,
     private val dispatchers: AppCoroutineDispatchers
 ) : AppInitializer {
     override fun init(application: Application) {
@@ -44,7 +44,7 @@ class DownloadInitializer @Inject constructor(
                     if (file.isText()) {
                         val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
                             .getOrElse { emptyList() } else emptyList()
-                        val textFile = textFileMapper.map(download, pages, file)
+                        val textFile = recentTextItemMapper.map(download, pages, file)
 
                         textFileDao.insert(textFile)
                     }
@@ -54,15 +54,15 @@ class DownloadInitializer @Inject constructor(
     }
 }
 
-class TextFileMapper @Inject constructor() {
-    fun map(download: Download, pages: List<String>, file: File): TextFile {
-        val filePages = pages.mapIndexed { index, s -> TextFile.Page(index + 1, s) }
-        return TextFile(
+class RecentTextItemMapper @Inject constructor() {
+    fun map(download: Download, pages: List<String>, file: File): RecentTextItem {
+        val filePages = pages.mapIndexed { index, s -> RecentTextItem.Page(index + 1, s) }
+        return RecentTextItem(
             id = file.fileId,
             itemId = file.itemId,
+            createdAt = System.currentTimeMillis(),
             title = download.namespace,
             pages = filePages,
-            totalPages = filePages.size,
             currentPage = 1,
             localUri = download.fileUri.toString()
         )

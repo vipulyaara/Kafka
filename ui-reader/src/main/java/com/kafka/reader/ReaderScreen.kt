@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.pdf.PdfReader
 import com.kafka.reader.text.TextReader
 import org.kafka.navigation.LocalNavigator
@@ -20,7 +20,7 @@ import org.kafka.ui.components.material.TopBar
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
     val viewState by viewModel.readerState.collectAsStateWithLifecycle()
-    val file = viewState.textFile
+    val file = viewState.recentTextItem
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -28,8 +28,8 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             when (file?.type) {
-                TextFile.Type.PDF -> PdfReader(fileId = file.id)
-                TextFile.Type.TXT -> TextReader(fileId = file.id)
+                RecentTextItem.Type.PDF -> PdfReader(fileId = file.id)
+                RecentTextItem.Type.TXT -> TextReader(fileId = file.id)
                 else -> viewState.download?.downloadInfo?.let { DownloadProgress(it) }
             }
         }

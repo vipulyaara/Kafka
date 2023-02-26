@@ -15,7 +15,7 @@ class UpdateItemDetail @Inject constructor(
 
     override suspend fun doWork(params: Param) {
         withContext(dispatchers.io) {
-            analytics.log { itemDetailClick(params.contentId) }
+            analytics.log { updateItemDetail(params.contentId) }
             repository.updateItemDetail(params.contentId).getOrThrow()
         }
     }

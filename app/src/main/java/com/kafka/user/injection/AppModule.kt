@@ -10,6 +10,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.textreader.DownloadInitializer
@@ -82,6 +83,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideFirestore() = FirebaseFirestore.getInstance()
 }
 
 @InstallIn(SingletonComponent::class)

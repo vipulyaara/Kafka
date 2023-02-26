@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.TextFile
-import com.kafka.data.entities.TextFile.Page
+import com.kafka.data.entities.RecentTextItem
+import com.kafka.data.entities.RecentTextItem.Page
 import com.kafka.reader.controls.GoToPage
 import org.kafka.common.simpleClickable
 import org.kafka.ui.components.scaffoldPadding
@@ -40,21 +40,21 @@ internal fun TextReader(
         viewModel.onPageChanged(fileId, viewModel.currentPage)
     }
 
-    viewState.textFile?.let { TextReader(modifier, viewModel, it) }
+    viewState.recentTextItem?.let { TextReader(modifier, viewModel, it) }
 }
 
 @Composable
 private fun TextReader(
     modifier: Modifier,
     viewModel: TextReaderViewModel,
-    textFile: TextFile
+    recentTextItem: RecentTextItem
 ) {
     Surface(modifier = modifier) {
         val scaffoldPadding = scaffoldPadding()
 
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(contentPadding = scaffoldPadding, state = viewModel.lazyListState) {
-                items(textFile.pages, key = { it.index }) { page ->
+                items(recentTextItem.pages, key = { it.index }) { page ->
                     Page(
                         page = page,
                         modifier = Modifier.simpleClickable { viewModel.toggleControls() }

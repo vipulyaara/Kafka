@@ -1,6 +1,7 @@
 package com.kafka.user.home
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
@@ -8,12 +9,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
@@ -35,6 +39,7 @@ import org.kafka.navigation.Screen
 import org.kafka.navigation.selectRootScreen
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
+import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun AppNavigation(
@@ -47,8 +52,8 @@ internal fun AppNavigation(
             is NavigationEvent.Destination -> {
                 // switch tabs first because of a bug in navigation that doesn't allow
                 // changing tabs when destination is opened from a different tab
-                event.root?.let {
-                    navController.selectRootScreen(it)
+                if (event.root != null && event.root != navigator.currentRoot.value)  {
+                    navController.selectRootScreen(event.root!!)
                 }
                 navController.navigate(event.route)
             }
@@ -169,8 +174,15 @@ private fun NavGraphBuilder.addLogin(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    bottomSheet(Screen.Profile.createRoute(root)) {
-        ProfileScreen()
+    dialog(
+        route = Screen.Profile.createRoute(root),
+        dialogProperties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        ProfileScreen(
+            modifier = Modifier
+                .androidMinWidthDialogSize(clampMaxWidth = true)
+                .clip(RoundedCornerShape(Dimens.Spacing12))
+        )
     }
 }
 

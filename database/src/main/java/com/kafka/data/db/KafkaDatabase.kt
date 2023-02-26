@@ -21,7 +21,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentSearch
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.User
 
 interface KafkaDatabase {
@@ -42,8 +42,8 @@ interface KafkaDatabase {
         ItemDetail::class,
         File::class,
         Item::class,
-        TextFile::class,
         RecentItem::class,
+        RecentTextItem::class,
         FollowedItem::class,
         QueueEntity::class,
         RecentSearch::class,

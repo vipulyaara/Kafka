@@ -12,14 +12,12 @@ internal object EnglishTypography {
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Medium,
         fontSize = TypeScale.BodyLargeSize,
-        lineHeight = TypeScale.BodyLargeLineHeight,
         letterSpacing = TypeScale.BodyLargeTracking,
     )
     val BodyMedium = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
-        lineHeight = TypeScale.BodyMediumLineHeight,
     )
     val BodySmall = TextStyle(
         fontFamily = DefaultFont,
@@ -31,77 +29,65 @@ internal object EnglishTypography {
         fontWeight = FontWeight.Light,
         fontSize = 16.sp,
         fontStyle = FontStyle.Italic,
-        lineHeight = TypeScale.DisplayLargeLineHeight,
         letterSpacing = TypeScale.DisplayLargeTracking,
     )
     val ContentProse = TextStyle(
         fontFamily = ProseFont,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 22.0.sp,
     )
     val DisplaySmall = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.SemiBold,
         fontSize = TypeScale.DisplaySmallSize,
-        lineHeight = TypeScale.DisplaySmallLineHeight,
         letterSpacing = TypeScale.DisplaySmallTracking,
     )
     val HeadlineLarge = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Bold,
         fontSize = TypeScale.HeadlineLargeSize,
-        lineHeight = TypeScale.HeadlineLargeLineHeight,
         letterSpacing = TypeScale.HeadlineLargeTracking,
     )
     val HeadlineMedium = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = TypeScale.HeadlineMediumWeight,
         fontSize = TypeScale.HeadlineMediumSize,
-        lineHeight = TypeScale.HeadlineMediumLineHeight,
     )
     val HeadlineSmall = TextStyle(
         fontFamily = Poppins,
         fontWeight = TypeScale.HeadlineSmallWeight,
         fontSize = 20.sp,
-        lineHeight = TypeScale.HeadlineSmallLineHeight,
         letterSpacing = TypeScale.HeadlineSmallTracking,
     )
     val LabelLarge = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = TypeScale.LabelLargeWeight,
         fontSize = TypeScale.LabelLargeSize,
-        lineHeight = TypeScale.LabelLargeLineHeight,
     )
     val LabelMedium = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Medium,
         fontSize = TypeScale.LabelMediumSize,
-        lineHeight = TypeScale.LabelMediumLineHeight,
     )
     val LabelSmall = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Bold,
         fontSize = TypeScale.LabelSmallSize,
-        lineHeight = TypeScale.LabelSmallLineHeight,
     )
     val TitleLarge = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.Medium,
         fontSize = 20.sp,
-        lineHeight = TypeScale.TitleLargeLineHeight,
     )
     val TitleMedium = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = TypeScale.TitleMediumWeight,
         fontSize = 16.sp,
-        lineHeight = TypeScale.TitleMediumLineHeight,
     )
     val TitleSmall = TextStyle(
         fontFamily = DefaultFont,
         fontWeight = FontWeight.SemiBold,
         fontSize = 13.sp,
-        lineHeight = TypeScale.TitleSmallLineHeight,
     )
 }
 

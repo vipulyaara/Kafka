@@ -29,9 +29,11 @@ dependencies {
     api project(':data')
 
     implementation libs.fetch
+
     implementation platform(libs.google.bom)
     implementation libs.google.auth
     implementation libs.google.auth.coroutines
+    implementation libs.google.firestore
 
     api libs.kotlin.coroutines.android
 }

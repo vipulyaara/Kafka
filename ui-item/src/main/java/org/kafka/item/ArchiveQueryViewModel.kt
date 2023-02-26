@@ -15,6 +15,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
+import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.observers.ObserveQueryItems
 import javax.inject.Inject
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ArchiveQueryViewModel @Inject constructor(
     private val observeQueryItems: ObserveQueryItems,
-    private val updateItems: UpdateItems
+    private val updateItems: UpdateItems,
+    private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
@@ -58,7 +60,7 @@ class ArchiveQueryViewModel @Inject constructor(
     private fun submitQuery(query: ArchiveQuery) {
         observeQueryItems(ObserveQueryItems.Params(query))
         viewModelScope.launch {
-            updateItems(UpdateItems.Params(query)).collectStatus(loadingState, uiMessageManager)
+            updateItems(UpdateItems.Params(query)).collectStatus(loadingState, snackbarManager)
         }
     }
 }

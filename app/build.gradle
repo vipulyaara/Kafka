@@ -48,7 +48,7 @@ android {
             excludes += ['META-INF/proguard/*']
         }
         resources {
-            excludes += ['META-INF/*.version', 'META-INF/proguard/*', '/*.properties', 'fabric/*.properties', 'META-INF/*.properties']
+            excludes += ['META-INF/proguard/*', '/*.properties', 'fabric/*.properties', 'META-INF/*.properties']
         }
     }
 
@@ -106,12 +106,11 @@ dependencies {
     implementation project(':ui-playback')
     implementation project(':webview')
 
-    implementation "androidx.metrics:metrics-performance:1.0.0-alpha03"
-
     implementation platform(libs.google.bom)
 
     implementation libs.google.analytics
     implementation libs.google.auth
+    implementation libs.google.firestore
     implementation libs.google.crashlytics
     implementation libs.google.dynamic.links
 

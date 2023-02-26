@@ -33,7 +33,7 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
         modifier = modifier
             .fillMaxWidth()
             .clickable { openItemDetail(item.itemId) }
-            .padding(Dimens.Spacing16),
+            .padding(vertical = Dimens.Spacing08, horizontal = Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
         CoverImage(item)

@@ -36,6 +36,8 @@ abstract class Interactor<in P> {
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun execute(params: P) = doWork(params)
+
     protected abstract suspend fun doWork(params: P)
 
     companion object {

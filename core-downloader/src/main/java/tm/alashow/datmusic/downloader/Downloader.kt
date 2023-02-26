@@ -23,6 +23,7 @@ interface Downloader {
     }
 
     val newDownloadId: Flow<String>
+    val downloadLocation: Flow<String?>
     val downloaderEvents: Flow<DownloaderEvent>
     fun clearDownloaderEvents()
     fun getDownloaderEvents(): List<DownloaderEvent>

@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.pdf.PdfReaderViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ class TextReaderViewModel @Inject constructor(
         uiMessageManager.message,
     ) { textFile, message ->
         PdfReaderViewState(
-            textFile = textFile,
+            recentTextItem = textFile,
             message = message
         )
     }.stateInDefault(
@@ -67,6 +67,6 @@ class TextReaderViewModel @Inject constructor(
 }
 
 data class TextReaderViewState(
-    val textFile: TextFile? = null,
+    val recentTextItem: RecentTextItem? = null,
     val message: UiMessage? = null,
 )

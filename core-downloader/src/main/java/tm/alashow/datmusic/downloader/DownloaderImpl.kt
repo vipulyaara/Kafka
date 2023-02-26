@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.event
+import org.kafka.base.debug
 import org.kafka.common.UiMessageManager
 import org.kafka.common.asUiMessage
 import timber.log.Timber
@@ -38,6 +39,7 @@ import java.util.Optional
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.kafka.data.entities.File as FileEntity
+
 
 @Singleton
 internal class DownloaderImpl @Inject constructor(
@@ -259,6 +261,12 @@ internal class DownloaderImpl @Inject constructor(
         }
     }
 
+    override val downloadLocation = downloadsLocationUri.map {
+        if (it.isPresent)
+            getPathFromUri(it.get())
+        else null
+    }
+
     override val hasDownloadsLocation = downloadsLocationUri.map { it.isPresent }
 
     override fun requestNewDownloadsLocation() = downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
@@ -289,11 +297,22 @@ internal class DownloaderImpl @Inject constructor(
         }
     }
 
+    private fun getPathFromUri(uri: Uri): String {
+        val split = uri.pathSegments[1].split(":").toTypedArray()
+        val path = split[1]
+        debug { "getPathFromUri: $path" }
+
+        return "...$path"
+    }
+
     override suspend fun resetDownloadsLocation() {
         analytics.event("downloads.resetDownloadsLocation")
         val current = downloadsLocationUri.first()
         if (current.isPresent) {
-            appContext.contentResolver.releasePersistableUriPermission(current.get(), INTENT_READ_WRITE_FLAG)
+            appContext.contentResolver.releasePersistableUriPermission(
+                current.get(),
+                INTENT_READ_WRITE_FLAG
+            )
         }
         preferences.save(DOWNLOADS_LOCATION, "")
     }

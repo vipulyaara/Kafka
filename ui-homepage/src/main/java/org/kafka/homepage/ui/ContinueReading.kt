@@ -116,7 +116,7 @@ private fun ContinueReadingItem(
                         }
                     )
                     .padding(Dimens.Spacing12),
-                horizontalArrangement = Arrangement.spacedBy(24.dp)
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
             ) {
                 CoverImage(continueReading)
                 Description(continueReading, Modifier.width(286.dp))

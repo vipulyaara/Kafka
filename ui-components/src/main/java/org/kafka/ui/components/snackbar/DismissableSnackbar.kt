@@ -4,14 +4,17 @@
  */
 package org.kafka.ui.components.snackbar
 
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.kafka.common.widgets.Dismissable
 
 @Composable
 fun DismissableSnackbarHost(hostState: SnackbarHostState, modifier: Modifier = Modifier) {
@@ -34,9 +37,38 @@ fun DismissableSnackbarHost(hostState: SnackbarHostState, modifier: Modifier = M
 fun SwipeDismissSnackbar(
     data: SnackbarData,
     onDismiss: () -> Unit = {},
-    snackbar: @Composable (SnackbarData) -> Unit = { Snackbar(it) }
+    snackbar: @Composable (SnackbarData) -> Unit = {
+        Snackbar(
+            snackbarData = it,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    }
 ) {
     Dismissable(onDismiss = onDismiss) {
         snackbar(data)
     }
+}
+
+@Composable
+fun Dismissable(
+    onDismiss: () -> Unit,
+    directions: Set<DismissDirection> = setOf(
+        DismissDirection.StartToEnd,
+        DismissDirection.EndToStart
+    ),
+    content: @Composable () -> Unit
+) {
+    val dismissState = rememberDismissState(confirmValueChange = {
+        if (it != DismissValue.Default) {
+            onDismiss.invoke()
+        }
+        true
+    })
+    SwipeToDismiss(
+        state = dismissState,
+        directions = directions,
+        background = {},
+        dismissContent = { content() }
+    )
 }

@@ -1,20 +1,19 @@
-package org.kafka.domain.interactors
+package org.kafka.domain.interactors.account
 
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.tasks.await
+import com.kafka.data.feature.item.auth.AccountRepository
 import kotlinx.coroutines.withContext
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class ResetPassword @Inject constructor(
-    private val auth: FirebaseAuth,
+    private val accountRepository: AccountRepository,
     private val dispatchers: AppCoroutineDispatchers
 ) : Interactor<ResetPassword.Params>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            auth.sendPasswordResetEmail(params.email).await()
+            accountRepository.resetPassword(params.email)
         }
     }
 

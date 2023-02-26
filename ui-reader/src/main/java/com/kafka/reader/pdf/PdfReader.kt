@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.TextFile
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.controls.GoToPage
 import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
@@ -40,9 +40,9 @@ internal fun PdfReader(
 
     LaunchedEffect(fileId) { viewModel.observeTextFile(fileId) }
 
-    AnimatedVisibilityFade(viewState.textFile != null) {
+    AnimatedVisibilityFade(viewState.recentTextItem != null) {
         PdfReaderWithControls(
-            textFile = viewState.textFile!!,
+            recentTextItem = viewState.recentTextItem!!,
             modifier = modifier.simpleClickable { viewModel.toggleControls() },
             setControls = viewModel::showControls,
             showControls = showControls,
@@ -53,7 +53,7 @@ internal fun PdfReader(
 
 @Composable
 private fun PdfReaderWithControls(
-    textFile: TextFile,
+    recentTextItem: RecentTextItem,
     modifier: Modifier = Modifier,
     showControls: Boolean = false,
     setControls: (Boolean) -> Unit = {},
@@ -61,15 +61,15 @@ private fun PdfReaderWithControls(
 ) {
     val scaffoldPadding = scaffoldPadding()
     val scope = rememberCoroutineScope()
-    val uri by rememberMutableState(textFile) { textFile.localUri.toUri() }
+    val uri by rememberMutableState(recentTextItem) { recentTextItem.localUri.toUri() }
     val pdfState = rememberVerticalPdfReaderState(
         resource = ResourceType.Local(uri),
-        startPage = (textFile.currentPage - 1).coerceAtLeast(0)
+        startPage = (recentTextItem.currentPage - 1).coerceAtLeast(0)
     )
     val currentPage by remember { derivedStateOf { pdfState.currentPage } }
     var panEnabled by rememberSaveable { mutableStateOf(true) }
 
-    LaunchedEffect(textFile, currentPage) {
+    LaunchedEffect(recentTextItem, currentPage) {
         onPageChanged(currentPage)
         panEnabled = false
     }
