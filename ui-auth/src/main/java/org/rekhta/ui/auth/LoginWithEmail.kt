@@ -50,12 +50,9 @@ internal fun LoginWithEmail(
     val keyboard = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        val prefilledUsername = stringResource(id = R.string.prefilled_userName)
-        val prefilledPassword = stringResource(id = R.string.prefilled_password)
-
-        var name by rememberSavableMutableState(init = { "Vipul Kumar" })
-        var username by rememberSavableMutableState(init = { prefilledUsername })
-        var password by rememberSavableMutableState(init = { prefilledPassword })
+        var name by rememberSavableMutableState(init = { "" })
+        var username by rememberSavableMutableState(init = { "" })
+        var password by rememberSavableMutableState(init = { "" })
 
         if (!loginState.isLogin) {
             LoginTextField(
