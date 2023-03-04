@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.observers.ObserveTextFile
 import javax.inject.Inject

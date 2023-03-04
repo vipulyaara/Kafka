@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.search.R
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -51,7 +53,7 @@ fun SearchWidget(
             placeholder = {
                 Row {
                     Text(
-                        "Search...",
+                        stringResource(R.string.search),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -62,7 +64,6 @@ fun SearchWidget(
                     setSearchText(TextFieldValue(""))
                     keyboard?.show()
                 }
-                SpeechIcon(searchText.text) {}
             },
             keyboardOptions = SearchKeyboardOptions,
             onValueChange = { setSearchText(it) },

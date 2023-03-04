@@ -8,7 +8,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.isAudio
 import org.kafka.base.debug
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 
 data class ItemDetailViewState(
     val isFavorite: Boolean = false,

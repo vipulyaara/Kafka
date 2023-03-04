@@ -8,6 +8,7 @@ import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateFavorite @Inject constructor(
+    private val signInAnonymously: SignInAnonymously,
     private val accountRepository: AccountRepository,
     private val analytics: Analytics,
     private val dispatchers: AppCoroutineDispatchers
@@ -19,6 +20,11 @@ class UpdateFavorite @Inject constructor(
             } else {
                 analytics.log { removeFavorite((params.itemId)) }
             }
+
+            if (accountRepository.getCurrentUser() == null) {
+                signInAnonymously.execute(Unit)
+            }
+
             accountRepository.updateFavorite(params.itemId, params.isFavorite)
         }
     }

@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.Item
 import org.kafka.common.asImmutable
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.ui.Carousels
@@ -47,14 +48,20 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box {
-                HomepageFeedItems(
-                    homepage = viewState.homepage,
-                    isLoading = viewState.isLoading,
-                    openItemDetail = viewModel::openItemDetail,
-                    openRecentItemDetail = viewModel::openRecentItemDetail,
-                    removeRecentItem = viewModel::removeRecentItem
+                AnimatedVisibilityFade(viewState.homepage != null) {
+                    HomepageFeedItems(
+                        homepage = viewState.homepage,
+                        isLoading = viewState.isLoading,
+                        openItemDetail = viewModel::openItemDetail,
+                        openRecentItemDetail = viewModel::openRecentItemDetail,
+                        removeRecentItem = viewModel::removeRecentItem
+                    )
+                }
+                FullScreenMessage(
+                    uiMessage = viewState.message,
+                    show = viewState.isFullScreenError,
+                    onRetry = viewModel::retry
                 )
-                FullScreenMessage(viewState.message, viewState.isFullScreenError)
             }
         }
     }

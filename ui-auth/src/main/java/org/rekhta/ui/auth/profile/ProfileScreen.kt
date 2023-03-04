@@ -1,5 +1,6 @@
 package org.rekhta.ui.auth.profile
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import org.kafka.common.simpleClickable
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.rekhta.ui.auth.AuthViewModel
 import ui.common.theme.theme.Dimens
 
@@ -28,7 +30,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = 
     val viewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 
-    Surface(modifier = modifier) {
+    Surface(modifier = modifier.animateContentSize()) {
         if (viewState.currentUser != null) {
             Column(
                 modifier = Modifier
@@ -46,9 +48,12 @@ fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = 
 
                 LogoutButton(modifier = Modifier.align(Alignment.End)) {
                     authViewModel.logout()
-                    navigator.goBack()
                 }
             }
+        }
+
+        if (viewState.isLoading) {
+            InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
         }
     }
 }

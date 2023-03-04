@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.kafka.data.entities.Item
-import org.kafka.common.UiMessage
 import org.kafka.common.plus
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.favorites.R
 import org.kafka.library.LibraryItem
@@ -30,12 +30,7 @@ internal fun Favorites(
     openItemDetail: (String) -> Unit
 ) {
     if (items.isEmpty()) {
-        FullScreenMessage(
-            uiMessage = UiMessage(
-                title = stringResource(id = R.string.no_favorites_items_title),
-                message = stringResource(id = R.string.no_favorites_items_message)
-            )
-        )
+        FullScreenMessage(UiMessage(stringResource(id = R.string.no_favorites_items_message)))
     } else {
         when (layoutType) {
             LayoutType.List -> FavoriteItemList(

@@ -1,6 +1,5 @@
 package org.kafka.base.domain
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withTimeout
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -33,7 +31,7 @@ abstract class Interactor<in P> {
         }.catch { t ->
             Timber.e(t.localizedMessage ?: t.toString())
             emit(InvokeError(t))
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     suspend fun execute(params: P) = doWork(params)

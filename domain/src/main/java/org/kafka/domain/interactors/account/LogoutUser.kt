@@ -8,12 +8,14 @@ import javax.inject.Inject
 
 class LogoutUser @Inject constructor(
     private val accountRepository: AccountRepository,
+    private val signInAnonymously: SignInAnonymously,
     private val appCoroutineDispatchers: AppCoroutineDispatchers
 ) : Interactor<Unit>() {
 
     override suspend fun doWork(params: Unit) {
         withContext(appCoroutineDispatchers.io) {
             accountRepository.signOut()
+            signInAnonymously.execute(Unit)
         }
     }
 }

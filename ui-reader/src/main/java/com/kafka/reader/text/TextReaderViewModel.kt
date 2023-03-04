@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.pdf.PdfReaderViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessage
 import org.kafka.common.UiMessageManager
 import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.observers.ObserveTextFile
@@ -65,8 +63,3 @@ class TextReaderViewModel @Inject constructor(
         }
     }
 }
-
-data class TextReaderViewState(
-    val recentTextItem: RecentTextItem? = null,
-    val message: UiMessage? = null,
-)

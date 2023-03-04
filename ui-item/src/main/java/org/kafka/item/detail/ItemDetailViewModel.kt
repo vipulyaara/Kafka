@@ -79,6 +79,10 @@ class ItemDetailViewModel @Inject constructor(
     )
 
     init {
+        observeItemDetail(ObserveItemDetail.Param(itemId))
+        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
+        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
+
         refresh()
     }
 
@@ -91,10 +95,6 @@ class ItemDetailViewModel @Inject constructor(
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, snackbarManager)
         }
-
-        observeItemDetail(ObserveItemDetail.Param(itemId))
-        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
-        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
     }
 
     fun onPrimaryAction(itemId: String) {

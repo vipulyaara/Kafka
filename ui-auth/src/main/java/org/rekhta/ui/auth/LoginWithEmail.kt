@@ -95,7 +95,7 @@ internal fun LoginWithEmail(
                     forgotPassword(username)
                 }
                 .padding(top = Dimens.Spacing20),
-            text = "Forgot password?",
+            text = stringResource(R.string.forgot_password),
             textDecoration = TextDecoration.Underline,
             style = MaterialTheme.typography.labelSmall
         )
@@ -124,7 +124,8 @@ private fun LoginButton(
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically)
                 .padding(vertical = Dimens.Spacing08),
-            text = if (loginState.isLogin) "Login" else "Sign up",
+            text = if (loginState.isLogin) stringResource(R.string.login)
+            else stringResource(R.string.sign_up),
             style = MaterialTheme.typography.titleSmall.alignCenter()
         )
     }
@@ -192,5 +193,5 @@ internal enum class LoginTextField(
     val imeAction: ImeAction
 ) {
     Username("Email", KeyboardType.Email, VisualTransformation.None, ImeAction.Next),
-    Password("Password", KeyboardType.Password, PasswordVisualTransformation(), ImeAction.Go)
+    Password("Password", KeyboardType.Password, PasswordVisualTransformation(), ImeAction.Done)
 }

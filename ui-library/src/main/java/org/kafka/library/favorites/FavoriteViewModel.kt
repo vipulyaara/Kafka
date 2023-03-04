@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.UiMessageManager
 import org.kafka.domain.observers.ObserveFavorites
 import org.kafka.domain.observers.ObserveFollowedItems

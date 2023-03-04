@@ -14,11 +14,13 @@ import javax.inject.Singleton
 class ObserveUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val dispatchers: AppCoroutineDispatchers
-) : SubjectInteractor<Unit, User?>() {
+) : SubjectInteractor<ObserveUser.Params, User?>() {
 
-    override fun createObservable(params: Unit): Flow<User?> {
+    override fun createObservable(params: Params): Flow<User?> {
         return accountRepository.observeCurrentUser()
-            .map { if (it?.anonymous == true) null else it }
+            .map { if (!params.includeAnonymous) it.takeIf { it?.anonymous == false } else it }
             .flowOn(dispatchers.io)
     }
+
+    data class Params(val includeAnonymous: Boolean = false)
 }

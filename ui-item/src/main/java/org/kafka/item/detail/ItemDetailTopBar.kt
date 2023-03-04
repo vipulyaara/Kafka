@@ -17,7 +17,6 @@ import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
-import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
@@ -26,8 +25,8 @@ import ui.common.theme.theme.Dimens
 internal fun TopBar(
     lazyListState: LazyListState,
     onShareClicked: () -> Unit,
-    isShareVisible: Boolean = false,
-    navigator: Navigator = LocalNavigator.current
+    onBackPressed: () -> Unit,
+    isShareVisible: Boolean = false
 ) {
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
 
@@ -41,7 +40,7 @@ internal fun TopBar(
     TopBar(
         containerColor = Color.Transparent,
         navigationIcon = {
-            BackIcon(navigator, containerColor, contentColor)
+            BackIcon(onBackPressed, containerColor, contentColor)
         },
         actions = {
             if (isShareVisible) {
@@ -72,8 +71,17 @@ private fun BackIcon(
     containerColor: Color,
     contentColor: Color
 ) {
+    BackIcon(onBackPressed = { navigator.goBack() }, containerColor, contentColor)
+}
+
+@Composable
+private fun BackIcon(
+    onBackPressed: () -> Unit,
+    containerColor: Color,
+    contentColor: Color
+) {
     IconButton(
-        onClick = { navigator.goBack() },
+        onClick = { onBackPressed() },
         modifier = Modifier
             .padding(Dimens.Spacing08)
             .clip(CircleShape)

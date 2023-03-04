@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -77,18 +78,33 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         preloadImages(context, state.itemsByCreator)
     }
 
+    val coroutineScope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+
+    HandleBackPress(bottomSheetState, coroutineScope)
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
                 lazyListState = lazyListState,
                 isShareVisible = state.itemDetail != null,
-                onShareClicked = { viewModel.shareItemText(context) }
+                onShareClicked = { viewModel.shareItemText(context) },
+                onBackPressed = {
+                    if (bottomSheetState.isVisible) {
+                        coroutineScope.launch { bottomSheetState.hide() }
+                    } else {
+                        navigator.goBack()
+                    }
+                }
             )
         }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel, navigator, lazyListState)
+            ItemDetail(state, viewModel, navigator, lazyListState, bottomSheetState)
         }
     }
 }
@@ -98,7 +114,8 @@ private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
     navigator: Navigator,
-    lazyListState: LazyListState
+    lazyListState: LazyListState,
+    bottomSheetState: ModalBottomSheetState
 ) {
     Box(Modifier.fillMaxSize()) {
         InfiniteProgressBar(
@@ -106,7 +123,7 @@ private fun ItemDetail(
             modifier = Modifier.align(Alignment.Center)
         )
 
-        FullScreenMessage(state.message, state.isFullScreenError, viewModel::retry)
+        FullScreenMessage(state.message, show = state.isFullScreenError, onRetry = viewModel::retry)
 
         AnimatedVisibilityFade(state.itemDetail != null) {
             val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
@@ -128,7 +145,8 @@ private fun ItemDetail(
                 goToCreator = { creator ->
                     navigator.navigate(Screen.Search.createRoute(RootScreen.Search, creator))
                 },
-                lazyListState = lazyListState
+                lazyListState = lazyListState,
+                bottomSheetState = bottomSheetState
             )
         }
     }
@@ -145,21 +163,16 @@ private fun ItemDetail(
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     goToCreator: (String?) -> Unit,
-    lazyListState: LazyListState
+    lazyListState: LazyListState,
+    bottomSheetState: ModalBottomSheetState
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
-
-    HandleBackPress(bottomSheetState, coroutineScope)
-
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
             DescriptionDialog(itemDetail = itemDetail)
-        }
+        },
+        sheetShape = RoundedCornerShape(topStart = Dimens.Spacing24, topEnd = Dimens.Spacing24)
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -258,9 +271,9 @@ private fun DescriptionDialog(itemDetail: ItemDetail, modifier: Modifier = Modif
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
+            .statusBarsPadding()
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = Dimens.Spacing24)
-            .padding(top = Dimens.Spacing24)
     ) {
         Box(
             modifier = Modifier

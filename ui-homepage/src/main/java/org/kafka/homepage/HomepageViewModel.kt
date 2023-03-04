@@ -42,7 +42,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "User is $user" }
+        debug { "User is $user $message $homepage" }
         HomepageViewState(
             homepage = homepage,
             user = user,
@@ -56,12 +56,21 @@ class HomepageViewModel @Inject constructor(
 
     init {
         observeHomepage(selectedQuery)
-        observeUser(Unit)
+        observeUser(ObserveUser.Params())
 
+        updateItems()
+    }
+
+    private fun updateItems() {
         viewModelScope.launch {
             updateItems(UpdateItems.Params(selectedQuery))
                 .collectStatus(loadingCounter, uiMessageManager)
         }
+    }
+
+    fun retry() {
+        viewModelScope.launch { uiMessageManager.clearMessage() }
+        updateItems()
     }
 
     fun removeRecentItem(itemId: String) {

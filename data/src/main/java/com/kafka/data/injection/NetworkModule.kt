@@ -4,6 +4,7 @@ import android.app.Application
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.api.interceptor.AcceptDialogInterceptor
+import com.kafka.data.api.interceptor.NetworkConnectionInterceptor
 import com.kafka.data.api.interceptor.RewriteCachesInterceptor
 import dagger.Module
 import dagger.Provides
@@ -53,10 +54,12 @@ class NetworkModule {
     fun okHttp(
         cache: Cache,
         acceptDialogInterceptor: AcceptDialogInterceptor,
-        rewriteCachesInterceptor: RewriteCachesInterceptor
+        rewriteCachesInterceptor: RewriteCachesInterceptor,
+        networkConnectionInterceptor: NetworkConnectionInterceptor
     ) = getBaseBuilder(cache)
         .addInterceptor(acceptDialogInterceptor)
         .addInterceptor(rewriteCachesInterceptor)
+//        .addInterceptor(networkConnectionInterceptor)
         .build()
 
     @Provides

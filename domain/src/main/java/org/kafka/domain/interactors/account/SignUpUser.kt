@@ -8,20 +8,15 @@ import javax.inject.Inject
 
 class SignUpUser @Inject constructor(
     private val accountRepository: AccountRepository,
+    private val updateUser: UpdateUser,
     private val dispatchers: AppCoroutineDispatchers
 ) : Interactor<SignUpUser.Params>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            val newUser = accountRepository.signUpOrLinkUser(params.email, params.password)
+            val user = accountRepository.signUpOrLinkUser(params.email, params.password)
                 ?.copy(displayName = params.name)
-            val existingUser = accountRepository.getCurrentUser()
-
-            when {
-                newUser == null -> error("Failed to create user")
-                existingUser == null -> accountRepository.updateUser(newUser)
-                else -> accountRepository.updateUser(newUser.copy(favorites = existingUser.favorites))
-            }
+            updateUser.execute(user)
         }
     }
 

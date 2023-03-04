@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.kafka.common.snackbar.UiMessage
 import java.util.UUID
 
 data class UiMessage(
@@ -13,17 +14,17 @@ data class UiMessage(
     val title: String = "",
     val id: Long = UUID.randomUUID().mostSignificantBits,
 )
-
-fun UiMessage(
-    t: Throwable,
-    id: Long = UUID.randomUUID().mostSignificantBits,
-): UiMessage = UiMessage(
-    message = t.message ?: "Error occurred: $t",
-    id = id,
-)
+//
+//fun UiMessage(
+//    t: Throwable,
+//    id: Long = UUID.randomUUID().mostSignificantBits,
+//): UiMessage = UiMessage(
+//    message = t.message ?: "Error occurred: $t",
+//    id = id,
+//)
 
 fun String?.asUiMessage() =
-    this?.let { UiMessage(message = it) } ?: UiMessage(message = "Something went wrong")
+    this?.let { UiMessage(it) } ?: UiMessage("Something went wrong")
 
 class UiMessageManager {
     private val mutex = Mutex()
@@ -41,9 +42,9 @@ class UiMessageManager {
         }
     }
 
-    suspend fun clearMessage(id: Long) {
+    suspend fun clearMessage() {
         mutex.withLock {
-            _messages.value = _messages.value.filterNot { it.id == id }
+            _messages.value = emptyList()
         }
     }
 }

@@ -15,8 +15,6 @@ sealed class UiMessage {
     }
 }
 
-fun String.asUiMessage() = UiMessage.Plain(this)
-
 fun Throwable?.toUiMessage() = when {
     else -> when (val message = this.localizedMessage()) {
         R.string.error_unknown -> UiMessage.Plain(

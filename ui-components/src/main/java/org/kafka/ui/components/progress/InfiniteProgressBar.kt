@@ -47,8 +47,8 @@ fun InfiniteTransition.BouncingDot(
     modifier: Modifier = Modifier
 ) {
     val bounce by animateFloat(
-        0f,
-        50f,
+        -25f,
+        25f,
         infiniteRepeatable(
             tween(600),
             RepeatMode.Reverse,

@@ -53,6 +53,14 @@ val ProductSans = FontFamily(
     Font(R.font.product_sans_bold, FontWeight.Bold)
 )
 
+val BasisSans = FontFamily(
+    Font(R.font.basis_light, FontWeight.Light),
+    Font(R.font.basis_bold, FontWeight.Normal),
+    Font(R.font.basis_bold, FontWeight.SemiBold),
+    Font(R.font.basis_bold, FontWeight.Medium),
+    Font(R.font.basis_bold, FontWeight.Bold)
+)
+
 val Roboto = createFontFamily("Roboto")
 val OpenSans = createFontFamily("Open Sans")
 val ProseFont = createFontFamily("Lora")

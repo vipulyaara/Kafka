@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.feature.item.ItemWithDownload
-import org.kafka.common.UiMessage
 import org.kafka.common.plus
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.favorites.R
 import org.kafka.ui.components.bottomScaffoldPadding
@@ -23,12 +23,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun Downloads(items: List<ItemWithDownload>, openItemDetail: (String) -> Unit) {
     if (items.isEmpty()) {
-        FullScreenMessage(
-            uiMessage = UiMessage(
-                title = stringResource(id = R.string.no_downloads_items_title),
-                message = stringResource(id = R.string.no_downloads_items_message)
-            )
-        )
+        FullScreenMessage(UiMessage(stringResource(id = R.string.no_downloads_items_message)))
     } else {
         DownloadsList(
             items = items,

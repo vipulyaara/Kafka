@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.UiMessageManager
 import org.kafka.domain.observers.ObserveDownloadItem
 import org.kafka.domain.observers.ObserveTextFile

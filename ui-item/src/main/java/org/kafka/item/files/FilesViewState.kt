@@ -2,7 +2,7 @@ package org.kafka.item.files
 
 import com.kafka.data.entities.File
 import com.kafka.data.feature.item.ItemWithDownload
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 
 data class FilesViewState(
     val title: String = "",

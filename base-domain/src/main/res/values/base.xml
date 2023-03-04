@@ -18,11 +18,11 @@
     <string name="error.title">Error</string>
     <string name="error.subtitle">Whoops :(</string>
     <string name="error.tryAgain">Try again</string>
-    <string name="error.network">Network error</string>
-    <string name="error.server">Server error</string>
+    <string name="error.network">Network could not be reached</string>
+    <string name="error.server">Server could not be reached</string>
     <string name="error.auth">Authorization error</string>
     <string name="error.noAuth">You need to login</string>
-    <string name="error.notFound">Not found</string>
+    <string name="error.notFound">Resource could not be found</string>
     <string name="error.api">API error</string>
     <string name="error.empty.title">Empty</string>
     <string name="error.empty">No results</string>

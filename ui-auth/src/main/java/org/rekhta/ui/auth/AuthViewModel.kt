@@ -15,10 +15,10 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.account.SignInUser
 import org.kafka.domain.interactors.account.LogoutUser
-import org.kafka.domain.interactors.account.SignUpUser
 import org.kafka.domain.interactors.account.ResetPassword
+import org.kafka.domain.interactors.account.SignInUser
+import org.kafka.domain.interactors.account.SignUpUser
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class AuthViewModel @Inject constructor(
     )
 
     init {
-        observeUser(Unit)
+        observeUser(ObserveUser.Params())
     }
 
     fun login(email: String, password: String) {
@@ -62,7 +62,6 @@ class AuthViewModel @Inject constructor(
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
                         .collectStatus(loadingCounter, snackbarManager)
-                    navigator.goBack()
                 }
             }
         }
@@ -80,7 +79,6 @@ class AuthViewModel @Inject constructor(
                 else -> {
                     signUpUser(SignUpUser.Params(email, password, name))
                         .collectStatus(loadingCounter, snackbarManager)
-                    navigator.goBack()
                 }
             }
         }
@@ -110,9 +108,10 @@ class AuthViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             analytics.log { this.logoutClicked() }
-            logoutUser(Unit).collect { status ->
+            logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
                 if (status == InvokeSuccess) {
                     snackbarManager.addMessage(UiMessage(R.string.logged_out))
+                    navigator.goBack()
                 }
             }
         }

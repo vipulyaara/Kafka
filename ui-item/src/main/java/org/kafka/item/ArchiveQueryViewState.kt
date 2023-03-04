@@ -1,7 +1,7 @@
 package org.kafka.item
 
 import com.kafka.data.entities.Item
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 
 /**
  * @author Vipul Kumar; dated 27/12/18.
