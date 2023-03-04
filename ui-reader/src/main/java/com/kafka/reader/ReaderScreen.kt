@@ -1,85 +1,45 @@
 package com.kafka.reader
 
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.kafka.common.Icons
-import org.kafka.common.extensions.elevation
-import org.kafka.common.widgets.IconButton
-import org.kafka.common.widgets.IconResource
+import com.kafka.data.entities.RecentTextItem
+import com.kafka.reader.pdf.PdfReader
+import com.kafka.reader.text.TextReader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
-import ui.common.theme.theme.Dimens
+import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.material.BackButton
+import org.kafka.ui.components.material.TopBar
 
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val progressViewState by viewModel.downloadState.collectAsStateWithLifecycle()
-    val scrollState = rememberScrollState()
+    val viewState by viewModel.readerState.collectAsStateWithLifecycle()
+    val file = viewState.recentTextItem
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar(scrollState) },
-        containerColor = MaterialTheme.colorScheme.background
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = it.calculateTopPadding())
-        ) {
-            if (progressViewState.uri != null) {
-                ReaderView(uri = progressViewState.uri!!)
-            } else {
-                LinearProgressIndicator(
-                    progress = progressViewState.progress,
-                    modifier = Modifier.fillMaxWidth()
-                )
+        topBar = { com.kafka.reader.TopBar() }
+    ) { padding ->
+        ProvideScaffoldPadding(padding = padding) {
+            when (file?.type) {
+                RecentTextItem.Type.PDF -> PdfReader(fileId = file.id)
+                RecentTextItem.Type.TXT -> TextReader(fileId = file.id)
+                else -> viewState.download?.downloadInfo?.let { DownloadProgress(it) }
             }
         }
     }
 }
 
 @Composable
-fun TextReaderView(text: String) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        Text(
-            modifier = Modifier.padding(Dimens.Spacing16),
-            text = text,
-            textAlign = TextAlign.Justify,
-            style = MaterialTheme.typography.displayMedium
-        )
-    }
-}
-
-@Composable
-private fun TopBar(
-    scrollState: ScrollState,
-    navigator: Navigator = LocalNavigator.current
-) {
-    org.kafka.ui.components.material.TopBar(
-        navigationIcon = {
-            IconButton(
-                onClick = { navigator.goBack() },
-                modifier = Modifier.padding(Dimens.Spacing08)
-            ) {
-                IconResource(imageVector = Icons.Back)
-            }
-        },
-        elevation = remember { scrollState.elevation.value }
+private fun TopBar(navigator: Navigator = LocalNavigator.current) {
+    TopBar(
+        navigationIcon = { BackButton { navigator.goBack() } },
+        containerColor = Color.Transparent
     )
 }

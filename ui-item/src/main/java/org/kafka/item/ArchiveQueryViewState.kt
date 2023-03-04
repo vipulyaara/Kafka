@@ -1,7 +1,7 @@
 package org.kafka.item
 
 import com.kafka.data.entities.Item
-import org.kafka.common.UiMessage
+import org.kafka.common.snackbar.UiMessage
 
 /**
  * @author Vipul Kumar; dated 27/12/18.
@@ -11,6 +11,6 @@ data class ArchiveQueryViewState(
     var isLoading: Boolean = false,
     val message: UiMessage? = null
 ) {
-    val isShown: Boolean
-        get() = items.isNullOrEmpty() || isLoading
+    val isNotShown: Boolean
+        get() = items.isNullOrEmpty() && !isLoading
 }

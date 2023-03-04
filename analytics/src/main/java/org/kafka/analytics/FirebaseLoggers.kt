@@ -15,11 +15,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseLogger @Inject constructor(
+class FirebaseAnalytics @Inject constructor(
     @ApplicationContext private val context: Context,
     @ProcessLifetime private val scope: CoroutineScope,
-    private val crashLogger: CrashLogger
-) : Logger {
+    private val crashLogger: CrashLogger,
+    private val eventRepository: EventRepository
+) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
     private val userData = MutableStateFlow(UserData(""))
 
@@ -28,6 +29,10 @@ class FirebaseLogger @Inject constructor(
             updateUserProperty { userData.value }
             crashLogger.initialize(userData.value)
         }
+    }
+
+    override fun log(eventInfo: EventRepository.() -> EventInfo) {
+        log(eventInfo(eventRepository))
     }
 
     override fun log(eventInfo: EventInfo) {
@@ -85,7 +90,7 @@ class FirebaseCrashLogger @Inject constructor() : CrashLogger {
     }
 }
 
-fun Map<String, String>.asBundle() = Bundle().apply {
+fun Map<String, String?>.asBundle() = Bundle().apply {
     entries.forEach {
         putString(it.key, it.value)
     }

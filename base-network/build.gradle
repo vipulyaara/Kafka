@@ -36,6 +36,7 @@ dependencies {
     api libs.androidx.core
     api libs.androidx.collection
 
+    implementation(platform(libs.compose.bom))
     implementation libs.compose.runtime.runtime
 
     implementation libs.jsoup

@@ -34,7 +34,7 @@ class ItemRepository @Inject constructor(
     }
 
     private suspend fun getItemByItemId(itemId: String): Item {
-        return itemLocalDataSource.getItemByItemId(itemId)
+        return itemLocalDataSource.get(itemId)
     }
 
     suspend fun addRecentlyVisitedItem(itemId: String) {
@@ -42,6 +42,10 @@ class ItemRepository @Inject constructor(
         recentItemLocalDataSource.insert(
             item.asRecentlyVisited(System.currentTimeMillis())
         )
+    }
+
+    suspend fun removeRecentlyVisitedItem(itemId: String) {
+        recentItemLocalDataSource.delete(itemId)
     }
 
     suspend fun updateQuery(query: String) {

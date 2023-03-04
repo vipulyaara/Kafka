@@ -2,7 +2,6 @@ package com.kafka.data.feature.item
 
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
-import okhttp3.ResponseBody
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.network.resultApiCall
 import javax.inject.Inject
@@ -18,13 +17,8 @@ class ItemDataSource @Inject constructor(
 
     suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {
         return resultApiCall(dispatchers.io) {
-            itemMapper.map(archiveService.search(query))
-        }
-    }
-
-    suspend fun downloadFile(url: String): Result<ResponseBody> {
-        return resultApiCall(dispatchers.io) {
-            archiveService.downloadFileWithDynamicUrlSync(url)
+            val response = archiveService.search(query)
+            itemMapper.map(response)
         }
     }
 }

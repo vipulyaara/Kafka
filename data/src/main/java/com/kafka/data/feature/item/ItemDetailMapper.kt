@@ -2,9 +2,11 @@ package com.kafka.data.feature.item
 
 import android.text.Html
 import com.kafka.data.dao.FileDao
-import com.kafka.data.entities.File.Companion.supportedFiles
+import com.kafka.data.entities.File.Companion.supportedExtensions
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
+import org.kafka.base.debug
 import javax.inject.Inject
 
 class ItemDetailMapper @Inject constructor(
@@ -12,22 +14,38 @@ class ItemDetailMapper @Inject constructor(
     private val fileMapper: FileMapper
 ) {
     suspend fun map(from: ItemDetailResponse): ItemDetail {
+        debug { "mapping item detail: ${from.files.joinToString { it.name }}" }
         return ItemDetail(
             itemId = from.metadata.identifier,
             language = from.metadata.licenseurl,
             title = from.metadata.title?.dismissUpperCase(),
             description = (from.metadata.description?.joinToString()?.format() ?: ""),
-            creator = from.metadata.creator?.joinToString(),
+            creator = from.metadata.creator?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
-            files = from.files.filter { it.name.isNotEmpty() }.map { it.name },
-            coverImageResource = 0,
-            coverImage = "https://archive.org/services/img/${from.metadata.identifier}",
-            metadata = from.metadata.collection
+            files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },
+            coverImage = from.findCoverImage(),
+            metadata = from.metadata.collection,
+            primaryTextFile = from.files.getTextFile()?.fileId,
+            subject = from.metadata.subject
         ).also {
             insertFiles(from, it)
         }
     }
+
+    private fun List<File>.getTextFile() =
+        firstOrNull { it.name.extension() == "pdf" }
+        ?: firstOrNull { it.name.extension() == "epub" }
+        ?: firstOrNull { it.name.extension() == "txt" }
+
+
+    fun String.extension() = split(".").last()
+
+    private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
+        it.name.startsWith("cover_1")
+                && (it.name.endsWith("jpg") || it.name.endsWith("png"))
+    }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
+        ?: "https://archive.org/services/img/${metadata.identifier}"
 
     private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
         val files = from.files.map {
@@ -36,10 +54,10 @@ class ItemDetailMapper @Inject constructor(
                 itemId = from.metadata.identifier,
                 itemTitle = item.title,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.fileOrNull(it.name)?.localUri,
+                localUri = fileDao.getOrNull(it.name)?.localUri,
                 coverImage = item.coverImage
             )
-        }.filter { supportedFiles.contains(it.extension) }
+        }.filter { supportedExtensions.contains(it.extension) }
 
         fileDao.insertAll(files)
     }

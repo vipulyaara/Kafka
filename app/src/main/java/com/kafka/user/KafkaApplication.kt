@@ -1,7 +1,7 @@
 package com.kafka.user
 
 import android.app.Application
-import com.kafka.user.config.AppInitializers
+import com.kafka.user.initializer.AppInitializers
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 

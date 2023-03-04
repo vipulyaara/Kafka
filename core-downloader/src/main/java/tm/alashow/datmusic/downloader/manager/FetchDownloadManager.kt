@@ -4,24 +4,30 @@
  */
 package tm.alashow.datmusic.downloader.manager
 
+import com.tonyodev.fetch2.AbstractFetchListener
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
+import com.tonyodev.fetch2.database.DownloadInfo
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import java.io.IOException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import tm.alashow.base.util.extensions.simpleName
-import tm.alashow.datmusic.data.db.SQLITE_MAX_VARIABLES
+
+const val SQLITE_MAX_VARIABLES = 900
 
 class FetchDownloadManager @Inject constructor(
     private val fetch: Fetch,
 ) : DownloadManager<Int, Request, Status, Download> {
 
-    private suspend fun Fetch.getDownloadsByIds(ids: List<Int>): List<Download> = suspendCoroutine { continuation ->
-        getDownloads(ids) { continuation.resume(it) }
-    }
+    private suspend fun Fetch.getDownloadsByIds(ids: List<Int>): List<Download> =
+        suspendCoroutine { continuation ->
+            getDownloads(ids) { continuation.resume(it) }
+        }
 
     private suspend fun Fetch.getDownloadsByIdsChunked(
         ids: List<Int>,
@@ -33,12 +39,6 @@ class FetchDownloadManager @Inject constructor(
         }.flatten()
     }
 
-    private suspend fun Fetch.getDownloadsByIdsAndStatus(ids: Set<Int>, statuses: List<Status>): List<Download> = suspendCoroutine { continuation ->
-        getDownloadsWithStatus(statuses) {
-            continuation.resume(it.filter { dl -> dl.id in ids })
-        }
-    }
-
     override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> = suspendCoroutine { continuation ->
         fetch.enqueue(
             request,
@@ -46,7 +46,12 @@ class FetchDownloadManager @Inject constructor(
                 continuation.resume(DownloadEnqueueSuccessful(request))
             },
             { error ->
-                continuation.resume(DownloadEnqueueFailed(error.throwable ?: IOException("Download error: ${error.simpleName}, code=${error.value}")))
+                continuation.resume(
+                    DownloadEnqueueFailed(
+                        error.throwable
+                            ?: IOException("Download error: ${error.name}, code=${error.value}")
+                    )
+                )
             }
         )
     }
@@ -59,13 +64,8 @@ class FetchDownloadManager @Inject constructor(
         fetch.getDownloads { continuation.resume(it) }
     }
 
-    override suspend fun getDownloadsWithIdsAndStatuses(ids: Set<Int>, statuses: List<Status>): List<Download> {
-        return if (ids.isEmpty())
-            emptyList()
-        else when (statuses.isEmpty()) {
-            true -> fetch.getDownloadsByIdsChunked(ids.toList())
-            else -> fetch.getDownloadsByIdsAndStatus(ids, statuses)
-        }
+    override suspend fun getDownloadsWithIdsAndStatuses(ids: Set<Int>): List<Download> {
+        return fetch.getDownloadsByIdsChunked(ids.toList())
     }
 
     override suspend fun getDownloadsWithStatuses(statuses: List<Status>): List<Download> =
@@ -126,111 +126,106 @@ class FetchDownloadManager @Inject constructor(
 }
 
 // Note: Currently not used
-// sealed class Downloadable(
-//    val download: Download
-// )
-//
-// object DownloadUninitialized : Downloadable(DownloadInfo())
-//
-// class DownloadCompleted(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadAdded(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadResumed(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadPaused(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadCanceled(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadRemoved(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadDeleted(
-//    download: Download
-// ) : Downloadable(download)
-//
-// class DownloadQueued(
-//    download: Download,
-//    val waitingOnNetwork: Boolean
-// ) : Downloadable(download)
-//
-// class DownloadError(
-//    download: Download,
-//    val error: Error,
-//    val throwable: Throwable?
-// ) : Downloadable(download)
-//
-// class DownloadProgress(
-//    download: Download,
-//    val etaInMilliSeconds: Long,
-//    val downloadedBytesPerSecond: Long
-// ) : Downloadable(download)
-//
-// fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
-//    val fetchListener = object : AbstractFetchListener() {
-//        override fun onAdded(download: Download) {
-//            super.onAdded(download)
-//            trySend(DownloadAdded(download))
-//        }
-//
-//        override fun onCancelled(download: Download) {
-//            super.onCancelled(download)
-//            trySend(DownloadCanceled(download))
-//        }
-//
-//        override fun onCompleted(download: Download) {
-//            super.onCompleted(download)
-//            trySend(DownloadCompleted(download))
-//        }
-//
-//        override fun onDeleted(download: Download) {
-//            super.onDeleted(download)
-//            trySend(DownloadDeleted(download))
-//        }
-//
-//        override fun onError(download: Download, error: Error, throwable: Throwable?) {
-//            super.onError(download, error, throwable)
-//            trySend(DownloadError(download, error, throwable))
-//        }
-//
-//        override fun onPaused(download: Download) {
-//            super.onPaused(download)
-//            trySend(DownloadPaused(download))
-//        }
-//
-//        override fun onProgress(download: Download, etaInMilliSeconds: Long, downloadedBytesPerSecond: Long) {
-//            super.onProgress(download, etaInMilliSeconds, downloadedBytesPerSecond)
-//            trySend(DownloadProgress(download, etaInMilliSeconds, downloadedBytesPerSecond))
-//        }
-//
-//        override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
-//            super.onQueued(download, waitingOnNetwork)
-//            trySend(DownloadQueued(download, waitingOnNetwork))
-//        }
-//
-//        override fun onRemoved(download: Download) {
-//            super.onRemoved(download)
-//            trySend(DownloadRemoved(download))
-//        }
-//
-//        override fun onResumed(download: Download) {
-//            super.onResumed(download)
-//            trySend(DownloadResumed(download))
-//        }
-//    }
-//    fetch.addListener(fetchListener)
-//    awaitClose {
-//        fetch.removeListener(fetchListener)
-//    }
-// }
+ sealed class Downloadable(
+    val download: Download
+ )
+
+ object DownloadUninitialized : Downloadable(DownloadInfo())
+
+ class DownloadCompleted(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadAdded(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadResumed(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadPaused(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadCanceled(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadRemoved(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadDeleted(
+    download: Download
+ ) : Downloadable(download)
+
+ class DownloadQueued(
+    download: Download,
+    val waitingOnNetwork: Boolean
+ ) : Downloadable(download)
+
+ class DownloadError(
+    download: Download,
+    val error: Error,
+    val throwable: Throwable?
+ ) : Downloadable(download)
+
+ class DownloadProgress(
+    download: Download,
+    val etaInMilliSeconds: Long,
+    val downloadedBytesPerSecond: Long
+ ) : Downloadable(download)
+
+ fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
+    val fetchListener = object : AbstractFetchListener() {
+        override fun onAdded(download: Download) {
+            super.onAdded(download)
+            trySend(DownloadAdded(download))
+        }
+
+        override fun onCancelled(download: Download) {
+            super.onCancelled(download)
+            trySend(DownloadCanceled(download))
+        }
+
+        override fun onCompleted(download: Download) {
+            super.onCompleted(download)
+            trySend(DownloadCompleted(download))
+        }
+
+        override fun onDeleted(download: Download) {
+            super.onDeleted(download)
+            trySend(DownloadDeleted(download))
+        }
+
+        override fun onPaused(download: Download) {
+            super.onPaused(download)
+            trySend(DownloadPaused(download))
+        }
+
+        override fun onProgress(download: Download, etaInMilliSeconds: Long, downloadedBytesPerSecond: Long) {
+            super.onProgress(download, etaInMilliSeconds, downloadedBytesPerSecond)
+            trySend(DownloadProgress(download, etaInMilliSeconds, downloadedBytesPerSecond))
+        }
+
+        override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
+            super.onQueued(download, waitingOnNetwork)
+            trySend(DownloadQueued(download, waitingOnNetwork))
+        }
+
+        override fun onRemoved(download: Download) {
+            super.onRemoved(download)
+            trySend(DownloadRemoved(download))
+        }
+
+        override fun onResumed(download: Download) {
+            super.onResumed(download)
+            trySend(DownloadResumed(download))
+        }
+    }
+    fetch.addListener(fetchListener)
+    awaitClose {
+        fetch.removeListener(fetchListener)
+    }
+ }

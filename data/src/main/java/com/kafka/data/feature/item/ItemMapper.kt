@@ -8,21 +8,21 @@ import javax.inject.Inject
 
 class ItemMapper @Inject constructor() {
      fun map(from: SearchResponse): List<Item> {
-        return from.response.docs.mapIndexed { index, doc -> doc.toItem(index) }
+        return from.response.docs.map { doc -> doc.toItem() }
     }
 
-    private fun Doc.toItem(index: Int) = Item(
+    private fun Doc.toItem() = Item(
         itemId = this.identifier,
         language = this.language,
-        title = this.title.dismissUpperCase(),
+        title = this.title.first().dismissUpperCase(),
         description = this.description?.get(0)?.trim(),
-        creator = this.creator?.get(0)?.let { Creator(it, it) },
+        creator = this.creator?.get(0)?.sanitizeForRoom()?.let { Creator(it, it) },
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",
-        coverImageResource = 0,
         collection = this.collection,
         genre = this.subject,
-        position = this.downloads
+        position = this.downloads,
+        subject = subject?.joinToString(",")
     )
 }
 
@@ -31,5 +31,7 @@ fun String.dismissUpperCase() = if (this.isUpperCase()) {
 } else {
     this
 }
+
+fun String.sanitizeForRoom() = this.replace("'", "")
 
 fun String.isUpperCase() = toCharArray().all { it.isUpperCase() }

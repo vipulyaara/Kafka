@@ -17,7 +17,6 @@ class UpdateItems @Inject constructor(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            debug { "Query updating $params" }
             itemRepository.updateQuery(buildRemoteQuery(params.archiveQuery))
             debug { "Query updated $params" }
         }

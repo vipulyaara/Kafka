@@ -13,30 +13,31 @@ include ':analytics'
 include ':app'
 include ':base-domain'
 include ':base-network'
-include ':common:ui-common'
-include ':common:ui-common-theme'
-include ':common:ui-components'
-//include ':core-downloader'
+include ':ui-common'
+include ':ui-components'
+include ':core-downloader'
+include ':core-ui-downloader'
 include ':data'
 include ':database'
 include ':data-models'
 include ':domain'
 include ':navigation'
 include ':notifications'
-include ':ui-favorites'
+include ':ui-auth'
+include ':ui-common-theme'
+include ':ui-library'
 include ':ui-homepage'
-include ':ui-search'
 include ':ui-item'
 include ':ui-reader'
-include ':ui-artist'
+include ':ui-search'
+include ':ui-text-reader'
 include ':webview'
 
-include ':playback-core'
-include ':playback-ui'
-project(':playback-core').projectDir = new File(settingsDir, '../Sarahang/playback-core')
-project(':playback-ui').projectDir = new File(settingsDir, '../Sarahang/playback-ui')
+include ':core-playback'
+include ':ui-playback'
+project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
+project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
 
 enableFeaturePreview("VERSION_CATALOGS")
 
 includeBuild("gradlePlugins")
-include ':ui-text-reader'

@@ -9,12 +9,15 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.user.config.FirebaseInitializer
-import com.kafka.user.config.LoggerInitializer
-import com.kafka.user.config.ThreeTenBpInitializer
+import com.kafka.textreader.DownloadInitializer
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
+import com.kafka.user.initializer.FirebaseInitializer
+import com.kafka.user.initializer.LoggerInitializer
+import com.kafka.user.initializer.ThreeTenBpInitializer
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -24,10 +27,9 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.kafka.analytics.Analytics
 import org.kafka.analytics.CrashLogger
 import org.kafka.analytics.FirebaseCrashLogger
-import org.kafka.analytics.FirebaseLogger
-import org.kafka.analytics.Logger
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.DynamicDeepLinkHandler
@@ -73,10 +75,18 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideNotificationManagerImpl(application: Application) = NotificationManagerImpl(
+    fun provideNotificationManager(application: Application) = NotificationManagerImpl(
         application,
         NotificationManagerCompat.from(application.applicationContext)
     )
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideFirestore() = FirebaseFirestore.getInstance()
 }
 
 @InstallIn(SingletonComponent::class)
@@ -84,7 +94,7 @@ class AppModule {
 abstract class AppModuleBinds {
 
     @Binds
-    abstract fun bindLogger(firebaseLogger: FirebaseLogger): Logger
+    abstract fun bindLogger(firebaseLogger: org.kafka.analytics.FirebaseAnalytics): Analytics
 
     @Binds
     abstract fun bindCrashLogger(firebaseCrashLogger: FirebaseCrashLogger): CrashLogger
@@ -96,6 +106,10 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideLoggerInitializer(bind: LoggerInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideDownloadInitializer(bind: DownloadInitializer): AppInitializer
 
     @Binds
     @IntoSet

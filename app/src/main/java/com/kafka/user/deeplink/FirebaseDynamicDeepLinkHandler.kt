@@ -1,40 +1,50 @@
 package com.kafka.user.deeplink
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import dagger.Reusable
 import org.kafka.analytics.CrashLogger
+import org.kafka.base.debug
+import org.kafka.base.errorLog
 import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
 @Reusable
 class FirebaseDynamicDeepLinkHandler @Inject constructor(
-    private val crashLogger: CrashLogger
+    private val crashLogger: CrashLogger,
+    private val navigator: Navigator
 ) : DynamicDeepLinkHandler {
 
-    override suspend fun handleDeepLink(intent: Intent) {
-//        FirebaseDynamicLinks.getInstance()
-//            .getDynamicLink(intent)
-//            .await {
-//                crashLogger.logNonFatal(it)
-//            }?.let {
-//
-//            }
+    override fun handleDeepLink(activity: Activity, intent: Intent) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(activity) { pendingDynamicLinkData: PendingDynamicLinkData? ->
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+                debug { "deepLink: $deepLink" }
+            }
+            .addOnFailureListener(activity) { e -> errorLog(e) }
     }
 
-    override fun createDeepLinkUri(): Uri {
+    override fun createDeepLinkUri(link: String): Uri {
         val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = Uri.parse("https://www.example.com/")
-            domainUriPrefix = "https://example.page.link"
+            this.link = Uri.parse(link)
+            domainUriPrefix = "https://kafka.page.link"
             // Open links with this app on Android
-            androidParameters { }
+            androidParameters {
+                fallbackUrl = Uri.parse("https://www.archive.org")
+            }
         }
-
         return dynamicLink.uri
     }
-
 }

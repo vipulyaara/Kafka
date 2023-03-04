@@ -6,8 +6,3 @@ import javax.inject.Qualifier
 @Qualifier
 @MustBeDocumented
 annotation class ProcessLifetime
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-@MustBeDocumented
-annotation class ImageLoading

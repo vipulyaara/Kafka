@@ -8,16 +8,16 @@ import android.content.Context
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchNotificationManager
-import com.tonyodev.fetch2core.Downloader as FetchDownloader
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
+import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -32,7 +32,6 @@ class DownloaderModule {
         @ApplicationContext context: Context
     ): FetchNotificationManager = DownloaderNotificationManager(context)
 
-    // TODO: when are we going to close the fetch created in here? on App.onDestroy?
     @Provides
     @Singleton
     fun provideFetch(
@@ -52,4 +51,6 @@ class DownloaderModule {
         Fetch.Impl.setDefaultInstanceConfiguration(fetcherConfig)
         return Fetch.Impl.getInstance(fetcherConfig)
     }
+
+
 }

@@ -13,7 +13,8 @@ data class Doc(
     @Serializable(with = StringListSerializer::class)
     val creator: List<String>? = null,
     @SerialName("date")
-    val date: String? = null,
+    @Serializable(with = StringListSerializer::class)
+    val date: List<String>? = null,
     @SerialName("description")
     @Serializable(with = StringListSerializer::class)
     val description: List<String>? = null,
@@ -36,9 +37,10 @@ data class Doc(
     @Serializable(with = StringListSerializer::class)
     val subject: List<String>? = null,
     @SerialName("title")
-    val title: String,
+    @Serializable(with = StringListSerializer::class)
+    val title: List<String>,
     @SerialName("week")
     val week: Int? = 0,
     @SerialName("year")
-    val year: String? = null
+    val year: String? = null,
 )

@@ -1,9 +1,16 @@
 package org.kafka.homepage.ui
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,16 +24,20 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,32 +46,41 @@ import coil.compose.AsyncImage
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemWithRecentItem
 import org.kafka.common.ImmutableList
-import org.kafka.common.shadowMaterial
+import org.kafka.common.image.Icons
+import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.textPrimary
-import ui.common.theme.theme.textSecondary
 
 @Composable
 internal fun ContinueReading(
     readingList: ImmutableList<ItemWithRecentItem>,
     modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
+    removeRecentItem: (String) -> Unit
 ) {
-    val removeFromRecent by rememberSaveable { mutableStateOf(false) }
+    var isInEditMode by remember { mutableStateOf(false) }
 
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
                 text = stringResource(id = R.string.continue_reading),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.textSecondary,
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
-            LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
-                items(readingList.items, key = { it.item.itemId }) {
-                    ContinueReadingItem(it.item) { openItemDetail(it.item.itemId) }
+            LazyRow(
+                contentPadding = PaddingValues(end = 60.dp)
+            ) {
+                items(readingList.items, key = { it.item.itemId }) { continueReading ->
+                    ContinueReadingItem(
+                        continueReading = continueReading.item,
+                        onItemClicked = { openItemDetail(continueReading.item.itemId) },
+                        onItemRemoved = { removeRecentItem(it) },
+                        isInEditMode = isInEditMode,
+                        changeEditMode = { isInEditMode = it }
+                    )
                 }
             }
         }
@@ -70,31 +90,96 @@ internal fun ContinueReading(
 }
 
 @Composable
-private fun ContinueReadingItem(continueReading: Item, onItemClicked: () -> Unit) {
-    Column(modifier = Modifier
-        .padding(Dimens.Spacing12)
-        .clickable { onItemClicked() }
-        .widthIn(100.dp, 286.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(Dimens.Spacing12),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
+private fun ContinueReadingItem(
+    continueReading: Item,
+    modifier: Modifier = Modifier,
+    isInEditMode: Boolean = false,
+    changeEditMode: (Boolean) -> Unit = {},
+    onItemRemoved: (String) -> Unit,
+    onItemClicked: () -> Unit
+) {
+
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .padding(Dimens.Spacing12)
+                .widthIn(100.dp, 286.dp)
         ) {
-            CoverImage(continueReading)
-            Description(continueReading, Modifier.width(286.dp))
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(Dimens.Spacing08))
+                    .combinedClickable(
+                        onLongClick = { changeEditMode(!isInEditMode) },
+                        onClick = {
+                            changeEditMode(false)
+                            onItemClicked()
+                        }
+                    )
+                    .padding(Dimens.Spacing12),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
+            ) {
+                CoverImage(continueReading)
+                Description(continueReading, Modifier.width(286.dp))
+            }
+
+            Spacer(modifier = Modifier.height(Dimens.Spacing12))
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.Spacing12)
+                    .padding(horizontal = 4.dp)
+                    .shadowMaterial(Dimens.Spacing12, clip = false)
+                    .clip(RoundedCornerShape(Dimens.Spacing04))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+            )
         }
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
+        RemoveRecentItemButton(isInEditMode, onItemRemoved, continueReading)
+    }
+}
 
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.Spacing12)
-                .padding(horizontal = 4.dp)
-                .shadowMaterial(Dimens.Spacing12, clip = false)
-                .clip(RoundedCornerShape(Dimens.Spacing02))
-                .background(MaterialTheme.colorScheme.onPrimary)
+@Composable
+private fun BoxScope.RemoveRecentItemButton(
+    isInEditMode: Boolean,
+    onItemRemoved: (String) -> Unit,
+    continueReading: Item
+) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = .85f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
         )
+    )
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = -20f,
+        targetValue = 20f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    if (isInEditMode) {
+        IconButton(
+            modifier = Modifier
+                .size(Dimens.Spacing44)
+                .align(Alignment.TopEnd)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    rotationZ = rotation
+                },
+            onClick = { onItemRemoved(continueReading.itemId) }) {
+            Icon(
+                imageVector = Icons.XCircle,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -107,7 +192,7 @@ private fun CoverImage(item: Item) {
         )
     ) {
         AsyncImage(
-            model = item.run { coverImage ?: coverImageResource },
+            model = item.coverImage,
             contentDescription = stringResource(id = R.string.cd_cover_image),
             modifier = Modifier
                 .size(64.dp, 76.dp)
@@ -129,13 +214,19 @@ private fun Description(continueReading: Item, modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
+            text = continueReading.creator?.name.orEmpty(),
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(Dimens.Spacing02))
+        Text(
             text = continueReading.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.tertiary
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing08))
-
-        Progress()
     }
 }
 
@@ -155,7 +246,7 @@ private fun Progress() {
         Text(
             text = "20%",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.textSecondary
+            color = MaterialTheme.colorScheme.secondary
         )
     }
 }

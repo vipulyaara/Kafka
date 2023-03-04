@@ -3,6 +3,7 @@ package org.kafka.domain.interactors
 import com.kafka.data.db.devnagri
 import com.kafka.data.db.englishPoetry
 import com.kafka.data.db.englishProse
+import com.kafka.data.db.kafkaArchives
 import com.kafka.data.db.urduPoetry
 import com.kafka.data.db.urduProse
 import com.kafka.data.model.ArchiveQuery
@@ -23,8 +24,14 @@ class GetHomepageTags @Inject constructor() {
             HomepageTag("Urdu Prose", urduProse.toQuery(), false),
             HomepageTag(
                 "Suggested",
-                listOf(urduPoetry, englishProse, englishPoetry, urduProse, devnagri).joinToString()
-                    .toQuery(),
+                listOf(
+                    kafkaArchives,
+                    englishPoetry.split(" ,").sublistSuggested(),
+                    urduPoetry.split(" ,").sublistSuggested(),
+                    devnagri.split(" ,").sublistSuggested(),
+                    englishProse.split(" ,").sublistSuggested(),
+                    urduProse.split(" ,").sublistSuggested()
+                ).joinToString().toQuery(),
                 true
             )
         )
@@ -56,3 +63,8 @@ fun SearchQuery.asArchiveQuery() = ArchiveQuery().apply {
 data class HomepageTag(
     val title: String, val searchQuery: SearchQuery, var isSelected: Boolean = false
 )
+
+private const val suggestedItemsSize = 40
+
+private fun <E> List<E>.sublistSuggested() =
+    subList(0, size.coerceAtMost(suggestedItemsSize)).joinToString()

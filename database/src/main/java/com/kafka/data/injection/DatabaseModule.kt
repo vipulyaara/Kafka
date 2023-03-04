@@ -69,7 +69,7 @@ class DatabaseDaoModule {
     fun provideFileDao(db: KafkaRoomDatabase) = db.fileDao()
 
     @Provides
-    fun provideContentDao(db: KafkaRoomDatabase) = db.languageDao()
+    fun provideTextFileDao(db: KafkaRoomDatabase) = db.textFileDao()
 
     @Provides
     fun provideContentEntryDao(db: KafkaRoomDatabase) = db.searchDao()
@@ -81,5 +81,11 @@ class DatabaseDaoModule {
     fun provideFollowedItemDao(db: KafkaRoomDatabase) = db.followedItemDao()
 
     @Provides
-    fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.searchConfigurationDao()
+    fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.recentSearchDao()
+
+    @Provides
+    fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
+
+    @Provides
+    fun provideAuthDao(db: KafkaRoomDatabase) = db.authDao()
 }

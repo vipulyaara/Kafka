@@ -8,27 +8,25 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
-import org.kafka.common.LogCompositions
+import com.kafka.data.entities.Item
 import org.kafka.common.asImmutable
-import org.kafka.common.extensions.AnimatedVisibility
+import org.kafka.common.extensions.AnimatedVisibilityFade
+import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
-import org.kafka.common.widgets.RekhtaSnackbarHost
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
-import org.kafka.ui.components.item.Item
-import org.kafka.navigation.LeafScreen
-import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.RootScreen
+import org.kafka.homepage.ui.FeaturedItems
+import org.kafka.item.preloadImages
 import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.material.TopBar
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -38,68 +36,88 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     LogCompositions(tag = "Homepage Feed items")
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarState = SnackbarHostState()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewState.homepage?.queryItems) {
+        preloadImages(context, viewState.homepage?.queryItems)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar() },
-        snackbarHost = { RekhtaSnackbarHost(hostState = snackbarState) },
+        topBar = { HomeTopBar(viewState.user, viewModel::openLogin, viewModel::openProfile) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            Homepage(viewState)
-        }
-    }
-}
-
-@Composable
-private fun Homepage(viewState: HomepageViewState) {
-    val lazyListState = rememberLazyListState()
-    val navigator = LocalNavigator.current
-
-    Box(Modifier.fillMaxSize()) {
-        AnimatedVisibility(viewState.hasQueryItems) {
-            HomepageFeedItems(
-                homepage = viewState.homepage!!,
-                lazyListState = lazyListState,
-                openItemDetail = {
-                    navigator.navigate(LeafScreen.ItemDetail.buildRoute(it, RootScreen.Home))
+            Box {
+                AnimatedVisibilityFade(viewState.homepage != null) {
+                    HomepageFeedItems(
+                        homepage = viewState.homepage,
+                        isLoading = viewState.isLoading,
+                        openItemDetail = viewModel::openItemDetail,
+                        openRecentItemDetail = viewModel::openRecentItemDetail,
+                        removeRecentItem = viewModel::removeRecentItem
+                    )
                 }
-            )
+                FullScreenMessage(
+                    uiMessage = viewState.message,
+                    show = viewState.isFullScreenError,
+                    onRetry = viewModel::retry
+                )
+            }
         }
-        InfiniteProgressBar(
-            show = viewState.isFullScreenLoading,
-            modifier = Modifier.align(Alignment.Center)
-        )
-        FullScreenMessage(viewState.message, viewState.isFullScreenError)
     }
 }
 
 @Composable
 private fun HomepageFeedItems(
-    homepage: Homepage,
+    homepage: Homepage?,
+    isLoading: Boolean,
+    openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
-    lazyListState: LazyListState
+    removeRecentItem: (String) -> Unit,
+    lazyListState: LazyListState = rememberLazyListState()
 ) {
-    LazyColumn(
-        state = lazyListState,
-        contentPadding = scaffoldPadding(),
-        modifier = Modifier.fillMaxSize()
-    ) {
+    LazyColumn(state = lazyListState, contentPadding = scaffoldPadding()) {
         item { Carousels() }
 
         item {
             ContinueReading(
-                readingList = homepage.continueReadingItems.asImmutable(),
+                readingList = homepage?.continueReadingItems.orEmpty().asImmutable(),
                 modifier = Modifier.padding(vertical = Dimens.Spacing20),
-                openItemDetail = openItemDetail
+                openItemDetail = openRecentItemDetail,
+                removeRecentItem = removeRecentItem
             )
         }
 
         itemsIndexed(
-            items = homepage.queryItems,
+            items = homepage?.queryItems.orEmpty(),
             key = { _, item -> item.itemId }
-        ) { _, item ->
-            Item(item = item, openItemDetail = openItemDetail)
+        ) { index, item ->
+            Item(
+                item = item,
+                modifier = Modifier,
+                openItemDetail = openItemDetail
+            )
+            homepage?.followedItems?.let { FeaturedItems(index, it, openItemDetail) }
+        }
+
+        item {
+            InfiniteProgressBar(show = isLoading)
         }
     }
 }
+
+@Composable
+private fun FeaturedItems(
+    index: Int,
+    items: List<Item>,
+    openItemDetail: (String) -> Unit
+) {
+    if (index == FavoriteRowIndex) {
+        FeaturedItems(
+            items = items.asImmutable(),
+            openItemDetail = openItemDetail
+        )
+    }
+}
+
+private const val FavoriteRowIndex = 15

@@ -4,6 +4,8 @@
 -allowaccessmodification
 -repackageclasses
 
+-keepnames class **
+
 # Note that you cannot just include these flags in your own
 # configuration file; if you are including this file, optimization
 # will be turned off. You'll need to either edit this file, or
@@ -82,6 +84,12 @@
 
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
+
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp3.** {
 *;
@@ -106,3 +114,5 @@
 }
 
 -keepattributes SourceFile,LineNumberTable
+
+-keep class app.rive.runtime.** { *; }

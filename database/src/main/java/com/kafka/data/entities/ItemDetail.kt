@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(indices = [Index(value = ["itemId"], unique = true)])
 data class ItemDetail(
-    @PrimaryKey val itemId: String = "",
+    @PrimaryKey val itemId: String,
     val language: String? = null,
     val title: String? = null,
     val description: String? = null,
@@ -17,9 +17,10 @@ data class ItemDetail(
     val collection: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
-    val coverImageResource: Int = 0,
     val files: List<String>? = null,
-    val metadata: List<String>? = null
+    val metadata: List<String>? = null,
+    val primaryTextFile: String? = null,
+    val subject: List<String>? = null,
 ) : BaseEntity
 
 fun ItemDetail?.webUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

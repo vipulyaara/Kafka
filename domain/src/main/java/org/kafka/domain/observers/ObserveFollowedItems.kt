@@ -19,7 +19,7 @@ class ObserveFollowedItems @Inject constructor(
     override fun createObservable(params: Unit): Flow<List<Item>> {
         return followedItemDao.observeFollowedItems()
             .map { followedItems ->
-                followedItems.map { itemDao.getItemByItemId(it.itemId) }
+                followedItems.map { itemDao.get(it.itemId) }
                     .distinctBy { it.itemId }
                     .reversed()
             }.flowOn(dispatchers.io)

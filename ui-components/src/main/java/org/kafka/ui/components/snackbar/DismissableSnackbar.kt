@@ -1,0 +1,74 @@
+/*
+ * Copyright (C) 2021, Alashov Berkeli
+ * All rights reserved.
+ */
+package org.kafka.ui.components.snackbar
+
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.rememberDismissState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
+@Composable
+fun DismissableSnackbarHost(hostState: SnackbarHostState, modifier: Modifier = Modifier) {
+    SnackbarHost(
+        hostState = hostState,
+        snackbar = {
+            SwipeDismissSnackbar(
+                data = it,
+                onDismiss = { it.dismiss() }
+            )
+        },
+        modifier = modifier
+    )
+}
+
+/**
+ * Wrapper around [Snackbar] to make it swipe-dismissable, using [SwipeToDismiss].
+ */
+@Composable
+fun SwipeDismissSnackbar(
+    data: SnackbarData,
+    onDismiss: () -> Unit = {},
+    snackbar: @Composable (SnackbarData) -> Unit = {
+        Snackbar(
+            snackbarData = it,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+) {
+    Dismissable(onDismiss = onDismiss) {
+        snackbar(data)
+    }
+}
+
+@Composable
+fun Dismissable(
+    onDismiss: () -> Unit,
+    directions: Set<DismissDirection> = setOf(
+        DismissDirection.StartToEnd,
+        DismissDirection.EndToStart
+    ),
+    content: @Composable () -> Unit
+) {
+    val dismissState = rememberDismissState(confirmValueChange = {
+        if (it != DismissValue.Default) {
+            onDismiss.invoke()
+        }
+        true
+    })
+    SwipeToDismiss(
+        state = dismissState,
+        directions = directions,
+        background = {},
+        dismissContent = { content() }
+    )
+}

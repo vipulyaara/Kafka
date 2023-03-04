@@ -27,9 +27,9 @@ android {
 dependencies {
     implementation project(':base-domain')
     implementation project(':data')
-    api project(':common:ui-common-theme')
-    api project(':common:ui-common')
-    api project(':common:ui-components')
+    api project(':ui-common-theme')
+    api project(':ui-common')
+    api project(':ui-components')
 
     api libs.androidx.core
     api libs.androidx.lifecycle.runtime
@@ -45,11 +45,11 @@ dependencies {
     api libs.compose.ui.tooling
     api libs.compose.ui.ui
     api libs.compose.ui.util
-    api libs.compose.livedata
+//    api libs.compose.livedata
     api libs.compose.material.material3
 
     androidTestApi libs.compose.ui.test
-    debugApi libs.compose.ui.test.manifest
+//    debugApi libs.compose.ui.test.manifest
 
     api libs.androidx.paging.compose
 

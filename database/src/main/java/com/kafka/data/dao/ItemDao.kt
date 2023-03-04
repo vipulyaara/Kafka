@@ -22,7 +22,13 @@ abstract class ItemDao : EntityDao<Item> {
     abstract fun observeQueryItems(buildLocalQuery: SimpleSQLiteQuery): Flow<List<Item>>
 
     @Query("select * from item where itemId = :itemId")
-    abstract suspend fun getItemByItemId(itemId: String): Item
+    abstract suspend fun get(itemId: String): Item
+
+    @Query("select * from item where itemId IN (:itemIds)")
+    abstract suspend fun get(itemIds: List<String>): List<Item>
+
+    @Query("select * from item where itemId IN (:itemIds)")
+    abstract fun observe(itemIds: List<String>): Flow<List<Item>>
 
     @Query("delete from item")
     abstract suspend fun deleteAll()

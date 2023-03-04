@@ -4,17 +4,21 @@
  */
 package tm.alashow.datmusic.downloader.interactors
 
-import android.telephony.mbms.DownloadRequest
-import javax.inject.Inject
+import com.kafka.data.dao.DownloadRequestsDao
+import com.kafka.data.dao.FileDao
+import com.kafka.data.entities.DownloadRequest
 import kotlinx.coroutines.flow.Flow
-import tm.alashow.data.SubjectInteractor
-import tm.alashow.datmusic.data.db.daos.AudiosFtsDao
-import tm.alashow.datmusic.domain.entities.DownloadRequest
+import kotlinx.coroutines.flow.map
+import org.kafka.base.domain.SubjectInteractor
+import javax.inject.Inject
 
 class SearchDownloads @Inject constructor(
-    private val audiosFtsDao: AudiosFtsDao,
+    private val downloadRequestsDao: DownloadRequestsDao,
+    private val fileDao: FileDao,
 ) : SubjectInteractor<String, List<DownloadRequest>>() {
     override fun createObservable(params: String): Flow<List<DownloadRequest>> {
-        return audiosFtsDao.searchDownloads("*$params*")
+        return fileDao.entriesByTitle(params).map { files ->
+            downloadRequestsDao.getByIds(files.map { it.fileId })
+        }
     }
 }

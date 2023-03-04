@@ -18,15 +18,16 @@ android {
     compileSdk Publishing.compileSdk
 
     defaultConfig {
-        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
-        multiDexEnabled true
         applicationId Publishing.applicationId
         minSdkVersion Publishing.minSdk
         targetSdkVersion Publishing.targetSdk
         versionCode Publishing.versionCode
         versionName Publishing.publishVersion
 
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
     }
 
     compileOptions {
@@ -47,7 +48,7 @@ android {
             excludes += ['META-INF/proguard/*']
         }
         resources {
-            excludes += ['META-INF/*.version', 'META-INF/proguard/*', '/*.properties', 'fabric/*.properties', 'META-INF/*.properties']
+            excludes += ['META-INF/proguard/*', '/*.properties', 'fabric/*.properties', 'META-INF/*.properties']
         }
     }
 
@@ -82,10 +83,13 @@ android {
 }
 
 dependencies {
-    implementation project(':common:ui-common')
-    implementation project(':common:ui-common-theme')
-    implementation project(':common:ui-components')
+    implementation project(':ui-common')
+    implementation project(':ui-common-theme')
+    implementation project(':ui-components')
     implementation project(':base-domain')
+    implementation project(':core-downloader')
+    implementation project(':core-playback')
+    implementation project(':core-ui-downloader')
     implementation project(':data')
     implementation project(':navigation')
     implementation project(':analytics')
@@ -96,22 +100,22 @@ dependencies {
     implementation project(':ui-search')
     implementation project(':ui-item')
     implementation project(':ui-reader')
-    implementation project(':ui-favorites')
-    implementation project(':ui-artist')
+    implementation project(':ui-text-reader')
+    implementation project(':ui-library')
+    implementation project(':ui-auth')
+    implementation project(':ui-playback')
     implementation project(':webview')
-    implementation project(':playback-core')
-    implementation project(':playback-ui')
-
-    implementation "androidx.metrics:metrics-performance:1.0.0-alpha03"
 
     implementation platform(libs.google.bom)
 
-    implementation "com.google.firebase:firebase-crashlytics-ktx"
-    implementation "com.google.firebase:firebase-analytics-ktx"
-    implementation "com.google.firebase:firebase-dynamic-links-ktx"
+    implementation libs.google.analytics
+    implementation libs.google.auth
+    implementation libs.google.firestore
+    implementation libs.google.crashlytics
+    implementation libs.google.dynamic.links
 
-//    implementation libs.pdftron.standard
-//    implementation libs.pdftron.tools
+    implementation libs.google.crashlytics
+    implementation libs.google.analytics
 
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.viewmodel.compose
@@ -124,11 +128,9 @@ dependencies {
     implementation libs.compose.ui.tooling
     implementation libs.compose.ui.ui
     implementation libs.compose.ui.util
-    implementation libs.compose.livedata
 
     implementation libs.coil.coil
 
-    implementation libs.pdfkit
     implementation libs.androidx.appcompat
 
     implementation libs.androidx.activity.compose
@@ -165,6 +167,9 @@ dependencies {
 
     implementation libs.icons.feather
     implementation libs.icons.tabler
+
+    implementation libs.rive
+    implementation libs.startup
 }
 
 android.applicationVariants.all { variant ->

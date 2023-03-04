@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloader.enqueue.downloadsLocationNotSelected" translatable="false">Downloads location not selected yet</string>
+</resources>

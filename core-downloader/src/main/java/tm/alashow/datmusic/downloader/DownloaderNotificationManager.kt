@@ -24,12 +24,16 @@ import com.tonyodev.fetch2.EXTRA_NOTIFICATION_GROUP_ID
 import com.tonyodev.fetch2.EXTRA_NOTIFICATION_ID
 import com.tonyodev.fetch2.Fetch
 
-class DownloaderNotificationManager(val context: Context) : DefaultFetchNotificationManager(context) {
+class DownloaderNotificationManager(private val context: Context) :
+    DefaultFetchNotificationManager(context) {
     override fun getFetchInstanceForNamespace(namespace: String): Fetch {
         return Fetch.getDefaultInstance()
     }
 
-    override fun getActionPendingIntent(downloadNotification: DownloadNotification, actionType: DownloadNotification.ActionType): PendingIntent {
+    override fun getActionPendingIntent(
+        downloadNotification: DownloadNotification,
+        actionType: DownloadNotification.ActionType
+    ): PendingIntent {
         val intent = Intent(notificationManagerAction)
         intent.putExtra(EXTRA_NAMESPACE, downloadNotification.namespace)
         intent.putExtra(EXTRA_DOWNLOAD_ID, downloadNotification.notificationId)

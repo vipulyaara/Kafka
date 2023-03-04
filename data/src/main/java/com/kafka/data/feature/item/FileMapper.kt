@@ -1,7 +1,6 @@
 package com.kafka.data.feature.item
 
-import com.kafka.data.entities.isMp3
-import com.kafka.data.entities.isPdf
+import com.kafka.data.entities.isAudio
 import com.kafka.data.entities.isText
 import com.kafka.data.model.item.File
 import java.net.URL
@@ -16,18 +15,21 @@ class FileMapper @Inject constructor() {
         prefix: String,
         localUri: String?
     ) = file.run {
+        val extension = name.split(".").last()
         com.kafka.data.entities.File(
-            fileId = name,
+            fileId = fileId,
             itemId = itemId,
             itemTitle = itemTitle,
             size = size?.toLongOrNull(),
-            title = title?.dismissUpperCase() ?: "---",
-            extension = name.split(".").last(),
+            name = name,
+            title = title ?: name.removeSuffix(".$extension"),
+            extension = extension,
             creator = creator,
             time = length,
-            format = format,
-            playbackUrl = if (format.isMp3()) URL("$prefix/$name").toString() else null,
-            readerUrl = if (format.isPdf() || format.isText()) URL("$prefix/$name").toString() else null,
+            format = format.orEmpty(),
+            playbackUrl = if (extension.isAudio()) URL("$prefix/$name").toString() else null,
+            readerUrl = if (extension.isText()) URL("$prefix/$name").toString() else null,
+            downloadUrl = URL("$prefix/$name").toString(),
             coverImage = coverImage,
             localUri = localUri
         )

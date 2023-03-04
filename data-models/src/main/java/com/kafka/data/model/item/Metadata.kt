@@ -19,6 +19,9 @@ data class Metadata(
     @SerialName("description")
     @Serializable(with = StringListSerializer::class)
     val description: List<String>? = null,
+    @SerialName("subject")
+    @Serializable(with = StringListSerializer::class)
+    val subject: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,
     @SerialName("licenseurl")

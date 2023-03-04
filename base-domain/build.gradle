@@ -23,7 +23,7 @@ android {
 dependencies {
     api libs.kotlin.stdlib
 
-    api "androidx.appcompat:appcompat-resources:1.4.0"
+    api "androidx.appcompat:appcompat-resources:1.6.0"
 
     api libs.kotlin.coroutines.core
 
@@ -37,4 +37,5 @@ dependencies {
     api libs.store
 
     implementation libs.androidx.paging.common
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1'
 }

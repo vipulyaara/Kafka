@@ -1,9 +1,15 @@
 package org.kafka.navigation
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 
 interface DynamicDeepLinkHandler {
-    suspend fun handleDeepLink(intent: Intent)
-    fun createDeepLinkUri(): Uri
+    fun handleDeepLink(activity: Activity, intent: Intent)
+    fun createDeepLinkUri(link: String): Uri
+
+    companion object {
+        fun itemDetailLink(itemId: String) =
+            Uri.parse("https://www.archive.org/details/?id=${itemId}")
+    }
 }
