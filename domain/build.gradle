@@ -24,8 +24,8 @@ android {
 
 dependencies {
     implementation project(':base-domain')
-    implementation project(':analytics')
-    implementation project(':core-downloader')
+    implementation project(':core:analytics')
+    implementation project(':core:downloader')
     api project(':data')
 
     implementation libs.fetch

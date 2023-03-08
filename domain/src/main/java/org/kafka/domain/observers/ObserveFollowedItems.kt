@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
-import org.kafka.domain.interactors.UpdateFavoriteItems
+import org.kafka.domain.interactors.recent.UpdateFavoriteItems
 import javax.inject.Inject
 
 class ObserveFollowedItems @Inject constructor(

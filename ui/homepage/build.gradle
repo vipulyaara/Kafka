@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 kapt {
     correctErrorTypes = true
@@ -12,7 +13,6 @@ android {
 
     defaultConfig {
         minSdkVersion Publishing.minSdk
-        manifestPlaceholders += ['appAuthRedirectScheme': 'empty']
     }
 
     compileOptions {
@@ -27,25 +27,26 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
-    namespace 'org.kafka.navigation'
+
+    sourceSets {
+        main { java.srcDirs = ['src/main/java'] }
+        test { java.srcDirs = ['src/test/java'] }
+        androidTest { java.srcDirs = ['src/androidTest/java'] }
+    }
+    namespace 'org.kafka.homepage'
 }
 
 dependencies {
+    implementation project(':core:analytics')
     implementation project(':base-domain')
     implementation project(':data')
+    implementation project(':domain')
+    implementation project(':base-network')
+    implementation project(':navigation')
+    implementation project(':ui:library')
+    implementation project(':ui:item')
     implementation project(':ui:common')
-
-    implementation libs.androidx.navigation.compose
-    api libs.compose.runtime.runtime
-
-    api libs.androidx.core
-    api libs.androidx.lifecycle.runtime
-    api libs.androidx.lifecycle.livedata.ktx
-    api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.androidx.lifecycle.viewmodel.compose
-
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
+    implementation project(':ui:components')
 
     implementation libs.hilt.library
     kapt libs.hilt.compiler
