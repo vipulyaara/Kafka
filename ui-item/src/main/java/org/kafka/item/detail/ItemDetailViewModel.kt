@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.isAudio
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
 import com.sarahang.playback.core.PlaybackConnection
@@ -41,8 +40,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(
+    observeItemDetail: ObserveItemDetail,
     private val updateItemDetail: UpdateItemDetail,
-    private val observeItemDetail: ObserveItemDetail,
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
@@ -99,7 +98,7 @@ class ItemDetailViewModel @Inject constructor(
 
     fun onPrimaryAction(itemId: String) {
         val itemDetail = state.value.itemDetail
-        if (itemDetail.isAudio()) {
+        if (itemDetail!!.isAudio) {
             addRecentItem(itemId)
             playbackConnection.playAlbum(itemId)
         } else {

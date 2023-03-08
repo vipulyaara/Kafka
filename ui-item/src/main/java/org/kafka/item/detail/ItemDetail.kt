@@ -1,9 +1,5 @@
 package org.kafka.item.detail
 
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,40 +8,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -58,8 +42,9 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.Screen.ItemDescription
+import org.kafka.navigation.Screen.Search
 import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -78,14 +63,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         preloadImages(context, state.itemsByCreator)
     }
 
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
-
-    HandleBackPress(bottomSheetState, coroutineScope)
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -93,18 +70,12 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
                 lazyListState = lazyListState,
                 isShareVisible = state.itemDetail != null,
                 onShareClicked = { viewModel.shareItemText(context) },
-                onBackPressed = {
-                    if (bottomSheetState.isVisible) {
-                        coroutineScope.launch { bottomSheetState.hide() }
-                    } else {
-                        navigator.goBack()
-                    }
-                }
+                onBackPressed = { navigator.goBack() }
             )
         }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel, navigator, lazyListState, bottomSheetState)
+            ItemDetail(state, viewModel, navigator, lazyListState)
         }
     }
 }
@@ -114,8 +85,7 @@ private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
     navigator: Navigator,
-    lazyListState: LazyListState,
-    bottomSheetState: ModalBottomSheetState
+    lazyListState: LazyListState
 ) {
     Box(Modifier.fillMaxSize()) {
         InfiniteProgressBar(
@@ -127,82 +97,43 @@ private fun ItemDetail(
 
         AnimatedVisibilityFade(state.itemDetail != null) {
             val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-            ItemDetail(
-                itemDetail = state.itemDetail!!,
-                relatedItems = state.itemsByCreator,
-                isLoading = state.isLoading,
-                isFavorite = state.isFavorite,
-                toggleFavorite = { viewModel.updateFavorite() },
-                openItemDetail = { itemId ->
-                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
-                },
-                openFiles = { itemId ->
-                    viewModel.openFiles(itemId)
-                },
-                onPrimaryAction = { itemId ->
-                    viewModel.onPrimaryAction(itemId)
-                },
-                goToCreator = { creator ->
-                    navigator.navigate(Screen.Search.createRoute(RootScreen.Search, creator))
-                },
-                lazyListState = lazyListState,
-                bottomSheetState = bottomSheetState
-            )
-        }
-    }
-}
 
-@Composable
-private fun ItemDetail(
-    itemDetail: ItemDetail,
-    relatedItems: List<Item>?,
-    isLoading: Boolean,
-    isFavorite: Boolean,
-    toggleFavorite: () -> Unit,
-    openItemDetail: (String) -> Unit,
-    onPrimaryAction: (String) -> Unit,
-    openFiles: (String) -> Unit,
-    goToCreator: (String?) -> Unit,
-    lazyListState: LazyListState,
-    bottomSheetState: ModalBottomSheetState
-) {
-    val coroutineScope = rememberCoroutineScope()
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetContent = {
-            DescriptionDialog(itemDetail = itemDetail)
-        },
-        sheetShape = RoundedCornerShape(topStart = Dimens.Spacing24, topEnd = Dimens.Spacing24)
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-            contentPadding = scaffoldPadding()
-        ) {
-            item {
-                ItemDescription(
-                    itemDetail = itemDetail,
-                    showDescription = { coroutineScope.launch { bottomSheetState.show() } },
-                    goToCreator = goToCreator
-                )
-            }
-
-            item {
-                ItemDetailActions(
-                    itemDetail = itemDetail,
-                    onPrimaryAction = onPrimaryAction,
-                    openFiles = openFiles,
-                    isFavorite = isFavorite,
-                    toggleFavorite = toggleFavorite
-                )
-            }
-
-            relatedContent(relatedItems, openItemDetail)
-
-            if (isLoading) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState,
+                contentPadding = scaffoldPadding()
+            ) {
                 item {
-                    Delayed(modifier = Modifier.animateItemPlacement()) {
-                        InfiniteProgressBar()
+                    ItemDescription(
+                        itemDetail = state.itemDetail!!,
+                        showDescription = {
+                            navigator.navigate(ItemDescription.createRoute(currentRoot, it))
+                        },
+                        goToCreator = {
+                            navigator.navigate(Search.createRoute(RootScreen.Search, it))
+                        }
+                    )
+                }
+
+                item {
+                    ItemDetailActions(
+                        itemDetail = state.itemDetail!!,
+                        onPrimaryAction = viewModel::onPrimaryAction,
+                        openFiles = viewModel::openFiles,
+                        isFavorite = state.isFavorite,
+                        toggleFavorite = viewModel::updateFavorite
+                    )
+                }
+
+                relatedContent(state.itemsByCreator) {
+                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, it))
+                }
+
+                if (state.isLoading) {
+                    item {
+                        Delayed(modifier = Modifier.animateItemPlacement()) {
+                            InfiniteProgressBar()
+                        }
                     }
                 }
             }
@@ -213,21 +144,19 @@ private fun ItemDetail(
 @Composable
 private fun ItemDescription(
     itemDetail: ItemDetail,
-    showDescription: () -> Unit,
+    showDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit
 ) {
-    SelectionContainer {
+    SelectionContainer(Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = Dimens.Spacing24),
+            modifier = Modifier.padding(top = Dimens.Spacing24),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoadImage(
                 data = itemDetail.coverImage,
                 modifier = Modifier
-                    .size(196.dp, 248.dp)
-                    .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
+                    .size(216.dp, 248.dp)
+                    .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing08))
             )
 
             Spacer(Modifier.height(Dimens.Spacing24))
@@ -251,7 +180,7 @@ private fun ItemDescription(
             )
 
             Text(
-                text = ratingText(MaterialTheme.colorScheme.secondary) +
+                text = ratingText(itemDetail.uiRating) +
                         AnnotatedString(itemDetail.description.orEmpty()),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.secondary,
@@ -259,57 +188,25 @@ private fun ItemDescription(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(Dimens.Spacing24)
-                    .clickable { showDescription() }
+                    .simpleClickable { showDescription(itemDetail.itemId) }
             )
         }
     }
 }
 
 @Composable
-private fun DescriptionDialog(itemDetail: ItemDetail, modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .statusBarsPadding()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = Dimens.Spacing24)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp, 4.dp)
-                .clip(RoundedCornerShape(50))
-                .background(MaterialTheme.colorScheme.primary)
-        )
-        Spacer(modifier = Modifier.height(Dimens.Spacing36))
-        Text(
-            text = ratingText(MaterialTheme.colorScheme.secondary) +
-                    AnnotatedString(itemDetail.description.orEmpty()),
-            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
-            color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = bottomScaffoldPadding())
-        )
-    }
+fun ratingText(rating: Int): AnnotatedString {
+    return AnnotatedString.Builder().apply {
+        repeat(rating) {
+            append("✪")
+        }
+        repeat(MaxRating - rating) {
+            append("✪")
+        }
+
+        addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 0, rating)
+        append("   ")
+    }.toAnnotatedString()
 }
 
-@Composable
-private fun HandleBackPress(
-    bottomSheetState: ModalBottomSheetState,
-    coroutineScope: CoroutineScope
-) {
-    val backPressDispatcher = LocalOnBackPressedDispatcherOwner.current
-    backPressDispatcher?.onBackPressedDispatcher
-        ?.addCallback(LocalLifecycleOwner.current, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (bottomSheetState.isVisible) {
-                    isEnabled = true
-                    coroutineScope.launch { bottomSheetState.hide() }
-                } else {
-                    isEnabled = false
-                    backPressDispatcher.onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
-}
+private const val MaxRating = 5

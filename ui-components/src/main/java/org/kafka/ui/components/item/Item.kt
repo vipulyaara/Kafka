@@ -73,11 +73,13 @@ fun ItemDescription(item: Item) {
 }
 
 @Composable
-fun ItemType(mediaType: String?) {
+fun ItemTitle(title: String?) {
     Text(
-        text = mediaType.orEmpty(),
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.tertiary
+        text = title.orEmpty(),
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        color = MaterialTheme.colorScheme.textPrimary
     )
 }
 
@@ -93,12 +95,10 @@ fun ItemCreator(creator: String?) {
 }
 
 @Composable
-fun ItemTitle(title: String?) {
+fun ItemType(mediaType: String?) {
     Text(
-        text = title.orEmpty(),
-        style = MaterialTheme.typography.bodyMedium,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.textPrimary
+        text = mediaType.orEmpty(),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.tertiary
     )
 }

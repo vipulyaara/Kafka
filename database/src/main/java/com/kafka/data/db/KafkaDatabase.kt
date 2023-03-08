@@ -9,7 +9,6 @@ import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.FollowedItemDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.dao.ItemDetailDao
-import com.kafka.data.dao.RecentItemDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.SearchDao
 import com.kafka.data.dao.TextFileDao
@@ -19,7 +18,6 @@ import com.kafka.data.entities.FollowedItem
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.QueueEntity
-import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.User
@@ -27,7 +25,6 @@ import com.kafka.data.entities.User
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
     fun fileDao(): FileDao
-    fun recentItemDao(): RecentItemDao
     fun followedItemDao(): FollowedItemDao
     fun searchDao(): SearchDao
     fun itemDao(): ItemDao
@@ -42,7 +39,6 @@ interface KafkaDatabase {
         ItemDetail::class,
         File::class,
         Item::class,
-        RecentItem::class,
         RecentTextItem::class,
         FollowedItem::class,
         QueueEntity::class,

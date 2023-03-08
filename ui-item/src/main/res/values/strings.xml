@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="file_type_is_not_supported">File type is not supported</string>
+    <string name="play">Play</string>
+    <string name="read">Read</string>
 </resources>

@@ -14,7 +14,7 @@ class ItemMapper @Inject constructor() {
     private fun Doc.toItem() = Item(
         itemId = this.identifier,
         language = this.language,
-        title = this.title.first().dismissUpperCase(),
+        title = this.title.joinToString().dismissUpperCase(),
         description = this.description?.get(0)?.trim(),
         creator = this.creator?.get(0)?.sanitizeForRoom()?.let { Creator(it, it) },
         mediaType = this.mediatype,
@@ -22,7 +22,8 @@ class ItemMapper @Inject constructor() {
         collection = this.collection,
         genre = this.subject,
         position = this.downloads,
-        subject = subject?.joinToString(",")
+        subject = subject?.joinToString(","),
+        rating = this.rating
     )
 }
 

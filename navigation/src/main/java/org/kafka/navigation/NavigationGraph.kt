@@ -25,6 +25,12 @@ sealed class Screen(
         }
     }
 
+    object ItemDescription : Screen("item_description/{itemId}") {
+        fun createRoute(root: RootScreen, itemId: String): String {
+            return "${root.route}/item_description/$itemId"
+        }
+    }
+
     object Files : Screen("files/{itemId}") {
         fun createRoute(root: RootScreen, itemId: String): String {
             return "${root.route}/files/$itemId"

@@ -43,8 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.kafka.data.entities.Item
-import com.kafka.data.entities.ItemWithRecentItem
+import com.kafka.data.entities.RecentItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
@@ -54,12 +53,11 @@ import ui.common.theme.theme.textPrimary
 
 @Composable
 internal fun ContinueReading(
-    readingList: ImmutableList<ItemWithRecentItem>,
+    readingList: ImmutableList<RecentItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit
 ) {
-    var isInEditMode by remember { mutableStateOf(false) }
 
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
@@ -70,16 +68,13 @@ internal fun ContinueReading(
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
 
-            LazyRow(
-                contentPadding = PaddingValues(end = 60.dp)
-            ) {
-                items(readingList.items, key = { it.item.itemId }) { continueReading ->
+            LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
+                items(readingList.items, key = { it.itemId }) { continueReading ->
                     ContinueReadingItem(
-                        continueReading = continueReading.item,
-                        onItemClicked = { openItemDetail(continueReading.item.itemId) },
+                        continueReading = continueReading,
+                        onItemClicked = { openItemDetail(continueReading.itemId) },
                         onItemRemoved = { removeRecentItem(it) },
-                        isInEditMode = isInEditMode,
-                        changeEditMode = { isInEditMode = it }
+                        modifier = Modifier.animateItemPlacement()
                     )
                 }
             }
@@ -91,13 +86,12 @@ internal fun ContinueReading(
 
 @Composable
 private fun ContinueReadingItem(
-    continueReading: Item,
+    continueReading: RecentItem,
     modifier: Modifier = Modifier,
-    isInEditMode: Boolean = false,
-    changeEditMode: (Boolean) -> Unit = {},
     onItemRemoved: (String) -> Unit,
     onItemClicked: () -> Unit
 ) {
+    var isInEditMode by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
         Column(
@@ -109,9 +103,9 @@ private fun ContinueReadingItem(
                 modifier = Modifier
                     .clip(RoundedCornerShape(Dimens.Spacing08))
                     .combinedClickable(
-                        onLongClick = { changeEditMode(!isInEditMode) },
+                        onLongClick = { isInEditMode = !isInEditMode },
                         onClick = {
-                            changeEditMode(false)
+                            isInEditMode = false
                             onItemClicked()
                         }
                     )
@@ -143,7 +137,7 @@ private fun ContinueReadingItem(
 private fun BoxScope.RemoveRecentItemButton(
     isInEditMode: Boolean,
     onItemRemoved: (String) -> Unit,
-    continueReading: Item
+    continueReading: RecentItem
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val scale by infiniteTransition.animateFloat(
@@ -173,7 +167,7 @@ private fun BoxScope.RemoveRecentItemButton(
                     scaleY = scale
                     rotationZ = rotation
                 },
-            onClick = { onItemRemoved(continueReading.itemId) }) {
+            onClick = { onItemRemoved(continueReading.fileId) }) {
             Icon(
                 imageVector = Icons.XCircle,
                 tint = MaterialTheme.colorScheme.primary,
@@ -184,7 +178,7 @@ private fun BoxScope.RemoveRecentItemButton(
 }
 
 @Composable
-private fun CoverImage(item: Item) {
+private fun CoverImage(item: RecentItem) {
     Box(
         modifier = Modifier.shadowMaterial(
             elevation = Dimens.Spacing08,
@@ -192,7 +186,7 @@ private fun CoverImage(item: Item) {
         )
     ) {
         AsyncImage(
-            model = item.coverImage,
+            model = item.coverUrl,
             contentDescription = stringResource(id = R.string.cd_cover_image),
             modifier = Modifier
                 .size(64.dp, 76.dp)
@@ -203,24 +197,25 @@ private fun CoverImage(item: Item) {
 }
 
 @Composable
-private fun Description(continueReading: Item, modifier: Modifier = Modifier) {
+private fun Description(continueReading: RecentItem, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
-            text = continueReading.title.orEmpty(),
-            style = MaterialTheme.typography.bodySmall,
+            text = continueReading.title,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
-            text = continueReading.creator?.name.orEmpty(),
+            text = continueReading.creator,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.height(Dimens.Spacing02))
+        Spacer(modifier = Modifier.height(Dimens.Spacing04))
+
         Text(
             text = continueReading.mediaType.orEmpty(),
             style = MaterialTheme.typography.bodySmall,

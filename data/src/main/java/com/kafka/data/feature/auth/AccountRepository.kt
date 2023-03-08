@@ -1,4 +1,4 @@
-package com.kafka.data.feature.item.auth
+package com.kafka.data.feature.auth
 
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth

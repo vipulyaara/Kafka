@@ -1,7 +1,7 @@
 package org.kafka.domain.observers
 
 import com.kafka.data.entities.User
-import com.kafka.data.feature.item.auth.AccountRepository
+import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map

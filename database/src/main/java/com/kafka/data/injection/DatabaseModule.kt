@@ -75,9 +75,6 @@ class DatabaseDaoModule {
     fun provideContentEntryDao(db: KafkaRoomDatabase) = db.searchDao()
 
     @Provides
-    fun provideRecentItemDao(db: KafkaRoomDatabase) = db.recentItemDao()
-
-    @Provides
     fun provideFollowedItemDao(db: KafkaRoomDatabase) = db.followedItemDao()
 
     @Provides

@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.components.WIDE_LAYOUT_MIN_WIDTH
@@ -25,6 +26,7 @@ import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.common.widgets.shadowMaterial
+import org.kafka.item.R
 import org.kafka.ui.components.material.FloatingButton
 import ui.common.theme.theme.Dimens
 
@@ -61,7 +63,7 @@ fun ItemDetailActions(
             }
 
             FloatingButton(
-                text = itemDetail.callToAction,
+                text = stringResource(if (itemDetail.isAudio) R.string.play else R.string.read),
                 modifier = Modifier.weight(0.8f),
                 onClicked = { onPrimaryAction(itemDetail.itemId) }
             )

@@ -1,6 +1,7 @@
 package org.kafka.domain.interactors
 
-import com.kafka.data.feature.item.ItemRepository
+import com.kafka.data.dao.ItemDetailDao
+import com.kafka.data.entities.RecentItem
 import kotlinx.coroutines.withContext
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor
@@ -8,25 +9,16 @@ import javax.inject.Inject
 
 class AddRecentItem @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
-    private val itemRepository: ItemRepository
+    private val itemDetailDao: ItemDetailDao,
+    private val updateRecentItem: UpdateRecentItem
 ) : Interactor<AddRecentItem.Params>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            itemRepository.addRecentlyVisitedItem(params.itemId)
+            val item = itemDetailDao.get(params.itemId)
+            updateRecentItem.execute(RecentItem.fromItem(item))
         }
     }
+
     data class Params(val itemId: String)
-}
-
-class RemoveRecentItem @Inject constructor(
-    private val itemRepository: ItemRepository,
-    private val dispatchers: AppCoroutineDispatchers,
-) : Interactor<String>() {
-
-    override suspend fun doWork(params: String) {
-        withContext(dispatchers.io) {
-            itemRepository.removeRecentlyVisitedItem(params)
-        }
-    }
 }

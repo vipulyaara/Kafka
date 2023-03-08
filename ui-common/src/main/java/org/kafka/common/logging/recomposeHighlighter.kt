@@ -31,8 +31,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.dp
-import com.facebook.flipper.BuildConfig
 import kotlinx.coroutines.delay
+import org.kafka.base.BuildConfig
 import org.kafka.base.debug
 import kotlin.math.min
 

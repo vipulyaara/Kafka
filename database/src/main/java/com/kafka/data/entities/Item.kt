@@ -20,9 +20,8 @@ data class Item constructor(
     val genre: List<String>? = null,
     val subject: String? = null,
     val uploader: String? = null,
-    val position: Int = 0
+    val position: Int = 0,
+    val rating: Double? = null
 ) : BaseEntity
 
 data class Creator(val id: String, val name: String)
-
-fun Item.asRecentlyVisited(visitedTime: Long) = RecentItem(itemId, visitedTime)

@@ -73,7 +73,9 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
+
     namespace 'org.kafka.user'
+
     lint {
         abortOnError true
         checkDependencies true
@@ -131,7 +133,7 @@ dependencies {
 
     implementation libs.coil.coil
 
-    implementation libs.androidx.appcompat
+//    implementation libs.androidx.appcompat
 
     implementation libs.androidx.activity.compose
 
@@ -167,9 +169,6 @@ dependencies {
 
     implementation libs.icons.feather
     implementation libs.icons.tabler
-
-    implementation libs.rive
-    implementation libs.startup
 }
 
 android.applicationVariants.all { variant ->

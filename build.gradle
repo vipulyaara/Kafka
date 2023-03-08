@@ -24,6 +24,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.20'
+    id 'com.google.devtools.ksp' version '1.8.10-1.0.9' apply false
 }
 
 allprojects {
@@ -31,11 +32,8 @@ allprojects {
         google()
         mavenCentral()
 
-        // Used for Accompanist snapshots
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://androidx.dev/snapshots/latest/artifacts/repository' }
-
-        // Used for Roomigrant
         maven { url 'https://jitpack.io' }
         maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
         maven { url "https://customers.pspdfkit.com/maven/" }
@@ -44,12 +42,6 @@ allprojects {
 
 subprojects {
     configurations.configureEach {
-        // We forcefully exclude AppCompat + MDC from any transitive dependencies.
-        // This is a Compose app, so there's no need for these.
-//        exclude group: 'androidx.appcompat'
-//        exclude group: 'com.google.android.material', module: 'material'
-//        exclude group: 'com.google.android.material', module: 'material'
-
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def group = details.requested.group
             def module = details.requested.module.name
@@ -61,18 +53,6 @@ subprojects {
             }
         }
     }
-
-//    apply plugin: 'com.diffplug.spotless'
-//    spotless {
-//        kotlin {
-//            target '**/*.kt'
-//            targetExclude("$buildDir/**/*.kt")
-//            targetExclude('bin/**/*.kt')
-//
-//            ktlint(Versions.ktlint)
-//            licenseHeaderFile rootProject.file('spotless/copyright.kt')
-//        }
-//    }
 
     tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
@@ -122,25 +102,4 @@ subprojects {
             }
         }
     }
-}
-
-/**
- * Update dependencyUpdates task to reject versions which are more 'unstable' than our
- * current version.
- */
-//tasks.named("dependencyUpdates").configure {
-//    rejectVersionIf {
-//        def current = DependencyUpdates.versionToRelease(it.currentVersion)
-//        // If we're using a SNAPSHOT, ignore since we must be doing so for a reason.
-//        if (current == ReleaseType.SNAPSHOT) return true
-//
-//        // Otherwise we reject if the candidate is more 'unstable' than our version
-//        def candidate = DependencyUpdates.versionToRelease(it.candidate.version)
-//        return candidate.isLessStableThan(current)
-//    }
-//}
-
-Object propOrDef(String propertyName, Object defaultValue) {
-    def propertyValue = project.properties[propertyName]
-    return propertyValue != null ? propertyValue : defaultValue
 }

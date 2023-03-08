@@ -98,7 +98,7 @@ internal object EnglishTypography {
     )
     val TitleSmall = TextStyle(
         fontFamily = DefaultFont,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
         fontSize = 13.sp,
         lineHeight = TypeScale.TitleSmallLineHeight,
     )

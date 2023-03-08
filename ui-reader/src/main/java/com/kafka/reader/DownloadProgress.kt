@@ -26,9 +26,8 @@ import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
-import org.kafka.ui.components.R
 import org.kafka.ui.components.file.DownloadStatusIcons
-import org.kafka.ui.components.rive.RiveAnimation
+import org.kafka.ui.components.rive.DownloadAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
@@ -48,13 +47,9 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
 
 @Composable
 fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
-    val percentage = if (progress > 0.95f) 100f else progress.coerceIn(0.1f, 0.9f).run { this * 100 }
-    val percentageState by animateFloatAsState(targetValue = percentage)
+    val percentageState by animateFloatAsState(targetValue = progress)
 
-    RiveAnimation(resource = R.raw.liquid_download_12, modifier = modifier) { view ->
-        view.setBooleanState("State machine 1", "Downloading", true)
-        view.setNumberState("State machine 1", "Progress", percentageState)
-    }
+    DownloadAnimation(progress = percentageState, modifier = modifier)
 }
 
 @Composable

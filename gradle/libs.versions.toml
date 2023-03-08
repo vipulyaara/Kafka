@@ -1,18 +1,18 @@
 [versions]
 accompanist = "0.29.1-alpha"
 androidxhilt = "1.0.0"
-androidxlifecycle = "2.6.0-alpha02"
-navigation = "2.6.0-alpha01"
-androidxtest = "1.4.0"
-coil = "2.1.0"
-compose = "1.4.0-beta01"
-compose-bom = "2023.02.00-beta01"
-constraintlayout = "1.1.0-alpha05"
+androidxlifecycle = "2.6.0-rc01"
+navigation = "2.6.0-alpha06"
+androidxtest = "1.5.2"
+coil = "2.2.2"
+compose-bom = "2023.02.00-beta03"
+constraintlayout = "1.1.0-alpha07"
 composeCompiler = "1.4.2"
 composesnapshot = "-" # a single character = no snapshot
-coroutines = "1.5.2"
+coroutines = "1.6.4"
 dagger = "2.44.2"
 hilt = "2.44.2"
+icons = "1.0.0"
 kotlin = "1.8.10"
 ktlint = "0.40.0"
 material3 = "1.1.0-alpha04"
@@ -21,12 +21,9 @@ paging = "3.1.1"
 retrofit = "2.9.0"
 room = "2.5.0"
 threetenbp = "1.5.2"
-flipper = "0.98.0"
-soloader = "0.10.1"
-icons = "1.0.0"
-serialization = "1.1.0"
-exoplayer = "2.15.0"
-media3 = "1.0.0-alpha03"
+serialization = "1.4.1"
+exoplayer = "2.18.4"
+media3 = "1.0.0-rc02"
 pdftron = "9.3.1"
 
 [libraries]
@@ -44,28 +41,28 @@ accompanist-web = { module = "com.google.accompanist:accompanist-webview", versi
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
-android-r8 = "com.android.tools:r8:3.1.51"
-android-gradlePlug = "com.android.tools.build:gradle:7.4.1"
+android-r8 = "com.android.tools:r8:4.0.52"
+android-gradlePlug = "com.android.tools.build:gradle:7.4.2"
 proguard-snippets = "com.infstory:proguard-snippets:1.0.0"
-media = "androidx.media:media:1.4.1"
+media = "androidx.media:media:1.6.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 radiography = "com.squareup.radiography:radiography:2.4.1"
-profile-installer = "androidx.profileinstaller:profileinstaller:1.2.0-alpha01"
+profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-beta01"
 pdfkit = "com.pspdfkit:pspdfkit:8.2.1"
 rive = "app.rive:rive-android:4.0.0"
-startup = "androidx.startup:startup-runtime:1.1.0"
+startup = "androidx.startup:startup-runtime:1.1.1"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
 androidx-activity = "androidx.activity:activity:1.6.1"
-androidx-appcompat = "androidx.appcompat:appcompat:1.3.1"
-androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.3.1"
-androidx-archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
-androidx-browser = "androidx.browser:browser:1.3.0"
+androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
+androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.6.1"
+androidx-archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
+androidx-browser = "androidx.browser:browser:1.5.0"
 androidx-collection = "androidx.collection:collection-ktx:1.2.0"
-androidx-core = "androidx.core:core-ktx:1.6.0"
+androidx-core = "androidx.core:core-ktx:1.9.0"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
 androidx-emoji = "androidx.emoji:emoji:1.1.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.3.0"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.5.5"
 
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxhilt" }
 androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
@@ -94,7 +91,7 @@ lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
-androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha14"
+androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha18"
 
 androidx-palette = "androidx.palette:palette:1.0.0"
 
@@ -106,11 +103,11 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxtest" }
-androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.3"
+androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxtest" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxtest" }
 
-androidx-work-runtime = "androidx.work:work-runtime-ktx:2.5.0"
+androidx-work-runtime = "androidx.work:work-runtime-ktx:2.8.0"
 
 appauth = "net.openid:appauth:0.8.1"
 
@@ -129,7 +126,7 @@ compose-material-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
@@ -169,12 +166,7 @@ icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", ve
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
 icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons", version.ref = "icons" }
 
-flipper-core = { module = "com.facebook.flipper:flipper", version.ref = "flipper" }
-flipper-soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
-flipper-release = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipper" }
-flipper-network = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipper" }
-
-leakCanary = "com.squareup.leakcanary:leakcanary-android:2.9.1"
+leakCanary = "com.squareup.leakcanary:leakcanary-android:2.10"
 leakCanary-process = "com.squareup.leakcanary:leakcanary-android-process:2.9.1"
 
 mockK = "io.mockk:mockk:1.12.0"
@@ -186,22 +178,9 @@ retrofit-gsonConverter = { module = "com.squareup.retrofit2:converter-gson", ver
 retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
 retrofit-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
-robolectric = "org.robolectric:robolectric:4.6.1"
-
-store = "com.dropbox.mobile.store:store4:4.0.4-KT15"
-
-threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.3.1"
-
+threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
-
-tracing = "androidx.tracing:tracing-ktx:1.0.0"
-
-tmdbJava = "com.uwetrottmann.tmdb2:tmdb-java:2.4.0"
-
+tracing = "androidx.tracing:tracing-ktx:1.1.0"
 dataStore = "androidx.datastore:datastore-preferences:1.0.0"
-
-traktJava = "com.uwetrottmann.trakt5:trakt-java:6.9.0"
-
 truth = "com.google.truth:truth:1.1.3"
-
-jsoup = "org.jsoup:jsoup:1.12.1"
+jsoup = "org.jsoup:jsoup:1.15.1"

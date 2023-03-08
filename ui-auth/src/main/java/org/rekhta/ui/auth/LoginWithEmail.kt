@@ -37,7 +37,6 @@ import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 internal fun LoginWithEmail(
@@ -176,8 +175,7 @@ internal fun LoginTextField(
             unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
             containerColor = MaterialTheme.colorScheme.background,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
-            textColor = MaterialTheme.colorScheme.textPrimary
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         shape = RoundedCornerShape(Dimens.Spacing08)
     )

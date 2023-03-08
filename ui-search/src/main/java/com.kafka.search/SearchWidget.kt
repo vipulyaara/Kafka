@@ -77,8 +77,7 @@ fun SearchWidget(
                 unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary,
-                textColor = MaterialTheme.colorScheme.onBackground
+                cursorColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(Dimens.Spacing08)
         )

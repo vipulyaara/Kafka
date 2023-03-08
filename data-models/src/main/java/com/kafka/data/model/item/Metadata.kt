@@ -39,5 +39,5 @@ data class Metadata(
     @SerialName("title")
     val title: String? = null,
     @SerialName("year")
-    val year: String? = null
+    val year: String? = null,
 )

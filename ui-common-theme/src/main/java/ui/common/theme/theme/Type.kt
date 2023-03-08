@@ -1,7 +1,6 @@
 package ui.common.theme.theme
 
 import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
@@ -45,24 +44,9 @@ internal fun createFontFamily(id: String, additionalWeights: List<FontWeight> = 
         ) + additionalWeights
     )
 
-val ProductSans = FontFamily(
-    Font(R.font.product_sans_light, FontWeight.Light),
-    Font(R.font.product_sans_regular, FontWeight.Normal),
-    Font(R.font.product_sans_medium, FontWeight.SemiBold),
-    Font(R.font.product_sans_medium, FontWeight.Medium),
-    Font(R.font.product_sans_bold, FontWeight.Bold)
-)
-
-val BasisSans = FontFamily(
-    Font(R.font.basis_light, FontWeight.Light),
-    Font(R.font.basis_bold, FontWeight.Normal),
-    Font(R.font.basis_bold, FontWeight.SemiBold),
-    Font(R.font.basis_bold, FontWeight.Medium),
-    Font(R.font.basis_bold, FontWeight.Bold)
-)
-
 val Roboto = createFontFamily("Roboto")
 val OpenSans = createFontFamily("Open Sans")
 val ProseFont = createFontFamily("Lora")
 val Poppins = createFontFamily("Poppins")
+val Inter = createFontFamily("Inter")
 val DefaultFont = Roboto
