@@ -23,10 +23,10 @@ import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.recent.AddRecentItem
+import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
-import org.kafka.domain.interactors.UpdateFavorite
+import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
@@ -87,6 +87,10 @@ class ItemDetailViewModel @Inject constructor(
 
     fun retry() {
         refresh()
+    }
+
+    fun goBack() {
+        navigator.goBack()
     }
 
     private fun refresh() {
