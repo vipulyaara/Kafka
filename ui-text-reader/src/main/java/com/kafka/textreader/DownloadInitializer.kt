@@ -5,7 +5,6 @@ import com.kafka.data.AppInitializer
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
-import com.kafka.data.dao.TextFileDao
 import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.RecentItem
@@ -31,7 +30,6 @@ import javax.inject.Inject
 class DownloadInitializer @Inject constructor(
     private val fetch: Fetch,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
-    private val textFileDao: TextFileDao,
     private val readTextFromUri: ReadTextFromUri,
     private val downloadRequestsDao: DownloadRequestsDao,
     private val fileDao: FileDao,
@@ -72,18 +70,19 @@ class RecentTextItemMapper @Inject constructor() {
         file: File,
         itemDetail: ItemDetail
     ): RecentItem.Readable {
-//        val filePages = pages.mapIndexed { index, s -> RecentItem.Readable.Page(index + 1) }
+        val filePages = pages.mapIndexed { index, s -> RecentItem.Readable.Page(index + 1) }
         return RecentItem.Readable(
             fileId = file.fileId,
             itemId = file.itemId,
             createdAt = System.currentTimeMillis(),
             title = itemDetail.title.orEmpty(),
-//            pages = filePages,
             currentPage = 1,
             localUri = download.fileUri.toString(),
             coverUrl = itemDetail.coverImage.orEmpty(),
             creator = itemDetail.creator.orEmpty(),
-            mediaType = itemDetail.mediaType.orEmpty()
+            mediaType = itemDetail.mediaType.orEmpty(),
+            type = file.extension.orEmpty(),
+            pages = filePages,
         )
     }
 }

@@ -3,24 +3,24 @@ package com.kafka.reader
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.RecentTextItem
+import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.UiMessageManager
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.ObserveDownloadItem
-import org.kafka.domain.observers.ObserveTextFile
+import org.kafka.domain.observers.ObserveReadableRecentItem
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
 @HiltViewModel
 class ReaderViewModel @Inject constructor(
     private val observeDownloadItem: ObserveDownloadItem,
-    private val observeTextFile: ObserveTextFile,
+    private val observeRecentItem: ObserveReadableRecentItem,
     private val downloader: Downloader,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -29,11 +29,11 @@ class ReaderViewModel @Inject constructor(
 
     val readerState = combine(
         observeDownloadItem.flow,
-        observeTextFile.flow,
+        observeRecentItem.flow,
         uiMessageManager.message,
-    ) { download, textFile, message ->
+    ) { download, readable, message ->
         ReaderViewState(
-            recentTextItem = textFile,
+            recentItem = readable,
             download = download,
             message = message
         )
@@ -52,13 +52,13 @@ class ReaderViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            observeTextFile(fileId.value)
+            observeRecentItem(fileId.value)
         }
     }
 }
 
 data class ReaderViewState(
-    val recentTextItem: RecentTextItem? = null,
+    val recentItem: RecentItem.Readable? = null,
     val download: ItemWithDownload? = null,
     val message: UiMessage? = null,
 )

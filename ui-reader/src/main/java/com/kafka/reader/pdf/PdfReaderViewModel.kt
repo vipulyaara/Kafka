@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.RecentTextItem
+import com.kafka.data.entities.RecentItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -15,23 +15,23 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.UpdateCurrentPage
-import org.kafka.domain.observers.ObserveTextFile
+import org.kafka.domain.observers.ObserveReadableRecentItem
 import javax.inject.Inject
 
 @HiltViewModel
 class PdfReaderViewModel @Inject constructor(
-    private val observeTextFile: ObserveTextFile,
+    private val observeRecentItem: ObserveReadableRecentItem,
     private val updateCurrentPage: UpdateCurrentPage,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     var showControls by mutableStateOf(false)
 
     val readerState = combine(
-        observeTextFile.flow,
+        observeRecentItem.flow,
         uiMessageManager.message,
-    ) { textFile, message ->
+    ) { recentItem, message ->
         PdfReaderViewState(
-            recentTextItem = textFile,
+            recentItem = recentItem,
             message = message
         )
     }.stateInDefault(
@@ -41,7 +41,7 @@ class PdfReaderViewModel @Inject constructor(
 
     fun observeTextFile(fileId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            observeTextFile.invoke(fileId)
+            observeRecentItem.invoke(fileId)
         }
     }
 
@@ -61,6 +61,6 @@ class PdfReaderViewModel @Inject constructor(
 }
 
 data class PdfReaderViewState(
-    val recentTextItem: RecentTextItem? = null,
+    val recentItem: RecentItem.Readable? = null,
     val message: UiMessage? = null,
 )

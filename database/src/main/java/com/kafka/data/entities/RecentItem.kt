@@ -27,12 +27,20 @@ sealed class RecentItem {
         override val createdAt: Long,
         val currentPage: Int,
         val localUri: String,
-//        val pages: List<Page>,
+        val type: String,
+        val pages: List<Page>,
     ) : RecentItem() {
-        constructor(): this("", "", "", "", "", "", 0, 0, "")
+        constructor() : this("", "", "", "", "", "", 0, 0, "", "", emptyList())
 
-//        @Keep
-//        data class Page(val number: Int, val text: String = "")
+        val isPdf: Boolean
+            get() = type == "pdf"
+        val isTxt: Boolean
+            get() = type == "txt"
+
+        @Keep
+        data class Page(val index: Int, val text: String = "") {
+            constructor() : this(0, "")
+        }
     }
 
     @Keep
@@ -63,7 +71,9 @@ sealed class RecentItem {
                         mediaType = item.mediaType,
                         createdAt = System.currentTimeMillis(),
                         currentPage = 0,
-                        localUri = ""
+                        type = item.primaryTextFile.substringAfterLast(".").lowercase(),
+                        localUri = "",
+                        pages = emptyList()
                     )
                 }
                 _mediaTypeAudio -> {

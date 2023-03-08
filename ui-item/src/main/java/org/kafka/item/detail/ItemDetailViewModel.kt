@@ -26,7 +26,7 @@ import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.AddRecentItem
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
-import org.kafka.domain.interactors.account.UpdateFavorite
+import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems

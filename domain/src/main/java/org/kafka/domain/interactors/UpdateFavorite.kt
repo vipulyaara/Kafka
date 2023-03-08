@@ -1,10 +1,11 @@
-package org.kafka.domain.interactors.account
+package org.kafka.domain.interactors
 
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.Analytics
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor
+import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 
 class UpdateFavorite @Inject constructor(
@@ -21,7 +22,7 @@ class UpdateFavorite @Inject constructor(
                 analytics.log { removeFavorite((params.itemId)) }
             }
 
-            if (accountRepository.getCurrentUser() == null) {
+            if (!accountRepository.isUserLoggedIn) {
                 signInAnonymously.execute(Unit)
             }
 

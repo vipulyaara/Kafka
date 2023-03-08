@@ -1,4 +1,4 @@
-package org.kafka.domain.interactors.account
+package org.kafka.domain.interactors
 
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.model.ArchiveQuery
@@ -6,7 +6,6 @@ import com.kafka.data.model.booksByIdentifiers
 import kotlinx.coroutines.withContext
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor
-import org.kafka.domain.interactors.UpdateItems
 import javax.inject.Inject
 
 class UpdateFavoriteItems @Inject constructor(

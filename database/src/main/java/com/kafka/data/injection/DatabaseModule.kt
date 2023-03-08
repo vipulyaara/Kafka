@@ -69,9 +69,6 @@ class DatabaseDaoModule {
     fun provideFileDao(db: KafkaRoomDatabase) = db.fileDao()
 
     @Provides
-    fun provideTextFileDao(db: KafkaRoomDatabase) = db.textFileDao()
-
-    @Provides
     fun provideContentEntryDao(db: KafkaRoomDatabase) = db.searchDao()
 
     @Provides

@@ -9,12 +9,12 @@ import javax.inject.Inject
 
 class ObserveItemFollowStatus @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
-    private val observeFavorites: ObserveFavorites
+    private val observeFollowedItemIds: ObserveFollowedItemIds
 ) : SubjectInteractor<ObserveItemFollowStatus.Params, Boolean>() {
 
     override fun createObservable(params: Params): Flow<Boolean> {
-        return observeFavorites.createObservable(Unit)
-            .map { it.any { it.itemId == params.itemId } }
+        return observeFollowedItemIds.execute(Unit)
+            .map { it.contains(params.itemId) }
             .flowOn(dispatchers.io)
     }
 

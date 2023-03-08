@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.domain.observers.ObserveFavorites
+import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.ObserveFollowedItems
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
@@ -21,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     observeFollowedItems: ObserveFollowedItems,
-    observeFavorites: ObserveFavorites,
     preferencesStore: PreferencesStore
 ) : ViewModel() {
     private val preferenceKey get() = stringPreferencesKey("layout")
@@ -32,7 +30,7 @@ class FavoriteViewModel @Inject constructor(
     )
 
     val state: StateFlow<FavoriteViewState> = combine(
-        observeFavorites.flow,
+        observeFollowedItems.flow,
         layoutType.map { LayoutType.valueOf(it) },
         uiMessageManager.message,
     ) { favorites, layout, message ->
@@ -51,7 +49,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     init {
-        observeFavorites(Unit)
+        observeFollowedItems(Unit)
     }
 }
 

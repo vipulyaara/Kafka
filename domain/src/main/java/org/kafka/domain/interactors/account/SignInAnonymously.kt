@@ -9,10 +9,9 @@ class SignInAnonymously @Inject constructor(
 ) : Interactor<Unit>() {
 
     override suspend fun doWork(params: Unit) {
-        if (accountRepository.getCurrentUser() == null) {
-            accountRepository.signInAnonymously()?.let { newUser ->
-                accountRepository.updateUser(newUser)
-            } ?: throw Exception("Failed to sign in anonymously")
+        if (!accountRepository.isUserLoggedIn) {
+            accountRepository.signInAnonymously()
+                ?: throw Exception("Failed to sign in anonymously")
         }
     }
 }

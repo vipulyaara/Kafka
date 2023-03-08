@@ -24,10 +24,10 @@ class ObserveRecentItems @Inject constructor(
 ) : SubjectInteractor<Unit, List<RecentItem>>() {
 
     override fun createObservable(params: Unit): Flow<List<RecentItem>> {
-        return accountRepository.observeCurrentUser()
+        return accountRepository.observeCurrentFirebaseUser()
             .filterNotNull()
             .flatMapLatest {
-                firestoreGraph.getRecentItemsCollection(it.id)
+                firestoreGraph.getRecentItemsCollection(it.uid)
                     .snapshots()
                     .map { snapshots ->
                         snapshots.map { mapRecentItem(it) }.sortedByDescending { it.createdAt }

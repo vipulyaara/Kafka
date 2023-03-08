@@ -13,9 +13,8 @@ class SignInUser @Inject constructor(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            val user = accountRepository.signInUser(params.email, params.password)
+            accountRepository.signInUser(params.email, params.password)
                 ?: error("Failed to sign in")
-            accountRepository.updateUser(user.copy(anonymous = false))
         }
     }
 

@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentTextItem
-import com.kafka.data.entities.RecentTextItem.Page
+import com.kafka.data.entities.RecentItem
 import com.kafka.reader.controls.GoToPage
 import org.kafka.common.simpleClickable
 import org.kafka.ui.components.scaffoldPadding
@@ -40,14 +39,14 @@ internal fun TextReader(
         viewModel.onPageChanged(fileId, viewModel.currentPage)
     }
 
-    viewState.recentTextItem?.let { TextReader(modifier, viewModel, it) }
+    viewState.recentItem?.let { TextReader(modifier, viewModel, it) }
 }
 
 @Composable
 private fun TextReader(
     modifier: Modifier,
     viewModel: TextReaderViewModel,
-    recentTextItem: RecentTextItem
+    recentTextItem: RecentItem.Readable
 ) {
     Surface(modifier = modifier) {
         val scaffoldPadding = scaffoldPadding()
@@ -72,7 +71,7 @@ private fun TextReader(
 }
 
 @Composable
-private fun Page(page: Page, modifier: Modifier = Modifier) {
+private fun Page(page: RecentItem.Readable.Page, modifier: Modifier = Modifier) {
     SelectionContainer {
         Box(modifier = modifier.fillMaxWidth()) {
             Text(

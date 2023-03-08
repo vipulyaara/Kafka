@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.domain.interactors.UpdateCurrentPage
-import org.kafka.domain.observers.ObserveTextFile
+import org.kafka.domain.observers.ObserveReadableRecentItem
 import javax.inject.Inject
 
 @HiltViewModel
 class TextReaderViewModel @Inject constructor(
-    private val observeTextFile: ObserveTextFile,
+    private val observeTextFile: ObserveReadableRecentItem,
     private val updateCurrentPage: UpdateCurrentPage,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
@@ -34,7 +34,7 @@ class TextReaderViewModel @Inject constructor(
         uiMessageManager.message,
     ) { textFile, message ->
         PdfReaderViewState(
-            recentTextItem = textFile,
+            recentItem = textFile,
             message = message
         )
     }.stateInDefault(

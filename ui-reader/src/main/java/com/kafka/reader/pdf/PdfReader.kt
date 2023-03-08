@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentTextItem
+import com.kafka.data.entities.RecentItem
 import com.kafka.reader.controls.GoToPage
 import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
@@ -40,9 +40,9 @@ internal fun PdfReader(
 
     LaunchedEffect(fileId) { viewModel.observeTextFile(fileId) }
 
-    AnimatedVisibilityFade(viewState.recentTextItem != null) {
+    AnimatedVisibilityFade(viewState.recentItem != null) {
         PdfReaderWithControls(
-            recentTextItem = viewState.recentTextItem!!,
+            recentTextItem = viewState.recentItem!!,
             modifier = modifier.simpleClickable { viewModel.toggleControls() },
             setControls = viewModel::showControls,
             showControls = showControls,
@@ -53,7 +53,7 @@ internal fun PdfReader(
 
 @Composable
 private fun PdfReaderWithControls(
-    recentTextItem: RecentTextItem,
+    recentTextItem: RecentItem.Readable,
     modifier: Modifier = Modifier,
     showControls: Boolean = false,
     setControls: (Boolean) -> Unit = {},

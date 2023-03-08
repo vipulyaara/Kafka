@@ -55,7 +55,7 @@ internal fun LoginWithEmail(
 
         if (!loginState.isLogin) {
             LoginTextField(
-                loginTextField = LoginTextField.Username,
+                loginTextField = LoginTextField.Name,
                 text = name,
                 setSearchText = { name = it },
                 onFocusChanged = onFocusChanged
@@ -187,6 +187,7 @@ internal enum class LoginTextField(
     val visualTransformation: VisualTransformation,
     val imeAction: ImeAction
 ) {
+    Name("Name", KeyboardType.Text, VisualTransformation.None, ImeAction.Next),
     Username("Email", KeyboardType.Email, VisualTransformation.None, ImeAction.Next),
     Password("Password", KeyboardType.Password, PasswordVisualTransformation(), ImeAction.Done)
 }

@@ -58,7 +58,6 @@ internal fun ContinueReading(
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit
 ) {
-
     if (readingList.items.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
