@@ -1,4 +1,4 @@
-package org.kafka.domain.observers
+package org.kafka.domain.observers.library
 
 import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.coroutines.flow.Flow

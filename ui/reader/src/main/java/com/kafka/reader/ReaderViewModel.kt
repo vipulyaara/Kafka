@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.observers.ObserveDownloadItem
 import org.kafka.domain.observers.ObserveReadableRecentItem
+import org.kafka.domain.observers.library.ObserveDownloadItem
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 

@@ -4,9 +4,9 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,10 +18,9 @@ import javax.inject.Singleton
  * */
 @Singleton
 class AccountRepository @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val firestoreGraph: FirestoreGraph
+    private val auth: FirebaseAuth
 ) {
-    private val currentFirebaseUser
+    val currentFirebaseUser
         get() = auth.currentUser
 
     val isUserLoggedIn
@@ -49,10 +48,13 @@ class AccountRepository @Inject constructor(
         val listener: (FirebaseAuth) -> Unit = { firebaseAuth ->
             trySend(firebaseAuth.currentUser)
         }
+
         auth.addAuthStateListener(listener)
 
-        awaitClose { auth.removeAuthStateListener(listener) }
-    }
+        awaitClose {
+            auth.removeAuthStateListener(listener)
+        }
+    }.onStart { emit(null) }
 
     fun signOut() {
         auth.signOut()
@@ -63,17 +65,5 @@ class AccountRepository @Inject constructor(
             displayName = name
         }
         currentFirebaseUser!!.updateProfile(profileUpdates).await()
-    }
-
-    suspend fun updateFavorite(itemId: String, isFavorite: Boolean) {
-        currentFirebaseUser?.uid
-            ?.let { firestoreGraph.getFavoritesCollection(it) }
-            ?.run {
-                if (isFavorite) {
-                    document(itemId).set(itemId)
-                } else {
-                    document(itemId).delete()
-                }
-            }?.await()
     }
 }

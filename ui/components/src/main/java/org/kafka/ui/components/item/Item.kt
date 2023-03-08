@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.entities.Item
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.ui.components.R
@@ -29,20 +30,54 @@ import ui.common.theme.theme.textPrimary
 
 @Composable
 fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
+    Item(
+        title = item.title,
+        creator = item.creator?.name,
+        mediaType = item.mediaType,
+        coverImage = item.coverImage,
+        itemId = item.itemId,
+        modifier = modifier,
+        openItemDetail = openItemDetail
+    )
+}
+
+@Composable
+fun Item(item: FavoriteItem, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
+    Item(
+        title = item.title,
+        creator = item.creator,
+        mediaType = item.mediaType,
+        coverImage = item.coverImage,
+        itemId = item.itemId,
+        modifier = modifier,
+        openItemDetail = openItemDetail
+    )
+}
+
+@Composable
+fun Item(
+    title: String?,
+    creator: String?,
+    mediaType: String?,
+    coverImage: String?,
+    itemId: String,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { openItemDetail(item.itemId) }
+            .clickable { openItemDetail(itemId) }
             .padding(vertical = Dimens.Spacing08, horizontal = Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        CoverImage(item)
-        ItemDescription(item)
+        CoverImage(coverImage)
+        ItemDescription(title, creator, mediaType)
     }
 }
 
 @Composable
-fun CoverImage(item: Item) {
+fun CoverImage(coverImage: String?) {
     Box(
         modifier = Modifier.shadowMaterial(
             elevation = Dimens.Spacing08,
@@ -50,7 +85,7 @@ fun CoverImage(item: Item) {
         )
     ) {
         AsyncImage(
-            model = item.coverImage,
+            model = coverImage,
             placeholder = painterResource(id = R.drawable.ic_absurd_bulb),
             contentDescription = "Cover",
             modifier = Modifier
@@ -62,13 +97,13 @@ fun CoverImage(item: Item) {
 }
 
 @Composable
-fun ItemDescription(item: Item) {
+fun ItemDescription(title: String?, creator: String?, mediaType: String?) {
     Column {
-        ItemTitle(item.title)
+        ItemTitle(title)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        ItemCreator(item.creator?.name)
+        ItemCreator(creator)
         Spacer(modifier = Modifier.height(Dimens.Spacing04))
-        ItemType(item.mediaType)
+        ItemType(mediaType)
     }
 }
 

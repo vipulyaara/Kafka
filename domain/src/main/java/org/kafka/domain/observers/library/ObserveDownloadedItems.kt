@@ -1,4 +1,4 @@
-package org.kafka.domain.observers
+package org.kafka.domain.observers.library
 
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao

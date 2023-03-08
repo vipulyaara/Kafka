@@ -1,5 +1,9 @@
 package org.kafka.domain.interactors
 
+import com.kafka.data.dao.ItemDetailDao
+import com.kafka.data.entities.FavoriteItem
+import com.kafka.data.entities.ItemDetail
+import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.Analytics
@@ -11,6 +15,8 @@ import javax.inject.Inject
 class UpdateFavorite @Inject constructor(
     private val signInAnonymously: SignInAnonymously,
     private val accountRepository: AccountRepository,
+    private val favoritesRepository: FavoritesRepository,
+    private val itemDetailDao: ItemDetailDao,
     private val analytics: Analytics,
     private val dispatchers: AppCoroutineDispatchers
 ) : Interactor<UpdateFavorite.Params>() {
@@ -26,8 +32,19 @@ class UpdateFavorite @Inject constructor(
                 signInAnonymously.execute(Unit)
             }
 
-            accountRepository.updateFavorite(params.itemId, params.isFavorite)
+            val itemDetail = itemDetailDao.get(params.itemId)
+            favoritesRepository.updateFavorite(mapFavoriteItem(itemDetail), params.isFavorite)
         }
+    }
+
+    private fun mapFavoriteItem(itemDetail: ItemDetail): FavoriteItem {
+        return FavoriteItem(
+            itemId = itemDetail.itemId,
+            title = itemDetail.title.orEmpty(),
+            creator = itemDetail.creator.orEmpty(),
+            mediaType = itemDetail.mediaType.orEmpty(),
+            coverImage = itemDetail.coverImage.orEmpty()
+        )
     }
 
     data class Params(val itemId: String, val isFavorite: Boolean)

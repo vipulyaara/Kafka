@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.FavoriteItem
 import org.kafka.common.ImmutableList
 import org.kafka.common.widgets.LoadImage
 import ui.common.theme.theme.Dimens
@@ -25,7 +25,7 @@ import ui.common.theme.theme.textPrimary
 
 @Composable
 fun FeaturedItems(
-    items: ImmutableList<Item>,
+    items: ImmutableList<FavoriteItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
@@ -59,7 +59,7 @@ fun FeaturedItems(
 }
 
 @Composable
-private fun FeaturedItem(item: Item, openItemDetail: (String) -> Unit) {
+private fun FeaturedItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
     Column(
         modifier = Modifier
             .width(148.dp)
@@ -75,7 +75,7 @@ private fun FeaturedItem(item: Item, openItemDetail: (String) -> Unit) {
         )
 
         Text(
-            text = item.title.orEmpty(),
+            text = item.title,
             style = MaterialTheme.typography.bodySmall,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.textPrimary,
@@ -83,7 +83,7 @@ private fun FeaturedItem(item: Item, openItemDetail: (String) -> Unit) {
         )
 
         Text(
-            text = item.creator?.name.orEmpty(),
+            text = item.creator,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.secondary,
             overflow = TextOverflow.Ellipsis,

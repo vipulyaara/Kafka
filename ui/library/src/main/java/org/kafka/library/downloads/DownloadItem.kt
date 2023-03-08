@@ -40,7 +40,7 @@ internal fun DownloadItem(
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        CoverImage(item.item)
+        CoverImage(item.item.coverImage)
         DownloadItemDescription(item, Modifier.weight(1f))
         DownloadStatusIcons(downloadInfo = item.downloadInfo)
     }

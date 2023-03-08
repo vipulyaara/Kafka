@@ -20,8 +20,8 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.domain.interactors.recent.AddRecentItem
-import org.kafka.domain.observers.ObserveDownloadedItems
 import org.kafka.domain.observers.ObserveFiles
+import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
 import javax.inject.Inject

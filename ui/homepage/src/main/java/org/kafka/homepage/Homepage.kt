@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.entities.Homepage
-import com.kafka.data.entities.Item
 import org.kafka.common.asImmutable
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.logging.LogCompositions
@@ -97,7 +97,7 @@ private fun HomepageFeedItems(
                 modifier = Modifier,
                 openItemDetail = openItemDetail
             )
-            homepage?.followedItems?.let { FeaturedItems(index, it, openItemDetail) }
+            homepage?.favoriteItems?.let { FeaturedItems(index, it, openItemDetail) }
         }
 
         item {
@@ -109,7 +109,7 @@ private fun HomepageFeedItems(
 @Composable
 private fun FeaturedItems(
     index: Int,
-    items: List<Item>,
+    items: List<FavoriteItem>,
     openItemDetail: (String) -> Unit
 ) {
     if (index == FavoriteRowIndex) {

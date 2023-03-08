@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.prefs.PreferencesStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.map
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.observers.ObserveFollowedItems
+import org.kafka.domain.observers.library.ObserveFavorites
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    observeFollowedItems: ObserveFollowedItems,
+    observeFavorites: ObserveFavorites,
     preferencesStore: PreferencesStore
 ) : ViewModel() {
     private val preferenceKey get() = stringPreferencesKey("layout")
@@ -30,7 +30,7 @@ class FavoriteViewModel @Inject constructor(
     )
 
     val state: StateFlow<FavoriteViewState> = combine(
-        observeFollowedItems.flow,
+        observeFavorites.flow,
         layoutType.map { LayoutType.valueOf(it) },
         uiMessageManager.message,
     ) { favorites, layout, message ->
@@ -49,13 +49,13 @@ class FavoriteViewModel @Inject constructor(
     }
 
     init {
-        observeFollowedItems(Unit)
+        observeFavorites(Unit)
     }
 }
 
 @Immutable
 data class FavoriteViewState(
-    val favoriteItems: List<Item>? = null,
+    val favoriteItems: List<FavoriteItem>? = null,
     val message: UiMessage? = null,
     val layoutType: LayoutType = LayoutType.List
 )

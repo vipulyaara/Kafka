@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.UiMessageManager
-import org.kafka.domain.observers.ObserveDownloadedItems
+import org.kafka.common.snackbar.UiMessage
+import org.kafka.domain.observers.library.ObserveDownloadedItems
 import javax.inject.Inject
 
 @HiltViewModel

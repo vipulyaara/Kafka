@@ -3,7 +3,7 @@ package com.kafka.data.entities
 data class Homepage(
     val queryItems: List<Item>,
     val recentItems: List<RecentItem>,
-    val followedItems: List<Item>
+    val favoriteItems: List<FavoriteItem>
 ) {
     val continueReadingItems: List<RecentItem>
         get() = recentItems.subList(

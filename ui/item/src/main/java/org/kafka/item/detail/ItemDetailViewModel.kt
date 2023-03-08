@@ -28,8 +28,8 @@ import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveItemDetail
-import org.kafka.domain.observers.ObserveItemFollowStatus
 import org.kafka.domain.observers.ObserveQueryItems
+import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.DeepLinksNavigation
 import org.kafka.navigation.DynamicDeepLinkHandler
@@ -45,7 +45,7 @@ class ItemDetailViewModel @Inject constructor(
     private val observeQueryItems: ObserveQueryItems,
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
-    private val observeItemFollowStatus: ObserveItemFollowStatus,
+    private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
@@ -61,7 +61,7 @@ class ItemDetailViewModel @Inject constructor(
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { observeByAuthor(it) },
         observeQueryItems.flow.onStart { emit(emptyList()) },
-        observeItemFollowStatus.flow,
+        observeFavoriteStatus.flow,
         loadingState.observable,
         uiMessageManager.message,
     ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
@@ -79,8 +79,8 @@ class ItemDetailViewModel @Inject constructor(
 
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
-        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
-        observeItemFollowStatus(ObserveItemFollowStatus.Params(itemId))
+        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
+        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
 
         refresh()
     }
@@ -134,7 +134,7 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun observeByAuthor(itemDetail: ItemDetail?) {
         itemDetail?.let {
-            observeItemFollowStatus(ObserveItemFollowStatus.Params(itemDetail.itemId))
+            observeFavoriteStatus(ObserveFavoriteStatus.Params(itemDetail.itemId))
 
             itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
                 observeQueryItems(ObserveQueryItems.Params(it))

@@ -1,7 +1,7 @@
-package org.kafka.domain.observers
+package org.kafka.domain.observers.library
 
-import com.kafka.data.entities.RecentItem
-import com.kafka.data.feature.RecentItemRepository
+import com.kafka.data.entities.FavoriteItem
+import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -11,19 +11,18 @@ import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
-/**
- * Interactor for updating the homepage.
- * */
-class ObserveRecentItems @Inject constructor(
+class ObserveFavorites @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val accountRepository: AccountRepository,
-    private val recentItemRepository: RecentItemRepository
-) : SubjectInteractor<Unit, List<RecentItem>>() {
+    private val favoritesRepository: FavoritesRepository,
+) : SubjectInteractor<Unit, List<FavoriteItem>>() {
 
-    override fun createObservable(params: Unit): Flow<List<RecentItem>> {
+    override fun createObservable(params: Unit): Flow<List<FavoriteItem>> {
         return accountRepository.observeCurrentFirebaseUser()
             .flatMapLatest { user ->
-                user?.let { recentItemRepository.observeRecentItems(it.uid) } ?: flowOf(emptyList())
+                user?.let {
+                    favoritesRepository.observeRecentItems(user.uid)
+                } ?: flowOf(emptyList())
             }
             .flowOn(dispatchers.io)
     }

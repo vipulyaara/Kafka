@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.FavoriteItem
 import org.kafka.common.plus
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.widgets.FullScreenMessage
@@ -24,7 +24,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun Favorites(
-    items: List<Item>,
+    items: List<FavoriteItem>,
     layoutType: LayoutType,
     changeLayoutType: (LayoutType) -> Unit,
     openItemDetail: (String) -> Unit
@@ -54,7 +54,7 @@ internal fun Favorites(
 
 @Composable
 private fun FavoriteItemList(
-    favoriteItems: List<Item>,
+    favoriteItems: List<FavoriteItem>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier
@@ -78,7 +78,7 @@ private fun FavoriteItemList(
 
 @Composable
 private fun FavoriteItemGrid(
-    favoriteItems: List<Item>,
+    favoriteItems: List<FavoriteItem>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier

@@ -8,26 +8,23 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
+import org.kafka.domain.observers.library.ObserveFavorites
 import javax.inject.Inject
 
 class ObserveHomepage @Inject constructor(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val observeRecentItems: ObserveRecentItems,
-    private val observeFollowedItems: ObserveFollowedItems,
+    private val observeFavorites: ObserveFavorites,
     private val observeQueryItems: ObserveQueryItems
 ) : SubjectInteractor<ArchiveQuery, Homepage>() {
 
     override fun createObservable(params: ArchiveQuery): Flow<Homepage> {
-        observeQueryItems(ObserveQueryItems.Params(params))
-        observeRecentItems(Unit)
-        observeFollowedItems(Unit)
-
         return combine(
-            observeQueryItems.flow,
-            observeRecentItems.flow,
-            observeFollowedItems.flow,
-        ) { queryItems, recentItems, followedItems ->
-            Homepage(queryItems.mapQueryItems(), recentItems, followedItems)
+            observeQueryItems.execute(ObserveQueryItems.Params(params)),
+            observeRecentItems.execute(Unit),
+            observeFavorites.execute(Unit),
+        ) { queryItems, recentItems, favoriteItems ->
+            Homepage(queryItems.mapQueryItems(), recentItems, favoriteItems)
         }.flowOn(appCoroutineDispatchers.io)
     }
 

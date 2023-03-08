@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 class SignUpUser @Inject constructor(
     private val accountRepository: AccountRepository,
+    private val signInUser: SignInUser,
     private val dispatchers: AppCoroutineDispatchers
 ) : Interactor<SignUpUser.Params>() {
 
@@ -15,6 +16,9 @@ class SignUpUser @Inject constructor(
         withContext(dispatchers.io) {
             accountRepository.signUpOrLinkUser(params.email, params.password)
             accountRepository.updateUser(params.name)
+            // re-login to receive an update on authListener
+            accountRepository.signOut()
+            signInUser.execute(SignInUser.Params(params.email, params.password))
         }
     }
 
