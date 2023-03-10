@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="continue_reading" translatable="false">Continue Reading</string>
+    <string name="continue_reading" translatable="false">Reading List</string>
     <string name="cd_cover_image" translatable="false">Cover Image</string>
+    <string name="favorites">Favorites</string>
 </resources>

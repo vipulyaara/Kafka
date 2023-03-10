@@ -37,7 +37,6 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
-import org.kafka.navigation.selectRootScreen
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
 import ui.common.theme.theme.Dimens
@@ -53,9 +52,9 @@ internal fun AppNavigation(
             is NavigationEvent.Destination -> {
                 // switch tabs first because of a bug in navigation that doesn't allow
                 // changing tabs when destination is opened from a different tab
-                if (event.root != null && event.root != navigator.currentRoot.value)  {
-                    navController.selectRootScreen(event.root!!)
-                }
+//                if (event.root != null && event.root != navigator.currentRoot.value)  {
+//                    navController.selectRootScreen(event.root!!)
+//                }
                 navController.navigate(event.route)
             }
 

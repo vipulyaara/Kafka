@@ -14,9 +14,9 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.domain.interactors.GetHomepageTags
-import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.asArchiveQuery
+import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
@@ -42,7 +42,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "User is $user $message $homepage" }
+        debug { "User is $user $message ${homepage.recentItems}" }
         HomepageViewState(
             homepage = homepage,
             user = user,

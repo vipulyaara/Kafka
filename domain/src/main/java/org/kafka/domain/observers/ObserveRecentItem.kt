@@ -2,7 +2,6 @@ package org.kafka.domain.observers
 
 import com.kafka.data.entities.RecentItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.kafka.base.AppCoroutineDispatchers
@@ -15,12 +14,11 @@ import javax.inject.Inject
 class ObserveRecentItem @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val observeRecentItems: ObserveRecentItems
-) : SubjectInteractor<String, RecentItem>() {
+) : SubjectInteractor<String, RecentItem?>() {
 
-    override fun createObservable(params: String): Flow<RecentItem> {
+    override fun createObservable(params: String): Flow<RecentItem?> {
         return observeRecentItems.execute(Unit)
             .map { it.firstOrNull { it.fileId == params } }
-            .filterNotNull()
             .flowOn(dispatchers.io)
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.SimpleColorFilter
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -22,21 +21,15 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import org.kafka.ui.components.R
 
 @Composable
-fun DownloadAnimation(
-    progress: Float,
-    modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
-) {
+fun DownloadAnimation(progress: Float, modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.purple_elephant))
 
     Box(modifier = modifier.size(300.dp)) {
         LottieAnimation(
             composition = composition,
-//            dynamicProperties = colorFilterDynamicProperty(color),
             iterations = LottieConstants.IterateForever,
             modifier = modifier.align(Alignment.Center),
             isPlaying = true,
-            clipSpec = LottieClipSpec.Progress(progress),
         )
     }
 }

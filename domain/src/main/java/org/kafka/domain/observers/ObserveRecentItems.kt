@@ -23,7 +23,9 @@ class ObserveRecentItems @Inject constructor(
     override fun createObservable(params: Unit): Flow<List<RecentItem>> {
         return accountRepository.observeCurrentFirebaseUser()
             .flatMapLatest { user ->
-                user?.let { recentItemRepository.observeRecentItems(it.uid) } ?: flowOf(emptyList())
+                user?.let {
+                    recentItemRepository.observeRecentItems(it.uid)
+                } ?: flowOf(emptyList())
             }
             .flowOn(dispatchers.io)
     }

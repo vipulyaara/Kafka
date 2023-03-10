@@ -16,7 +16,7 @@ class ObserveRecentSearch @Inject constructor(
 
     override fun createObservable(params: Unit): Flow<List<RecentSearch>> {
         return recentSearchDao.observeRecentSearch()
-            .map { it.take(10) }
+            .map { it.take(20) }
             .flowOn(dispatchers.io)
     }
 }

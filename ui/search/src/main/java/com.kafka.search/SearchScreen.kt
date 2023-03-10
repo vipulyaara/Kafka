@@ -59,6 +59,7 @@ fun SearchScreen() {
     LaunchedEffect(Unit) {
         if (searchText.text.isNotEmpty()) {
             queryViewModel.submitQuery(searchText.text, selectedFilters)
+            searchViewModel.addRecentSearch(searchText.text, selectedFilters)
         }
     }
 
@@ -71,8 +72,7 @@ fun SearchScreen() {
                 recentSearches = recentSearches,
                 selectedFilters = selectedFilters,
                 onSearchClicked = {
-                    queryViewModel.submitQuery(it, selectedFilters)
-                    searchViewModel.addRecentSearch(it, selectedFilters)
+                    navigator.navigate(Screen.Search.createRoute(currentRoot, it))
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = {
@@ -114,10 +114,7 @@ private fun Search(
                 if (queryViewState.isNotShown && recentSearches.isNotEmpty()) {
                     RecentSearches(
                         recentSearches = recentSearches.map { it.searchTerm },
-                        onSearchClicked = {
-                            setSearchText(TextFieldValue(it, TextRange(it.length)))
-                            onSearchClicked(it)
-                        },
+                        onSearchClicked = { onSearchClicked(it) },
                         onRemoveSearch = removeRecentSearch
                     )
                 }

@@ -12,9 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.search.R
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -30,7 +32,7 @@ fun RecentSearches(
     ) {
         Column(modifier = modifier) {
             recentSearches.takeIf { it.isNotEmpty() }?.let {
-                SearchResultLabel("Recent searches")
+                SearchResultLabel(stringResource(R.string.recent_searches))
             }
 
             recentSearches.forEach {
@@ -77,9 +79,9 @@ private fun RecentSearchItem(
 @Composable
 private fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier.padding(Dimens.Spacing12),
         text = text,
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier.padding(Dimens.Spacing16),
         color = MaterialTheme.colorScheme.secondary
     )
 }

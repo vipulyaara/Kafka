@@ -6,14 +6,18 @@ import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
 import dagger.Reusable
 import kotlinx.coroutines.flow.map
+import org.kafka.base.debug
 import javax.inject.Inject
 
 @Reusable
 class RecentItemRepository @Inject constructor(private val firestoreGraph: FirestoreGraph) {
     fun observeRecentItems(uid: String) = firestoreGraph.getRecentItemsCollection(uid)
         .snapshots()
-        .map { snapshots ->
-            snapshots.map { mapRecentItem(it) }.sortedByDescending { it.createdAt }
+        .map { snapshot ->
+            snapshot.map { mapRecentItem(it) }
+                .sortedByDescending { it.createdAt }
+                .distinctBy { it.itemId }
+                .also { debug { "recent are $it" } }
         }
 
     private fun mapRecentItem(queryDocumentSnapshot: QueryDocumentSnapshot): RecentItem {

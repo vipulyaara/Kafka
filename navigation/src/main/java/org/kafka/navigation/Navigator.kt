@@ -88,13 +88,13 @@ fun NavController.selectRootScreen(tab: RootScreen) {
             saveState = true
         }
 
-//        val currentEntry = currentBackStackEntry
-//        val currentDestination = currentEntry?.destination
-//        val hostGraphRoute = currentDestination?.hostNavGraph?.route
-//        val isReselected = hostGraphRoute == tab.route
-//        if (isReselected) {
-//            navigateUp()
-//        }
+        val currentEntry = currentBackStackEntry
+        val currentDestination = currentEntry?.destination
+        val hostGraphRoute = currentDestination?.hostNavGraph?.route
+        val isReselected = hostGraphRoute == tab.route
+        if (isReselected) {
+            navigateUp()
+        }
     }
 }
 

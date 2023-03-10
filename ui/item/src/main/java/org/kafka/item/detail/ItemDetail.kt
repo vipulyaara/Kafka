@@ -33,6 +33,7 @@ import com.kafka.data.entities.ItemDetail
 import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
+import org.kafka.common.extensions.alignCenter
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
@@ -182,7 +183,7 @@ private fun ItemDescription(
             Text(
                 text = ratingText(itemDetail.uiRating) +
                         AnnotatedString(itemDetail.description.orEmpty()),
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium.alignCenter(),
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,

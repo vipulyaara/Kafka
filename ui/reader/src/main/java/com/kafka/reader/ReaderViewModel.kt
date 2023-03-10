@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
@@ -32,6 +33,7 @@ class ReaderViewModel @Inject constructor(
         observeRecentItem.flow,
         uiMessageManager.message,
     ) { download, readable, message ->
+        debug { "Readable is $readable" }
         ReaderViewState(
             recentItem = readable,
             download = download,
