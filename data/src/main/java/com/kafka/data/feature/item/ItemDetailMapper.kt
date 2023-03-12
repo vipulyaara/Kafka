@@ -54,11 +54,9 @@ class ItemDetailMapper @Inject constructor(
         val files = from.files.map {
             fileMapper.map(
                 file = it,
-                itemId = from.metadata.identifier,
-                itemTitle = item.title,
+                item = item,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.getOrNull(it.name)?.localUri,
-                coverImage = item.coverImage
+                localUri = fileDao.getOrNull(it.name)?.localUri
             )
         }.filter { supportedExtensions.contains(it.extension) }
 
