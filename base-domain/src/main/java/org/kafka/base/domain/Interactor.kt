@@ -60,7 +60,7 @@ abstract class SubjectInteractor<P, T> {
         return flow
     }
 
-    suspend fun execute(params: P): T = createObservable(params).first()
+    fun execute(params: P): Flow<T> = createObservable(params)
 
     abstract fun createObservable(params: P): Flow<T>
 

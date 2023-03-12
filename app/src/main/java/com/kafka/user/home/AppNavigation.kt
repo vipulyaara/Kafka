@@ -28,6 +28,7 @@ import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.common.extensions.collectEvent
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
+import org.kafka.item.detail.description.DescriptionDialog
 import org.kafka.item.files.Files
 import org.kafka.library.LibraryScreen
 import org.kafka.navigation.LocalNavigator
@@ -36,7 +37,6 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
-import org.kafka.navigation.selectRootScreen
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
 import ui.common.theme.theme.Dimens
@@ -52,9 +52,9 @@ internal fun AppNavigation(
             is NavigationEvent.Destination -> {
                 // switch tabs first because of a bug in navigation that doesn't allow
                 // changing tabs when destination is opened from a different tab
-                if (event.root != null && event.root != navigator.currentRoot.value)  {
-                    navController.selectRootScreen(event.root!!)
-                }
+//                if (event.root != null && event.root != navigator.currentRoot.value)  {
+//                    navController.selectRootScreen(event.root!!)
+//                }
                 navController.navigate(event.route)
             }
 
@@ -81,6 +81,7 @@ private fun NavGraphBuilder.addHomeRoot() {
     ) {
         addHome(RootScreen.Home)
         addItemDetail(RootScreen.Home)
+        addItemDescription(RootScreen.Home)
         addFiles(RootScreen.Home)
         addReader(RootScreen.Home)
         addLibrary(RootScreen.Home)
@@ -98,6 +99,7 @@ private fun NavGraphBuilder.addSearchRoot() {
     ) {
         addSearch(RootScreen.Search)
         addItemDetail(RootScreen.Search)
+        addItemDescription(RootScreen.Search)
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
         addPlayer(RootScreen.Search)
@@ -111,6 +113,7 @@ private fun NavGraphBuilder.addLibraryRoot() {
     ) {
         addLibrary(RootScreen.Library)
         addItemDetail(RootScreen.Library)
+        addItemDescription(RootScreen.Library)
         addFiles(RootScreen.Library)
         addReader(RootScreen.Library)
         addSearch(RootScreen.Library)
@@ -152,6 +155,12 @@ private fun NavGraphBuilder.addLibrary(root: RootScreen) {
 private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
     composable(Screen.ItemDetail.createRoute(root)) {
         ItemDetail()
+    }
+}
+
+private fun NavGraphBuilder.addItemDescription(root: RootScreen) {
+    bottomSheet(Screen.ItemDescription.createRoute(root)) {
+        DescriptionDialog()
     }
 }
 

@@ -26,7 +26,7 @@
     <string name="audio.menu.copyLink">Copy link</string>
 
     <string name="downloader.downloadsLocationSelect.title">Downloads location</string>
-    <string name="downloader.downloadsLocationSelect.text">Click Next to select downloads folder location</string>
+    <string name="downloader.downloadsLocationSelect.text">Select a folder location</string>
     <string name="downloader.downloadsLocationSelect.next">Next</string>
 
     <string name="downloader.enqueue.downloadsNotFound">Selected downloads folder not found</string>

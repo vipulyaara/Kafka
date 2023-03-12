@@ -73,7 +73,9 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
+
     namespace 'org.kafka.user'
+
     lint {
         abortOnError true
         checkDependencies true
@@ -83,28 +85,28 @@ android {
 }
 
 dependencies {
-    implementation project(':ui-common')
-    implementation project(':ui-common-theme')
-    implementation project(':ui-components')
+    implementation project(':ui:common')
+    implementation project('::ui:theme')
+    implementation project(':ui:components')
     implementation project(':base-domain')
-    implementation project(':core-downloader')
+    implementation project(':core:downloader')
     implementation project(':core-playback')
-    implementation project(':core-ui-downloader')
+    implementation project(':ui:downloader')
     implementation project(':data')
     implementation project(':navigation')
-    implementation project(':analytics')
+    implementation project(':core:analytics')
     implementation project(':notifications')
     implementation project(':navigation')
     implementation project(':domain')
-    implementation project(':ui-homepage')
-    implementation project(':ui-search')
-    implementation project(':ui-item')
-    implementation project(':ui-reader')
-    implementation project(':ui-text-reader')
-    implementation project(':ui-library')
-    implementation project(':ui-auth')
+    implementation project(':ui:homepage')
+    implementation project(':ui:search')
+    implementation project(':ui:item')
+    implementation project(':ui:reader')
+    implementation project(':ui:text-reader')
+    implementation project(':ui:library')
+    implementation project(':ui:auth')
     implementation project(':ui-playback')
-    implementation project(':webview')
+    implementation project(':ui:webview')
 
     implementation platform(libs.google.bom)
 
@@ -131,7 +133,7 @@ dependencies {
 
     implementation libs.coil.coil
 
-    implementation libs.androidx.appcompat
+//    implementation libs.androidx.appcompat
 
     implementation libs.androidx.activity.compose
 
@@ -167,9 +169,6 @@ dependencies {
 
     implementation libs.icons.feather
     implementation libs.icons.tabler
-
-    implementation libs.rive
-    implementation libs.startup
 }
 
 android.applicationVariants.all { variant ->

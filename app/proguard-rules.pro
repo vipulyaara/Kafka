@@ -52,8 +52,9 @@
 # Dagger
 -dontwarn com.google.errorprone.annotations.*
 
-# Keep trakt-java and tmdb-java entity names (for GSON)
--keep class com.kafka.*.entities.** {
+-keepclassmembers class com.kafka.data.entities.** { *; }
+
+-keep class com.kafka.data.entities.** {
     <fields>;
     <init>(...);
 }

@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdk Publishing.compileSdk
+
+    defaultConfig {
+        minSdkVersion Publishing.minSdk
+        manifestPlaceholders += ['appAuthRedirectScheme': 'empty']
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+    }
+
+    sourceSets {
+        main { java.srcDirs = ['src/main/java'] }
+        test { java.srcDirs = ['src/test/java'] }
+        androidTest { java.srcDirs = ['src/androidTest/java'] }
+    }
+    namespace 'org.kafka.search'
+}
+
+dependencies {
+    implementation project(':core:analytics')
+    implementation project(':base-domain')
+    implementation project(':data')
+    implementation project(':domain')
+    implementation project(':base-network')
+    implementation project(':navigation')
+    implementation project(':ui:library')
+    implementation project(':ui:item')
+    implementation project(':ui:common')
+    implementation project(':ui:components')
+
+    implementation libs.hilt.library
+    kapt libs.hilt.compiler
+}

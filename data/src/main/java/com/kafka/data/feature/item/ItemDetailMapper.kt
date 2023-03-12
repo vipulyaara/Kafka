@@ -2,6 +2,7 @@ package com.kafka.data.feature.item
 
 import android.text.Html
 import com.kafka.data.dao.FileDao
+import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.File.Companion.supportedExtensions
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.item.File
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class ItemDetailMapper @Inject constructor(
     private val fileDao: FileDao,
+    private val itemDao: ItemDao,
     private val fileMapper: FileMapper
 ) {
     suspend fun map(from: ItemDetailResponse): ItemDetail {
@@ -27,7 +29,8 @@ class ItemDetailMapper @Inject constructor(
             coverImage = from.findCoverImage(),
             metadata = from.metadata.collection,
             primaryTextFile = from.files.getTextFile()?.fileId,
-            subject = from.metadata.subject
+            subject = from.metadata.subject,
+            rating = itemDao.getOrNull(from.metadata.identifier)?.rating
         ).also {
             insertFiles(from, it)
         }
@@ -51,11 +54,9 @@ class ItemDetailMapper @Inject constructor(
         val files = from.files.map {
             fileMapper.map(
                 file = it,
-                itemId = from.metadata.identifier,
-                itemTitle = item.title,
+                item = item,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.getOrNull(it.name)?.localUri,
-                coverImage = item.coverImage
+                localUri = fileDao.getOrNull(it.name)?.localUri
             )
         }.filter { supportedExtensions.contains(it.extension) }
 

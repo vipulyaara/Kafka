@@ -21,6 +21,14 @@ data class ItemDetail(
     val metadata: List<String>? = null,
     val primaryTextFile: String? = null,
     val subject: List<String>? = null,
-) : BaseEntity
+    val rating: Double? = null
+) : BaseEntity {
+    val uiRating: Int
+        get() = (rating ?: 0.0).toInt()
+
+    val isAudio
+        get() = this.mediaType == mediaTypeAudio
+
+}
 
 fun ItemDetail?.webUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

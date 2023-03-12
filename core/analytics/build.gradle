@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdk Publishing.compileSdk
+
+    defaultConfig {
+        minSdkVersion Publishing.minSdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+    }
+    namespace 'org.kafka.analytics'
+}
+
+dependencies {
+    implementation project(':base-domain')
+    implementation project(':data')
+
+    implementation platform(libs.google.bom)
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
+
+    implementation libs.hilt.library
+    kapt libs.hilt.compiler
+}

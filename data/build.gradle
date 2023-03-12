@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
+apply plugin:  'com.google.devtools.ksp'
 
 kapt {
     correctErrorTypes = true
@@ -55,7 +56,7 @@ dependencies {
     api libs.androidx.room.runtime
     api libs.androidx.room.ktx
     api libs.androidx.room.paging
-    kapt libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
     api libs.androidx.paging.runtime
 
     api libs.retrofit.serialization
@@ -63,9 +64,4 @@ dependencies {
     api libs.kotlin.coroutines.core
 
     api libs.kotlin.stdlib
-
-    debugApi libs.flipper.core
-    debugApi libs.flipper.soloader
-    debugApi libs.flipper.network
-    releaseApi libs.flipper.release
 }

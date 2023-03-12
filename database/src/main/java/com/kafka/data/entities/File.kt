@@ -60,7 +60,6 @@ data class File(
     }
 }
 
-fun ItemDetail?.isAudio() = this?.mediaType == mediaTypeAudio
 
 fun String?.isText() = File.textExtensions.contains(this?.lowercase())
 fun String?.isAudio() = File.audioExtensions.contains(this?.lowercase())

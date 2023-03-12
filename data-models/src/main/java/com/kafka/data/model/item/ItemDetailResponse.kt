@@ -16,13 +16,13 @@ data class ItemDetailResponse(
     @SerialName("files_count")
     val filesCount: Int,
     @SerialName("item_size")
-    val itemSize: Long,
+    val itemSize: Long = 0L,
     @SerialName("metadata")
     val metadata: Metadata,
     @SerialName("server")
-    val server: String,
+    val server: String = "",
     @SerialName("uniq")
-    val uniq: Int,
+    val uniq: Int = 0,
     @SerialName("workable_servers")
-    val workableServers: List<String>
+    val workableServers: List<String> = emptyList()
 )

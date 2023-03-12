@@ -11,8 +11,7 @@ data class User(
     @PrimaryKey @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "display_name") val displayName: String,
     @ColumnInfo(name = "image_url") val imageUrl: String? = null,
-    @ColumnInfo(name = "anonymous") val anonymous: Boolean,
-    @ColumnInfo(name = "favorites") val favorites: List<String> = emptyList()
+    @ColumnInfo(name = "anonymous") val anonymous: Boolean
 ) : BaseEntity {
-    constructor() : this("", "", null, false, emptyList())
+    constructor() : this("", "", null, false)
 }
