@@ -1,11 +1,11 @@
 [versions]
-accompanist = "0.29.1-alpha"
+accompanist = "0.29.2-rc"
 androidxhilt = "1.0.0"
-androidxlifecycle = "2.6.0-rc01"
-navigation = "2.6.0-alpha06"
+androidxlifecycle = "2.6.0"
+navigation = "2.6.0-alpha07"
 androidxtest = "1.5.2"
 coil = "2.2.2"
-compose-bom = "2023.02.00-beta03"
+compose-bom = "2023.02.00-rc02"
 constraintlayout = "1.1.0-alpha07"
 composeCompiler = "1.4.2"
 composesnapshot = "-" # a single character = no snapshot
@@ -30,8 +30,6 @@ pdftron = "9.3.1"
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-insetsui = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
-accompanist-pager-core = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }

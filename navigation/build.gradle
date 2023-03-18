@@ -36,7 +36,8 @@ dependencies {
     implementation project(':ui:common')
 
     implementation libs.androidx.navigation.compose
-    api libs.compose.runtime.runtime
+    implementation libs.compose.runtime.runtime
+    implementation libs.compose.material.material
 
     api libs.androidx.core
     api libs.androidx.lifecycle.runtime

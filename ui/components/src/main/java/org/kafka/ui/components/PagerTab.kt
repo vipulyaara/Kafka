@@ -12,7 +12,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import com.google.accompanist.pager.ExperimentalPagerApi
 import java.lang.Integer.max
 import kotlin.math.absoluteValue
 
@@ -22,7 +21,6 @@ import kotlin.math.absoluteValue
  *
  * @sample com.google.accompanist.sample.pager.PagerWithTabs
  */
-@ExperimentalPagerApi
 fun Modifier.pagerTabIndicatorOffset(
     pagerState: PagerState,
     tabPositions: List<TabPosition>,

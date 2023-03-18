@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.pdf.PdfReader
 import com.kafka.reader.text.TextReader
 import org.kafka.navigation.LocalNavigator
@@ -26,10 +27,13 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
         topBar = { com.kafka.reader.TopBar() }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            when {
-                recentItem?.isPdf == true -> PdfReader(fileId = recentItem.fileId)
-                recentItem?.isTxt == true -> TextReader(fileId = recentItem.fileId)
-                else -> viewState.download?.downloadInfo?.let { DownloadProgress(it) }
+            if (recentItem?.localUri == null) {
+                viewState.download?.downloadInfo?.let { DownloadProgress(it) }
+            } else {
+                when (recentItem.type) {
+                    RecentTextItem.Type.PDF -> PdfReader(fileId = recentItem.fileId)
+                    RecentTextItem.Type.TXT -> TextReader(fileId = recentItem.fileId)
+                }
             }
         }
     }

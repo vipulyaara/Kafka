@@ -40,4 +40,4 @@ project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playb
 
 enableFeaturePreview("VERSION_CATALOGS")
 
-includeBuild("gradlePlugins")
+//includeBuild("gradlePlugins")

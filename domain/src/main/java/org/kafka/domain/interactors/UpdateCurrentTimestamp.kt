@@ -1,21 +1,22 @@
 package org.kafka.domain.interactors
 
+import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.dao.RecentTextDao
 import kotlinx.coroutines.withContext
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
-class UpdateCurrentPage @Inject constructor(
+class UpdateCurrentTimestamp @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
-    private val recentTextDao: RecentTextDao
-) : Interactor<UpdateCurrentPage.Params>() {
+    private val recentAudioDao: RecentAudioDao
+) : Interactor<UpdateCurrentTimestamp.Params>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            recentTextDao.updateCurrentPage(params.fileId, params.currentPage)
+            recentAudioDao.updateTimestamp(params.fileId, params.timestamp)
         }
     }
 
-    data class Params(val fileId: String, val currentPage: Int)
+    data class Params(val fileId: String, val timestamp: Long)
 }

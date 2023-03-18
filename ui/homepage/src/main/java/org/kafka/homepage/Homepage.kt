@@ -36,11 +36,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     LogCompositions(tag = "Homepage Feed items")
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-
-    LaunchedEffect(viewState.homepage?.queryItems) {
-        preloadImages(context, viewState.homepage?.queryItems)
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

@@ -118,7 +118,7 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
-        itemDetail?.primaryTextFile?.let {
+        itemDetail?.primaryFile?.let {
             addRecentItem(itemId)
             navigator.navigate(Screen.Reader.createRoute(navigator.currentRoot.value, it))
         } ?: viewModelScope.launch {

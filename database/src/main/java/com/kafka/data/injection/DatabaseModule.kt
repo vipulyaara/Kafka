@@ -75,6 +75,12 @@ class DatabaseDaoModule {
     fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.recentSearchDao()
 
     @Provides
+    fun provideRecentTextDao(db: KafkaRoomDatabase) = db.recentTextDao()
+
+    @Provides
+    fun provideRecentAudioDao(db: KafkaRoomDatabase) = db.recentAudioDao()
+
+    @Provides
     fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
 
     @Provides

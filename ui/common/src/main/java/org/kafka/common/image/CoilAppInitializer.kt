@@ -18,11 +18,13 @@ class CoilAppInitializer @Inject constructor(
     private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
     override fun init(application: Application) {
-        Coil.setImageLoader {
-            ImageLoader.Builder(application)
-                .okHttpClient(okHttpClient)
-                .diskCache(DiskCache.Builder().directory(File(context.cacheDir, "images_cache")).build())
-                .build()
-        }
+//        Coil.setImageLoader {
+//            ImageLoader.Builder(application)
+//                .okHttpClient(okHttpClient)
+//                .dispatcher(dispatchers.io)
+//                .fetcherDispatcher(dispatchers.io)
+//                .diskCache(DiskCache.Builder().directory(File(context.cacheDir, "images_cache")).build())
+//                .build()
+//        }
     }
 }

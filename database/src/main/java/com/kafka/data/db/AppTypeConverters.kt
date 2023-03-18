@@ -1,6 +1,7 @@
 package com.kafka.data.db
 
 import androidx.room.TypeConverter
+import com.kafka.data.entities.RecentTextItem
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -31,6 +32,12 @@ class AppTypeConverters {
         true -> LocalDateTime.now()
         else -> LocalDateTime.parse(value, localDateFormat)
     }
+
+    @TypeConverter
+    fun stringToPageList(data: String) = json.decodeFromString<List<RecentTextItem.Page>>(data)
+
+    @TypeConverter
+    fun pageListToString(data: List<RecentTextItem.Page>) = json.encodeToString(data)
 
     @TypeConverter
     fun fromLocalDateTime(value: LocalDateTime): String = localDateFormat.format(value)

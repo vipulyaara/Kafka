@@ -216,7 +216,7 @@ private fun Description(continueReading: RecentItem, modifier: Modifier = Modifi
         Spacer(modifier = Modifier.height(Dimens.Spacing04))
 
         Text(
-            text = continueReading.mediaType.orEmpty(),
+            text = continueReading.mediaType,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.tertiary
         )
@@ -225,13 +225,13 @@ private fun Description(continueReading: RecentItem, modifier: Modifier = Modifi
 }
 
 @Composable
-private fun Progress() {
+private fun Progress(progress: Float) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
         verticalAlignment = Alignment.CenterVertically
     ) {
         LinearProgressIndicator(
-            progress = 0.2f,
+            progress = progress,
             modifier = Modifier
                 .height(Dimens.Spacing04)
                 .width(116.dp)

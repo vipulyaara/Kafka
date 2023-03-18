@@ -59,12 +59,9 @@ dependencies {
     api libs.accompanist.placeholder
     api libs.accompanist.swiperefresh
     api libs.accompanist.systemuicontroller
-    api libs.accompanist.pager.core
-    api libs.accompanist.pager.indicators
     api libs.accompanist.navigation.animation
     api libs.accompanist.navigation.material
     api libs.accompanist.web
-    api "dev.chrisbanes.snapper:snapper:0.1.0"
 
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation

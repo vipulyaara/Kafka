@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.controls.GoToPage
 import com.kafka.textreader.bouquet.ResourceType
 import com.kafka.textreader.bouquet.VerticalPdfReader
@@ -53,7 +53,7 @@ internal fun PdfReader(
 
 @Composable
 private fun PdfReaderWithControls(
-    recentTextItem: RecentItem.Readable,
+    recentTextItem: RecentTextItem,
     modifier: Modifier = Modifier,
     showControls: Boolean = false,
     setControls: (Boolean) -> Unit = {},
@@ -76,10 +76,11 @@ private fun PdfReaderWithControls(
 
     Box(modifier = modifier.fillMaxSize()) {
         InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
-        ZoomableImage(panEnabled = panEnabled) {
+        ZoomableImage(panEnabled = panEnabled, onClick = { setControls(!showControls) }) {
             VerticalPdfReader(
                 state = pdfState,
-                contentPadding = scaffoldPadding
+                contentPadding = scaffoldPadding,
+                modifier = Modifier
             )
         }
 

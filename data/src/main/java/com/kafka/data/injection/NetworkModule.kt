@@ -54,12 +54,10 @@ class NetworkModule {
     fun okHttp(
         cache: Cache,
         acceptDialogInterceptor: AcceptDialogInterceptor,
-        rewriteCachesInterceptor: RewriteCachesInterceptor,
-        networkConnectionInterceptor: NetworkConnectionInterceptor
+        rewriteCachesInterceptor: RewriteCachesInterceptor
     ) = getBaseBuilder(cache)
         .addInterceptor(acceptDialogInterceptor)
         .addInterceptor(rewriteCachesInterceptor)
-//        .addInterceptor(networkConnectionInterceptor)
         .build()
 
     @Provides

@@ -1,13 +1,12 @@
-package com.kafka.textreader
+package com.kafka.user.initializer
 
 import android.app.Application
 import com.kafka.data.AppInitializer
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
-import com.kafka.data.dao.ItemDetailDao
+import com.kafka.data.dao.RecentTextDao
 import com.kafka.data.entities.File
-import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.isText
 import com.kafka.data.entities.isTxt
 import com.kafka.data.injection.ProcessLifetime
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.domain.interactors.ReadTextFromUri
-import org.kafka.domain.interactors.UpdateRecentItem
 import tm.alashow.datmusic.downloader.manager.Downloadable
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
@@ -27,7 +25,7 @@ import javax.inject.Inject
 /**
  * Listen to the downloads and save the text files to the database when download is completed
  * */
-class DownloadInitializer @Inject constructor(
+class ReaderProgressInitializer @Inject constructor(
     private val fetch: Fetch,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
     private val readTextFromUri: ReadTextFromUri,
@@ -35,8 +33,7 @@ class DownloadInitializer @Inject constructor(
     private val fileDao: FileDao,
     private val recentTextItemMapper: RecentTextItemMapper,
     private val dispatchers: AppCoroutineDispatchers,
-    private val itemDetailDao: ItemDetailDao,
-    private val updateRecentItem: UpdateRecentItem
+    private val recentTextDao: RecentTextDao
 ) : AppInitializer {
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
@@ -54,35 +51,23 @@ class DownloadInitializer @Inject constructor(
             if (file.isText()) {
                 val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
                     .getOrElse { emptyList() } else emptyList()
-                val itemDetail = itemDetailDao.get(file.itemId)
-                val textFile = recentTextItemMapper.map(download, pages, file, itemDetail)
+                val textFile = recentTextItemMapper.map(download, pages, file)
 
-                updateRecentItem.execute(textFile)
+                recentTextDao.insert(textFile)
             }
         }
     }
 }
 
 class RecentTextItemMapper @Inject constructor() {
-    fun map(
-        download: Download,
-        pages: List<String>,
-        file: File,
-        itemDetail: ItemDetail
-    ): RecentItem.Readable {
-        val filePages = pages.mapIndexed { index, s -> RecentItem.Readable.Page(index + 1) }
-        return RecentItem.Readable(
+    fun map(download: Download, pages: List<String>, file: File): RecentTextItem {
+        val filePages = pages.mapIndexed { index, s -> RecentTextItem.Page(index + 1, s) }
+        return RecentTextItem(
             fileId = file.fileId,
-            itemId = file.itemId,
-            createdAt = System.currentTimeMillis(),
-            title = itemDetail.title.orEmpty(),
             currentPage = 1,
-            localUri = download.fileUri.toString(),
-            coverUrl = itemDetail.coverImage.orEmpty(),
-            creator = itemDetail.creator.orEmpty(),
-            mediaType = itemDetail.mediaType.orEmpty(),
-            type = file.extension.orEmpty(),
+            type = RecentTextItem.Type.fromString(file.extension),
             pages = filePages,
+            localUri = download.fileUri.toString()
         )
     }
 }

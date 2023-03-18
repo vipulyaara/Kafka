@@ -76,7 +76,7 @@ class VerticalPdfReaderState(
 fun rememberVerticalPdfReaderState(
     resource: ResourceType,
     startPage: Int,
-    isZoomEnable: Boolean = true
+    isZoomEnable: Boolean = false
 ): VerticalPdfReaderState {
     return remember {
         VerticalPdfReaderState(resource, isZoomEnable, startPage)

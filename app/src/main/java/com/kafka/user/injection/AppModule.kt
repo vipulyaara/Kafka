@@ -13,10 +13,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
-import com.kafka.textreader.DownloadInitializer
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
+import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
+import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.ThreeTenBpInitializer
 import dagger.Binds
 import dagger.Module
@@ -109,7 +110,11 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideDownloadInitializer(bind: DownloadInitializer): AppInitializer
+    abstract fun provideDownloadInitializer(bind: ReaderProgressInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
 
     @Binds
     @IntoSet

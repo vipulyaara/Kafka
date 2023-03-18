@@ -68,7 +68,6 @@ subprojects {
             freeCompilerArgs += "-Xopt-in=coil.annotation.ExperimentalCoilApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.text.InternalFoundationTextApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
-            freeCompilerArgs += "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.unit.ExperimentalUnitApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"

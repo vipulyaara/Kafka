@@ -8,12 +8,7 @@ import java.net.URL
 import javax.inject.Inject
 
 class FileMapper @Inject constructor() {
-    fun map(
-        file: File,
-        item: ItemDetail,
-        prefix: String,
-        localUri: String?
-    ) = file.run {
+    fun map(file: File, item: ItemDetail, prefix: String, localUri: String?) = file.run {
         val extension = name.split(".").last()
         com.kafka.data.entities.File(
             fileId = fileId,

@@ -44,6 +44,7 @@ fun ZoomableImage(
     isZoomable: Boolean = true,
     panEnabled: Boolean = true,
     scrollState: ScrollableState? = null,
+    onClick : () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -63,7 +64,7 @@ fun ZoomableImage(
             .combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = { /* NADA :) */ },
+                onClick = onClick,
                 onDoubleClick = {
                     if (scale.value >= 1.5f) {
                         scale.value = 1f

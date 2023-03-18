@@ -85,27 +85,26 @@ android {
 }
 
 dependencies {
-    implementation project(':ui:common')
-    implementation project('::ui:theme')
-    implementation project(':ui:components')
     implementation project(':base-domain')
     implementation project(':core:downloader')
     implementation project(':core-playback')
-    implementation project(':ui:downloader')
-    implementation project(':data')
-    implementation project(':navigation')
     implementation project(':core:analytics')
-    implementation project(':notifications')
-    implementation project(':navigation')
+    implementation project(':data')
     implementation project(':domain')
-    implementation project(':ui:homepage')
-    implementation project(':ui:search')
-    implementation project(':ui:item')
-    implementation project(':ui:reader')
-    implementation project(':ui:text-reader')
-    implementation project(':ui:library')
+    implementation project(':navigation')
+    implementation project(':notifications')
     implementation project(':ui:auth')
+    implementation project(':ui:common')
+    implementation project(':ui:components')
+    implementation project(':ui:downloader')
+    implementation project(':ui:homepage')
+    implementation project(':ui:item')
+    implementation project(':ui:library')
     implementation project(':ui-playback')
+    implementation project(':ui:reader')
+    implementation project(':ui:search')
+    implementation project(':ui:text-reader')
+    implementation project(':ui:theme')
     implementation project(':ui:webview')
 
     implementation platform(libs.google.bom)
@@ -133,8 +132,6 @@ dependencies {
 
     implementation libs.coil.coil
 
-//    implementation libs.androidx.appcompat
-
     implementation libs.androidx.activity.compose
 
     implementation libs.retrofit.serialization
@@ -147,13 +144,13 @@ dependencies {
 
     implementation libs.accompanist.navigation.animation
     implementation libs.accompanist.navigation.material
-    api libs.accompanist.pager.core
 
     implementation libs.timber
     debugImplementation libs.leakCanary
     debugImplementation libs.leakCanary.process
 
-    api libs.tracing
+    implementation libs.tracing
+    implementation libs.fetch
 
     implementation libs.kotlin.stdlib
 
@@ -183,5 +180,4 @@ android.applicationVariants.all { variant ->
     }
 }
 
-//apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'

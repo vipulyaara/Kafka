@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -18,8 +19,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,12 +46,12 @@ fun VerticalPdfReader(
         DisposableEffect(key1 = Unit) {
             val job = coroutineScope.launch(Dispatchers.IO) {
                 load(
-                    coroutineScope,
-                    ctx,
-                    state,
-                    constraints.maxWidth,
-                    constraints.maxHeight,
-                    true
+                    coroutineScope = coroutineScope,
+                    context = ctx,
+                    state = state,
+                    width = constraints.maxWidth,
+                    height = constraints.maxHeight,
+                    portrait = true
                 )
             }
             onDispose {
@@ -63,8 +62,7 @@ fun VerticalPdfReader(
 
         state.pdfRender?.let { pdf ->
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = contentPadding,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 state = lazyState
@@ -102,110 +100,6 @@ fun VerticalPdfReader(
         }
     }
 }
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun HorizontalPDFReader(
-    state: HorizontalPdfReaderState,
-    modifier: Modifier
-) {
-    BoxWithConstraints(
-        modifier = modifier,
-        contentAlignment = Alignment.TopCenter
-    ) {
-        val ctx = LocalContext.current
-        val coroutineScope = rememberCoroutineScope()
-        val density = LocalDensity.current
-        DisposableEffect(key1 = Unit) {
-            val job = coroutineScope.launch(Dispatchers.IO) {
-                load(
-                    coroutineScope,
-                    ctx,
-                    state,
-                    constraints.maxWidth,
-                    constraints.maxHeight,
-                    constraints.maxHeight > constraints.maxWidth
-                )
-            }
-            onDispose {
-                job.cancel()
-                state.close()
-            }
-        }
-        state.pdfRender?.let { pdf ->
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTransformGestures(true) { centroid, pan, zoom, rotation ->
-                            if (!state.mIsZoomEnable) return@detectTransformGestures
-                            val nScale = (state.scale * zoom)
-                                .coerceAtLeast(1f)
-                                .coerceAtMost(3f)
-                            val nOffset = if (nScale > 1f) {
-                                val maxT = constraints.maxWidth * (state.scale - 1)
-                                val maxH = constraints.maxHeight * (state.scale - 1)
-                                Offset(
-                                    x = (state.offset.x + pan.x).coerceIn(
-                                        minimumValue = -maxT / 2,
-                                        maximumValue = maxT / 2
-                                    ),
-                                    y = (state.offset.y + pan.y).coerceIn(
-                                        minimumValue = -maxH / 2,
-                                        maximumValue = maxH / 2
-                                    )
-                                )
-                            } else {
-                                Offset(0f, 0f)
-                            }
-                            state.mScale = nScale
-                            state.offset = nOffset
-                        }
-                    },
-                count = state.pdfPageCount,
-                state = state.pagerState,
-                userScrollEnabled = state.scale == 1f
-            ) { page ->
-                val bitmapState = pdf.pageLists[page].stateFlow.collectAsState()
-                DisposableEffect(key1 = Unit) {
-                    pdf.pageLists[page].load()
-                    onDispose {
-                        pdf.pageLists[page].recycle()
-                    }
-                }
-                val height = bitmapState.value.height * state.scale
-                val width = constraints.maxWidth * state.scale
-                PdfImage(
-                    graphicsLayerData = {
-                        if (page == state.currentPage) {
-                            GraphicsLayerData(
-                                scale = state.scale,
-                                translationX = state.offset.x,
-                                translationY = state.offset.y
-                            )
-                        } else {
-                            GraphicsLayerData(
-                                scale = 1f,
-                                translationX = 0f,
-                                translationY = 0f
-                            )
-                        }
-                    },
-                    bitmap = {
-                        bitmapState.value.asImageBitmap()
-                    },
-                    dimension = {
-                        Dimension(
-                            height = with(density) { height.toDp() },
-                            width = with(density) { width.toDp() }
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
-
 
 private suspend fun load(
     coroutineScope: CoroutineScope,

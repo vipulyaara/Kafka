@@ -31,7 +31,7 @@ internal fun TopBar(
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
 
     val containerColor by animateColorAsState(
-        if (isRaised) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
+        if (isRaised) MaterialTheme.colorScheme.primary else Color.Transparent
     )
     val contentColor by animateColorAsState(
         if (isRaised) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary

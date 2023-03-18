@@ -1,14 +1,12 @@
 package com.kafka.textreader.bouquet
 
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.core.net.toUri
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 
-@OptIn(ExperimentalPagerApi::class)
 class HorizontalPdfReaderState(
     resource: ResourceType,
     isZoomEnable: Boolean = false
@@ -41,7 +39,7 @@ class HorizontalPdfReaderState(
                     it[0] as ResourceType,
                     it[1] as Boolean
                 ).apply {
-                    pagerState = PagerState(currentPage = it[2] as Int)
+                    pagerState = PagerState(it[2] as Int)
                 }
             }
         )

@@ -28,7 +28,7 @@ class ItemDetailMapper @Inject constructor(
             files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },
             coverImage = from.findCoverImage(),
             metadata = from.metadata.collection,
-            primaryTextFile = from.files.getTextFile()?.fileId,
+            primaryFile = from.files.primaryFile(from.metadata.mediatype)?.fileId,
             subject = from.metadata.subject,
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating
         ).also {
@@ -36,10 +36,13 @@ class ItemDetailMapper @Inject constructor(
         }
     }
 
+    private fun List<File>.primaryFile(mediaType: String?) =
+        if (mediaType == "texts") getTextFile() else firstOrNull()
+
     private fun List<File>.getTextFile() =
         firstOrNull { it.name.extension() == "pdf" }
-        ?: firstOrNull { it.name.extension() == "epub" }
-        ?: firstOrNull { it.name.extension() == "txt" }
+            ?: firstOrNull { it.name.extension() == "epub" }
+            ?: firstOrNull { it.name.extension() == "txt" }
 
 
     fun String.extension() = split(".").last()

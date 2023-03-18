@@ -51,13 +51,8 @@ internal fun BoxScope.GoToPage(
     }
 }
 
-
 @Composable
-internal fun GoToPage(
-    currentPage: Int,
-    goToPage: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
+internal fun GoToPage(currentPage: Int, goToPage: (Int) -> Unit, modifier: Modifier = Modifier) {
     var value by rememberMutableState(currentPage) { currentPage.toString() }
     val keyboard = LocalSoftwareKeyboardController.current
 

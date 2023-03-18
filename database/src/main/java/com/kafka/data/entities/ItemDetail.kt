@@ -19,7 +19,7 @@ data class ItemDetail(
     val coverImage: String? = null,
     val files: List<String>? = null,
     val metadata: List<String>? = null,
-    val primaryTextFile: String? = null,
+    val primaryFile: String? = null,
     val subject: List<String>? = null,
     val rating: Double? = null
 ) : BaseEntity {
