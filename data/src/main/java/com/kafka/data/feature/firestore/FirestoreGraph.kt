@@ -16,11 +16,18 @@ class FirestoreGraph @Inject constructor(
     val favoritesCollection
         get() = getFavoritesCollection(auth.currentUser!!.uid)
 
-    fun getRecentItemsCollection(id: String) = firestore.collection("recent_items")
+    val homepageCollection
+        get() = firestore
+            .collection("homepage")
+            .document("ids")
+
+    fun getRecentItemsCollection(id: String) = firestore
+        .collection("recent_items")
         .document(id)
         .collection("items")
 
-    fun getFavoritesCollection(id: String) = firestore.collection("favorites")
+    fun getFavoritesCollection(id: String) = firestore
+        .collection("favorites")
         .document(id)
         .collection("items")
 }

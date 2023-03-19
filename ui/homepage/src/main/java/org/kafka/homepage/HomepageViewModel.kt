@@ -13,9 +13,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.domain.interactors.GetHomepageTags
-import org.kafka.domain.interactors.UpdateItems
-import org.kafka.domain.interactors.asArchiveQuery
+import org.kafka.domain.interactors.UpdateHomepage
 import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
@@ -26,8 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
-    private val getHomepageTags: GetHomepageTags,
-    private val updateItems: UpdateItems,
+    private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
     observeUser: ObserveUser,
     private val navigator: Navigator,
@@ -36,13 +33,14 @@ class HomepageViewModel @Inject constructor(
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
+
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
         observeUser.flow,
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "User is $user $message ${homepage.recentItems}" }
+        debug { "User is $user $message ${homepage.recentItems} ${homepage.queryItems}" }
         HomepageViewState(
             homepage = homepage,
             user = user,
@@ -55,7 +53,7 @@ class HomepageViewModel @Inject constructor(
     )
 
     init {
-        observeHomepage(selectedQuery)
+        observeHomepage(Unit)
         observeUser(ObserveUser.Params())
 
         updateItems()
@@ -63,7 +61,7 @@ class HomepageViewModel @Inject constructor(
 
     private fun updateItems() {
         viewModelScope.launch {
-            updateItems(UpdateItems.Params(selectedQuery))
+            updateHomepage(Unit)
                 .collectStatus(loadingCounter, uiMessageManager)
         }
     }
@@ -100,7 +98,4 @@ class HomepageViewModel @Inject constructor(
         analytics.log { this.openRecentItem(itemId) }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
-
-    private val selectedQuery
-        get() = getHomepageTags().first { it.isSelected }.searchQuery.asArchiveQuery()
 }

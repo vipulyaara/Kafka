@@ -19,7 +19,8 @@ class BuildLocalQuery @Inject constructor() {
 
         queries.forEach {
             val newKey = replaceIdentifierForLocalQuery(it.key)
-            where += "$newKey like '%${it.value.replace(' ', '%')}%'${it.joiner.toLocalJoiner()}"
+            val newValue = it.value.replace(' ', '%').replace("'", " ")
+            where += "$newKey like '%${newValue}%'${it.joiner.toLocalJoiner()}"
         }
 
         val orderBy = " ORDER BY position DESC"

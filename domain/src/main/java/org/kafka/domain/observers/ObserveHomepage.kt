@@ -1,11 +1,18 @@
 package org.kafka.domain.observers
 
+import com.google.firebase.firestore.ktx.snapshots
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.Item
+import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.booksByIdentifiers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.observers.library.ObserveFavorites
@@ -15,34 +22,30 @@ class ObserveHomepage @Inject constructor(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val observeRecentItems: ObserveRecentItems,
     private val observeFavorites: ObserveFavorites,
-    private val observeQueryItems: ObserveQueryItems
-) : SubjectInteractor<ArchiveQuery, Homepage>() {
+    private val observeQueryItems: ObserveQueryItems,
+    firestoreGraph: FirestoreGraph
+) : SubjectInteractor<Unit, Homepage>() {
 
-    override fun createObservable(params: ArchiveQuery): Flow<Homepage> {
+    override fun createObservable(params: Unit): Flow<Homepage> {
         return combine(
-            observeQueryItems.execute(ObserveQueryItems.Params(params)),
+            homepageQueryItems,
             observeRecentItems.execute(Unit),
             observeFavorites.execute(Unit),
         ) { queryItems, recentItems, favoriteItems ->
-            Homepage(queryItems.mapQueryItems(), recentItems, favoriteItems)
+            Homepage(queryItems.sortByIds(), recentItems, favoriteItems)
         }.flowOn(appCoroutineDispatchers.io)
+            .onStart { emit(Homepage(emptyList(), emptyList(), emptyList())) }
     }
 
-    private fun List<Item>.mapQueryItems(): List<Item> {
-        val kafkaArchives = filter { it.isKafkaArchive() }
-        val adbiDuniya = filter { it.isAdbiDuniya() }
+    private val homepageIds =
+        firestoreGraph.homepageCollection.snapshots().map { it.get("ids").toString() }
 
-        return kafkaArchives + adbiDuniya + toMutableList()
-            .apply { removeAll { kafkaArchives.contains(it) || adbiDuniya.contains(it) } }
-    }
+    private val homepageQueryItems = homepageIds
+        .flatMapLatest {
+            val query = ArchiveQuery().booksByIdentifiers(it)
+            observeQueryItems.execute(ObserveQueryItems.Params(query))
+        }
 
-    private fun Item.isKafkaArchive(): Boolean {
-        val subjects = subject.orEmpty().lowercase()
-        return subjects.contains("kafka archives") || subjects.contains("kafka-archives")
-    }
-
-    private fun Item.isAdbiDuniya(): Boolean {
-        val subjects = subject.orEmpty().lowercase()
-        return subjects.contains("adbi-duniya")
-    }
+    private suspend fun List<Item>.sortByIds() = homepageIds.first().split(", ")
+        .mapNotNull { this.associateBy { it.itemId }[it] }
 }

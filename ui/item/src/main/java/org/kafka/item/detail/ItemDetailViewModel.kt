@@ -89,10 +89,6 @@ class ItemDetailViewModel @Inject constructor(
         refresh()
     }
 
-    fun goBack() {
-        navigator.goBack()
-    }
-
     private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))

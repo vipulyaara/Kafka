@@ -44,8 +44,7 @@ class ItemDetailMapper @Inject constructor(
             ?: firstOrNull { it.name.extension() == "epub" }
             ?: firstOrNull { it.name.extension() == "txt" }
 
-
-    fun String.extension() = split(".").last()
+    private fun String.extension() = split(".").last()
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
         it.name.startsWith("cover_1")

@@ -6,17 +6,22 @@ import com.kafka.data.db.englishProse
 import com.kafka.data.db.kafkaArchives
 import com.kafka.data.db.urduPoetry
 import com.kafka.data.db.urduProse
+import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
 import com.kafka.data.model.booksByCollection
 import com.kafka.data.model.booksByIdentifiers
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.booksByTitleOrCreator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import org.kafka.base.debug
 import javax.inject.Inject
 
-class GetHomepageTags @Inject constructor() {
-    operator fun invoke(): List<HomepageTag> {
-        return listOf(
+class GetHomepageTags @Inject constructor(private val firestoreGraph: FirestoreGraph) {
+    suspend operator fun invoke(): List<HomepageTag> {
+        val items = listOf(
             HomepageTag("Urdu Poetry", urduPoetry.toQuery(), false),
             HomepageTag("English Prose", englishProse.toQuery(), false),
             HomepageTag("Devnagri", devnagri.toQuery(), false),
@@ -24,18 +29,29 @@ class GetHomepageTags @Inject constructor() {
             HomepageTag("Urdu Prose", urduProse.toQuery(), false),
             HomepageTag(
                 "Suggested",
-                listOf(
-                    kafkaArchives,
-                    englishPoetry.split(" ,").sublistSuggested(),
-                    urduPoetry.split(" ,").sublistSuggested(),
-                    devnagri.split(" ,").sublistSuggested(),
-                    englishProse.split(" ,").sublistSuggested(),
-                    urduProse.split(" ,").sublistSuggested()
-                ).joinToString().toQuery(),
+                homepageQuery().toQuery(),
                 true
             )
         )
+
+        val ids = homepageQuery()
+        debug { "Homepage tags are $ids" }
+
+        withContext(Dispatchers.IO) {
+            firestoreGraph.homepageCollection.set(mapOf("ids" to ids)).await()
+        }
+
+        return items
     }
+
+    private fun homepageQuery() = listOf(
+        kafkaArchives,
+        englishPoetry.split(" ,").sublistSuggested(),
+        urduPoetry.split(" ,").sublistSuggested(),
+        devnagri.split(" ,").sublistSuggested(),
+        englishProse.split(" ,").sublistSuggested(),
+        urduProse.split(" ,").sublistSuggested()
+    ).joinToString()
 
     private fun String.toQuery() = SearchQuery(type = SearchQueryType.Suggested(this))
 }
