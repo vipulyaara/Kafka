@@ -69,7 +69,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         topBar = {
             TopBar(
                 lazyListState = lazyListState,
-                isShareVisible = state.itemDetail != null,
+                isShareVisible = false,
                 onShareClicked = { viewModel.shareItemText(context) },
                 onBackPressed = { navigator.goBack() }
             )

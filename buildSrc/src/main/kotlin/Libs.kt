@@ -1,6 +1,6 @@
 object Publishing {
     const val applicationId = "com.kafka.user"
-    const val versionCode = 9
+    const val versionCode = 10
 
     const val publishVersion = "0.0.1"
 

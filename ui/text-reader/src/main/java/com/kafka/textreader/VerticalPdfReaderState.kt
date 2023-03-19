@@ -1,19 +1,19 @@
-package com.kafka.textreader.bouquet
+package com.kafka.textreader
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.core.net.toUri
 
 class VerticalPdfReaderState(
     resource: ResourceType,
     isZoomEnable: Boolean = false,
-    startPage: Int = 0
+    initialPage: Int = 0,
 ) : PdfReaderState(resource, isZoomEnable) {
 
-    var lazyState: LazyListState = LazyListState(startPage)
+    var lazyState: LazyListState = LazyListState(initialPage)
         private set
 
     override val currentPage: Int
@@ -60,11 +60,11 @@ class VerticalPdfReaderState(
             restore = {
                 VerticalPdfReaderState(
                     it[0] as ResourceType,
-                    it[1] as Boolean
+                    it[1] as Boolean,
+                    it[2] as Int
                 ).apply {
                     lazyState = LazyListState(
-                        firstVisibleItemIndex = it[2] as Int,
-                        firstVisibleItemScrollOffset = it[3] as Int
+                        firstVisibleItemIndex = it[2] as Int
                     )
                 }
             }
@@ -75,10 +75,10 @@ class VerticalPdfReaderState(
 @Composable
 fun rememberVerticalPdfReaderState(
     resource: ResourceType,
-    startPage: Int,
-    isZoomEnable: Boolean = false
+    isZoomEnable: Boolean = true,
+    initialPage: Int = 0,
 ): VerticalPdfReaderState {
-    return remember {
-        VerticalPdfReaderState(resource, isZoomEnable, startPage)
+    return rememberSaveable(saver = VerticalPdfReaderState.Saver) {
+        VerticalPdfReaderState(resource, isZoomEnable, initialPage)
     }
 }

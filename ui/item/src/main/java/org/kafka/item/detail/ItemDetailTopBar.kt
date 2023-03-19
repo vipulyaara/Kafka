@@ -17,7 +17,6 @@ import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
-import org.kafka.navigation.Navigator
 import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 
@@ -63,15 +62,6 @@ private fun ShareIcon(isRaised: Boolean, onShareClicked: () -> Unit) {
             )
         }
     }
-}
-
-@Composable
-private fun BackIcon(
-    navigator: Navigator,
-    containerColor: Color,
-    contentColor: Color
-) {
-    BackIcon(onBackPressed = { navigator.goBack() }, containerColor, contentColor)
 }
 
 @Composable

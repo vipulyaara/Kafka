@@ -1,4 +1,4 @@
-package com.kafka.textreader.bouquet
+package com.kafka.textreader
 
 internal data class GraphicsLayerData(
     val scale: Float,

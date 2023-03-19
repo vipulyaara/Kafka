@@ -38,9 +38,9 @@ fun Tabs(
         contentColor = contentColor,
         divider = { Divider(color = MaterialTheme.colorScheme.surfaceVariant) },
         indicator = { tabPositions ->
-//            TabRowDefaults.Indicator(
-//                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-//            )
+            TabRowDefaults.Indicator(
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+            )
         },
         modifier = modifier,
     ) {

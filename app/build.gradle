@@ -1,11 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'dagger.hilt.android.plugin'
-
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
-
     id 'com.google.gms.google-services'
 }
 
@@ -52,7 +50,6 @@ android {
         }
     }
 
-
     buildTypes {
         debug {
             versionNameSuffix "-debug"
@@ -66,10 +63,10 @@ android {
         }
 
         release {
+            signingConfig signingConfigs.debug
             shrinkResources true
             minifyEnabled true
             debuggable false
-            signingConfig = signingConfigs.debug
             proguardFiles 'proguard-rules.pro'
         }
     }

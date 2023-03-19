@@ -47,7 +47,7 @@ private fun DownloadsList(
         contentPadding = padding,
         modifier = modifier.fillMaxSize()
     ) {
-        item { header() }
+//        item { header() }
 
         itemsIndexed(
             items = items,

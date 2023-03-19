@@ -1,4 +1,4 @@
-package com.kafka.textreader.bouquet
+package com.kafka.textreader
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
