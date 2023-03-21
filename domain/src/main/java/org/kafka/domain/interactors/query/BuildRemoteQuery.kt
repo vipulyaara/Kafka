@@ -41,7 +41,7 @@ class BuildRemoteQuery @Inject constructor() {
         var query = "${key}:("
 
         items.forEach {
-            query += "${it.value.replace("'", " ")} ${it.joiner} "
+            query += "${it.value} ${it.joiner} "
         }
 
         query = query.removeSuffix(" ${items.last().joiner} ")

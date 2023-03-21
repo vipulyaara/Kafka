@@ -1,6 +1,5 @@
 package com.kafka.reader
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -24,10 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.launch
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import org.kafka.ui.components.file.DownloadStatusIcons
-import org.kafka.ui.components.rive.DownloadAnimation
+import org.kafka.ui.components.progress.DownloadAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
@@ -38,7 +38,7 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
             modifier = Modifier.padding(Dimens.Spacing24),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DownloadingAnimation(progress = downloadInfo.progress)
+            DownloadAnimation()
             Progress(downloadInfo.progress)
             Actions(downloadInfo, modifier = Modifier.padding(top = Dimens.Spacing24))
         }
@@ -46,14 +46,7 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
 }
 
 @Composable
-fun DownloadingAnimation(progress: Float, modifier: Modifier = Modifier) {
-    val percentageState by animateFloatAsState(targetValue = progress)
-
-    DownloadAnimation(progress = percentageState, modifier = modifier)
-}
-
-@Composable
-private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier  ) {
+private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
     val downloader = LocalDownloader.current
     val scope = rememberCoroutineScope()
 
@@ -82,7 +75,7 @@ private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier  ) {
         ) {
             DownloadStatusIcons(downloadInfo = downloadInfo)
 
-            AnimatedVisibility(visible = downloadInfo.status.isActive()) {
+            AnimatedVisibilityFade(visible = downloadInfo.status.isActive()) {
                 IconResource(
                     imageVector = Icons.XCircle,
                     tint = MaterialTheme.colorScheme.error,

@@ -1,5 +1,7 @@
 package org.kafka.navigation
 
+import java.net.URLEncoder
+
 
 sealed class RootScreen(val route: String) {
     object Home : RootScreen("home_root")
@@ -44,10 +46,12 @@ sealed class Screen(
     }
 
     object Search : Screen("search?keyword={keyword}") {
+        @Suppress("NAME_SHADOWING")
         fun createRoute(
             root: RootScreen,
             keyword: String? = null
         ): String {
+            val keyword = keyword?.replace("'", " ")
             return "${root.route}/search".let {
                 if (keyword != null) "$it?keyword=$keyword" else it
             }

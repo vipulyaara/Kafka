@@ -1,4 +1,4 @@
-package org.kafka.ui.components.rive
+package org.kafka.ui.components.progress
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -21,7 +21,7 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import org.kafka.ui.components.R
 
 @Composable
-fun DownloadAnimation(progress: Float, modifier: Modifier = Modifier) {
+fun DownloadAnimation(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.purple_elephant))
 
     Box(modifier = modifier.size(300.dp)) {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import tm.alashow.datmusic.downloader.observers.ObserveDownloads
@@ -21,9 +22,10 @@ class ObserveDownloadedItems @Inject constructor(
 ) : SubjectInteractor<Unit, List<ItemWithDownload>>() {
 
     override fun createObservable(params: Unit): Flow<List<ItemWithDownload>> {
-        return observeDownloads.createObservable(ObserveDownloads.Params()).map {
+        return observeDownloads.execute(ObserveDownloads.Params()).map {
             it.files.map { fileDownloadItem ->
                 val file = fileDao.get(fileDownloadItem.downloadRequest.id)
+                debug { "ObserveDownloadedItems: ${file.itemTitle}" }
                 ItemWithDownload(
                     downloadRequest = fileDownloadItem.downloadRequest,
                     downloadInfo = downloadInfoMapper.map(fileDownloadItem.downloadInfo),

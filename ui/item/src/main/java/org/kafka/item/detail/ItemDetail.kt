@@ -156,7 +156,7 @@ private fun ItemDescription(
             LoadImage(
                 data = itemDetail.coverImage,
                 modifier = Modifier
-                    .size(216.dp, 248.dp)
+                    .size(208.dp, 248.dp)
                     .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing08))
             )
 
