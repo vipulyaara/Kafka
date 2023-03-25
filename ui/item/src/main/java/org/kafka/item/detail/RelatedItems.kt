@@ -23,7 +23,7 @@ internal fun LazyListScope.relatedContent(
             Spacer(modifier = Modifier.height(Dimens.Spacing24))
             Text(
                 text = stringResource(R.string.more_by_author),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(Dimens.Spacing12)
             )

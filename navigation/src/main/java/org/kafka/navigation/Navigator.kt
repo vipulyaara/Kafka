@@ -63,9 +63,8 @@ class NavigatorImpl : Navigator {
 
         val rootPath = route.split("/").firstOrNull()
         val rootScreen = ROOT_SCREENS.firstOrNull { it.route == rootPath }
-        val root = if (rootScreen != null) rootPath else null
 
-        debug { "Navigating to $route with root $root" }
+        debug { "Navigating to $route with root $rootScreen" }
         navigationQueue.trySend(NavigationEvent.Destination(route, rootScreen))
     }
 

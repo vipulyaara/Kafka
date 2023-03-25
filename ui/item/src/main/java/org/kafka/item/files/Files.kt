@@ -37,14 +37,14 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 
     Scaffold(topBar = { TopBar(viewState.title, lazyListState = lazyListState) }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-                Files(
-                    viewState = viewState,
-                    selectedExtension = viewModel.selectedExtension,
-                    selectExtension = { viewModel.selectedExtension = it },
-                    onFileClicked = viewModel::onFileClicked,
-                    lazyListState = lazyListState
-                )
-            }
+            Files(
+                viewState = viewState,
+                selectedExtension = viewModel.selectedExtension,
+                selectExtension = { viewModel.selectedExtension = it },
+                onFileClicked = viewModel::onFileClicked,
+                lazyListState = lazyListState
+            )
+        }
     }
 }
 

@@ -26,10 +26,13 @@ import com.kafka.data.entities.Item
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
-fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
+fun Item(
+    item: Item,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit
+) {
     Item(
         title = item.title,
         creator = item.creator?.name,
@@ -42,7 +45,11 @@ fun Item(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> 
 }
 
 @Composable
-fun Item(item: FavoriteItem, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
+fun Item(
+    item: FavoriteItem,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit
+) {
     Item(
         title = item.title,
         creator = item.creator,
@@ -111,10 +118,9 @@ fun ItemDescription(title: String?, creator: String?, mediaType: String?) {
 fun ItemTitle(title: String?) {
     Text(
         text = title.orEmpty(),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleSmall,
         maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        color = MaterialTheme.colorScheme.textPrimary
+        overflow = TextOverflow.Ellipsis
     )
 }
 
@@ -122,7 +128,7 @@ fun ItemTitle(title: String?) {
 fun ItemCreator(creator: String?) {
     Text(
         text = creator.orEmpty(),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.labelMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         color = MaterialTheme.colorScheme.secondary
@@ -133,7 +139,7 @@ fun ItemCreator(creator: String?) {
 fun ItemType(mediaType: String?) {
     Text(
         text = mediaType.orEmpty(),
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.tertiary
     )
 }

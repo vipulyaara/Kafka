@@ -26,7 +26,6 @@ import org.kafka.ui.components.file.DownloadStatusIcons
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 internal fun FileItem(
@@ -59,14 +58,13 @@ internal fun FileItem(
         ) {
             Text(
                 text = file.title,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.textPrimary,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier
             )
 
             Text(
                 text = fileSubtitle,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
             )

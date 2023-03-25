@@ -23,7 +23,6 @@ import org.kafka.common.ImmutableList
 import org.kafka.common.widgets.LoadImage
 import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 fun FeaturedItems(
@@ -41,7 +40,7 @@ fun FeaturedItems(
         ) {
             Text(
                 text = stringResource(R.string.favorites),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
@@ -78,9 +77,8 @@ private fun FeaturedItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
 
         Text(
             text = item.title,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.titleSmall,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.textPrimary,
             maxLines = 1,
         )
 

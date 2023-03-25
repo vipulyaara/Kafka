@@ -79,6 +79,7 @@ subprojects {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
             freeCompilerArgs += "-Xopt-in=androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi"
             freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.ui.text.ExperimentalTextApi"
 
             // Set JVM target to 1.8
             jvmTarget = "1.8"

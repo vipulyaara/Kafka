@@ -28,11 +28,13 @@ import org.kafka.item.ArchiveQueryViewState
 import org.kafka.item.SearchFilter
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Screen
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun SearchScreen() {

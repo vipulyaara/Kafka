@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -37,7 +38,6 @@ import org.kafka.common.extensions.alignCenter
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
-import org.kafka.common.widgets.shadowMaterial
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
@@ -49,7 +49,6 @@ import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
@@ -157,15 +156,14 @@ private fun ItemDescription(
                 data = itemDetail.coverImage,
                 modifier = Modifier
                     .size(208.dp, 248.dp)
-                    .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing08))
+                    .clip(RoundedCornerShape(Dimens.Spacing08))
             )
 
             Spacer(Modifier.height(Dimens.Spacing24))
 
             Text(
                 text = itemDetail.title.orEmpty(),
-                style = MaterialTheme.typography.titleLarge.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.textPrimary,
+                style = MaterialTheme.typography.titleLarge.alignCenter(),
                 modifier = Modifier.padding(horizontal = Dimens.Spacing24)
             )
 
@@ -183,7 +181,7 @@ private fun ItemDescription(
             Text(
                 text = ratingText(itemDetail.uiRating) +
                         AnnotatedString(itemDetail.description.orEmpty()),
-                style = MaterialTheme.typography.labelMedium.alignCenter(),
+                style = MaterialTheme.typography.bodySmall.alignCenter(),
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,

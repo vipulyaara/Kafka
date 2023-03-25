@@ -49,7 +49,6 @@ import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.textPrimary
 
 @Composable
 internal fun ContinueReading(
@@ -62,7 +61,7 @@ internal fun ContinueReading(
         Column(modifier = modifier) {
             Text(
                 text = stringResource(id = R.string.continue_reading),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(horizontal = Dimens.Spacing20)
             )
@@ -200,15 +199,14 @@ private fun Description(continueReading: RecentItem, modifier: Modifier = Modifi
     Column(modifier = modifier) {
         Text(
             text = continueReading.title,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.textPrimary,
+            style = MaterialTheme.typography.titleSmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         Text(
             text = continueReading.creator,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.secondary
@@ -217,7 +215,7 @@ private fun Description(continueReading: RecentItem, modifier: Modifier = Modifi
 
         Text(
             text = continueReading.mediaType,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.tertiary
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing08))

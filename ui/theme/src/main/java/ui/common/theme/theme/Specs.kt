@@ -1,6 +1,8 @@
 package ui.common.theme.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import javax.annotation.concurrent.Immutable
@@ -21,3 +23,12 @@ data class Specs(
     val paddings: PaddingValues = PaddingValues(padding),
     val inputPaddings: PaddingValues = PaddingValues(horizontal = padding, vertical = paddingSmall)
 )
+
+object AppBarAlphas {
+    @Composable
+    fun translucentBarAlpha(): Float = when {
+        isSystemInDarkTheme() -> 0.85f
+        else -> 0.92f
+    }
+}
+

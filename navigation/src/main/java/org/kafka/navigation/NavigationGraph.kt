@@ -1,8 +1,5 @@
 package org.kafka.navigation
 
-import java.net.URLEncoder
-
-
 sealed class RootScreen(val route: String) {
     object Home : RootScreen("home_root")
     object Search : RootScreen("search_root")

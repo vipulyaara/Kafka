@@ -1,5 +1,6 @@
 package com.kafka.search
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -26,11 +27,8 @@ fun RecentSearches(
     onRemoveSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface.copy(alpha = 0.3f))
-    ) {
-        Column(modifier = modifier) {
+    Surface(color = MaterialTheme.colorScheme.background) {
+        Column(modifier = modifier.animateContentSize()) {
             recentSearches.takeIf { it.isNotEmpty() }?.let {
                 SearchResultLabel(stringResource(R.string.recent_searches))
             }
@@ -62,7 +60,7 @@ private fun RecentSearchItem(
         Text(
             modifier = Modifier.weight(1f),
             text = searchTerm,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurface
         )
 
@@ -80,7 +78,7 @@ private fun RecentSearchItem(
 private fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleSmall,
         modifier = modifier.padding(Dimens.Spacing16),
         color = MaterialTheme.colorScheme.secondary
     )

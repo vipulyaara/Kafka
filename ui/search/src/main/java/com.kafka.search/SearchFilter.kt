@@ -94,7 +94,7 @@ private fun FilterChip(
             }
             Text(
                 text = filter.name,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.labelSmall,
                 color = contentColorFor(containerColor)
             )
         }

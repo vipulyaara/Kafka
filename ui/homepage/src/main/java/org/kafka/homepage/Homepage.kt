@@ -9,13 +9,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.entities.Homepage
 import org.kafka.common.asImmutable
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -24,7 +21,6 @@ import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.ui.Carousels
 import org.kafka.homepage.ui.ContinueReading
 import org.kafka.homepage.ui.FeaturedItems
-import org.kafka.item.preloadImages
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -77,7 +73,9 @@ private fun HomepageFeedItems(
         item {
             ContinueReading(
                 readingList = homepage?.continueReadingItems.orEmpty().asImmutable(),
-                modifier = Modifier.padding(vertical = Dimens.Spacing20),
+                modifier = Modifier
+                    .padding(vertical = Dimens.Spacing20)
+                    .animateItemPlacement(),
                 openItemDetail = openRecentItemDetail,
                 removeRecentItem = removeRecentItem
             )
@@ -92,26 +90,19 @@ private fun HomepageFeedItems(
                 modifier = Modifier,
                 openItemDetail = openItemDetail
             )
-            homepage?.favoriteItems?.let { FeaturedItems(index, it, openItemDetail) }
+            homepage?.favoriteItems?.let {
+                if (index == FavoriteRowIndex) {
+                    FeaturedItems(
+                        items = it.asImmutable(),
+                        openItemDetail = openItemDetail
+                    )
+                }
+            }
         }
 
         item {
             InfiniteProgressBar(show = isLoading)
         }
-    }
-}
-
-@Composable
-private fun FeaturedItems(
-    index: Int,
-    items: List<FavoriteItem>,
-    openItemDetail: (String) -> Unit
-) {
-    if (index == FavoriteRowIndex) {
-        FeaturedItems(
-            items = items.asImmutable(),
-            openItemDetail = openItemDetail
-        )
     }
 }
 

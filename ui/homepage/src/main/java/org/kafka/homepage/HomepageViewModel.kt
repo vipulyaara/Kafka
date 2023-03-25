@@ -33,7 +33,6 @@ class HomepageViewModel @Inject constructor(
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
-
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
         observeUser.flow,

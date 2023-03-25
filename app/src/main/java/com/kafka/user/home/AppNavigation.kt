@@ -49,15 +49,7 @@ internal fun AppNavigation(
 ) {
     collectEvent(navigator.queue) { event ->
         when (event) {
-            is NavigationEvent.Destination -> {
-                // switch tabs first because of a bug in navigation that doesn't allow
-                // changing tabs when destination is opened from a different tab
-//                if (event.root != null && event.root != navigator.currentRoot.value)  {
-//                    navController.selectRootScreen(event.root!!)
-//                }
-                navController.navigate(event.route)
-            }
-
+            is NavigationEvent.Destination -> navController.navigate(event.route)
             is NavigationEvent.Back -> navController.navigateUp()
             else -> Unit
         }
