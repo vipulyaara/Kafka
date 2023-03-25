@@ -2,6 +2,15 @@
 
 Kafka uses www.archive.org to serve millions of audiobooks and pdf books available in more than 100 languages, all free.
 
+
+## Download
+
+<a href="https://play.google.com/store/apps/details?id=com.kafka.user" target="_blank">
+<img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240 />
+</a>
+
+## Demo
+
 ### [Video](https://vimeo.com/user68598793/review/472788300/8256f4487c)
 
 </br>
