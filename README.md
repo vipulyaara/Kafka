@@ -19,8 +19,10 @@
 <img src="https://user-images.githubusercontent.com/6247940/218861002-ff07951f-e9a5-428a-ad60-05b5e1393ccd.png">
 <img src="https://user-images.githubusercontent.com/6247940/218860894-99674641-3a46-46bc-83b5-fb4c9e83c805.png">
 
-
-The audio player is separated into another library https://github.com/vipulyaara/Sarahang
+## How to run
+ - Clone the repo
+ - Clone [Sarahang](https://github.com/vipulyaara/Sarahang) in the same parent folder as Kafka.<br/>Sarahang is the audio player being used in Kafka and not yet provided through maven.
+ - Run project
 
 ## Architecture
 
