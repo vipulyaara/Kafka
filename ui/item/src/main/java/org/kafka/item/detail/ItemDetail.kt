@@ -181,7 +181,7 @@ private fun ItemDescription(
             Text(
                 text = ratingText(itemDetail.uiRating) +
                         AnnotatedString(itemDetail.description.orEmpty()),
-                style = MaterialTheme.typography.labelMedium.alignCenter(),
+                style = MaterialTheme.typography.bodySmall.alignCenter(),
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,

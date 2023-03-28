@@ -51,7 +51,7 @@ fun AppTheme(
         systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = isLight)
     }
 
-    MaterialTheme(colorScheme = colorScheme, typography = KafkaTypography) {
+    MaterialTheme(colorScheme = colorScheme, typography = TypographyEnglish) {
         content()
     }
 }
