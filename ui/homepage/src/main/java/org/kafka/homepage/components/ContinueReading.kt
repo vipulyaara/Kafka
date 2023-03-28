@@ -1,4 +1,4 @@
-package org.kafka.homepage.ui
+package org.kafka.homepage.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -222,6 +222,7 @@ private fun Description(continueReading: RecentItem, modifier: Modifier = Modifi
     }
 }
 
+// todo add progress
 @Composable
 private fun Progress(progress: Float) {
     Row(

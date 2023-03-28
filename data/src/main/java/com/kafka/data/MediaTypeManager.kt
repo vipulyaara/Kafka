@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 import org.kafka.base.extensions.stateInDefault
 import javax.inject.Inject
 
+/* Unused class: we might add functionality to filter by media type in future. */
 class MediaTypeManager @Inject constructor(
     preferencesStore: PreferencesStore,
     @ProcessLifetime private val coroutineScope: CoroutineScope

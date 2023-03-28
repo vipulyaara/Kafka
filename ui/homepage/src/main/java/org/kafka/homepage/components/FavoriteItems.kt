@@ -1,4 +1,4 @@
-package org.kafka.homepage.ui
+package org.kafka.homepage.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,42 +25,40 @@ import org.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun FeaturedItems(
+fun FavoriteItems(
     items: ImmutableList<FavoriteItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
-    if (items.items.isNotEmpty()) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = Dimens.Spacing12)
-                .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f))
-                .padding(vertical = Dimens.Spacing24)
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = Dimens.Spacing12)
+            .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f))
+            .padding(vertical = Dimens.Spacing24)
+    ) {
+        Text(
+            text = stringResource(R.string.favorites),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(horizontal = Dimens.Spacing20)
+        )
+        LazyRow(
+            modifier = Modifier.padding(top = Dimens.Spacing08),
+            contentPadding = PaddingValues(horizontal = Dimens.Spacing12)
         ) {
-            Text(
-                text = stringResource(R.string.favorites),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(horizontal = Dimens.Spacing20)
-            )
-            LazyRow(
-                modifier = Modifier.padding(top = Dimens.Spacing08),
-                contentPadding = PaddingValues(horizontal = Dimens.Spacing12)
+            items(
+                items = items.items.subList(0, items.size.coerceAtMost(10)),
+                key = { it.itemId }
             ) {
-                items(
-                    items = items.items.subList(0, items.size.coerceAtMost(10)),
-                    key = { it.itemId }
-                ) {
-                    FeaturedItem(item = it, openItemDetail = openItemDetail)
-                }
+                FavoriteItem(item = it, openItemDetail = openItemDetail)
             }
         }
     }
 }
 
 @Composable
-private fun FeaturedItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
+private fun FavoriteItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
     Column(
         modifier = Modifier
             .width(148.dp)
@@ -74,14 +72,12 @@ private fun FeaturedItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
                 .aspectRatio(1f)
                 .padding(bottom = Dimens.Spacing04),
         )
-
         Text(
             text = item.title,
             style = MaterialTheme.typography.titleSmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
         )
-
         Text(
             text = item.creator,
             style = MaterialTheme.typography.labelMedium,

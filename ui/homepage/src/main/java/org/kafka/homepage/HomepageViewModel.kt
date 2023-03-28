@@ -39,7 +39,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "User is $user $message ${homepage.recentItems} ${homepage.queryItems}" }
+        debug { "Homepage state is $user $message $homepage" }
         HomepageViewState(
             homepage = homepage,
             user = user,

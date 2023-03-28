@@ -10,6 +10,9 @@ data class Homepage(
             fromIndex = 0,
             toIndex = ContinueReadingItemsThreshold.coerceAtMost(recentItems.size)
         )
+
+    val hasFavorites
+        get() = favoriteItems.isNotEmpty()
 }
 
 private const val ContinueReadingItemsThreshold = 10

@@ -15,11 +15,18 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun HomeTopBar(user: User?, login: () -> Unit, openProfile: () -> Unit) {
+    HomeTopBar {
+        if (user == null) login() else openProfile()
+    }
+}
+
+@Composable
+internal fun HomeTopBar(onUserClicked: () -> Unit) {
     TopBar(
         containerColor = Color.Transparent,
         actions = {
             IconButton(
-                onClick = { if (user == null) login() else openProfile() },
+                onClick = onUserClicked,
                 modifier = Modifier
                     .padding(horizontal = Dimens.Spacing16)
                     .size(Dimens.Spacing24)

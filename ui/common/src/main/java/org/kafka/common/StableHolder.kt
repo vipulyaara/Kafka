@@ -8,4 +8,4 @@ class ImmutableList<T>(val items: List<T>) {
     val size = items.size
 }
 
-fun <T : Any> List<T>.asImmutable() = ImmutableList(this)
+fun <T : Any> List<T>?.asImmutable() = ImmutableList(this.orEmpty())

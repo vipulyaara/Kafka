@@ -41,7 +41,7 @@ class FirebaseAnalytics @Inject constructor(
     }
 
     override fun updateUserProperty(update: UserData.() -> UserData) {
-        val userData = update(userData.value)
+        // update the user data
     }
 
     override fun logScreenView(

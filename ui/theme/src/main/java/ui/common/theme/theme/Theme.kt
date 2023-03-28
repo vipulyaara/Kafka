@@ -72,27 +72,21 @@ val KafkaTypography by lazy {
         ),
         titleMedium = default.titleMedium.copy(
             fontFamily = DefaultFont,
-            fontWeight = FontWeight.Medium
         ),
         titleSmall = default.titleSmall.copy(
             fontFamily = DefaultFont,
-            fontWeight = FontWeight.Medium,
-            letterSpacing = 0.01.sp
         ),
         bodyLarge = default.bodyLarge.copy(fontFamily = DefaultFont),
         bodyMedium = default.bodyMedium.copy(
             fontFamily = DefaultFont,
-            fontWeight = FontWeight.Medium
+            letterSpacing = 0.1.sp,
         ),
         bodySmall = default.bodySmall.copy(
-            fontFamily = DefaultFont,
-            fontWeight = FontWeight.Medium
+            fontFamily = DefaultFont
         ),
         labelLarge = default.labelLarge.copy(fontFamily = DefaultFont),
         labelMedium = default.labelMedium.copy(
-            fontFamily = DefaultFont,
-            letterSpacing = 0.1.sp,
-            fontWeight = FontWeight.Medium
+            fontFamily = DefaultFont
         ),
         labelSmall = default.labelSmall.copy(fontFamily = DefaultFont),
     )

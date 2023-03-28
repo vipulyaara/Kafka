@@ -53,10 +53,6 @@ class EventRepository @Inject constructor(
 
     fun loginClicked() = "login_prompt_clicked" to mapOf<String, String>()
 
-    fun logNoAnonymousUser() = "null_user" to mapOf(
-        "source" to "homepage"
-    )
-
     fun logoutClicked() = "logout_clicked" to mapOf<String, String>()
 
     fun shareItem(itemId: String) = "share_item" to mapOf("item_id" to itemId)

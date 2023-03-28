@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.kafka.common.animation.Delayed
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
@@ -27,18 +28,20 @@ fun RecentSearches(
     onRemoveSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Column(modifier = modifier.animateContentSize()) {
-            recentSearches.takeIf { it.isNotEmpty() }?.let {
-                SearchResultLabel(stringResource(R.string.recent_searches))
-            }
+    Delayed {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Column(modifier = modifier.animateContentSize()) {
+                recentSearches.takeIf { it.isNotEmpty() }?.let {
+                    SearchResultLabel(stringResource(R.string.recent_searches))
+                }
 
-            recentSearches.forEach {
-                RecentSearchItem(
-                    searchTerm = it,
-                    onSearchClicked = onSearchClicked,
-                    onRemoveSearch = onRemoveSearch
-                )
+                recentSearches.forEach {
+                    RecentSearchItem(
+                        searchTerm = it,
+                        onSearchClicked = onSearchClicked,
+                        onRemoveSearch = onRemoveSearch
+                    )
+                }
             }
         }
     }

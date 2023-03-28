@@ -1,4 +1,4 @@
-package org.kafka.homepage.ui
+package org.kafka.homepage.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

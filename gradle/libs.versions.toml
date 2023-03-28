@@ -1,11 +1,11 @@
 [versions]
 accompanist = "0.30.0"
 androidxhilt = "1.0.0"
-androidxlifecycle = "2.6.0"
-navigation = "2.6.0-alpha07"
+androidxlifecycle = "2.6.1"
+navigation = "2.6.0-alpha08"
 androidxtest = "1.5.2"
 coil = "2.2.2"
-compose-bom = "2023.03.00"
+compose-bom = "2023.04.00-alpha01"
 constraintlayout = "1.1.0-alpha07"
 composeCompiler = "1.4.2"
 composesnapshot = "-" # a single character = no snapshot

@@ -2,5 +2,5 @@
 <resources>
     <string name="continue_reading" translatable="false">Reading List</string>
     <string name="cd_cover_image" translatable="false">Cover Image</string>
-    <string name="favorites">Favorites</string>
+    <string name="favorites" translatable="false">Favorites</string>
 </resources>

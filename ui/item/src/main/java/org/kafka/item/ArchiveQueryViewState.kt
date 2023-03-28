@@ -11,6 +11,6 @@ data class ArchiveQueryViewState(
     var isLoading: Boolean = false,
     val message: UiMessage? = null
 ) {
-    val isNotShown: Boolean
+    val canShowRecentSearches: Boolean
         get() = items.isNullOrEmpty() && !isLoading
 }

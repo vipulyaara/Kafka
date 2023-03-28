@@ -95,7 +95,6 @@
 -keep class com.squareup.okhttp3.** {
 *;
 }
--dontwarn okio.
 
 -keep class androidx.startup.AppInitializer
 -keep class * extends androidx.startup.Initializer

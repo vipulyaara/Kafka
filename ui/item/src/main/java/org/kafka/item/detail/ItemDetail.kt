@@ -181,13 +181,14 @@ private fun ItemDescription(
             Text(
                 text = ratingText(itemDetail.uiRating) +
                         AnnotatedString(itemDetail.description.orEmpty()),
-                style = MaterialTheme.typography.bodySmall.alignCenter(),
+                style = MaterialTheme.typography.labelMedium.alignCenter(),
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
-                    .padding(Dimens.Spacing24)
+                    .fillMaxWidth()
                     .simpleClickable { showDescription(itemDetail.itemId) }
+                    .padding(Dimens.Spacing24)
             )
         }
     }

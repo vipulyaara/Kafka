@@ -69,4 +69,4 @@ val OpenSans = createFontFamily("Open Sans")
 val ProseFont = createFontFamily("Lora")
 val Poppins = createFontFamily("Poppins")
 val Inter = createFontFamily("Inter")
-val DefaultFont = InterFontFamily
+val DefaultFont = Roboto

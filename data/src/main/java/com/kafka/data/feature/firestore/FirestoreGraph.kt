@@ -13,9 +13,6 @@ class FirestoreGraph @Inject constructor(
     val recentItemsCollection
         get() = getRecentItemsCollection(auth.currentUser!!.uid)
 
-    val favoritesCollection
-        get() = getFavoritesCollection(auth.currentUser!!.uid)
-
     val homepageCollection
         get() = firestore
             .collection("homepage")
