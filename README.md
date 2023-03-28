@@ -26,19 +26,17 @@
 
 ## Architecture
 
-This app focuses on scalable, flexible and reactive app architecure. Parts of the architecture are inspired by [DatMusic](https://github.com/alashow/datmusic-android).
+Kafka implements MVVM with interactors using all the latest android frameworks.<br/>
+Parts of the architecture are inspired by [Tivi](https://github.com/chrisbanes/tivi). Download and audio features are copied from [DatMusic](https://github.com/alashow/datmusic-android).
 
-It is a version of MVVM with interactors as an additional layer to enhance re-usability. The app uses following frameworks
+The app uses
 
-
-* [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) (for thread switching; and streams with Flow)
-* [Jetpack compose](https://developer.android.com/jetpack/compose) 
-the app is built completely with Jetpack compose and all the latest APIs.
-* [Livedata](https://developer.android.com/topic/libraries/architecture/livedata)
+* [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
+* [Jetpack compose](https://developer.android.com/jetpack/compose) with Material3 theming
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
-* Retrofit2
+* [Retrofit2](https://github.com/square/retrofit)
 * [Dagger Hilt](https://dagger.dev/hilt/)
-* [ExoPlayer](https://github.com/google/ExoPlayer) - For audio playback
+* [ExoPlayer](https://github.com/google/ExoPlayer)
 
 
 ![final-architecture](https://user-images.githubusercontent.com/6247940/75632907-cb5f5780-5c00-11ea-974d-ff7a5e8b0a21.png)
