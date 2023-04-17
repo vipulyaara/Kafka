@@ -1,27 +1,20 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlinx-serialization'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
+}
 
 android {
-    compileSdk Publishing.compileSdk
-
-    defaultConfig {
-        minSdkVersion Publishing.minSdk
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         compose true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
+
     namespace 'org.kafka.ui.components'
 }
 

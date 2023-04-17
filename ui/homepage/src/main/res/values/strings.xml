@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="continue_reading" translatable="false">Reading List</string>
-    <string name="cd_cover_image" translatable="false">Cover Image</string>
+    <string name="continue_reading" translatable="false">Reading list</string>
+    <string name="cd_cover_image" translatable="false">Cover image</string>
     <string name="favorites" translatable="false">Favorites</string>
+    <string name="editors_choice">Editor\'s choice</string>
+    <string name="find_many_more_on_the_search_page">Find many more on the search page</string>
 </resources>

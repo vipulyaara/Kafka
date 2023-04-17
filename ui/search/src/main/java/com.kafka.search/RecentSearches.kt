@@ -1,12 +1,12 @@
 package com.kafka.search
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,6 +19,7 @@ import org.kafka.common.animation.Delayed
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
+import org.kafka.ui.components.LabelMedium
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -28,11 +29,14 @@ fun RecentSearches(
     onRemoveSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Delayed {
+    Delayed(modifier = modifier) {
         Surface(color = MaterialTheme.colorScheme.background) {
-            Column(modifier = modifier.animateContentSize()) {
+            Column {
                 recentSearches.takeIf { it.isNotEmpty() }?.let {
-                    SearchResultLabel(stringResource(R.string.recent_searches))
+                    LabelMedium(
+                        stringResource(R.string.recent_searches),
+                        Modifier.padding(Dimens.Spacing16)
+                    )
                 }
 
                 recentSearches.forEach {
@@ -77,12 +81,4 @@ private fun RecentSearchItem(
     }
 }
 
-@Composable
-private fun SearchResultLabel(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleSmall,
-        modifier = modifier.padding(Dimens.Spacing16),
-        color = MaterialTheme.colorScheme.secondary
-    )
-}
+

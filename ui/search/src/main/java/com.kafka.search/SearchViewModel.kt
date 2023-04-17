@@ -1,17 +1,20 @@
 package com.kafka.search
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
 import org.kafka.domain.observers.ObserveRecentSearch
-import org.kafka.item.SearchFilter
+import org.kafka.navigation.SearchFilter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +26,10 @@ class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     var keyword = savedStateHandle.getStateFlow("keyword", "")
+    val selectedFilters = savedStateHandle.getStateFlow("filters", SearchFilter.all())
+        .map { SearchFilter.from(it).toMutableStateList() }
+        .stateInDefault(viewModelScope, mutableStateListOf(*SearchFilter.values()))
+
     val recentSearches = observeRecentSearch.flow.stateInDefault(viewModelScope, emptyList())
 
     init {

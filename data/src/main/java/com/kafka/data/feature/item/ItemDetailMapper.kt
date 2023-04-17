@@ -29,7 +29,9 @@ class ItemDetailMapper @Inject constructor(
             coverImage = from.findCoverImage(),
             metadata = from.metadata.collection,
             primaryFile = from.files.primaryFile(from.metadata.mediatype)?.fileId,
-            subject = from.metadata.subject,
+            subject = from.metadata.subject
+                ?.subList(0, from.metadata.subject!!.size.coerceAtMost(12))
+                ?.filter { it.isNotEmpty() },
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating
         ).also {
             insertFiles(from, it)
@@ -47,7 +49,7 @@ class ItemDetailMapper @Inject constructor(
     private fun String.extension() = split(".").last()
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
-        it.name.startsWith("cover_1")
+        it.name.startsWith("cover_")
                 && (it.name.endsWith("jpg") || it.name.endsWith("png"))
     }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
         ?: "https://archive.org/services/img/${metadata.identifier}"

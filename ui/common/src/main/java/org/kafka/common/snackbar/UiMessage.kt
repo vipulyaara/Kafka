@@ -2,7 +2,7 @@ package org.kafka.common.snackbar
 
 import android.content.Context
 import org.kafka.base.network.localizedMessage
-import org.kafka.common.R
+import org.kafka.base.R
 
 sealed class UiMessage {
     data class Plain(val value: String) : UiMessage()

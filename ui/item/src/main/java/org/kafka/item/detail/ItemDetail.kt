@@ -2,6 +2,7 @@ package org.kafka.item.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -18,11 +20,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -38,14 +42,14 @@ import org.kafka.common.extensions.alignCenter
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
+import org.kafka.item.R
+import org.kafka.item.detail.description.DescriptionText
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
-import org.kafka.navigation.Screen.ItemDescription
-import org.kafka.navigation.Screen.Search
+import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.Item
+import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -75,7 +79,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel, navigator, lazyListState)
+            ItemDetail(state, viewModel, lazyListState)
         }
     }
 }
@@ -84,7 +88,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
-    navigator: Navigator,
     lazyListState: LazyListState
 ) {
     Box(Modifier.fillMaxSize()) {
@@ -96,8 +99,6 @@ private fun ItemDetail(
         FullScreenMessage(state.message, show = state.isFullScreenError, onRetry = viewModel::retry)
 
         AnimatedVisibilityFade(state.itemDetail != null) {
-            val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState,
@@ -106,12 +107,8 @@ private fun ItemDetail(
                 item {
                     ItemDescription(
                         itemDetail = state.itemDetail!!,
-                        showDescription = {
-                            navigator.navigate(ItemDescription.createRoute(currentRoot, it))
-                        },
-                        goToCreator = {
-                            navigator.navigate(Search.createRoute(RootScreen.Search, it))
-                        }
+                        showDescription = viewModel::showDescription,
+                        goToCreator = viewModel::goToCreator
                     )
                 }
 
@@ -125,8 +122,33 @@ private fun ItemDetail(
                     )
                 }
 
-                relatedContent(state.itemsByCreator) {
-                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, it))
+                if (!state.itemDetail?.subject.isNullOrEmpty()) {
+                    item {
+                        Subjects(
+                            subjects = state.itemDetail?.subject.orEmpty(),
+                            modifier = Modifier.padding(Dimens.Spacing16)
+                        ) {
+                            viewModel.goToSubjectSubject(it)
+                        }
+                    }
+                }
+
+                state.itemsByCreator?.takeIf { it.isNotEmpty() }?.let {
+                    item {
+                        LabelMedium(
+                            text = stringResource(R.string.more_by_author),
+                            modifier = Modifier.padding(Dimens.Spacing16)
+                        )
+                    }
+                    items(state.itemsByCreator, key = { it.itemId }) { item ->
+                        Item(
+                            item,
+                            modifier = Modifier.padding(
+                                vertical = Dimens.Spacing06,
+                                horizontal = Dimens.Gutter
+                            )
+                        ) { viewModel.openItemDetail(item.itemId) }
+                    }
                 }
 
                 if (state.isLoading) {
@@ -171,24 +193,22 @@ private fun ItemDescription(
 
             Text(
                 text = itemDetail.creator.orEmpty(),
-                style = MaterialTheme.typography.titleSmall.copy(textAlign = TextAlign.Center),
+                style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .simpleClickable { goToCreator(itemDetail.creator) }
                     .padding(horizontal = Dimens.Spacing24)
             )
 
-            Text(
-                text = ratingText(itemDetail.uiRating) +
-                        AnnotatedString(itemDetail.description.orEmpty()),
-                style = MaterialTheme.typography.bodySmall.alignCenter(),
-                color = MaterialTheme.colorScheme.secondary,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
+            DescriptionText(
+                itemDetail = itemDetail,
                 modifier = Modifier
                     .fillMaxWidth()
                     .simpleClickable { showDescription(itemDetail.itemId) }
-                    .padding(Dimens.Spacing24)
+                    .padding(Dimens.Spacing24),
+                style = MaterialTheme.typography.bodySmall.alignCenter(),
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -207,6 +227,22 @@ fun ratingText(rating: Int): AnnotatedString {
         addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 0, rating)
         append("   ")
     }.toAnnotatedString()
+}
+
+@Composable
+private fun Subjects(
+    subjects: List<String>,
+    modifier: Modifier = Modifier,
+    onClicked: (String) -> Unit
+) {
+    FlowRow(modifier = modifier) {
+        subjects.forEach {
+            SubjectItem(
+                text = it,
+                modifier = Modifier.padding(Dimens.Spacing04),
+                onClicked = { onClicked(it) })
+        }
+    }
 }
 
 private const val MaxRating = 5

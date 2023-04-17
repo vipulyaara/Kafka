@@ -23,8 +23,8 @@ import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
 import org.kafka.ui.components.item.ItemCreator
-import org.kafka.ui.components.item.ItemTitle
-import org.kafka.ui.components.item.ItemType
+import org.kafka.ui.components.item.ItemTitleMedium
+import org.kafka.ui.components.item.ItemMediaType
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -49,11 +49,11 @@ internal fun DownloadItem(
 @Composable
 fun DownloadItemDescription(item: ItemWithDownload, modifier: Modifier = Modifier) {
     Column(modifier) {
-        ItemTitle(item.file.name)
+        ItemTitleMedium(item.file.name)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
         ItemCreator(item.item.title)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        ItemType(item.item.mediaType)
+        ItemMediaType(item.item.mediaType)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
 
         if (item.downloadInfo.status != DownloadStatus.COMPLETED) {

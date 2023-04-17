@@ -1,13 +1,28 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
 plugins {
-    id 'com.gradle.enterprise' version '3.12.6'
+    id("com.gradle.enterprise") version "3.13"
 }
 
 gradleEnterprise {
     buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+        publishAlways()
     }
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+// https://docs.gradle.org/7.6/userguide/configuration_cache.html#config_cache:stable
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+
+rootProject.name = "kafka"
 
 include ':app'
 include ':base-domain'
@@ -37,7 +52,3 @@ include ':core-playback'
 include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
-
-enableFeaturePreview("VERSION_CATALOGS")
-
-//includeBuild("gradlePlugins")

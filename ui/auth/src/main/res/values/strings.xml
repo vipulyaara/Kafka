@@ -6,4 +6,5 @@
     <string name="forgot_password" translatable="false">Forgot password?</string>
     <string name="login" translatable="false">Login</string>
     <string name="sign_up" translatable="false">Sign up</string>
+    <string name="logged_out" translatable="false">Logged out successfully</string>
 </resources>

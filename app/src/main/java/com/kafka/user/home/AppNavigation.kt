@@ -25,6 +25,7 @@ import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
 import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
+import org.kafka.base.debug
 import org.kafka.common.extensions.collectEvent
 import org.kafka.homepage.Homepage
 import org.kafka.item.detail.ItemDetail
@@ -50,7 +51,10 @@ internal fun AppNavigation(
     collectEvent(navigator.queue) { event ->
         when (event) {
             is NavigationEvent.Destination -> navController.navigate(event.route)
-            is NavigationEvent.Back -> navController.navigateUp()
+            is NavigationEvent.Back -> {
+                debug { "Back pressed" }
+                navController.navigateUp()
+            }
             else -> Unit
         }
     }

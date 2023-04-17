@@ -19,17 +19,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
-import org.kafka.item.SearchFilter
+import org.kafka.navigation.SearchFilter
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun SearchFilterChips(
-    selectedFilters: SnapshotStateList<SearchFilter>,
+    selectedFilters: MutableList<SearchFilter>,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -94,7 +93,7 @@ private fun FilterChip(
             }
             Text(
                 text = filter.name,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = contentColorFor(containerColor)
             )
         }

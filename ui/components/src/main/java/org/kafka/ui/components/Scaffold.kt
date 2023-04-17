@@ -28,3 +28,6 @@ fun scaffoldPadding(): PaddingValues = LocalScaffoldPadding.current
 
 @Composable
 fun bottomScaffoldPadding() = LocalScaffoldPadding.current.calculateBottomPadding()
+
+@Composable
+fun topScaffoldPadding() = LocalScaffoldPadding.current.calculateTopPadding()

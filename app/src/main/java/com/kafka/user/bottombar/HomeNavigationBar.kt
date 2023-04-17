@@ -3,6 +3,7 @@ package com.kafka.user.bottombar
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
@@ -29,10 +30,8 @@ internal fun HomeNavigationBar(
     modifier: Modifier = Modifier,
     isPlayerActive: Boolean = false,
 ) {
-    val elevation = if (isPlayerActive) 0.dp else 8.dp
-
     NavigationBar(
-        tonalElevation = elevation,
+        tonalElevation = if (isPlayerActive) 0.dp else 8.dp,
         windowInsets = WindowInsets.navigationBars,
         containerColor = NavigationBarDefaults.containerColor,
         modifier = modifier,

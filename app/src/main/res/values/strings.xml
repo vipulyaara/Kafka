@@ -14,4 +14,6 @@
     <string name="dark_mode" translatable="false">Dark mode</string>
     <string name="library" translatable="false">Library</string>
     <string name="title_dynamicfeature" translatable="false">Module Title</string>
+    <string name="bottom_bar_search" translatable="false">Search</string>
+    <string name="home" translatable="false">Home</string>
 </resources>

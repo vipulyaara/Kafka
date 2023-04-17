@@ -14,14 +14,6 @@ data class UiMessage(
     val title: String = "",
     val id: Long = UUID.randomUUID().mostSignificantBits,
 )
-//
-//fun UiMessage(
-//    t: Throwable,
-//    id: Long = UUID.randomUUID().mostSignificantBits,
-//): UiMessage = UiMessage(
-//    message = t.message ?: "Error occurred: $t",
-//    id = id,
-//)
 
 fun String?.asUiMessage() =
     this?.let { UiMessage(it) } ?: UiMessage("Something went wrong")

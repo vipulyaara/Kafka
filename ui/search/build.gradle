@@ -1,40 +1,19 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    id 'kotlin-kapt'
 }
 
-apply plugin: 'dagger.hilt.android.plugin'
-
 android {
-    compileSdk Publishing.compileSdk
-
-    defaultConfig {
-        minSdkVersion Publishing.minSdk
-        manifestPlaceholders += ['appAuthRedirectScheme': 'empty']
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         compose true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
 
-    sourceSets {
-        main { java.srcDirs = ['src/main/java'] }
-        test { java.srcDirs = ['src/test/java'] }
-        androidTest { java.srcDirs = ['src/androidTest/java'] }
-    }
     namespace 'org.kafka.search'
 }
 

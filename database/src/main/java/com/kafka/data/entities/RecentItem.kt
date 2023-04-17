@@ -75,3 +75,11 @@ data class RecentAudioItem(
     val progress: Int
         get() = (currentTimestamp * 100 / duration).toInt()
 }
+
+data class RecentItemWithProgress(
+    val recentItem: RecentItem,
+    val percentage: Int
+) {
+    val progress: Float
+        get() = percentage / 100f
+}

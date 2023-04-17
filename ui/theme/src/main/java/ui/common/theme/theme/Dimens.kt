@@ -1,5 +1,6 @@
 package ui.common.theme.theme
 
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
 object Dimens {
@@ -32,6 +33,8 @@ object Dimens {
     val Radius12 = Spacing12
     val Radius16 = Spacing16
 
+    val Gutter = 16.dp
+
     val Elevation04 = 4.dp
 
     val RadiusSmall = Radius04
@@ -39,4 +42,8 @@ object Dimens {
 
     val CarouselMinHeight = 156.dp
     val CarouselMaxHeight = 236.dp
+
+    val CoverSizeSmall = DpSize(72.dp, 78.dp)
+    val CoverSizeMedium = DpSize(78.dp, 88.dp)
+    val CoverSizeLarge = DpSize(120.dp, 120.dp)
 }

@@ -15,6 +15,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -22,19 +23,20 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun AppTheme(
     dynamicColor: Boolean = isAtLeastS(),
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val isDarkTheme = isSystemInDarkTheme()
-
     val colorScheme = when {
         dynamicColor && isDarkTheme -> if (isAtLeastS()) {
             dynamicDarkColorScheme(LocalContext.current)
+                .copy(background = Color.Black, surface = Color.Black)
         } else {
             DarkAppColors
         }
 
         dynamicColor && !isDarkTheme -> if (isAtLeastS()) {
             dynamicLightColorScheme(LocalContext.current)
+                .copy(background = Color.White, surface = Color.White)
         } else {
             LightAppColors
         }
@@ -51,9 +53,7 @@ fun AppTheme(
         systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = isLight)
     }
 
-    MaterialTheme(colorScheme = colorScheme, typography = TypographyEnglish) {
-        content()
-    }
+    MaterialTheme(colorScheme = colorScheme, typography = KafkaTypography, content = content)
 }
 
 val KafkaTypography by lazy {
@@ -64,31 +64,44 @@ val KafkaTypography by lazy {
         displaySmall = default.displaySmall.copy(fontFamily = DefaultFont),
         headlineLarge = default.headlineLarge.copy(fontFamily = DefaultFont),
         headlineMedium = default.headlineMedium.copy(fontFamily = DefaultFont),
-        headlineSmall = default.headlineSmall.copy(fontFamily = DefaultFont),
+        headlineSmall = TextStyle(
+            fontFamily = Inter,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            lineHeight = 24.sp,
+        ),
         titleLarge = default.titleLarge.copy(
             fontFamily = DefaultFont,
             fontWeight = FontWeight.Medium,
             fontSize = 20.sp
         ),
-        titleMedium = default.titleMedium.copy(
-            fontFamily = DefaultFont,
+        titleMedium = TextStyle(
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
         ),
-        titleSmall = default.titleSmall.copy(
-            fontFamily = DefaultFont,
+        titleSmall = TextStyle(
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 13.sp,
+            lineHeight = 18.sp,
         ),
         bodyLarge = default.bodyLarge.copy(fontFamily = DefaultFont),
-        bodyMedium = default.bodyMedium.copy(
-            fontFamily = DefaultFont,
-            letterSpacing = 0.1.sp,
-        ),
-        bodySmall = default.bodySmall.copy(
-            fontFamily = DefaultFont
-        ),
+        bodyMedium = default.bodyMedium,
+        bodySmall = default.bodySmall,
         labelLarge = default.labelLarge.copy(fontFamily = DefaultFont),
-        labelMedium = default.labelMedium.copy(
-            fontFamily = DefaultFont
+        labelMedium = TextStyle(
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 13.sp,
+            lineHeight = 15.sp,
         ),
-        labelSmall = default.labelSmall.copy(fontFamily = DefaultFont),
+        labelSmall = TextStyle(
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 12.sp,
+        ),
     )
 }
 
@@ -107,3 +120,5 @@ fun ProvideRipple(
 fun isAtLeastS(): Boolean {
     return VERSION.SDK_INT >= 31
 }
+
+enum class Theme { Dark, Light, Auto }

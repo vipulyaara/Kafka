@@ -40,15 +40,15 @@ internal fun Carousels(
             contentPadding = PaddingValues(horizontal = Dimens.Spacing12),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            itemsIndexed(carouselItems) { page, item ->
-                CarouselItem(item, page, navigator)
+            itemsIndexed(carouselItems) { _, item ->
+                CarouselItem(item, navigator)
             }
         }
     }
 }
 
 @Composable
-private fun CarouselItem(item: CarouselItem, page: Int, navigator: Navigator) {
+private fun CarouselItem(item: CarouselItem, navigator: Navigator) {
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
     AsyncImage(
         model = item.image,
@@ -61,12 +61,16 @@ private fun CarouselItem(item: CarouselItem, page: Int, navigator: Navigator) {
                 shape = RoundedCornerShape(Dimens.Spacing08)
             )
             .clickable {
-                if (page == 0) {
-                    navigator.navigate(
+                when (item.itemId) {
+                    "kafka_archives" -> navigator.navigate(
                         Screen.Search.createRoute(RootScreen.Search, "kafka%20archives")
                     )
-                } else {
-                    navigator.navigate(
+
+                    "adbi-duniya" -> navigator.navigate(
+                        Screen.Search.createRoute(RootScreen.Search, "adbi-duniya")
+                    )
+
+                    else -> navigator.navigate(
                         Screen.ItemDetail.createRoute(currentRoot, item.itemId)
                     )
                 }

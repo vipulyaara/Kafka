@@ -73,6 +73,7 @@ class NavigatorImpl : Navigator {
     }
 
     override fun goBack() {
+        debug { "Going back" }
         navigationQueue.trySend(NavigationEvent.Back)
     }
 }

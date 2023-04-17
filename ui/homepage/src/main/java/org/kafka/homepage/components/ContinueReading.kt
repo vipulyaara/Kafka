@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,63 +43,61 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.RecentItemWithProgress
 import org.kafka.common.ImmutableList
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
+import org.kafka.ui.components.LabelMedium
+import org.kafka.ui.components.item.ItemCreator
+import org.kafka.ui.components.item.ItemDescription
+import org.kafka.ui.components.item.ItemMediaType
+import org.kafka.ui.components.item.ItemTitleSmall
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun ContinueReading(
-    readingList: ImmutableList<RecentItem>,
+    readingList: ImmutableList<RecentItemWithProgress>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit
 ) {
-    if (readingList.items.isNotEmpty()) {
-        Column(modifier = modifier) {
-            Text(
-                text = stringResource(id = R.string.continue_reading),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(horizontal = Dimens.Spacing20)
-            )
-
-            LazyRow(contentPadding = PaddingValues(end = 60.dp)) {
-                items(readingList.items, key = { it.itemId }) { continueReading ->
-                    ContinueReadingItem(
-                        continueReading = continueReading,
-                        onItemClicked = { openItemDetail(continueReading.itemId) },
-                        onItemRemoved = { removeRecentItem(it) },
-                        modifier = Modifier.animateItemPlacement()
-                    )
-                }
+    Column(modifier = modifier) {
+        LabelMedium(
+            text = stringResource(id = R.string.continue_reading),
+            modifier = Modifier.padding(horizontal = Dimens.Gutter)
+        )
+        LazyRow(
+            contentPadding = PaddingValues(Dimens.Spacing12),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
+        ) {
+            items(readingList.items, key = { it.recentItem.itemId }) { continueReading ->
+                ContinueReadingItem(
+                    item = continueReading,
+                    onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
+                    onItemRemoved = { removeRecentItem(it) },
+                    modifier = Modifier.animateItemPlacement()
+                )
             }
         }
-    } else {
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
     }
 }
 
 @Composable
 private fun ContinueReadingItem(
-    continueReading: RecentItem,
+    item: RecentItemWithProgress,
     modifier: Modifier = Modifier,
     onItemRemoved: (String) -> Unit,
     onItemClicked: () -> Unit
 ) {
     var isInEditMode by remember { mutableStateOf(false) }
+    val recentItem = item.recentItem
 
     Box(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .padding(Dimens.Spacing12)
-                .widthIn(100.dp, 286.dp)
-        ) {
+        Column(modifier = Modifier.widthIn(100.dp, 286.dp)) {
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(Dimens.Spacing08))
@@ -107,27 +108,45 @@ private fun ContinueReadingItem(
                             onItemClicked()
                         }
                     )
-                    .padding(Dimens.Spacing12),
+                    .padding(Dimens.Spacing08),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
-                CoverImage(continueReading)
-                Description(continueReading, Modifier.width(286.dp))
+                CoverImage(recentItem)
+
+                ItemDescription(
+                    title = { ItemTitleSmall(recentItem.title, 1) },
+                    creator = { ItemCreator(recentItem.creator) },
+                    mediaType = { ItemMediaType(recentItem.mediaType) },
+                    modifier = Modifier.width(286.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(Dimens.Spacing12))
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.Spacing12)
-                    .padding(horizontal = 4.dp)
-                    .shadowMaterial(Dimens.Spacing12, clip = false)
-                    .clip(RoundedCornerShape(Dimens.Spacing04))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
+            ShelfWithProgress(progress = item.progress)
         }
 
-        RemoveRecentItemButton(isInEditMode, onItemRemoved, continueReading)
+        RemoveRecentItemButton(isInEditMode, onItemRemoved, recentItem)
+    }
+}
+
+@Composable
+private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(Dimens.Spacing12)
+            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing12))
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)),
+        shape = RoundedCornerShape(Dimens.Spacing12),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+    ) {
+        Spacer(modifier = Modifier.fillMaxSize())
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(progress)
+        )
     }
 }
 
@@ -140,17 +159,17 @@ private fun BoxScope.RemoveRecentItemButton(
     val infiniteTransition = rememberInfiniteTransition()
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = .85f,
+        targetValue = .90f,
         animationSpec = infiniteRepeatable(
             animation = tween(500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
     val rotation by infiniteTransition.animateFloat(
-        initialValue = -20f,
-        targetValue = 20f,
+        initialValue = -10f,
+        targetValue = 10f,
         animationSpec = infiniteRepeatable(
-            animation = tween(500, easing = LinearEasing),
+            animation = tween(230, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -178,10 +197,11 @@ private fun BoxScope.RemoveRecentItemButton(
 @Composable
 private fun CoverImage(item: RecentItem) {
     Box(
-        modifier = Modifier.shadowMaterial(
-            elevation = Dimens.Spacing08,
-            shape = RoundedCornerShape(Dimens.Spacing04)
-        )
+        modifier = Modifier
+            .shadowMaterial(
+                elevation = Dimens.Spacing08,
+                shape = RoundedCornerShape(Dimens.Spacing04)
+            )
     ) {
         AsyncImage(
             model = item.coverUrl,
@@ -191,34 +211,6 @@ private fun CoverImage(item: RecentItem) {
                 .background(MaterialTheme.colorScheme.surface),
             contentScale = ContentScale.Crop
         )
-    }
-}
-
-@Composable
-private fun Description(continueReading: RecentItem, modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Text(
-            text = continueReading.title,
-            style = MaterialTheme.typography.titleSmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        Text(
-            text = continueReading.creator,
-            style = MaterialTheme.typography.labelMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.secondary
-        )
-        Spacer(modifier = Modifier.height(Dimens.Spacing04))
-
-        Text(
-            text = continueReading.mediaType,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.tertiary
-        )
-        Spacer(modifier = Modifier.height(Dimens.Spacing08))
     }
 }
 

@@ -20,7 +20,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
@@ -43,7 +45,17 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BottomSheetDefaults.DragHandle()
                 Spacer(modifier = Modifier.height(Dimens.Spacing16))
-                viewState.itemDetail?.let { DescriptionText(it) }
+                viewState.itemDetail?.let {
+                    DescriptionText(
+                        itemDetail = it,
+                        style = MaterialTheme.typography.bodyMedium
+                            .copy(textAlign = TextAlign.Justify),
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .navigationBarsPadding()
+                            .padding(bottom = Dimens.Spacing48)
+                    )
+                }
                 InfiniteProgressBar(show = viewState.isFullScreenLoading)
             }
         }
@@ -51,17 +63,21 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun DescriptionText(itemDetail: ItemDetail) {
+internal fun DescriptionText(
+    itemDetail: ItemDetail,
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip
+) {
     SelectionContainer {
         Text(
             text = ratingText(itemDetail.uiRating) +
                     AnnotatedString(itemDetail.description.orEmpty()),
-            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
-            color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .navigationBarsPadding()
-                .padding(bottom = Dimens.Spacing48)
+            style = style,
+            maxLines = maxLines,
+            overflow = overflow,
+            modifier = modifier
         )
     }
 }

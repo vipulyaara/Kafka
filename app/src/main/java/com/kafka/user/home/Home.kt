@@ -27,6 +27,7 @@ import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
+import org.kafka.analytics.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
@@ -39,6 +40,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun Home(
     navController: NavHostController,
+    analytics: Analytics,
     modifier: Modifier = Modifier,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
@@ -58,13 +60,17 @@ internal fun Home(
         val maxWidth = maxWidth
 
         Row(Modifier.fillMaxSize()) {
-            HomeNavigationRail(
-                isWideLayout = isWideLayout,
-                maxWidth = maxWidth,
-                selectedTab = selectedTab,
-                navController = navController,
-                artist = nowPlaying.artist
-            )
+            if (isWideLayout) {
+                ResizableHomeNavigationRail(
+                    availableWidth = maxWidth,
+                    selectedTab = selectedTab,
+                    navController = navController,
+                    analytics = analytics,
+                    onPlayingArtistClick = {
+                        navController.navigate(Screen.Search.createRoute(RootScreen.Search, nowPlaying.artist))
+                    },
+                )
+            }
             Scaffold(
                 modifier = Modifier.weight(12f),
                 snackbarHost = { DismissableSnackbarHost(snackbarHostState) },
@@ -73,7 +79,8 @@ internal fun Home(
                         isWideLayout = isWideLayout,
                         navController = navController,
                         selectedTab = selectedTab,
-                        isPlayerActive = isPlayerActive
+                        isPlayerActive = isPlayerActive,
+                        analytics = analytics
                     )
                 }
             ) { paddings ->
@@ -90,7 +97,8 @@ private fun BottomBar(
     isWideLayout: Boolean,
     navController: NavHostController,
     selectedTab: RootScreen,
-    isPlayerActive: Boolean
+    isPlayerActive: Boolean,
+    analytics: Analytics
 ) {
     val navigator = LocalNavigator.current
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
@@ -108,30 +116,13 @@ private fun BottomBar(
 
             HomeNavigationBar(
                 selectedTab = selectedTab,
-                onNavigationSelected = { selected -> navController.selectRootScreen(selected) },
+                onNavigationSelected = { selected ->
+                    analytics.log { this.homeTabSwitched(selectedTab.route, "navigation_bar") }
+                    navController.selectRootScreen(selected)
+                },
                 isPlayerActive = isPlayerActive,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
     else Spacer(Modifier.navigationBarsPadding())
-}
-
-@Composable
-private fun RowScope.HomeNavigationRail(
-    isWideLayout: Boolean,
-    maxWidth: Dp,
-    selectedTab: RootScreen,
-    navController: NavHostController,
-    artist: String?
-) {
-    if (isWideLayout) {
-        ResizableHomeNavigationRail(
-            availableWidth = maxWidth,
-            selectedTab = selectedTab,
-            navController = navController,
-            onPlayingArtistClick = {
-                navController.navigate(Screen.Search.createRoute(RootScreen.Search, artist))
-            },
-        )
-    }
 }

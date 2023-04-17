@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.debug
 import javax.inject.Inject
 
 class AudioProgressInitializer @Inject constructor(
@@ -23,11 +24,12 @@ class AudioProgressInitializer @Inject constructor(
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
             playbackConnection.playbackProgress
-                .filter { it.position % 5L == 0L }
+                .filter { it.position % 5L == 0L && it.position != 0L }
                 .collectLatest { timestamp ->
+                    debug { "Updating progress for $timestamp" }
                     playbackConnection.nowPlaying.value.fileId?.let { fileId ->
                         val audioItem = recentAudioDao.get(fileId)
-                        if (audioItem != null) {
+                        if (audioItem == null) {
                             val audio = RecentAudioItem(fileId, timestamp.position, timestamp.total)
                             recentAudioDao.insert(audio)
                         } else {

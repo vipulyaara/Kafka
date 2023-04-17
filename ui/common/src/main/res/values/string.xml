@@ -19,11 +19,9 @@
     <string name="pref_theme_light_value" translatable="false">light</string>
     <string name="pref_theme_dark_value" translatable="false">dark</string>
 
-    <string name="home" translatable="false">Home</string>
     <string name="player_library" translatable="false">Player</string>
     <string name="library" translatable="false">Library</string>
     <string name="bottom_bar_profile">Profile</string>
-    <string name="bottom_bar_search" translatable="false">Search</string>
     <string name="next" translatable="false">Next</string>
     <string name="previous" translatable="false">Previous</string>
     <string name="share" translatable="false">Share</string>
@@ -31,34 +29,8 @@
     <string name="copy" translatable="false">Copy</string>
     <string name="see_ghazal" translatable="false">See Ghazal</string>
 
-    <string name="ghazal">Ghazal</string>
-    <string name="nazm">Nazm</string>
-    <string name="sher">Sher</string>
-
-    <string name="hindi" translatable="false">Hindi</string>
-    <string name="english" translatable="false">English</string>
-    <string name="urdu" translatable="false">Urdu</string>
-    <string name="rubai" translatable="false">Rubai</string>
-    <string name="musaddas" translatable="false">Musaddas</string>
-    <string name="mukhammas" translatable="false">Mukhammas</string>
-    <string name="salaam" translatable="false">Salaam</string>
-    <string name="unpublished_ghazals" translatable="false">Unpublished Ghazals</string>
-    <string name="unpublished_sher" translatable="false">Unpublished Sher</string>
-    <string name="qasida" translatable="false">Qasida</string>
-    <string name="masnavi" translatable="false">Masnavi</string>
-    <string name="marsiya" translatable="false">Marsiya</string>
-    <string name="latifa" translatable="false">Latifa</string>
-    <string name="afsancha" translatable="false">Afsancha</string>
-    <string name="drama" translatable="false">Drama</string>
-    <string name="article" translatable="false">Article</string>
-    <string name="translation" translatable="false">Translation</string>
     <string name="unknown" translatable="false">Unknown</string>
-    <string name="novel" translatable="false">Novel</string>
-    <string name="khaka" translatable="false">Khaka</string>
-    <string name="tanzomizah" translatable="false">Tanz-o-mizah</string>
-    <string name="short_story" translatable="false">Short story</string>
 
     <string name="search_relevant_content">Most relevant content</string>
     <string name="logout" translatable="false">Logout</string>
-    <string name="logged_out" translatable="false">Logged out successfully</string>
 </resources>

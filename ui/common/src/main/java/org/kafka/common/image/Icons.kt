@@ -13,8 +13,11 @@ import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
 import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.FileContract
+import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.tablericons.ArrowForward
+import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Book
@@ -26,6 +29,8 @@ import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
+import compose.icons.tablericons.FileText
+import compose.icons.tablericons.Headphones
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
@@ -40,36 +45,21 @@ import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 
 object Icons {
-    val Home: ImageVector
-        get() = TablerIcons.Home
-    val HomeActive: ImageVector
-        get() = TablerIcons.Home2
-    val Search: ImageVector
-        get() = TablerIcons.Search
-    val Check: ImageVector
-        get() = TablerIcons.CircleCheck
-    val SearchActive: ImageVector
-        get() = FeatherIcons.Search
-    val Library: ImageVector
-        get() = TablerIcons.Bookmark
-    val LibraryActive: ImageVector
-        get() = TablerIcons.Book
-    val Profile: ImageVector
-        get() = FontAwesomeIcons.Solid.UserCircle
-    val Files: ImageVector
-        get() = FeatherIcons.File
-    val ProfileActive: ImageVector
-        get() = FeatherIcons.User
-    val GoToTop: ImageVector
-        get() = TablerIcons.ChevronUpLeft
-    val List: ImageVector
-        get() = TablerIcons.LayoutList
-    val Grid: ImageVector
-        get() = TablerIcons.LayoutGrid
-    val Web: ImageVector
-        get() = TablerIcons.World
-    val Share: ImageVector
-        get() = TablerIcons.Share
+    val Home: ImageVector = TablerIcons.Home
+    val HomeActive: ImageVector = TablerIcons.Home2
+    val Search: ImageVector = TablerIcons.Search
+    val Check: ImageVector = TablerIcons.CircleCheck
+    val SearchActive: ImageVector = FeatherIcons.Search
+    val Library: ImageVector = TablerIcons.Bookmark
+    val LibraryActive: ImageVector = TablerIcons.Book
+    val Profile: ImageVector = FontAwesomeIcons.Solid.UserCircle
+    val Files: ImageVector = FeatherIcons.File
+    val ProfileActive: ImageVector = FeatherIcons.User
+    val GoToTop: ImageVector = TablerIcons.ChevronUpLeft
+    val List: ImageVector = TablerIcons.LayoutList
+    val Grid: ImageVector = TablerIcons.LayoutGrid
+    val Web: ImageVector = TablerIcons.World
+    val Share: ImageVector = TablerIcons.Share
     val Heart = TablerIcons.Heart
     val Download = TablerIcons.Download
     val Downloaded = TablerIcons.CircleCheck
@@ -81,6 +71,8 @@ object Icons {
     val X = TablerIcons.X
     val XCircle = TablerIcons.CircleX
     val Mic = TablerIcons.Microphone
+    val Audio = FontAwesomeIcons.Solid.Headphones
+    val Texts = FontAwesomeIcons.Solid.FileContract
     val Back
         @Composable get() = if (LocalLayoutDirection.current == LayoutDirection.Ltr)
             TablerIcons.ArrowLeft

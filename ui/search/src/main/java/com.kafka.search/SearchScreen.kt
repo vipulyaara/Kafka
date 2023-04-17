@@ -10,9 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -25,14 +23,15 @@ import com.kafka.data.entities.RecentSearch
 import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
-import org.kafka.item.SearchFilter
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Screen
+import org.kafka.navigation.SearchFilter
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBar
-import org.kafka.ui.components.scaffoldPadding
+import org.kafka.ui.components.topScaffoldPadding
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun SearchScreen() {
@@ -46,22 +45,18 @@ fun SearchScreen() {
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(text = keywordState, selection = TextRange(0)))
     }
-    val selectedFilters = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { mutableStateListOf(*it.toTypedArray()) }
-        )
-    ) { mutableStateListOf(*SearchFilter.values()) }
+    val selectedFilters by searchViewModel.selectedFilters.collectAsStateWithLifecycle()
+    val onSearchClicked: (String) -> Unit = {
+        if (it.isNotEmpty()) {
+            queryViewModel.submitQuery(it, selectedFilters)
+            searchViewModel.addRecentSearch(it, selectedFilters)
+        }
+    }
 
     val navigator = LocalNavigator.current
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        if (searchText.text.isNotEmpty()) {
-            queryViewModel.submitQuery(searchText.text, selectedFilters)
-            searchViewModel.addRecentSearch(searchText.text, selectedFilters)
-        }
-    }
+    LaunchedEffect(Unit) { onSearchClicked(searchText.text) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
@@ -72,7 +67,8 @@ fun SearchScreen() {
                 recentSearches = recentSearches,
                 selectedFilters = selectedFilters,
                 onSearchClicked = {
-                    navigator.navigate(Screen.Search.createRoute(currentRoot, it))
+                    searchText = TextFieldValue(text = it, selection = TextRange(it.length))
+                    onSearchClicked(it)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = {
@@ -94,7 +90,7 @@ private fun Search(
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit
 ) {
-    Column(modifier = Modifier.padding(top = scaffoldPadding().calculateTopPadding())) {
+    Column(modifier = Modifier.padding(top = topScaffoldPadding())) {
         SearchWidget(
             searchText = searchText,
             setSearchText = setSearchText,
@@ -106,12 +102,18 @@ private fun Search(
         LazyColumn(contentPadding = PaddingValues(bottom = bottomScaffoldPadding())) {
             queryViewState.items?.let { items ->
                 items(items) {
-                    Item(item = it) { itemId -> openItemDetail(itemId) }
+                    Item(
+                        item = it,
+                        modifier = Modifier.padding(
+                            vertical = Dimens.Spacing06,
+                            horizontal = Dimens.Gutter
+                        )
+                    ) { itemId -> openItemDetail(itemId) }
                 }
             }
 
-            item {
-                if (queryViewState.canShowRecentSearches && recentSearches.isNotEmpty()) {
+            if (queryViewState.canShowRecentSearches && recentSearches.isNotEmpty()) {
+                item {
                     RecentSearches(
                         recentSearches = recentSearches.map { it.searchTerm },
                         onSearchClicked = { onSearchClicked(it) },

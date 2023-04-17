@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.observers.library.ObserveFavorites
@@ -23,18 +22,32 @@ class ObserveHomepage @Inject constructor(
     private val observeRecentItems: ObserveRecentItems,
     private val observeFavorites: ObserveFavorites,
     private val observeQueryItems: ObserveQueryItems,
+    private val subjectHomepageItemProvider: SubjectHomepageItemProvider,
     firestoreGraph: FirestoreGraph
 ) : SubjectInteractor<Unit, Homepage>() {
 
     override fun createObservable(params: Unit): Flow<Homepage> {
         return combine(
             homepageQueryItems,
+            subjectHomepageItemProvider.execute(Unit),
             observeRecentItems.execute(Unit),
             observeFavorites.execute(Unit),
-        ) { queryItems, recentItems, favoriteItems ->
-            Homepage(queryItems.sortByIds(), recentItems, favoriteItems)
+        ) { queryItems, subjectRows, recentItems, _ ->
+            /*
+            * ugly code to remove duplicate items from query and subject rows.
+            * todo: move this logic to firestore
+            * */
+            val subjectItems = subjectRows.filterIsInstance<Homepage.Row>()
+                .map { it.items.map { it.all() }.flatten() }
+                .flatten().filterNotNull()
+            val queryLabel = if (queryItems.isEmpty()) null else Homepage.Label("Editor's choice")
+            val editorsChoiceItems =
+                queryItems.filter { queryItem -> subjectItems.none { it.itemId == queryItem.itemId } }
+            val column =
+                if (editorsChoiceItems.isEmpty()) null else Homepage.Column(editorsChoiceItems)
+            val items = subjectRows + queryLabel + column
+            Homepage(recentItems, items.filterNotNull())
         }.flowOn(appCoroutineDispatchers.io)
-            .onStart { emit(Homepage(emptyList(), emptyList(), emptyList())) }
     }
 
     private val homepageIds =

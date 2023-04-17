@@ -58,7 +58,7 @@ class FirebaseAnalytics @Inject constructor(
                 when {
                     arguments is Bundle -> {
                         for (key in arguments.keySet()) {
-                            val value = arguments.get(key).toString()
+                            val value = arguments.getString(key).toString()
                             // We don't want to include the label or route twice
                             if (value == label || value == route) continue
 

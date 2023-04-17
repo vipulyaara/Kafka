@@ -112,9 +112,9 @@ abstract class AppModuleBinds {
     @IntoSet
     abstract fun provideDownloadInitializer(bind: ReaderProgressInitializer): AppInitializer
 
-    @Binds
-    @IntoSet
-    abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
+//    @Binds
+//    @IntoSet
+//    abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
 
     @Binds
     @IntoSet

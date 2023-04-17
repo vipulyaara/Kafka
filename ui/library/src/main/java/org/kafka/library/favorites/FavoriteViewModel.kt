@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.FavoriteItem
+import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -55,7 +56,7 @@ class FavoriteViewModel @Inject constructor(
 
 @Immutable
 data class FavoriteViewState(
-    val favoriteItems: List<FavoriteItem>? = null,
+    val favoriteItems: List<Item>? = null,
     val message: UiMessage? = null,
     val layoutType: LayoutType = LayoutType.List
 )

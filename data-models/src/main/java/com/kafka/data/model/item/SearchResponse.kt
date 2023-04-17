@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SearchResponse(
     @SerialName("response")
-    val response: Response,
+    val response: Response? = null,
     @SerialName("responseHeader")
-    val responseHeader: ResponseHeader
+    val responseHeader: ResponseHeader? = null
 )

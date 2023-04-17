@@ -10,3 +10,11 @@ data class FavoriteItem(
     val mediaType: String = "",
     val coverImage: String = "",
 ) : BaseEntity
+
+fun FavoriteItem.toItem() = Item(
+    itemId = itemId,
+    title = title,
+    creator = Creator(id = creator, name = creator),
+    mediaType = mediaType,
+    coverImage = coverImage,
+)

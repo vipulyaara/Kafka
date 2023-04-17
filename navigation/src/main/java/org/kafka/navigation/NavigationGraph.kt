@@ -1,5 +1,7 @@
 package org.kafka.navigation
 
+import org.kafka.base.debug
+
 sealed class RootScreen(val route: String) {
     object Home : RootScreen("home_root")
     object Search : RootScreen("search_root")
@@ -42,17 +44,37 @@ sealed class Screen(
         }
     }
 
-    object Search : Screen("search?keyword={keyword}") {
-        @Suppress("NAME_SHADOWING")
+    object Search : Screen("search?keyword={keyword}&filters={filters}") {
         fun createRoute(
             root: RootScreen,
-            keyword: String? = null
+            keyword: String? = null,
+            filter: String = SearchFilter.all(),
         ): String {
-            val keyword = keyword?.replace("'", " ")
+            val routeKeyword = keyword?.replace("'", " ")
             return "${root.route}/search".let {
-                if (keyword != null) "$it?keyword=$keyword" else it
+                if (routeKeyword != null) "$it?keyword=$routeKeyword&filters=$filter" else it
             }
         }
     }
+}
 
+
+enum class SearchFilter {
+    Name, Creator, Subject;
+
+    companion object {
+        private fun fromString(value: String): SearchFilter {
+            debug { "SearchFilter.fromAlls: $value" }
+            return values().first { it.name.lowercase() == value.lowercase() }
+        }
+
+        fun from(value: String): List<SearchFilter> {
+            debug { "SearchFilter.fromAll: $value" }
+            return value.split(",").map { SearchFilter.fromString(it.trim()) }
+        }
+
+        fun all(): String {
+            return values().toList().joinToString(",") { it.name }
+        }
+    }
 }

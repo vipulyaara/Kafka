@@ -73,7 +73,7 @@ fun LoginScreen() {
 @Composable
 private fun Login(
     login: (email: String, password: String) -> Unit,
-    signup: (email: String, password: String, name: String) -> Unit,
+    signup: (email: String, password: String) -> Unit,
     forgotPassword: (email: String) -> Unit,
     loginByGmail: () -> Unit,
     modifier: Modifier = Modifier,
@@ -100,11 +100,11 @@ private fun Login(
             loginState = loginState,
             modifier = Modifier.weight(0.7f),
             onFocusChanged = onFocusChanged,
-            login = { email, password, name ->
+            login = { email, password ->
                 if (loginState.isLogin) {
                     login(email, password)
                 } else {
-                    signup(email, password, name)
+                    signup(email, password)
                 }
             },
             forgotPassword = { email -> forgotPassword(email) }

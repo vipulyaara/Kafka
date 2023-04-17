@@ -15,12 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.entities.FavoriteItem
+import com.kafka.data.entities.Item
 import org.kafka.common.widgets.LoadImage
 import org.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun LibraryItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
+internal fun LibraryItem(item: Item, openItemDetail: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,14 +44,14 @@ internal fun LibraryItem(item: FavoriteItem, openItemDetail: (String) -> Unit) {
             )
         ) {
             Text(
-                text = item.title,
+                text = item.title.orEmpty(),
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(Dimens.Spacing02))
             Text(
-                text = item.creator,
+                text = item.creator?.name.orEmpty(),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
                 maxLines = 2,

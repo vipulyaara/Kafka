@@ -1,7 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlinx-serialization'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
+}
 
 kapt {
     correctErrorTypes = true
@@ -9,25 +12,6 @@ kapt {
 }
 
 android {
-    compileSdk Publishing.compileSdk
-
-    defaultConfig {
-        minSdkVersion Publishing.minSdk
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [
-                        "room.schemaLocation": "$projectDir/schemas".toString(),
-                        "room.incremental"   : "true"
-                ]
-            }
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     namespace 'org.kafka.base.network'
 }
 
@@ -43,7 +27,6 @@ dependencies {
     api libs.threeTenAbp
 
     api libs.dataStore
-    kapt libs.androidx.room.compiler
     api libs.androidx.paging.runtime
 
     api libs.retrofit.retrofit

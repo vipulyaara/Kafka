@@ -1,40 +1,22 @@
-/*
-* Copyright (C) 2021, Alashov Berkeli
-* All rights reserved.
-*/
-
 plugins {
-	id "com.android.library"
-	id "dagger.hilt.android.plugin"
-	id "kotlin-android"
-	id "kotlin-kapt"
+	alias(libs.plugins.android.library)
+	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.cacheFixPlugin)
+	alias(libs.plugins.hilt)
+	id 'kotlin-kapt'
+	id 'kotlinx-serialization'
 }
 
 android {
 	namespace "com.kafka.ui.downloader"
-
-	compileSdk Publishing.compileSdk
-
-	defaultConfig {
-		minSdkVersion Publishing.minSdk
-	}
-
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_8
-		targetCompatibility JavaVersion.VERSION_1_8
-	}
 
 	buildFeatures {
 		compose = true
 	}
 
 	composeOptions {
-		kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+		kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
 	}
-}
-
-repositories {
-	mavenCentral()
 }
 
 dependencies {

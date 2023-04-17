@@ -1,26 +1,12 @@
-/*
-* Copyright (C) 2021, Alashov Berkeli
-* All rights reserved.
-*/
-
 plugins {
-	id "com.android.library"
-	id "dagger.hilt.android.plugin"
-	id "kotlin-android"
-	id "kotlin-kapt"
+	alias(libs.plugins.android.library)
+	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.cacheFixPlugin)
+	alias(libs.plugins.hilt)
+	id 'kotlin-kapt'
 }
 
 android {
-	compileSdk Publishing.compileSdk
-
-	defaultConfig {
-		minSdkVersion Publishing.minSdk
-	}
-
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_8
-		targetCompatibility JavaVersion.VERSION_1_8
-	}
 	namespace 'org.kafka.downloader'
 }
 

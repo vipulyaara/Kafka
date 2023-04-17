@@ -1,6 +1,7 @@
 package com.kafka.data.model.item
 
 import com.kafka.data.model.StringListSerializer
+import com.kafka.data.model.SubjectListSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,7 +21,7 @@ data class Metadata(
     @Serializable(with = StringListSerializer::class)
     val description: List<String>? = null,
     @SerialName("subject")
-    @Serializable(with = StringListSerializer::class)
+    @Serializable(with = SubjectListSerializer::class)
     val subject: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,

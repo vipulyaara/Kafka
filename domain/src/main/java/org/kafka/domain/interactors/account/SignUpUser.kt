@@ -15,12 +15,12 @@ class SignUpUser @Inject constructor(
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             accountRepository.signUpOrLinkUser(params.email, params.password)
-            accountRepository.updateUser(params.name)
+            accountRepository.updateUser(params.name.orEmpty())
             // re-login to receive an update on authListener
             accountRepository.signOut()
             signInUser.execute(SignInUser.Params(params.email, params.password))
         }
     }
 
-    data class Params(val email: String, val password: String, val name: String)
+    data class Params(val email: String, val password: String, val name: String? = null)
 }

@@ -1,38 +1,20 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    id 'kotlin-kapt'
+    alias(libs.plugins.hilt)
 }
 
 android {
-    compileSdk Publishing.compileSdk
-
-    defaultConfig {
-        minSdkVersion Publishing.minSdk
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         compose true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
 
-    sourceSets {
-        main { java.srcDirs = ['src/main/java'] }
-        test { java.srcDirs = ['src/test/java'] }
-        androidTest { java.srcDirs = ['src/androidTest/java'] }
-    }
     namespace 'org.kafka.homepage'
 }
 

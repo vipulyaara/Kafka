@@ -18,7 +18,9 @@ import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.SearchFilter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,10 +48,7 @@ class HomepageViewModel @Inject constructor(
             message = message,
             isLoading = isLoading
         )
-    }.stateInDefault(
-        scope = viewModelScope,
-        initialValue = HomepageViewState(),
-    )
+    }.stateInDefault(scope = viewModelScope, initialValue = HomepageViewState())
 
     init {
         observeHomepage(Unit)
@@ -60,8 +59,7 @@ class HomepageViewModel @Inject constructor(
 
     private fun updateItems() {
         viewModelScope.launch {
-            updateHomepage(Unit)
-                .collectStatus(loadingCounter, uiMessageManager)
+            updateHomepage(Unit).collectStatus(loadingCounter, uiMessageManager)
         }
     }
 
@@ -96,5 +94,13 @@ class HomepageViewModel @Inject constructor(
     fun openRecentItemDetail(itemId: String) {
         analytics.log { this.openRecentItem(itemId) }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+    }
+
+    fun openSubject(name: String) {
+        navigator.navigate(Screen.Search.createRoute(RootScreen.Search, name, SearchFilter.Subject.name))
+    }
+
+    fun openSearch() {
+        navigator.navigate(Screen.Search.createRoute(RootScreen.Search))
     }
 }

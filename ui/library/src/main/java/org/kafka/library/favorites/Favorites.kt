@@ -2,6 +2,7 @@ package org.kafka.library.favorites
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -11,7 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kafka.data.entities.FavoriteItem
+import com.kafka.data.entities.Item
 import org.kafka.common.plus
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.widgets.FullScreenMessage
@@ -24,7 +25,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun Favorites(
-    items: List<FavoriteItem>,
+    items: List<Item>,
     layoutType: LayoutType,
     changeLayoutType: (LayoutType) -> Unit,
     openItemDetail: (String) -> Unit
@@ -54,13 +55,14 @@ internal fun Favorites(
 
 @Composable
 private fun FavoriteItemList(
-    favoriteItems: List<FavoriteItem>,
+    favoriteItems: List<Item>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
+
     LazyColumn(
         contentPadding = padding,
         modifier = modifier.fillMaxSize()
@@ -71,14 +73,18 @@ private fun FavoriteItemList(
             items = favoriteItems,
             key = { _, item -> item.itemId }
         ) { _, item ->
-            Item(item = item, openItemDetail = openItemDetail)
+            Item(
+                item = item,
+                openItemDetail = openItemDetail,
+                modifier = Modifier.padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
+            )
         }
     }
 }
 
 @Composable
 private fun FavoriteItemGrid(
-    favoriteItems: List<FavoriteItem>,
+    favoriteItems: List<Item>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier

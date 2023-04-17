@@ -7,11 +7,11 @@ import org.kafka.common.snackbar.UiMessage
 
 @Immutable
 data class HomepageViewState(
-    val homepage: Homepage = Homepage(emptyList(), emptyList(), emptyList()),
+    val homepage: Homepage = Homepage.Empty,
     val user: User? = null,
     val isLoading: Boolean = false,
     val message: UiMessage? = null
 ) {
     val isFullScreenError: Boolean
-        get() = homepage.queryItems.isEmpty() && message != null
+        get() = homepage.homepageRows.isEmpty() && message != null
 }

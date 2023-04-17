@@ -24,7 +24,6 @@ private fun createSingleGoogleFontFamily(
     },
 )
 
-
 @ExperimentalTextApi
 internal val GmsFontProvider: GoogleFont.Provider by lazy {
     GoogleFont.Provider(
@@ -49,24 +48,9 @@ internal fun createFontFamily(id: String) =
         )
     )
 
-internal val InterFontFamily: FontFamily by lazy {
-    createSingleGoogleFontFamily(
-        name = "Inter",
-        variants = listOf(
-            FontWeight.Light to FontStyle.Normal,
-            FontWeight.Normal to FontStyle.Normal,
-            FontWeight.Normal to FontStyle.Italic,
-            FontWeight.Medium to FontStyle.Normal,
-            FontWeight.SemiBold to FontStyle.Normal,
-            FontWeight.Bold to FontStyle.Normal,
-            FontWeight.Black to FontStyle.Normal,
-        ),
-    )
-}
-
 val Roboto = createFontFamily("Roboto")
 val OpenSans = createFontFamily("Open Sans")
 val ProseFont = createFontFamily("Lora")
 val Poppins = createFontFamily("Poppins")
 val Inter = createFontFamily("Inter")
-val DefaultFont = Roboto
+val DefaultFont = Inter

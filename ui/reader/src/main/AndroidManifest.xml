@@ -1,14 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-<!--        <activity-->
-<!--            android:name="com.pdftron.pdf.controls.DocumentActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"-->
-<!--            android:theme="@style/PDFTronAppTheme"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-        <meta-data
-            android:name="pdftron_license_key"
-            android:value="${pdftronLicenseKey}" />
-    </application>
-</manifest>
+<manifest/>

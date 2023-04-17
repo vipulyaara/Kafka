@@ -3,6 +3,7 @@ package org.rekhta.ui.auth
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -67,7 +68,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun signup(email: String, password: String, name: String) {
+    fun signup(email: String, password: String) {
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
@@ -77,7 +78,7 @@ class AuthViewModel @Inject constructor(
                     snackbarManager.addMessage(UiMessage(R.string.invalid_password_message))
 
                 else -> {
-                    signUpUser(SignUpUser.Params(email, password, name))
+                    signUpUser(SignUpUser.Params(email, password))
                         .collectStatus(loadingCounter, snackbarManager)
                 }
             }
@@ -121,5 +122,12 @@ class AuthViewModel @Inject constructor(
         isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
     private fun CharSequence.isValidPassword() = length > 4
+}
 
+data class AuthViewState(
+    val currentUser: User? = null,
+    val isLoading: Boolean = false
+) {
+    val userName: String?
+        get() = currentUser?.displayName.takeIf { it?.isNotEmpty() == true }
 }

@@ -18,7 +18,7 @@ class FavoritesRepository @Inject constructor(
     fun observeRecentItems(uid: String) = firestoreGraph.getFavoritesCollection(uid)
         .snapshots()
         .map { snapshots ->
-            snapshots.map { it.toObject<FavoriteItem>() }.reversed()
+            snapshots.map { it.toObject<FavoriteItem>() }
         }
 
     suspend fun updateFavorite(favoriteItem: FavoriteItem, isFavorite: Boolean) {

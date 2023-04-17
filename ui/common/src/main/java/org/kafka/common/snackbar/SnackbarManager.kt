@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.kafka.common.R
+import org.kafka.base.R
 import javax.inject.Inject
 import javax.inject.Singleton
 

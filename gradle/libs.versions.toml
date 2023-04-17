@@ -1,19 +1,20 @@
 [versions]
-accompanist = "0.30.0"
+accompanist = "0.30.1"
+agp = "8.0.0"
 androidxhilt = "1.0.0"
 androidxlifecycle = "2.6.1"
-navigation = "2.6.0-alpha08"
+navigation = "2.6.0-alpha09"
 androidxtest = "1.5.2"
-coil = "2.2.2"
-compose-bom = "2023.04.00-alpha01"
-constraintlayout = "1.1.0-alpha07"
-composeCompiler = "1.4.2"
+coil = "2.3.0"
+compose-bom = "2023.04.00-alpha02"
+constraintlayout = "1.1.0-alpha09"
+composecompiler = "1.4.5"
 composesnapshot = "-" # a single character = no snapshot
 coroutines = "1.6.4"
 dagger = "2.45"
-hilt = "2.44.2"
+hilt = "2.45"
 icons = "1.0.0"
-kotlin = "1.8.10"
+kotlin = "1.8.20"
 ktlint = "0.40.0"
 material3 = "1.1.0-alpha04"
 okhttp = "4.10.0"
@@ -21,10 +22,27 @@ paging = "3.1.1"
 retrofit = "2.9.0"
 room = "2.5.1"
 threetenbp = "1.5.2"
-serialization = "1.4.1"
+serialization = "1.5.0"
 exoplayer = "2.18.5"
 media3 = "1.0.0"
 pdftron = "9.3.1"
+compileSdk = "33"
+minSdk = "24"
+targetSdk = "33"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-lint = { id = "com.android.lint", version.ref = "agp" }
+cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "2.7.1" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = "com.google.devtools.ksp:1.8.20-1.0.10"
+gms-googleServices = "com.google.gms.google-services:4.3.15"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.9.5"
+spotless = "com.diffplug.spotless:6.18.0"
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -39,8 +57,6 @@ accompanist-web = { module = "com.google.accompanist:accompanist-webview", versi
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
-android-r8 = "com.android.tools:r8:4.0.52"
-android-gradlePlug = "com.android.tools.build:gradle:7.4.2"
 proguard-snippets = "com.infstory:proguard-snippets:1.0.0"
 media = "androidx.media:media:1.6.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
@@ -49,6 +65,7 @@ profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-beta01"
 pdfkit = "com.pspdfkit:pspdfkit:8.2.1"
 rive = "app.rive:rive-android:4.0.0"
 startup = "androidx.startup:startup-runtime:1.1.1"
+tools-desugarjdklibs = "com.android.tools:desugar_jdk_libs:2.0.3"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
 androidx-activity = "androidx.activity:activity:1.6.1"
@@ -57,10 +74,10 @@ androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.6.1"
 androidx-archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
 androidx-browser = "androidx.browser:browser:1.5.0"
 androidx-collection = "androidx.collection:collection-ktx:1.2.0"
-androidx-core = "androidx.core:core-ktx:1.9.0"
+androidx-core = "androidx.core:core-ktx:1.10.0"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
 androidx-emoji = "androidx.emoji:emoji:1.1.0"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.5.5"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.5.6"
 
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxhilt" }
 androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
@@ -105,7 +122,7 @@ androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxtest" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxtest" }
 
-androidx-work-runtime = "androidx.work:work-runtime-ktx:2.8.0"
+androidx-work-runtime = "androidx.work:work-runtime-ktx:2.8.1"
 
 appauth = "net.openid:appauth:0.8.1"
 
@@ -134,8 +151,8 @@ fetch = "com.github.alashow:Fetch:3.1.62"
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:31.2.2"
-google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.4"
+google-bom = "com.google.firebase:firebase-bom:31.5.0"
+google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.5"
 google-gmsGoogleServices = "com.google.gms:google-services:4.3.15"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.2"
 google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -159,7 +176,6 @@ kotlin-gradlePlug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", vers
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
-
 icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", version.ref = "icons" }
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
 icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons", version.ref = "icons" }
@@ -176,7 +192,7 @@ retrofit-gsonConverter = { module = "com.squareup.retrofit2:converter-gson", ver
 retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
 retrofit-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
-threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.0"
+threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
 timber = "com.jakewharton.timber:timber:5.0.1"
 tracing = "androidx.tracing:tracing-ktx:1.1.0"
 dataStore = "androidx.datastore:datastore-preferences:1.0.0"

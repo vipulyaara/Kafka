@@ -1,7 +1,8 @@
 plugins {
-    id 'com.android.application'
-    id 'dagger.hilt.android.plugin'
-    id 'kotlin-android'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.hilt)
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
     id 'com.google.gms.google-services'
@@ -13,34 +14,20 @@ kapt {
 }
 
 android {
-    compileSdk Publishing.compileSdk
-
     defaultConfig {
         applicationId Publishing.applicationId
-        minSdkVersion Publishing.minSdk
-        targetSdkVersion Publishing.targetSdk
         versionCode Publishing.versionCode
         versionName Publishing.publishVersion
-
-        multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments suppressErrors: 'DEBUGGABLE,NOT-PROFILEABLE'
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
 
     buildFeatures {
         compose true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
+
     packagingOptions {
         jniLibs {
             excludes += ['META-INF/proguard/*']
@@ -52,21 +39,22 @@ android {
 
     buildTypes {
         debug {
-            versionNameSuffix "-debug"
-            applicationIdSuffix ".debug"
-            debuggable true
-        }
-
-        benchmark {
-            signingConfig signingConfigs.debug
-            debuggable false
+            signingConfig = signingConfigs["debug"]
+            versionNameSuffix = "-dev"
+            applicationIdSuffix = ".debug"
         }
 
         release {
-            signingConfig signingConfigs.debug
-            shrinkResources true
-            minifyEnabled true
-            debuggable false
+            signingConfig = signingConfigs["debug"]
+            shrinkResources = true
+            minifyEnabled = true
+            proguardFiles 'proguard-rules.pro'
+        }
+
+        create("benchmark") {
+            initWith(buildTypes["release"])
+            signingConfig = signingConfigs["debug"]
+            matchingFallbacks += "release"
             proguardFiles 'proguard-rules.pro'
         }
     }
@@ -163,18 +151,6 @@ dependencies {
 
     implementation libs.icons.feather
     implementation libs.icons.tabler
-}
-
-android.applicationVariants.all { variant ->
-    task "open${variant.name.capitalize()}" {
-        dependsOn "install${variant.name.capitalize()}"
-
-        doLast {
-            exec {
-                commandLine "adb shell monkey -p -t ${variant.applicationId} -c android.intent.category.LAUNCHER 1".split(" ")
-            }
-        }
-    }
 }
 
 apply plugin: 'com.google.firebase.crashlytics'

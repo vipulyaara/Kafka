@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sarahang.playback.ui.components.ResizableLayout
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
+import org.kafka.analytics.Analytics
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.selectRootScreen
 
@@ -27,6 +28,7 @@ internal fun RowScope.ResizableHomeNavigationRail(
     availableWidth: Dp,
     selectedTab: RootScreen,
     navController: NavHostController,
+    analytics: Analytics,
     baseWeight: Float = 4.5f,
     minWeight: Float = 1f,
     maxWeight: Float = 12f,
@@ -46,7 +48,10 @@ internal fun RowScope.ResizableHomeNavigationRail(
     ) { resizableModifier ->
         HomeNavigationRail(
             selectedTab = selectedTab,
-            onNavigationSelected = { selected -> navController.selectRootScreen(selected) },
+            onNavigationSelected = { selected ->
+                analytics.log { homeTabSwitched(selected.route, "navigation_rail") }
+                navController.selectRootScreen(selected)
+            },
             onPlayingArtistClick = onPlayingArtistClick,
             modifier = Modifier
                 .fillMaxHeight()

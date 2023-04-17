@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -41,7 +42,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = 
             ) {
                 UserProfileHeader(
                     modifier = Modifier,
-                    displayName = viewState.currentUser!!.displayName
+                    displayName = viewState.userName ?: "Profile"
                 ) {
                     navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
                 }
@@ -60,7 +61,11 @@ fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = 
 
 @Composable
 private fun LogoutButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    OutlinedButton(modifier = modifier, onClick = onClick) {
+    OutlinedButton(
+        modifier = modifier,
+        onClick = onClick,
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+    ) {
         Text(text = "Logout")
     }
 }

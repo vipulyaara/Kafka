@@ -1,36 +1,22 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'kotlin-parcelize'
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.cacheFixPlugin)
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
+    id 'kotlin-parcelize'
+    alias(libs.plugins.hilt)
 }
 
 android {
-    compileSdk Publishing.compileSdk
-
-    defaultConfig {
-        multiDexEnabled true
-        minSdk Publishing.minSdk
-
-        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         compose true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
+
     namespace 'org.kafka.reader.text'
 }
 

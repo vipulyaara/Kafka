@@ -35,7 +35,12 @@ import org.kafka.navigation.DeepLinksNavigation
 import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.navigation.Navigation
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.Screen.ItemDescription
+import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.SearchFilter.Creator
+import org.kafka.navigation.SearchFilter.Subject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,9 +59,11 @@ class ItemDetailViewModel @Inject constructor(
     private val analytics: Analytics,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     private val loadingState = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    private val itemId: String = checkNotNull(savedStateHandle["itemId"])
+    private val currentRoot
+        get() = navigator.currentRoot.value
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { observeByAuthor(it) },
@@ -79,7 +86,6 @@ class ItemDetailViewModel @Inject constructor(
 
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
-        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
 
         refresh()
@@ -105,7 +111,6 @@ class ItemDetailViewModel @Inject constructor(
             openReader(itemId)
         }
     }
-
 
     fun openFiles(itemId: String) {
         analytics.log { this.openFiles(itemId) }
@@ -148,17 +153,30 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
+    fun openItemDetail(itemId: String) {
+        analytics.log { this.openItemDetail(itemId) }
+        navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
+    }
+
+    fun goToSubjectSubject(keyword: String) {
+        navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Subject.name))
+    }
+
+    fun goToCreator(keyword: String?) {
+        navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Creator.name))
+    }
+
+    fun showDescription(itemId: String) {
+        navigator.navigate(ItemDescription.createRoute(currentRoot, itemId))
+    }
+
     fun shareItemText(context: Context) {
         analytics.log { this.shareItem(itemId) }
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
         val deepLink = dynamicDeepLinkHandler.createDeepLinkUri(link)
-        val text = """
-            Check out $itemTitle on Kafka
-            
-            $deepLink
-        """.trimIndent()
+        val text = context.getString(R.string.check_out_on_kafka, itemTitle, deepLink).trimIndent()
 
         context.shareText(text)
     }

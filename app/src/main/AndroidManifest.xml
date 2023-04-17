@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.kafka.user.KafkaApplication"
@@ -17,12 +16,11 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_config"
         android:enableOnBackInvokedCallback="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:testOnly="false"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:theme="@style/Theme.Kafka"
         android:usesCleartextTraffic="true">
 
         <profileable
@@ -67,21 +65,5 @@
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
-
-        <!--        <service-->
-        <!--            android:name="com.kafka.player.timber.playback.MusicService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true">-->
-
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.media.browse.MediaBrowserService" />-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
-
-        <!--        <receiver android:name="androidx.media.session.MediaButtonReceiver">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
     </application>
 </manifest>
