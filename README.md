@@ -16,8 +16,10 @@
 </br>
 
 
-<img src="https://user-images.githubusercontent.com/6247940/232330667-838af627-54ff-4987-b0e8-0763c2e09752.png">
-<img src="https://user-images.githubusercontent.com/6247940/232330669-c0bd7376-3d0f-4d52-b968-8f7a3b55fb2a.png">
+<img src="https://user-images.githubusercontent.com/6247940/233622882-30152b92-a09c-470b-b251-ae75b425cb9d.png">
+<img src="https://user-images.githubusercontent.com/6247940/233622886-39d7c75a-363a-4c11-adde-7e0df52583d8.png">
+<img src="https://user-images.githubusercontent.com/6247940/233622953-e418f2d6-d576-470b-bef3-7f193944cf3b.png">
+
 
 ## How to run
  - Clone the repo
