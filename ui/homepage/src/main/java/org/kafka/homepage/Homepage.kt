@@ -30,6 +30,7 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.Item
 import org.kafka.common.animation.Delayed
 import org.kafka.common.asImmutable
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
@@ -55,15 +56,18 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
         topBar = { HomeTopBar(viewState.user, viewModel::openLogin, viewModel::openProfile) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            HomepageFeedItems(
-                homepage = viewState.homepage,
-                isLoading = viewState.isLoading,
-                openItemDetail = viewModel::openItemDetail,
-                openRecentItemDetail = viewModel::openRecentItemDetail,
-                removeRecentItem = viewModel::removeRecentItem,
-                goToSearch = viewModel::openSearch,
-                goToSubject = viewModel::openSubject
-            )
+            AnimatedVisibilityFade(visible = viewState.homepage.homepageRows.isNotEmpty()) {
+                HomepageFeedItems(
+                    homepage = viewState.homepage,
+                    isLoading = viewState.isLoading,
+                    openItemDetail = viewModel::openItemDetail,
+                    openRecentItemDetail = viewModel::openRecentItemDetail,
+                    removeRecentItem = viewModel::removeRecentItem,
+                    goToSearch = viewModel::openSearch,
+                    goToSubject = viewModel::openSubject
+                )
+            }
+
             FullScreenMessage(
                 uiMessage = viewState.message,
                 show = viewState.isFullScreenError,

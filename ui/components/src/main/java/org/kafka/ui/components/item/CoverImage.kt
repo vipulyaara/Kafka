@@ -6,16 +6,12 @@ package org.kafka.ui.components.item
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -36,9 +32,6 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.shimmer
 import org.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
 
@@ -82,20 +75,6 @@ fun CoverImage(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(iconPadding)
-                    )
-                    Box(
-                        Modifier
-                            .fillMaxSize()
-                            .placeholder(
-                                visible = state is State.Loading,
-                                color = Color.Transparent,
-                                shape = shape,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = contentColor.copy(
-                                        alpha = .15f
-                                    )
-                                ),
-                            )
                     )
                 }
 

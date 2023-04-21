@@ -43,7 +43,7 @@ dependencies {
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
 
-    implementation libs.hilt.library
+    implementation libs.hilt.android
     kapt libs.hilt.compiler
 
     api libs.lottie.core

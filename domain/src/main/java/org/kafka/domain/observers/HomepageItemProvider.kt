@@ -20,8 +20,8 @@ class SubjectHomepageItemProvider @Inject constructor(
             Subject("librivox", ArchiveQuery().booksBySubject("librivox")),
             Subject("adbi-duniya", ArchiveQuery().booksBySubject("adbi-duniya")),
             Subject("kafka-archives", ArchiveQuery().booksBySubject("kafka archives")),
-            Subject("urdu", ArchiveQuery().booksBySubject("urdu")),
-            Subject("हिंदी", ArchiveQuery().booksBySubject("हिंदी")),
+//            Subject("urdu", ArchiveQuery().booksBySubject("urdu")),
+//            Subject("हिंदी", ArchiveQuery().booksBySubject("हिंदी")),
         )
         return combine(
             subjects.map { observeQueryItems.execute(ObserveQueryItems.Params(it.query)) }

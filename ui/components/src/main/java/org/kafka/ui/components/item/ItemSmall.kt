@@ -21,16 +21,6 @@ fun ItemSmall(
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
-//    Box(modifier = Modifier
-//        .height(96.dp)
-//        .width(300.dp)
-//        .background(MaterialTheme.colorScheme.secondary)) {
-////        Column {
-//        Text(text = item.title.orEmpty(), maxLines = 1, overflow = TextOverflow.Ellipsis)
-////            ItemTitleSmall(title = item.title, maxLines = 1)
-////            ItemCreatorSmall(creator = item.creator?.name)
-////        }
-//    }
     ItemSmall(
         title = item.title,
         creator = item.creator?.name,

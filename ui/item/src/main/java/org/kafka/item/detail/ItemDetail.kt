@@ -20,7 +20,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -133,16 +132,16 @@ private fun ItemDetail(
                     }
                 }
 
-                state.itemsByCreator?.takeIf { it.isNotEmpty() }?.let {
+                if (state.hasItemsByCreator) {
                     item {
                         LabelMedium(
                             text = stringResource(R.string.more_by_author),
                             modifier = Modifier.padding(Dimens.Spacing16)
                         )
                     }
-                    items(state.itemsByCreator, key = { it.itemId }) { item ->
+                    items(state.itemsByCreator!!, key = { it.itemId }) { item ->
                         Item(
-                            item,
+                            item = item,
                             modifier = Modifier.padding(
                                 vertical = Dimens.Spacing06,
                                 horizontal = Dimens.Gutter

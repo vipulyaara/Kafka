@@ -34,7 +34,7 @@ dependencies {
 
     api libs.dataStore
 
-    api libs.hilt.library
+    api libs.hilt.android
     kapt libs.hilt.compiler
 
     api libs.androidx.room.runtime

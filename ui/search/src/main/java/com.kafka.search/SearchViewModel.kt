@@ -17,6 +17,8 @@ import org.kafka.domain.observers.ObserveRecentSearch
 import org.kafka.navigation.SearchFilter
 import javax.inject.Inject
 
+const val MaxRecentSearches = 30
+
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
@@ -30,7 +32,9 @@ class SearchViewModel @Inject constructor(
         .map { SearchFilter.from(it).toMutableStateList() }
         .stateInDefault(viewModelScope, mutableStateListOf(*SearchFilter.values()))
 
-    val recentSearches = observeRecentSearch.flow.stateInDefault(viewModelScope, emptyList())
+    val recentSearches = observeRecentSearch.flow
+        .map { it.take(MaxRecentSearches) }
+        .stateInDefault(viewModelScope, emptyList())
 
     init {
         observeRecentSearch(Unit)

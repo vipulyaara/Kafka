@@ -15,11 +15,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentSearch
+import org.kafka.common.extensions.AnimatedVisibilityFade
+import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
 import org.kafka.item.ArchiveQueryViewModel
 import org.kafka.item.ArchiveQueryViewState
@@ -90,41 +95,44 @@ private fun Search(
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit
 ) {
-    Column(modifier = Modifier.padding(top = topScaffoldPadding())) {
+    val density = LocalDensity.current
+    var listTopPadding by rememberMutableState { 0.dp }
+    val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
+
+    AnimatedVisibilityFade(visible = queryViewState.items != null) {
+        LazyColumn(contentPadding = paddingValues) {
+            items(queryViewState.items!!) { item ->
+                Item(
+                    item = item,
+                    modifier = Modifier.padding(Dimens.Gutter, Dimens.Spacing06)
+                ) { itemId -> openItemDetail(itemId) }
+            }
+        }
+    }
+
+    if (queryViewState.canShowRecentSearches && recentSearches.isNotEmpty()) {
+        RecentSearches(
+            recentSearches = recentSearches.map { it.searchTerm },
+            onSearchClicked = onSearchClicked,
+            onRemoveSearch = removeRecentSearch,
+            contentPadding = paddingValues
+        )
+    }
+
+    AnimatedVisibilityFade(visible = queryViewState.isLoading) {
+        InfiniteProgressBar(modifier = Modifier.padding(paddingValues))
+    }
+
+    Column(modifier = Modifier.onGloballyPositioned {
+        listTopPadding = with(density) { it.size.height.toDp() }
+    }) {
         SearchWidget(
             searchText = searchText,
             setSearchText = setSearchText,
-            onImeAction = onSearchClicked
+            onImeAction = onSearchClicked,
+            modifier = Modifier.padding(top = topScaffoldPadding())
         )
 
-        SearchFilterChips(selectedFilters)
-
-        LazyColumn(contentPadding = PaddingValues(bottom = bottomScaffoldPadding())) {
-            queryViewState.items?.let { items ->
-                items(items) {
-                    Item(
-                        item = it,
-                        modifier = Modifier.padding(
-                            vertical = Dimens.Spacing06,
-                            horizontal = Dimens.Gutter
-                        )
-                    ) { itemId -> openItemDetail(itemId) }
-                }
-            }
-
-            if (queryViewState.canShowRecentSearches && recentSearches.isNotEmpty()) {
-                item {
-                    RecentSearches(
-                        recentSearches = recentSearches.map { it.searchTerm },
-                        onSearchClicked = { onSearchClicked(it) },
-                        onRemoveSearch = removeRecentSearch
-                    )
-                }
-            }
-
-            item {
-                InfiniteProgressBar(show = queryViewState.isLoading)
-            }
-        }
+        SearchFilterChips(selectedFilters = selectedFilters)
     }
 }

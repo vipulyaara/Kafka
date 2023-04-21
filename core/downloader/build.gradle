@@ -21,7 +21,7 @@ dependencies {
     implementation project(':ui:common')
     implementation project(':base-network')
 
-	api libs.hilt.library
+	api libs.hilt.android
 	kapt libs.hilt.compiler
 
 	implementation libs.fetch

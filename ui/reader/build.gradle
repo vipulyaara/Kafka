@@ -29,7 +29,7 @@ dependencies {
     implementation project(':ui:components')
     implementation project(':ui:text-reader')
 
-    implementation libs.hilt.library
+    implementation libs.hilt.android
     kapt libs.hilt.compiler
 
     implementation 'androidx.multidex:multidex:2.0.1'

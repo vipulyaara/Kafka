@@ -15,6 +15,9 @@ data class ItemDetailViewState(
     val isFullScreenError
         get() = message != null && itemDetail == null
 
+    val hasItemsByCreator
+        get() = !itemsByCreator.isNullOrEmpty()
+
     val isFullScreenLoading: Boolean
         get() {
             debug { "isFullScreenLoading $isLoading $itemDetail" }
