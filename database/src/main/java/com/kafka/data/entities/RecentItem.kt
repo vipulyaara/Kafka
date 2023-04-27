@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.Serializable
 
 @Keep
+@Serializable
 data class RecentItem(
     @DocumentId
     val fileId: String,

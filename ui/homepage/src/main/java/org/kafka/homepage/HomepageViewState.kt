@@ -13,5 +13,5 @@ data class HomepageViewState(
     val message: UiMessage? = null
 ) {
     val isFullScreenError: Boolean
-        get() = homepage.homepageRows.isEmpty() && message != null
+        get() = homepage.collection.isEmpty() && message != null
 }

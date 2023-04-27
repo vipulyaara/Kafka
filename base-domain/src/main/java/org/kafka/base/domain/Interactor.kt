@@ -85,5 +85,12 @@ abstract class SubjectInteractor<P, T> {
     fun errors(): Flow<Throwable> = errorState.asSharedFlow()
 }
 
+abstract class SuspendingWorkInteractor<P : Any, T> : SubjectInteractor<P, T>() {
+    override fun createObservable(params: P): Flow<T> = flow {
+        emit(doWork(params))
+    }
+
+    abstract suspend fun doWork(params: P): T
+}
 
 operator fun <T> SubjectInteractor<Unit, T>.invoke() = invoke(Unit)

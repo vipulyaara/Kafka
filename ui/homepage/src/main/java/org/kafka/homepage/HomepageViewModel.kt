@@ -20,7 +20,8 @@ import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
-import org.kafka.navigation.SearchFilter
+import com.kafka.data.model.SearchFilter
+import org.kafka.domain.interactors.UpdateInitialFirestoreHomepage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +29,7 @@ class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
+    private val updateInitialFirestoreHomepage: UpdateInitialFirestoreHomepage,
     observeUser: ObserveUser,
     private val navigator: Navigator,
     private val analytics: Analytics
@@ -41,7 +43,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "Homepage state is $user $message $homepage" }
+        debug { "Homepage state is ${homepage.collection}" }
         HomepageViewState(
             homepage = homepage,
             user = user,
@@ -55,6 +57,10 @@ class HomepageViewModel @Inject constructor(
         observeUser(ObserveUser.Params())
 
         updateItems()
+
+        viewModelScope.launch {
+            updateInitialFirestoreHomepage(Unit).collect()
+        }
     }
 
     private fun updateItems() {

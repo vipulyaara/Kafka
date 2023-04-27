@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
-import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
@@ -88,6 +87,11 @@ class AppModule {
     @Singleton
     @Provides
     fun provideFirestore() = FirebaseFirestore.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideFirestoreKt(firebaseFirestore: FirebaseFirestore) =
+        dev.gitlive.firebase.firestore.FirebaseFirestore(firebaseFirestore)
 }
 
 @InstallIn(SingletonComponent::class)

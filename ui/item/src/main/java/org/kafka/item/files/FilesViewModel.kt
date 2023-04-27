@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.UiMessageManager
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
@@ -36,7 +35,6 @@ class FilesViewModel @Inject constructor(
     private val navigator: Navigator,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
-    private val uiMessageManager = UiMessageManager()
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     var selectedExtension by mutableStateOf(null as String?)
 
@@ -44,17 +42,15 @@ class FilesViewModel @Inject constructor(
         observeFiles.flow,
         observeDownloadedItems.flow,
         snapshotFlow { selectedExtension },
-        loadingState.observable,
-        uiMessageManager.message,
-    ) { files, downloads, selectedExtension, isLoading, message ->
+        loadingState.observable
+    ) { files, downloads, selectedExtension, isLoading ->
         FilesViewState(
             title = files.firstOrNull()?.itemTitle.orEmpty(),
             files = files,
             filteredFiles = filteredFiles(files, selectedExtension),
             actionLabels = actionLabels(files),
             downloads = downloads,
-            isLoading = isLoading,
-            message = message
+            isLoading = isLoading
         )
     }.stateInDefault(
         scope = viewModelScope,

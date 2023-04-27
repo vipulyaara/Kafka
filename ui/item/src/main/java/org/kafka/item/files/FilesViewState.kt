@@ -10,6 +10,5 @@ data class FilesViewState(
     val files: List<File> = emptyList(),
     val filteredFiles: List<File> = emptyList(),
     val actionLabels: List<String> = emptyList(),
-    val isLoading: Boolean = false,
-    val message: UiMessage? = null
+    val isLoading: Boolean = false
 )

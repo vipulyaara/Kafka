@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
+import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import org.kafka.common.animation.Delayed
 import org.kafka.common.asImmutable
@@ -56,7 +58,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
         topBar = { HomeTopBar(viewState.user, viewModel::openLogin, viewModel::openProfile) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            AnimatedVisibilityFade(visible = viewState.homepage.homepageRows.isNotEmpty()) {
+            AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                 HomepageFeedItems(
                     homepage = viewState.homepage,
                     isLoading = viewState.isLoading,
@@ -101,30 +103,31 @@ private fun HomepageFeedItems(
             }
         }
 
-        homepage.homepageRows.forEach {
+        homepage.collection.forEach {
             when (it) {
-                is Homepage.Label -> {
-                    item(key = "label${it.text}", contentType = it::class.java) {
-                        SubjectItem(
-                            text = it.text,
-                            modifier = Modifier
-                                .padding(horizontal = Dimens.Gutter)
-                                .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08),
-                            onClicked = { goToSubject(it.text) }
-                        )
-                    }
-                }
+                is HomepageCollection.Row -> {
+//
+//                    item(key = "label${it.label}", contentType = it::class.java) {
+//                        SubjectItem(
+//                            text = it.label,
+//                            modifier = Modifier
+//                                .padding(horizontal = Dimens.Gutter)
+//                                .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08),
+//                            onClicked = { goToSubject(it.label) }
+//                        )
+//                    }
 
-                is Homepage.Row -> {
                     item(
-                        key = it.name,
-                        contentType = it.name
+                        key = it.label,
+                        contentType = it.label
                     ) {
+                        SubjectItem(it, goToSubject)
                         ItemGridRow(it, openItemDetail)
                     }
                 }
 
-                is Homepage.Column -> {
+                is HomepageCollection.Column -> {
+                    item { SubjectItem(it) {} }
                     items(it.items, key = { it.itemId }, contentType = { it::class.java }) { item ->
                         Item(
                             item = item,
@@ -158,20 +161,36 @@ private fun HomepageFeedItems(
 }
 
 @Composable
-private fun ItemGridRow(row: Homepage.Row, openItemDetail: (String) -> Unit) {
+private fun SubjectItem(
+    it: HomepageCollection,
+    goToSubject: (String) -> Unit
+) {
+    SubjectItem(
+        text = it.label,
+        modifier = Modifier
+            .padding(horizontal = Dimens.Gutter)
+            .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08),
+        onClicked = { goToSubject(it.label) }
+    )
+}
+
+@Composable
+private fun ItemGridRow(row: HomepageCollection.Row, openItemDetail: (String) -> Unit) {
+    val triplets = remember { row.items.chunked(3) }
+
     LazyRow(
         contentPadding = PaddingValues(horizontal = Dimens.Gutter),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter)
     ) {
         items(
-            items = row.items,
-            key = { it.first.itemId },
+            items = triplets,
+            key = { it.firstOrNull()?.itemId.orEmpty() },
             contentType = { "m" }
         ) {
             Column {
-                GridItem(it.first, openItemDetail)
-                it.second?.let { item -> GridItem(item, openItemDetail) }
-                it.third?.let { item -> GridItem(item, openItemDetail) }
+                it.firstOrNull()?.let { it1 -> GridItem(it1, openItemDetail) }
+                it.getOrNull(1)?.let { item -> GridItem(item, openItemDetail) }
+                it.getOrNull(2)?.let { item -> GridItem(item, openItemDetail) }
             }
         }
     }

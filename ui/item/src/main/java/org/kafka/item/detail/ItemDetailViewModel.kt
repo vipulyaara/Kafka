@@ -39,8 +39,8 @@ import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.ItemDescription
 import org.kafka.navigation.Screen.Search
-import org.kafka.navigation.SearchFilter.Creator
-import org.kafka.navigation.SearchFilter.Subject
+import com.kafka.data.model.SearchFilter.Creator
+import com.kafka.data.model.SearchFilter.Subject
 import javax.inject.Inject
 
 @HiltViewModel

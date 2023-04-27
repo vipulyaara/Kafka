@@ -60,9 +60,8 @@ internal fun GoToPage(currentPage: Int, goToPage: (Int) -> Unit, modifier: Modif
         modifier = modifier.shadowMaterial(Dimens.Elevation04, RoundedCornerShape(50)),
         value = value,
         onValueChange = { value = it },
-        textStyle = MaterialTheme.typography.displayMedium.alignCenter(),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+        textStyle = MaterialTheme.typography.titleMedium.alignCenter(),
+        colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Unspecified,
             unfocusedIndicatorColor = Color.Unspecified,
         ),

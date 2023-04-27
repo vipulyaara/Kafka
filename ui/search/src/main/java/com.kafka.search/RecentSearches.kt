@@ -13,14 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.kafka.common.animation.Delayed
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
 import org.kafka.ui.components.LabelMedium
-import org.kafka.ui.components.bottomScaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -45,7 +43,7 @@ fun RecentSearches(
                     searchTerm = it,
                     onSearchClicked = onSearchClicked,
                     onRemoveSearch = onRemoveSearch,
-                    modifier = Modifier
+                    modifier = Modifier.animateItemPlacement()
                 )
             }
         }

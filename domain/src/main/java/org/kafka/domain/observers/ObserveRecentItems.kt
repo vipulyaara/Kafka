@@ -1,5 +1,6 @@
 package org.kafka.domain.observers
 
+import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.auth.AccountRepository
@@ -26,8 +27,14 @@ class ObserveRecentItems @Inject constructor(
         return accountRepository.observeCurrentFirebaseUser()
             .filterNotNull()
             .flatMapLatest { user -> recentItemRepository.observeRecentItems(user.uid) }
-            .map { it.map { RecentItemWithProgress(it, 0) } }
+            .map { it.map { RecentItemWithProgress(it, 0) } } //todo: add actual progress
             .onStart { emit(emptyList()) }
             .flowOn(dispatchers.io)
+    }
+
+    private fun RecentItem.mapPercentage() {
+        when (this.mediaType) {
+
+        }
     }
 }

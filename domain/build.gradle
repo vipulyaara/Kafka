@@ -27,5 +27,7 @@ dependencies {
     implementation libs.google.auth.coroutines
     implementation libs.google.firestore
 
+    implementation "dev.gitlive:firebase-firestore:1.8.0"
+
     api libs.kotlin.coroutines.android
 }

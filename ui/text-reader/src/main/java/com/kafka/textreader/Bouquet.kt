@@ -145,7 +145,7 @@ private suspend fun load(
                         } ?: run {
                             state.mError = IOException("File not found")
                         }
-                    }
+                    }.join()
                 }
             }
         }

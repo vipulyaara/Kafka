@@ -41,5 +41,7 @@ dependencies {
     api libs.kotlin.serialization
     api libs.kotlin.coroutines.core
 
+    api "dev.gitlive:firebase-firestore:1.8.0"
+
     api libs.kotlin.stdlib
 }

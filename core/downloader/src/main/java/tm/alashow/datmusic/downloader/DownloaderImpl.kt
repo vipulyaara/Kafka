@@ -25,8 +25,8 @@ import okhttp3.internal.toImmutableList
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.event
 import org.kafka.base.debug
-import org.kafka.common.UiMessageManager
 import org.kafka.common.asUiMessage
+import org.kafka.common.snackbar.SnackbarManager
 import timber.log.Timber
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
@@ -49,8 +49,8 @@ internal class DownloaderImpl @Inject constructor(
     private val repo: DownloadRequestsDao,
     private val fileDao: FileDao,
     private val analytics: Analytics,
+    private val snackbarManager: SnackbarManager
 ) : Downloader {
-    private val uiMessageManager: UiMessageManager = UiMessageManager()
 
     companion object {
         private const val INTENT_READ_WRITE_FLAG = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -71,8 +71,8 @@ internal class DownloaderImpl @Inject constructor(
         downloaderEventsHistory.add(event)
     }
 
-    private suspend fun downloaderMessage(message: DownloadMessage<*>) =
-        uiMessageManager.emitMessage("message".asUiMessage())
+    private fun downloaderMessage(message: DownloadMessage<*>) =
+        snackbarManager.addMessage("Something went wrong".asUiMessage())
 
     /**
      * Audio item pending for download. Used when waiting for download location.

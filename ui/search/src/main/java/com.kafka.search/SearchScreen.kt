@@ -8,12 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -22,15 +20,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentSearch
+import com.kafka.data.model.SearchFilter
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
-import org.kafka.item.ArchiveQueryViewModel
-import org.kafka.item.ArchiveQueryViewState
-import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.Screen
-import org.kafka.navigation.SearchFilter
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
@@ -42,43 +35,32 @@ import ui.common.theme.theme.Dimens
 fun SearchScreen() {
     LogCompositions(tag = "Search")
 
-    val queryViewModel: ArchiveQueryViewModel = hiltViewModel()
     val searchViewModel: SearchViewModel = hiltViewModel()
-    val queryViewState by queryViewModel.state.collectAsStateWithLifecycle()
-    val recentSearches by searchViewModel.recentSearches.collectAsStateWithLifecycle()
-    val keywordState by searchViewModel.keyword.collectAsStateWithLifecycle()
+    val searchViewState by searchViewModel.state.collectAsStateWithLifecycle()
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(text = keywordState, selection = TextRange(0)))
+        mutableStateOf(TextFieldValue(text = searchViewState.keyword, selection = TextRange(0)))
     }
-    val selectedFilters by searchViewModel.selectedFilters.collectAsStateWithLifecycle()
     val onSearchClicked: (String) -> Unit = {
         if (it.isNotEmpty()) {
-            queryViewModel.submitQuery(it, selectedFilters)
-            searchViewModel.addRecentSearch(it, selectedFilters)
+            searchViewModel.search(it, searchViewState.filters)
+            searchViewModel.addRecentSearch(it, searchViewState.filters)
         }
     }
-
-    val navigator = LocalNavigator.current
-    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) { onSearchClicked(searchText.text) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Search(
                 searchText = searchText,
                 setSearchText = { searchText = it },
-                queryViewState = queryViewState,
-                recentSearches = recentSearches,
-                selectedFilters = selectedFilters,
+                searchViewState = searchViewState,
+                selectedFilters = searchViewState.filters,
+                onFilterClicked = { searchViewModel.toggleFilter(it) },
                 onSearchClicked = {
                     searchText = TextFieldValue(text = it, selection = TextRange(it.length))
                     onSearchClicked(it)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
-                openItemDetail = {
-                    navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, it))
-                }
+                openItemDetail = { searchViewModel.openItemDetail(it) }
             )
         }
     }
@@ -88,9 +70,9 @@ fun SearchScreen() {
 private fun Search(
     searchText: TextFieldValue,
     setSearchText: (TextFieldValue) -> Unit,
-    queryViewState: ArchiveQueryViewState,
-    recentSearches: List<RecentSearch>,
-    selectedFilters: SnapshotStateList<SearchFilter>,
+    searchViewState: SearchViewState,
+    selectedFilters: List<SearchFilter>,
+    onFilterClicked: (SearchFilter) -> Unit,
     onSearchClicked: (String) -> Unit,
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit
@@ -99,9 +81,9 @@ private fun Search(
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
 
-    AnimatedVisibilityFade(visible = queryViewState.items != null) {
+    AnimatedVisibilityFade(visible = searchViewState.items != null) {
         LazyColumn(contentPadding = paddingValues) {
-            items(queryViewState.items!!) { item ->
+            items(searchViewState.items!!) { item ->
                 Item(
                     item = item,
                     modifier = Modifier.padding(Dimens.Gutter, Dimens.Spacing06)
@@ -110,16 +92,16 @@ private fun Search(
         }
     }
 
-    if (queryViewState.canShowRecentSearches && recentSearches.isNotEmpty()) {
+    if (searchViewState.canShowRecentSearches) {
         RecentSearches(
-            recentSearches = recentSearches.map { it.searchTerm },
+            recentSearches = searchViewState.recentSearches!!.map { it.searchTerm },
             onSearchClicked = onSearchClicked,
             onRemoveSearch = removeRecentSearch,
             contentPadding = paddingValues
         )
     }
 
-    AnimatedVisibilityFade(visible = queryViewState.isLoading) {
+    AnimatedVisibilityFade(visible = searchViewState.isLoading) {
         InfiniteProgressBar(modifier = Modifier.padding(paddingValues))
     }
 
@@ -133,6 +115,6 @@ private fun Search(
             modifier = Modifier.padding(top = topScaffoldPadding())
         )
 
-        SearchFilterChips(selectedFilters = selectedFilters)
+        SearchFilterChips(selectedFilters = selectedFilters, onFilterClicked = onFilterClicked)
     }
 }

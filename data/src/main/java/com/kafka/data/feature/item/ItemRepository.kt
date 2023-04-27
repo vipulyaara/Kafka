@@ -20,4 +20,10 @@ class ItemRepository @Inject constructor(
             itemLocalDataSource.insertAll(it)
         }
     }
+
+    suspend fun getQueryItems(query: String) =
+        remoteDataSource.fetchItemsByQuery(query).getOrThrow()
+
+    suspend fun getItem(itemId: String) =
+        itemLocalDataSource.getOrNull(itemId)
 }

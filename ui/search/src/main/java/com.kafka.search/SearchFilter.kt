@@ -21,14 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.kafka.data.model.SearchFilter
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
-import org.kafka.navigation.SearchFilter
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun SearchFilterChips(
-    selectedFilters: MutableList<SearchFilter>,
+    selectedFilters: List<SearchFilter>,
+    onFilterClicked: (SearchFilter) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -43,15 +44,7 @@ internal fun SearchFilterChips(
                 modifier = Modifier
                     .padding(horizontal = Dimens.Spacing02)
                     .animateContentSize(),
-                onClick = {
-                    if (selected) {
-                        if (selectedFilters.size > 1) {
-                            selectedFilters.remove(filter)
-                        }
-                    } else {
-                        selectedFilters.add(filter)
-                    }
-                },
+                onClick = { onFilterClicked(filter) },
             )
         }
     }

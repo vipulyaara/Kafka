@@ -1,27 +1,30 @@
 package com.kafka.data.feature.firestore
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Reusable
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
 @Reusable
 class FirestoreGraph @Inject constructor(
-    private val firestore: FirebaseFirestore,
+    private val firestoreKt: dev.gitlive.firebase.firestore.FirebaseFirestore,
+    private val firestore: com.google.firebase.firestore.FirebaseFirestore,
     private val auth: FirebaseAuth
 ) {
     val recentItemsCollection
         get() = getRecentItemsCollection(auth.currentUser!!.uid)
 
-    val homepageCollection
-        get() = firestore
-            .collection("homepage")
-            .document("ids")
-
     fun getRecentItemsCollection(id: String) = firestore
         .collection("recent_items")
         .document(id)
         .collection("items")
+
+    val homepageCollection: CollectionReference
+        get() = firestoreKt
+            .collection("homepage")
+            .document("collection_items")
+            .collection("items")
 
     fun getFavoritesCollection(id: String) = firestore
         .collection("favorites")

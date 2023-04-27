@@ -38,7 +38,7 @@ class GetHomepageTags @Inject constructor(private val firestoreGraph: FirestoreG
         debug { "Homepage tags are $ids" }
 
         withContext(Dispatchers.IO) {
-            firestoreGraph.homepageCollection.set(mapOf("ids" to ids)).await()
+//            firestoreGraph.homepageCollection.set(mapOf("ids" to ids)).await()
         }
 
         return items
@@ -55,6 +55,15 @@ class GetHomepageTags @Inject constructor(private val firestoreGraph: FirestoreG
 
     private fun String.toQuery() = SearchQuery(type = SearchQueryType.Suggested(this))
 }
+
+fun allSuggestedIds() = listOf(
+    kafkaArchives.split(" ,").suggestedSublist(),
+    englishPoetry.split(" ,").suggestedSublist(),
+    urduPoetry.split(" ,").suggestedSublist(),
+    devnagri.split(" ,").suggestedSublist(),
+    englishProse.split(" ,").suggestedSublist(),
+    urduProse.split(" ,").suggestedSublist()
+)
 
 data class SearchQuery(val text: String = "", val type: SearchQueryType)
 
@@ -80,7 +89,10 @@ data class HomepageTag(
     val title: String, val searchQuery: SearchQuery, var isSelected: Boolean = false
 )
 
-private const val suggestedItemsSize = 40
+private const val suggestedItemsSize = 30
 
 private fun <E> List<E>.sublistSuggested() =
     subList(0, size.coerceAtMost(suggestedItemsSize)).joinToString()
+
+private fun <E> List<E>.suggestedSublist() =
+    subList(0, size.coerceAtMost(suggestedItemsSize))

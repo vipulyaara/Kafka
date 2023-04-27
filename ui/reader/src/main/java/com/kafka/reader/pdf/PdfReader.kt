@@ -40,7 +40,8 @@ internal fun PdfReader(
             modifier = modifier.simpleClickable { viewModel.toggleControls() },
             setControls = viewModel::showControls,
             showControls = showControls,
-            onPageChanged = { viewModel.onPageChanged(fileId, it) }
+            onPageChanged = { viewModel.onPageChanged(fileId, it) },
+            setError = { viewModel.setMessage(it) }
         )
     }
 }
@@ -52,6 +53,7 @@ private fun PdfReaderWithControls(
     showControls: Boolean = false,
     setControls: (Boolean) -> Unit = {},
     onPageChanged: (Int) -> Unit = {},
+    setError: (Throwable) -> Unit = {},
 ) {
     val scaffoldPadding = scaffoldPadding()
     val scope = rememberCoroutineScope()
@@ -60,6 +62,10 @@ private fun PdfReaderWithControls(
         resource = ResourceType.Local(uri),
         initialPage = (recentTextItem.currentPage - 1).coerceAtLeast(0)
     )
+
+    LaunchedEffect(pdfState) {
+        pdfState.error?.let { setError(it) }
+    }
 
     LaunchedEffect(recentTextItem, pdfState.currentPage) { onPageChanged(pdfState.currentPage) }
 
