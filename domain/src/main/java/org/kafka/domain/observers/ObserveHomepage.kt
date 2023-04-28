@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.observers.library.ObserveFavorites
@@ -34,7 +33,6 @@ class ObserveHomepage @Inject constructor(
         ) { queryItems, recentItems, favoriteItems ->
             Homepage(queryItems.sortByIds(), recentItems, favoriteItems)
         }.flowOn(appCoroutineDispatchers.io)
-            .onStart { emit(Homepage(emptyList(), emptyList(), emptyList())) }
     }
 
     private val homepageIds =

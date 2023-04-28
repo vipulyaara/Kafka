@@ -146,6 +146,7 @@ google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
+google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-auth-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 
 junit = "junit:junit:4.13.2"

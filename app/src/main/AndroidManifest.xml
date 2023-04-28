@@ -68,20 +68,8 @@
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
 
-        <!--        <service-->
-        <!--            android:name="com.kafka.player.timber.playback.MusicService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="true">-->
-
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.media.browse.MediaBrowserService" />-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
-
-        <!--        <receiver android:name="androidx.media.session.MediaButtonReceiver">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
-        <!--            </intent-filter>-->
-        <!--        </receiver>-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_kafka_logo" />
     </application>
 </manifest>
