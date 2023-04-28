@@ -18,16 +18,15 @@ android {
 }
 
 dependencies {
-    implementation project(':core:analytics')
     implementation project(':base-domain')
+    implementation project(':core:analytics')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':navigation')
     implementation project(':ui:common')
     implementation project(':ui:components')
-
+    implementation libs.hilt.android
     implementation libs.icons.font.awesome
 
-    implementation libs.hilt.android
     kapt libs.hilt.compiler
 }

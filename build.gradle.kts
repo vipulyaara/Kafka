@@ -138,6 +138,8 @@ fun Project.configureAndroidProject() {
     extensions.configure<BaseExtension> {
         compileSdkVersion(libs.versions.compileSdk.get().toInt())
 
+//        apply(plugin = "com.squareup.sort-dependencies")
+
         defaultConfig {
             minSdk = libs.versions.minSdk.get().toInt()
             targetSdk = libs.versions.targetSdk.get().toInt()

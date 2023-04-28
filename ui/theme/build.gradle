@@ -18,36 +18,30 @@ android {
 }
 
 dependencies {
-    implementation project(':base-domain')
-    implementation project(':data')
-    implementation project(':core:analytics')
-
+    api libs.accompanist.systemuicontroller
     api libs.androidx.core
-    api libs.palette
-
-    api libs.compose.runtime.runtime
+    api libs.androidx.hilt.compose
+    api libs.androidx.hilt.navigation
+    api libs.compose.animation.animation
     api libs.compose.foundation.foundation
     api libs.compose.foundation.layout
-    api libs.compose.animation.animation
+    //    api libs.compose.livedata
+    api libs.compose.material.material3
+    api libs.compose.runtime.runtime
+    api libs.compose.ui.textfonts
     api libs.compose.ui.tooling
     api libs.compose.ui.ui
     api libs.compose.ui.util
-//    api libs.compose.livedata
-    api libs.compose.material.material3
-    api libs.compose.ui.textfonts
-
-    api libs.accompanist.systemuicontroller
-
     api libs.kotlin.serialization
-
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
-
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
-
-    api libs.lottie.core
     api libs.lottie.compose
+    api libs.lottie.core
+    api libs.palette
 
+    implementation project(':base-domain')
+    implementation project(':core:analytics')
+    implementation project(':data')
+    implementation libs.hilt.android
     implementation libs.kotlin.stdlib
+
+    kapt libs.hilt.compiler
 }

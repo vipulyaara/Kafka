@@ -18,23 +18,21 @@ android {
 }
 
 dependencies {
+    api libs.androidx.core
+    api libs.androidx.hilt.compose
+    api libs.androidx.hilt.navigation
+    api libs.androidx.lifecycle.livedata.ktx
+    api libs.androidx.lifecycle.runtime
+    api libs.androidx.lifecycle.viewmodel.compose
+    api libs.androidx.lifecycle.viewmodel.ktx
+
     implementation project(':base-domain')
     implementation project(':data')
     implementation project(':ui:common')
-
     implementation libs.androidx.navigation.compose
-    implementation libs.compose.runtime.runtime
     implementation libs.compose.material.material
-
-    api libs.androidx.core
-    api libs.androidx.lifecycle.runtime
-    api libs.androidx.lifecycle.livedata.ktx
-    api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.androidx.lifecycle.viewmodel.compose
-
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
-
+    implementation libs.compose.runtime.runtime
     implementation libs.hilt.android
+
     kapt libs.hilt.compiler
 }

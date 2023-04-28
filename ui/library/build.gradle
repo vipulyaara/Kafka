@@ -17,19 +17,17 @@ android {
 }
 
 dependencies {
-    implementation project(':core:analytics')
     implementation project(':base-domain')
-    implementation project(':core:downloader')
-    implementation project(':ui:downloader')
     implementation project(':core:analytics')
+    implementation project(':core:downloader')
     implementation project(':data')
     implementation project(':domain')
     implementation project(':navigation')
     implementation project(':ui:common')
     implementation project(':ui:components')
-
+    implementation project(':ui:downloader')
     implementation libs.fetch
-
     implementation libs.hilt.android
+
     kapt libs.hilt.compiler
 }

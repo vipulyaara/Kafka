@@ -21,34 +21,29 @@ android {
 }
 
 dependencies {
+    ksp libs.androidx.room.compiler
+
     api project(':base-domain')
     api project(':base-network')
     api project(':data-models')
-
-    implementation platform(libs.google.bom)
-    implementation libs.google.firestore
-    implementation libs.google.dynamic.links
-
-    api libs.androidx.core
     api libs.androidx.collection
-
-    implementation libs.jsoup
-    api libs.threeTenAbp
-
-    api libs.dataStore
-
-    api libs.hilt.android
-    kapt libs.hilt.compiler
-
-    api libs.androidx.room.runtime
+    api libs.androidx.core
+    api libs.androidx.paging.runtime
     api libs.androidx.room.ktx
     api libs.androidx.room.paging
-    ksp libs.androidx.room.compiler
-    api libs.androidx.paging.runtime
-
-    api libs.retrofit.serialization
-    api libs.kotlin.serialization
+    api libs.androidx.room.runtime
+    api libs.dataStore
+    api libs.hilt.android
     api libs.kotlin.coroutines.core
-
+    api libs.kotlin.serialization
     api libs.kotlin.stdlib
+    api libs.retrofit.serialization
+    api libs.threeTenAbp
+
+    implementation platform(libs.google.bom)
+    implementation libs.google.dynamic.links
+    implementation libs.google.firestore
+    implementation libs.jsoup
+
+    kapt libs.hilt.compiler
 }

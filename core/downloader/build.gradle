@@ -15,14 +15,14 @@ repositories {
 }
 
 dependencies {
-	implementation project(':core:analytics')
-	implementation project(':base-domain')
-	implementation project(':data')
-    implementation project(':ui:common')
-    implementation project(':base-network')
-
 	api libs.hilt.android
-	kapt libs.hilt.compiler
 
+	implementation project(':base-domain')
+	implementation project(':base-network')
+	implementation project(':core:analytics')
+	implementation project(':data')
+	implementation project(':ui:common')
 	implementation libs.fetch
+
+	kapt libs.hilt.compiler
 }

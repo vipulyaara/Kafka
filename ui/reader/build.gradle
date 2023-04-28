@@ -18,21 +18,19 @@ android {
 }
 
 dependencies {
-    implementation project(':core:analytics')
     implementation project(':base-domain')
     implementation project(':base-network')
-    implementation project(':navigation')
-    implementation project(':domain')
+    implementation project(':core:analytics')
     implementation project(':core:downloader')
-    implementation project(':ui:downloader')
+    implementation project(':domain')
+    implementation project(':navigation')
     implementation project(':ui:common')
     implementation project(':ui:components')
+    implementation project(':ui:downloader')
     implementation project(':ui:text-reader')
-
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation libs.hilt.android
     implementation libs.pdfviewer
 
-    implementation libs.hilt.android
     kapt libs.hilt.compiler
-
-    implementation 'androidx.multidex:multidex:2.0.1'
 }

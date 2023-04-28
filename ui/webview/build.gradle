@@ -17,55 +17,47 @@ android {
 }
 
 dependencies {
-    implementation project(':base-domain')
-    implementation project(':data')
     api project('::ui:theme')
     api project(':ui:common')
     api project(':ui:components')
-
-    api libs.androidx.core
-    api libs.androidx.lifecycle.runtime
-    api libs.androidx.lifecycle.process
-    api libs.androidx.lifecycle.livedata.ktx
-    api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.androidx.lifecycle.viewmodel.compose
-
-    api libs.compose.foundation.foundation
-    api libs.compose.runtime.runtime
-    api libs.compose.foundation.layout
-    api libs.compose.animation.animation
-    api libs.compose.ui.tooling
-    api libs.compose.ui.ui
-    api libs.compose.ui.util
-//    api libs.compose.livedata
-    api libs.compose.material.material3
-
-    androidTestApi libs.compose.ui.test
-//    debugApi libs.compose.ui.test.manifest
-
-    api libs.androidx.paging.compose
-
-    implementation libs.coil.coil
-    api libs.coil.compose
     api libs.accompanist.flowlayout
+    api libs.accompanist.navigation.animation
+    api libs.accompanist.navigation.material
     api libs.accompanist.placeholder
     api libs.accompanist.swiperefresh
     api libs.accompanist.systemuicontroller
-    api libs.accompanist.navigation.animation
-    api libs.accompanist.navigation.material
     api libs.accompanist.web
-
+    api libs.androidx.core
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
-
-    api libs.lottie.core
+    api libs.androidx.lifecycle.livedata.ktx
+    api libs.androidx.lifecycle.process
+    api libs.androidx.lifecycle.runtime
+    api libs.androidx.lifecycle.viewmodel.compose
+    api libs.androidx.lifecycle.viewmodel.ktx
+    //    debugApi libs.compose.ui.test.manifest
+    api libs.androidx.paging.compose
+    api libs.coil.compose
+    api libs.compose.animation.animation
+    api libs.compose.foundation.foundation
+    api libs.compose.foundation.layout
+    //    api libs.compose.livedata
+    api libs.compose.material.material3
+    api libs.compose.runtime.runtime
+    api libs.compose.ui.tooling
+    api libs.compose.ui.ui
+    api libs.compose.ui.util
+    api libs.icons.feather
+    api libs.icons.font.awesome
+    api libs.icons.tabler
     api libs.lottie.compose
-
+    api libs.lottie.core
     api libs.tracing
 
-    implementation libs.kotlin.stdlib
+    androidTestApi libs.compose.ui.test
 
-    api libs.icons.feather
-    api libs.icons.tabler
-    api libs.icons.font.awesome
+    implementation project(':base-domain')
+    implementation project(':data')
+    implementation libs.coil.coil
+    implementation libs.kotlin.stdlib
 }

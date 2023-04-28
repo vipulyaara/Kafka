@@ -23,16 +23,14 @@ android {
 dependencies {
     implementation project(':base-domain')
     implementation project(':base-network')
-    implementation project(':navigation')
+    implementation project(':core:downloader')
     implementation project(':domain')
+    implementation project(':navigation')
     implementation project(':ui:common')
     implementation project(':ui:components')
-    implementation project(':core:downloader')
-
-    implementation libs.fetch
-
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
-
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation libs.fetch
+    implementation libs.hilt.android
+
+    kapt libs.hilt.compiler
 }

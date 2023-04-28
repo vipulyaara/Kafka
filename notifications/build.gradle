@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
-    implementation project(':base-domain')
     api project(':data')
+
+    implementation project(':base-domain')
 }

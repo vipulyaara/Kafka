@@ -19,17 +19,17 @@ android {
 }
 
 dependencies {
-    implementation project(':core:analytics')
     implementation project(':base-domain')
+    implementation project(':base-network')
+    implementation project(':core:analytics')
     implementation project(':data')
     implementation project(':domain')
-    implementation project(':base-network')
     implementation project(':navigation')
-    implementation project(':ui:library')
-    implementation project(':ui:item')
     implementation project(':ui:common')
     implementation project(':ui:components')
-
+    implementation project(':ui:item')
+    implementation project(':ui:library')
     implementation libs.hilt.android
+
     kapt libs.hilt.compiler
 }
