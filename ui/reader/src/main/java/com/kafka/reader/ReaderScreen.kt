@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentTextItem
-import com.kafka.reader.pdf.PdfReader
+import com.kafka.reader.viewer.PdfReader
 import com.kafka.reader.text.TextReader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator

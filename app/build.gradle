@@ -98,6 +98,7 @@ dependencies {
     implementation project(':ui:webview')
 
     implementation platform(libs.google.bom)
+    implementation libs.google.messaging
 
     implementation libs.google.analytics
     implementation libs.google.auth

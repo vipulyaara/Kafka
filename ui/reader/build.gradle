@@ -29,6 +29,8 @@ dependencies {
     implementation project(':ui:components')
     implementation project(':ui:text-reader')
 
+    implementation libs.pdfviewer
+
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
