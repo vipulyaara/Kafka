@@ -45,6 +45,8 @@ dependencies {
     implementation project(':ui:components')
     implementation project(':ui:text-reader')
 
+    implementation libs.pdfviewer
+
     implementation libs.hilt.library
     kapt libs.hilt.compiler
 

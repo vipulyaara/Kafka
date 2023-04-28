@@ -1,8 +1,8 @@
 object Publishing {
     const val applicationId = "com.kafka.user"
-    const val versionCode = 10
+    const val versionCode = 11
 
-    const val publishVersion = "0.0.1"
+    const val publishVersion = "0.0.2"
 
     const val compileSdk = 33
     const val minSdk = 24
