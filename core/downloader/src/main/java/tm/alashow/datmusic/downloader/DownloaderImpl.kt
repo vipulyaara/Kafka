@@ -25,7 +25,6 @@ import okhttp3.internal.toImmutableList
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.event
 import org.kafka.base.debug
-import org.kafka.common.asUiMessage
 import org.kafka.common.snackbar.SnackbarManager
 import timber.log.Timber
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
@@ -71,8 +70,9 @@ internal class DownloaderImpl @Inject constructor(
         downloaderEventsHistory.add(event)
     }
 
-    private fun downloaderMessage(message: DownloadMessage<*>) =
-        snackbarManager.addMessage("Something went wrong".asUiMessage())
+    private fun downloaderMessage(message: DownloadMessage<*>) {
+//        snackbarManager.addMessage(message.toUiMessage())
+    }
 
     /**
      * Audio item pending for download. Used when waiting for download location.

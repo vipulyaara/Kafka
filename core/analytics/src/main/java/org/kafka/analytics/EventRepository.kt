@@ -5,7 +5,7 @@ import javax.inject.Inject
 class EventRepository @Inject constructor(
 ) {
     fun searchQuery(keyword: String, filters: List<String>? = null) =
-        "perform_search_query" to mapOf(
+        FirebaseAnalytics.SEARCH to mapOf(
             "keyword" to keyword,
             "filters" to filters?.joinToString()
         )
@@ -63,6 +63,14 @@ class EventRepository @Inject constructor(
     )
 
     fun loginClicked() = "login_prompt_clicked" to mapOf<String, String>()
+
+    fun signUp(name: String?) = FirebaseAnalytics.SIGN_UP to mapOf(
+        "name" to name
+    )
+
+    fun login() = FirebaseAnalytics.LOGIN to mapOf(
+        FirebaseAnalytics.PARAM_METHOD to ""
+    )
 
     fun logoutClicked() = "logout_clicked" to mapOf<String, String>()
 

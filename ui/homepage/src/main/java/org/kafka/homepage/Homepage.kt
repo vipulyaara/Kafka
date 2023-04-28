@@ -106,17 +106,6 @@ private fun HomepageFeedItems(
         homepage.collection.forEach {
             when (it) {
                 is HomepageCollection.Row -> {
-//
-//                    item(key = "label${it.label}", contentType = it::class.java) {
-//                        SubjectItem(
-//                            text = it.label,
-//                            modifier = Modifier
-//                                .padding(horizontal = Dimens.Gutter)
-//                                .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08),
-//                            onClicked = { goToSubject(it.label) }
-//                        )
-//                    }
-
                     item(
                         key = it.label,
                         contentType = it.label

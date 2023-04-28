@@ -8,13 +8,15 @@ sealed class HomepageCollectionResponse {
     abstract val label: String
     abstract val items: List<String>
     abstract val labelClickable: Boolean
+    abstract val enabled: Boolean
 
     @Serializable
     @SerialName("row")
     data class Row(
         override val label: String,
         override val items: List<String>,
-        override val labelClickable: Boolean = true
+        override val labelClickable: Boolean = true,
+        override val enabled: Boolean = true
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -22,6 +24,7 @@ sealed class HomepageCollectionResponse {
     data class Column(
         override val label: String,
         override val items: List<String>,
-        override val labelClickable: Boolean = true
+        override val labelClickable: Boolean = true,
+        override val enabled: Boolean = true
     ) : HomepageCollectionResponse()
 }

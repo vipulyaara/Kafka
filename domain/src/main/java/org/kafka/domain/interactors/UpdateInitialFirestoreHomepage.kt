@@ -28,14 +28,13 @@ class UpdateInitialFirestoreHomepage @Inject constructor(
             }
 
             val flattenedRowItems = rows.map { it.items }.flatten()
-            val suggestedItems =
-                allSuggestedIds().flatten().toMutableList()
+            val suggestedItems = allSuggestedIds().flatten().toMutableList()
             suggestedItems.removeIf { item -> flattenedRowItems.any { it == item } }
             val column = HomepageCollectionResponse.Column("Editor's choice", suggestedItems, false)
 
             val homepageCollection = firestoreGraph.homepageCollection
 
-            (rows + column).forEach {
+            listOf(column).forEach {
                 homepageCollection.document(it.label)
                     .set(HomepageCollectionResponse.serializer(), it, encodeDefaults = true)
             }

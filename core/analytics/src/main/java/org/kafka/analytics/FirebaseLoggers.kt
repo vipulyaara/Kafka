@@ -72,6 +72,13 @@ class FirebaseAnalytics @Inject constructor(
             // Ignore, Firebase might not be setup for this project
         }
     }
+
+    companion object {
+        const val SIGN_UP = FirebaseAnalytics.Event.SIGN_UP
+        const val LOGIN = FirebaseAnalytics.Event.LOGIN
+        const val SEARCH = FirebaseAnalytics.Event.SEARCH
+        const val PARAM_METHOD = FirebaseAnalytics.Param.METHOD
+    }
 }
 
 @Singleton

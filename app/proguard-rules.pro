@@ -116,3 +116,5 @@
 -keepattributes SourceFile,LineNumberTable
 
 -keep class app.rive.runtime.** { *; }
+
+-keep class com.shockwave.**

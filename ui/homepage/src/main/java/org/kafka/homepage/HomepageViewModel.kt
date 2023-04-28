@@ -2,6 +2,7 @@ package org.kafka.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -20,8 +21,6 @@ import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
-import com.kafka.data.model.SearchFilter
-import org.kafka.domain.interactors.UpdateInitialFirestoreHomepage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +28,6 @@ class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
-    private val updateInitialFirestoreHomepage: UpdateInitialFirestoreHomepage,
     observeUser: ObserveUser,
     private val navigator: Navigator,
     private val analytics: Analytics
@@ -57,10 +55,6 @@ class HomepageViewModel @Inject constructor(
         observeUser(ObserveUser.Params())
 
         updateItems()
-
-        viewModelScope.launch {
-            updateInitialFirestoreHomepage(Unit).collect()
-        }
     }
 
     private fun updateItems() {

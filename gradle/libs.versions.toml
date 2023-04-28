@@ -26,6 +26,7 @@ serialization = "1.5.0"
 exoplayer = "2.18.5"
 media3 = "1.0.0"
 pdftron = "9.3.1"
+pdfviewer = "3.2.0-beta.1"
 compileSdk = "33"
 minSdk = "24"
 targetSdk = "33"
@@ -197,6 +198,7 @@ okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"
 retrofit-gsonConverter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
 retrofit-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+pdfviewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "pdfviewer" }
 
 threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
 timber = "com.jakewharton.timber:timber:5.0.1"
