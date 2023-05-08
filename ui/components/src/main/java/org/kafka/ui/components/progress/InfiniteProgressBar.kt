@@ -22,14 +22,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
     val infiniteTransition = rememberInfiniteTransition()
-    if (show) {
+    AnimatedVisibilityFade(show, modifier) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp),
             horizontalArrangement = Arrangement.Center

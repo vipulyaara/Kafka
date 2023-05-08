@@ -27,11 +27,11 @@
 
     <string name="downloader.enqueue.downloadsNotFound" translatable="false">Selected downloads folder not found</string>
     <string name="downloader.enqueue.audio.queued" translatable="false">Added to download queue</string>
-    <string name="downloader.enqueue.audio.error.invalidUrl" translatable="false">Audio has invalid download url</string>
+    <string name="downloader.enqueue.audio.error.invalidUrl" translatable="false">Download has invalid url</string>
     <string name="downloader.enqueue.audio.error.fileCreate" translatable="false">Couldn\'t create file in downloads location</string>
     <string name="downloader.enqueue.audio.existing.resuming" translatable="false">Resuming existing download</string>
-    <string name="downloader.enqueue.audio.existing.alreadyQueued" translatable="false">This song is already in the download queue</string>
-    <string name="downloader.enqueue.audio.existing.completed" translatable="false">This song was already downloaded</string>
+    <string name="downloader.enqueue.audio.existing.alreadyQueued" translatable="false">This item is already in the download queue</string>
+    <string name="downloader.enqueue.audio.existing.completed" translatable="false">This item was already downloaded</string>
     <string name="downloader.enqueue.audio.existing.unknown" translatable="false">Download request exists but has unhandled status: %1$s</string>
 
     <string name="downloads.title" translatable="false">Downloads</string>

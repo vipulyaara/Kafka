@@ -2,11 +2,13 @@ package org.kafka.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.Homepage.Companion
 import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.base.debug
@@ -41,7 +43,7 @@ class HomepageViewModel @Inject constructor(
         loadingCounter.observable,
         uiMessageManager.message,
     ) { homepage, user, isLoading, message ->
-        debug { "Homepage state is ${homepage.collection}" }
+        debug { "Homepage state is ${isLoading}" }
         HomepageViewState(
             homepage = homepage,
             user = user,

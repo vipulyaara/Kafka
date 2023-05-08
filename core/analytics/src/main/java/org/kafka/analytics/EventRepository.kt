@@ -2,8 +2,7 @@ package org.kafka.analytics
 
 import javax.inject.Inject
 
-class EventRepository @Inject constructor(
-) {
+class EventRepository @Inject constructor() {
     fun searchQuery(keyword: String, filters: List<String>? = null) =
         FirebaseAnalytics.SEARCH to mapOf(
             "keyword" to keyword,

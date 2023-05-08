@@ -1,11 +1,13 @@
 package com.kafka.data.entities
 
+import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.errorprone.annotations.Keep
 import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Keep
 @Serializable
 data class RecentItem(
@@ -43,6 +45,7 @@ data class RecentItem(
     }
 }
 
+@Immutable
 @Entity(tableName = "recent_text")
 data class RecentTextItem(
     @PrimaryKey val fileId: String,
@@ -67,6 +70,7 @@ data class RecentTextItem(
     data class Page(val index: Int, val text: String)
 }
 
+@Immutable
 @Entity(tableName = "recent_audio")
 data class RecentAudioItem(
     @PrimaryKey val fileId: String,
@@ -77,6 +81,7 @@ data class RecentAudioItem(
         get() = (currentTimestamp * 100 / duration).toInt()
 }
 
+@Immutable
 data class RecentItemWithProgress(
     val recentItem: RecentItem,
     val percentage: Int

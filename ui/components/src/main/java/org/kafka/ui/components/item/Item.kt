@@ -111,7 +111,7 @@ fun ItemDescription(
         Row(verticalAlignment = Alignment.CenterVertically) {
             creator()
         }
-        Spacer(modifier = Modifier.height(Dimens.Spacing04))
+        Spacer(modifier = Modifier.height(Dimens.Spacing08))
         mediaType()
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,9 +23,9 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun TopBar(
-    lazyListState: LazyListState,
     onShareClicked: () -> Unit,
     onBackPressed: () -> Unit,
+    lazyListState: LazyListState = rememberLazyListState(),
     isShareVisible: Boolean = false
 ) {
     val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }

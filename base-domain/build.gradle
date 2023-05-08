@@ -15,7 +15,6 @@ android {
 }
 
 dependencies {
-    api "androidx.appcompat:appcompat-resources:1.6.0"
     api libs.dagger.dagger
     api libs.kotlin.coroutines.core
     api libs.kotlin.stdlib
@@ -23,7 +22,7 @@ dependencies {
     api libs.okhttp.okhttp
     api libs.retrofit.retrofit
     api libs.timber
+    api libs.kotlin.immutable
 
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1'
     implementation libs.androidx.paging.common
 }

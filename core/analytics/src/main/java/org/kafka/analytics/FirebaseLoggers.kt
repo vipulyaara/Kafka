@@ -92,7 +92,9 @@ class FirebaseCrashLogger @Inject constructor() : CrashLogger {
         FirebaseCrashlytics.getInstance().log(throwable.message.orEmpty())
     }
 
-    override fun logNonFatal(throwable: Throwable) {
+    override fun logNonFatal(throwable: Throwable, message: String?, tag: String?) {
+        message?.let { FirebaseCrashlytics.getInstance().log(message) }
+        tag?.let { FirebaseCrashlytics.getInstance().setCustomKey("tag", it) }
         FirebaseCrashlytics.getInstance().recordException(throwable)
     }
 }

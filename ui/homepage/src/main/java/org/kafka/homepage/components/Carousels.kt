@@ -52,7 +52,7 @@ private fun CarouselItem(item: CarouselItem, navigator: Navigator) {
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
     AsyncImage(
         model = item.image,
-        contentScale = ContentScale.None,
+        contentScale = ContentScale.Fit,
         contentDescription = null,
         modifier = Modifier
             .padding(Dimens.Spacing02)

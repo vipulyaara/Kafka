@@ -71,7 +71,7 @@ internal class DownloaderImpl @Inject constructor(
     }
 
     private fun downloaderMessage(message: DownloadMessage<*>) {
-//        snackbarManager.addMessage(message.toUiMessage())
+        snackbarManager.addMessage(message.toUiMessage())
     }
 
     /**

@@ -38,7 +38,6 @@ dependencies {
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
     api libs.compose.foundation.layout
-    //    api libs.compose.livedata
     api libs.compose.material.material3
     api libs.compose.runtime.runtime
     api libs.compose.ui.tooling
@@ -50,10 +49,6 @@ dependencies {
     api libs.lottie.compose
     api libs.lottie.core
     api libs.tracing
-
-    debugApi libs.compose.ui.test.manifest
-
-    androidTestApi libs.compose.ui.test
 
     implementation project(':base-domain')
     implementation project(':base-network')

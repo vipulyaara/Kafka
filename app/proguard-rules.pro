@@ -4,8 +4,6 @@
 -allowaccessmodification
 -repackageclasses
 
--keepnames class **
-
 # Note that you cannot just include these flags in your own
 # configuration file; if you are including this file, optimization
 # will be turned off. You'll need to either edit this file, or

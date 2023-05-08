@@ -35,9 +35,9 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun SearchWidget(
-    searchText: TextFieldValue,
+    searchText: String,
     modifier: Modifier = Modifier,
-    setSearchText: (TextFieldValue) -> Unit,
+    setSearchText: (String) -> Unit,
     onImeAction: (String) -> Unit
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
@@ -60,15 +60,15 @@ fun SearchWidget(
                 }
             },
             trailingIcon = {
-                ClearIcon(searchText.text) {
-                    setSearchText(TextFieldValue(""))
+                ClearIcon(searchText) {
+                    setSearchText("")
                     keyboard?.show()
                 }
             },
             keyboardOptions = SearchKeyboardOptions,
             onValueChange = { setSearchText(it) },
             keyboardActions = KeyboardActions(onSearch = {
-                onImeAction(searchText.text)
+                onImeAction(searchText)
                 keyboard?.hide()
             }),
             textStyle = MaterialTheme.typography.titleMedium,

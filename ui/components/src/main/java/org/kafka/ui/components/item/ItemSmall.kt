@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,25 +41,23 @@ fun ItemSmall(
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit
 ) {
-    Surface(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { openItemDetail(itemId) },
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-        ) {
-            CoverImage(
-                data = coverImage,
-                modifier = Modifier.align(Alignment.CenterVertically),
-                size = Dimens.CoverSizeSmall
-            )
-            ItemDescription(
-                title = { ItemTitleSmall(title) },
-                creator = { ItemCreatorSmall(creator) },
-                mediaType = { ItemMediaType(mediaType) },
-                modifier = Modifier.padding(vertical = Dimens.Spacing02)
-            )
-        }
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { openItemDetail(itemId) },
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        CoverImage(
+            data = coverImage,
+            modifier = Modifier.align(Alignment.CenterVertically),
+            size = Dimens.CoverSizeSmall
+        )
+        ItemDescription(
+            title = { ItemTitleSmall(title) },
+            creator = { ItemCreatorSmall(creator) },
+            mediaType = { ItemMediaType(mediaType) },
+            modifier = Modifier.padding(vertical = Dimens.Spacing02)
+        )
     }
 }
 

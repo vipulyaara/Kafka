@@ -17,10 +17,8 @@ class UpdateHomepage @Inject constructor(
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
-            debug { "Homepage ids:" }
-            val homepageIds = homepageRepository.getHomepageCollection()
-                .map { it.items }.flatten().map { it.itemId }
-            debug { "Homepage ids: $homepageIds" }
+            val homepageIds = homepageRepository.getHomepageIds()
+            debug { "Homepage ids: ${homepageIds.size} $homepageIds" }
             val query = ArchiveQuery().booksByIdentifiers(homepageIds)
             updateItems.execute(UpdateItems.Params(query))
         }

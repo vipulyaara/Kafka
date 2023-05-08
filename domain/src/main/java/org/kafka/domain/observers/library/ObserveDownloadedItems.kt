@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
+import org.kafka.base.errorLog
 import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import tm.alashow.datmusic.downloader.observers.ObserveDownloads
 import javax.inject.Inject
@@ -23,14 +24,20 @@ class ObserveDownloadedItems @Inject constructor(
 
     override fun createObservable(params: Unit): Flow<List<ItemWithDownload>> {
         return observeDownloads.execute(ObserveDownloads.Params()).map {
-            it.files.map { fileDownloadItem ->
-                val file = fileDao.get(fileDownloadItem.downloadRequest.id)
-                debug { "ObserveDownloadedItems: ${file.itemTitle}" }
+            it.files.mapNotNull { fileDownloadItem ->
+                val file = fileDao.getOrNull(fileDownloadItem.downloadRequest.id)
+                val item = itemDao.getOrNull(file?.itemId.orEmpty())
+
+                if (file == null || item == null) {
+                    errorLog { "ObserveDownloadedItems: file or item is null" }
+                    return@mapNotNull null
+                }
+
                 ItemWithDownload(
                     downloadRequest = fileDownloadItem.downloadRequest,
                     downloadInfo = downloadInfoMapper.map(fileDownloadItem.downloadInfo),
                     file = file,
-                    item = itemDao.get(file.itemId)
+                    item = item
                 )
             }
         }.flowOn(dispatchers.io)

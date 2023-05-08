@@ -22,7 +22,7 @@ class LoggerInitializer @Inject constructor(private val crashLogger: CrashLogger
         Timber.plant(object : Timber.Tree() {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
                 if (priority == Log.ERROR) {
-                    crashLogger.logFatal(t ?: Exception(message))
+                    crashLogger.logNonFatal(t ?: Exception(message), message, tag)
                 }
             }
         })

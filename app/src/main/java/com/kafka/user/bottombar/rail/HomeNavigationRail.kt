@@ -5,7 +5,6 @@
 package com.kafka.user.bottombar.rail
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +54,7 @@ import org.kafka.navigation.Screen
 import ui.common.theme.theme.Dimens
 
 internal object HomeNavigationRailDefaults {
-    val ActiveColor @Composable get() = MaterialTheme.colorScheme.secondary
+    val ActiveColor @Composable get() = MaterialTheme.colorScheme.primary
     val OnActiveColor @Composable get() = MaterialTheme.colorScheme.onSecondary
     val OnInactiveColor @Composable get() = MaterialTheme.colorScheme.onSurface
 
@@ -79,7 +78,6 @@ internal object HomeNavigationRailDefaults {
     val ExpandedPlaybackModeMinHeight = 600.dp
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun HomeNavigationRail(
     selectedTab: RootScreen,
@@ -129,23 +127,24 @@ internal fun HomeNavigationRail(
                                 selected = isSelected,
                                 onClick = { onNavigationSelected(item.rootScreen) },
                                 icon = {
-                                    HomeNavigationItemIcon(
-                                        item = item,
-                                        selected = isSelected
-                                    )
+                                    HomeNavigationItemIcon(item = item, selected = isSelected)
                                 },
                                 label = {
                                     Text(
-                                        stringResource(item.labelResId),
+                                        text = stringResource(item.labelResId),
                                         maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = MaterialTheme.typography.headlineSmall,
                                     )
                                 },
                                 alwaysShowLabel = false,
                                 colors = HomeNavigationRailDefaults.colors,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(Dimens.Spacing12)
+                                    .padding(
+                                        horizontal = Dimens.Spacing40,
+                                        vertical = Dimens.Spacing24
+                                    )
                                     .align(Alignment.CenterHorizontally),
                             )
                         }

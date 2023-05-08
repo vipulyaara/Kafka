@@ -17,10 +17,10 @@ import org.kafka.common.plus
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.favorites.R
-import org.kafka.library.LibraryItem
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.LayoutType
+import org.kafka.ui.components.item.LibraryItem
 import ui.common.theme.theme.Dimens
 
 @Composable

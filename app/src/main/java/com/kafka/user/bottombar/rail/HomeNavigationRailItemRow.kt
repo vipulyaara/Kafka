@@ -59,7 +59,7 @@ internal fun HomeNavigationRailItemRow(
                     color = activeColor
                 )
             )
-            .padding(Dimens.Spacing12)
+            .padding(horizontal = Dimens.Spacing40, vertical = Dimens.Spacing24)
     ) {
         HomeNavigationItemTransition(
             activeColor = activeColor,
@@ -73,7 +73,7 @@ internal fun HomeNavigationRailItemRow(
             Text(
                 stringResource(item.labelResId),
                 maxLines = 1,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
             )
         }

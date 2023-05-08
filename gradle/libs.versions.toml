@@ -15,6 +15,7 @@ dagger = "2.45"
 hilt = "2.45"
 icons = "1.0.0"
 kotlin = "1.8.20"
+kotlin-immutable = "0.3.5"
 ktlint = "0.40.0"
 material3 = "1.1.0-alpha04"
 okhttp = "4.10.0"
@@ -183,6 +184,7 @@ kotlin-extensions = { module = "org.jetbrains.kotlin:kotlin-android-extensions",
 kotlin-gradlePlug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
 
 icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", version.ref = "icons" }
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }

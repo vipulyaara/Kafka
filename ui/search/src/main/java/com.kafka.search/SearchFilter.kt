@@ -32,10 +32,7 @@ internal fun SearchFilterChips(
     onFilterClicked: (SearchFilter) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyRow(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing08)
-    ) {
+    LazyRow(modifier = modifier) {
         items(SearchFilter.values()) { filter ->
             val selected = selectedFilters.contains(filter)
             FilterChip(

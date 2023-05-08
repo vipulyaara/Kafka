@@ -26,10 +26,4 @@
     <style name="Theme.Kafka.Home" parent="Theme.Kafka.Immerse">
         <item name="android:windowLightStatusBar">@bool/use_light_status_bar</item>
     </style>
-
-    <!--    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">-->
-    <!--    <item name="android:windowBackground">@color/window_background</item>-->
-    <!--        <item name="android:windowLightStatusBar">@bool/use_light_status_bar</item>-->
-    <!--    </style>-->
-
 </resources>

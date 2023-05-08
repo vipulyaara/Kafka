@@ -9,9 +9,12 @@ import org.kafka.common.snackbar.UiMessage
 data class HomepageViewState(
     val homepage: Homepage = Homepage.Empty,
     val user: User? = null,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val message: UiMessage? = null
 ) {
     val isFullScreenError: Boolean
         get() = homepage.collection.isEmpty() && message != null
+
+    val isFullScreenLoading: Boolean
+        get() = homepage.collection.isEmpty() && isLoading
 }

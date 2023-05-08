@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @Reusable
 class FirestoreGraph @Inject constructor(
-    private val firestoreKt: dev.gitlive.firebase.firestore.FirebaseFirestore,
+    private val firestoreKt: FirebaseFirestore,
     private val firestore: com.google.firebase.firestore.FirebaseFirestore,
     private val auth: FirebaseAuth
 ) {

@@ -23,8 +23,8 @@ import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
 import org.kafka.ui.components.item.ItemCreator
-import org.kafka.ui.components.item.ItemTitleMedium
 import org.kafka.ui.components.item.ItemMediaType
+import org.kafka.ui.components.item.ItemTitleMedium
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -40,7 +40,7 @@ internal fun DownloadItem(
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        CoverImage(item.item.coverImage)
+        CoverImage(data = item.item.coverImage, size = Dimens.CoverSizeMedium)
         DownloadItemDescription(item, Modifier.weight(1f))
         DownloadStatusIcons(downloadInfo = item.downloadInfo)
     }

@@ -1,5 +1,6 @@
-package org.kafka.domain.interactors
+package org.kafka.domain.observers
 
+import com.kafka.data.entities.Item
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter
@@ -7,21 +8,28 @@ import com.kafka.data.model.booksByAuthor
 import com.kafka.data.model.booksBySubject
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.joinerOr
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
-import org.kafka.base.domain.Interactor
-import org.kafka.domain.interactors.query.BuildRemoteQuery
+import org.kafka.base.debug
+import org.kafka.base.domain.SubjectInteractor
+import org.kafka.domain.interactors.query.BuildLocalQuery
 import javax.inject.Inject
 
-class SearchQueryItems @Inject constructor(
+class ObserveSearchItems @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
-    private val buildRemoteQuery: BuildRemoteQuery,
-    private val itemRepository: ItemRepository,
-) : Interactor<SearchQueryItems.Params>() {
+    private val buildLocalQuery: BuildLocalQuery,
+    private val itemRepository: ItemRepository
+) : SubjectInteractor<ObserveSearchItems.Params, List<Item>>() {
 
-    override suspend fun doWork(params: Params): Unit = withContext(dispatchers.io) {
-        val archiveQuery = buildQuery(params.keyword, params.searchFilter)
-        itemRepository.updateQuery(buildRemoteQuery(archiveQuery))
+    override fun createObservable(params: Params): Flow<List<Item>> {
+        debug { "ObserveSearchItems.createObservable: params=$params" }
+        return itemRepository.observeQueryItems(
+            buildLocalQuery(buildQuery(params.keyword, params.searchFilter))
+        ).flowOn(dispatchers.io).onStart {
+            debug { "ObserveSearchItems11" }
+        }
     }
 
     private fun buildQuery(

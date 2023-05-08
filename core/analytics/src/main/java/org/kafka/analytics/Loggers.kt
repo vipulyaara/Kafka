@@ -17,12 +17,10 @@ fun Analytics.event(name: String, map: Map<String, Any> = emptyMap()) =
 interface CrashLogger {
     fun initialize(userData: UserData)
     fun logFatal(throwable: Throwable)
-    fun logNonFatal(throwable: Throwable)
+    fun logNonFatal(throwable: Throwable, message: String? = null, tag: String? = null)
 }
 
 data class UserData(val userId: String)
-
-interface Event
 
 typealias EventInfo = Pair<String, Map<String, String?>>
 

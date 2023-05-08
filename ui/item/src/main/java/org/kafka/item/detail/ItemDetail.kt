@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -58,7 +58,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     debug { "Item Detail launch" }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
     val context = LocalContext.current
 
@@ -70,7 +69,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
-                lazyListState = lazyListState,
                 isShareVisible = false,
                 onShareClicked = { viewModel.shareItemText(context) },
                 onBackPressed = { navigator.goBack() }
@@ -78,17 +76,13 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel, lazyListState)
+            ItemDetail(state, viewModel)
         }
     }
 }
 
 @Composable
-private fun ItemDetail(
-    state: ItemDetailViewState,
-    viewModel: ItemDetailViewModel,
-    lazyListState: LazyListState
-) {
+private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewModel) {
     Box(Modifier.fillMaxSize()) {
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
@@ -98,12 +92,12 @@ private fun ItemDetail(
         FullScreenMessage(state.message, show = state.isFullScreenError, onRetry = viewModel::retry)
 
         AnimatedVisibilityFade(state.itemDetail != null) {
-            LazyColumn(
+            LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
-                state = lazyListState,
-                contentPadding = scaffoldPadding()
+                contentPadding = scaffoldPadding(),
+                columns = GridCells.Fixed(GridItemSpan)
             ) {
-                item {
+                item(span = { GridItemSpan(GridItemSpan) }) {
                     ItemDescription(
                         itemDetail = state.itemDetail!!,
                         showDescription = viewModel::showDescription,
@@ -111,7 +105,7 @@ private fun ItemDetail(
                     )
                 }
 
-                item {
+                item(span = { GridItemSpan(GridItemSpan) }) {
                     ItemDetailActions(
                         itemDetail = state.itemDetail!!,
                         onPrimaryAction = viewModel::onPrimaryAction,
@@ -122,7 +116,7 @@ private fun ItemDetail(
                 }
 
                 if (!state.itemDetail?.subject.isNullOrEmpty()) {
-                    item {
+                    item(span = { GridItemSpan(GridItemSpan) }) {
                         Subjects(
                             subjects = state.itemDetail?.subject.orEmpty(),
                             modifier = Modifier.padding(Dimens.Spacing16)
@@ -133,12 +127,13 @@ private fun ItemDetail(
                 }
 
                 if (state.hasItemsByCreator) {
-                    item {
+                    item(span = { GridItemSpan(GridItemSpan) }) {
                         LabelMedium(
                             text = stringResource(R.string.more_by_author),
                             modifier = Modifier.padding(Dimens.Spacing16)
                         )
                     }
+
                     items(state.itemsByCreator!!, key = { it.itemId }) { item ->
                         Item(
                             item = item,
@@ -151,7 +146,7 @@ private fun ItemDetail(
                 }
 
                 if (state.isLoading) {
-                    item {
+                    item(span = { GridItemSpan(GridItemSpan) }) {
                         Delayed(modifier = Modifier.animateItemPlacement()) {
                             InfiniteProgressBar()
                         }
@@ -245,3 +240,5 @@ private fun Subjects(
 }
 
 private const val MaxRating = 5
+private const val GridItemSpan = 1
+

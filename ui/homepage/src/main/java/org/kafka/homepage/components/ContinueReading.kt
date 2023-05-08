@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
-import org.kafka.common.ImmutableList
+import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
@@ -74,7 +74,7 @@ internal fun ContinueReading(
             contentPadding = PaddingValues(Dimens.Spacing12),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
         ) {
-            items(readingList.items, key = { it.recentItem.itemId }) { continueReading ->
+            items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
@@ -97,7 +97,7 @@ private fun ContinueReadingItem(
     val recentItem = item.recentItem
 
     Box(modifier = modifier) {
-        Column(modifier = Modifier.widthIn(100.dp, 286.dp)) {
+        Column(modifier = Modifier.widthIn(50.dp, 286.dp)) {
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(Dimens.Spacing08))
@@ -117,7 +117,7 @@ private fun ContinueReadingItem(
                     title = { ItemTitleSmall(recentItem.title, 1) },
                     creator = { ItemCreator(recentItem.creator) },
                     mediaType = { ItemMediaType(recentItem.mediaType) },
-                    modifier = Modifier.width(286.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
