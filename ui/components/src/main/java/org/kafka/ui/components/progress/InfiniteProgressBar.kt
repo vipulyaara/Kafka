@@ -30,9 +30,7 @@ fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
     val infiniteTransition = rememberInfiniteTransition()
     AnimatedVisibilityFade(show, modifier) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             infiniteTransition.BouncingDot(StartOffset(0))

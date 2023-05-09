@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
@@ -81,12 +81,6 @@ private fun Search(
                     modifier = Modifier.padding(Dimens.Gutter, Dimens.Spacing06)
                 ) { itemId -> openItemDetail(itemId) }
             }
-
-            if (searchViewState.isLoading) {
-                item {
-                    InfiniteProgressBar(modifier = Modifier.padding(paddingValues))
-                }
-            }
         }
     }
 
@@ -119,7 +113,7 @@ private fun Search(
             SearchFilterChips(selectedFilters = selectedFilters, onFilterClicked = onFilterClicked)
             InfiniteProgressBar(
                 show = searchViewState.isLoading,
-                modifier = Modifier.size(Dimens.Spacing24)
+                modifier = Modifier.height(Dimens.Spacing24)
             )
         }
     }

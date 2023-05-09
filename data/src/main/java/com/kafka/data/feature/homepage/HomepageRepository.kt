@@ -24,7 +24,7 @@ class HomepageRepository @Inject constructor(
         .sortedBy { it.index }
         .map { it.items.split(", ") }.flatten().toList()
 
-    private suspend fun QuerySnapshot.toHomepage() =
+    private fun QuerySnapshot.toHomepage() =
         documents.map { it.data(HomepageCollectionResponse.serializer()) }
             .filter { it.enabled }
             .sortedBy { it.index }

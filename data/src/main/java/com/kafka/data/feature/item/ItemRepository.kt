@@ -20,4 +20,6 @@ class ItemRepository @Inject constructor(
             itemLocalDataSource.insertAll(it)
         }
     }
+
+    suspend fun exists(id: String) = itemLocalDataSource.exists(id)
 }

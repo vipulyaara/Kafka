@@ -33,4 +33,7 @@ abstract class ItemDao : EntityDao<Item> {
 
     @Query("delete from item")
     abstract suspend fun deleteAll()
+
+    @Query("SELECT EXISTS(SELECT * FROM item where itemId = :itemId)")
+    abstract suspend fun exists(itemId: String): Boolean
 }
