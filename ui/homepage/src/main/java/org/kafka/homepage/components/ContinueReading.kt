@@ -53,6 +53,7 @@ import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.item.ItemCreator
+import org.kafka.ui.components.item.ItemCreatorSmall
 import org.kafka.ui.components.item.ItemDescription
 import org.kafka.ui.components.item.ItemMediaType
 import org.kafka.ui.components.item.ItemTitleSmall
@@ -115,7 +116,7 @@ private fun ContinueReadingItem(
 
                 ItemDescription(
                     title = { ItemTitleSmall(recentItem.title, 1) },
-                    creator = { ItemCreator(recentItem.creator) },
+                    creator = { ItemCreatorSmall(recentItem.creator) },
                     mediaType = { ItemMediaType(recentItem.mediaType) },
                     modifier = Modifier.fillMaxWidth()
                 )

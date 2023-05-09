@@ -1,16 +1,13 @@
 package org.kafka.ui.components.item
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,19 +21,13 @@ import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun Item(
-    item: Item,
-    modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
-) {
+fun Item(item: Item, modifier: Modifier = Modifier) {
     Item(
         title = item.title,
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        itemId = item.itemId,
-        modifier = modifier,
-        openItemDetail = openItemDetail
+        modifier = modifier
     )
 }
 
@@ -46,22 +37,20 @@ fun Item(
     creator: String?,
     mediaType: String?,
     coverImage: String?,
-    itemId: String,
-    modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { openItemDetail(itemId) },
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
         CoverImage(
             data = coverImage,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .widthIn(max = 80.dp)
-                .heightIn(max = 92.dp)
+                .sizeIn(
+                    maxWidth = Dimens.CoverSizeMedium.width,
+                    maxHeight = Dimens.CoverSizeMedium.height
+                )
         )
 
         ItemDescription(
@@ -71,32 +60,6 @@ fun Item(
         )
     }
 }
-
-//@Composable
-//fun CoverImage(
-//    coverImage: String?,
-//    modifier: Modifier = Modifier,
-//    size: DpSize = Dimens.CoverSizeMedium
-//) {
-//    Box(
-//        modifier = modifier
-//            .size(size)
-//            .shadowMaterial(
-//                elevation = Dimens.Spacing08,
-//                shape = RoundedCornerShape(Dimens.RadiusSmall)
-//            )
-//    ) {
-//        AsyncImage(
-//            model = coverImage,
-//            placeholder = painterResource(id = R.drawable.ic_absurd_bulb),
-//            contentDescription = "Cover",
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(MaterialTheme.colorScheme.surface),
-//            contentScale = ContentScale.Crop
-//        )
-//    }
-//}
 
 @Composable
 fun ItemDescription(

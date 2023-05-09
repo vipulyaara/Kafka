@@ -1,5 +1,6 @@
 package org.kafka.library.favorites
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -75,8 +76,9 @@ private fun FavoriteItemList(
         ) { _, item ->
             Item(
                 item = item,
-                openItemDetail = openItemDetail,
-                modifier = Modifier.padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
+                modifier = Modifier
+                    .clickable { openItemDetail(item.itemId) }
+                    .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
             )
         }
     }

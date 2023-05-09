@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
 package org.kafka.ui.components.item
 
 import android.graphics.Bitmap
@@ -32,6 +28,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import org.kafka.common.widgets.shadowMaterial
 import org.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
 
@@ -44,7 +41,7 @@ fun CoverImage(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor = containerColor),
     contentScale: ContentScale = ContentScale.Crop,
-    shape: Shape = RoundedCornerShape(Dimens.Spacing02),
+    shape: Shape = RoundedCornerShape(Dimens.Spacing04),
     placeholder: Painter = painterResource(id = R.drawable.ic_absurd_bulb),
     iconPadding: Dp = 0.dp,
     bitmapPlaceholder: Bitmap? = null,
@@ -56,7 +53,9 @@ fun CoverImage(
         tonalElevation = elevation,
         color = containerColor,
         shape = shape,
-        modifier = modifier.then(sizeMod)
+        modifier = modifier
+            .then(sizeMod)
+            .shadowMaterial(Dimens.Spacing08, shape)
     ) {
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)

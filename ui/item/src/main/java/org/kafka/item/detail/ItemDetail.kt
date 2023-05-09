@@ -1,5 +1,6 @@
 package org.kafka.item.detail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -48,6 +49,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
+import org.kafka.ui.components.item.ItemSmall
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -135,13 +137,15 @@ private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewMode
                     }
 
                     items(state.itemsByCreator!!, key = { it.itemId }) { item ->
-                        Item(
+                        ItemSmall(
                             item = item,
-                            modifier = Modifier.padding(
-                                vertical = Dimens.Spacing06,
-                                horizontal = Dimens.Gutter
-                            )
-                        ) { viewModel.openItemDetail(item.itemId) }
+                            modifier = Modifier
+                                .clickable { viewModel.openItemDetail(item.itemId) }
+                                .padding(
+                                    vertical = Dimens.Spacing06,
+                                    horizontal = Dimens.Gutter
+                                )
+                        )
                     }
                 }
 

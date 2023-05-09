@@ -1,6 +1,5 @@
 package org.kafka.ui.components.item
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,19 +14,13 @@ import com.kafka.data.entities.Item
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ItemSmall(
-    item: Item,
-    modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
-) {
+fun ItemSmall(item: Item, modifier: Modifier = Modifier) {
     ItemSmall(
         title = item.title,
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        itemId = item.itemId,
-        modifier = modifier,
-        openItemDetail = openItemDetail
+        modifier = modifier
     )
 }
 
@@ -37,14 +30,10 @@ fun ItemSmall(
     creator: String?,
     mediaType: String?,
     coverImage: String?,
-    itemId: String,
-    modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { openItemDetail(itemId) },
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {
         CoverImage(

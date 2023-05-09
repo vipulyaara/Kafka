@@ -2,6 +2,7 @@ package com.kafka.data.feature.item
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.kafka.data.dao.ItemLocalDataSource
+import com.kafka.data.entities.Item
 import javax.inject.Inject
 
 /**
@@ -20,6 +21,10 @@ class ItemRepository @Inject constructor(
             itemLocalDataSource.insertAll(it)
         }
     }
+
+    suspend fun updateItems(query: String) = remoteDataSource.fetchItemsByQuery(query).getOrThrow()
+
+    suspend fun saveItems(items: List<Item>) = itemLocalDataSource.insertAll(items)
 
     suspend fun exists(id: String) = itemLocalDataSource.exists(id)
 }

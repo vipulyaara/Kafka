@@ -2,9 +2,9 @@ package com.kafka.user.bottombar
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.kafka.user.R
 import org.kafka.common.image.Icons
 import org.kafka.navigation.RootScreen
-import org.kafka.user.R
 
 internal val HomeNavigationItems = listOf(
     HomeNavigationItem.ImageVectorIcon(
@@ -27,14 +27,7 @@ internal val HomeNavigationItems = listOf(
         contentDescriptionResId = R.string.library,
         iconImageVector = Icons.Library,
         selectedImageVector = Icons.LibraryActive,
-    ),
-//    HomeNavigationItem.ImageVectorIcon(
-//        rootScreen = RootScreen.Profile,
-//        labelResId = R.string.bottom_bar_profile,
-//        contentDescriptionResId = R.string.bottom_bar_profile,
-//        iconImageVector = Icons.Profile,
-//        selectedImageVector = Icons.ProfileActive,
-//    ),
+    )
 )
 
 internal sealed class HomeNavigationItem(

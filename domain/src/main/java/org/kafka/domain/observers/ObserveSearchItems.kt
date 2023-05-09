@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
-import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.interactors.query.BuildLocalQuery
 import javax.inject.Inject
@@ -24,12 +23,9 @@ class ObserveSearchItems @Inject constructor(
 ) : SubjectInteractor<ObserveSearchItems.Params, List<Item>>() {
 
     override fun createObservable(params: Params): Flow<List<Item>> {
-        debug { "ObserveSearchItems.createObservable: params=$params" }
         return itemRepository.observeQueryItems(
             buildLocalQuery(buildQuery(params.keyword, params.searchFilter))
-        ).flowOn(dispatchers.io).onStart {
-            debug { "ObserveSearchItems11" }
-        }
+        ).flowOn(dispatchers.io)
     }
 
     private fun buildQuery(

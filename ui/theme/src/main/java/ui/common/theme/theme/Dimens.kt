@@ -43,7 +43,7 @@ object Dimens {
     val CarouselMinHeight = 156.dp
     val CarouselMaxHeight = 236.dp
 
-    val CoverSizeSmall = DpSize(72.dp, 78.dp)
-    val CoverSizeMedium = DpSize(78.dp, 88.dp)
+    val CoverSizeSmall = DpSize(76.dp, 88.dp)
+    val CoverSizeMedium = DpSize(80.dp, 92.dp)
     val CoverSizeLarge = DpSize(120.dp, 120.dp)
 }

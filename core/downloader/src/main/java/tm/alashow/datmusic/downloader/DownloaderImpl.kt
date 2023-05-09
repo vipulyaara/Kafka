@@ -169,7 +169,6 @@ internal class DownloaderImpl @Inject constructor(
                             true
                         } else {
                             Timber.i("Completed status and file exists=$fileExists, doing nothing.")
-                            downloaderMessage(AudioDownloadAlreadyCompleted)
                             false
                         }
                     }

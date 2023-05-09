@@ -42,15 +42,8 @@ class HomepageViewModel @Inject constructor(
         observeUser.flow,
         loadingCounter.observable,
         uiMessageManager.message,
-    ) { homepage, user, isLoading, message ->
-        debug { "Homepage state is ${isLoading}" }
-        HomepageViewState(
-            homepage = homepage,
-            user = user,
-            message = message,
-            isLoading = isLoading
-        )
-    }.stateInDefault(scope = viewModelScope, initialValue = HomepageViewState())
+        ::HomepageViewState
+    ).stateInDefault(scope = viewModelScope, initialValue = HomepageViewState())
 
     init {
         observeHomepage(Unit)

@@ -38,7 +38,7 @@ fun RecentSearches(
                 )
             }
 
-            items(recentSearches) {
+            items(recentSearches, key = { it }) {
                 RecentSearchItem(
                     searchTerm = it,
                     onSearchClicked = onSearchClicked,

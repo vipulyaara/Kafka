@@ -22,8 +22,8 @@ class ObserveHomepage @Inject constructor(
 
     override fun createObservable(params: Unit): Flow<Homepage> {
         return combine(
-            observeRecentItems.execute(Unit).onStart { emit(persistentListOf()) },
-            homepageRepository.observeHomepageCollection().onStart { emit(persistentListOf()) },
+            observeRecentItems.execute(Unit),
+            homepageRepository.observeHomepageCollection(),
         ) { recentItems, collection ->
             debug { "ObserveHomepage: collection=$collection" }
             Homepage(recentItems = recentItems, collection = collection)

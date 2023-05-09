@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
@@ -27,8 +27,6 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
 import javax.inject.Inject
 
-const val MaxRecentSearches = 30
-
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
@@ -42,37 +40,22 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
-    var keyword by mutableStateOf("")
 
-    private val selectedFilters = MutableStateFlow(SearchFilter.all())
+    var keyword by mutableStateOf(savedStateHandle.get<String>("keyword").orEmpty())
+    var filters by mutableStateOf(
+        savedStateHandle.get<String>("filters")?.let { SearchFilter.from(it) }
+            ?: SearchFilter.all())
 
-    val state: StateFlow<SearchViewState> = kotlinx.coroutines.flow.combine(
-        selectedFilters,
-        observeSearchItems.flow,
-        observeRecentSearch.flow.map {
-            it.take(MaxRecentSearches).distinctBy { it.id }.map { it.searchTerm }
-        },
+    val state: StateFlow<SearchViewState> = combine(
+        observeSearchItems.flow.onStart { if (keyword.isEmpty()) emit(listOf()) },
+        observeRecentSearch.flow,
         loadingState.observable,
         uiMessageManager.message,
-    ) { filters, items, recentSearches, isLoading, message ->
-        SearchViewState(
-            filters = filters,
-            items = items,
-            recentSearches = recentSearches,
-            isLoading = isLoading,
-            message = message
-        )
-    }.stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
+        ::SearchViewState,
+    ).stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
-        savedStateHandle.get<String>("filters")
-            ?.let { selectedFilters.value = SearchFilter.from(it) }
-
-        savedStateHandle.get<String>("keyword")?.takeIf { it.isNotEmpty() }
-            ?.let { keyword = it }
-
-        search(keyword, selectedFilters.value)
-
+        search(keyword, filters)
         observeRecentSearch(Unit)
     }
 
@@ -80,7 +63,6 @@ class SearchViewModel @Inject constructor(
         if (keyword.isEmpty()) return
 
         analytics.log { searchQuery(keyword, filters.map { it.name }) }
-
         addRecentSearch(keyword, filters)
 
         observeSearchItems(ObserveSearchItems.Params(keyword, filters))
@@ -99,13 +81,13 @@ class SearchViewModel @Inject constructor(
     }
 
     fun toggleFilter(filter: SearchFilter) {
-        val filters = state.value.filters.toMutableList()
+        val filters = filters.toMutableList()
         if (filters.contains(filter)) {
             filters.remove(filter)
         } else {
             filters.add(filter)
         }
-        selectedFilters.value = filters
+        this.filters = filters
     }
 
     fun removeRecentSearch(keyword: String) {

@@ -18,7 +18,7 @@ class UpdateHomepage @Inject constructor(
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
-            val homepageIds = homepageRepository.getHomepageIds()
+            val homepageIds = homepageRepository.getHomepageIds().reversed()
             val unfetchedIds = homepageIds.filter { !itemRepository.exists(it) }
 
             // only fetch if some item doesn't exist in the database already

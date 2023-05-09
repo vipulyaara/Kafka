@@ -1,5 +1,6 @@
 package com.kafka.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,8 +28,8 @@ import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
-import org.kafka.ui.components.item.Item
-import org.kafka.ui.components.progress.InfiniteProgressBar
+import org.kafka.ui.components.item.ItemSmall
+import org.kafka.ui.components.progress.InfiniteProgressBarSmall
 import org.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
 
@@ -45,11 +46,11 @@ fun SearchScreen() {
                 searchText = searchViewModel.keyword,
                 setSearchText = { searchViewModel.keyword = it },
                 searchViewState = searchViewState,
-                selectedFilters = searchViewState.filters,
+                selectedFilters = searchViewModel.filters,
                 onFilterClicked = { searchViewModel.toggleFilter(it) },
                 onSearchClicked = {
                     searchViewModel.keyword = it
-                    searchViewModel.search(it, searchViewState.filters)
+                    searchViewModel.search(it, searchViewModel.filters)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = { searchViewModel.openItemDetail(it) }
@@ -76,10 +77,12 @@ private fun Search(
     AnimatedVisibilityFade(visible = searchViewState.items != null) {
         LazyColumn(contentPadding = paddingValues) {
             items(searchViewState.items!!) { item ->
-                Item(
+                ItemSmall(
                     item = item,
-                    modifier = Modifier.padding(Dimens.Gutter, Dimens.Spacing06)
-                ) { itemId -> openItemDetail(itemId) }
+                    modifier = Modifier
+                        .clickable { openItemDetail(item.itemId) }
+                        .padding(Dimens.Gutter, Dimens.Spacing06)
+                )
             }
         }
     }
@@ -111,7 +114,7 @@ private fun Search(
                 .padding(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing08)
         ) {
             SearchFilterChips(selectedFilters = selectedFilters, onFilterClicked = onFilterClicked)
-            InfiniteProgressBar(
+            InfiniteProgressBarSmall(
                 show = searchViewState.isLoading,
                 modifier = Modifier.height(Dimens.Spacing24)
             )

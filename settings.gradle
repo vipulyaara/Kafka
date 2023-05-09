@@ -54,3 +54,4 @@ include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
 include ':recommendation'
+include ':baselineprofile'

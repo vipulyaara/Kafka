@@ -68,8 +68,8 @@ fun SearchWidget(
             keyboardOptions = SearchKeyboardOptions,
             onValueChange = { setSearchText(it) },
             keyboardActions = KeyboardActions(onSearch = {
-                onImeAction(searchText)
                 keyboard?.hide()
+                onImeAction(searchText)
             }),
             textStyle = MaterialTheme.typography.titleMedium,
             colors = TextFieldDefaults.outlinedTextFieldColors(
