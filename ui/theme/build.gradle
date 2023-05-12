@@ -37,9 +37,9 @@ dependencies {
     api libs.lottie.core
     api libs.palette
 
-    implementation project(':base-domain')
+    implementation project(':base:domain')
     implementation project(':core:analytics')
-    implementation project(':data')
+    implementation project(':data:repo')
     implementation libs.hilt.android
     implementation libs.kotlin.stdlib
 

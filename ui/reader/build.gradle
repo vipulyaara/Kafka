@@ -18,8 +18,8 @@ android {
 }
 
 dependencies {
-    implementation project(':base-domain')
-    implementation project(':base-network')
+    implementation project(':base:domain')
+    implementation project(':base:network')
     implementation project(':core:analytics')
     implementation project(':core:downloader')
     implementation project(':domain')

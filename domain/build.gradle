@@ -15,11 +15,11 @@ android {
 }
 
 dependencies {
-    api project(':data')
+    api project(':data:repo')
     api libs.kotlin.coroutines.android
 
     implementation platform(libs.google.bom)
-    implementation project(':base-domain')
+    implementation project(':base:domain')
     implementation project(':core:analytics')
     implementation project(':core:downloader')
     implementation "dev.gitlive:firebase-firestore:1.8.0"

@@ -1,10 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.cacheFixPlugin)
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
+}
+
+room {
+    schemaLocationDir.set(file("$projectDir/schemas"))
 }
 
 kapt {
@@ -13,16 +17,23 @@ kapt {
 }
 
 android {
-    namespace 'com.kafka.data'
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
+    }
+
+    namespace 'com.kafka.database'
 }
 
 dependencies {
     ksp libs.androidx.room.compiler
 
-    api project(':base-domain')
-    api project(':base-network')
-    api project(':data-models')
-    api project(':database')
+    api project(':base:domain')
+    api project(':base:network')
+    api project(':data:models')
     api libs.androidx.collection
     api libs.androidx.core
     api libs.androidx.paging.runtime
@@ -37,8 +48,10 @@ dependencies {
     api libs.retrofit.serialization
     api libs.threeTenAbp
 
+    implementation libs.compose.runtime.runtime
+
     implementation platform(libs.google.bom)
-    implementation libs.google.auth
+    implementation libs.google.dynamic.links
     implementation libs.google.firestore
     implementation libs.jsoup
 

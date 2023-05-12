@@ -7,33 +7,21 @@ plugins {
     id 'kotlinx-serialization'
 }
 
-room {
-    schemaLocationDir.set(file("$projectDir/schemas"))
-}
-
 kapt {
     correctErrorTypes = true
     useBuildCache = true
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
-    }
-
-    namespace 'com.kafka.database'
+    namespace 'com.kafka.data.models'
 }
 
 dependencies {
     ksp libs.androidx.room.compiler
 
-    api project(':base-domain')
-    api project(':base-network')
-    api project(':data-models')
+    api project(':base:domain')
+    api project(':base:network')
+    api "dev.gitlive:firebase-firestore:1.8.0"
     api libs.androidx.collection
     api libs.androidx.core
     api libs.androidx.paging.runtime
@@ -48,11 +36,6 @@ dependencies {
     api libs.retrofit.serialization
     api libs.threeTenAbp
 
-    implementation libs.compose.runtime.runtime
-
-    implementation platform(libs.google.bom)
-    implementation libs.google.dynamic.links
-    implementation libs.google.firestore
     implementation libs.jsoup
 
     kapt libs.hilt.compiler

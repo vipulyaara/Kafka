@@ -21,8 +21,8 @@ android {
 }
 
 dependencies {
-    implementation project(':base-domain')
-    implementation project(':base-network')
+    implementation project(':base:domain')
+    implementation project(':base:network')
     implementation project(':core:downloader')
     implementation project(':domain')
     implementation project(':navigation')

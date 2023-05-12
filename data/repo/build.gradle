@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.ksp)
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
 }
@@ -13,15 +13,16 @@ kapt {
 }
 
 android {
-    namespace 'com.kafka.data.models'
+    namespace 'com.kafka.data'
 }
 
 dependencies {
     ksp libs.androidx.room.compiler
 
-    api project(':base-domain')
-    api project(':base-network')
-    api "dev.gitlive:firebase-firestore:1.8.0"
+    api project(':base:domain')
+    api project(':base:network')
+    api project(':data:models')
+    api project(':data:database')
     api libs.androidx.collection
     api libs.androidx.core
     api libs.androidx.paging.runtime
@@ -36,6 +37,9 @@ dependencies {
     api libs.retrofit.serialization
     api libs.threeTenAbp
 
+    implementation platform(libs.google.bom)
+    implementation libs.google.auth
+    implementation libs.google.firestore
     implementation libs.jsoup
 
     kapt libs.hilt.compiler

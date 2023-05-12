@@ -10,7 +10,6 @@ android {
 }
 
 dependencies {
-    api project(':data')
-
-    implementation project(':base-domain')
+    api project(':data:repo')
+    implementation project(':base:domain')
 }

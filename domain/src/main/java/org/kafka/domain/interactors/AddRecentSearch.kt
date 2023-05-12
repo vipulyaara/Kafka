@@ -2,7 +2,6 @@ package org.kafka.domain.interactors
 
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.entities.RecentSearch
-import com.kafka.data.feature.item.ItemRepository
 import kotlinx.coroutines.withContext
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.Interactor

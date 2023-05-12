@@ -1,17 +1,13 @@
 package org.kafka.domain.observers
 
 import com.kafka.data.entities.Homepage
-import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.feature.homepage.HomepageRepository
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
-import org.kafka.domain.observers.ObserveRecentItems
 import javax.inject.Inject
 
 class ObserveHomepage @Inject constructor(

@@ -50,9 +50,9 @@ dependencies {
     api libs.lottie.core
     api libs.tracing
 
-    implementation project(':base-domain')
-    implementation project(':base-network')
-    implementation project(':data')
+    implementation project(':base:domain')
+    implementation project(':base:network')
+    implementation project(':data:repo')
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib
 }

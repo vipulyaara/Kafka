@@ -40,6 +40,8 @@ uiautomator = "2.2.0"
 benchmark-macro-junit4 = "1.2.0-alpha14"
 androidx-baselineprofile = "1.2.0-alpha13"
 profileinstaller = "1.3.1"
+androidx-appcompat-appcompat = "1.6.1"
+material = "1.9.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -174,6 +176,7 @@ google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 google-auth-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
+google-remoteConfig = { module = "com.google.firebase:remote-config-ktx" }
 
 junit = "junit:junit:4.13.2"
 
@@ -218,3 +221,5 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat-appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }

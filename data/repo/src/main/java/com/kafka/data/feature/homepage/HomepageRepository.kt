@@ -5,7 +5,6 @@ import com.kafka.data.model.homepage.HomepageCollectionResponse
 import dagger.Reusable
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import org.kafka.base.debug

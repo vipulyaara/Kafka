@@ -3,7 +3,6 @@ package com.kafka.data.feature.item
 import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.model.item.Doc
-import com.kafka.data.model.item.ItemDetailResponse
 import com.kafka.data.model.item.SearchResponse
 import javax.inject.Inject
 

@@ -16,7 +16,7 @@ android {
 }
 
 dependencies {
-    api project(':base-domain')
+    api project(':base:domain')
     api libs.androidx.collection
     api libs.androidx.core
     api libs.androidx.paging.runtime

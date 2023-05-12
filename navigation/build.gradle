@@ -26,8 +26,8 @@ dependencies {
     api libs.androidx.lifecycle.viewmodel.compose
     api libs.androidx.lifecycle.viewmodel.ktx
 
-    implementation project(':base-domain')
-    implementation project(':data')
+    implementation project(':base:domain')
+    implementation project(':data:repo')
     implementation project(':ui:common')
     implementation libs.androidx.navigation.compose
     implementation libs.compose.material.material

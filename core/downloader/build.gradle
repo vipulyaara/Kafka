@@ -17,10 +17,10 @@ repositories {
 dependencies {
 	api libs.hilt.android
 
-	implementation project(':base-domain')
-	implementation project(':base-network')
+	implementation project(':base:domain')
+	implementation project(':base:network')
 	implementation project(':core:analytics')
-	implementation project(':data')
+	implementation project(':data:repo')
 	implementation project(':ui:common')
 	implementation libs.fetch
 

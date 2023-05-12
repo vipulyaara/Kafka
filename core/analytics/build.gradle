@@ -16,8 +16,8 @@ android {
 
 dependencies {
     implementation platform(libs.google.bom)
-    implementation project(':base-domain')
-    implementation project(':data')
+    implementation project(':base:domain')
+    implementation project(':data:repo')
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation libs.hilt.android

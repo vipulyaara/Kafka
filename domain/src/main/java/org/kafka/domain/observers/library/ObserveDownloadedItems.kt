@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.kafka.base.AppCoroutineDispatchers
-import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.base.errorLog
 import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper

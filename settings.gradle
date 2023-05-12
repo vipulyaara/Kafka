@@ -26,13 +26,16 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 rootProject.name = "kafka"
 
 include ':app'
-include ':base-domain'
-include ':base-network'
+include ':base:domain'
+include ':base:network'
+include ':baselineprofile'
 include ':core:analytics'
 include ':core:downloader'
-include ':data'
-include ':database'
-include ':data-models'
+include ':core:recommendation'
+include ':core:remote-config'
+include ':data:repo'
+include ':data:database'
+include ':data:models'
 include ':domain'
 include ':navigation'
 include ':notifications'
@@ -53,5 +56,3 @@ include ':core-playback'
 include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
-include ':recommendation'
-include ':baselineprofile'

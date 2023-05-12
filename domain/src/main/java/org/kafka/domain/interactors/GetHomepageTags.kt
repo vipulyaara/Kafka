@@ -14,7 +14,6 @@ import com.kafka.data.model.booksByIdentifiers
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.booksByTitleOrCreator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.kafka.base.debug
 import javax.inject.Inject
