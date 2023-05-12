@@ -1,30 +1,28 @@
 package org.kafka.homepage
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,9 +35,9 @@ import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
-import org.kafka.common.widgets.IconResource
 import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.ItemSmall
 import org.kafka.ui.components.item.SubjectItem
@@ -66,7 +64,8 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
-                        goToSubject = viewModel::openSubject
+                        goToSubject = viewModel::openSubject,
+                        onBannerClick = viewModel::onBannerClick
                     )
                 }
 
@@ -94,47 +93,95 @@ private fun HomepageFeedItems(
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
+    onBannerClick: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(scaffoldPadding())
+    LazyColumn(
+        modifier = Modifier.testTag("homepage_feed_items"),
+        contentPadding = scaffoldPadding()
     ) {
-        Carousels()
-
-        if (homepage.hasRecentItems) {
-            ContinueReading(
-                readingList = homepage.continueReadingItems,
-                openItemDetail = openRecentItemDetail,
-                removeRecentItem = removeRecentItem,
-                modifier = Modifier.padding(top = Dimens.Gutter)
-            )
+        item(key = "carousels", contentType = "carousels") {
+            Carousels(onBannerClick = onBannerClick)
         }
 
-        homepage.collection.forEach { collection ->
+        if (homepage.hasRecentItems) {
+            item(key = "recent", contentType = "recent") {
+                ContinueReading(
+                    readingList = homepage.continueReadingItems,
+                    openItemDetail = openRecentItemDetail,
+                    removeRecentItem = removeRecentItem,
+                    modifier = Modifier.padding(top = Dimens.Gutter)
+                )
+            }
+        }
+
+        homepage.collection.forEachIndexed { index, collection ->
             when (collection) {
-                is HomepageCollection.Row,
-                is HomepageCollection.Column -> {
-                    SubjectItem(collection.label, goToSubject)
-                    ItemsRow(collection.items, openItemDetail)
+                is HomepageCollection.Row -> {
+                    item(key = collection.label) {
+                        SubjectItem(collection.label, goToSubject)
+                        ItemsGrid(
+                            collection.items,
+                            openItemDetail,
+                            Modifier.testTag("row_$index")
+                        )
+                    }
                 }
+
+                is HomepageCollection.Column -> {
+                    item(key = collection.label) { SubjectItem(collection.label, goToSubject) }
+                    items(
+                        collection.items,
+                        key = { it.itemId },
+                        contentType = { it.javaClass }
+                    ) { item ->
+                        ItemSmall(
+                            item = item,
+                            modifier = Modifier
+                                .clickable { openItemDetail(item.itemId) }
+                                .padding(
+                                    horizontal = Dimens.Gutter,
+                                    vertical = Dimens.Spacing06
+                                )
+                        )
+                    }
+                }
+
+                else -> {}
             }
         }
 
         if (homepage.hasSearchPrompt) {
-            GoToSearchPrompt(
-                modifier = Modifier
-                    .padding(Dimens.Gutter)
-                    .fillMaxWidth(),
-                onClick = goToSearch
-            )
+            item(key = "search_prompt") {
+                MessageBox(
+                    text = stringResource(R.string.find_many_more_on_the_search_page),
+                    icon = Icons.ArrowForward,
+                    modifier = Modifier
+                        .clickable { goToSearch() }
+                        .padding(Dimens.Gutter)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ItemsRow(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
-    LazyHorizontalGrid(rows = GridCells.Fixed(3), modifier = Modifier.height(290.dp)) {
+private fun ItemsGrid(
+    items: ImmutableList<Item>,
+    openItemDetail: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    lazyListState: LazyGridState = rememberLazyGridState()
+) {
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(3),
+        modifier = modifier.height(290.dp),
+        state = lazyListState,
+        flingBehavior = rememberSnapFlingBehavior(
+            snapLayoutInfoProvider = remember(lazyListState) {
+                SnapLayoutInfoProvider(lazyGridState = lazyListState)
+            },
+        )
+    ) {
         items(
             items = items,
             key = { it.itemId },
@@ -156,37 +203,16 @@ private fun ItemsRow(items: ImmutableList<Item>, openItemDetail: (String) -> Uni
 
 @Composable
 private fun SubjectItem(label: String, goToSubject: (String) -> Unit) {
+    val subjectItemModifier = remember {
+        Modifier
+            .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08)
+            .padding(horizontal = Dimens.Gutter)
+    }
+
     SubjectItem(
         text = label,
-        modifier = Modifier
-            .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08)
-            .padding(horizontal = Dimens.Gutter),
+        modifier = subjectItemModifier,
         onClicked = { goToSubject(label) }
     )
 }
 
-@Composable
-private fun GoToSearchPrompt(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Surface(
-        modifier = modifier.clickable(onClick = onClick),
-        shape = RoundedCornerShape(Dimens.RadiusMedium),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Dimens.Spacing12),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.find_many_more_on_the_search_page),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            IconResource(imageVector = Icons.ArrowForward, tint = MaterialTheme.colorScheme.primary)
-        }
-    }
-}

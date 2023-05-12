@@ -33,6 +33,7 @@ dependencies {
     implementation project(':ui-playback')
     implementation libs.fetch
     implementation libs.hilt.android
+    implementation libs.rebugger
 
     kapt libs.hilt.compiler
 }

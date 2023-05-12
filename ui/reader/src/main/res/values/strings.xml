@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading_hint" translatable="false">Download is in progress. You can leave this screen and we will notify you when it\'s complete.</string>
+</resources>

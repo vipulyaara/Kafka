@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,11 +22,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.launch
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.reader.R
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.progress.DownloadAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
@@ -40,7 +44,10 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
         ) {
             DownloadAnimation()
             Progress(downloadInfo.progress)
-            Actions(downloadInfo, modifier = Modifier.padding(top = Dimens.Spacing24))
+            Spacer(modifier = Modifier.height(Dimens.Spacing24))
+            Actions(downloadInfo, modifier = Modifier)
+            Spacer(modifier = Modifier.height(Dimens.Spacing48))
+            MessageBox(text = stringResource(R.string.downloading_hint))
         }
     }
 }

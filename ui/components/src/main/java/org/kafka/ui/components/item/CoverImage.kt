@@ -60,6 +60,7 @@ fun CoverImage(
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(data)
+                .crossfade(true)
                 .build(),
             contentDescription = contentDescription,
             contentScale = contentScale,

@@ -11,10 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.entities.Item
+import com.theapache64.rebugger.Rebugger
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun ItemSmall(item: Item, modifier: Modifier = Modifier) {
+    Rebugger(trackMap = mapOf("item" to item))
+
     ItemSmall(
         title = item.title,
         creator = item.creator?.name,

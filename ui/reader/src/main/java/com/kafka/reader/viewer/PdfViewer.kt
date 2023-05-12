@@ -14,6 +14,8 @@ fun PdfViewer(pdfState: PdfState, modifier: Modifier = Modifier) {
             PDFView(it, null).apply {
                 fromUri(pdfState.uri)
                     .defaultPage(pdfState.initialPage)
+                    .spacing(12)
+//                    .autoSpacing(true)
                     .onPageChange { page, _ -> pdfState.onPageChange(page) }
                     .onError { t -> pdfState.onError(t) }
                     .load()

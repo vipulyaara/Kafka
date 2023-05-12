@@ -8,6 +8,7 @@ import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.Analytics
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.debug
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
@@ -34,6 +35,7 @@ class UpdateFavorite @Inject constructor(
 
             val itemDetail = itemDetailDao.get(params.itemId)
             favoritesRepository.updateFavorite(mapFavoriteItem(itemDetail), params.isFavorite)
+            debug { "Favorite updated: ${params.itemId} isFavorite: ${params.isFavorite}" }
         }
     }
 

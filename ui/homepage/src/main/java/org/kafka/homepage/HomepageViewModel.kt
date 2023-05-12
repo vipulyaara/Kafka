@@ -98,4 +98,20 @@ class HomepageViewModel @Inject constructor(
     fun openSearch() {
         navigator.navigate(Screen.Search.createRoute(RootScreen.Search))
     }
+
+    fun onBannerClick(itemId: String) {
+        when (itemId) {
+            "kafka_archives" -> navigator.navigate(
+                Screen.Search.createRoute(RootScreen.Search, "kafka%20archives")
+            )
+
+            "adbi-duniya" -> navigator.navigate(
+                Screen.Search.createRoute(RootScreen.Search, "adbi-duniya")
+            )
+
+            else -> navigator.navigate(
+                Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId)
+            )
+        }
+    }
 }

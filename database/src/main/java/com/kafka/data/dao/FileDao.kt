@@ -28,9 +28,6 @@ abstract class FileDao : EntityDao<File> {
     }
 
     @Query("select * from File where fileId = :fileId")
-    abstract suspend fun get(fileId: String): File
-
-    @Query("select * from File where fileId = :fileId")
     abstract fun entry(fileId: String): Flow<File>
 
     @Query("select * from File where fileId = :fileId")

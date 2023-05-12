@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.errorLog
 import org.kafka.domain.interactors.ReadTextFromUri
 import tm.alashow.datmusic.downloader.manager.Downloadable
 import tm.alashow.datmusic.downloader.manager.createFetchListener
@@ -47,8 +48,13 @@ class ReaderProgressInitializer @Inject constructor(
         val download = it?.download
         if (download?.status == Status.COMPLETED) {
             val downloadRequest = downloadRequestsDao.getByRequestId(download.id)
-            val file = fileDao.get(downloadRequest.id)
-            if (file.isText()) {
+            val file = fileDao.getOrNull(downloadRequest.id)
+
+            if (file == null) {
+                errorLog { "File not found for download request: $downloadRequest" }
+            }
+
+            if (file != null && file.isText()) {
                 val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
                     .getOrElse { emptyList() } else emptyList()
                 val textFile = recentTextItemMapper.map(download, pages, file)

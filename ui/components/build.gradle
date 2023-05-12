@@ -19,23 +19,23 @@ android {
 }
 
 dependencies {
-    api libs.accompanist.systemuicontroller
-    api libs.androidx.core
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
-    api libs.compose.animation.animation
-    api libs.compose.foundation.foundation
-    api libs.compose.foundation.layout
-    //    api libs.compose.livedata
-    api libs.compose.material.material3
-    api libs.compose.runtime.runtime
-    api libs.compose.ui.tooling
-    api libs.compose.ui.ui
-    api libs.compose.ui.util
-    api libs.kotlin.serialization
-    api libs.lottie.compose
-    api libs.lottie.core
-    api libs.palette
+    implementation libs.accompanist.systemuicontroller
+    implementation libs.androidx.core
+    implementation libs.androidx.hilt.compose
+    implementation libs.androidx.hilt.navigation
+    implementation libs.compose.animation.animation
+    implementation libs.compose.foundation.foundation
+    implementation libs.compose.foundation.layout
+    implementation libs.compose.material.material3
+    implementation libs.compose.runtime.runtime
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.ui.ui
+    implementation libs.compose.ui.util
+    implementation libs.kotlin.serialization
+    implementation libs.lottie.compose
+    implementation libs.lottie.core
+    implementation libs.palette
+    implementation libs.rebugger
 
     implementation project('::ui:theme')
     implementation project(':base-domain')

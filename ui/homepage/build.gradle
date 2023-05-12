@@ -30,6 +30,7 @@ dependencies {
     implementation project(':ui:item')
     implementation project(':ui:library')
     implementation libs.hilt.android
+    implementation libs.rebugger
 
     kapt libs.hilt.compiler
 }

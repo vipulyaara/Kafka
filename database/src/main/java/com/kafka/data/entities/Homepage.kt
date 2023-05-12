@@ -40,9 +40,7 @@ sealed class HomepageCollection {
         override val items: ImmutableList<Item>,
         override val labelClickable: Boolean = true,
         override val enabled: Boolean = true
-    ) : HomepageCollection() {
-        val triplets = items.chunked(2).toPersistentList()
-    }
+    ) : HomepageCollection()
 
     @Immutable
     data class Column(
