@@ -18,8 +18,8 @@ kapt {
 android {
     defaultConfig {
         applicationId "com.kafka.user"
-        versionCode 15
-        versionName "0.0.5"
+        versionCode 16
+        versionName "0.0.6"
     }
 
     compileOptions {

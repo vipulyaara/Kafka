@@ -58,7 +58,7 @@ private fun Library(
     changeLayoutType: (LayoutType) -> Unit,
     openItemDetail: (String) -> Unit,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { LibraryTab.values().size })
 
     Column(
         modifier = Modifier
@@ -73,7 +73,6 @@ private fun Library(
 
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            pageCount = LibraryTab.values().size,
             state = pagerState
         ) { page ->
             LibraryPage(

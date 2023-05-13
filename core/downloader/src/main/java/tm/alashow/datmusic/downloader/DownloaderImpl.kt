@@ -118,7 +118,7 @@ internal class DownloaderImpl @Inject constructor(
 
         return when (val enqueueResult = enqueueDownloadRequest(downloadRequest, fetchRequest)) {
             is DownloadEnqueueSuccessful -> {
-                downloaderMessage(AudioDownloadQueued)
+//                downloaderMessage(AudioDownloadQueued)
                 newDownloadIdState.send(downloadRequest.id)
                 true
             }

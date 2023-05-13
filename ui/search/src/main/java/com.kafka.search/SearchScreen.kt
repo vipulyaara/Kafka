@@ -28,7 +28,7 @@ import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
-import org.kafka.ui.components.item.ItemSmall
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.progress.InfiniteProgressBarSmall
 import org.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -77,7 +77,7 @@ private fun Search(
     AnimatedVisibilityFade(visible = searchViewState.items != null) {
         LazyColumn(contentPadding = paddingValues) {
             items(searchViewState.items!!) { item ->
-                ItemSmall(
+                Item(
                     item = item,
                     modifier = Modifier
                         .clickable { openItemDetail(item.itemId) }

@@ -78,7 +78,7 @@ val KafkaTypography by lazy {
         titleMedium = TextStyle(
             fontFamily = Inter,
             fontWeight = FontWeight.Medium,
-            fontSize = 13.5.sp,
+            fontSize = 14.sp,
             lineHeight = 20.sp,
         ),
         titleSmall = TextStyle(

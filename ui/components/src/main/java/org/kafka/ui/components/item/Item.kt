@@ -55,7 +55,7 @@ fun Item(
 
         ItemDescription(
             title = { ItemTitleMedium(title) },
-            creator = { ItemCreator(creator) },
+            creator = { ItemCreatorSmall(creator) },
             mediaType = { ItemMediaType(mediaType) }
         )
     }

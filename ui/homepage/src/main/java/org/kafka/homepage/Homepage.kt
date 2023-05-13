@@ -39,6 +39,7 @@ import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemSmall
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -134,7 +135,7 @@ private fun HomepageFeedItems(
                         key = { it.itemId },
                         contentType = { it.javaClass }
                     ) { item ->
-                        ItemSmall(
+                        Item(
                             item = item,
                             modifier = Modifier
                                 .clickable { openItemDetail(item.itemId) }
