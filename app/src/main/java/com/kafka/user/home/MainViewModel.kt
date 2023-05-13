@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun signInAnonymously() {
+    private fun signInAnonymously() {
         viewModelScope.launch {
             signInAnonymously(Unit).collect()
         }

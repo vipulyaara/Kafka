@@ -1,5 +1,6 @@
 package com.kafka.data.feature.homepage
 
+import com.kafka.data.entities.HomepageBanner
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import dagger.Reusable
@@ -17,6 +18,13 @@ class HomepageRepository @Inject constructor(
 ) {
     fun observeHomepageCollection() =
         firestoreGraph.homepageCollection.snapshots.flatMapLatest { it.toHomepage() }
+
+    fun observeHomepageBanners() = firestoreGraph.homepageBanners.snapshots.map {
+        it.documents.map { it.data(HomepageBanner.serializer()) }
+            .filter { it.enabled }
+            .sortedBy { it.index }
+            .toPersistentList()
+    }
 
     suspend fun getHomepageIds() = firestoreGraph.homepageCollection.get()
         .documents.asSequence().map { it.data(HomepageCollectionResponse.serializer()) }

@@ -1,12 +1,15 @@
 package com.kafka.data.entities
 
 import androidx.compose.runtime.Immutable
+import com.google.firebase.firestore.DocumentId
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Immutable
 data class Homepage(
+    val banners: ImmutableList<HomepageBanner>,
     val recentItems: ImmutableList<RecentItemWithProgress>,
     val collection: ImmutableList<HomepageCollection>
 ) {
@@ -23,7 +26,7 @@ data class Homepage(
         get() = collection.isNotEmpty()
 
     companion object {
-        val Empty = Homepage(persistentListOf(), persistentListOf())
+        val Empty = Homepage(persistentListOf(), persistentListOf(), persistentListOf())
     }
 }
 
@@ -49,6 +52,24 @@ sealed class HomepageCollection {
         override val labelClickable: Boolean = true,
         override val enabled: Boolean = true
     ) : HomepageCollection()
+}
+
+@Immutable
+@Serializable
+data class HomepageBanner(
+    @DocumentId
+    val id: String,
+    val action: Action = Action.Search,
+    val imageUrl: String = "",
+    val enabled: Boolean = false,
+    val keyword: String? = null,
+    val index: Int = 0
+) {
+    @Serializable
+    enum class Action {
+        @SerialName("search")  Search,
+        @SerialName("item_detail")  ItemDetail
+    }
 }
 
 

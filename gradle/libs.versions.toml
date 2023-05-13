@@ -176,7 +176,8 @@ google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 google-auth-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-remoteConfig = { module = "com.google.firebase:remote-config-ktx" }
+google-remoteConfig = { module = "com.google.firebase:firebase-config-ktx" }
+google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
 junit = "junit:junit:4.13.2"
 

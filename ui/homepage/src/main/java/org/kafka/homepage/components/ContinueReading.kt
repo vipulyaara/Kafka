@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +53,6 @@ import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import org.kafka.ui.components.LabelMedium
-import org.kafka.ui.components.item.ItemCreator
 import org.kafka.ui.components.item.ItemCreatorSmall
 import org.kafka.ui.components.item.ItemDescription
 import org.kafka.ui.components.item.ItemMediaType
@@ -95,21 +95,21 @@ private fun ContinueReadingItem(
     onItemClicked: () -> Unit
 ) {
     var isInEditMode by remember { mutableStateOf(false) }
-    val recentItem = item.recentItem
+    val recentItem by remember { derivedStateOf { item.recentItem } }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier
+        .clip(RoundedCornerShape(Dimens.Spacing08))
+        .combinedClickable(
+            onLongClick = { isInEditMode = !isInEditMode },
+            onClick = {
+                isInEditMode = false
+                onItemClicked()
+            }
+        )
+    ) {
         Column(modifier = Modifier.widthIn(50.dp, 286.dp)) {
             Row(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(Dimens.Spacing08))
-                    .combinedClickable(
-                        onLongClick = { isInEditMode = !isInEditMode },
-                        onClick = {
-                            isInEditMode = false
-                            onItemClicked()
-                        }
-                    )
-                    .padding(Dimens.Spacing08),
+                modifier = Modifier.padding(Dimens.Spacing08),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
                 CoverImage(recentItem)

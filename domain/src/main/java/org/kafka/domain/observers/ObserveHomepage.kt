@@ -20,9 +20,10 @@ class ObserveHomepage @Inject constructor(
         return combine(
             observeRecentItems.execute(Unit),
             homepageRepository.observeHomepageCollection(),
-        ) { recentItems, collection ->
+            homepageRepository.observeHomepageBanners()
+        ) { recentItems, collection, banners ->
             debug { "ObserveHomepage: collection=$collection" }
-            Homepage(recentItems = recentItems, collection = collection)
+            Homepage(banners = banners, recentItems = recentItems, collection = collection)
         }.flowOn(appCoroutineDispatchers.io)
     }
 }

@@ -2,6 +2,7 @@ package org.kafka.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.HomepageBanner
 import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -89,25 +90,27 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openSubject(name: String) {
-        navigator.navigate(Screen.Search.createRoute(RootScreen.Search, name, SearchFilter.Subject.name))
+        navigator.navigate(
+            Screen.Search.createRoute(
+                RootScreen.Search,
+                name,
+                SearchFilter.Subject.name
+            )
+        )
     }
 
     fun openSearch() {
         navigator.navigate(Screen.Search.createRoute(RootScreen.Search))
     }
 
-    fun onBannerClick(itemId: String) {
-        when (itemId) {
-            "kafka_archives" -> navigator.navigate(
-                Screen.Search.createRoute(RootScreen.Search, "kafka%20archives")
+    fun onBannerClick(banner: HomepageBanner) {
+        when (banner.action) {
+            HomepageBanner.Action.Search -> navigator.navigate(
+                Screen.Search.createRoute(RootScreen.Search, banner.keyword)
             )
 
-            "adbi-duniya" -> navigator.navigate(
-                Screen.Search.createRoute(RootScreen.Search, "adbi-duniya")
-            )
-
-            else -> navigator.navigate(
-                Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId)
+            HomepageBanner.Action.ItemDetail -> navigator.navigate(
+                Screen.ItemDetail.createRoute(navigator.currentRoot.value, banner.keyword.orEmpty())
             )
         }
     }

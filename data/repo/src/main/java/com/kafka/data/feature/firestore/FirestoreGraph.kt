@@ -26,6 +26,12 @@ class FirestoreGraph @Inject constructor(
             .document("collection_items")
             .collection("items")
 
+    val homepageBanners: CollectionReference
+        get() = firestoreKt
+            .collection("homepage")
+            .document("banners")
+            .collection("items")
+
     fun getFavoritesCollection(id: String) = firestore
         .collection("favorites")
         .document(id)

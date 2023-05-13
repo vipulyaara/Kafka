@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
+import com.kafka.data.entities.HomepageBanner
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import kotlinx.collections.immutable.ImmutableList
@@ -94,17 +96,23 @@ private fun HomepageFeedItems(
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
-    onBannerClick: (String) -> Unit
+    onBannerClick: (HomepageBanner) -> Unit
 ) {
+    val hasBanners by remember { derivedStateOf { homepage.banners.isNotEmpty() } }
+    val hasRecentItems by remember { derivedStateOf { homepage.hasRecentItems } }
+    val hasSearchPrompt by remember { derivedStateOf { homepage.hasSearchPrompt } }
+
     LazyColumn(
         modifier = Modifier.testTag("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
-        item(key = "carousels", contentType = "carousels") {
-            Carousels(onBannerClick = onBannerClick)
+        if (hasBanners) {
+            item(key = "carousels", contentType = "carousels") {
+                Carousels(carouselItems = homepage.banners, onBannerClick = onBannerClick)
+            }
         }
 
-        if (homepage.hasRecentItems) {
+        if (hasRecentItems) {
             item(key = "recent", contentType = "recent") {
                 ContinueReading(
                     readingList = homepage.continueReadingItems,
@@ -151,7 +159,7 @@ private fun HomepageFeedItems(
             }
         }
 
-        if (homepage.hasSearchPrompt) {
+        if (hasSearchPrompt) {
             item(key = "search_prompt") {
                 MessageBox(
                     text = stringResource(R.string.find_many_more_on_the_search_page),
