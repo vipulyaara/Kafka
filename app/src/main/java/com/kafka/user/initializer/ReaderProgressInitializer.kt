@@ -47,19 +47,20 @@ class ReaderProgressInitializer @Inject constructor(
     private suspend fun addRecentItem(it: Downloadable?) {
         val download = it?.download
         if (download?.status == Status.COMPLETED) {
-            val downloadRequest = downloadRequestsDao.getByRequestId(download.id)
-            val file = fileDao.getOrNull(downloadRequest.id)
+            downloadRequestsDao.getByRequestIdOrNull(download.id)?.let { downloadRequest ->
+                val file = fileDao.getOrNull(downloadRequest.id)
 
-            if (file == null) {
-                errorLog { "File not found for download request: $downloadRequest" }
-            }
+                if (file == null) {
+                    errorLog { "File not found for download request: $downloadRequest" }
+                }
 
-            if (file != null && file.isText()) {
-                val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
-                    .getOrElse { emptyList() } else emptyList()
-                val textFile = recentTextItemMapper.map(download, pages, file)
+                if (file != null && file.isText()) {
+                    val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
+                        .getOrElse { emptyList() } else emptyList()
+                    val textFile = recentTextItemMapper.map(download, pages, file)
 
-                recentTextDao.insert(textFile)
+                    recentTextDao.insert(textFile)
+                }
             }
         }
     }

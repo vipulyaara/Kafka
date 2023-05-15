@@ -17,7 +17,7 @@ class SignInUser @Inject constructor(
         withContext(dispatchers.io) {
             accountRepository.signInUser(params.email, params.password)
                 ?: error("Failed to sign in")
-            analytics.log { login() }
+            analytics.log { login("email") }
         }
     }
 

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.model.SearchFilter
-import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
 import org.kafka.ui.components.ProvideScaffoldPadding
@@ -74,7 +73,7 @@ private fun Search(
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
 
-    AnimatedVisibilityFade(visible = searchViewState.items != null) {
+    if (!searchViewState.items.isNullOrEmpty()) {
         LazyColumn(contentPadding = paddingValues) {
             items(searchViewState.items!!) { item ->
                 Item(

@@ -41,6 +41,7 @@ fun ItemSmall(
     ) {
         CoverImage(
             data = coverImage,
+            placeholder = placeholder(mediaType),
             modifier = Modifier.align(Alignment.CenterVertically),
             size = Dimens.CoverSizeSmall
         )

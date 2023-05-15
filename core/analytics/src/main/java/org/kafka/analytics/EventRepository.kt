@@ -22,6 +22,16 @@ class EventRepository @Inject constructor() {
         "source" to source
     )
 
+    fun playItem(itemId: String, source: String? = null) = "play_item" to mapOf(
+        "item_id" to itemId,
+        "source" to source
+    )
+
+    fun readItem(itemId: String, source: String? = null) = "read_item" to mapOf(
+        "item_id" to itemId,
+        "source" to source
+    )
+
     fun homeTabSwitched(tab: String, source: String? = null) = "home_tab_switched" to mapOf(
         "tab" to tab,
         "source" to source
@@ -67,8 +77,8 @@ class EventRepository @Inject constructor() {
         "name" to name
     )
 
-    fun login() = FirebaseAnalytics.LOGIN to mapOf(
-        FirebaseAnalytics.PARAM_METHOD to ""
+    fun login(method: String) = FirebaseAnalytics.LOGIN to mapOf(
+        FirebaseAnalytics.PARAM_METHOD to method
     )
 
     fun logoutClicked() = "logout_clicked" to mapOf<String, String>()

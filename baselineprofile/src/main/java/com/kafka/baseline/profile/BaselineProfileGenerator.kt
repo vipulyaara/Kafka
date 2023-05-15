@@ -47,31 +47,32 @@ class BaselineProfileGenerator {
             pressHome()
             startActivityAndWait()
 
-            val initialTags = listOf(0, 1, 2).map { "row_$it" }
-            val allTags = listOf(0, 1, 2, 3, 4).map { "row_$it" }
+//            val initialTags = listOf(0, 1, 2).map { "row_$it" }
+//            val allTags = listOf(0, 1, 2, 3, 4).map { "row_$it" }
 
             device.wait(Until.hasObject(By.res("homepage_feed_items")), 10_000)
 
             val homepageFeed = device.findObject(By.res("homepage_feed_items"))
 
-            initialTags.forEach {
-                device.wait(Until.hasObject(By.res(it)), 10_000)
-            }
+//            initialTags.forEach {
+//                device.wait(Until.hasObject(By.res(it)), 10_000)
+//            }
+//
+//            val row = allTags.mapNotNull { tag ->
+//                device.findObject(By.res(tag))
+//            }
 
-            val row = allTags.mapNotNull { tag ->
-                device.findObject(By.res(tag))
-            }
+//            row.forEach { scrollable ->
+//                scrollable.setGestureMargin(device.displayWidth / 10)
+//                repeat(3) {
+//                    scrollable.fling(Direction.RIGHT)
+//                    scrollable.fling(Direction.LEFT)
+//                }
+//                homepageFeed.scroll(Direction.DOWN, 20f)
+//            }
 
-            row.forEach { scrollable ->
-                scrollable.setGestureMargin(device.displayWidth / 10)
-                repeat(3) {
-                    scrollable.fling(Direction.RIGHT)
-                    scrollable.fling(Direction.LEFT)
-                }
-                homepageFeed.scroll(Direction.DOWN, 20f)
-            }
-
-            repeat(3) {
+            homepageFeed.setGestureMargin(device.displayWidth / 10)
+            repeat(5) {
                 homepageFeed.fling(Direction.DOWN)
                 homepageFeed.fling(Direction.UP)
             }

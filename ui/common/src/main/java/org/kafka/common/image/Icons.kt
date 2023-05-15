@@ -18,7 +18,6 @@ import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.tablericons.ArrowForward
 import compose.icons.tablericons.ArrowLeft
-import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
@@ -29,8 +28,6 @@ import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
-import compose.icons.tablericons.FileText
-import compose.icons.tablericons.Headphones
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
@@ -43,6 +40,7 @@ import compose.icons.tablericons.Search
 import compose.icons.tablericons.Share
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
+import org.kafka.common.image.kafkaicons.Vinyl
 
 object Icons {
     val Home: ImageVector = TablerIcons.Home
@@ -81,4 +79,5 @@ object Icons {
     val Eye = TablerIcons.Eye
     val EyeOff = TablerIcons.EyeOff
     val ArrowForward = TablerIcons.ArrowForward
+    val Vinyl = KafkaIcons.Vinyl
 }

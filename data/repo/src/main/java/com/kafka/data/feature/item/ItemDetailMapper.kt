@@ -43,7 +43,6 @@ class ItemDetailMapper @Inject constructor(
 
     private fun List<File>.getTextFile() =
         firstOrNull { it.name.extension() == "pdf" }
-            ?: firstOrNull { it.name.extension() == "epub" }
             ?: firstOrNull { it.name.extension() == "txt" }
 
     private fun String.extension() = split(".").last()

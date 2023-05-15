@@ -45,6 +45,7 @@ fun Item(
     ) {
         CoverImage(
             data = coverImage,
+            placeholder = placeholder(mediaType),
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .sizeIn(
@@ -104,8 +105,10 @@ fun ItemCreator(creator: String?, modifier: Modifier = Modifier) {
 @Composable
 fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier) {
     IconResource(
-        imageVector = if (mediaType == "audio") Icons.Audio else Icons.Texts,
+        imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
         modifier = modifier.size(16.dp)
     )
 }
+
+fun placeholder(mediaType: String?) = if (mediaType == "audio") Icons.Audio else Icons.Texts

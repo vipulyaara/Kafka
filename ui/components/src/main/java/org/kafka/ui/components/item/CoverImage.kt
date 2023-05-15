@@ -9,16 +9,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -28,8 +26,8 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import org.kafka.common.image.Icons
 import org.kafka.common.widgets.shadowMaterial
-import org.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -39,11 +37,11 @@ fun CoverImage(
     imageModifier: Modifier = Modifier,
     size: DpSize = DpSize.Unspecified,
     containerColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = contentColorFor(backgroundColor = containerColor),
+    contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     contentScale: ContentScale = ContentScale.Crop,
     shape: Shape = RoundedCornerShape(Dimens.Spacing04),
-    placeholder: Painter = painterResource(id = R.drawable.ic_absurd_bulb),
-    iconPadding: Dp = 0.dp,
+    placeholder: ImageVector = Icons.Vinyl,
+    iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
     elevation: Dp = 2.dp,
@@ -69,7 +67,7 @@ fun CoverImage(
             when (state) {
                 is State.Error, State.Empty, is State.Loading -> {
                     Icon(
-                        painter = placeholder,
+                        imageVector = placeholder,
                         tint = contentColor,
                         contentDescription = null,
                         modifier = Modifier

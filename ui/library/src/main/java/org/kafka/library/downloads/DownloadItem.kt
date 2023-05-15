@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
+import org.kafka.common.image.Icons
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
 import org.kafka.ui.components.item.ItemCreator
@@ -40,7 +41,11 @@ internal fun DownloadItem(
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        CoverImage(data = item.item.coverImage, size = Dimens.CoverSizeMedium)
+        CoverImage(
+            data = item.item.coverImage,
+            size = Dimens.CoverSizeMedium,
+            placeholder = if (item.item.isAudio) Icons.Audio else Icons.Texts
+        )
         DownloadItemDescription(item, Modifier.weight(1f))
         DownloadStatusIcons(downloadInfo = item.downloadInfo)
     }

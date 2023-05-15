@@ -103,11 +103,12 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun onPrimaryAction(itemId: String) {
-        val itemDetail = state.value.itemDetail
-        if (itemDetail!!.isAudio) {
+        if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
+            analytics.log { playItem(itemId) }
             playbackConnection.playAlbum(itemId)
         } else {
+            analytics.log { readItem(itemId) }
             openReader(itemId)
         }
     }

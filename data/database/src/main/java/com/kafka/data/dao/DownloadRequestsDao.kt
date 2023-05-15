@@ -24,7 +24,7 @@ abstract class DownloadRequestsDao : EntityDao<DownloadRequest> {
 
     @Transaction
     @Query("SELECT * FROM download_requests WHERE request_id == :id ORDER BY created_at DESC, id ASC")
-    abstract suspend fun getByRequestId(id: Int): DownloadRequest
+    abstract suspend fun getByRequestIdOrNull(id: Int): DownloadRequest?
 
     @Transaction
     @Query("SELECT * FROM download_requests ORDER BY created_at DESC, id ASC")

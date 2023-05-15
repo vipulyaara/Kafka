@@ -25,7 +25,7 @@ data class File(
 ): BaseEntity {
     companion object {
         val audioExtensions = listOf("mp3", "wav", "aac", "ogg", "flac")
-        val textExtensions = listOf("pdf", "epub", "txt")
+        val textExtensions = listOf("pdf", "txt")
         val supportedExtensions = audioExtensions + textExtensions
 
         val playableExtensions = listOf("mp3", "wav")

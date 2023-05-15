@@ -24,7 +24,10 @@ data class Item constructor(
     val uploader: String? = null,
     val position: Int = 0,
     val rating: Double? = null
-) : BaseEntity
+) : BaseEntity {
+    val isAudio: Boolean
+        get() = mediaType == "audio"
+}
 
 @Immutable
 data class Creator(val id: String, val name: String)
