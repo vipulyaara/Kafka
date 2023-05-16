@@ -179,6 +179,8 @@ google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-remoteConfig = { module = "com.google.firebase:firebase-config-ktx" }
 google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
+firestore-ktx = "dev.gitlive:firebase-firestore:1.8.0"
+
 junit = "junit:junit:4.13.2"
 
 pdftron = { module = "com.pdftron:pdftron", version.ref = "pdftron" }
