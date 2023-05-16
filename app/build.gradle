@@ -95,7 +95,6 @@ dependencies {
     implementation project(':ui:library')
     implementation project(':ui:reader')
     implementation project(':ui:search')
-    implementation project(':ui:text-reader')
     implementation project(':ui:theme')
     implementation project(':ui:webview')
     implementation project(':ui-playback')

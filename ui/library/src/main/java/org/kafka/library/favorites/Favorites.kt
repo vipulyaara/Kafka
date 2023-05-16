@@ -11,8 +11,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import org.kafka.common.plus
 import org.kafka.common.snackbar.UiMessage
@@ -25,33 +28,39 @@ import org.kafka.ui.components.item.LibraryItem
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun Favorites(
-    items: List<Item>,
-    layoutType: LayoutType,
-    changeLayoutType: (LayoutType) -> Unit,
-    openItemDetail: (String) -> Unit
-) {
-    if (items.isEmpty()) {
-        FullScreenMessage(UiMessage(stringResource(id = R.string.no_favorites_items_message)))
-    } else {
-        when (layoutType) {
-            LayoutType.List -> FavoriteItemList(
-                favoriteItems = items,
-                openItemDetail = openItemDetail,
-                header = {
-                    LayoutType(layoutType = layoutType, changeViewType = changeLayoutType)
-                }
-            )
+internal fun Favorites(favoriteViewModel: FavoriteViewModel = hiltViewModel()) {
+    val favoriteViewState by favoriteViewModel.state.collectAsStateWithLifecycle()
 
-            LayoutType.Grid -> FavoriteItemGrid(
-                favoriteItems = items,
-                openItemDetail = openItemDetail,
-                header = {
-                    LayoutType(layoutType = layoutType, changeViewType = changeLayoutType)
-                }
-            )
+    favoriteViewState.favoriteItems?.let { items ->
+        if (items.isEmpty()) {
+            FullScreenMessage(UiMessage(stringResource(id = R.string.no_favorites_items_message)))
+        } else {
+            when (favoriteViewState.layoutType) {
+                LayoutType.List -> FavoriteItemList(
+                    favoriteItems = items,
+                    openItemDetail = favoriteViewModel::openItemDetail,
+                    header = {
+                        LayoutType(
+                            layoutType = favoriteViewState.layoutType,
+                            changeViewType = favoriteViewModel::updateLayoutType
+                        )
+                    }
+                )
+
+                LayoutType.Grid -> FavoriteItemGrid(
+                    favoriteItems = items,
+                    openItemDetail = favoriteViewModel::openItemDetail,
+                    header = {
+                        LayoutType(
+                            layoutType = favoriteViewState.layoutType,
+                            changeViewType = favoriteViewModel::updateLayoutType
+                        )
+                    }
+                )
+            }
         }
     }
+
 }
 
 @Composable

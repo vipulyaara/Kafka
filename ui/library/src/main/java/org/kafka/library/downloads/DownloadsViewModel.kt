@@ -7,16 +7,23 @@ import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.library.ObserveDownloadedItems
+import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
+import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
 @HiltViewModel
 class DownloadsViewModel @Inject constructor(
-    observeDownloadedItems: ObserveDownloadedItems
+    observeDownloadedItems: ObserveDownloadedItems,
+    private val downloader: Downloader,
+    private val analytics: Analytics,
+    private val navigator: Navigator,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
@@ -38,6 +45,15 @@ class DownloadsViewModel @Inject constructor(
 
     init {
         observeDownloadedItems(Unit)
+    }
+
+    fun openItemDetail(itemId: String) {
+        analytics.log { this.openItemDetail(itemId) }
+        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+    }
+
+    private fun requestNewDownloadLocation() {
+        downloader.requestNewDownloadsLocation()
     }
 }
 

@@ -27,8 +27,6 @@ dependencies {
     implementation project(':ui:common')
     implementation project(':ui:components')
     implementation project(':ui:downloader')
-    implementation project(':ui:text-reader')
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation libs.hilt.android
     implementation libs.pdfviewer
 

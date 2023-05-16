@@ -96,7 +96,7 @@ private fun Page(page: RecentTextItem.Page, modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(Dimens.Spacing24),
                 text = page.text,
                 textAlign = TextAlign.Justify,
-                style = MaterialTheme.typography.displayMedium
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

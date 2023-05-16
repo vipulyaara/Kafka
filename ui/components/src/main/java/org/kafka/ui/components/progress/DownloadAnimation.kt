@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.LottieProperty
-import com.airbnb.lottie.SimpleColorFilter
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -30,6 +29,7 @@ fun DownloadAnimation(modifier: Modifier = Modifier) {
             iterations = LottieConstants.IterateForever,
             modifier = modifier.align(Alignment.Center),
             isPlaying = true,
+            dynamicProperties = colorFilterDynamicProperty(),
         )
     }
 }
@@ -38,10 +38,12 @@ fun DownloadAnimation(modifier: Modifier = Modifier) {
 fun colorFilterDynamicProperty(color: Color = MaterialTheme.colorScheme.secondary) =
     rememberLottieDynamicProperties(
         rememberLottieDynamicProperty(
-            property = LottieProperty.COLOR_FILTER,
-            value = SimpleColorFilter(color.toArgb()),
+            property = LottieProperty.COLOR,
+            value = color.toArgb(),
             keyPath = arrayOf(
-                "**",
+                "air Outlines 5",
+                "Group 1",
+                "Path 1"
             )
-        ),
+        )
     )

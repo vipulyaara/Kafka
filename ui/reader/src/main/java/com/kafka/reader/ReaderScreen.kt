@@ -10,7 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentTextItem.Type
 import com.kafka.reader.text.TextReader
-import com.kafka.reader.viewer.PdfReader
+import com.kafka.reader.pdf.PdfReader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding

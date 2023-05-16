@@ -10,15 +10,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.library.ObserveFavorites
+import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     observeFavorites: ObserveFavorites,
-    preferencesStore: PreferencesStore
+    preferencesStore: PreferencesStore,
+    private val analytics: Analytics,
+    private val navigator: Navigator,
 ) : ViewModel() {
     private val preferenceKey get() = stringPreferencesKey("layout")
 
@@ -38,6 +43,11 @@ class FavoriteViewModel @Inject constructor(
 
     fun updateLayoutType(layoutType: LayoutType) {
         this.layoutType.value = layoutType.name
+    }
+
+    fun openItemDetail(itemId: String) {
+        analytics.log { this.openItemDetail(itemId) }
+        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 
     init {

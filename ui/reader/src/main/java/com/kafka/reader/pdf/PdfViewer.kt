@@ -1,10 +1,11 @@
-package com.kafka.reader.viewer
+package com.kafka.reader.pdf
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 
 @Composable
 fun PdfViewer(pdfState: PdfState, modifier: Modifier = Modifier) {
@@ -15,8 +16,8 @@ fun PdfViewer(pdfState: PdfState, modifier: Modifier = Modifier) {
                 fromUri(pdfState.uri)
                     .defaultPage(pdfState.initialPage)
                     .spacing(12)
-//                    .autoSpacing(true)
                     .onPageChange { page, _ -> pdfState.onPageChange(page) }
+                    .scrollHandle(DefaultScrollHandle(it))
                     .onError { t -> pdfState.onError(t) }
                     .load()
             }

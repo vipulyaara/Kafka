@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -47,7 +48,12 @@ class SearchViewModel @Inject constructor(
             ?: SearchFilter.all())
 
     val state: StateFlow<SearchViewState> = combine(
-        observeSearchItems.flow.onStart { if (keyword.isEmpty()) emit(listOf()) },
+        observeSearchItems.flow.onStart {
+            if (keyword.isEmpty()) {
+                debug { "keyword is empty" }
+                emit(listOf())
+            }
+        },
         observeRecentSearch.flow,
         loadingState.observable,
         uiMessageManager.message,

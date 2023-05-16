@@ -49,7 +49,6 @@ include ':ui:homepage'
 include ':ui:item'
 include ':ui:reader'
 include ':ui:search'
-include ':ui:text-reader'
 include ':ui:webview'
 
 include ':core-playback'
