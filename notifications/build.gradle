@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
-    api project(':data:repo')
-    implementation project(':base:domain')
+    implementation project(':data:repo')
+
+    implementation libs.androidx.core
 }
