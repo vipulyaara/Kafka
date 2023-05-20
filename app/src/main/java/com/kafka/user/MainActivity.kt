@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
+import org.kafka.analytics.AppReviewManager
 import org.kafka.navigation.DynamicDeepLinkHandler
 import ui.common.theme.theme.AppTheme
 import javax.inject.Inject
@@ -15,6 +16,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     internal lateinit var dynamicLinkHandler: DynamicDeepLinkHandler
+
+    @Inject
+    internal lateinit var appReviewManager: AppReviewManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

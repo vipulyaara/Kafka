@@ -15,6 +15,7 @@ sealed class Screen(
     fun createRoute(root: RootScreen) = "${root.route}/$route"
 
     object Profile : Screen("profile")
+    object Feedback : Screen("feedback")
     object Library : Screen("library")
     object Home : Screen("home")
     object Login : Screen("login")

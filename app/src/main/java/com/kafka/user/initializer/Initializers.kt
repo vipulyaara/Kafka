@@ -8,6 +8,7 @@ import com.google.firebase.ktx.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
+import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.analytics.CrashLogger
@@ -50,5 +51,13 @@ class ThreeTenBpInitializer @Inject constructor(
             AndroidThreeTen.init(application)
             ZoneRulesProvider.getAvailableZoneIds()
         }
+    }
+}
+
+class RemoteConfigInitializer @Inject constructor(
+    private val remoteConfig: RemoteConfig
+) : AppInitializer {
+    override fun init(application: Application) {
+        remoteConfig
     }
 }

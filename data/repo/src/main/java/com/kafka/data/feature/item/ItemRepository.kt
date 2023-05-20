@@ -16,13 +16,8 @@ class ItemRepository @Inject constructor(
     fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) =
         itemLocalDataSource.observeQueryItems(simpleSQLiteQuery)
 
-    suspend fun updateQuery(query: String) {
-        remoteDataSource.fetchItemsByQuery(query).getOrThrow().let {
-            itemLocalDataSource.insertAll(it)
-        }
-    }
-
-    suspend fun updateItems(query: String) = remoteDataSource.fetchItemsByQuery(query).getOrThrow()
+    suspend fun updateQuery(query: String) =
+        remoteDataSource.fetchItemsByQuery(query).getOrThrow()
 
     suspend fun saveItems(items: List<Item>) = itemLocalDataSource.insertAll(items)
 

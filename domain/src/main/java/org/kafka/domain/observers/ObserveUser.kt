@@ -31,6 +31,7 @@ class ObserveUser @Inject constructor(
         User(
             id = it.uid,
             displayName = it.displayName.orEmpty(),
+            email = it.email,
             imageUrl = it.photoUrl.toString(),
             anonymous = it.isAnonymous
         )

@@ -1,11 +1,15 @@
 package org.kafka.item.detail
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.SearchFilter.Creator
+import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
 import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +20,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
+import org.kafka.analytics.AppReviewManager
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -39,8 +45,6 @@ import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.ItemDescription
 import org.kafka.navigation.Screen.Search
-import com.kafka.data.model.SearchFilter.Creator
-import com.kafka.data.model.SearchFilter.Subject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,6 +61,7 @@ class ItemDetailViewModel @Inject constructor(
     private val dynamicDeepLinkHandler: DynamicDeepLinkHandler,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
+    private val appReviewManager: AppReviewManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
@@ -181,4 +186,22 @@ class ItemDetailViewModel @Inject constructor(
 
         context.shareText(text)
     }
+
+    fun showAppRatingIfNeeded(context: Context) {
+        viewModelScope.launch { appReviewManager.incrementItemOpenCount() }
+
+        debug { "totalItemOpens: ${appReviewManager.totalItemOpens}" }
+
+        if (appReviewManager.totalItemOpens % itemOpenThresholdForAppReview == 0) {
+            context.getActivity()?.let { appReviewManager.showReviewDialog(it) }
+        }
+    }
+
+    private fun Context.getActivity(): Activity? = when (this) {
+        is Activity -> this
+        is ContextWrapper -> baseContext.getActivity()
+        else -> null
+    }
 }
+
+private const val itemOpenThresholdForAppReview = 5

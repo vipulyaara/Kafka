@@ -39,6 +39,7 @@ import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.rekhta.ui.auth.LoginScreen
+import org.rekhta.ui.auth.feedback.FeedbackScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
 import ui.common.theme.theme.Dimens
 
@@ -82,6 +83,7 @@ private fun NavGraphBuilder.addHomeRoot() {
         addReader(RootScreen.Home)
         addLibrary(RootScreen.Home)
         addProfile(RootScreen.Home)
+        addFeedback(RootScreen.Home)
         addSearch(RootScreen.Home)
         addPlayer(RootScreen.Home)
         addLogin(RootScreen.Home)
@@ -179,15 +181,18 @@ private fun NavGraphBuilder.addLogin(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    dialog(
-        route = Screen.Profile.createRoute(root),
-        dialogProperties = DialogProperties(usePlatformDefaultWidth = false)
+    bottomSheet(
+        route = Screen.Profile.createRoute(root)
     ) {
-        ProfileScreen(
-            modifier = Modifier
-                .androidMinWidthDialogSize(clampMaxWidth = true)
-                .clip(RoundedCornerShape(Dimens.Spacing12))
-        )
+        ProfileScreen()
+    }
+}
+
+private fun NavGraphBuilder.addFeedback(root: RootScreen) {
+    bottomSheet(
+        route = Screen.Feedback.createRoute(root)
+    ) {
+        FeedbackScreen()
     }
 }
 

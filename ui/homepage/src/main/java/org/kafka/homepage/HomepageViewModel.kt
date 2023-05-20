@@ -10,11 +10,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
+import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
+import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.domain.interactors.UpdateHomepage
+import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
@@ -22,15 +25,18 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import javax.inject.Inject
+import org.kafka.common.snackbar.UiMessage.Companion as SnackbarUiMessage
 
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
+    private val logoutUser: LogoutUser,
     observeUser: ObserveUser,
     private val navigator: Navigator,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
@@ -73,9 +79,21 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 
-    fun openProfile() {
+    fun openFeedback() {
         viewModelScope.launch {
-            navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
+            navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
+        }
+    }
+
+    fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
+        viewModelScope.launch {
+            analytics.log { logoutClicked() }
+            logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
+                if (status == InvokeSuccess) {
+                    snackbarManager.addMessage(SnackbarUiMessage(R.string.logged_out))
+                    onLogout()
+                }
+            }
         }
     }
 
@@ -92,9 +110,9 @@ class HomepageViewModel @Inject constructor(
     fun openSubject(name: String) {
         navigator.navigate(
             Screen.Search.createRoute(
-                RootScreen.Search,
-                name,
-                SearchFilter.Subject.name
+                root = RootScreen.Search,
+                keyword = name,
+                filter = SearchFilter.Subject.name
             )
         )
     }

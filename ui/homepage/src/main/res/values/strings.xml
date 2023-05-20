@@ -3,6 +3,7 @@
     <string name="continue_reading" translatable="false">Reading list</string>
     <string name="cd_cover_image" translatable="false">Cover image</string>
     <string name="favorites" translatable="false">Favorites</string>
-    <string name="editors_choice">Editor\'s choice</string>
-    <string name="find_many_more_on_the_search_page">Find many more on the search page</string>
+    <string name="editors_choice" translatable="false">Editor\'s choice</string>
+    <string name="find_many_more_on_the_search_page" translatable="false">Find many more on the search page</string>
+    <string name="logged_out" translatable="false">Logged out successfully</string>
 </resources>

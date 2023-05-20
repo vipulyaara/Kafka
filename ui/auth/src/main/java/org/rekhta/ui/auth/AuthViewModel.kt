@@ -22,6 +22,7 @@ import org.kafka.domain.interactors.account.SignInUser
 import org.kafka.domain.interactors.account.SignUpUser
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -116,6 +117,10 @@ class AuthViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun openFeedback() {
+        navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
     }
 
     private fun CharSequence.isValidEmail() =

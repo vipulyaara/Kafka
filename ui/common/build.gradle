@@ -18,22 +18,19 @@ android {
 }
 
 dependencies {
-    api project('::ui:theme')
-    api libs.accompanist.flowlayout
-    api libs.accompanist.navigation.animation
-    api libs.accompanist.navigation.material
-    api libs.accompanist.placeholder
-    api libs.accompanist.swiperefresh
-    api libs.accompanist.systemuicontroller
+    api project(':ui:theme')
+
+    implementation libs.accompanist.flowlayout
+    implementation libs.accompanist.navigation.animation
+    implementation libs.accompanist.navigation.material
+    implementation libs.accompanist.systemuicontroller
     api libs.androidx.core
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
-    api libs.androidx.lifecycle.livedata.ktx
     api libs.androidx.lifecycle.process
     api libs.androidx.lifecycle.runtime
     api libs.androidx.lifecycle.viewmodel.compose
     api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.androidx.paging.compose
     api libs.coil.compose
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
@@ -43,15 +40,13 @@ dependencies {
     api libs.compose.ui.tooling
     api libs.compose.ui.ui
     api libs.compose.ui.util
-    api libs.icons.feather
-    api libs.icons.font.awesome
-    api libs.icons.tabler
-    api libs.lottie.compose
-    api libs.lottie.core
-    api libs.tracing
+    implementation libs.icons.feather
+    implementation libs.icons.font.awesome
+    implementation libs.icons.tabler
+    implementation libs.lottie.compose
+    implementation libs.lottie.core
+    implementation libs.tracing
 
-    implementation project(':base:domain')
-    implementation project(':base:network')
     implementation project(':data:repo')
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib

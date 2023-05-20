@@ -56,7 +56,14 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { HomeTopBar(viewState.user, viewModel::openLogin, viewModel::openProfile) },
+        topBar = {
+            HomeTopBar(
+                viewState.user,
+                viewModel::openLogin,
+                viewModel::openFeedback,
+                viewModel::logout
+            )
+        },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -98,21 +105,17 @@ private fun HomepageFeedItems(
     goToSubject: (String) -> Unit,
     onBannerClick: (HomepageBanner) -> Unit
 ) {
-    val hasBanners by remember { derivedStateOf { homepage.banners.isNotEmpty() } }
-    val hasRecentItems by remember { derivedStateOf { homepage.hasRecentItems } }
-    val hasSearchPrompt by remember { derivedStateOf { homepage.hasSearchPrompt } }
-
     LazyColumn(
         modifier = Modifier.testTag("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
-        if (hasBanners) {
+        if (homepage.banners.isNotEmpty()) {
             item(key = "carousels", contentType = "carousels") {
                 Carousels(carouselItems = homepage.banners, onBannerClick = onBannerClick)
             }
         }
 
-        if (hasRecentItems) {
+        if (homepage.hasRecentItems) {
             item(key = "recent", contentType = "recent") {
                 ContinueReading(
                     readingList = homepage.continueReadingItems,
@@ -159,7 +162,7 @@ private fun HomepageFeedItems(
             }
         }
 
-        if (hasSearchPrompt) {
+        if (homepage.hasSearchPrompt) {
             item(key = "search_prompt") {
                 MessageBox(
                     text = stringResource(R.string.find_many_more_on_the_search_page),

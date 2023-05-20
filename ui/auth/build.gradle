@@ -25,6 +25,7 @@ dependencies {
     implementation project(':navigation')
     implementation project(':ui:common')
     implementation project(':ui:components')
+    implementation libs.accompanist.placeholder
     implementation libs.hilt.android
     implementation libs.icons.font.awesome
 

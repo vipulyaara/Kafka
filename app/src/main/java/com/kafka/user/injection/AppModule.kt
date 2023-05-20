@@ -17,7 +17,9 @@ import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
+import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.ThreeTenBpInitializer
+import com.kafka.user.review.AppReviewManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,6 +30,7 @@ import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.kafka.analytics.Analytics
+import org.kafka.analytics.AppReviewManager
 import org.kafka.analytics.CrashLogger
 import org.kafka.analytics.FirebaseCrashLogger
 import org.kafka.base.AppCoroutineDispatchers
@@ -116,10 +119,6 @@ abstract class AppModuleBinds {
     @IntoSet
     abstract fun provideDownloadInitializer(bind: ReaderProgressInitializer): AppInitializer
 
-//    @Binds
-//    @IntoSet
-//    abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
-
     @Binds
     @IntoSet
     abstract fun provideFirebaseInitializer(bind: FirebaseInitializer): AppInitializer
@@ -128,10 +127,19 @@ abstract class AppModuleBinds {
     @IntoSet
     abstract fun provideCoilAppInitializer(bind: CoilAppInitializer): AppInitializer
 
+    @Binds
+    @IntoSet
+    abstract fun provideRemoteConfigInitializer(bind: RemoteConfigInitializer): AppInitializer
+
     @Singleton
     @Binds
     abstract fun provideNotificationManager(bind: NotificationManagerImpl): NotificationManager
 
     @Binds
-    abstract fun deepLinkHandler(firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler): DynamicDeepLinkHandler
+    abstract fun deepLinkHandler(
+        firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler
+    ): DynamicDeepLinkHandler
+
+    @Binds
+    abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
 }

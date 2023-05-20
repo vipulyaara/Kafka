@@ -60,6 +60,7 @@ fun LoginScreen() {
                     signup = authViewModel::signup,
                     forgotPassword = authViewModel::forgotPassword,
                     loginByGmail = authViewModel::loginByGmail,
+                    openFeedback = authViewModel::openFeedback
                 )
             }
 
@@ -76,6 +77,7 @@ private fun Login(
     signup: (email: String, password: String) -> Unit,
     forgotPassword: (email: String) -> Unit,
     loginByGmail: () -> Unit,
+    openFeedback: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var loginState by rememberSavableMutableState { LoginState.Login }
@@ -121,6 +123,10 @@ private fun Login(
         SignupPrompt(loginState) {
             loginState = if (loginState.isLogin) LoginState.Signup else LoginState.Login
         }
+
+        Spacer(modifier = Modifier.height(Dimens.Spacing24))
+
+        FeedbackPrompt(openFeedback = openFeedback)
     }
 }
 
@@ -143,6 +149,17 @@ private fun SignupPrompt(loginState: LoginState, toggleLoginState: () -> Unit) {
     Text(
         modifier = Modifier.simpleClickable { toggleLoginState() },
         text = if (loginState.isLogin) "New User? Signup here" else "Already have an account? Login here",
+        textDecoration = TextDecoration.Underline,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.secondary
+    )
+}
+
+@Composable
+private fun FeedbackPrompt(openFeedback: () -> Unit) {
+    Text(
+        modifier = Modifier.simpleClickable { openFeedback() },
+        text = "Have a feedback? Let us know",
         textDecoration = TextDecoration.Underline,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.secondary

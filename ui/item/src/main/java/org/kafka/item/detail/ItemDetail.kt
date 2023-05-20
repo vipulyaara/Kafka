@@ -84,6 +84,8 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
 @Composable
 private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewModel) {
+    val context = LocalContext.current
+
     Box(Modifier.fillMaxSize()) {
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
@@ -109,7 +111,10 @@ private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewMode
                 item(span = { GridItemSpan(GridItemSpan) }) {
                     ItemDetailActions(
                         itemDetail = state.itemDetail!!,
-                        onPrimaryAction = viewModel::onPrimaryAction,
+                        onPrimaryAction = {
+                            viewModel.onPrimaryAction(it)
+                            viewModel.showAppRatingIfNeeded(context)
+                        },
                         openFiles = viewModel::openFiles,
                         isFavorite = state.isFavorite,
                         toggleFavorite = viewModel::updateFavorite

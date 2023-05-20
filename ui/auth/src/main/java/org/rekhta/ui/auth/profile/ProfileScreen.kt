@@ -32,24 +32,22 @@ fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = 
     val navigator = LocalNavigator.current
 
     Surface(modifier = modifier.animateContentSize()) {
-        if (viewState.currentUser != null) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Dimens.Spacing20)
-                    .navigationBarsPadding(),
-                horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Dimens.Spacing20)
+                .navigationBarsPadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            UserProfileHeader(
+                modifier = Modifier,
+                displayName = viewState.userName ?: "Profile"
             ) {
-                UserProfileHeader(
-                    modifier = Modifier,
-                    displayName = viewState.userName ?: "Profile"
-                ) {
-                    navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
-                }
+                navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
+            }
 
-                LogoutButton(modifier = Modifier.align(Alignment.End)) {
-                    authViewModel.logout()
-                }
+            LogoutButton(modifier = Modifier.align(Alignment.End)) {
+                authViewModel.logout()
             }
         }
 

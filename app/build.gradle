@@ -18,8 +18,8 @@ kapt {
 android {
     defaultConfig {
         applicationId "com.kafka.user"
-        versionCode 18
-        versionName "0.0.8"
+        versionCode 19
+        versionName "0.0.9"
     }
 
     compileOptions {
@@ -82,6 +82,7 @@ dependencies {
     implementation project(':core:analytics')
     implementation project(':core:downloader')
     implementation project(':core-playback')
+    implementation project(':core:remote-config')
     implementation project(':data:repo')
     implementation project(':domain')
     implementation project(':navigation')
@@ -123,6 +124,7 @@ dependencies {
     implementation libs.google.dynamic.links
     implementation libs.google.firestore
     implementation libs.google.messaging
+    implementation libs.google.review
     implementation libs.hilt.android
     implementation libs.icons.feather
     implementation libs.icons.tabler

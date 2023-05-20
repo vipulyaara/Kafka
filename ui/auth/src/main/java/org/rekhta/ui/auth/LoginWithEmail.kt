@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -37,12 +36,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import org.kafka.auth.R
-import org.kafka.common.extensions.alignCenter
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
+import org.kafka.ui.components.material.PrimaryButton
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -116,23 +115,12 @@ private fun LoginButton(
     loginState: LoginState,
     enabled: Boolean = true,
 ) {
-    Button(
+    PrimaryButton(
+        text = if (loginState.isLogin) stringResource(R.string.login) else stringResource(R.string.sign_up),
         enabled = enabled,
-        shape = RoundedCornerShape(Dimens.Spacing08),
-        onClick = {
-            keyboard?.hide()
-            login()
-        }
     ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically)
-                .padding(vertical = Dimens.Spacing08),
-            text = if (loginState.isLogin) stringResource(R.string.login)
-            else stringResource(R.string.sign_up),
-            style = MaterialTheme.typography.titleSmall.alignCenter()
-        )
+        keyboard?.hide()
+        login()
     }
 }
 

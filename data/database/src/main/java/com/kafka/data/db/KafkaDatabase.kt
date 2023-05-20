@@ -1,9 +1,11 @@
 package com.kafka.data.db
 
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.kafka.data.dao.AuthDao
+import androidx.room.migration.AutoMigrationSpec
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
@@ -20,7 +22,6 @@ import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.RecentAudioItem
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.entities.RecentTextItem
-import com.kafka.data.entities.User
 
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
@@ -31,7 +32,6 @@ interface KafkaDatabase {
     fun recentTextDao(): RecentTextDao
     fun recentAudioDao(): RecentAudioDao
     fun downloadRequestsDao(): DownloadRequestsDao
-    fun authDao(): AuthDao
 }
 
 @Database(
@@ -43,11 +43,16 @@ interface KafkaDatabase {
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,
-        DownloadRequest::class,
-        User::class
+        DownloadRequest::class
     ],
-    version = 3,
-    exportSchema = false
+    version = 4,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class)
+    ]
 )
 @TypeConverters(AppTypeConverters::class)
-abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase
+abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
+    @DeleteTable(tableName = "user")
+    class UserRemovalMigration : AutoMigrationSpec
+}

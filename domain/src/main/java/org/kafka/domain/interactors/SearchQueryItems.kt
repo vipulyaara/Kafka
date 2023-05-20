@@ -21,7 +21,9 @@ class SearchQueryItems @Inject constructor(
 
     override suspend fun doWork(params: Params): Unit = withContext(dispatchers.io) {
         val archiveQuery = buildQuery(params.keyword, params.searchFilter)
-        itemRepository.updateQuery(buildRemoteQuery(archiveQuery))
+        itemRepository.updateQuery(buildRemoteQuery(archiveQuery)).let {
+            itemRepository.saveItems(it)
+        }
     }
 
     private fun buildQuery(

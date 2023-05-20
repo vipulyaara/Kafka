@@ -29,6 +29,7 @@ dependencies {
     implementation project(':ui:components')
     implementation project(':ui:item')
     implementation project(':ui:library')
+
     implementation libs.hilt.android
     implementation libs.rebugger
 
