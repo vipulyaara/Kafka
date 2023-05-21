@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import org.kafka.base.debug
 import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -29,10 +30,9 @@ class FeedbackViewModel @Inject constructor(
 
     val state: StateFlow<FeedbackViewState> = combine(
         observeUser.flow.map { it?.email },
-        loadingCounter.observable
-    ) { email, isLoading ->
-        FeedbackViewState(email = email, isLoading = isLoading)
-    }.stateInDefault(scope = viewModelScope, initialValue = FeedbackViewState())
+        loadingCounter.observable,
+        ::FeedbackViewState
+    ).stateInDefault(scope = viewModelScope, initialValue = FeedbackViewState())
 
     fun sendFeedback(text: String, email: String) {
         viewModelScope.launch {

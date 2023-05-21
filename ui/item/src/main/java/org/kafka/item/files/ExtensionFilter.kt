@@ -2,6 +2,7 @@ package org.kafka.item.files
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.kafka.common.widgets.dropdownStroke
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -53,14 +54,15 @@ internal fun ExtensionFilter(
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .align(Alignment.Center)
-                    .dropdownStroke()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 actionLabels.forEach { item ->
-                    val color =
-                        if (item == selectedFilter) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                    val color = if (item == selectedFilter) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.surface
 
                     DropdownMenuItem(
-                        text = { Text(text = item, color = color) },
+                        text = { Text(text = item, color = contentColorFor(color)) },
+                        modifier = Modifier.background(color),
                         onClick = {
                             expanded = false
                             if (item == "all") onItemSelected(null) else onItemSelected(item)

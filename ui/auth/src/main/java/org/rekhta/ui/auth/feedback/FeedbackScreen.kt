@@ -14,11 +14,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,11 +35,10 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun FeedbackScreen(viewModel: FeedbackViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val keyboard = LocalSoftwareKeyboardController.current
 
     Surface(modifier = Modifier.animateContentSize()) {
         Feedback(state) { feedback, email ->
-            keyboard?.hide()
+            //todo: hide keyboard
             viewModel.sendFeedback(feedback, email)
         }
     }
@@ -63,8 +62,12 @@ private fun Feedback(state: FeedbackViewState, sendFeedback: (String, String) ->
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        var email by rememberSavableMutableState(init = { state.email.orEmpty() })
+        var email by rememberSavableMutableState(init = { "" })
         var feedback by rememberSavableMutableState(init = { "" })
+
+        LaunchedEffect(state.email) {
+            email = state.email.orEmpty()
+        }
 
         EmailTextField(
             text = email,

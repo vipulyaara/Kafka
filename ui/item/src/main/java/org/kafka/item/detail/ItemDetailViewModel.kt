@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.AppReviewManager
-import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
@@ -96,11 +95,7 @@ class ItemDetailViewModel @Inject constructor(
         refresh()
     }
 
-    fun retry() {
-        refresh()
-    }
-
-    private fun refresh() {
+    fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, snackbarManager)
@@ -190,8 +185,6 @@ class ItemDetailViewModel @Inject constructor(
     fun showAppRatingIfNeeded(context: Context) {
         viewModelScope.launch { appReviewManager.incrementItemOpenCount() }
 
-        debug { "totalItemOpens: ${appReviewManager.totalItemOpens}" }
-
         if (appReviewManager.totalItemOpens % itemOpenThresholdForAppReview == 0) {
             context.getActivity()?.let { appReviewManager.showReviewDialog(it) }
         }
@@ -204,4 +197,4 @@ class ItemDetailViewModel @Inject constructor(
     }
 }
 
-private const val itemOpenThresholdForAppReview = 5
+private const val itemOpenThresholdForAppReview = 20

@@ -1,5 +1,6 @@
 package org.kafka.homepage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.padding
@@ -75,6 +76,7 @@ internal fun ProfileMenu(
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .align(Alignment.Center)
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
                 ProfileMenuAction.values().forEach { item ->
                     DropdownMenuItem(

@@ -92,7 +92,11 @@ private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewMode
             modifier = Modifier.align(Alignment.Center)
         )
 
-        FullScreenMessage(state.message, show = state.isFullScreenError, onRetry = viewModel::retry)
+        FullScreenMessage(
+            uiMessage = state.message,
+            show = state.isFullScreenError,
+            onRetry = viewModel::refresh
+        )
 
         AnimatedVisibilityFade(state.itemDetail != null) {
             LazyVerticalGrid(
