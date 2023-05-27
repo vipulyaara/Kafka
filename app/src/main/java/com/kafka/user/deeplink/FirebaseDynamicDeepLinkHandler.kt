@@ -10,7 +10,6 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import dagger.Reusable
-import org.kafka.analytics.CrashLogger
 import org.kafka.base.debug
 import org.kafka.base.errorLog
 import org.kafka.navigation.DynamicDeepLinkHandler
@@ -19,7 +18,6 @@ import javax.inject.Inject
 
 @Reusable
 class FirebaseDynamicDeepLinkHandler @Inject constructor(
-    private val crashLogger: CrashLogger,
     private val navigator: Navigator
 ) : DynamicDeepLinkHandler {
 

@@ -135,12 +135,12 @@ private fun HomepageFeedItems(
                         items = collection.items,
                         key = { "featured_${it.itemId}" },
                         contentType = { "featured" }
-                    ) {
+                    ) { item ->
                         FeaturedItem(
-                            item = it,
+                            item = item,
                             label = collection.label,
                             imageUrl = collection.image,
-                            onClick = { openItemDetail(it.itemId) },
+                            onClick = { openItemDetail(item.itemId) },
                             modifier = Modifier
                                 .padding(horizontal = Dimens.Gutter)
                                 .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)

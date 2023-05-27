@@ -6,8 +6,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import org.kafka.analytics.CrashLogger
 import org.kafka.base.debug
+import org.kafka.base.errorLog
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,10 +15,7 @@ import javax.inject.Singleton
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
 @Singleton
-class RemoteConfig @Inject constructor(
-    private val json: Json,
-    private val crashLogger: CrashLogger
-) {
+class RemoteConfig @Inject constructor(private val json: Json) {
 
     private val remoteConfig by lazy {
         Firebase.remoteConfig.apply {
@@ -35,7 +32,7 @@ class RemoteConfig @Inject constructor(
                 debug { "Fetch and activate remote config completed" }
             }
         } catch (e: Exception) {
-            crashLogger.logNonFatal(e)
+            errorLog(e) { "Error fetching remote config" }
         }
     }
 
@@ -49,7 +46,7 @@ class RemoteConfig @Inject constructor(
                 json.decodeFromString(serializer, it.orEmpty())
             } catch (e: SerializationException) {
                 Timber.e(e)
-                crashLogger.logNonFatal(e)
+                errorLog(e) { "Error parsing remote config" }
                 null
             }
         }

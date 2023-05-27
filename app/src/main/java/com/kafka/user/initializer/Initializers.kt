@@ -3,6 +3,7 @@ package com.kafka.user.initializer
 import android.app.Application
 import android.util.Log
 import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -11,24 +12,38 @@ import com.kafka.data.injection.ProcessLifetime
 import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.analytics.CrashLogger
 import org.kafka.base.AppCoroutineDispatchers
 import org.threeten.bp.zone.ZoneRulesProvider
 import timber.log.Timber
 import javax.inject.Inject
 
-class LoggerInitializer @Inject constructor(private val crashLogger: CrashLogger) : AppInitializer {
+class LoggerInitializer @Inject constructor() : AppInitializer {
     override fun init(application: Application) {
         Timber.plant(Timber.DebugTree())
-        Timber.plant(object : Timber.Tree() {
-            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                if (priority == Log.ERROR) {
-                    crashLogger.logNonFatal(t ?: Exception(message), message, tag)
-                }
-            }
-        })
+
+        try {
+            Timber.plant(CrashlyticsTree(FirebaseCrashlytics.getInstance()))
+        } catch (e: IllegalStateException) {
+            // Firebase is likely not setup in this project. Ignore the exception
+        }
     }
 }
+
+private class CrashlyticsTree(
+    private val firebaseCrashlytics: FirebaseCrashlytics,
+) : Timber.Tree() {
+    override fun isLoggable(tag: String?, priority: Int): Boolean {
+        return priority >= Log.INFO
+    }
+
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        firebaseCrashlytics.log(message)
+        if (t != null) {
+            firebaseCrashlytics.recordException(t)
+        }
+    }
+}
+
 
 class FirebaseInitializer @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,

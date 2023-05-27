@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kafka.data.injection.ProcessLifetime
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,6 @@ import javax.inject.Singleton
 class FirebaseAnalytics @Inject constructor(
     @ApplicationContext private val context: Context,
     @ProcessLifetime private val scope: CoroutineScope,
-    private val crashLogger: CrashLogger,
     private val eventRepository: EventRepository
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
@@ -27,7 +25,6 @@ class FirebaseAnalytics @Inject constructor(
     init {
         scope.launch {
             updateUserProperty { userData.value }
-            crashLogger.initialize(userData.value)
         }
     }
 
@@ -78,24 +75,6 @@ class FirebaseAnalytics @Inject constructor(
         const val LOGIN = FirebaseAnalytics.Event.LOGIN
         const val SEARCH = FirebaseAnalytics.Event.SEARCH
         const val PARAM_METHOD = FirebaseAnalytics.Param.METHOD
-    }
-}
-
-@Singleton
-class FirebaseCrashLogger @Inject constructor() : CrashLogger {
-    override fun initialize(userData: UserData) {
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-        FirebaseCrashlytics.getInstance().setUserId(userData.userId)
-    }
-
-    override fun logFatal(throwable: Throwable) {
-        FirebaseCrashlytics.getInstance().log(throwable.message.orEmpty())
-    }
-
-    override fun logNonFatal(throwable: Throwable, message: String?, tag: String?) {
-        message?.let { FirebaseCrashlytics.getInstance().log(message) }
-        tag?.let { FirebaseCrashlytics.getInstance().setCustomKey("tag", it) }
-        FirebaseCrashlytics.getInstance().recordException(throwable)
     }
 }
 
