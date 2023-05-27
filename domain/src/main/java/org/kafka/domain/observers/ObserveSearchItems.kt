@@ -34,8 +34,9 @@ class ObserveSearchItems @Inject constructor(
         val query = ArchiveQuery()
 
         // sometimes filters are empty in production for some reason
-        (searchFilters.takeIf { it.isNotEmpty() } ?: SearchFilter.all()).forEach {
-            val joiner = if (it == searchFilters.last()) "" else joinerOr
+        val filters = searchFilters.takeIf { it.isNotEmpty() } ?: SearchFilter.all()
+        filters.forEach {
+            val joiner = if (it == filters.last()) "" else joinerOr
             when (it) {
                 SearchFilter.Creator -> query.booksByAuthor(keyword, joiner)
                 SearchFilter.Name -> query.booksByTitleKeyword(keyword, joiner)

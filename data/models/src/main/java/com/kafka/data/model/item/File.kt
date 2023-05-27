@@ -48,6 +48,8 @@ data class File(
     @SerialName("width")
     val width: String? = null
 ) {
+    // todo: improve file ids to make them unique
+    // this will require a migration to new file ids which might be a breaking change
     val fileId: String
         get() = (name + format).hashCode().toString()
 }

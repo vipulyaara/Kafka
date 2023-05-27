@@ -1,6 +1,5 @@
 package com.kafka.data.feature.homepage
 
-import com.kafka.data.entities.HomepageBanner
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import dagger.Reusable
@@ -16,26 +15,29 @@ class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper
 ) {
-    fun observeHomepageCollection() =
-        firestoreGraph.homepageCollection.snapshots.flatMapLatest { it.toHomepage() }
-
-    fun observeHomepageBanners() = firestoreGraph.homepageBanners.snapshots.map {
-        it.documents.map { it.data(HomepageBanner.serializer()) }
-            .filter { it.enabled }
-            .sortedBy { it.index }
-            .toPersistentList()
-    }
-
-    suspend fun getHomepageIds() = firestoreGraph.homepageCollection.get()
-        .documents.asSequence().map { it.data(HomepageCollectionResponse.serializer()) }
-        .sortedBy { it.index }
-        .map { it.items.split(", ") }.flatten().toList()
+    fun observeHomepageCollection() = firestoreGraph.homepageCollection.snapshots
+        .flatMapLatest { it.toHomepage() }
 
     private fun QuerySnapshot.toHomepage() =
         documents.map { it.data(HomepageCollectionResponse.serializer()) }
             .filter { it.enabled }
             .sortedBy { it.index }
-            .also { debug { "homepage is : ${it}" } }
-            .run { homepageMapper.map(this).map { it.filter { it.items.isNotEmpty() } } }
-            .map { it.toPersistentList() }
+            .also { debug { "homepage is : $it" } }
+            .run { homepageMapper.map(this) }
+            .map { it.toList().toPersistentList() }
+
+    /**
+     * Get the list of ids of the homepage items to fetch the items from archive api
+     * */
+    suspend fun getHomepageIds() = firestoreGraph.homepageCollection.get()
+        .documents.asSequence().map { it.data(HomepageCollectionResponse.serializer()) }
+        .sortedBy { it.index }
+        .mapNotNull {
+            when (it) {
+                is HomepageCollectionResponse.Column -> it.itemIds.split(", ")
+                is HomepageCollectionResponse.FeaturedItem -> it.itemIds.split(", ")
+                is HomepageCollectionResponse.Row -> it.itemIds.split(", ")
+                else -> null
+            }
+        }.flatten().distinct().toList()
 }

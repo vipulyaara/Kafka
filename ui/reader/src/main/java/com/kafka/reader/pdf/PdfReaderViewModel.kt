@@ -27,7 +27,7 @@ class PdfReaderViewModel @Inject constructor(
     private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
-    var showControls by mutableStateOf(false)
+    private var showControls by mutableStateOf(false)
 
     val readerState = combine(
         observeRecentItem.flow,
@@ -43,10 +43,6 @@ class PdfReaderViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             observeRecentItem.invoke(fileId)
         }
-    }
-
-    fun showControls(show: Boolean) {
-        showControls = show
     }
 
     fun toggleControls() {

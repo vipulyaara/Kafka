@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.kafka.data.entities.HomepageBanner
+import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens

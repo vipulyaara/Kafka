@@ -1,15 +1,17 @@
 package org.kafka.homepage
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -18,9 +20,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
-import com.kafka.data.entities.HomepageBanner
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
+import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
@@ -41,8 +41,10 @@ import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.FeaturedItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemSmall
+import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -58,10 +60,10 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             HomeTopBar(
-                viewState.user,
-                viewModel::openLogin,
-                viewModel::openFeedback,
-                viewModel::logout
+                user = viewState.user,
+                login = viewModel::openLogin,
+                openFeedback = viewModel::openFeedback,
+                logout = viewModel::logout
             )
         },
     ) { padding ->
@@ -109,40 +111,65 @@ private fun HomepageFeedItems(
         modifier = Modifier.testTag("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
-        if (homepage.banners.isNotEmpty()) {
-            item(key = "carousels", contentType = "carousels") {
-                Carousels(carouselItems = homepage.banners, onBannerClick = onBannerClick)
-            }
-        }
-
-        if (homepage.hasRecentItems) {
-            item(key = "recent", contentType = "recent") {
-                ContinueReading(
-                    readingList = homepage.continueReadingItems,
-                    openItemDetail = openRecentItemDetail,
-                    removeRecentItem = removeRecentItem,
-                    modifier = Modifier.padding(top = Dimens.Gutter)
-                )
-            }
-        }
-
         homepage.collection.forEachIndexed { index, collection ->
             when (collection) {
+                is HomepageCollection.Banners -> {
+                    item(key = "carousels", contentType = "carousels") {
+                        Carousels(carouselItems = collection.items, onBannerClick = onBannerClick)
+                    }
+                }
+
+                is HomepageCollection.RecentItems -> {
+                    item(key = "recent", contentType = "recent") {
+                        ContinueReading(
+                            readingList = homepage.continueReadingItems,
+                            openItemDetail = openRecentItemDetail,
+                            removeRecentItem = removeRecentItem,
+                            modifier = Modifier.padding(top = Dimens.Gutter)
+                        )
+                    }
+                }
+
+                is HomepageCollection.FeaturedItem -> {
+                    items(
+                        items = collection.items,
+                        key = { "featured_${it.itemId}" },
+                        contentType = { "featured" }
+                    ) {
+                        FeaturedItem(
+                            item = it,
+                            label = collection.label,
+                            imageUrl = collection.image,
+                            onClick = { openItemDetail(it.itemId) },
+                            modifier = Modifier
+                                .padding(horizontal = Dimens.Gutter)
+                                .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
+                        )
+                    }
+                }
+
                 is HomepageCollection.Row -> {
-                    item(key = collection.label) {
-                        SubjectItem(collection.label, goToSubject)
+                    item(key = collection.labels, contentType = "row") {
+                        SubjectItems(collection.labels, goToSubject)
+                        ItemsRow(collection.items, openItemDetail)
+                    }
+                }
+
+                is HomepageCollection.Grid -> {
+                    item(key = collection.labels, contentType = "grid") {
+                        SubjectItems(collection.labels, goToSubject)
                         ItemsGrid(
-                            collection.items,
-                            openItemDetail,
-                            Modifier.testTag("row_$index")
+                            items = collection.items,
+                            openItemDetail = openItemDetail,
+                            modifier = Modifier.testTag("row_$index")
                         )
                     }
                 }
 
                 is HomepageCollection.Column -> {
-                    item(key = collection.label) { SubjectItem(collection.label, goToSubject) }
+                    item(key = collection.labels) { SubjectItems(collection.labels, goToSubject) }
                     items(
-                        collection.items,
+                        items = collection.items,
                         key = { it.itemId },
                         contentType = { it.javaClass }
                     ) { item ->
@@ -157,8 +184,6 @@ private fun HomepageFeedItems(
                         )
                     }
                 }
-
-                else -> {}
             }
         }
 
@@ -167,12 +192,36 @@ private fun HomepageFeedItems(
                 MessageBox(
                     text = stringResource(R.string.find_many_more_on_the_search_page),
                     icon = Icons.ArrowForward,
+                    onClick = { goToSearch() },
                     modifier = Modifier
-                        .clickable { goToSearch() }
                         .padding(Dimens.Gutter)
                         .fillMaxWidth()
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun ItemsRow(items: List<Item>, openItemDetail: (String) -> Unit) {
+    LazyRow(
+        contentPadding = PaddingValues(
+            horizontal = Dimens.Gutter,
+            vertical = Dimens.Spacing08
+        ),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        items(
+            items = items,
+            key = { it.itemId },
+            contentType = { it.javaClass }
+        ) { item ->
+            RowItem(
+                item = item,
+                modifier = Modifier
+                    .widthIn(max = Dimens.CoverSizeLarge.width)
+                    .clickable { openItemDetail(item.itemId) }
+            )
         }
     }
 }
@@ -186,13 +235,8 @@ private fun ItemsGrid(
 ) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(3),
-        modifier = modifier.height(290.dp),
-        state = lazyListState,
-        flingBehavior = rememberSnapFlingBehavior(
-            snapLayoutInfoProvider = remember(lazyListState) {
-                SnapLayoutInfoProvider(lazyGridState = lazyListState)
-            },
-        )
+        modifier = modifier.height(HorizontalGridHeight.dp),
+        state = lazyListState
     ) {
         items(
             items = items,
@@ -202,7 +246,7 @@ private fun ItemsGrid(
             ItemSmall(
                 item = item,
                 modifier = Modifier
-                    .widthIn(max = 350.dp)
+                    .widthIn(max = RowItemMaxWidth.dp)
                     .clickable { openItemDetail(item.itemId) }
                     .padding(
                         horizontal = Dimens.Gutter,
@@ -214,17 +258,20 @@ private fun ItemsGrid(
 }
 
 @Composable
-private fun SubjectItem(label: String, goToSubject: (String) -> Unit) {
-    val subjectItemModifier = remember {
-        Modifier
-            .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing08)
-            .padding(horizontal = Dimens.Gutter)
+private fun SubjectItems(labels: List<String>, goToSubject: (String) -> Unit) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
+        modifier = subjectModifier
+    ) {
+        labels.forEach { label ->
+            SubjectItem(text = label, onClicked = { goToSubject(label) })
+        }
     }
-
-    SubjectItem(
-        text = label,
-        modifier = subjectItemModifier,
-        onClicked = { goToSubject(label) }
-    )
 }
 
+private val subjectModifier = Modifier
+    .padding(top = Dimens.Gutter, bottom = Dimens.Spacing08)
+    .padding(horizontal = Dimens.Gutter)
+
+private const val HorizontalGridHeight = 290
+private const val RowItemMaxWidth = 350

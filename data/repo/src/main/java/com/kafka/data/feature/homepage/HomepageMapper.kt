@@ -3,38 +3,69 @@ package com.kafka.data.feature.homepage
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.model.homepage.HomepageCollectionResponse
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import org.kafka.base.debug
 import javax.inject.Inject
 
 class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
-    fun map(collection: List<HomepageCollectionResponse>) =
-        combine(collection.map {
-            when (it) {
-                is HomepageCollectionResponse.Row ->
-                    itemDao.observe(it.items.split(", "))
-                        .map { items ->
-                            HomepageCollection.Row(
-                                label = it.label,
-                                items = items.toPersistentList(),
-                                labelClickable = it.labelClickable
-                            )
-                        }
-
-                is HomepageCollectionResponse.Column ->
-                    itemDao.observe(it.items.split(", "))
-                        .map { items ->
-                            HomepageCollection.Column(
-                                label = it.label,
-                                items = items.toPersistentList(),
-                                labelClickable = it.labelClickable
-                            )
-                        }
-            }
-        }) { collectionItems ->
-            debug { "collectionItems: ${collectionItems.joinToString("/n")}" }
-            collectionItems
+    fun map(collection: List<HomepageCollectionResponse>) = combine(collection.map {
+        when (it) {
+            is HomepageCollectionResponse.Row -> it.mapRows()
+            is HomepageCollectionResponse.Column -> it.mapColumn()
+            is HomepageCollectionResponse.Banners -> it.mapBanners()
+            is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
+            is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
+            is HomepageCollectionResponse.Grid -> it.mapGrid()
         }
+    }) { it.toList() }
+
+    private fun HomepageCollectionResponse.Row.mapRows() =
+        itemDao.observe(itemIds.split(", ")).map { items ->
+            HomepageCollection.Row(
+                labels = label.splitLabel(),
+                items = items.toPersistentList(),
+                clickable = clickable
+            )
+        }
+
+    private fun HomepageCollectionResponse.Column.mapColumn() =
+        itemDao.observe(itemIds.split(", ")).map { items ->
+            HomepageCollection.Column(
+                labels = label.splitLabel(),
+                items = items.toPersistentList(),
+                clickable = clickable
+            )
+        }
+
+    private fun HomepageCollectionResponse.Grid.mapGrid() =
+        itemDao.observe(itemIds.split(", ")).map { items ->
+            HomepageCollection.Grid(
+                labels = label.splitLabel(),
+                items = items.toPersistentList(),
+                clickable = clickable
+            )
+        }
+
+    private fun HomepageCollectionResponse.Banners.mapBanners() =
+        flowOf(HomepageCollection.Banners(items = items.toPersistentList(), enabled = enabled))
+
+    // todo: items are filled later on domain layer, find a way to fill them here
+    private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
+        flowOf(HomepageCollection.RecentItems(persistentListOf(), enabled))
+
+    private fun HomepageCollectionResponse.FeaturedItem.mapFeatured() =
+        itemDao.observe(itemIds.split(", ")).map { items ->
+            HomepageCollection.FeaturedItem(
+                label = label,
+                items = items.toPersistentList(),
+                image = image?.random()?.downloadURL,
+                enabled = enabled
+            )
+        }
+
+    private fun String?.splitLabel(separator: String = ", ") =
+        this.orEmpty().split(separator).filter { it.isNotEmpty() }
 }

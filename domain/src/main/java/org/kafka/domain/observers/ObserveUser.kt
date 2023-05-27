@@ -21,7 +21,7 @@ class ObserveUser @Inject constructor(
 
     override fun createObservable(params: Params): Flow<User?> {
         return accountRepository.observeCurrentFirebaseUser()
-            .onEach { debug { "User changed $it" } }
+            .onEach { debug { "User changed ${it?.uid}" } }
             .map { if (!params.includeAnonymous) it.takeIf { it?.isAnonymous == false } else it }
             .map { mapUser(it) }
             .flowOn(dispatchers.io)

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ItemMapper @Inject constructor() {
      fun map(from: SearchResponse): List<Item> {
-        return from.response!!.docs.map { doc -> doc.toItem() }
+        return from.response?.docs?.map { doc -> doc.toItem() }.orEmpty()
     }
 
     private fun Doc.toItem() = Item(

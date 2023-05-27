@@ -1,6 +1,7 @@
 package org.kafka.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,12 @@ import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun MessageBox(text: String, modifier: Modifier = Modifier, icon: ImageVector? = null) {
+fun MessageBox(
+    text: String,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    onClick: () -> Unit = {}
+) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.RadiusMedium),
@@ -31,13 +37,14 @@ fun MessageBox(text: String, modifier: Modifier = Modifier, icon: ImageVector? =
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onClick() }
                 .padding(Dimens.Spacing20),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
 

@@ -1,76 +1,78 @@
 package com.kafka.data.entities
 
 import androidx.compose.runtime.Immutable
-import com.google.firebase.firestore.DocumentId
+import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
-data class Homepage(
-    val banners: ImmutableList<HomepageBanner>,
-    val recentItems: ImmutableList<RecentItemWithProgress>,
-    val collection: ImmutableList<HomepageCollection>
-) {
+data class Homepage(val collection: ImmutableList<HomepageCollection>) {
     val continueReadingItems: ImmutableList<RecentItemWithProgress>
-        get() = recentItems.subList(
+        get() = collection.recentItems.subList(
             fromIndex = 0,
-            toIndex = ContinueReadingItemsThreshold.coerceAtMost(recentItems.size)
+            toIndex = ContinueReadingItemsThreshold.coerceAtMost(collection.recentItems.size)
         )
-
-    val hasRecentItems: Boolean
-        get() = recentItems.isNotEmpty()
 
     val hasSearchPrompt: Boolean
         get() = collection.isNotEmpty()
 
     companion object {
-        val Empty = Homepage(persistentListOf(), persistentListOf(), persistentListOf())
+        val Empty = Homepage(persistentListOf())
     }
 }
 
+val ImmutableList<HomepageCollection>.recentItems
+    get() = filterIsInstance<HomepageCollection.RecentItems>()
+        .firstOrNull()?.items.orEmpty().toPersistentList()
+
 @Immutable
 sealed class HomepageCollection {
-    abstract val label: String
-    abstract val items: ImmutableList<Item>
-    abstract val labelClickable: Boolean
     abstract val enabled: Boolean
 
     @Immutable
+    data class Banners(
+        val items: ImmutableList<HomepageBanner>,
+        override val enabled: Boolean = true
+    ) : HomepageCollection()
+
+    @Immutable
+    data class FeaturedItem(
+        val label: String?,
+        val items: ImmutableList<Item>,
+        val image: String? = null,
+        override val enabled: Boolean = true
+    ) : HomepageCollection()
+
+    @Immutable
+    data class RecentItems(
+        val items: ImmutableList<RecentItemWithProgress>,
+        override val enabled: Boolean = true
+    ) : HomepageCollection()
+
+    @Immutable
     data class Row(
-        override val label: String,
-        override val items: ImmutableList<Item>,
-        override val labelClickable: Boolean = true,
+        val labels: List<String>,
+        val items: ImmutableList<Item>,
+        val clickable: Boolean = true,
         override val enabled: Boolean = true
     ) : HomepageCollection()
 
     @Immutable
     data class Column(
-        override val label: String,
-        override val items: ImmutableList<Item>,
-        override val labelClickable: Boolean = true,
+        val labels: List<String>,
+        val items: ImmutableList<Item>,
+        val clickable: Boolean = true,
+        override val enabled: Boolean = true
+    ) : HomepageCollection()
+
+    @Immutable
+    data class Grid(
+        val labels: List<String>,
+        val items: ImmutableList<Item>,
+        val clickable: Boolean = true,
         override val enabled: Boolean = true
     ) : HomepageCollection()
 }
-
-@Immutable
-@Serializable
-data class HomepageBanner(
-    @DocumentId
-    val id: String,
-    val action: Action = Action.Search,
-    val imageUrl: String = "",
-    val enabled: Boolean = false,
-    val keyword: String? = null,
-    val index: Int = 0
-) {
-    @Serializable
-    enum class Action {
-        @SerialName("search")  Search,
-        @SerialName("item_detail")  ItemDetail
-    }
-}
-
 
 private const val ContinueReadingItemsThreshold = 10

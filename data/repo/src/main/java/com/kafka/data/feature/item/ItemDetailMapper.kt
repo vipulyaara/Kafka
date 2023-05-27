@@ -54,12 +54,12 @@ class ItemDetailMapper @Inject constructor(
         ?: "https://archive.org/services/img/${metadata.identifier}"
 
     private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
-        val files = from.files.map {
+        val files = from.files.map { file ->
             fileMapper.map(
-                file = it,
+                file = file,
                 item = item,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.getOrNull(it.name)?.localUri
+                localUri = fileDao.getOrNull(file.name)?.localUri
             )
         }.filter { supportedExtensions.contains(it.extension) }
 

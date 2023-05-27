@@ -1,6 +1,5 @@
 package org.kafka.domain.observers
 
-import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.auth.AccountRepository
@@ -33,11 +32,5 @@ class ObserveRecentItems @Inject constructor(
             .onStart { emit(emptyList()) }
             .map { it.toPersistentList() }
             .flowOn(dispatchers.io)
-    }
-
-    private fun RecentItem.mapPercentage() {
-        when (this.mediaType) {
-
-        }
     }
 }

@@ -60,7 +60,6 @@ internal fun Favorites(favoriteViewModel: FavoriteViewModel = hiltViewModel()) {
             }
         }
     }
-
 }
 
 @Composable

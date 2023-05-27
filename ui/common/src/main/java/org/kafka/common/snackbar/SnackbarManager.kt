@@ -20,7 +20,6 @@ open class SnackbarMessage<T>(val message: UiMessage, val action: SnackbarAction
 @Singleton
 class SnackbarManager @Inject constructor() {
 
-    //todo: Check if it should be a shared flow
     private val messagesChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)
     private val actionDismissedMessageChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)
     private val actionPerformedMessageChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)

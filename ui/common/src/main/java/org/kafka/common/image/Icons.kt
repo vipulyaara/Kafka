@@ -78,6 +78,6 @@ object Icons {
             TablerIcons.ArrowRight
     val Eye = TablerIcons.Eye
     val EyeOff = TablerIcons.EyeOff
-    val ArrowForward = TablerIcons.ArrowForward
+    val ArrowForward = TablerIcons.ArrowRight
     val Vinyl = KafkaIcons.Vinyl
 }
