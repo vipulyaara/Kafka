@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit) {
+fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit = {}) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(50),

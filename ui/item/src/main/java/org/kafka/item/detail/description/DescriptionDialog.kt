@@ -1,10 +1,9 @@
 package org.kafka.item.detail.description
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -42,21 +41,32 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
                 .heightIn(max = maxHeight * 0.9f)
                 .padding(horizontal = Dimens.Spacing24)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                BottomSheetDefaults.DragHandle()
-                Spacer(modifier = Modifier.height(Dimens.Spacing16))
-                viewState.itemDetail?.let {
+            Column(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(bottom = Dimens.Spacing48),
+                verticalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
+            ) {
+                BottomSheetDefaults.DragHandle(Modifier.align(Alignment.CenterHorizontally))
+
+                viewState.itemDetail?.let { itemDetail ->
                     DescriptionText(
-                        itemDetail = it,
+                        itemDetail = itemDetail,
                         style = MaterialTheme.typography.bodyMedium
                             .copy(textAlign = TextAlign.Justify),
                         modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
                             .verticalScroll(rememberScrollState())
-                            .navigationBarsPadding()
-                            .padding(bottom = Dimens.Spacing48)
                     )
+
+                    itemDetail.language?.let {
+                        Text(text = "Language : $it", style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
-                InfiniteProgressBar(show = viewState.isFullScreenLoading)
+                InfiniteProgressBar(
+                    show = viewState.isFullScreenLoading,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
         }
     }

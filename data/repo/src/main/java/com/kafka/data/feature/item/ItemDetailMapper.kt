@@ -18,16 +18,11 @@ class ItemDetailMapper @Inject constructor(
     suspend fun map(from: ItemDetailResponse): ItemDetail {
         debug { "mapping item detail: ${from.files.joinToString { it.name }}" }
 
-        val languagesInDescription =
-            from.metadata.languages?.joinToString()?.let { "\n\n" + it } ?: ""
-        val description =
-            (from.metadata.description?.joinToString()?.format() ?: "") + languagesInDescription
-
         return ItemDetail(
             itemId = from.metadata.identifier,
             language = from.metadata.languages?.joinToString(),
             title = from.metadata.title?.dismissUpperCase(),
-            description = description,
+            description = from.metadata.description?.joinToString()?.format() ?: "",
             creator = from.metadata.creator?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,

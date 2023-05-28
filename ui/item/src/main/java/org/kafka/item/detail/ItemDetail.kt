@@ -183,7 +183,7 @@ private fun ItemDescription(
             LoadImage(
                 data = itemDetail.coverImage,
                 modifier = Modifier
-                    .size(208.dp, 248.dp)
+                    .size(Dimens.CoverSizeDetail)
                     .clip(RoundedCornerShape(Dimens.Spacing08))
             )
 
