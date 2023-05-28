@@ -13,6 +13,7 @@ fun PdfViewer(pdfState: PdfState, modifier: Modifier = Modifier) {
         modifier = modifier,
         factory = {
             PDFView(it, null).apply {
+                maxZoom = MaxZoom
                 fromUri(pdfState.uri)
                     .defaultPage(pdfState.initialPage)
                     .spacing(12)
@@ -31,3 +32,5 @@ data class PdfState(
     val onError: (Throwable) -> Unit = {},
     val onPageChange: (Int) -> Unit = { _ -> }
 )
+
+const val MaxZoom = 6f
