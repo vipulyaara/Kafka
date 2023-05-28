@@ -16,7 +16,8 @@ data class Metadata(
     @Serializable(with = StringListSerializer::class)
     val collection: List<String>? = null,
     @SerialName("date")
-    val date: String? = null,
+    @Serializable(with = StringListSerializer::class)
+    val date: List<String>? = null,
     @SerialName("description")
     @Serializable(with = StringListSerializer::class)
     val description: List<String>? = null,
@@ -41,4 +42,7 @@ data class Metadata(
     val title: String? = null,
     @SerialName("year")
     val year: String? = null,
+    @SerialName("language")
+    @Serializable(with = SubjectListSerializer::class)
+    val languages: List<String>? = null,
 )

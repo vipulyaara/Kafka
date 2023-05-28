@@ -19,12 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.model.SearchFilter
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
+import org.kafka.search.R
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.item.Item
@@ -116,6 +119,15 @@ private fun Search(
             InfiniteProgressBarSmall(
                 show = searchViewState.isLoading,
                 modifier = Modifier.height(Dimens.Spacing24)
+            )
+        }
+
+        if (!searchViewState.canShowRecentSearches && searchViewState.items.isNullOrEmpty()) {
+            MessageBox(
+                text = stringResource(R.string.search_user_hint),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Dimens.Gutter)
             )
         }
     }

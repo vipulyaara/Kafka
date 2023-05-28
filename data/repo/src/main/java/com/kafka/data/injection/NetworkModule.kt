@@ -1,6 +1,5 @@
 package com.kafka.data.injection
 
-import android.app.Application
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.api.interceptor.AcceptDialogInterceptor
@@ -23,18 +22,16 @@ import javax.inject.Singleton
 
 const val baseUrl = "https://archive.org/"
 
-val json = Json {
-    ignoreUnknownKeys = true
-    isLenient = true
-}
-
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
 
     @Provides
     @Singleton
-    fun jsonConfigured() = json
+    fun jsonConfigured() = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     @Provides
     @Singleton

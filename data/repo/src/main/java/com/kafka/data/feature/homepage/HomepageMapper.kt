@@ -5,6 +5,7 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -22,32 +23,42 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         }
     }) { it.toList() }
 
-    private fun HomepageCollectionResponse.Row.mapRows() =
-        itemDao.observe(itemIds.split(", ")).map { items ->
+    private fun HomepageCollectionResponse.Row.mapRows(): Flow<HomepageCollection.Row> {
+        val itemIdList = itemIds.split(", ")
+        return itemDao.observe(itemIdList).map { items ->
+            val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Row(
                 labels = label.splitLabel(),
-                items = items.toPersistentList(),
+                items = sortedItems.toPersistentList(),
                 clickable = clickable
             )
         }
+    }
 
-    private fun HomepageCollectionResponse.Column.mapColumn() =
-        itemDao.observe(itemIds.split(", ")).map { items ->
+
+    private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {
+        val itemIdList = itemIds.split(", ")
+        return itemDao.observe(itemIdList).map { items ->
+            val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Column(
                 labels = label.splitLabel(),
-                items = items.toPersistentList(),
+                items = sortedItems.toPersistentList(),
                 clickable = clickable
             )
         }
+    }
 
-    private fun HomepageCollectionResponse.Grid.mapGrid() =
-        itemDao.observe(itemIds.split(", ")).map { items ->
+    private fun HomepageCollectionResponse.Grid.mapGrid(): Flow<HomepageCollection.Grid> {
+        val itemIdList = itemIds.split(", ")
+        return itemDao.observe(itemIdList).map { items ->
+            val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Grid(
                 labels = label.splitLabel(),
-                items = items.toPersistentList(),
+                items = sortedItems.toPersistentList(),
                 clickable = clickable
             )
         }
+    }
 
     private fun HomepageCollectionResponse.Banners.mapBanners() =
         flowOf(HomepageCollection.Banners(items = items.toPersistentList(), enabled = enabled))
