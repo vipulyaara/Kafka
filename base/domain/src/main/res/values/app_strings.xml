@@ -32,6 +32,7 @@
     <string name="downloader.enqueue.audio.existing.resuming" translatable="false">Resuming existing download</string>
     <string name="downloader.enqueue.audio.existing.alreadyQueued" translatable="false">This item is already in the download queue</string>
     <string name="downloader.enqueue.audio.existing.completed" translatable="false">This item was already downloaded</string>
+    <string name="downloader.enqueue.audio.existing.deleted" translatable="false">The item is deleted</string>
     <string name="downloader.enqueue.audio.existing.unknown" translatable="false">Download request exists but has unhandled status: %1$s</string>
 
     <string name="downloads.title" translatable="false">Downloads</string>

@@ -18,7 +18,6 @@ import com.kafka.data.entities.File
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
@@ -71,7 +70,7 @@ internal fun FileItem(
         }
 
         Box {
-            AnimatedVisibilityFade(downloadInfo == null) {
+            if (downloadInfo == null) {
                 IconButton(onClick = { scope.launch { downloader.enqueueFile(file.fileId) } }) {
                     IconResource(
                         imageVector = Icons.Download,
@@ -80,7 +79,7 @@ internal fun FileItem(
                 }
             }
 
-            AnimatedVisibilityFade(downloadInfo != null) {
+            if (downloadInfo != null) {
                 DownloadStatusIcons(
                     downloadInfo = downloadInfo!!,
                     downloader = downloader,

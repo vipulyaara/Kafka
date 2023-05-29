@@ -15,7 +15,7 @@ class FavoritesRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val accountRepository: AccountRepository
 ) {
-    fun observeRecentItems(uid: String) = firestoreGraph.getFavoritesCollection(uid)
+    fun observeFavorites(uid: String) = firestoreGraph.getFavoritesCollection(uid)
         .snapshots()
         .map { snapshots ->
             snapshots.map { it.toObject<FavoriteItem>() }

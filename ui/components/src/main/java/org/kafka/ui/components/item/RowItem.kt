@@ -24,7 +24,6 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
             size = Dimens.CoverSizeLarge,
             placeholder = placeholder(item.mediaType),
             shape = RoundedCornerShape(Dimens.RadiusMedium),
-            contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxWidth()
         )
 

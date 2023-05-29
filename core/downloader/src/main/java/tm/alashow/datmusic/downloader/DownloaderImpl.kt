@@ -39,7 +39,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.kafka.data.entities.File as FileEntity
 
-
 @Singleton
 internal class DownloaderImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
@@ -168,7 +167,7 @@ internal class DownloaderImpl @Inject constructor(
                             Timber.i("Completed status but file doesn't exist, allowing enqueue.")
                             true
                         } else {
-                            Timber.i("Completed status and file exists=$fileExists, doing nothing.")
+                            Timber.i("Completed status and file exists, doing nothing.")
                             false
                         }
                     }
@@ -225,11 +224,9 @@ internal class DownloaderImpl @Inject constructor(
         }
     }
 
-    override suspend fun delete(vararg downloadItems: DownloadItem) {
-        fetcher.delete(downloadItems.map { it.downloadInfo.id })
-        downloadItems.forEach {
-            repo.delete(it.downloadRequest.id)
-        }
+    override suspend fun delete(vararg downloadInfoIds: Int) {
+        downloadInfoIds.forEach { repo.delete(it.toString()) }
+        fetcher.delete(downloadInfoIds.toList())
     }
 
     override suspend fun findAudioDownload(fileId: String): FileEntity? = fileDao.getOrNull(fileId)
@@ -346,10 +343,20 @@ internal class DownloaderImpl @Inject constructor(
                     downloaderMessage(DownloadsFolderNotFound)
                     downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
                 }
+
                 else -> downloaderMessage(AudioDownloadErrorFileCreate)
             }
             return null
         }
         return file
+    }
+
+    private fun fileExistsFromPreviousSession(
+        downloadLocationUri: Uri,
+        fileName: String
+    ): Boolean {
+        val downloadsLocationFolder = downloadLocationUri.toDocumentFile(appContext)
+        val file = downloadsLocationFolder.findFile(fileName)
+        return file != null && file.exists()
     }
 }

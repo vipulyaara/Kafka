@@ -43,6 +43,7 @@ fun DownloadStatusIcons(
                         DownloadStatus.PAUSED -> scope.launch { downloader.resume(downloadId) }
                         DownloadStatus.FAILED,
                         DownloadStatus.CANCELLED -> scope.launch { downloader.retry(downloadId) }
+                        DownloadStatus.COMPLETED -> scope.launch { downloader.delete(downloadId) }
 
                         else -> {}
                     }
@@ -74,7 +75,7 @@ fun DownloadStatus.icon() = when (this) {
     DownloadStatus.QUEUED -> Icons.Queue
     DownloadStatus.DOWNLOADING -> Icons.Pause
     DownloadStatus.PAUSED -> Icons.Play
-    DownloadStatus.COMPLETED -> Icons.Downloaded
+    DownloadStatus.COMPLETED -> Icons.Delete
     DownloadStatus.FAILED,
     DownloadStatus.CANCELLED -> Icons.Retry
 

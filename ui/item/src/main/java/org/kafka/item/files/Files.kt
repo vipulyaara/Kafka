@@ -75,6 +75,7 @@ private fun Files(
                     viewState.downloads.firstOrNull { it.file.fileId == file.fileId }
                 }
             }
+
             FileItem(
                 file = file,
                 onFileClicked = onFileClicked,

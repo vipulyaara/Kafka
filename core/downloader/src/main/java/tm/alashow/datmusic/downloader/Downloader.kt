@@ -36,7 +36,7 @@ interface Downloader {
     suspend fun cancel(vararg downloadInfoIds: Int)
     suspend fun retry(vararg downloadInfoIds: Int)
     suspend fun remove(vararg downloadItems: DownloadItem)
-    suspend fun delete(vararg downloadItems: DownloadItem)
+    suspend fun delete(vararg downloadInfoIds: Int)
 
     suspend fun findAudioDownload(fileId: String): FileEntity?
     suspend fun getAudioDownload(audioId: String, vararg allowedStatuses: Status = arrayOf(Status.COMPLETED)): Optional<FileDownloadItem>

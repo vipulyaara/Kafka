@@ -24,6 +24,8 @@ val AudioDownloadAlreadyQueued =
     DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_alreadyQueued)
 val AudioDownloadAlreadyCompleted =
     DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_completed)
+val AudioDownloadDeleted =
+    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_deleted)
 
 fun AudioDownloadExistingUnknownStatus(status: Status) =
     DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_unknown, listOf(status))

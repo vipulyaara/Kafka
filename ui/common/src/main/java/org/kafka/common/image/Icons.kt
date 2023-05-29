@@ -38,6 +38,7 @@ import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Share
+import compose.icons.tablericons.Trash
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 import org.kafka.common.image.kafkaicons.Vinyl
@@ -61,6 +62,7 @@ object Icons {
     val Heart = TablerIcons.Heart
     val Download = TablerIcons.Download
     val Downloaded = TablerIcons.CircleCheck
+    val Delete = TablerIcons.Trash
     val Pause = TablerIcons.PlayerPause
     val Play = TablerIcons.PlayerPlay
     val Queue = TablerIcons.Clock

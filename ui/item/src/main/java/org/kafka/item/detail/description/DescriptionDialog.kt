@@ -60,9 +60,10 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
                     )
 
                     itemDetail.language?.let {
-                        Text(text = "Language : $it", style = MaterialTheme.typography.bodyMedium)
+                        Text(text = "Language : $it", style = MaterialTheme.typography.titleSmall)
                     }
                 }
+
                 InfiniteProgressBar(
                     show = viewState.isFullScreenLoading,
                     modifier = Modifier.align(Alignment.CenterHorizontally)

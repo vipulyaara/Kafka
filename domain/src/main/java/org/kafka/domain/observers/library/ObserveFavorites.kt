@@ -23,7 +23,7 @@ class ObserveFavorites @Inject constructor(
         return accountRepository.observeCurrentFirebaseUser()
             .flatMapLatest { user ->
                 user?.let {
-                    favoritesRepository.observeRecentItems(user.uid)
+                    favoritesRepository.observeFavorites(user.uid)
                 } ?: flowOf(emptyList())
             }
             .map { favorites -> favorites.map { it.toItem() } }
