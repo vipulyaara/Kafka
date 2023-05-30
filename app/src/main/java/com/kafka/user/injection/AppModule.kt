@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.data.AppInitializer
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
+import com.kafka.user.initializer.DownloadInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
@@ -112,7 +113,11 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideDownloadInitializer(bind: ReaderProgressInitializer): AppInitializer
+    abstract fun provideDownloadInitializer(bind: DownloadInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideReaderProgressInitializer(bind: ReaderProgressInitializer): AppInitializer
 
     @Binds
     @IntoSet

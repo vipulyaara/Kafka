@@ -13,7 +13,7 @@ import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import tm.alashow.datmusic.downloader.observers.ObserveDownloads
 import javax.inject.Inject
 
-class ObserveDownloadedItems @Inject constructor(
+class ObserveFirebaseDownloadedItems @Inject constructor(
     private val dispatchers: AppCoroutineDispatchers,
     private val observeDownloads: ObserveDownloads,
     private val downloadInfoMapper: DownloadInfoMapper,

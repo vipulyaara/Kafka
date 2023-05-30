@@ -8,13 +8,21 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kafka.data.AppInitializer
+import com.kafka.data.feature.DownloadsRepository
 import com.kafka.data.injection.ProcessLifetime
 import com.kafka.remote.config.RemoteConfig
+import com.tonyodev.fetch2.Fetch
+import com.tonyodev.fetch2.Status
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.domain.interactors.UploadExistingDownloads
+import org.kafka.domain.interactors.toDownloadItem
 import org.threeten.bp.zone.ZoneRulesProvider
 import timber.log.Timber
+import tm.alashow.datmusic.downloader.manager.createFetchListener
+import tm.alashow.datmusic.downloader.observers.AddCompletedDownloadsToFetch
 import javax.inject.Inject
 
 class LoggerInitializer @Inject constructor() : AppInitializer {
@@ -25,6 +33,30 @@ class LoggerInitializer @Inject constructor() : AppInitializer {
             Timber.plant(CrashlyticsTree(FirebaseCrashlytics.getInstance()))
         } catch (e: IllegalStateException) {
             // Firebase is likely not setup in this project. Ignore the exception
+        }
+    }
+}
+
+class DownloadInitializer @Inject constructor(
+    private val addCompletedDownloadsToFetch: AddCompletedDownloadsToFetch,
+    private val uploadExistingDownloads: UploadExistingDownloads,
+    private val downloadsRepository: DownloadsRepository,
+    @ProcessLifetime private val coroutineScope: CoroutineScope,
+    private val dispatchers: AppCoroutineDispatchers,
+    private val fetch: Fetch
+) : AppInitializer {
+    override fun init(application: Application) {
+        coroutineScope.launch(dispatchers.io) { uploadExistingDownloads.execute(Unit) }
+        coroutineScope.launch(dispatchers.io) {
+            addCompletedDownloadsToFetch.execute(downloadsRepository.getDownloads().orEmpty())
+        }
+
+        coroutineScope.launch(dispatchers.io) {
+            createFetchListener(fetch).collectLatest { download ->
+                if (download?.download?.status == Status.COMPLETED) {
+                    downloadsRepository.addDownload(download.download.toDownloadItem())
+                }
+            }
         }
     }
 }

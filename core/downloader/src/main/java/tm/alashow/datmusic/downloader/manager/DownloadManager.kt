@@ -4,6 +4,8 @@
  */
 package tm.alashow.datmusic.downloader.manager
 
+import com.tonyodev.fetch2.CompletedDownload
+
 sealed class DownloadEnqueueResult<T>
 data class DownloadEnqueueSuccessful<T>(val updatedRequest: T) : DownloadEnqueueResult<T>()
 data class DownloadEnqueueFailed<T>(val error: Throwable) : DownloadEnqueueResult<T>()
@@ -30,4 +32,6 @@ interface DownloadManager<ID, RequestType, StatusType, DownloadType> {
     suspend fun retry(ids: List<ID>)
     suspend fun remove(ids: List<ID>)
     suspend fun delete(ids: List<ID>)
+
+    suspend fun addCompletedDownloads(completedDownloads: List<CompletedDownload>)
 }

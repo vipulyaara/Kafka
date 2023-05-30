@@ -195,16 +195,17 @@ private fun ItemDescription(
                 modifier = Modifier.padding(horizontal = Dimens.Spacing24)
             )
 
-            Spacer(Modifier.height(Dimens.Spacing04))
-
-            Text(
-                text = itemDetail.creator.orEmpty(),
-                style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .simpleClickable { goToCreator(itemDetail.creator) }
-                    .padding(horizontal = Dimens.Spacing24)
-            )
+            itemDetail.creator?.let { creator ->
+                Spacer(Modifier.height(Dimens.Spacing04))
+                Text(
+                    text = creator,
+                    style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .simpleClickable { goToCreator(itemDetail.creator) }
+                        .padding(horizontal = Dimens.Spacing24)
+                )
+            }
 
             DescriptionText(
                 itemDetail = itemDetail,

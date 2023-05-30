@@ -220,12 +220,12 @@ internal class DownloaderImpl @Inject constructor(
     override suspend fun remove(vararg downloadItems: DownloadItem) {
         fetcher.remove(downloadItems.map { it.downloadInfo.id })
         downloadItems.forEach {
-            repo.delete(it.downloadRequest.id)
+            repo.delete(it.downloadInfo.id.toString())
         }
     }
 
     override suspend fun delete(vararg downloadInfoIds: Int) {
-        downloadInfoIds.forEach { repo.delete(it.toString()) }
+//        downloadInfoIds.forEach { repo.delete(it.toString()) }
         fetcher.delete(downloadInfoIds.toList())
     }
 
@@ -244,7 +244,7 @@ internal class DownloaderImpl @Inject constructor(
             val downloadInfo = fetcher.getDownload(request.requestId)
             if (downloadInfo != null) {
                 if (downloadInfo.status in allowedStatuses)
-                    return Optional.of(FileDownloadItem.from(request, downloadInfo))
+                    return Optional.of(FileDownloadItem.from(downloadInfo))
             }
         }
         return Optional.empty()

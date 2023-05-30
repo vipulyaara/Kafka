@@ -6,7 +6,6 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 
 data class ItemWithDownload(
-    val downloadRequest: DownloadRequest,
     val downloadInfo: DownloadInfo,
     val file: File,
     val item: Item
@@ -17,7 +16,7 @@ data class DownloadInfo(
     val progress: Float,
     val status: DownloadStatus,
     val fileUri: Uri,
-    val sizeStatus: String?
+    val size: String?
 )
 
 enum class DownloadStatus {

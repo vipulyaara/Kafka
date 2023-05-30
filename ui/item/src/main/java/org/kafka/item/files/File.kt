@@ -36,7 +36,7 @@ internal fun FileItem(
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     val fileSubtitle = if (downloadInfo?.status?.isActive() == true) {
-        listOf(file.extension, downloadInfo.sizeStatus).joinToString(" - ")
+        listOf(file.extension, downloadInfo.size).joinToString(" - ")
     } else {
         listOf(file.extension, file.mapSize()).joinToString(" - ")
     }

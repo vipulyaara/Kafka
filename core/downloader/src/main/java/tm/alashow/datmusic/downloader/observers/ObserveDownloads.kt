@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import org.kafka.base.domain.SubjectInteractor
 import tm.alashow.datmusic.downloader.DownloadItems
@@ -36,7 +37,7 @@ class ObserveDownloads @Inject constructor(
     ): Flow<List<Pair<DownloadRequest, Download>>> = flow {
         val requestsById = downloadRequests.associateBy { it.requestId }
         while (true) {
-            fetcher.getDownloadsWithIdsAndStatuses(ids = requestsById.keys)
+            fetcher.getDownloads()
                 .map { requestsById.getValue(it.id) to it }
                 .also { emit(it) }
             delay(Downloader.DOWNLOADS_STATUS_REFRESH_INTERVAL)
@@ -44,16 +45,9 @@ class ObserveDownloads @Inject constructor(
     }.distinctUntilChanged()
 
     override fun createObservable(params: Params): Flow<DownloadItems> {
-        val downloadsRequestsFlow: Flow<List<DownloadRequest>> = when {
-            params.hasQuery -> searchDownloads.invoke(params.query)
-            else -> dao.entries()
+        return flow {
+            val items = fetcher.getDownloads().map { FileDownloadItem.from(it) }
+            emit(DownloadItems(items))
         }
-
-        return downloadsRequestsFlow.flatMapLatest { fetcherDownloads(it) }
-            .map {
-                val audioDownloads = it.filter { pair -> pair.first.entityType == DownloadRequest.Type.Audio }
-                    .map { (request, info) -> FileDownloadItem.from(request, info) }
-                DownloadItems(audioDownloads)
-            }
     }
 }

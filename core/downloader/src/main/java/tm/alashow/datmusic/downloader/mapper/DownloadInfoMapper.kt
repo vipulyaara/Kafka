@@ -16,7 +16,7 @@ class DownloadInfoMapper @Inject constructor() {
             progress = download.progress.coerceAtLeast(0) / 100f,
             fileUri = download.fileUri,
             status = download.status.toDownloadStatus(),
-            sizeStatus = download.fileSizeStatus(),
+            size = download.fileSizeStatus(),
         )
     }
 

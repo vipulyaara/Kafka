@@ -5,6 +5,7 @@
 package tm.alashow.datmusic.downloader.manager
 
 import com.tonyodev.fetch2.AbstractFetchListener
+import com.tonyodev.fetch2.CompletedDownload
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Request
@@ -13,6 +14,7 @@ import com.tonyodev.fetch2.database.DownloadInfo
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import org.kafka.base.debug
 import java.io.IOException
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -122,6 +124,14 @@ class FetchDownloadManager @Inject constructor(
 
     override suspend fun delete(ids: List<Int>) {
         fetch.delete(ids)
+    }
+
+    override suspend fun addCompletedDownloads(completedDownloads: List<CompletedDownload>) {
+        fetch.addCompletedDownloads(completedDownloads, true, {
+            debug { "Completed downloads added: $it" }
+        }, {
+            debug { "Completed downloads failed to add: $it" }
+        })
     }
 }
 

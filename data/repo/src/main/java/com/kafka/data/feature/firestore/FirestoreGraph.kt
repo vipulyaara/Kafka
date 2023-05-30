@@ -32,4 +32,9 @@ class FirestoreGraph @Inject constructor(
         .collection("favorites")
         .document(id)
         .collection("items")
+
+    fun getDownloadsCollection(id: String) = firestore
+        .collection("downloads")
+        .document(id)
+        .collection("items")
 }

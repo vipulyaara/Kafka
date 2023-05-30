@@ -34,7 +34,7 @@ class ReaderProgressInitializer @Inject constructor(
     private val fileDao: FileDao,
     private val recentTextItemMapper: RecentTextItemMapper,
     private val dispatchers: AppCoroutineDispatchers,
-    private val recentTextDao: RecentTextDao
+    private val recentTextDao: RecentTextDao,
 ) : AppInitializer {
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {

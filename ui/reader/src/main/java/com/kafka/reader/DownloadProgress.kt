@@ -66,9 +66,9 @@ private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.weight(0.6f)) {
-            if (downloadInfo.sizeStatus != null) {
+            if (downloadInfo.size != null) {
                 Text(
-                    text = downloadInfo.sizeStatus!!,
+                    text = downloadInfo.size!!,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
