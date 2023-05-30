@@ -72,7 +72,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             HomepageCollection.FeaturedItem(
                 label = label,
                 items = items.toPersistentList(),
-                image = image?.random()?.downloadURL,
+                image = image?.randomOrNull()?.downloadURL,
                 enabled = enabled
             )
         }
