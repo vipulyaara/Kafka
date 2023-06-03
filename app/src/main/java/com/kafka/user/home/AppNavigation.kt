@@ -80,8 +80,8 @@ private fun NavGraphBuilder.addHomeRoot() {
         addProfile(RootScreen.Home)
         addFeedback(RootScreen.Home)
         addSearch(RootScreen.Home)
-        addPlayer(RootScreen.Home)
         addLogin(RootScreen.Home)
+        addPlayer(RootScreen.Home)
     }
 }
 

@@ -27,11 +27,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.kafka.auth.R
 import org.kafka.common.extensions.AnimatedVisibilityFade
+import org.kafka.common.extensions.alignCenter
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.simpleClickable
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.material.BackButton
+import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.progress.FullScreenProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -46,12 +49,16 @@ internal enum class LoginState {
 fun LoginScreen() {
     val authViewModel: AuthViewModel = hiltViewModel()
     val authViewState by authViewModel.state.collectAsState()
+    val navigator = LocalNavigator.current
 
     if (authViewState.currentUser != null) {
-        LocalNavigator.current.goBack()
+        navigator.goBack()
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { TopBar(navigationIcon = { BackButton { navigator.goBack() } }) }
+    ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             if (authViewState.currentUser == null) {
                 Login(
@@ -94,7 +101,7 @@ private fun Login(
     ) {
         Spacer(modifier = Modifier.height(Dimens.Spacing24))
 
-        LoginLogo(modifier = Modifier.weight(0.3f))
+        LoginLogo(modifier = Modifier.weight(0.4f))
 
         Spacer(modifier = Modifier.height(Dimens.Spacing48))
 
@@ -133,14 +140,18 @@ private fun Login(
 @Composable
 private fun LoginLogo(modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_kafka_logo),
-            modifier = Modifier
-                .size(Dimens.Spacing96)
-                .align(Alignment.Center),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-            contentDescription = null
-        )
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_kafka_logo),
+                modifier = Modifier.size(Dimens.Spacing96),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                contentDescription = null
+            )
+        }
     }
 }
 
