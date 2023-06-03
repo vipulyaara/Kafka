@@ -3,4 +3,5 @@
     <string name="search" translatable="false">Search...</string>
     <string name="recent_searches" translatable="false">Recent searches</string>
     <string name="search_user_hint" translatable="false">Try different spellings or write in different languages to get more accurate results.</string>
+    <string name="cd_clear_text" translatable="false">Clear text</string>
 </resources>

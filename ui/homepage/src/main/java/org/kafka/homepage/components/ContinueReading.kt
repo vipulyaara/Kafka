@@ -101,6 +101,7 @@ private fun ContinueReadingItem(
         .clip(RoundedCornerShape(Dimens.Spacing08))
         .combinedClickable(
             onLongClick = { isInEditMode = !isInEditMode },
+            onClickLabel = item.recentItem.title,
             onClick = {
                 isInEditMode = false
                 onItemClicked()
@@ -185,11 +186,12 @@ private fun BoxScope.RemoveRecentItemButton(
                     scaleY = scale
                     rotationZ = rotation
                 },
-            onClick = { onItemRemoved(continueReading.fileId) }) {
+            onClick = { onItemRemoved(continueReading.fileId) },
+        ) {
             Icon(
                 imageVector = Icons.XCircle,
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = null
+                contentDescription = stringResource(R.string.cd_remove_from_reading_list)
             )
         }
     }
@@ -206,7 +208,7 @@ private fun CoverImage(item: RecentItem) {
     ) {
         AsyncImage(
             model = item.coverUrl,
-            contentDescription = stringResource(id = R.string.cd_cover_image),
+            contentDescription = null,
             modifier = Modifier
                 .size(64.dp, 76.dp)
                 .background(MaterialTheme.colorScheme.surface),

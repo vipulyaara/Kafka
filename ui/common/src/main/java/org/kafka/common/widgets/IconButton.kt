@@ -51,6 +51,7 @@ fun IconButton(
     rippleColor: Color = Color.Unspecified,
     rippleRadius: Dp = RippleRadius,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClickLabel: String? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
@@ -59,6 +60,7 @@ fun IconButton(
                 onClick = onClick,
                 enabled = enabled,
                 role = Role.Button,
+                onClickLabel = onClickLabel,
                 interactionSource = interactionSource,
                 indication = rememberRipple(
                     bounded = false,

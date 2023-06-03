@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
+import org.kafka.item.R
 import org.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 
@@ -78,7 +80,11 @@ private fun BackIcon(
             .clip(CircleShape)
             .background(containerColor)
     ) {
-        IconResource(imageVector = Icons.Back, tint = contentColor)
+        IconResource(
+            imageVector = Icons.Back,
+            tint = contentColor,
+            contentDescription = stringResource(R.string.cd_back_button)
+        )
     }
 }
 

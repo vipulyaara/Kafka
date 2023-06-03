@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import com.kafka.data.entities.User
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
@@ -66,7 +67,11 @@ internal fun ProfileMenu(
             onClick = { if (user == null) login() else expanded = true },
             modifier = Modifier.size(Dimens.Spacing24)
         ) {
-            IconResource(imageVector = Icons.Profile, tint = MaterialTheme.colorScheme.primary)
+            IconResource(
+                imageVector = Icons.Profile,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(R.string.cd_profile)
+            )
         }
 
         Box {

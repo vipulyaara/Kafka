@@ -7,8 +7,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
+import org.kafka.ui.components.R
 
 @Composable
 fun LayoutType(layoutType: LayoutType, changeViewType: (LayoutType) -> Unit) {
@@ -18,11 +20,12 @@ fun LayoutType(layoutType: LayoutType, changeViewType: (LayoutType) -> Unit) {
             LayoutType.Grid -> Icons.List
         }
 
-        IconButton(
-            onClick = { changeViewType(layoutType.toggle()) },
-            modifier = Modifier
-        ) {
-            IconResource(imageVector = icon, tint = MaterialTheme.colorScheme.primary)
+        IconButton(onClick = { changeViewType(layoutType.toggle()) }) {
+            IconResource(
+                imageVector = icon,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(R.string.cd_change_layout)
+            )
         }
     }
 }

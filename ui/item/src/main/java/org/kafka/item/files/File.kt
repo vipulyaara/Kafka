@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.kafka.data.entities.File
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
+import org.kafka.item.R
 import org.kafka.ui.components.file.DownloadStatusIcons
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
@@ -71,17 +73,20 @@ internal fun FileItem(
 
         Box {
             if (downloadInfo == null) {
-                IconButton(onClick = { scope.launch { downloader.enqueueFile(file.fileId) } }) {
+                IconButton(
+                    onClickLabel = stringResource(R.string.cd_download_file),
+                    onClick = { scope.launch { downloader.enqueueFile(file.fileId) } }) {
                     IconResource(
                         imageVector = Icons.Download,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = stringResource(R.string.cd_download)
                     )
                 }
             }
 
             if (downloadInfo != null) {
                 DownloadStatusIcons(
-                    downloadInfo = downloadInfo!!,
+                    downloadInfo = downloadInfo,
                     downloader = downloader,
                     scope = scope
                 )
