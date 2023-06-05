@@ -295,7 +295,7 @@ internal class DownloaderImpl @Inject constructor(
 
     private fun getPathFromUri(uri: Uri): String {
         val split = uri.pathSegments[1].split(":").toTypedArray()
-        val path = split[1]
+        val path = split.getOrNull(1) ?: split[0]
         debug { "getPathFromUri: $path" }
 
         return "...$path"
