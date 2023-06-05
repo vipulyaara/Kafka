@@ -46,17 +46,24 @@ class DownloadInitializer @Inject constructor(
     private val fetch: Fetch
 ) : AppInitializer {
     override fun init(application: Application) {
-        coroutineScope.launch(dispatchers.io) { uploadExistingDownloads.execute(Unit) }
-        coroutineScope.launch(dispatchers.io) {
-            addCompletedDownloadsToFetch.execute(downloadsRepository.getDownloads().orEmpty())
-        }
+        addressBackwardCompatibility()
 
+        // add new downloads to firestore
         coroutineScope.launch(dispatchers.io) {
             createFetchListener(fetch).collectLatest { download ->
                 if (download?.download?.status == Status.COMPLETED) {
                     downloadsRepository.addDownload(download.download.toDownloadItem())
                 }
             }
+        }
+    }
+
+    private fun addressBackwardCompatibility() {
+        // upload existing downloads to firestore
+        coroutineScope.launch(dispatchers.io) { uploadExistingDownloads.execute(Unit) }
+        // upload existing downloads to fetch
+        coroutineScope.launch(dispatchers.io) {
+            addCompletedDownloadsToFetch.execute(downloadsRepository.getDownloads().orEmpty())
         }
     }
 }
