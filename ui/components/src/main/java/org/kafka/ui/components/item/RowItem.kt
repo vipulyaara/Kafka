@@ -39,7 +39,7 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ItemMediaType(mediaType = item.mediaType, size = 12.dp)
+                ItemMediaType(mediaType = item.mediaType, size = Dimens.IconSizeSmall)
                 ItemCreatorSmall(creator = item.creator?.name)
             }
         }
