@@ -6,4 +6,6 @@
     <string name="editors_choice" translatable="false">Editor\'s choice</string>
     <string name="find_many_more_on_the_search_page" translatable="false">Find many more on the search page</string>
     <string name="logged_out" translatable="false">Logged out successfully</string>
+    <string name="cd_profile" translatable="false">Profile</string>
+    <string name="cd_remove_from_reading_list" translatable="false">Remove from reading list</string>
 </resources>

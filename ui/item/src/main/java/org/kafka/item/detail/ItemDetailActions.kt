@@ -57,6 +57,7 @@ fun ItemDetailActions(
             Box(modifier = Modifier.weight(0.2f)) {
                 Icon(
                     icon = Icons.Download,
+                    contentDescription = stringResource(R.string.cd_files),
                     modifier = Modifier.align(Alignment.Center),
                     onClicked = { openFiles(itemDetail.itemId) }
                 )
@@ -65,6 +66,7 @@ fun ItemDetailActions(
             FloatingButton(
                 text = stringResource(if (itemDetail.isAudio) R.string.play else R.string.read),
                 modifier = Modifier.weight(0.8f),
+                onClickLabel = stringResource(if (itemDetail.isAudio) R.string.play else R.string.read),
                 onClicked = { onPrimaryAction(itemDetail.itemId) }
             )
         }
@@ -80,6 +82,8 @@ private fun FavoriteIcon(
     val background by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
     val iconTint by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
     val icon = if (isFavorite) Icons.HeartFilled else Icons.Heart
+    val contentDescription =
+        if (isFavorite) R.string.cd_remove_from_favorites else R.string.cd_add_to_favorites
 
     Box(
         modifier = modifier
@@ -88,8 +92,16 @@ private fun FavoriteIcon(
             .background(background)
             .clickable { onClicked() }
     ) {
-        IconButton(onClick = onClicked, modifier = Modifier.align(Alignment.Center)) {
-            IconResource(imageVector = icon, tint = iconTint)
+        IconButton(
+            onClick = onClicked,
+            onClickLabel = stringResource(id = contentDescription),
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            IconResource(
+                imageVector = icon,
+                tint = iconTint,
+                contentDescription = stringResource(R.string.cd_favorite)
+            )
         }
     }
 }
@@ -98,6 +110,7 @@ private fun FavoriteIcon(
 private fun Icon(
     icon: ImageVector,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     onClicked: () -> Unit
 ) {
     Box(
@@ -108,7 +121,7 @@ private fun Icon(
             .clickable { onClicked() }
     ) {
         IconButton(onClick = onClicked, modifier = Modifier.align(Alignment.Center)) {
-            IconResource(imageVector = icon)
+            IconResource(imageVector = icon, contentDescription = contentDescription)
         }
     }
 }

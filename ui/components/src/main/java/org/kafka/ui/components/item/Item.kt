@@ -110,7 +110,8 @@ fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 
     IconResource(
         imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
-        modifier = modifier.size(size)
+        modifier = modifier.size(size),
+        contentDescription = mediaType
     )
 }
 

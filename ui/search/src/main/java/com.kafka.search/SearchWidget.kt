@@ -97,7 +97,8 @@ private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
                 .padding(Dimens.Spacing12)
                 .size(24.dp),
             imageVector = Icons.X,
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = stringResource(R.string.cd_clear_text)
         )
     }
 }

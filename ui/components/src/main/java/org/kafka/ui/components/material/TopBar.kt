@@ -10,10 +10,12 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
+import org.kafka.ui.components.R
 
 @Composable
 fun TopBar(
@@ -48,6 +50,10 @@ fun BackButton(modifier: Modifier = Modifier, goBack: () -> Unit) {
         onClick = { goBack() },
         modifier = modifier
     ) {
-        IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)
+        IconResource(
+            imageVector = Icons.Back,
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = stringResource(R.string.cd_back)
+        )
     }
 }

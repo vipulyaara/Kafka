@@ -16,7 +16,8 @@
 </br>
 
 
-<img src="https://user-images.githubusercontent.com/6247940/233622882-30152b92-a09c-470b-b251-ae75b425cb9d.png">
+<img src="https://github.com/vipulyaara/Kafka/assets/6247940/f5a41c17-d69b-4a42-93e0-3afe71e54957">
+
 <img src="https://user-images.githubusercontent.com/6247940/233622886-39d7c75a-363a-4c11-adde-7e0df52583d8.png">
 <img src="https://user-images.githubusercontent.com/6247940/233622953-e418f2d6-d576-470b-bef3-7f193944cf3b.png">
 

@@ -25,6 +25,7 @@ import org.kafka.common.widgets.shadowMaterial
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.material.BackButton
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.scaffoldPadding
 import tm.alashow.datmusic.downloader.Downloader
@@ -96,11 +97,7 @@ private fun TopBar(
 ) {
     TopBar(
         title = title,
-        navigationIcon = {
-            IconButton(onClick = { navigator.goBack() }) {
-                IconResource(imageVector = Icons.Back, tint = MaterialTheme.colorScheme.primary)
-            }
-        },
+        navigationIcon = { BackButton { navigator.goBack() } },
         modifier = Modifier.shadowMaterial(lazyListState.elevation)
     )
 }
