@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +33,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
@@ -66,24 +67,31 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         preloadImages(context, state.itemsByCreator)
     }
 
+    val lazyGridState = rememberLazyGridState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
                 isShareVisible = false,
+                lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
                 onBackPressed = { navigator.goBack() }
             )
         }
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state, viewModel)
+            ItemDetail(state, viewModel, lazyGridState)
         }
     }
 }
 
 @Composable
-private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewModel) {
+private fun ItemDetail(
+    state: ItemDetailViewState,
+    viewModel: ItemDetailViewModel,
+    lazyGridState: LazyGridState
+) {
     val context = LocalContext.current
 
     Box(Modifier.fillMaxSize()) {
@@ -101,6 +109,7 @@ private fun ItemDetail(state: ItemDetailViewState, viewModel: ItemDetailViewMode
         AnimatedVisibilityFade(state.itemDetail != null) {
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
+                state = lazyGridState,
                 contentPadding = scaffoldPadding(),
                 columns = GridCells.Fixed(GridItemSpan)
             ) {

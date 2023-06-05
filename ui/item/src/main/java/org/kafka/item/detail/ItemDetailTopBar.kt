@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -27,10 +28,10 @@ import ui.common.theme.theme.Dimens
 internal fun TopBar(
     onShareClicked: () -> Unit,
     onBackPressed: () -> Unit,
-    lazyListState: LazyListState = rememberLazyListState(),
+    lazyGridState: LazyGridState,
     isShareVisible: Boolean = false
 ) {
-    val isRaised by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 2 } }
+    val isRaised by remember { derivedStateOf { lazyGridState.firstVisibleItemIndex > 2 } }
 
     val containerColor by animateColorAsState(
         if (isRaised) MaterialTheme.colorScheme.primary else Color.Transparent
