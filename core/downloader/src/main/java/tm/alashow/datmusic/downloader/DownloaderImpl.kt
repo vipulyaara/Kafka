@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
 import org.kafka.analytics.Analytics
-import org.kafka.analytics.event
 import org.kafka.base.debug
 import org.kafka.common.snackbar.SnackbarManager
 import timber.log.Timber
@@ -282,7 +281,7 @@ internal class DownloaderImpl @Inject constructor(
             downloaderMessage(DownloadsUnknownError)
             return
         }
-        analytics.event("downloads.setDownloadsLocation", mapOf("uri" to uri))
+        analytics.log { setDownloadLocation(uri.toString()) }
         appContext.contentResolver.takePersistableUriPermission(uri, INTENT_READ_WRITE_FLAG)
         preferences.save(DOWNLOADS_LOCATION, uri.toString())
 
@@ -302,7 +301,7 @@ internal class DownloaderImpl @Inject constructor(
     }
 
     override suspend fun resetDownloadsLocation() {
-        analytics.event("downloads.resetDownloadsLocation")
+        analytics.log { resetDownloadLocation() }
         val current = downloadsLocationUri.first()
         if (current.isPresent) {
             appContext.contentResolver.releasePersistableUriPermission(

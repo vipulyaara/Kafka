@@ -37,11 +37,6 @@ class EventRepository @Inject constructor() {
         "source" to source
     )
 
-    fun updateItemDetail(itemId: String, source: String? = null) = "update_item_detail" to mapOf(
-        "item_id" to itemId,
-        "source" to source
-    )
-
     fun addFavorite(itemId: String, source: String? = null) = "add_favorite" to mapOf(
         "item_id" to itemId,
         "source" to source
@@ -85,8 +80,9 @@ class EventRepository @Inject constructor() {
 
     fun shareItem(itemId: String) = "share_item" to mapOf("item_id" to itemId)
 
-    fun themeChanged(theme: String, source: String? = null) = "theme" to mapOf(
-        "mode" to theme,
-        "source" to source
+    fun setDownloadLocation(location: String) = "set_download_location" to mapOf(
+        "location" to location
     )
+
+    fun resetDownloadLocation() = "reset_download_location" to mapOf<String, String>()
 }

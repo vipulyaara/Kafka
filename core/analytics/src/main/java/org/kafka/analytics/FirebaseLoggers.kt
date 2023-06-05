@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.kafka.base.debug
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,6 +35,7 @@ class FirebaseAnalytics @Inject constructor(
 
     override fun log(eventInfo: EventInfo) {
         val (eventName, map) = eventInfo
+        debug { "Logging event: $eventName, $map" }
         firebaseAnalytics.logEvent(eventName, map.asBundle())
     }
 
