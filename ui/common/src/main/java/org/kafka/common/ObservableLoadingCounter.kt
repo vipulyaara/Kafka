@@ -13,8 +13,9 @@ import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.toUiMessage
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
-class ObservableLoadingCounter {
+class ObservableLoadingCounter @Inject constructor() {
     private val count = AtomicInteger()
     private val loadingState = MutableStateFlow(count.get())
 

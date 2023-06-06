@@ -36,10 +36,9 @@ class SearchViewModel @Inject constructor(
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
+    private val loadingState: ObservableLoadingCounter,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val loadingState = ObservableLoadingCounter()
-
     private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
     private val keywordFlow = savedStateHandle
         .getMutableStateFlow(extraKeyword, "", viewModelScope)
