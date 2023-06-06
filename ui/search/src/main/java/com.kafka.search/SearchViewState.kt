@@ -9,8 +9,7 @@ data class SearchViewState(
     val filters: List<SearchFilter> = SearchFilter.all(),
     var items: List<Item>? = null,
     val recentSearches: List<String>? = null,
-    val isLoading: Boolean = false,
-    val message: UiMessage? = null
+    val isLoading: Boolean = false
 ) {
     val canShowRecentSearches: Boolean
         get() = items.isNullOrEmpty()

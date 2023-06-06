@@ -7,16 +7,16 @@ import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.common.getMutableStateFlow
-import org.kafka.domain.combine
+import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
 import org.kafka.domain.interactors.SearchQueryItems
@@ -35,10 +35,10 @@ class SearchViewModel @Inject constructor(
     private val observeSearchItems: ObserveSearchItems,
     private val navigator: Navigator,
     private val analytics: Analytics,
+    private val snackbarManager: SnackbarManager,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
-    private val uiMessageManager = UiMessageManager()
 
     private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
     private val keywordFlow = savedStateHandle
@@ -52,7 +52,6 @@ class SearchViewModel @Inject constructor(
         observeSearchItems.flow.onStart { if (keywordInitialValue.isEmpty()) emit(emptyList()) },
         observeRecentSearch.flow,
         loadingState.observable,
-        uiMessageManager.message,
         ::SearchViewState
     ).stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
@@ -77,7 +76,7 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch {
             searchQueryItems(SearchQueryItems.Params(keyword, filters))
-                .collectStatus(loadingState, uiMessageManager)
+                .collectStatus(loadingState, snackbarManager)
         }
     }
 
