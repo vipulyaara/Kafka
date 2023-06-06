@@ -9,7 +9,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.kafka.common.asImmutable
+import kotlinx.collections.immutable.toPersistentList
 import org.kafka.library.downloads.Downloads
 import org.kafka.library.favorites.Favorites
 import org.kafka.ui.components.ProvideScaffoldPadding
@@ -28,7 +28,7 @@ fun LibraryScreen() {
             ) {
                 Tabs(
                     pagerState = pagerState,
-                    tabs = LibraryTab.values().map { it.name }.asImmutable(),
+                    tabs = LibraryTab.values().map { it.name }.toPersistentList(),
                     modifier = Modifier.fillMaxWidth()
                 )
 

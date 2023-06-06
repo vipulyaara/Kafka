@@ -10,6 +10,7 @@ import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.joinerOr
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import org.kafka.base.AppCoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.interactors.query.BuildLocalQuery

@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
-import org.kafka.common.ImmutableList
 import org.kafka.common.extensions.alignCenter
 import org.kafka.ui.components.pagerTabIndicatorOffset
 import ui.common.theme.theme.Dimens
@@ -43,7 +43,7 @@ fun Tabs(
         },
         modifier = modifier,
     ) {
-        tabs.items.forEachIndexed { index, season ->
+        tabs.forEachIndexed { index, season ->
             Tab(
                 text = { TabItem(season, pagerState.currentPage == index) },
                 selected = pagerState.currentPage == index,

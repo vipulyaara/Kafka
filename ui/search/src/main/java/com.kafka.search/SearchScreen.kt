@@ -45,14 +45,14 @@ fun SearchScreen() {
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Search(
-                searchText = searchViewModel.keyword,
-                setSearchText = { searchViewModel.keyword = it },
+                searchText = searchViewState.keyword,
+                setSearchText = { searchViewModel.setKeyword(it) },
                 searchViewState = searchViewState,
-                selectedFilters = searchViewModel.filters,
+                selectedFilters = searchViewState.filters,
                 onFilterClicked = { searchViewModel.toggleFilter(it) },
                 onSearchClicked = {
-                    searchViewModel.keyword = it
-                    searchViewModel.search(it, searchViewModel.filters)
+                    searchViewModel.setKeyword(it)
+                    searchViewModel.search(it, searchViewState.filters)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = { searchViewModel.openItemDetail(it) }
@@ -122,13 +122,13 @@ private fun Search(
             )
         }
 
-        if (!searchViewState.canShowRecentSearches && searchViewState.items.isNullOrEmpty()) {
-            MessageBox(
-                text = stringResource(R.string.search_user_hint),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Dimens.Gutter)
-            )
-        }
+//        if (!searchViewState.canShowRecentSearches && searchViewState.items.isNullOrEmpty()) {
+//            MessageBox(
+//                text = stringResource(R.string.search_user_hint),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(Dimens.Gutter)
+//            )
+//        }
     }
 }

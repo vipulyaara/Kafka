@@ -1,8 +1,5 @@
 package com.kafka.search
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,15 +7,16 @@ import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
-import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
+import org.kafka.common.getMutableStateFlow
+import org.kafka.domain.combine
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
 import org.kafka.domain.interactors.SearchQueryItems
@@ -42,27 +40,31 @@ class SearchViewModel @Inject constructor(
     private val loadingState = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
-    var keyword by mutableStateOf(savedStateHandle.get<String>("keyword").orEmpty())
-    var filters by mutableStateOf(
-        savedStateHandle.get<String>("filters")?.let { SearchFilter.from(it) }
-            ?: SearchFilter.all())
+    private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
+    private val keywordFlow = savedStateHandle
+        .getMutableStateFlow(extraKeyword, "", viewModelScope)
+    private val filtersFlow = savedStateHandle
+        .getMutableStateFlow(extraFilters, SearchFilter.allString(), viewModelScope)
 
     val state: StateFlow<SearchViewState> = combine(
-        observeSearchItems.flow.onStart {
-            if (keyword.isEmpty()) {
-                debug { "keyword is empty" }
-                emit(listOf())
-            }
-        },
+        keywordFlow,
+        filtersFlow.map { SearchFilter.from(it) },
+        observeSearchItems.flow.onStart { if (keywordInitialValue.isEmpty()) emit(emptyList()) },
         observeRecentSearch.flow,
         loadingState.observable,
         uiMessageManager.message,
-        ::SearchViewState,
+        ::SearchViewState
     ).stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
-        search(keyword, filters)
+        val filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
+        search(keywordInitialValue, SearchFilter.from(filters))
+
         observeRecentSearch(Unit)
+    }
+
+    fun setKeyword(keyword: String) {
+        keywordFlow.value = keyword
     }
 
     fun search(keyword: String, filters: List<SearchFilter>) {
@@ -87,13 +89,13 @@ class SearchViewModel @Inject constructor(
     }
 
     fun toggleFilter(filter: SearchFilter) {
-        val filters = filters.toMutableList()
+        val filters = state.value.filters.toMutableList()
         if (filters.contains(filter)) {
             filters.remove(filter)
         } else {
             filters.add(filter)
         }
-        this.filters = filters
+        this.filtersFlow.value = SearchFilter.toString(filters)
     }
 
     fun removeRecentSearch(keyword: String) {
@@ -108,3 +110,6 @@ class SearchViewModel @Inject constructor(
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 }
+
+private const val extraKeyword = "keyword"
+private const val extraFilters = "filters"

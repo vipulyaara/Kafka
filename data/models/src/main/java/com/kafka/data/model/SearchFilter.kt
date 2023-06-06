@@ -16,6 +16,10 @@ enum class SearchFilter {
             return value.split(",").map { SearchFilter.fromString(it.trim()) }
         }
 
+        fun toString(filters: List<SearchFilter>): String {
+            return filters.joinToString(",") { it.name }
+        }
+
         fun allString(): String {
             return values().toList().joinToString(",") { it.name }
         }
