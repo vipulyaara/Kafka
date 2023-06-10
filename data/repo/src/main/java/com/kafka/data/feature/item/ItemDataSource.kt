@@ -2,7 +2,7 @@ package com.kafka.data.feature.item
 
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.network.resultApiCall
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ItemDataSource @Inject constructor(
     private val archiveService: ArchiveService,
     private val itemMapper: ItemMapper,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers
 ) {
 
     suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {

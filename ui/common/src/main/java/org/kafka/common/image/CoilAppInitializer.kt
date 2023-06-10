@@ -8,13 +8,13 @@ import coil.disk.DiskCache
 import com.kafka.data.AppInitializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import java.io.File
 import javax.inject.Inject
 
 class CoilAppInitializer @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
     override fun init(application: Application) {

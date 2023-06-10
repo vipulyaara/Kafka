@@ -3,14 +3,14 @@ package org.kafka.domain.interactors
 import com.google.firebase.auth.FirebaseAuth
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateFeedback @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val auth: FirebaseAuth,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers
 ) : Interactor<UpdateFeedback.Params>() {
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {

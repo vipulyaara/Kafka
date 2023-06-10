@@ -11,13 +11,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import javax.inject.Inject
 
 class AudioProgressInitializer @Inject constructor(
     private val playbackConnection: PlaybackConnection,
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val recentAudioDao: RecentAudioDao,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
 ) : AppInitializer {

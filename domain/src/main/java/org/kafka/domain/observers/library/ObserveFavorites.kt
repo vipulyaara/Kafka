@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveFavorites @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,
     private val favoritesRepository: FavoritesRepository,
 ) : SubjectInteractor<Unit, List<Item>>() {

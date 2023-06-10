@@ -31,7 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.AppReviewManager
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
@@ -68,7 +68,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideCoroutineDispatchers() = AppCoroutineDispatchers(
+    fun provideCoroutineDispatchers() = CoroutineDispatchers(
         io = Dispatchers.IO,
         computation = Dispatchers.Default,
         main = Dispatchers.Main

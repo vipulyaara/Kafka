@@ -12,7 +12,7 @@ import com.kafka.data.injection.ProcessLifetime
 import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.threeten.bp.zone.ZoneRulesProvider
 import timber.log.Timber
 import javax.inject.Inject
@@ -46,7 +46,7 @@ private class CrashlyticsTree(
 
 
 class FirebaseInitializer @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope
 ) : AppInitializer {
     override fun init(application: Application) {
@@ -58,7 +58,7 @@ class FirebaseInitializer @Inject constructor(
 }
 
 class ThreeTenBpInitializer @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope
 ) : AppInitializer {
     override fun init(application: Application) {

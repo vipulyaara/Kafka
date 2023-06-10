@@ -5,13 +5,13 @@ import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 
 class UpdateHomepage @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val homepageRepository: HomepageRepository,
     private val itemRepository: ItemRepository,
     private val buildRemoteQuery: BuildRemoteQuery

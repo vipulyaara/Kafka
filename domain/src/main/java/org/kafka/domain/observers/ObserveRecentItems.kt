@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Interactor for updating the homepage.
  * */
 class ObserveRecentItems @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,
     private val recentItemRepository: RecentItemRepository
 ) : SubjectInteractor<Unit, ImmutableList<RecentItemWithProgress>>() {

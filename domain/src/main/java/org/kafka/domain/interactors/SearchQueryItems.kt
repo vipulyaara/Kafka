@@ -8,13 +8,13 @@ import com.kafka.data.model.booksBySubject
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.joinerOr
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 
 class SearchQueryItems @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val buildRemoteQuery: BuildRemoteQuery,
     private val itemRepository: ItemRepository,
 ) : Interactor<SearchQueryItems.Params>() {

@@ -2,11 +2,11 @@ package org.kafka.domain.interactors.query
 
 import com.kafka.data.model._creator
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.domain.interactors.query.BuildArchiveQuery.Query.QueryByCreator
 import javax.inject.Inject
 
-class BuildArchiveQuery @Inject constructor(private val dispatchers: AppCoroutineDispatchers) {
+class BuildArchiveQuery @Inject constructor(private val dispatchers: CoroutineDispatchers) {
     suspend operator fun invoke(params: Params): ArchiveQuery {
         return withContext(dispatchers.computation) {
             ArchiveQuery().apply {

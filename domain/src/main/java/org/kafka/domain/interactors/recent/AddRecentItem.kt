@@ -3,13 +3,13 @@ package org.kafka.domain.interactors.recent
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.RecentItem
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.UpdateRecentItem
 import javax.inject.Inject
 
 class AddRecentItem @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val itemDetailDao: ItemDetailDao,
     private val updateRecentItem: UpdateRecentItem
 ) : Interactor<AddRecentItem.Params>() {

@@ -108,8 +108,8 @@ class AuthViewModel @Inject constructor(
     }
 
     fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
+        analytics.log { logoutClicked() }
         viewModelScope.launch {
-            analytics.log { logoutClicked() }
             logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
                 if (status == InvokeSuccess) {
                     snackbarManager.addMessage(UiMessage(R.string.logged_out))

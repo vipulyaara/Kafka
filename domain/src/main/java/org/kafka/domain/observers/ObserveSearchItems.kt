@@ -10,14 +10,13 @@ import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.joinerOr
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onStart
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.interactors.query.BuildLocalQuery
 import javax.inject.Inject
 
 class ObserveSearchItems @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val buildLocalQuery: BuildLocalQuery,
     private val itemRepository: ItemRepository
 ) : SubjectInteractor<ObserveSearchItems.Params, List<Item>>() {

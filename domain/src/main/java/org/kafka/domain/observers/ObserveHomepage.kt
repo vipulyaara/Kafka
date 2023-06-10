@@ -7,13 +7,13 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveHomepage @Inject constructor(
-    private val appCoroutineDispatchers: AppCoroutineDispatchers,
+    private val coroutineDispatchers: CoroutineDispatchers,
     private val observeRecentItems: ObserveRecentItems,
     private val homepageRepository: HomepageRepository
 ) : SubjectInteractor<Unit, Homepage>() {
@@ -38,6 +38,6 @@ class ObserveHomepage @Inject constructor(
             }.toPersistentList()
 
             Homepage(collection = collectionWithRecentItems)
-        }.flowOn(appCoroutineDispatchers.io)
+        }.flowOn(coroutineDispatchers.io)
     }
 }

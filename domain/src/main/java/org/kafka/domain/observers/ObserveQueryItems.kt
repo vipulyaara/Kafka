@@ -5,13 +5,13 @@ import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.interactors.query.BuildLocalQuery
 import javax.inject.Inject
 
 class ObserveQueryItems @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val buildLocalQuery: BuildLocalQuery,
     private val itemRepository: ItemRepository
 ) : SubjectInteractor<ObserveQueryItems.Params, List<Item>>() {

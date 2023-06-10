@@ -16,7 +16,7 @@ import com.tonyodev.fetch2.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.errorLog
 import org.kafka.domain.interactors.ReadTextFromUri
 import tm.alashow.datmusic.downloader.manager.Downloadable
@@ -33,7 +33,7 @@ class ReaderProgressInitializer @Inject constructor(
     private val downloadRequestsDao: DownloadRequestsDao,
     private val fileDao: FileDao,
     private val recentTextItemMapper: RecentTextItemMapper,
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val recentTextDao: RecentTextDao
 ) : AppInitializer {
     override fun init(application: Application) {

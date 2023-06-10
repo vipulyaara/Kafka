@@ -2,12 +2,12 @@ package org.kafka.domain.interactors
 
 import com.kafka.data.dao.RecentAudioDao
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateCurrentTimestamp @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val recentAudioDao: RecentAudioDao
 ) : Interactor<UpdateCurrentTimestamp.Params>() {
 

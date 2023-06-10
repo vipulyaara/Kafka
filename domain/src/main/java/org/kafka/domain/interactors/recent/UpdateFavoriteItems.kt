@@ -4,14 +4,14 @@ import com.kafka.data.dao.ItemDao
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.UpdateItems
 import javax.inject.Inject
 
 class UpdateFavoriteItems @Inject constructor(
     private val updateItems: UpdateItems,
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val itemDao: ItemDao
 ) : Interactor<UpdateFavoriteItems.Params>() {
     override suspend fun doWork(params: Params) {

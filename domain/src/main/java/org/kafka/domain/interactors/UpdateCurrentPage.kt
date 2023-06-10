@@ -2,12 +2,12 @@ package org.kafka.domain.interactors
 
 import com.kafka.data.dao.RecentTextDao
 import kotlinx.coroutines.withContext
-import org.kafka.base.AppCoroutineDispatchers
+import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateCurrentPage @Inject constructor(
-    private val dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val recentTextDao: RecentTextDao
 ) : Interactor<UpdateCurrentPage.Params>() {
 
