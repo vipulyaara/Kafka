@@ -16,4 +16,6 @@
     <string name="title_dynamicfeature" translatable="false">Module Title</string>
     <string name="bottom_bar_search" translatable="false">Search</string>
     <string name="home" translatable="false">Home</string>
+
+    <string name="notifications.defaultChannel">Default channel</string>
 </resources>

@@ -105,6 +105,7 @@ dependencies {
 
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.navigation.material)
+    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.hilt.compose)
     implementation(libs.androidx.hilt.navigation)

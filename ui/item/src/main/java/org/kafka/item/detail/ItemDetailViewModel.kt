@@ -6,7 +6,6 @@ import android.content.ContextWrapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.AppReviewManager
@@ -32,8 +30,8 @@ import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
+import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
-import org.kafka.domain.observers.ObserveQueryItems
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.DeepLinksNavigation
@@ -50,7 +48,7 @@ import javax.inject.Inject
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     private val updateItemDetail: UpdateItemDetail,
-    private val observeQueryItems: ObserveQueryItems,
+    private val observeCreatorItems: ObserveCreatorItems,
     private val updateItems: UpdateItems,
     private val addRecentItem: AddRecentItem,
     private val observeFavoriteStatus: ObserveFavoriteStatus,
@@ -70,8 +68,8 @@ class ItemDetailViewModel @Inject constructor(
         get() = navigator.currentRoot.value
 
     val state: StateFlow<ItemDetailViewState> = combine(
-        observeItemDetail.flow.onEach { observeByAuthor(it) },
-        observeQueryItems.flow.onStart { emit(emptyList()) },
+        observeItemDetail.flow.onEach { updateItemsByAuthor(it?.creator) },
+        observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
         uiMessageManager.message,
@@ -100,6 +98,9 @@ class ItemDetailViewModel @Inject constructor(
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, snackbarManager)
         }
+
+        observeCreatorItems(ObserveCreatorItems.Params(itemId))
+        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
     }
 
     fun onPrimaryAction(itemId: String) {
@@ -134,15 +135,10 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    private fun observeByAuthor(itemDetail: ItemDetail?) {
-        itemDetail?.let {
-            observeFavoriteStatus(ObserveFavoriteStatus.Params(itemDetail.itemId))
-
-            itemDetail.creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
-                observeQueryItems(ObserveQueryItems.Params(it))
-                viewModelScope.launch {
-                    updateItems(UpdateItems.Params(it)).collectStatus(loadingState, snackbarManager)
-                }
+    private fun updateItemsByAuthor(creator: String?) {
+        creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
+            viewModelScope.launch {
+                updateItems(UpdateItems.Params(it)).collectStatus(loadingState, snackbarManager)
             }
         }
     }

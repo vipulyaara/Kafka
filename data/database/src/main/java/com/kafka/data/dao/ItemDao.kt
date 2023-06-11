@@ -23,6 +23,9 @@ abstract class ItemDao : EntityDao<Item> {
     abstract suspend fun get(itemId: String): Item
 
     @Query("select * from item where itemId = :itemId")
+    abstract fun observe(itemId: String): Flow<Item?>
+
+    @Query("select * from item where itemId = :itemId")
     abstract suspend fun getOrNull(itemId: String): Item?
 
     @Query("select * from item where itemId IN (:itemIds)")

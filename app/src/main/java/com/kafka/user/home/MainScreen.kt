@@ -1,5 +1,6 @@
 package com.kafka.user.home
 
+import android.os.Build
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -14,8 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
+import org.kafka.base.debug
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.NavigatorHost
 import org.kafka.navigation.rememberBottomSheetNavigator
@@ -31,6 +37,8 @@ fun MainScreen() {
     LaunchedEffect(mainViewModel, navController) {
         mainViewModel.initializeScreenOpen(navController)
     }
+
+    RequestNotificationPermission()
 
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
@@ -63,6 +71,23 @@ private fun CompositionHosts(content: @Composable () -> Unit) {
                 AudioActionHost {
                     content()
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun RequestNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val permissionState = rememberPermissionState(
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
+
+        LaunchedEffect(permissionState) {
+            if (!permissionState.status.isGranted && permissionState.status.shouldShowRationale) {
+                debug { "Notification permission granted" }
+                permissionState.launchPermissionRequest()
             }
         }
     }
