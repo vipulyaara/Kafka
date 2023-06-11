@@ -71,7 +71,7 @@ object Icons {
     val Retry = TablerIcons.Download
     val HeartFilled = Icons.Default.Favorite
     val X = TablerIcons.X
-    val XCircle = FontAwesomeIcons.Solid.Cross
+    val XCircle = TablerIcons.CircleX
     val Mic = TablerIcons.Microphone
     val Audio = FontAwesomeIcons.Solid.Headphones
     val Texts = FontAwesomeIcons.Solid.FileContract
