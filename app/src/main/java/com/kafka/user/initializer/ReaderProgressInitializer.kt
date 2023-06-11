@@ -1,7 +1,7 @@
 package com.kafka.user.initializer
 
 import android.app.Application
-import com.kafka.data.AppInitializer
+import org.kafka.base.AppInitializer
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.RecentTextDao
@@ -9,7 +9,7 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.isText
 import com.kafka.data.entities.isTxt
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Status

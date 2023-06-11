@@ -5,7 +5,7 @@ import android.content.Context
 import coil.Coil
 import coil.ImageLoader
 import coil.disk.DiskCache
-import com.kafka.data.AppInitializer
+import org.kafka.base.AppInitializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import org.kafka.base.CoroutineDispatchers

@@ -33,5 +33,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":base:domain"))
+    implementation(project(":data:database"))
+
     implementation(libs.core.ktx)
+    implementation(libs.firestore.ktx)
+    implementation(libs.dataStore)
+    implementation(libs.google.analytics)
+    implementation(libs.google.messaging)
+    implementation(libs.google.coroutines)
 }

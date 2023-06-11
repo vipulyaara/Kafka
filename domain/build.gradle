@@ -25,6 +25,6 @@ dependencies {
     implementation libs.firestore.ktx
     implementation libs.fetch
     implementation libs.google.auth
-    implementation libs.google.auth.coroutines
+    implementation libs.google.coroutines
     implementation libs.google.firestore
 }

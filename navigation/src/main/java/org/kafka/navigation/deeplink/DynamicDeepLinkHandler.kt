@@ -1,4 +1,4 @@
-package org.kafka.navigation
+package org.kafka.navigation.deeplink
 
 import android.app.Activity
 import android.content.Intent

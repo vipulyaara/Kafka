@@ -34,9 +34,9 @@ import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
-import org.kafka.navigation.DeepLinksNavigation
-import org.kafka.navigation.DynamicDeepLinkHandler
-import org.kafka.navigation.Navigation
+import org.kafka.navigation.deeplink.DeepLinksNavigation
+import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
+import org.kafka.navigation.deeplink.Navigation
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen

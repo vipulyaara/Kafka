@@ -1,7 +1,7 @@
 package com.kafka.user.initializer
 
 import android.app.Application
-import com.kafka.data.AppInitializer
+import org.kafka.base.AppInitializer
 import javax.inject.Inject
 
 class AppInitializers @Inject constructor(

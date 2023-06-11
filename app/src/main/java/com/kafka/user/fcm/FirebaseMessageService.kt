@@ -5,16 +5,14 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.notifications.NotificationManager

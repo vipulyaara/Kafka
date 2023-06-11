@@ -8,7 +8,7 @@ import androidx.core.view.WindowCompat
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import org.kafka.analytics.AppReviewManager
-import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import ui.common.theme.theme.AppTheme
 import javax.inject.Inject
 

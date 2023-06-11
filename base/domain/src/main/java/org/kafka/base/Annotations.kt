@@ -1,4 +1,4 @@
-package com.kafka.data.injection
+package org.kafka.base
 
 import javax.inject.Qualifier
 

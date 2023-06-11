@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

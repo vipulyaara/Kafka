@@ -11,8 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.kafka.data.AppInitializer
-import com.kafka.data.injection.ProcessLifetime
+import com.google.firebase.messaging.FirebaseMessaging
+import com.kafka.recommendations.CountryInitializer
+import org.kafka.base.AppInitializer
+import com.kafka.recommendations.FirebaseTopics
+import com.kafka.recommendations.FirebaseTopicsImpl
+import org.kafka.base.ProcessLifetime
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
@@ -33,7 +37,7 @@ import org.kafka.analytics.Analytics
 import org.kafka.analytics.AppReviewManager
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
-import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
 import org.kafka.notifications.NotificationManagerImpl
 import javax.inject.Named
@@ -59,6 +63,12 @@ class AppModule {
         return FirebaseAnalytics.getInstance(app).apply {
             setUserId("")
         }
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseMessaging(app: Application): FirebaseMessaging {
+        return FirebaseMessaging.getInstance()
     }
 
     @Named("app")
@@ -126,6 +136,10 @@ abstract class AppModuleBinds {
     @IntoSet
     abstract fun provideRemoteConfigInitializer(bind: RemoteConfigInitializer): AppInitializer
 
+    @Binds
+    @IntoSet
+    abstract fun provideCountryInitializer(bind: CountryInitializer): AppInitializer
+
     @Singleton
     @Binds
     abstract fun provideNotificationManager(bind: NotificationManagerImpl): NotificationManager
@@ -137,4 +151,7 @@ abstract class AppModuleBinds {
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
+
+    @Binds
+    abstract fun provideFirebaseTopics(firebaseTopics: FirebaseTopicsImpl): FirebaseTopics
 }

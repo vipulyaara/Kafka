@@ -1,10 +1,10 @@
 package com.kafka.user.initializer
 
 import android.app.Application
-import com.kafka.data.AppInitializer
+import org.kafka.base.AppInitializer
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.entities.RecentAudioItem
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.fileId
 import kotlinx.coroutines.CoroutineScope

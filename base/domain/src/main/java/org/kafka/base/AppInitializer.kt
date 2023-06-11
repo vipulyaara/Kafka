@@ -1,4 +1,4 @@
-package com.kafka.data
+package org.kafka.base
 
 import android.app.Application
 

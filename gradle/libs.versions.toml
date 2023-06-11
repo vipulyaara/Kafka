@@ -174,7 +174,7 @@ google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
-google-auth-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1"
+google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1"
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-remoteConfig = { module = "com.google.firebase:firebase-config-ktx" }

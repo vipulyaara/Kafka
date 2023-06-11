@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.Reusable
 import org.kafka.base.debug
 import org.kafka.base.errorLog
-import org.kafka.navigation.DynamicDeepLinkHandler
+import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.navigation.Navigator
 import javax.inject.Inject
 

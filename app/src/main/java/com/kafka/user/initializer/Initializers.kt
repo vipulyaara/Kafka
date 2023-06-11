@@ -7,8 +7,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.kafka.data.AppInitializer
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.AppInitializer
+import org.kafka.base.ProcessLifetime
 import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

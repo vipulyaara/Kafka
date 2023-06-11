@@ -85,6 +85,7 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
     implementation(projects.corePlayback)
+    implementation(projects.core.recommendation)
     implementation(projects.core.remoteConfig)
     implementation(projects.data.repo)
     implementation(projects.domain)

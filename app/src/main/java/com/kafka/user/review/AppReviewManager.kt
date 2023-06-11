@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import com.kafka.data.prefs.PreferencesStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

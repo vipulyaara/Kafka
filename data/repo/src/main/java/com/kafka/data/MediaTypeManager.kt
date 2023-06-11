@@ -1,7 +1,7 @@
 package com.kafka.data
 
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.kafka.data.injection.ProcessLifetime
+import org.kafka.base.ProcessLifetime
 import com.kafka.data.prefs.PreferencesStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
