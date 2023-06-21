@@ -79,14 +79,16 @@ private fun CompositionHosts(content: @Composable () -> Unit) {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun RequestNotificationPermission() {
+    debug { "RequestNotificationPermission" }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         val permissionState = rememberPermissionState(
             android.Manifest.permission.POST_NOTIFICATIONS
         )
 
         LaunchedEffect(permissionState) {
+            debug { "permissionState: $permissionState" }
             if (!permissionState.status.isGranted && permissionState.status.shouldShowRationale) {
-                debug { "Notification permission granted" }
+
                 permissionState.launchPermissionRequest()
             }
         }

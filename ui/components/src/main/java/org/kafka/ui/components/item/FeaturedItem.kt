@@ -31,8 +31,6 @@ fun FeaturedItem(
     imageUrl: String? = null,
     onClick: () -> Unit = {}
 ) {
-    val icon = if (item.isAudio) Icons.Audio else Icons.Texts
-
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -42,7 +40,7 @@ fun FeaturedItem(
         Box {
             CoverImage(
                 data = imageUrl ?: item.coverImage,
-                placeholder = icon,
+                placeholder = if (item.isAudio) Icons.Audio else Icons.Texts,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)

@@ -8,7 +8,7 @@ enum class SearchFilter {
     companion object {
         private fun fromString(value: String): SearchFilter {
             debug { "SearchFilter.fromString: $value" }
-            return values().first { it.name.lowercase() == value.lowercase() }
+            return values().firstOrNull { it.name.lowercase() == value.lowercase() } ?: Name
         }
 
         fun from(value: String): List<SearchFilter> {

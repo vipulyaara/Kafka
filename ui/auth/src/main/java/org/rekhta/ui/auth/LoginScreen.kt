@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -25,9 +24,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.auth.R
 import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.alignCenter
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.simpleClickable
@@ -48,7 +47,7 @@ internal enum class LoginState {
 @Composable
 fun LoginScreen() {
     val authViewModel: AuthViewModel = hiltViewModel()
-    val authViewState by authViewModel.state.collectAsState()
+    val authViewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 
     if (authViewState.currentUser != null) {

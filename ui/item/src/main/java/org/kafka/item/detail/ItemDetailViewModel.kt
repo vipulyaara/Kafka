@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kafka.analytics.Analytics
 import org.kafka.analytics.AppReviewManager
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
@@ -34,14 +34,14 @@ import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
-import org.kafka.navigation.deeplink.DeepLinksNavigation
-import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
-import org.kafka.navigation.deeplink.Navigation
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.ItemDescription
 import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.deeplink.DeepLinksNavigation
+import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
+import org.kafka.navigation.deeplink.Navigation
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +63,6 @@ class ItemDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     private val loadingState = ObservableLoadingCounter()
-    private val uiMessageManager = UiMessageManager()
     private val currentRoot
         get() = navigator.currentRoot.value
 
@@ -72,14 +71,13 @@ class ItemDetailViewModel @Inject constructor(
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
-        uiMessageManager.message,
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading, message ->
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading ->
+        debug { "ItemDetailViewModel: $itemDetail" }
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
             isFavorite = isFavorite,
-            isLoading = isLoading,
-            message = message,
+            isLoading = isLoading
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -93,7 +91,7 @@ class ItemDetailViewModel @Inject constructor(
         refresh()
     }
 
-    fun refresh() {
+    private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
                 .collectStatus(loadingState, snackbarManager)
@@ -138,7 +136,8 @@ class ItemDetailViewModel @Inject constructor(
     private fun updateItemsByAuthor(creator: String?) {
         creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
             viewModelScope.launch {
-                updateItems(UpdateItems.Params(it)).collectStatus(loadingState, snackbarManager)
+                updateItems(UpdateItems.Params(it))
+                    .collectStatus(loadingState, snackbarManager)
             }
         }
     }

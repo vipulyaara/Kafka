@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class HomepageCollectionResponse {
     abstract val enabled: Boolean
+    abstract val topics: String
     abstract val index: Int
 
     @Serializable
@@ -14,7 +15,8 @@ sealed class HomepageCollectionResponse {
     data class Banners(
         val items: List<HomepageBanner> = listOf(),
         override val index: Int,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -24,14 +26,16 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val image: List<FirebaseImage>? = null,
         override val index: Int,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 
     @Serializable
     @SerialName("recentItems")
     data class RecentItems(
         override val index: Int,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -41,7 +45,8 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0
+        override val index: Int = 0,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -51,7 +56,8 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0
+        override val index: Int = 0,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -61,7 +67,8 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0
+        override val index: Int = 0,
+        override val topics: String = ""
     ) : HomepageCollectionResponse()
 }
 

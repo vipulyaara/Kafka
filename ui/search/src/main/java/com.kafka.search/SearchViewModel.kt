@@ -15,7 +15,6 @@ import org.kafka.analytics.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
-import org.kafka.common.getMutableStateFlow
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
@@ -37,17 +36,14 @@ class SearchViewModel @Inject constructor(
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
     private val loadingState: ObservableLoadingCounter,
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
-    private val keywordFlow = savedStateHandle
-        .getMutableStateFlow(extraKeyword, "", viewModelScope)
-    private val filtersFlow = savedStateHandle
-        .getMutableStateFlow(extraFilters, SearchFilter.allString(), viewModelScope)
 
     val state: StateFlow<SearchViewState> = combine(
-        keywordFlow,
-        filtersFlow.map { SearchFilter.from(it) },
+        savedStateHandle.getStateFlow(extraKeyword, ""),
+        savedStateHandle.getStateFlow(extraFilters, SearchFilter.allString())
+            .map { SearchFilter.from(it) },
         observeSearchItems.flow.onStart { if (keywordInitialValue.isEmpty()) emit(emptyList()) },
         observeRecentSearch.flow,
         loadingState.observable,
@@ -59,10 +55,6 @@ class SearchViewModel @Inject constructor(
         search(keywordInitialValue, SearchFilter.from(filters))
 
         observeRecentSearch(Unit)
-    }
-
-    fun setKeyword(keyword: String) {
-        keywordFlow.value = keyword
     }
 
     fun search(keyword: String, filters: List<SearchFilter>) {
@@ -79,6 +71,10 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun setQuery(query: String) {
+        savedStateHandle[extraKeyword] = query
+    }
+
     private fun addRecentSearch(keyword: String, selectedFilters: List<SearchFilter>) {
         viewModelScope.launch {
             analytics.log { this.addRecentSearch(keyword, selectedFilters.map { it.name }) }
@@ -93,7 +89,8 @@ class SearchViewModel @Inject constructor(
         } else {
             filters.add(filter)
         }
-        this.filtersFlow.value = SearchFilter.toString(filters)
+
+        savedStateHandle[extraFilters] = SearchFilter.toString(filters)
     }
 
     fun removeRecentSearch(keyword: String) {

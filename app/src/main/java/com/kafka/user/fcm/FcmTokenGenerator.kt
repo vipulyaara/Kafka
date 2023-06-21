@@ -16,13 +16,5 @@ class FcmTokenGenerator @Inject constructor() {
             val token = task.result
             debug { "FCM registration token: $token" }
         })
-
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
-            .addOnCompleteListener { task ->
-                debug { "Subscribed to weather topic" }
-                if (!task.isSuccessful) {
-                    debug { "Subscribed to weather topic failed ${task.exception}" }
-                }
-            }
     }
 }

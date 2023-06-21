@@ -5,8 +5,8 @@ import com.kafka.data.entities.Item
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByAuthor
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
@@ -25,7 +25,7 @@ class ObserveCreatorItems @Inject constructor(
                 it?.creator?.name?.let { creator ->
                     val query = ArchiveQuery().booksByAuthor(creator)
                     observeQueryItems.execute(ObserveQueryItems.Params(query))
-                } ?: emptyFlow()
+                } ?: flowOf(emptyList())
             }
     }
 

@@ -138,7 +138,7 @@ internal fun FeedbackTextField(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrect = false,
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Send
+            imeAction = ImeAction.Default
         ),
         onValueChange = { setText(it) },
         textStyle = MaterialTheme.typography.bodyMedium,

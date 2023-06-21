@@ -7,7 +7,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import org.kafka.base.AppInitializer
 import javax.inject.Inject
 
-/** Fetches user country and
+/**
+ *  Fetches user country and
  * - sets it to analytics
  * - subscribes user to the country's messaging topic for notifications
  * */

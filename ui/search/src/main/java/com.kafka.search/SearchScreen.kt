@@ -43,12 +43,12 @@ fun SearchScreen() {
         ProvideScaffoldPadding(padding = padding) {
             Search(
                 searchText = searchViewState.keyword,
-                setSearchText = { searchViewModel.setKeyword(it) },
+                setSearchText = { searchViewModel.setQuery(it) },
                 searchViewState = searchViewState,
                 selectedFilters = searchViewState.filters,
                 onFilterClicked = { searchViewModel.toggleFilter(it) },
                 onSearchClicked = {
-                    searchViewModel.setKeyword(it)
+                    searchViewModel.setQuery(it)
                     searchViewModel.search(it, searchViewState.filters)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },

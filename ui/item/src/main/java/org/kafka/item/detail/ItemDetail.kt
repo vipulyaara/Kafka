@@ -41,7 +41,6 @@ import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.simpleClickable
-import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.common.widgets.LoadImage
 import org.kafka.item.R
 import org.kafka.item.detail.description.DescriptionText
@@ -98,12 +97,6 @@ private fun ItemDetail(
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
             modifier = Modifier.align(Alignment.Center)
-        )
-
-        FullScreenMessage(
-            uiMessage = state.message,
-            show = state.isFullScreenError,
-            onRetry = viewModel::refresh
         )
 
         AnimatedVisibilityFade(state.itemDetail != null) {

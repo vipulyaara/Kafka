@@ -23,7 +23,7 @@ class ItemDetailMapper @Inject constructor(
             language = from.metadata.languages?.joinToString(),
             title = from.metadata.title?.dismissUpperCase(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
-            creator = from.metadata.creator?.joinToString()?.sanitizeForRoom(),
+            creator = from.metadata.creator?.take(5)?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
             files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },
@@ -32,7 +32,8 @@ class ItemDetailMapper @Inject constructor(
             primaryFile = from.files.primaryFile(from.metadata.mediatype)?.fileId,
             subject = from.metadata.subject
                 ?.subList(0, from.metadata.subject!!.size.coerceAtMost(12))
-                ?.filter { it.isNotEmpty() },
+//                ?.map { it.substring(0, it.length.coerceAtMost(50)) }
+                ?.filter { it.trim().isNotEmpty() },
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating
         ).also {
             insertFiles(from, it)
