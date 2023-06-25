@@ -1,4 +1,6 @@
-package org.kafka.analytics
+package org.kafka.analytics.logger
+
+import org.kafka.analytics.EventRepository
 
 interface Analytics {
     fun log(eventInfo: EventInfo)

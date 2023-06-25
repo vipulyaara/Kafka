@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kafka.analytics.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.AppReviewManager
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault

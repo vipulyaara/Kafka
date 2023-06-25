@@ -33,7 +33,7 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.kafka.analytics.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.AppReviewManager
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
@@ -110,7 +110,7 @@ class AppModule {
 abstract class AppModuleBinds {
 
     @Binds
-    abstract fun bindLogger(firebaseLogger: org.kafka.analytics.FirebaseAnalytics): Analytics
+    abstract fun bindLogger(firebaseLogger: org.kafka.analytics.logger.FirebaseAnalytics): Analytics
 
     @Binds
     @IntoSet

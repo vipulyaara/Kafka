@@ -6,6 +6,7 @@ import com.kafka.data.prefs.PreferencesStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -29,11 +30,14 @@ class FirebaseTopicsImpl @Inject constructor(
 
     override fun subscribeToTopic(topic: String) {
         processScope.launch {
-            preferencesStore.save(topicPreferenceKey, topicsFlow.first() + topic)
-            try {
-                firebaseMessaging.subscribeToTopic(topic).await()
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to subscribe to topic $topic")
+            if (topicsFlow.firstOrNull()?.contains(topic) != true) {
+                preferencesStore.save(topicPreferenceKey, topicsFlow.first() + topic)
+
+                try {
+                    firebaseMessaging.subscribeToTopic(topic).await()
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to subscribe to topic $topic")
+                }
             }
         }
     }
@@ -41,7 +45,12 @@ class FirebaseTopicsImpl @Inject constructor(
     override fun unsubscribeFromTopic(topic: String) {
         processScope.launch {
             preferencesStore.save(topicPreferenceKey, topicsFlow.first() - topic)
-            firebaseMessaging.unsubscribeFromTopic(topic).await()
+
+            try {
+                firebaseMessaging.unsubscribeFromTopic(topic).await()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to unsubscribe topic $topic")
+            }
         }
     }
 

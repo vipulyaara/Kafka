@@ -1,5 +1,6 @@
 package org.kafka.analytics
 
+import org.kafka.analytics.logger.FirebaseAnalytics
 import javax.inject.Inject
 
 class EventRepository @Inject constructor() {
@@ -85,4 +86,6 @@ class EventRepository @Inject constructor() {
     )
 
     fun resetDownloadLocation() = "reset_download_location" to mapOf<String, String>()
+
+    fun forgotPasswordSuccess() = "forgot_password_success" to mapOf<String, String>()
 }

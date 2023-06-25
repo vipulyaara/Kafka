@@ -1,4 +1,4 @@
-package org.kafka.analytics
+package org.kafka.analytics.logger
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.kafka.analytics.EventRepository
+import org.kafka.analytics.data.UserDataRepository
 import org.kafka.base.debug
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +20,7 @@ import javax.inject.Singleton
 class FirebaseAnalytics @Inject constructor(
     @ApplicationContext private val context: Context,
     @ProcessLifetime private val scope: CoroutineScope,
+    private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
@@ -41,6 +44,8 @@ class FirebaseAnalytics @Inject constructor(
 
     override fun updateUserProperty(update: UserData.() -> UserData) {
         // update the user data
+        val country = userDataRepository.getUserCountry()
+        firebaseAnalytics.setUserProperty("country", country)
     }
 
     override fun logScreenView(

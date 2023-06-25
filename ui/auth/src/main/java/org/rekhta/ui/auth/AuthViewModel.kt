@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.analytics.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.auth.R
 import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.extensions.stateInDefault
@@ -92,6 +92,7 @@ class AuthViewModel @Inject constructor(
                 resetPassword(ResetPassword.Params(email))
                     .collectStatus(loadingCounter, snackbarManager) { status ->
                         if (status == InvokeSuccess) {
+                            analytics.log { forgotPasswordSuccess() }
                             snackbarManager.addMessage(UiMessage(R.string.password_reset_link_sent))
                         }
                     }

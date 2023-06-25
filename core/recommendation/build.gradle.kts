@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation(project(":base:domain"))
     implementation(project(":data:database"))
+    implementation(project(":core:analytics"))
 
     implementation(libs.core.ktx)
     implementation(libs.firestore.ktx)

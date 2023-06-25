@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,15 +31,16 @@ import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import org.kafka.auth.R
 import org.kafka.common.extensions.rememberMutableState
-import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
@@ -55,16 +58,20 @@ internal fun LoginWithEmail(
     val keyboard = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        var username by rememberSavableMutableState(init = { "" })
-        var password by rememberSavableMutableState(init = { "" })
+        var username by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+            mutableStateOf(TextFieldValue(""))
+        }
+        var password by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+            mutableStateOf(TextFieldValue(""))
+        }
 
         val usernameAutofill = AutofillNode(
             autofillTypes = listOf(AutofillType.EmailAddress),
-            onFill = { username = it }
+            onFill = { username = TextFieldValue(it, TextRange(it.length)) }
         )
         val passwordAutofill = AutofillNode(
             autofillTypes = listOf(AutofillType.Password),
-            onFill = { password = it }
+            onFill = { password = TextFieldValue(it, TextRange(it.length)) }
         )
 
         val autofill = LocalAutofill.current
@@ -75,7 +82,7 @@ internal fun LoginWithEmail(
             modifier = Modifier.autoFill(autofill, usernameAutofill),
             loginTextField = LoginTextField.Username,
             text = username,
-            setSearchText = { username = it },
+            onValueChange = { username = it },
             onFocusChanged = onFocusChanged
         )
 
@@ -85,20 +92,20 @@ internal fun LoginWithEmail(
             modifier = Modifier.autoFill(autofill, passwordAutofill),
             loginTextField = LoginTextField.Password,
             text = password,
-            setSearchText = { password = it },
+            onValueChange = { password = it },
             onFocusChanged = onFocusChanged
         )
 
         Spacer(modifier = Modifier.height(Dimens.Spacing24))
 
-        LoginButton(keyboard, { login(username, password) }, loginState)
+        LoginButton(keyboard, { login(username.text, password.text) }, loginState)
 
         Text(
             modifier = Modifier
                 .align(Alignment.End)
                 .simpleClickable {
                     keyboard?.hide()
-                    forgotPassword(username)
+                    forgotPassword(username.text)
                 }
                 .padding(top = Dimens.Spacing20),
             text = stringResource(R.string.forgot_password),
@@ -127,10 +134,10 @@ private fun LoginButton(
 @Composable
 internal fun LoginTextField(
     loginTextField: LoginTextField,
-    text: String,
+    text: TextFieldValue,
     modifier: Modifier = Modifier,
     onFocusChanged: (FocusState) -> Unit = {},
-    setSearchText: (String) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
 ) {
     var isPasswordShown by rememberMutableState { false }
 
@@ -165,7 +172,7 @@ internal fun LoginTextField(
         visualTransformation = if (loginTextField == LoginTextField.Password)
             if (isPasswordShown) VisualTransformation.None else loginTextField.visualTransformation
         else loginTextField.visualTransformation,
-        onValueChange = { setSearchText(it) },
+        onValueChange = { onValueChange(it) },
         textStyle = MaterialTheme.typography.titleSmall,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedLabelColor = MaterialTheme.colorScheme.secondary,

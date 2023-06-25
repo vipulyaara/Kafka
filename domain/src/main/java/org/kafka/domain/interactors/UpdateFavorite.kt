@@ -6,7 +6,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import org.kafka.analytics.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.Interactor

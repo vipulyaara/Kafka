@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.kafka.analytics.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 

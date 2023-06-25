@@ -59,10 +59,8 @@ class HomepageRepository @Inject constructor(
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
         val isInCollection = collectionTopics.any {
             if (it.startsWith("-")) { // exclude topics
-                // user topics should not contain the topic
                 !userTopics.contains(it.removePrefix("-"))
             } else {
-                // user topics should contain the topic
                 userTopics.contains(it)
             }
         }

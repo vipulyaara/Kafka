@@ -3,7 +3,6 @@ package com.kafka.data.injection
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.api.interceptor.AcceptDialogInterceptor
-import com.kafka.data.api.interceptor.RewriteCachesInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,10 +45,8 @@ class NetworkModule {
     fun okHttp(
         cache: Cache,
         acceptDialogInterceptor: AcceptDialogInterceptor,
-        rewriteCachesInterceptor: RewriteCachesInterceptor
     ) = getBaseBuilder(cache)
         .addInterceptor(acceptDialogInterceptor)
-        .addInterceptor(rewriteCachesInterceptor)
         .build()
 
     @Provides

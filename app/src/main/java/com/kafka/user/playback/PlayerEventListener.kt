@@ -1,8 +1,8 @@
 package com.kafka.user.playback
 
 import com.sarahang.playback.core.apis.PlayerEventLogger
-import org.kafka.analytics.Analytics
-import org.kafka.analytics.EventInfo
+import org.kafka.analytics.logger.Analytics
+import org.kafka.analytics.logger.EventInfo
 import javax.inject.Inject
 
 class KafkaPlayerEventLogger @Inject constructor(

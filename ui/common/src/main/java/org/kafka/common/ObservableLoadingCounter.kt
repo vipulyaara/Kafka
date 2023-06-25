@@ -33,7 +33,7 @@ class ObservableLoadingCounter @Inject constructor() {
 
 suspend fun Flow<InvokeStatus>.collectStatus(
     counter: ObservableLoadingCounter,
-    uiMessageManager: UiMessageManager? = null,
+    uiMessageManager: UiMessageManager,
     onStatus: suspend (InvokeStatus) -> Unit = {},
 ) = collect { status ->
     debug { "Loading status $status" }
