@@ -44,7 +44,6 @@ internal enum class LoginState {
     val isLogin: Boolean get() = this == Login
 }
 
-// todo fix layout spacing
 @Composable
 fun LoginScreen() {
     val authViewModel: AuthViewModel = hiltViewModel()

@@ -147,7 +147,6 @@ dependencies {
     implementation(libs.profileinstaller)
 
     debugImplementation(libs.leakCanary)
-    debugImplementation(libs.leakCanary.process)
 
     kapt(libs.androidx.hilt.compiler)
     kapt(libs.hilt.compiler)

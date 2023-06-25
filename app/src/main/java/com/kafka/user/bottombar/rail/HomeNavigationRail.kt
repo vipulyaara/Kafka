@@ -99,8 +99,6 @@ internal fun HomeNavigationRail(
             val maxWidth = maxWidth
             val isExpandedPlaybackControls =
                 maxWidth > ExpandedPlaybackControlsMinWidth && maxHeight > ExpandedPlaybackModeMinHeight
-            val isExpandedNavigationItem =
-                maxWidth > HomeNavigationRailDefaults.ExpandedNavigationItemMinWidth
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
@@ -116,40 +114,34 @@ internal fun HomeNavigationRail(
                 ) {
                     HomeNavigationItems.forEach { item ->
                         val isSelected = selectedTab == item.rootScreen
-                        if (isExpandedNavigationItem) {
-                            HomeNavigationRailItemRow(
-                                item = item,
-                                selected = isSelected,
-                                onClick = { onNavigationSelected(item.rootScreen) },
-                            )
-                        } else {
-                            NavigationRailItem(
-                                selected = isSelected,
-                                onClick = { onNavigationSelected(item.rootScreen) },
-                                icon = {
-                                    HomeNavigationItemIcon(item = item, selected = isSelected)
-                                },
-                                label = {
-                                    Text(
-                                        text = stringResource(item.labelResId),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        style = MaterialTheme.typography.headlineSmall,
-                                    )
-                                },
-                                alwaysShowLabel = false,
-                                colors = HomeNavigationRailDefaults.colors,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = Dimens.Spacing40,
-                                        vertical = Dimens.Spacing24
-                                    )
-                                    .align(Alignment.CenterHorizontally),
-                            )
-                        }
+
+                        NavigationRailItem(
+                            selected = isSelected,
+                            onClick = { onNavigationSelected(item.rootScreen) },
+                            icon = {
+                                HomeNavigationItemIcon(item = item, selected = isSelected)
+                            },
+                            label = {
+                                Text(
+                                    text = stringResource(item.labelResId),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                            },
+                            alwaysShowLabel = false,
+                            colors = HomeNavigationRailDefaults.colors,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = Dimens.Spacing32,
+                                    vertical = Dimens.Spacing24
+                                )
+                                .align(Alignment.CenterHorizontally),
+                        )
                     }
                 }
+
                 if (isExpandedPlaybackControls) {
                     val expandedPlaybackControlsWeight =
                         3f + ((maxWidth - ExpandedPlaybackControlsMinWidth) / ExpandedPlaybackControlsMinWidth * 2.5f)

@@ -21,6 +21,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
+import kotlinx.coroutines.flow.collectLatest
 import org.kafka.base.debug
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.NavigatorHost
@@ -35,7 +36,9 @@ fun MainScreen() {
     val mainViewModel = hiltViewModel<MainViewModel>()
 
     LaunchedEffect(mainViewModel, navController) {
-        mainViewModel.initializeScreenOpen(navController)
+        navController.currentBackStackEntryFlow.collectLatest { entry ->
+            mainViewModel.logScreenView(entry)
+        }
     }
 
     RequestNotificationPermission()
