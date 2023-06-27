@@ -5,8 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -19,8 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
 import kotlinx.coroutines.CoroutineScope
 import org.kafka.common.extensions.elevation
-import org.kafka.common.image.Icons
-import org.kafka.common.widgets.IconResource
+import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
@@ -36,7 +33,9 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
 
-    Scaffold(topBar = { TopBar(viewState.title, lazyListState = lazyListState) }) { padding ->
+    Scaffold(
+        modifier = Modifier.testTagUi("download_files_screen"),
+        topBar = { TopBar(viewState.title, lazyListState = lazyListState) }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Files(
                 viewState = viewState,

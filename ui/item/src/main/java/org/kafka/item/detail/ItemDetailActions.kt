@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.components.WIDE_LAYOUT_MIN_WIDTH
 import org.kafka.common.image.Icons
+import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.common.widgets.shadowMaterial
@@ -58,7 +59,7 @@ fun ItemDetailActions(
                 Icon(
                     icon = Icons.Download,
                     contentDescription = stringResource(R.string.cd_files),
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.Center).testTagUi("download_files"),
                     onClicked = { openFiles(itemDetail.itemId) }
                 )
             }
@@ -95,7 +96,9 @@ private fun FavoriteIcon(
         IconButton(
             onClick = onClicked,
             onClickLabel = stringResource(id = contentDescription),
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
         ) {
             IconResource(
                 imageVector = icon,

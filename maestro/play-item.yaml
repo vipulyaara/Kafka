@@ -20,4 +20,4 @@ appId: com.kafka.user
     id: mini_player
 - assertVisible: William Shakespeare
 - scrollUntilVisible:
-      element: As You Like It
+    element: A Midsummer Night's Dream

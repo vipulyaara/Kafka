@@ -41,6 +41,7 @@ import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.simpleClickable
+import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.LoadImage
 import org.kafka.item.R
 import org.kafka.item.detail.description.DescriptionText
@@ -211,6 +212,7 @@ private fun ItemDescription(
             DescriptionText(
                 itemDetail = itemDetail,
                 modifier = Modifier
+                    .testTagUi("item_detail_description")
                     .fillMaxWidth()
                     .simpleClickable { showDescription(itemDetail.itemId) }
                     .padding(Dimens.Spacing24),

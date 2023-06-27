@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
+import org.kafka.common.test.testTagUi
 import org.kafka.item.detail.ItemDetailViewModel
 import org.kafka.item.detail.ratingText
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -37,6 +38,7 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
     BoxWithConstraints {
         Surface(
             Modifier
+                .testTagUi("item_detail_description_dialog")
                 .fillMaxWidth()
                 .heightIn(max = maxHeight * 0.9f)
                 .padding(horizontal = Dimens.Spacing24)

@@ -1,0 +1,25 @@
+appId: com.kafka.user
+---
+- clearState
+- launchApp
+- assertVisible:
+    id: homepage_feed_items
+- scrollUntilVisible:
+    element: Romeo and Juliet
+- tapOn: Romeo and Juliet
+- tapOn:
+    id: add_favorite
+- assertVisible:
+      id: remove_favorite
+- tapOn:
+    id: item_detail_description
+- assertVisible:
+    id: item_detail_description_dialog
+- back
+- tapOn:
+    id: download_files
+- assertVisible:
+    id: download_files_screen
+- back
+- assertVisible:
+    id: download_files
