@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.kafka.common.image.Icons
+import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
 import ui.common.theme.theme.Dimens
@@ -47,7 +48,9 @@ fun SearchWidget(
             .padding(top = Dimens.Spacing12)
     ) {
         OutlinedTextField(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .testTagUi("search_widget"),
             value = searchText,
             placeholder = {
                 Row {
@@ -93,6 +96,7 @@ private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
     ) {
         IconResource(
             modifier = Modifier
+                .testTagUi("search_clear")
                 .clickable(onClick = { onTextCleared() })
                 .padding(Dimens.Spacing12)
                 .size(24.dp),

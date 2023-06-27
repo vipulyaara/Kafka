@@ -4,12 +4,16 @@ appId: com.kafka.user
 - assertVisible:
     id: homepage_feed_items
 - scrollUntilVisible:
-      element: Romeo and Juliet
+    element: Romeo and Juliet
 - tapOn: Romeo and Juliet
 - tapOn: William Shakespeare
-- inputText: ""
-- inputText: "Kafka"
-- assertVisible: Romeo and Juliet
-- tapOn: Romeo and Juliet
+- tapOn:
+      id: search_clear
+#- tapOn:
+#      id: search_widget
+#- inputText: "Kafka"
+#- pressKey: Enter todo: press search
+- assertVisible: A Midsummer Night's Dream
+- tapOn: A Midsummer Night's Dream
 - assertVisible: William Shakespeare
 - back
