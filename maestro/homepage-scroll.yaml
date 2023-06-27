@@ -1,0 +1,9 @@
+appId: com.kafka.user.debug
+---
+- launchApp
+- assertVisible:
+    id: homepage_feed_items
+- scrollUntilVisible:
+    element: Romeo and Juliet
+- scrollUntilVisible:
+    element: The Odyssey

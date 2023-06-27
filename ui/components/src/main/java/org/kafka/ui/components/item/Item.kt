@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.theapache64.rebugger.Rebugger
 import org.kafka.common.image.Icons
+import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.IconResource
 import ui.common.theme.theme.Dimens
 
@@ -30,7 +31,7 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        modifier = modifier
+        modifier = modifier.testTagUi("item_audio")
     )
 }
 
@@ -110,7 +111,7 @@ fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 
     IconResource(
         imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
-        modifier = modifier.size(size),
+        modifier = modifier.size(size).testTagUi("item_${mediaType}_icon"),
         contentDescription = mediaType
     )
 }

@@ -99,6 +99,9 @@ internal fun HomeNavigationRail(
             val maxWidth = maxWidth
             val isExpandedPlaybackControls =
                 maxWidth > ExpandedPlaybackControlsMinWidth && maxHeight > ExpandedPlaybackModeMinHeight
+            val isExpandedNavigationItem =
+                maxWidth > HomeNavigationRailDefaults.ExpandedNavigationItemMinWidth
+
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
@@ -115,30 +118,38 @@ internal fun HomeNavigationRail(
                     HomeNavigationItems.forEach { item ->
                         val isSelected = selectedTab == item.rootScreen
 
-                        NavigationRailItem(
-                            selected = isSelected,
-                            onClick = { onNavigationSelected(item.rootScreen) },
-                            icon = {
-                                HomeNavigationItemIcon(item = item, selected = isSelected)
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(item.labelResId),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = MaterialTheme.typography.titleMedium,
-                                )
-                            },
-                            alwaysShowLabel = false,
-                            colors = HomeNavigationRailDefaults.colors,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = Dimens.Spacing32,
-                                    vertical = Dimens.Spacing24
-                                )
-                                .align(Alignment.CenterHorizontally),
-                        )
+                        if (isExpandedNavigationItem) {
+                            HomeNavigationRailItemRow(
+                                item = item,
+                                selected = isSelected,
+                                onClick = { onNavigationSelected(item.rootScreen) },
+                            )
+                        } else {
+                            NavigationRailItem(
+                                selected = isSelected,
+                                onClick = { onNavigationSelected(item.rootScreen) },
+                                icon = {
+                                    HomeNavigationItemIcon(item = item, selected = isSelected)
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(item.labelResId),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = MaterialTheme.typography.titleMedium,
+                                    )
+                                },
+                                alwaysShowLabel = false,
+                                colors = HomeNavigationRailDefaults.colors,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = Dimens.Spacing32,
+                                        vertical = Dimens.Spacing24
+                                    )
+                                    .align(Alignment.CenterHorizontally),
+                            )
+                        }
                     }
                 }
 

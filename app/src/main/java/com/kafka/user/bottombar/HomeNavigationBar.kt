@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.kafka.common.test.testTagUi
 import org.kafka.navigation.RootScreen
 
 internal object HomeNavigationBarDefaults {
@@ -38,6 +39,7 @@ internal fun HomeNavigationBar(
     ) {
         HomeNavigationItems.forEach { item ->
             NavigationBarItem(
+                modifier= Modifier.testTagUi("home_tab_${item.labelResId}"),
                 selected = selectedTab == item.rootScreen,
                 onClick = { onNavigationSelected(item.rootScreen) },
                 icon = {

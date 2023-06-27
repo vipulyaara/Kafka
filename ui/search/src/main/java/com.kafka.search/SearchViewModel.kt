@@ -61,7 +61,7 @@ class SearchViewModel @Inject constructor(
         if (keyword.isEmpty()) return
 
         analytics.log { searchQuery(keyword, filters.map { it.name }) }
-        addRecentSearch(keyword, filters)
+        addRecentSearch(keyword)
 
         observeSearchItems(ObserveSearchItems.Params(keyword, filters))
 
@@ -75,9 +75,8 @@ class SearchViewModel @Inject constructor(
         savedStateHandle[extraKeyword] = query
     }
 
-    private fun addRecentSearch(keyword: String, selectedFilters: List<SearchFilter>) {
+    private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
-            analytics.log { this.addRecentSearch(keyword, selectedFilters.map { it.name }) }
             addRecentSearch.invoke(keyword).collect()
         }
     }

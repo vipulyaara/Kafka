@@ -1,0 +1,15 @@
+appId: com.kafka.user
+---
+- launchApp
+- assertVisible:
+    id: homepage_feed_items
+- scrollUntilVisible:
+      element: Romeo and Juliet
+- tapOn: Romeo and Juliet
+- tapOn: William Shakespeare
+- inputText: ""
+- inputText: "Kafka"
+- assertVisible: Romeo and Juliet
+- tapOn: Romeo and Juliet
+- assertVisible: William Shakespeare
+- back

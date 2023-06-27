@@ -10,12 +10,6 @@ class EventRepository @Inject constructor() {
             "filters" to filters?.joinToString()
         )
 
-    fun addRecentSearch(keyword: String, filters: List<String>? = null) =
-        "add_recent_search" to mapOf(
-            "keyword" to keyword,
-            "filters" to filters?.joinToString()
-        )
-
     fun removeRecentSearch(keyword: String) = "remove_recent_search" to mapOf("keyword" to keyword)
 
     fun openItemDetail(itemId: String, source: String? = null) = "open_item_detail" to mapOf(
