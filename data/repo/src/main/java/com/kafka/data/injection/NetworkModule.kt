@@ -3,12 +3,16 @@ package com.kafka.data.injection
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.api.interceptor.AcceptDialogInterceptor
+import com.kafka.data.model.SerializationPolymorphicDefaultPair
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializer
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -18,6 +22,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 const val baseUrl = "https://archive.org/"
 
@@ -27,9 +32,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun jsonConfigured() = Json {
+    fun jsonConfigured(serializersModule: SerializersModule) = Json {
         ignoreUnknownKeys = true
         isLenient = true
+        this.serializersModule = serializersModule
     }
 
     @Provides
@@ -81,6 +87,18 @@ class NetworkModule {
             level = HttpLoggingInterceptor.Level.HEADERS
         })
         .build()
+
+    @Suppress("UNCHECKED_CAST")
+    @OptIn(InternalSerializationApi::class)
+    @Provides
+    @Singleton
+    fun provideSerializersModule(
+        polymorphicDefaultPairs: Set<@JvmSuppressWildcards SerializationPolymorphicDefaultPair<*>>
+    ): SerializersModule = SerializersModule {
+        polymorphicDefaultPairs.forEach { (base, default) ->
+            polymorphicDefaultDeserializer(base as KClass<Any>) { default.serializer() }
+        }
+    }
 
     private fun getBaseBuilder(cache: Cache): OkHttpClient.Builder {
         return OkHttpClient.Builder()

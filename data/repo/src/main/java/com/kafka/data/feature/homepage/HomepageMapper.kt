@@ -20,6 +20,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
             is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
             is HomepageCollectionResponse.Grid -> it.mapGrid()
+            is HomepageCollectionResponse.Unknown -> flowOf()
         }
     }) { it.toList() }
 
