@@ -70,6 +70,13 @@ sealed class HomepageCollectionResponse {
         override val index: Int = 0,
         override val topics: String = ""
     ) : HomepageCollectionResponse()
+
+    @Serializable
+    data class Unknown(
+        override val enabled: Boolean = false,
+        override val topics: String = "",
+        override val index: Int = -1
+    ) : HomepageCollectionResponse()
 }
 
 @Serializable
