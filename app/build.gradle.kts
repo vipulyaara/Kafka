@@ -58,6 +58,14 @@ android {
             proguardFiles("proguard-rules.pro")
         }
 
+        create("rc") {
+            initWith(buildTypes["release"])
+            signingConfig = signingConfigs["debug"]
+            matchingFallbacks += "release"
+            versionNameSuffix = "-rc"
+            applicationIdSuffix = ".rc"
+        }
+
         create("benchmark") {
             initWith(buildTypes["release"])
             signingConfig = signingConfigs["debug"]

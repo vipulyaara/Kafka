@@ -18,7 +18,6 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
 import kotlinx.coroutines.flow.collectLatest
@@ -89,9 +88,7 @@ private fun RequestNotificationPermission() {
         )
 
         LaunchedEffect(permissionState) {
-            debug { "permissionState: $permissionState" }
-            if (!permissionState.status.isGranted && permissionState.status.shouldShowRationale) {
-
+            if (!permissionState.status.isGranted) {
                 permissionState.launchPermissionRequest()
             }
         }

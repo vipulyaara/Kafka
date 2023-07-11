@@ -43,8 +43,6 @@ dependencies {
     implementation libs.icons.feather
     implementation libs.icons.font.awesome
     implementation libs.icons.tabler
-    implementation libs.lottie.compose
-    implementation libs.lottie.core
     implementation libs.tracing
 
     implementation project(':data:repo')

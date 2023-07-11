@@ -6,7 +6,7 @@ androidxlifecycle = "2.6.1"
 navigation = "2.7.0-beta01"
 androidxtest = "1.5.2"
 coil = "2.4.0"
-compose-bom = "2023.04.00-beta02"
+compose-bom = "2023.07.00-alpha01"
 constraintlayout = "1.1.0-alpha10"
 composecompiler = "1.4.5"
 composesnapshot = "-" # a single character = no snapshot
@@ -21,23 +21,23 @@ material3 = "1.1.0"
 okhttp = "4.11.0"
 paging = "3.1.1"
 retrofit = "2.9.0"
-room = "2.5.1"
+room = "2.5.2"
 threetenbp = "1.5.2"
 serialization = "1.5.0"
 exoplayer = "2.18.7"
 media3 = "1.0.2"
 pdftron = "9.3.1"
 pdfviewer = "3.2.0-beta.1"
-compileSdk = "33"
+compileSdk = "34"
 minSdk = "24"
-targetSdk = "33"
+targetSdk = "34"
 core-ktx = "1.10.1"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 uiautomator = "2.2.0"
-benchmark-macro-junit4 = "1.2.0-alpha14"
+benchmark-macro-junit4 = "1.2.0-alpha16"
 androidx-baselineprofile = "1.2.0-alpha13"
 profileinstaller = "1.3.1"
 androidx-appcompat-appcompat = "1.6.1"
@@ -116,12 +116,12 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
-lottie-core = "com.airbnb.android:lottie:6.0.0"
-lottie-compose = "com.airbnb.android:lottie-compose:6.0.0"
+lottie-core = "com.airbnb.android:lottie:6.0.1"
+lottie-compose = "com.airbnb.android:lottie-compose:6.0.1"
 
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
-androidx-paging-compose = "androidx.paging:paging-compose:1.0.0-alpha20"
+androidx-paging-compose = "androidx.paging:paging-compose:3.2.0-rc01"
 
 androidx-palette = "androidx.palette:palette:1.0.0"
 

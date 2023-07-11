@@ -25,7 +25,6 @@ dependencies {
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
     api libs.compose.foundation.layout
-    //    api libs.compose.livedata
     api libs.compose.material.material3
     api libs.compose.runtime.runtime
     api libs.compose.ui.textfonts
@@ -33,8 +32,6 @@ dependencies {
     api libs.compose.ui.ui
     api libs.compose.ui.util
     api libs.kotlin.serialization
-    api libs.lottie.compose
-    api libs.lottie.core
     api libs.palette
 
     implementation project(':base:domain')

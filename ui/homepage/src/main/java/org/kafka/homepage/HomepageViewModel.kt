@@ -108,6 +108,7 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openSubject(name: String) {
+        analytics.log { this.openSubject(name, "homepage") }
         navigator.navigate(
             Screen.Search.createRoute(
                 root = RootScreen.Search,

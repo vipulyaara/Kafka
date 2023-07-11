@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.AppReviewManager
+import org.kafka.analytics.logger.Analytics
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -155,6 +155,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun goToSubjectSubject(keyword: String) {
+        analytics.log { this.openSubject(keyword, "item_detail") }
         navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Subject.name))
     }
 

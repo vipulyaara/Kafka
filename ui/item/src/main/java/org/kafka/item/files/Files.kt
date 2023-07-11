@@ -42,6 +42,7 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
                 selectedExtension = viewModel.selectedExtension,
                 selectExtension = { viewModel.selectedExtension = it },
                 onFileClicked = viewModel::onFileClicked,
+                onDownloadClicked = viewModel::onDownloadClicked,
                 lazyListState = lazyListState
             )
         }
@@ -54,6 +55,7 @@ private fun Files(
     selectedExtension: String?,
     selectExtension: (String?) -> Unit,
     onFileClicked: (File) -> Unit,
+    onDownloadClicked: (File) -> Unit,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
     val downloader: Downloader = LocalDownloader.current
@@ -79,6 +81,7 @@ private fun Files(
             FileItem(
                 file = file,
                 onFileClicked = onFileClicked,
+                onDownloadClicked = onDownloadClicked,
                 downloadInfo = download?.downloadInfo,
                 modifier = Modifier.animateItemPlacement(),
                 downloader = downloader,

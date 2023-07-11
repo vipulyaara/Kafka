@@ -32,6 +32,7 @@ import ui.common.theme.theme.Dimens
 internal fun FileItem(
     file: File,
     onFileClicked: (File) -> Unit,
+    onDownloadClicked: (File) -> Unit,
     downloadInfo: DownloadInfo?,
     modifier: Modifier = Modifier,
     downloader: Downloader = LocalDownloader.current,
@@ -75,7 +76,7 @@ internal fun FileItem(
             if (downloadInfo == null) {
                 IconButton(
                     onClickLabel = stringResource(R.string.cd_download_file),
-                    onClick = { scope.launch { downloader.enqueueFile(file.fileId) } }) {
+                    onClick = { onDownloadClicked(file) }) {
                     IconResource(
                         imageVector = Icons.Download,
                         tint = MaterialTheme.colorScheme.primary,

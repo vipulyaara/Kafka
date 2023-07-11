@@ -205,17 +205,17 @@ private fun NavGraphBuilder.addFeedback(root: RootScreen) {
     }
 }
 
+// todo: app closes on back from player
+
 @Stable
 @Composable
 internal fun NavController.currentScreenAsState(): State<RootScreen> {
-    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Search) }
+    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
     val rootScreens = ROOT_SCREENS
     DisposableEffect(this) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.route } }
-                ?.let {
-                    selectedItem.value = it
-            }
+                ?.let { selectedItem.value = it }
         }
         addOnDestinationChangedListener(listener)
 

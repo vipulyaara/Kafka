@@ -4,13 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
-import org.kafka.base.ProcessLifetime
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.kafka.analytics.EventRepository
 import org.kafka.analytics.data.UserDataRepository
+import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class FirebaseAnalytics @Inject constructor(
     override fun log(eventInfo: EventInfo) {
         val (eventName, map) = eventInfo
         debug { "Logging event: $eventName, $map" }
-        firebaseAnalytics.logEvent(eventName, map.asBundle())
+        firebaseAnalytics.logEvent(eventName, map.filterValues { it != null }.asBundle())
     }
 
     override fun updateUserProperty(update: UserData.() -> UserData) {
