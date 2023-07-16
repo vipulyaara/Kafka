@@ -121,5 +121,3 @@ fun ProvideRipple(
 fun isAtLeastS(): Boolean {
     return VERSION.SDK_INT >= 31
 }
-
-enum class Theme { Dark, Light, Auto }

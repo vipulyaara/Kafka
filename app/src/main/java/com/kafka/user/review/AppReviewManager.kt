@@ -37,7 +37,7 @@ class AppReviewManagerImpl @Inject constructor(
     }
 
     /**
-     * Review dialog is shown after 10 times of a user reading or playing an item
+     * Review dialog is shown based on item opens count
      * */
     override suspend fun incrementItemOpenCount() {
         itemOpens.value++

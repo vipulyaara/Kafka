@@ -17,9 +17,7 @@ import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
 @Reusable
-class FirebaseDynamicDeepLinkHandler @Inject constructor(
-    private val navigator: Navigator
-) : DynamicDeepLinkHandler {
+class FirebaseDynamicDeepLinkHandler @Inject constructor() : DynamicDeepLinkHandler {
 
     override fun handleDeepLink(activity: Activity, intent: Intent) {
         FirebaseDynamicLinks.getInstance()

@@ -44,7 +44,6 @@ private class CrashlyticsTree(
     }
 }
 
-
 class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope
