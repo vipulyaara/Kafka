@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.kafka.user.bottombar.rail
+package com.kafka.user.home.bottombar.rail
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
@@ -36,10 +36,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.user.bottombar.HomeNavigationItemIcon
-import com.kafka.user.bottombar.HomeNavigationItems
-import com.kafka.user.bottombar.rail.HomeNavigationRailDefaults.ExpandedPlaybackControlsMinWidth
-import com.kafka.user.bottombar.rail.HomeNavigationRailDefaults.ExpandedPlaybackModeMinHeight
+import com.kafka.user.home.bottombar.HomeNavigationItemIcon
+import com.kafka.user.home.bottombar.HomeNavigationItems
+import com.kafka.user.home.bottombar.rail.HomeNavigationRailDefaults.ExpandedPlaybackControlsMinWidth
+import com.kafka.user.home.bottombar.rail.HomeNavigationRailDefaults.ExpandedPlaybackModeMinHeight
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection

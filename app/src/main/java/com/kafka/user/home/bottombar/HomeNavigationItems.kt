@@ -1,4 +1,4 @@
-package com.kafka.user.bottombar
+package com.kafka.user.home.bottombar
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector

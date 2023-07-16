@@ -1,4 +1,4 @@
-package com.kafka.user.bottombar.rail
+package com.kafka.user.home.bottombar.rail
 
 import androidx.datastore.preferences.core.floatPreferencesKey
 import com.sarahang.playback.core.PreferencesStore

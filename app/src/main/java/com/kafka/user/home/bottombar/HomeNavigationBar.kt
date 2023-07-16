@@ -1,4 +1,4 @@
-package com.kafka.user.bottombar
+package com.kafka.user.home.bottombar
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars

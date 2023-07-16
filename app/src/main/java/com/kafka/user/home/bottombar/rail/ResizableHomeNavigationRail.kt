@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.kafka.user.bottombar.rail
+package com.kafka.user.home.bottombar.rail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope

@@ -2,7 +2,7 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
-package com.kafka.user.bottombar.rail
+package com.kafka.user.home.bottombar.rail
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -29,8 +29,8 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
-import com.kafka.user.bottombar.HomeNavigationItem
-import com.kafka.user.bottombar.HomeNavigationItemIcon
+import com.kafka.user.home.bottombar.HomeNavigationItem
+import com.kafka.user.home.bottombar.HomeNavigationItemIcon
 import ui.common.theme.theme.Dimens
 
 @Composable

@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.kafka.user.bottombar.HomeNavigationBar
-import com.kafka.user.bottombar.rail.ResizableHomeNavigationRail
+import com.kafka.user.home.bottombar.HomeNavigationBar
+import com.kafka.user.home.bottombar.rail.ResizableHomeNavigationRail
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.isActive
