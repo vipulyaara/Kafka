@@ -15,10 +15,13 @@ android {
 }
 
 dependencies {
-    implementation platform(libs.google.bom)
     implementation project(':base:domain')
-    implementation "com.google.firebase:firebase-analytics-ktx"
-    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    
+    implementation platform(libs.google.bom)
+    implementation libs.google.analytics
+    implementation libs.google.auth
+    implementation libs.google.crashlytics
+
     implementation libs.hilt.android
 
     kapt libs.hilt.compiler

@@ -21,14 +21,14 @@ class FirebaseAnalytics @Inject constructor(
     @ApplicationContext private val context: Context,
     @ProcessLifetime private val scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
-    private val userData = MutableStateFlow(UserData(""))
 
     init {
         scope.launch {
-            updateUserProperty { userData.value }
+            updateUserProperty(userDataRepository.getUserData())
         }
     }
 
@@ -42,10 +42,9 @@ class FirebaseAnalytics @Inject constructor(
         firebaseAnalytics.logEvent(eventName, map.filterValues { it != null }.asBundle())
     }
 
-    override fun updateUserProperty(update: UserData.() -> UserData) {
-        // update the user data
-        val country = userDataRepository.getUserCountry()
-        firebaseAnalytics.setUserProperty("country", country)
+    override fun updateUserProperty(userData: UserData) {
+        firebaseAnalytics.setUserProperty("userId", userData.userId)
+        firebaseAnalytics.setUserProperty("country", userData.country)
     }
 
     override fun logScreenView(
