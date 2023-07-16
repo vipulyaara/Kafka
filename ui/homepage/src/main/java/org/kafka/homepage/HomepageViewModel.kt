@@ -69,13 +69,13 @@ class HomepageViewModel @Inject constructor(
 
     fun removeRecentItem(itemId: String) {
         viewModelScope.launch {
-            analytics.log { this.removeRecentItem(itemId) }
+            analytics.log { removeRecentItem(itemId) }
             removeRecentItem.invoke(itemId).collect()
         }
     }
 
     fun openLogin() {
-        analytics.log { this.loginClicked() }
+        analytics.log { loginClicked() }
         navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 
@@ -98,17 +98,17 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openItemDetail(itemId: String) {
-        analytics.log { this.openItemDetail(itemId, "homepage") }
+        analytics.log { openItemDetail(itemId, "homepage") }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 
     fun openRecentItemDetail(itemId: String) {
-        analytics.log { this.openRecentItem(itemId) }
+        analytics.log { openRecentItem(itemId) }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 
     fun openSubject(name: String) {
-        analytics.log { this.openSubject(name, "homepage") }
+        analytics.log { openSubject(name, "homepage") }
         navigator.navigate(
             Screen.Search.createRoute(
                 root = RootScreen.Search,
