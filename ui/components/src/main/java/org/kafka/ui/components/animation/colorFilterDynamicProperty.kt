@@ -1,4 +1,4 @@
-package org.kafka.ui.components.animations
+package org.kafka.ui.components.animation
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
