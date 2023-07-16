@@ -104,10 +104,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun loginByGmail() {
-
-    }
-
     fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
         analytics.log { logoutClicked() }
         viewModelScope.launch {
