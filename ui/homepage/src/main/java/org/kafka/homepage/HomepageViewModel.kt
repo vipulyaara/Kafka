@@ -36,9 +36,9 @@ class HomepageViewModel @Inject constructor(
     observeUser: ObserveUser,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
+    private val loadingCounter: ObservableLoadingCounter
 ) : ViewModel() {
-    private val loadingCounter = ObservableLoadingCounter()
     private val uiMessageManager = UiMessageManager()
 
     val state: StateFlow<HomepageViewState> = combine(

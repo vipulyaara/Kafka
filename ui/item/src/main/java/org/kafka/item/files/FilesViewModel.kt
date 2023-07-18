@@ -56,10 +56,7 @@ class FilesViewModel @Inject constructor(
             downloads = downloads,
             isLoading = isLoading
         )
-    }.stateInDefault(
-        scope = viewModelScope,
-        initialValue = FilesViewState(),
-    )
+    }.stateInDefault(scope = viewModelScope, initialValue = FilesViewState())
 
     init {
         observeFiles(ObserveFiles.Param(itemId))
@@ -82,9 +79,7 @@ class FilesViewModel @Inject constructor(
 
     fun onDownloadClicked(file: File) {
         analytics.log { downloadFile(file.fileId, file.itemId) }
-        viewModelScope.launch {
-             downloader.enqueueFile(file.fileId)
-        }
+        viewModelScope.launch { downloader.enqueueFile(file.fileId) }
     }
 
     private fun actionLabels(files: List<File>) = listOf("all") + files.map { it.format }.distinct()

@@ -49,6 +49,7 @@ class HomepageRepository @Inject constructor(
                 is HomepageCollectionResponse.Column -> it.itemIds.split(", ")
                 is HomepageCollectionResponse.FeaturedItem -> it.itemIds.split(", ")
                 is HomepageCollectionResponse.Row -> it.itemIds.split(", ")
+                is HomepageCollectionResponse.Grid -> it.itemIds.split(", ")
                 else -> null
             }
         }.flatten()

@@ -28,6 +28,7 @@ import com.kafka.data.entities.ItemDetail
 import org.kafka.common.test.testTagUi
 import org.kafka.item.detail.ItemDetailViewModel
 import org.kafka.item.detail.ratingText
+import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 
@@ -44,9 +45,7 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
                 .padding(horizontal = Dimens.Spacing24)
         ) {
             Column(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(bottom = Dimens.Spacing48),
+                modifier = Modifier.navigationBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
                 BottomSheetDefaults.DragHandle(Modifier.align(Alignment.CenterHorizontally))

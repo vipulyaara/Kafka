@@ -59,7 +59,7 @@ internal fun HomeNavigationRailItemRow(
                     color = activeColor
                 )
             )
-            .padding(horizontal = Dimens.Spacing40, vertical = Dimens.Spacing24)
+            .padding(horizontal = Dimens.Spacing40, vertical = Dimens.Spacing20)
     ) {
         HomeNavigationItemTransition(
             activeColor = activeColor,
