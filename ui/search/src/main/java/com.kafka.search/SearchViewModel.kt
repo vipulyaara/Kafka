@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
@@ -44,7 +43,7 @@ class SearchViewModel @Inject constructor(
         savedStateHandle.getStateFlow(extraKeyword, ""),
         savedStateHandle.getStateFlow(extraFilters, SearchFilter.allString())
             .map { SearchFilter.from(it) },
-        observeSearchItems.flow.onStart { if (keywordInitialValue.isEmpty()) emit(emptyList()) },
+        observeSearchItems.flow,
         observeRecentSearch.flow,
         loadingState.observable,
         ::SearchViewState
@@ -58,16 +57,16 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search(keyword: String, filters: List<SearchFilter>) {
-        if (keyword.isEmpty()) return
-
-        analytics.log { searchQuery(keyword, filters.map { it.name }) }
-        addRecentSearch(keyword)
-
         observeSearchItems(ObserveSearchItems.Params(keyword, filters))
 
         viewModelScope.launch {
             searchQueryItems(SearchQueryItems.Params(keyword, filters))
                 .collectStatus(loadingState, snackbarManager)
+        }
+
+        if (keyword.isNotEmpty()) {
+            analytics.log { searchQuery(keyword, filters.map { it.name }) }
+            addRecentSearch(keyword)
         }
     }
 

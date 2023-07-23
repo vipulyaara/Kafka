@@ -9,6 +9,7 @@ import com.kafka.data.model.booksBySubject
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.joinerOr
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
@@ -22,9 +23,13 @@ class ObserveSearchItems @Inject constructor(
 ) : SubjectInteractor<ObserveSearchItems.Params, List<Item>>() {
 
     override fun createObservable(params: Params): Flow<List<Item>> {
-        return itemRepository.observeQueryItems(
-            buildLocalQuery(buildQuery(params.keyword, params.searchFilter))
-        ).flowOn(dispatchers.io)
+        return if (params.keyword.isEmpty()) {
+            flowOf(emptyList())
+        } else {
+            itemRepository.observeQueryItems(
+                buildLocalQuery(buildQuery(params.keyword, params.searchFilter))
+            ).flowOn(dispatchers.io)
+        }
     }
 
     private fun buildQuery(

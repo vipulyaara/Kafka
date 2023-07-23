@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import com.kafka.data.entities.Item
 import ui.common.theme.theme.Dimens
 
@@ -22,8 +21,7 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
             data = item.coverImage,
             size = Dimens.CoverSizeLarge,
             placeholder = placeholder(item.mediaType),
-            shape = RoundedCornerShape(Dimens.RadiusMedium),
-            modifier = Modifier.fillMaxWidth()
+            shape = RoundedCornerShape(Dimens.RadiusMedium)
         )
 
         Column(

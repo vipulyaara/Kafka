@@ -55,40 +55,65 @@ fun CoverImage(
             .then(sizeMod)
             .shadowMaterial(Dimens.Spacing08, shape)
     ) {
-        SubcomposeAsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(data)
-                .crossfade(true)
-                .build(),
+        Image(
+            data = data,
             contentDescription = contentDescription,
             contentScale = contentScale,
-        ) {
-            val state = painter.state
-            when (state) {
-                is State.Error, State.Empty, is State.Loading -> {
-                    Icon(
-                        imageVector = placeholder,
-                        tint = contentColor,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(iconPadding)
-                    )
-                }
+            placeholder = placeholder,
+            contentColor = contentColor,
+            iconPadding = iconPadding,
+            modifier = imageModifier,
+            bitmapPlaceholder = bitmapPlaceholder,
+            shape = shape
+        )
+    }
+}
 
-                else -> SubcomposeAsyncImageContent(imageModifier.fillMaxSize())
-            }
-
-            if (bitmapPlaceholder != null && state is State.Loading) {
-                Image(
-                    painter = rememberAsyncImagePainter(bitmapPlaceholder),
+@Composable
+private fun Image(
+    data: Any?,
+    modifier: Modifier,
+    contentDescription: String?,
+    contentScale: ContentScale,
+    placeholder: ImageVector,
+    contentColor: Color,
+    iconPadding: Dp,
+    bitmapPlaceholder: Bitmap?,
+    shape: Shape
+) {
+    SubcomposeAsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(data)
+            .crossfade(true)
+            .build(),
+        contentDescription = contentDescription,
+        contentScale = contentScale,
+    ) {
+        val state = painter.state
+        when (state) {
+            is State.Error, State.Empty, is State.Loading -> {
+                Icon(
+                    imageVector = placeholder,
+                    tint = contentColor,
                     contentDescription = null,
-                    contentScale = contentScale,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(shape)
+                        .padding(iconPadding)
                 )
             }
+
+            else -> SubcomposeAsyncImageContent(modifier.fillMaxSize())
+        }
+
+        if (bitmapPlaceholder != null && state is State.Loading) {
+            Image(
+                painter = rememberAsyncImagePainter(bitmapPlaceholder),
+                contentDescription = null,
+                contentScale = contentScale,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape)
+            )
         }
     }
 }
