@@ -14,8 +14,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 27
-        versionName = "0.0.17"
+        versionCode = 28
+        versionName = "0.0.18"
     }
 
     compileOptions {
