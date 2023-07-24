@@ -29,6 +29,7 @@ fun IconButton(
     rippleRadius: Dp = RippleRadius,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = MaterialTheme.colorScheme.onBackground,
+    contentDescription: String? = null,
     imageVector: ImageVector
 ) {
     IconButton(
@@ -39,7 +40,11 @@ fun IconButton(
         rippleRadius = rippleRadius,
         interactionSource = interactionSource
     ) {
-        IconResource(imageVector = imageVector, contentDescription = null, tint = tint)
+        IconResource(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            tint = tint
+        )
     }
 }
 

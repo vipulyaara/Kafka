@@ -3,15 +3,12 @@ package ui.common.theme.theme
 import android.os.Build
 import android.os.Build.VERSION
 import androidx.annotation.ChecksSdkIntAtLeast
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -103,17 +100,6 @@ val KafkaTypography by lazy {
             fontSize = 12.sp,
             lineHeight = 14.sp,
         ),
-    )
-}
-
-@Composable
-fun ProvideRipple(
-    isBounded: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    CompositionLocalProvider(
-        LocalIndication provides rememberRipple(bounded = isBounded),
-        content = content
     )
 }
 

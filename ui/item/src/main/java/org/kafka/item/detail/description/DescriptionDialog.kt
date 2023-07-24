@@ -28,7 +28,6 @@ import com.kafka.data.entities.ItemDetail
 import org.kafka.common.test.testTagUi
 import org.kafka.item.detail.ItemDetailViewModel
 import org.kafka.item.detail.ratingText
-import org.kafka.ui.components.bottomScaffoldPadding
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 
