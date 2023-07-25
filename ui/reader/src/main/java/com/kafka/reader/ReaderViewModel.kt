@@ -34,15 +34,8 @@ class ReaderViewModel @Inject constructor(
         uiMessageManager.message,
     ) { download, readable, message ->
         debug { "Readable is $readable" }
-        ReaderViewState(
-            recentItem = readable,
-            download = download,
-            message = message
-        )
-    }.stateInDefault(
-        scope = viewModelScope,
-        initialValue = ReaderViewState(),
-    )
+        ReaderViewState(recentItem = readable, download = download, message = message)
+    }.stateInDefault(scope = viewModelScope, initialValue = ReaderViewState())
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

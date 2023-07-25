@@ -3,8 +3,8 @@ package org.kafka.ui.components.item
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +46,7 @@ fun CoverImage(
     contentDescription: String? = null,
     elevation: Dp = 2.dp,
 ) {
-    val sizeMod = if (size.isSpecified) Modifier.height(size.height) else Modifier
+    val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier
     Surface(
         tonalElevation = elevation,
         color = containerColor,

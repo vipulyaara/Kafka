@@ -50,12 +50,8 @@ fun Item(
         CoverImage(
             data = coverImage,
             placeholder = placeholder(mediaType),
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .sizeIn(
-                    maxWidth = Dimens.CoverSizeMedium.width,
-                    maxHeight = Dimens.CoverSizeMedium.height
-                )
+            size = Dimens.CoverSizeMedium,
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
 
         ItemDescription(
