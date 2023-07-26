@@ -31,7 +31,7 @@ pdftron = "9.3.1"
 pdfviewer = "3.2.0-beta.1"
 compileSdk = "34"
 minSdk = "24"
-targetSdk = "34"
+targetSdk = "33"
 core-ktx = "1.10.1"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
@@ -168,17 +168,18 @@ fetch = "com.github.alashow:Fetch:3.1.62"
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:32.1.0"
-google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.5"
+google-bom = "com.google.firebase:firebase-bom:32.2.0"
+google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.7"
 google-gmsGoogleServices = "com.google.gms:google-services:4.3.15"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.2"
 google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
-google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1"
+google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.2"
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
+google-performance = { module = "com.google.firebase:firebase-perf-ktx" }
 google-remoteConfig = { module = "com.google.firebase:firebase-config-ktx" }
 google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
@@ -231,3 +232,4 @@ benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat-appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-rules = { group = "androidx.test", name = "rules", version = "1.5.0" }
