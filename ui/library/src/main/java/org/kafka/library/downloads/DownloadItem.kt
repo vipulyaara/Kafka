@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -18,12 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.common.image.Icons
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
-import org.kafka.ui.components.item.ItemCreator
 import org.kafka.ui.components.item.ItemMediaType
 import org.kafka.ui.components.item.ItemTitleMedium
 import ui.common.theme.theme.Dimens
@@ -54,18 +55,33 @@ internal fun DownloadItem(
 @Composable
 fun DownloadItemDescription(item: ItemWithDownload, modifier: Modifier = Modifier) {
     Column(modifier) {
-        ItemTitleMedium(item.file.name)
+        ItemTitleMedium(item.item.title)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        ItemCreator(item.item.title)
-        Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        ItemMediaType(item.item.mediaType)
-        Spacer(modifier = Modifier.height(Dimens.Spacing02))
+        FileName(item.file.name)
+        Spacer(modifier = Modifier.height(Dimens.Spacing08))
 
-        if (item.downloadInfo.status != DownloadStatus.COMPLETED) {
-            val progress by animateFloatAsState(targetValue = item.downloadInfo.progress)
-            Progress(progress)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            ItemMediaType(item.item.mediaType)
+            Spacer(modifier = Modifier.width(Dimens.Spacing12))
+
+            if (item.downloadInfo.status != DownloadStatus.COMPLETED) {
+                val progress by animateFloatAsState(targetValue = item.downloadInfo.progress)
+                Progress(progress)
+            }
         }
     }
+}
+
+@Composable
+fun FileName(name: String?, modifier: Modifier = Modifier) {
+    Text(
+        text = name.orEmpty(),
+        style = MaterialTheme.typography.labelMedium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        color = MaterialTheme.colorScheme.tertiary,
+        modifier = modifier
+    )
 }
 
 @Composable

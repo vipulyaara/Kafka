@@ -38,7 +38,7 @@ class ObserveDownloadedItems @Inject constructor(
                     file = file,
                     item = item
                 )
-            }
+            }.distinctBy { it.item.itemId }
         }.flowOn(dispatchers.io)
     }
 }
