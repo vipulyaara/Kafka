@@ -40,6 +40,7 @@ import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
 import org.kafka.notifications.NotificationManagerImpl
+import tm.alashow.datmusic.downloader.DownloadInitializer
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -122,7 +123,11 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideDownloadInitializer(bind: ReaderProgressInitializer): AppInitializer
+    abstract fun provideReaderProgressInitializer(bind: ReaderProgressInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideDownloadInitializer(bind: DownloadInitializer): AppInitializer
 
     @Binds
     @IntoSet

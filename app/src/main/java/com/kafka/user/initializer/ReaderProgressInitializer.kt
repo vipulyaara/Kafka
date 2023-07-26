@@ -1,7 +1,6 @@
 package com.kafka.user.initializer
 
 import android.app.Application
-import org.kafka.base.AppInitializer
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.RecentTextDao
@@ -9,17 +8,17 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.isText
 import com.kafka.data.entities.isTxt
-import org.kafka.base.ProcessLifetime
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
+import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
 import org.kafka.domain.interactors.ReadTextFromUri
-import tm.alashow.datmusic.downloader.manager.Downloadable
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
 
@@ -39,28 +38,27 @@ class ReaderProgressInitializer @Inject constructor(
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
             createFetchListener(fetch).collectLatest {
-                addRecentItem(it)
+                if (it?.download?.status == Status.COMPLETED) {
+                    addRecentItem(it.download)
+                }
             }
         }
     }
 
-    private suspend fun addRecentItem(it: Downloadable?) {
-        val download = it?.download
-        if (download?.status == Status.COMPLETED) {
-            downloadRequestsDao.getByRequestIdOrNull(download.id)?.let { downloadRequest ->
-                val file = fileDao.getOrNull(downloadRequest.id)
+    private suspend fun addRecentItem(download: Download) {
+        downloadRequestsDao.getByRequestIdOrNull(download.id)?.let { downloadRequest ->
+            val file = fileDao.getOrNull(downloadRequest.id)
 
-                if (file == null) {
-                    errorLog { "File not found for download request: $downloadRequest" }
-                }
+            if (file == null) {
+                errorLog { "File not found for download request: $downloadRequest" }
+            }
 
-                if (file != null && file.isText()) {
-                    val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
-                        .getOrElse { emptyList() } else emptyList()
-                    val textFile = recentTextItemMapper.map(download, pages, file)
+            if (file != null && file.isText()) {
+                val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
+                    .getOrElse { emptyList() } else emptyList()
+                val textFile = recentTextItemMapper.map(download, pages, file)
 
-                    recentTextDao.insert(textFile)
-                }
+                recentTextDao.insert(textFile)
             }
         }
     }
