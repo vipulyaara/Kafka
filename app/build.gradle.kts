@@ -1,7 +1,6 @@
 plugins {
-    alias(libs.plugins.androidx.baselineprofile)
-
     alias(libs.plugins.android.application)
+    alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.gms.googleServices)
@@ -14,8 +13,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 30
-        versionName = "0.0.20"
+        versionCode = 32
+        versionName = "0.0.22"
     }
 
     compileOptions {
@@ -138,6 +137,7 @@ dependencies {
     implementation(libs.google.dynamic.links)
     implementation(libs.google.firestore)
     implementation(libs.google.messaging)
+    implementation(libs.google.performance)
     implementation(libs.google.review)
     implementation(libs.hilt.android)
     implementation(libs.icons.feather)

@@ -38,7 +38,7 @@ class BaselineProfileGenerator {
 
     @Test
     fun generate() {
-        rule.collectBaselineProfile("com.kafka.user") {
+        rule.collect("com.kafka.user") {
             // This block defines the app's critical user journey. Here we are interested in
             // optimizing for app startup. But you can also navigate and scroll
             // through your most important UI.
@@ -50,7 +50,7 @@ class BaselineProfileGenerator {
 //            val initialTags = listOf(0, 1, 2).map { "row_$it" }
 //            val allTags = listOf(0, 1, 2, 3, 4).map { "row_$it" }
 
-            device.wait(Until.hasObject(By.res("homepage_feed_items")), 10_000)
+            device.wait(Until.hasObject(By.res("homepage_feed_items")), 20_000)
 
             val homepageFeed = device.findObject(By.res("homepage_feed_items"))
 
@@ -72,10 +72,8 @@ class BaselineProfileGenerator {
 //            }
 
             homepageFeed.setGestureMargin(device.displayWidth / 10)
-            repeat(5) {
-                homepageFeed.fling(Direction.DOWN)
-                homepageFeed.fling(Direction.UP)
-            }
+            homepageFeed.fling(Direction.DOWN)
+            homepageFeed.fling(Direction.UP)
 
             device.pressBack()
 
