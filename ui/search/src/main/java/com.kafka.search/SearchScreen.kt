@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.model.SearchFilter
+import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
 import org.kafka.ui.components.ProvideScaffoldPadding
@@ -86,7 +87,7 @@ private fun Search(
         }
     }
 
-    if (searchText.isEmpty() && searchViewState.canShowRecentSearches) {
+    AnimatedVisibilityFade(searchText.isEmpty() && searchViewState.canShowRecentSearches) {
         RecentSearches(
             recentSearches = searchViewState.recentSearches!!,
             onSearchClicked = onSearchClicked,
