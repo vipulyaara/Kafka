@@ -84,6 +84,7 @@ android {
         // Make the build fail on any lint errors
         abortOnError = true
         checkDependencies =  true
+        warning += "AutoboxingStateCreation"
     }
 }
 
