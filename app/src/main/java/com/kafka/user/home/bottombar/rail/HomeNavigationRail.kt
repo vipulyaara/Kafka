@@ -114,6 +114,7 @@ internal fun HomeNavigationRail(
                         .selectableGroup()
                         .verticalScroll(rememberScrollState())
                         .weight(4f)
+                        .padding(top = Dimens.Spacing24, bottom = Dimens.Spacing24)
                 ) {
                     HomeNavigationItems.forEach { item ->
                         val isSelected = selectedTab == item.rootScreen

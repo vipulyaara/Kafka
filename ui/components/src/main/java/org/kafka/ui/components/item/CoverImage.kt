@@ -44,7 +44,7 @@ fun CoverImage(
     iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
-    elevation: Dp = 2.dp,
+    elevation: Dp = 2.dp
 ) {
     val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier
     Surface(
@@ -84,7 +84,7 @@ private fun Image(
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(data)
-            .crossfade(true)
+            .crossfade(200)
             .build(),
         contentDescription = contentDescription,
         contentScale = contentScale,
