@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,26 +58,28 @@ fun RecentSearches(
     onSearchClicked: (String) -> Unit,
     onRemoveSearch: (String) -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .clickable(onClick = { onSearchClicked(searchTerm) })
-            .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing08),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.weight(1f),
-            text = searchTerm,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+    SelectionContainer {
+        Row(
+            modifier = modifier
+                .clickable(onClick = { onSearchClicked(searchTerm) })
+                .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing08),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = searchTerm,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
-        IconResource(
-            modifier = Modifier
-                .clickable(onClick = { onRemoveSearch(searchTerm) })
-                .padding(10.dp)
-                .size(Dimens.Spacing24),
-            imageVector = Icons.XCircle
-        )
+            IconResource(
+                modifier = Modifier
+                    .clickable(onClick = { onRemoveSearch(searchTerm) })
+                    .padding(10.dp)
+                    .size(Dimens.Spacing24),
+                imageVector = Icons.XCircle
+            )
+        }
     }
 }
 
