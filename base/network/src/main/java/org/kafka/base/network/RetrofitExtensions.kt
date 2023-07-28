@@ -1,5 +1,6 @@
 package org.kafka.base.network
 
+import android.accounts.NetworkErrorException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.kafka.base.debug
@@ -14,7 +15,7 @@ suspend fun <T> resultApiCall(
             debug { "api call success" }
             Result.success(apiCall.invoke())
         } catch (throwable: Throwable) {
-            errorLog(throwable) { "Server Error" }
+            errorLog(NetworkErrorException(throwable)) { "Server Error" }
             Result.failure(throwable)
         }
     }

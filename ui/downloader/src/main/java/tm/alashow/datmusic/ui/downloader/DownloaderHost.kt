@@ -71,7 +71,7 @@ private fun DownloadsLocationDialog(
                 try {
                     downloader.setDownloadsLocation(it)
                 } catch (e: Exception) {
-                    Timber.e(e)
+                    Timber.e(e, "download location failed")
                 }
             }
         }
