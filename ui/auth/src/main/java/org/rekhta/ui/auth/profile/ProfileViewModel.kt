@@ -91,7 +91,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun openLogin() {
-        analytics.log { this.login() }
+        analytics.log { openLogin() }
         navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 
