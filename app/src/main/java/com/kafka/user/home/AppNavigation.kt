@@ -15,16 +15,21 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
@@ -44,6 +49,7 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.feedback.FeedbackScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
@@ -56,11 +62,26 @@ internal fun AppNavigation(
 ) {
     collectEvent(navigator.queue) { event ->
         when (event) {
-            is NavigationEvent.Destination -> navController.navigate(event.route)
+            is NavigationEvent.Destination -> {
+                // switch tabs first because of a bug in navigation that doesn't allow
+                // changing tabs when destination is opened from a different tab
+                event.root?.route?.let {
+                    navController.navigate(it) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+                navController.navigate(event.route)
+            }
+
             is NavigationEvent.Back -> {
                 debug { "Back pressed" }
                 navController.navigateUp()
             }
+
             else -> Unit
         }
     }
@@ -96,6 +117,7 @@ private fun NavGraphBuilder.addHomeRoot() {
         addSearch(RootScreen.Home)
         addLogin(RootScreen.Home)
         addPlayer(RootScreen.Home)
+        addWebView(RootScreen.Home)
     }
 }
 
@@ -190,18 +212,29 @@ private fun NavGraphBuilder.addLogin(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    bottomSheet(
-        route = Screen.Profile.createRoute(root)
+    dialog(
+        route = Screen.Profile.createRoute(root),
+        dialogProperties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         ProfileScreen()
     }
 }
 
 private fun NavGraphBuilder.addFeedback(root: RootScreen) {
-    bottomSheet(
-        route = Screen.Feedback.createRoute(root)
-    ) {
+    bottomSheet(route = Screen.Feedback.createRoute(root)) {
         FeedbackScreen()
+    }
+}
+
+private fun NavGraphBuilder.addWebView(root: RootScreen) {
+    composable(
+        route = Screen.Web.createRoute(root),
+        arguments = listOf(
+            navArgument("url") { type = NavType.StringType }
+        )
+    ) {
+        val navigator = LocalNavigator.current
+        WebView(it.arguments?.getString("url").orEmpty(), navigator::goBack)
     }
 }
 
@@ -226,7 +259,6 @@ internal fun NavController.currentScreenAsState(): State<RootScreen> {
 
     return selectedItem
 }
-
 
 @ExperimentalAnimationApi
 private fun AnimatedContentTransitionScope<*>.defaultEnterTransition(
@@ -260,14 +292,4 @@ private fun AnimatedContentTransitionScope<*>.defaultExitTransition(
 
 private val NavDestination.hostNavGraph: NavGraph
     get() = hierarchy.first { it is NavGraph } as NavGraph
-
-@ExperimentalAnimationApi
-private fun AnimatedContentTransitionScope<*>.defaultPopEnterTransition(): EnterTransition {
-    return fadeIn()
-}
-
-@ExperimentalAnimationApi
-private fun AnimatedContentTransitionScope<*>.defaultPopExitTransition(): ExitTransition {
-    return fadeOut()
-}
 

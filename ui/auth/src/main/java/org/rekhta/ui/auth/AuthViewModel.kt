@@ -16,13 +16,10 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.interactors.account.ResetPassword
 import org.kafka.domain.interactors.account.SignInUser
 import org.kafka.domain.interactors.account.SignUpUser
 import org.kafka.domain.observers.ObserveUser
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,9 +28,7 @@ class AuthViewModel @Inject constructor(
     private val signUpUser: SignUpUser,
     private val resetPassword: ResetPassword,
     private val snackbarManager: SnackbarManager,
-    private val logoutUser: LogoutUser,
     private val analytics: Analytics,
-    private val navigator: Navigator,
     observeUser: ObserveUser
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
@@ -104,22 +99,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
-        analytics.log { logoutClicked() }
-        viewModelScope.launch {
-            logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
-                if (status == InvokeSuccess) {
-                    snackbarManager.addMessage(UiMessage(R.string.logged_out))
-                    onLogout()
-                }
-            }
-        }
-    }
-
-    fun openFeedback() {
-        navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
-    }
-
     private fun CharSequence.isValidEmail() =
         isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
@@ -129,7 +108,4 @@ class AuthViewModel @Inject constructor(
 data class AuthViewState(
     val currentUser: User? = null,
     val isLoading: Boolean = false
-) {
-    val userName: String?
-        get() = currentUser?.displayName.takeIf { it?.isNotEmpty() == true }
-}
+)

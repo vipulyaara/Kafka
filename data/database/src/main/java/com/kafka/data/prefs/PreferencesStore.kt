@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -57,5 +58,24 @@ class PreferencesStore @Inject constructor(@ApplicationContext private val conte
                 }
         }
         return state
+    }
+}
+
+val THEME = stringPreferencesKey("theme")
+
+fun PreferencesStore.observeTheme(): Flow<Theme> {
+    return get(THEME, Theme.DEFAULT.name)
+        .map { theme ->
+            Theme.values().firstOrNull { it.name.equals(theme, true) } ?: Theme.SYSTEM
+        }
+}
+
+enum class Theme {
+    LIGHT,
+    DARK,
+    SYSTEM;
+
+    companion object {
+        val DEFAULT = SYSTEM
     }
 }

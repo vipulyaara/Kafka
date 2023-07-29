@@ -78,7 +78,7 @@ class EventRepository @Inject constructor() {
         "name" to name
     )
 
-    fun login(method: String) = FirebaseAnalytics.LOGIN to mapOf(
+    fun login(method: String = "email") = FirebaseAnalytics.LOGIN to mapOf(
         FirebaseAnalytics.PARAM_METHOD to method
     )
 
@@ -93,4 +93,6 @@ class EventRepository @Inject constructor() {
     fun resetDownloadLocation() = "reset_download_location" to mapOf<String, String>()
 
     fun forgotPasswordSuccess() = "forgot_password_success" to mapOf<String, String>()
+
+    fun themeChanged(theme: String) = "theme_changed" to mapOf("theme" to theme)
 }

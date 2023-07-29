@@ -35,7 +35,10 @@ import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
 import compose.icons.tablericons.LayoutGrid
 import compose.icons.tablericons.LayoutList
+import compose.icons.tablericons.Logout
+import compose.icons.tablericons.Message
 import compose.icons.tablericons.Microphone
+import compose.icons.tablericons.Moon
 import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
@@ -84,4 +87,7 @@ object Icons {
     val EyeOff = TablerIcons.EyeOff
     val ArrowForward = TablerIcons.ArrowRight
     val Vinyl = KafkaIcons.Vinyl
+    val Moon = TablerIcons.Moon
+    val Logout = TablerIcons.Logout
+    val Feedback = TablerIcons.Message
 }
