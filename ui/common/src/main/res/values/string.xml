@@ -32,5 +32,4 @@
     <string name="unknown" translatable="false">Unknown</string>
 
     <string name="search_relevant_content">Most relevant content</string>
-    <string name="logout" translatable="false">Logout</string>
 </resources>

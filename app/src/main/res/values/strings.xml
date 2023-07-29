@@ -5,7 +5,6 @@
     <string name="review_1" translatable="false">⍟⍟⍟⍟⍟“Young friend,” I say, “your mistake is that you have no perspective. I’ve already been in all the sick rooms, far and wide, and I tell you your wound is not so bad. Made in a tight corner with two blows from an axe. Many people offer their side and hardly hear the axe in the forest, to say nothing of the fact that it’s coming closer to them.”</string>
     <string name="cancel" translatable="false">Cancel</string>
     <string name="see_reviews" translatable="false">See Reviews</string>
-    <string name="bullet" translatable="false">%1$s \u2022 %2$s</string>
 
     <string name="pause" translatable="false">Pause</string>
     <string name="play" translatable="false">Play</string>
@@ -17,5 +16,5 @@
     <string name="bottom_bar_search" translatable="false">Search</string>
     <string name="home" translatable="false">Home</string>
 
-    <string name="notifications.defaultChannel">Default channel</string>
+    <string name="notifications.defaultChannel" translatable="false">Default channel</string>
 </resources>

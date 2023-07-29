@@ -156,14 +156,3 @@ private fun SignupPrompt(loginState: LoginState, toggleLoginState: () -> Unit) {
         color = MaterialTheme.colorScheme.secondary
     )
 }
-
-@Composable
-private fun FeedbackPrompt(openFeedback: () -> Unit) {
-    Text(
-        modifier = Modifier.simpleClickable { openFeedback() },
-        text = "Have a feedback? Let us know",
-        textDecoration = TextDecoration.Underline,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.secondary
-    )
-}
