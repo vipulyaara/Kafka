@@ -1,5 +1,6 @@
 package org.rekhta.ui.auth.feedback
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,10 +37,16 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun FeedbackScreen(viewModel: FeedbackViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val keyboard = LocalSoftwareKeyboardController.current
+
+    // todo back press should work out-of-the-box because this is an accompanist.navigation destination
+    BackHandler(true) {
+        viewModel.onBackPressed()
+    }
 
     Surface(modifier = Modifier.animateContentSize()) {
         Feedback(state) { feedback, email ->
-            //todo: hide keyboard
+            keyboard?.hide()
             viewModel.sendFeedback(feedback, email)
         }
     }

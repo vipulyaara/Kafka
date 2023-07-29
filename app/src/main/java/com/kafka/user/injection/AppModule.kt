@@ -12,7 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.kafka.recommendations.CountryInitializer
+import com.kafka.recommendations.FirebaseTopicsInitializer
 import org.kafka.base.AppInitializer
 import com.kafka.recommendations.FirebaseTopics
 import com.kafka.recommendations.FirebaseTopicsImpl
@@ -143,7 +143,7 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideCountryInitializer(bind: CountryInitializer): AppInitializer
+    abstract fun provideFirebaseTopicsInitializer(bind: FirebaseTopicsInitializer): AppInitializer
 
     @Singleton
     @Binds

@@ -34,6 +34,10 @@ class FeedbackViewModel @Inject constructor(
         ::FeedbackViewState
     ).stateInDefault(scope = viewModelScope, initialValue = FeedbackViewState())
 
+    fun onBackPressed() {
+        navigator.goBack()
+    }
+
     fun sendFeedback(text: String, email: String) {
         viewModelScope.launch {
             loadingCounter.addLoader()

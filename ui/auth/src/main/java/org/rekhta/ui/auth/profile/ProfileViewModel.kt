@@ -86,6 +86,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun openFeedback() {
+        navigator.goBack()
         navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
     }
 
