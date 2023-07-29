@@ -72,7 +72,7 @@ class EventRepository @Inject constructor() {
         "title" to title
     )
 
-    fun loginClicked() = "login_prompt_clicked" to mapOf<String, String>()
+    fun openLogin() = "open_login" to mapOf<String, String>()
 
     fun signUp(name: String?) = FirebaseAnalytics.SIGN_UP to mapOf(
         "name" to name
