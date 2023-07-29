@@ -1,70 +1,99 @@
 package org.rekhta.ui.auth.profile
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.kafka.auth.R
 import org.kafka.common.simpleClickable
-import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
 import org.kafka.ui.components.progress.InfiniteProgressBar
-import org.rekhta.ui.auth.AuthViewModel
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, authViewModel: AuthViewModel = hiltViewModel()) {
-    val viewState by authViewModel.state.collectAsStateWithLifecycle()
-    val navigator = LocalNavigator.current
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = hiltViewModel()
+) {
+    val viewState by profileViewModel.state.collectAsStateWithLifecycle()
 
-    Surface(modifier = modifier.animateContentSize()) {
+    CompositeSurface(modifier = modifier.padding(horizontal = Dimens.Spacing24)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.Spacing20)
-                .navigationBarsPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = Dimens.Spacing20),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
-            UserProfileHeader(
-                modifier = Modifier,
-                displayName = viewState.userName ?: "Profile"
-            ) {
-                navigator.navigate(Screen.Library.createRoute(RootScreen.Library))
-            }
+            ProfileHeader(
+                viewState = viewState,
+                profileViewModel = profileViewModel,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.Spacing12)
+            )
 
-            LogoutButton(modifier = Modifier.align(Alignment.End)) {
-                authViewModel.logout()
-            }
-        }
+            ProfileMenu(profileViewModel = profileViewModel)
 
-        if (viewState.isLoading) {
-            InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
+            viewState.appVersion?.let { version ->
+                Text(
+                    text = stringResource(R.string.app_version, version),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun LogoutButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    OutlinedButton(
+private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Surface(
         modifier = modifier,
-        onClick = onClick,
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surface
     ) {
-        Text(text = "Logout")
+        Surface(
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun ProfileHeader(
+    viewState: ProfileViewState,
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    Surface(modifier = modifier, shape = MaterialTheme.shapes.large) {
+        if (viewState.isLoading) {
+            InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
+        } else {
+            if (viewState.currentUser != null) {
+                UserProfileHeader(viewState.userName) { profileViewModel.openLibrary() }
+            } else {
+                LoginPrompt { profileViewModel.openLogin() }
+            }
+        }
     }
 }
 
@@ -85,11 +114,40 @@ private fun UserProfileHeader(
         )
         Spacer(modifier = Modifier.height(Dimens.Spacing04))
         Text(
-            text = "Go to Favorites",
+            text = stringResource(R.string.go_to_favorites),
             modifier = Modifier.simpleClickable { goToFavorites() },
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
             maxLines = 1
         )
+    }
+}
+
+@Composable
+private fun LoginPrompt(
+    modifier: Modifier = Modifier,
+    openLogin: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { openLogin() }
+            .padding(Dimens.Spacing24),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.login_rationale),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.tertiary,
+        )
+
+        Spacer(modifier = Modifier.height(Dimens.Spacing12))
+
+        Button(
+            modifier = Modifier.align(Alignment.End),
+            onClick = openLogin
+        ) {
+            Text(text = stringResource(R.string.login))
+        }
     }
 }

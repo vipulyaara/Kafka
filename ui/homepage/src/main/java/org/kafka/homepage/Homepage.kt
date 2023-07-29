@@ -59,12 +59,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            HomeTopBar(
-                user = viewState.user,
-                login = viewModel::openLogin,
-                openFeedback = viewModel::openFeedback,
-                logout = viewModel::logout
-            )
+            HomeTopBar(openProfile = viewModel::openProfile,)
         },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {

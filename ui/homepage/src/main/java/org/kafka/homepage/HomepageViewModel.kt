@@ -10,14 +10,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
-import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.domain.interactors.UpdateHomepage
-import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
@@ -25,18 +22,15 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import javax.inject.Inject
-import org.kafka.common.snackbar.UiMessage.Companion as SnackbarUiMessage
 
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
-    private val logoutUser: LogoutUser,
     observeUser: ObserveUser,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val snackbarManager: SnackbarManager,
     private val loadingCounter: ObservableLoadingCounter
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
@@ -74,27 +68,8 @@ class HomepageViewModel @Inject constructor(
         }
     }
 
-    fun openLogin() {
-        analytics.log { loginClicked() }
-        navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
-    }
-
-    fun openFeedback() {
-        viewModelScope.launch {
-            navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
-        }
-    }
-
-    fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
-        viewModelScope.launch {
-            analytics.log { logoutClicked() }
-            logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
-                if (status == InvokeSuccess) {
-                    snackbarManager.addMessage(SnackbarUiMessage(R.string.logged_out))
-                    onLogout()
-                }
-            }
-        }
+    fun openProfile() {
+        navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
     }
 
     fun openItemDetail(itemId: String) {

@@ -10,12 +10,19 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kafka.data.prefs.PreferencesStore
+import com.kafka.data.prefs.Theme
+import com.kafka.data.prefs.observeTheme
 
 @Composable
 fun AppTheme(
@@ -43,7 +50,7 @@ fun AppTheme(
     }
 
     val systemUiController = rememberSystemUiController()
-    val isLight = isSystemInLightTheme()
+    val isLight = !isDarkTheme
 
     SideEffect {
         systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = isLight)
@@ -106,4 +113,18 @@ val KafkaTypography by lazy {
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
 fun isAtLeastS(): Boolean {
     return VERSION.SDK_INT >= 31
+}
+
+val THEME = stringPreferencesKey("theme")
+
+@Composable
+fun PreferencesStore.shouldUseDarkColors(): Boolean {
+    val themePreference by remember { observeTheme() }.collectAsState(Theme.SYSTEM)
+
+    return when (themePreference) {
+        Theme.SYSTEM -> isSystemInDarkTheme()
+        Theme.DARK -> true
+        Theme.LIGHT -> false
+        else -> isSystemInDarkTheme()
+    }
 }

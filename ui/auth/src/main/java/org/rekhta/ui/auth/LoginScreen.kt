@@ -68,8 +68,7 @@ fun LoginScreen() {
                     modifier = Modifier,
                     login = authViewModel::login,
                     signup = authViewModel::signup,
-                    forgotPassword = authViewModel::forgotPassword,
-                    openFeedback = authViewModel::openFeedback
+                    forgotPassword = authViewModel::forgotPassword
                 )
             }
 
@@ -85,7 +84,6 @@ private fun Login(
     login: (email: String, password: String) -> Unit,
     signup: (email: String, password: String) -> Unit,
     forgotPassword: (email: String) -> Unit,
-    openFeedback: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var loginState by rememberSavableMutableState { LoginState.Login }
@@ -126,9 +124,6 @@ private fun Login(
             loginState = if (loginState.isLogin) LoginState.Signup else LoginState.Login
         }
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing24))
-
-        FeedbackPrompt(openFeedback = openFeedback)
         Spacer(modifier = Modifier.weight(0.1f))
     }
 }
