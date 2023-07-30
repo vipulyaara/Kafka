@@ -18,7 +18,7 @@ import com.kafka.data.feature.item.DownloadStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
-import org.kafka.common.widgets.IconButton
+import org.kafka.common.widgets.IconResource
 import org.kafka.ui.components.R
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
@@ -33,21 +33,23 @@ fun DownloadStatusIcons(
     val downloadId = downloadInfo.id
 
     Box(modifier = Modifier.size(Dimens.Spacing44)) {
-        IconButton(
+        IconResource(
             imageVector = downloadInfo.status.icon(),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = downloadInfo.status.label(),
+            modifier = Modifier.align(Alignment.Center),
             onClick = {
                 when (downloadInfo.status) {
                     DownloadStatus.DOWNLOADING -> scope.launch { downloader.pause(downloadId) }
                     DownloadStatus.PAUSED -> scope.launch { downloader.resume(downloadId) }
                     DownloadStatus.FAILED,
                     DownloadStatus.CANCELLED -> scope.launch { downloader.retry(downloadId) }
+
                     DownloadStatus.COMPLETED -> scope.launch { downloader.delete(downloadId) }
+
                     else -> {}
                 }
-            },
-            modifier = Modifier.align(Alignment.Center)
+            }
         )
 
         if (downloadInfo.status == DownloadStatus.DOWNLOADING) {

@@ -77,7 +77,6 @@ class BaselineProfileGenerator {
 
             device.pressBack()
 
-            // TODO Write more interactions to optimize advanced journeys of your app.
             // For example:
             // 1. Wait until the content is asynchronously loaded
             // 2. Scroll the feed content

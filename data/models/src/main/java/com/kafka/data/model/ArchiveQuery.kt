@@ -55,6 +55,14 @@ fun ArchiveQuery.booksByAuthor(author: String, joiner: String = ""): ArchiveQuer
     return this
 }
 
+fun ArchiveQuery.filterByType(types: List<String>): ArchiveQuery {
+    types.forEach {
+        val newJoiner = if (it == types.last()) "" else joinerOr
+        queries.add(QueryItem(_mediaType, it, newJoiner))
+    }
+    return this
+}
+
 fun ArchiveQuery.booksBySubject(subject: String, joiner: String = ""): ArchiveQuery {
     queries.add(QueryItem(_subject, subject, joiner))
     return this

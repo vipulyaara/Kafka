@@ -2,7 +2,10 @@ package org.kafka.domain.interactors.query
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.QueryItem
 import com.kafka.data.model._identifier
+import com.kafka.data.model._mediaType
+import com.kafka.data.prefs.ContentType
 import org.kafka.base.debug
 import javax.inject.Inject
 
@@ -17,11 +20,28 @@ class BuildLocalQuery @Inject constructor() {
         val selectFrom = "SELECT * FROM item WHERE"
         var where = " "
 
+        val mediaTypeQuery = queries.filter { it.key == _mediaType }
+            .takeIf { it.isNotEmpty() }
+            ?: ContentType.BOTH.mediaTypes.map { QueryItem(_mediaType, it) }
+
+        queries.removeIf { it.key == _mediaType }
+
+        where += " ("
         queries.forEach {
-            val newKey = replaceIdentifierForLocalQuery(it.key)
-            val newValue = it.value.replace(' ', '%').replace("'", " ")
+            val newKey = it.key.sanitizeForRoom()
+            val newValue = it.value
+                .replace(' ', '%')
+                .replace("'", " ")
             where += "$newKey like '%${newValue}%'${it.joiner.toLocalJoiner()}"
         }
+        where += ")"
+
+        where += " AND ("
+        mediaTypeQuery.forEachIndexed { index, it ->
+            val joiner = if (index == mediaTypeQuery.lastIndex) "" else " OR "
+            where += "${it.key} = '${it.value}'$joiner"
+        }
+        where += ")"
 
         val orderBy = " ORDER BY position DESC"
         val query = selectFrom + where.removeSuffix(queries.last().joiner.toLocalJoiner()) + orderBy
@@ -31,7 +51,6 @@ class BuildLocalQuery @Inject constructor() {
         return SimpleSQLiteQuery(query)
     }
 
-    private fun replaceIdentifierForLocalQuery(key: String) =
-        if (key == _identifier) "itemId" else key
+    private fun String.sanitizeForRoom() = if (this == _identifier) "itemId" else this
 
 }
