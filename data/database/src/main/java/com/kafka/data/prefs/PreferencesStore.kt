@@ -79,3 +79,20 @@ enum class Theme {
         val DEFAULT = SYSTEM
     }
 }
+
+enum class ContentType {
+    AUDIO,
+    TEXT,
+    BOTH;
+
+    val mediaTypes
+        get() = when (this) {
+            AUDIO -> listOf("audio")
+            TEXT -> listOf("texts")
+            BOTH -> listOf("audio", "texts")
+        }
+
+    companion object {
+        val DEFAULT = BOTH
+    }
+}

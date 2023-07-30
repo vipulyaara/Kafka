@@ -115,8 +115,6 @@ fun isAtLeastS(): Boolean {
     return VERSION.SDK_INT >= 31
 }
 
-val THEME = stringPreferencesKey("theme")
-
 @Composable
 fun PreferencesStore.shouldUseDarkColors(): Boolean {
     val themePreference by remember { observeTheme() }.collectAsState(Theme.SYSTEM)

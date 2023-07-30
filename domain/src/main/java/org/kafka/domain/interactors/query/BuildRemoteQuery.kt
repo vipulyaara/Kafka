@@ -5,9 +5,6 @@ import com.kafka.data.model.QueryItem
 import com.kafka.data.model._creator
 import com.kafka.data.model._creator_remote
 import com.kafka.data.model._mediaType
-import com.kafka.data.model._mediaTypeAudio
-import com.kafka.data.model._mediaTypeText
-import com.kafka.data.model.joinerAnd
 import org.kafka.base.debug
 import javax.inject.Inject
 
@@ -21,16 +18,10 @@ class BuildRemoteQuery @Inject constructor() {
 
         groups.keys.forEach {
             val value = groups[it] ?: error("")
-            val newKey = replaceCreatorNameForRemoteQuery(it)
+            val newKey = it.sanitizeForApi()
             query += buildSameKeyQueries(newKey, value)
             query += value.last().joiner.toRemoteJoiner()
         }
-
-        query += joinerAnd.toRemoteJoiner()
-        query += "$_mediaType:($_mediaTypeText OR $_mediaTypeAudio)"
-
-//    query = query.plus(keyValueRemoteQuery(_mediaType, _mediaTypeText, joinerOr.toRemoteJoiner()))
-//    query = query.plus(keyValueRemoteQuery(_mediaType, _mediaTypeAudio, ""))
 
         debug { "Remote query is $query" }
 
@@ -38,7 +29,9 @@ class BuildRemoteQuery @Inject constructor() {
     }
 
     private fun buildSameKeyQueries(key: String, items: List<QueryItem>): String {
-        var query = "${key}:("
+        var query = ""
+        if (key == _mediaType) query += "+AND+"
+        query += "${key}:("
 
         items.forEach {
             query += "${it.value} ${it.joiner} "
@@ -50,6 +43,6 @@ class BuildRemoteQuery @Inject constructor() {
         return query
     }
 
-    private fun replaceCreatorNameForRemoteQuery(key: String) =
-        if (key == _creator) _creator_remote else key
+    private fun String.sanitizeForApi() =
+        if (this == _creator) _creator_remote else this
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.data.prefs.THEME
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,6 @@ import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
-import ui.common.theme.theme.THEME
 import javax.inject.Inject
 
 @HiltViewModel
