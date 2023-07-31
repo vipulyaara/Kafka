@@ -89,7 +89,7 @@ enum class ContentType {
         get() = when (this) {
             AUDIO -> listOf("audio")
             TEXT -> listOf("texts")
-            BOTH -> listOf("audio", "texts")
+            BOTH -> listOf("texts", "audio")
         }
 
     companion object {

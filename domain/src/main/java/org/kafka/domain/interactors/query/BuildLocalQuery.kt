@@ -22,7 +22,7 @@ class BuildLocalQuery @Inject constructor() {
 
         val mediaTypeQuery = queries.filter { it.key == _mediaType }
             .takeIf { it.isNotEmpty() }
-            ?: ContentType.BOTH.mediaTypes.map { QueryItem(_mediaType, it) }
+            ?: ContentType.DEFAULT.mediaTypes.map { QueryItem(_mediaType, it) }
 
         queries.removeIf { it.key == _mediaType }
 

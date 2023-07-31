@@ -36,7 +36,7 @@ class SearchQueryItems @Inject constructor(
 internal fun buildQuery(
     keyword: String,
     searchFilters: List<SearchFilter> = SearchFilter.values().toList(),
-    contentType: ContentType = ContentType.BOTH
+    contentType: ContentType = ContentType.DEFAULT
 ): ArchiveQuery {
     val query = ArchiveQuery()
     searchFilters.forEach {
