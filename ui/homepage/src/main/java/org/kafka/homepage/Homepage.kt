@@ -58,7 +58,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { HomeTopBar(openProfile = viewModel::openProfile,) },
+        topBar = { HomeTopBar(openProfile = viewModel::openProfile) },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box(modifier = Modifier.fillMaxSize()) {
