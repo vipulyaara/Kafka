@@ -3,6 +3,8 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -29,6 +31,8 @@ data class ItemDetail(
     val isAudio
         get() = this.mediaType == mediaTypeAudio
 
+    val immutableSubjects: ImmutableList<String>
+        get() = subject.orEmpty().toPersistentList()
 }
 
-fun ItemDetail?.webUrl()  = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"
+fun ItemDetail?.webUrl() = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

@@ -142,14 +142,14 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Row -> {
-                    item(key = collection.labels, contentType = "row") {
+                    item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, goToSubject)
                         ItemsRow(collection.items, openItemDetail)
                     }
                 }
 
                 is HomepageCollection.Grid -> {
-                    item(key = collection.labels, contentType = "grid") {
+                    item(key = collection.key, contentType = "grid") {
                         SubjectItems(collection.labels, goToSubject)
                         ItemsGrid(
                             items = collection.items,
@@ -160,7 +160,7 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Column -> {
-                    item(key = collection.labels) { SubjectItems(collection.labels, goToSubject) }
+                    item(key = collection.key) { SubjectItems(collection.labels, goToSubject) }
                     items(
                         items = collection.items,
                         key = { it.itemId },
@@ -196,7 +196,7 @@ private fun HomepageFeedItems(
 }
 
 @Composable
-private fun ItemsRow(items: List<Item>, openItemDetail: (String) -> Unit) {
+private fun ItemsRow(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
     LazyRow(
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
@@ -251,7 +251,7 @@ private fun ItemsGrid(
 }
 
 @Composable
-private fun SubjectItems(labels: List<String>, goToSubject: (String) -> Unit) {
+private fun SubjectItems(labels: ImmutableList<String>, goToSubject: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         modifier = subjectModifier

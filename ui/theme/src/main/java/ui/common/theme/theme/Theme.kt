@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
@@ -69,7 +68,7 @@ val KafkaTypography by lazy {
         headlineLarge = default.headlineLarge.copy(fontFamily = DefaultFont),
         headlineMedium = default.headlineMedium.copy(fontFamily = DefaultFont),
         headlineSmall = TextStyle(
-            fontFamily = Inter,
+            fontFamily = DefaultFont,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             lineHeight = 24.sp,
@@ -80,13 +79,13 @@ val KafkaTypography by lazy {
             fontSize = 20.sp
         ),
         titleMedium = TextStyle(
-            fontFamily = Inter,
+            fontFamily = DefaultFont,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             lineHeight = 20.sp,
         ),
         titleSmall = TextStyle(
-            fontFamily = Inter,
+            fontFamily = DefaultFont,
             fontWeight = FontWeight.Medium,
             fontSize = 13.sp,
             lineHeight = 18.sp,
@@ -96,13 +95,13 @@ val KafkaTypography by lazy {
         bodySmall = default.bodySmall,
         labelLarge = default.labelLarge.copy(fontFamily = DefaultFont),
         labelMedium = TextStyle(
-            fontFamily = Inter,
+            fontFamily = DefaultFont,
             fontWeight = FontWeight.Medium,
             fontSize = 13.sp,
             lineHeight = 15.sp,
         ),
         labelSmall = TextStyle(
-            fontFamily = Inter,
+            fontFamily = DefaultFont,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
             lineHeight = 14.sp,

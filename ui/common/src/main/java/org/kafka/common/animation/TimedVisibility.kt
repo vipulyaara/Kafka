@@ -1,8 +1,5 @@
 package org.kafka.common.animation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -13,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.kafka.common.extensions.AnimatedVisibilityFade
 
 /**
  * Delays visibility of given [content] for [delayMillis].
@@ -54,7 +52,10 @@ fun TimedVisibility(
             job.cancel()
         }
     }
-    AnimatedVisibility(visible = visible, modifier = modifier, enter = fadeIn(), exit = fadeOut()) {
+    AnimatedVisibilityFade(
+        visible = visible,
+        modifier = modifier
+    ) {
         content()
     }
 }

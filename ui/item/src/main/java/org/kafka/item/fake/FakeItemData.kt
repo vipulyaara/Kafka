@@ -3,6 +3,7 @@ package org.kafka.item.fake
 import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import kotlinx.collections.immutable.persistentListOf
 
 object FakeItemData {
     private val coverUrl =
@@ -29,7 +30,7 @@ object FakeItemData {
         coverImage = coverUrl,
     )
 
-    val items = listOf(item0, item1, item2)
+    val items = persistentListOf(item0, item1, item2)
 
     val itemDetail = ItemDetail(
         itemId = "123",

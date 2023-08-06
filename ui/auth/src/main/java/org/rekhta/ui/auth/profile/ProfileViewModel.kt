@@ -2,6 +2,7 @@ package org.rekhta.ui.auth.profile
 
 import android.app.Application
 import android.content.pm.PackageManager
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
@@ -109,11 +110,12 @@ class ProfileViewModel @Inject constructor(
     }
 }
 
+@Immutable
 data class ProfileViewState(
     val currentUser: User? = null,
     val theme: Theme = Theme.DEFAULT,
     val appVersion: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = true
 ) {
     val userName: String
         get() = currentUser?.displayName.takeIf { it?.isNotEmpty() == true } ?: "Profile"

@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -30,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
 import com.kafka.search.SearchScreen
@@ -65,15 +65,15 @@ internal fun AppNavigation(
             is NavigationEvent.Destination -> {
                 // switch tabs first because of a bug in navigation that doesn't allow
                 // changing tabs when destination is opened from a different tab
-                event.root?.route?.let {
-                    navController.navigate(it) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+//                event.root?.route?.let {
+//                    navController.navigate(it) {
+//                        popUpTo(navController.graph.findStartDestination().id) {
+//                            saveState = true
+//                        }
+//                        launchSingleTop = true
+//                        restoreState = true
+//                    }
+//                }
                 navController.navigate(event.route)
             }
 
@@ -182,7 +182,11 @@ private fun NavGraphBuilder.addLibrary(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
-    composable(Screen.ItemDetail.createRoute(root)) {
+    composable(
+        Screen.ItemDetail.createRoute(root),
+        arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+        deepLinks = listOf(navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" })
+    ) {
         ItemDetail()
     }
 }

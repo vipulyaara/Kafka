@@ -29,7 +29,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Row(
-                labels = label.splitLabel(),
+                labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
                 clickable = clickable
             )
@@ -42,7 +42,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Column(
-                labels = label.splitLabel(),
+                labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
                 clickable = clickable
             )
@@ -54,7 +54,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Grid(
-                labels = label.splitLabel(),
+                labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
                 clickable = clickable
             )

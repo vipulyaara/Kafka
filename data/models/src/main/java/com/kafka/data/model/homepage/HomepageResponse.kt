@@ -1,5 +1,6 @@
 package com.kafka.data.model.homepage
 
+import androidx.compose.runtime.Immutable
 import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -80,6 +81,7 @@ sealed class HomepageCollectionResponse {
 }
 
 @Serializable
+@Immutable
 data class HomepageBanner(
     @DocumentId
     val id: String = "",
