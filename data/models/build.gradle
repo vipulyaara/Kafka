@@ -28,6 +28,7 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.paging
     implementation libs.androidx.room.runtime
+    implementation libs.compose.runtime.runtime
     implementation libs.dataStore
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core

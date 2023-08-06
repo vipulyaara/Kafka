@@ -13,7 +13,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
+import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -24,14 +25,11 @@ import kotlinx.coroutines.flow.collectLatest
 import org.kafka.base.debug
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.NavigatorHost
-import org.kafka.navigation.rememberBottomSheetNavigator
 import org.kafka.ui.components.snackbar.SnackbarMessagesHost
 import tm.alashow.datmusic.ui.downloader.DownloaderHost
 
 @Composable
-fun MainScreen() {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+fun MainScreen(navController: NavHostController, bottomSheetNavigator:BottomSheetNavigator) {
     val mainViewModel = hiltViewModel<MainViewModel>()
 
     LaunchedEffect(mainViewModel, navController) {

@@ -32,8 +32,9 @@ class ItemDetailMapper @Inject constructor(
             primaryFile = from.files.primaryFile(from.metadata.mediatype)?.fileId,
             subject = from.metadata.subject
                 ?.subList(0, from.metadata.subject!!.size.coerceAtMost(12))
-//                ?.map { it.substring(0, it.length.coerceAtMost(50)) }
-                ?.filter { it.trim().isNotEmpty() },
+                ?.map { it.substring(0, it.length.coerceAtMost(50)) }
+                ?.map { it.trim() }
+                ?.filter { it.isNotEmpty() },
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating
         ).also {
             insertFiles(from, it)

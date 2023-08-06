@@ -21,11 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun ExtensionFilter(
-    actionLabels: List<String>,
+    actionLabels: ImmutableList<String>,
     selectedFilter: String?,
     onItemSelected: (String?) -> Unit,
     modifier: Modifier = Modifier

@@ -3,14 +3,14 @@ package org.kafka.navigation.deeplink
 import androidx.core.net.toUri
 
 sealed class Navigation {
-    object Homepage : Navigation()
+    data object Homepage : Navigation()
     data class ItemDetail(val itemId: String) : Navigation()
     data class Player(val itemId: String) : Navigation()
     data class Reader(val itemId: String) : Navigation()
-    object Library : Navigation()
-    object LanguageSelection : Navigation()
-    object Profile : Navigation()
-    object Search : Navigation()
+    data object Library : Navigation()
+    data object LanguageSelection : Navigation()
+    data object Profile : Navigation()
+    data object Search : Navigation()
 }
 
 object DeepLinksNavigation {

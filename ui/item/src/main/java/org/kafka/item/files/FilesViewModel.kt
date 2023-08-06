@@ -12,6 +12,7 @@ import com.kafka.data.entities.isAudio
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.Audio
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -82,7 +83,8 @@ class FilesViewModel @Inject constructor(
         viewModelScope.launch { downloader.enqueueFile(file.fileId) }
     }
 
-    private fun actionLabels(files: List<File>) = listOf("all") + files.map { it.format }.distinct()
+    private fun actionLabels(files: List<File>) =
+        (listOf("all") + files.map { it.format }.distinct()).toPersistentList()
 
     private fun filteredFiles(files: List<File>, selectedExtension: String?) =
         files.filter { selectedExtension == null || it.format == selectedExtension }

@@ -75,7 +75,7 @@ class ItemDetailViewModel @Inject constructor(
         debug { "ItemDetailViewModel: $itemDetail" }
         ItemDetailViewState(
             itemDetail = itemDetail,
-            itemsByCreator = itemsByCreator.filterNot { it.itemId == itemId },
+            itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
             isLoading = isLoading
         )

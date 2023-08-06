@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Rekhta</string>
-    <string name="app_launcher" translatable="false">Rekhta</string>
-    <string name="app_label" translatable="false">Rekhta</string>
-
     <string name="search.title" translatable="false">Search</string>
     <string name="search.hint" translatable="false">Songs, albums, artists</string>
     <string name="search.hint.query" translatable="false">Search query</string>
