@@ -1,9 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.kafka.user.debug",
-    "sha256_cert_fingerprints":
-    ["58:7A:25:D2:44:76:38:DB:B4:73:75:98:80:EC:64:A5:46:22:23:6B:2F:52:91:93:AB:52:FF:23:A7:97:95:39"]
-  }
-}]
