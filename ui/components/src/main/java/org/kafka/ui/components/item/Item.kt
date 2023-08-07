@@ -34,7 +34,7 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        modifier = modifier.testTagUi("item_audio")
+        modifier = modifier.testTagUi("content_item")
     )
 }
 
