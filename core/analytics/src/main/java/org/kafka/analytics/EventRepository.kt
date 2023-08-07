@@ -12,11 +12,12 @@ class EventRepository @Inject constructor() {
 
     fun removeRecentSearch(keyword: String) = "remove_recent_search" to mapOf("keyword" to keyword)
 
-    fun openItemDetail(itemId: String, name: String? = null, source: String? = null) = "open_item_detail" to mapOf(
-        "item_id" to itemId,
-        "source" to source,
-        "name" to name
-    )
+    fun openItemDetail(itemId: String, source: String? = null, name: String? = null) =
+        "open_item_detail" to mapOf(
+            "item_id" to itemId,
+            "source" to source,
+            "name" to name
+        )
 
     fun playItem(itemId: String, source: String? = null) = "play_item" to mapOf(
         "item_id" to itemId,

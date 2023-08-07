@@ -52,27 +52,33 @@ sealed class HomepageCollection {
 
     @Immutable
     data class Row(
-        val labels: List<String>,
+        val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
         override val enabled: Boolean = true
-    ) : HomepageCollection()
+    ) : HomepageCollection() {
+        val key = labels.joinToString(separator = ",")
+    }
 
     @Immutable
     data class Column(
-        val labels: List<String>,
+        val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
         override val enabled: Boolean = true
-    ) : HomepageCollection()
+    ) : HomepageCollection() {
+        val key = labels.joinToString(separator = ",")
+    }
 
     @Immutable
     data class Grid(
-        val labels: List<String>,
+        val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
         override val enabled: Boolean = true
-    ) : HomepageCollection()
+    ) : HomepageCollection() {
+        val key = labels.joinToString(separator = ",")
+    }
 }
 
 private const val ContinueReadingItemsThreshold = 10
