@@ -56,7 +56,7 @@ class BaselineProfileGenerator {
 
     private fun MacrobenchmarkScope.waitForAsyncContent() {
         device.wait(Until.hasObject(By.res(homepageListKey)), 20_000)
-        val contentList = device.findObject(By.res(homepageListKey))
+//        val contentList = device.findObject(By.res(homepageListKey))
         // Wait until a snack collection item within the list is rendered.
 //        contentList.wait(Until.hasObject(By.res("snack_collection")), 5_000)
     }
