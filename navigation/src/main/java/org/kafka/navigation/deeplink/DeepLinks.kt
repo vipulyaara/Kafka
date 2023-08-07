@@ -1,6 +1,7 @@
 package org.kafka.navigation.deeplink
 
 import androidx.core.net.toUri
+import org.kafka.navigation.deeplink.Config.BASE_URL
 
 sealed class Navigation {
     data object Homepage : Navigation()
@@ -16,16 +17,16 @@ sealed class Navigation {
 object DeepLinksNavigation {
     fun findUri(navigation: Navigation) = when (navigation) {
         Navigation.Homepage -> {
-            "app.kafka://homepage".toUri()
+            "${BASE_URL}/homepage".toUri()
         }
         is Navigation.ItemDetail -> {
-            "app.kafka://item/${navigation.itemId}".toUri()
+            "${BASE_URL}item/${navigation.itemId}".toUri()
         }
-        is Navigation.Player -> "app.kafka://player/${navigation.itemId}".toUri()
-        is Navigation.Reader -> "app.kafka://reader/${navigation.itemId}".toUri()
-        is Navigation.Library -> "app.kafka://library".toUri()
-        is Navigation.LanguageSelection -> "app.kafka://language".toUri()
-        is Navigation.Profile -> "app.kafka://profile".toUri()
-        is Navigation.Search -> "app.kafka://search".toUri()
+        is Navigation.Player -> "${BASE_URL}/player/${navigation.itemId}".toUri()
+        is Navigation.Reader -> "${BASE_URL}/reader/${navigation.itemId}".toUri()
+        is Navigation.Library -> "${BASE_URL}/library".toUri()
+        is Navigation.LanguageSelection -> "${BASE_URL}/language".toUri()
+        is Navigation.Profile -> "${BASE_URL}/profile".toUri()
+        is Navigation.Search -> "${BASE_URL}/search".toUri()
     }
 }

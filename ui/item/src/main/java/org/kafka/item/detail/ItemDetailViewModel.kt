@@ -172,8 +172,8 @@ class ItemDetailViewModel @Inject constructor(
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
-        val deepLink = dynamicDeepLinkHandler.createDeepLinkUri(link)
-        val text = context.getString(R.string.check_out_on_kafka, itemTitle, deepLink).trimIndent()
+//        val deepLink = dynamicDeepLinkHandler.createDeepLinkUri(link)
+        val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
 
         context.shareText(text)
     }

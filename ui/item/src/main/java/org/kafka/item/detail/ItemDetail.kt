@@ -81,7 +81,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
-                isShareVisible = false,
                 lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
                 onBackPressed = { navigator.goBack() }
