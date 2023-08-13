@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.entities.User
 import org.kafka.auth.R
+import org.kafka.common.animation.Delayed
 import org.kafka.common.simpleClickable
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
@@ -42,7 +44,9 @@ fun ProfileScreen(
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
             ProfileHeader(
-                viewState = viewState,
+                isLoading = viewState.isLoading,
+                userName = viewState.currentUser?.displayName.orEmpty(),
+                currentUser = viewState.currentUser,
                 profileViewModel = profileViewModel,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,16 +84,18 @@ private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable
 
 @Composable
 private fun ProfileHeader(
-    viewState: ProfileViewState,
+    isLoading: Boolean,
+    userName: String,
+    currentUser: User?,
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
     Surface(modifier = modifier, shape = MaterialTheme.shapes.large) {
-        if (viewState.isLoading) {
+        if (isLoading) {
             InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
         } else {
-            if (viewState.currentUser != null) {
-                UserProfileHeader(viewState.userName) { profileViewModel.openLibrary() }
+            if (currentUser != null) {
+                UserProfileHeader(userName) { profileViewModel.openLibrary() }
             } else {
                 LoginPrompt { profileViewModel.openLogin() }
             }

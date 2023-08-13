@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController = rememberNavController(bottomSheetNavigator)
             AppTheme(isDarkTheme = preferencesStore.shouldUseDarkColors()) {
