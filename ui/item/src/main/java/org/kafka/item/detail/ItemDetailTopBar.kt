@@ -29,7 +29,7 @@ internal fun TopBar(
     onShareClicked: () -> Unit,
     onBackPressed: () -> Unit,
     lazyGridState: LazyGridState,
-    isShareVisible: Boolean = false
+    isShareVisible: Boolean = true
 ) {
     val isRaised by remember { derivedStateOf { lazyGridState.firstVisibleItemIndex > 2 } }
 

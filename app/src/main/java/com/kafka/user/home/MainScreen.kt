@@ -57,7 +57,9 @@ fun MainScreen(navController: NavHostController, bottomSheetNavigator:BottomShee
                 Home(
                     navController = navController,
                     analytics = mainViewModel.analytics,
-                    modifier = Modifier.semantics { testTagsAsResourceId = true })
+                    modifier = Modifier.semantics { testTagsAsResourceId = true },
+                    playerTheme = mainViewModel.playerTheme,
+                )
             }
         }
     }

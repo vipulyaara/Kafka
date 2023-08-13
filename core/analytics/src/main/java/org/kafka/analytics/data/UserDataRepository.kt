@@ -11,12 +11,12 @@ class UserDataRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val firebaseAuth: FirebaseAuth
 ) {
+    fun getUserData(): UserData =
+        UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())
+
     fun getUserCountry(): String? {
         val telephonyManager =
             context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
     }
-
-    fun getUserData(): UserData =
-        UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())
 }

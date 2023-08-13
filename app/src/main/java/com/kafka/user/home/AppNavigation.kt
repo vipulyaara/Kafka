@@ -171,7 +171,8 @@ private fun NavGraphBuilder.addPlayer(root: RootScreen) {
         PlaybackSheet(
             onClose = { navigator.goBack() },
             goToItem = { playbackViewModel.goToAlbum() },
-            goToCreator = { playbackViewModel.goToCreator() }
+            goToCreator = { playbackViewModel.goToCreator() },
+            playerTheme = playbackViewModel.playerTheme,
         )
     }
 }

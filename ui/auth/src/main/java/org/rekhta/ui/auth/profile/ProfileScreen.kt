@@ -45,7 +45,7 @@ fun ProfileScreen(
         ) {
             ProfileHeader(
                 isLoading = viewState.isLoading,
-                userName = viewState.currentUser?.displayName.orEmpty(),
+                userName = viewState.currentUser?.displayName,
                 currentUser = viewState.currentUser,
                 profileViewModel = profileViewModel,
                 modifier = Modifier
@@ -85,7 +85,7 @@ private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable
 @Composable
 private fun ProfileHeader(
     isLoading: Boolean,
-    userName: String,
+    userName: String?,
     currentUser: User?,
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
@@ -105,7 +105,7 @@ private fun ProfileHeader(
 
 @Composable
 private fun UserProfileHeader(
-    displayName: String,
+    displayName: String?,
     modifier: Modifier = Modifier,
     goToFavorites: () -> Unit
 ) {
@@ -114,11 +114,13 @@ private fun UserProfileHeader(
             .fillMaxWidth()
             .padding(Dimens.Spacing24)
     ) {
-        Text(
-            text = displayName,
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.height(Dimens.Spacing04))
+        displayName?.let { name ->
+            Text(
+                text = name,
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(Dimens.Spacing04))
+        }
         Text(
             text = stringResource(R.string.go_to_favorites),
             modifier = Modifier.simpleClickable { goToFavorites() },

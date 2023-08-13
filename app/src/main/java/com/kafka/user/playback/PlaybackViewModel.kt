@@ -3,6 +3,8 @@ package com.kafka.user.playback
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.dao.FileDao
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.getPlayerTheme
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.id
@@ -18,8 +20,10 @@ import javax.inject.Inject
 class PlaybackViewModel @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val fileDao: FileDao,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val remoteConfig: RemoteConfig
 ) : ViewModel() {
+    val playerTheme by lazy { remoteConfig.getPlayerTheme() }
 
     fun goToAlbum() {
         viewModelScope.launch(Dispatchers.IO) {
