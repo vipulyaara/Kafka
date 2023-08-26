@@ -22,6 +22,7 @@ dependencies {
     implementation project(':base:network')
     implementation project(':core:analytics')
     implementation project(':core-playback')
+    implementation project(':core:remote-config')
     implementation project(':data:repo')
     implementation project(':domain')
     implementation project(':navigation')

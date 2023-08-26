@@ -84,7 +84,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
                 lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
                 onBackPressed = { navigator.goBack() },
-                isShareVisible = false
+                isShareVisible = viewModel.isShareEnabled()
             )
         }
     ) { padding ->
