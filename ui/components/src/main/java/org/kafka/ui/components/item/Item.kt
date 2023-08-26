@@ -34,7 +34,8 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        modifier = modifier.testTagUi("content_item")
+        modifier = modifier.testTagUi("content_item"),
+        isInAppropriate = item.isInappropriate
     )
 }
 
@@ -44,7 +45,8 @@ fun Item(
     creator: String?,
     mediaType: String?,
     coverImage: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isInAppropriate: Boolean = false
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -54,7 +56,8 @@ fun Item(
             data = coverImage,
             placeholder = placeholder(mediaType),
             size = Dimens.CoverSizeMedium,
-            modifier = Modifier.align(Alignment.CenterVertically)
+            modifier = Modifier.align(Alignment.CenterVertically),
+            isNoPreview = isInAppropriate
         )
 
         ItemDescription(title = { ItemTitleMedium(title) },
@@ -146,7 +149,8 @@ fun ItemSmall(
             modifier = Modifier.align(Alignment.CenterVertically),
             size = Dimens.CoverSizeSmall
         )
-        ItemDescription(title = { ItemTitleSmall(title) },
+        ItemDescription(
+            title = { ItemTitleSmall(title) },
             creator = { ItemCreatorSmall(creator) },
             mediaType = { ItemMediaType(mediaType) },
             modifier = Modifier.padding(vertical = Dimens.Spacing02)

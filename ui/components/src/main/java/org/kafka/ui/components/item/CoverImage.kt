@@ -44,7 +44,8 @@ fun CoverImage(
     iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
-    elevation: Dp = 2.dp
+    elevation: Dp = 2.dp,
+    isNoPreview: Boolean = false
 ) {
     val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier
     Surface(
@@ -56,7 +57,7 @@ fun CoverImage(
             .shadowMaterial(Dimens.Spacing08, shape)
     ) {
         Image(
-            data = data,
+            data = if (isNoPreview) null else data,
             contentDescription = contentDescription,
             contentScale = contentScale,
             placeholder = placeholder,
