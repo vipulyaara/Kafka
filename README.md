@@ -1,6 +1,6 @@
 # Kafka
 
-[Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available in more than 100 languages, all free and in the public domain.
+[Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available across a multitude of genres and languages, all free and in the public domain.
 
 
 ## Download
