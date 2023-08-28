@@ -16,11 +16,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.entities.Item
 import org.kafka.common.image.Icons
+import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -78,6 +80,19 @@ fun FeaturedItem(
             }
         }
     }
+}
+
+@Composable
+fun FeaturedItemPlaceholder() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .padding(horizontal = Dimens.Gutter)
+            .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
+            .clip(RoundedCornerShape(Dimens.RadiusMedium))
+            .placeholderDefault()
+    )
 }
 
 private val Scrim = Brush.verticalGradient(

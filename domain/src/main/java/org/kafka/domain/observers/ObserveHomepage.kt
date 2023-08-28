@@ -26,14 +26,11 @@ class ObserveHomepage @Inject constructor(
             debug { "ObserveHomepage: collection=$collection" }
             val collectionWithRecentItems = collection.mapNotNull {
                 when (it) {
-                    is HomepageCollection.Banners -> if (it.items.isEmpty()) null else it
-                    is HomepageCollection.Column -> if (it.items.isEmpty()) null else it
-                    is HomepageCollection.FeaturedItem -> if (it.items.isEmpty()) null else it
-                    is HomepageCollection.Row -> if (it.items.isEmpty()) null else it
-                    is HomepageCollection.Grid -> if (it.items.isEmpty()) null else it
                     is HomepageCollection.RecentItems -> {
                         if (recentItems.isEmpty()) null else it.copy(items = recentItems)
                     }
+
+                    else -> it
                 }
             }.toPersistentList()
 

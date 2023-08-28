@@ -1,17 +1,21 @@
 package org.kafka.ui.components.item
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import com.kafka.data.entities.Item
+import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -41,4 +45,14 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+fun RowItemPlaceholder(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(Dimens.CoverSizeLarge)
+            .clip(RoundedCornerShape(Dimens.RadiusMedium))
+            .placeholderDefault()
+    )
 }

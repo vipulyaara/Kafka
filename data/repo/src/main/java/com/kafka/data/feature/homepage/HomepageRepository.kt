@@ -44,6 +44,7 @@ class HomepageRepository @Inject constructor(
         .asSequence()
         .map { it.data(HomepageCollectionResponse.serializer()) }
         .sortedBy { it.index }
+        .filter { it.enabled }
         .mapNotNull {
             when (it) {
                 is HomepageCollectionResponse.Column -> it.itemIds.split(", ")
@@ -52,7 +53,7 @@ class HomepageRepository @Inject constructor(
                 is HomepageCollectionResponse.Grid -> it.itemIds.split(", ")
                 else -> null
             }
-        }.flatten()
+        }
         .distinct()
         .toList()
 
