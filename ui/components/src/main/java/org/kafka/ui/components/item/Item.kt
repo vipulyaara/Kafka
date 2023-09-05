@@ -189,7 +189,10 @@ fun placeholder(mediaType: String?) = if (mediaType == "audio") Icons.Audio else
 
 @Composable
 fun ItemPlaceholder(modifier: Modifier = Modifier) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter)) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter)
+    ) {
         Box(
             modifier = Modifier
                 .size(Dimens.CoverSizeSmall)
