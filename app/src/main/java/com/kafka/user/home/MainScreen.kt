@@ -29,7 +29,7 @@ import org.kafka.ui.components.snackbar.SnackbarMessagesHost
 import tm.alashow.datmusic.ui.downloader.DownloaderHost
 
 @Composable
-fun MainScreen(navController: NavHostController, bottomSheetNavigator:BottomSheetNavigator) {
+fun MainScreen(navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
     val mainViewModel = hiltViewModel<MainViewModel>()
 
     LaunchedEffect(mainViewModel, navController) {
