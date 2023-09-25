@@ -15,9 +15,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 interface FirebaseTopics {
+    val topics: Flow<List<String>>
     fun subscribeToTopic(topic: String)
     fun unsubscribeFromTopic(topic: String)
-    val topics: Flow<List<String>>
 }
 
 class FirebaseTopicsImpl @Inject constructor(

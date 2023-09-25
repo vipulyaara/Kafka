@@ -44,6 +44,7 @@ class HomepageRepository @Inject constructor(
         .asSequence()
         .map { it.data(HomepageCollectionResponse.serializer()) }
         .sortedBy { it.index }
+        .filter { it.enabled }
         .mapNotNull {
             when (it) {
                 is HomepageCollectionResponse.Column -> it.itemIds.split(", ")
@@ -52,20 +53,30 @@ class HomepageRepository @Inject constructor(
                 is HomepageCollectionResponse.Grid -> it.itemIds.split(", ")
                 else -> null
             }
-        }.flatten()
+        }
         .distinct()
         .toList()
 
     private fun HomepageCollectionResponse.filterByTopics(userTopics: List<String>): Boolean {
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
-        val isInCollection = collectionTopics.any {
-            if (it.startsWith("-")) { // exclude topics
-                !userTopics.contains(it.removePrefix("-"))
-            } else {
-                userTopics.contains(it)
+        return collectionTopics.isEmpty()
+                || userTopics.isEmpty()
+                || shouldShowCollection(userTopics, collectionTopics)
+    }
+
+    private fun shouldShowCollection(userTopics: List<String>, collectionTopics: List<String>): Boolean {
+        val includedTopics = collectionTopics.filter { !it.startsWith("-") }.toSet()
+        val excludedTopics =
+            collectionTopics.filter { it.startsWith("-") }.map { it.substring(1) }.toSet()
+
+        for (userTopic in userTopics) {
+            if (excludedTopics.any { userTopic.contains(it) }) {
+                return false
+            } else if (includedTopics.any { userTopic.contains(it) }) {
+                return true
             }
         }
 
-        return collectionTopics.isEmpty() || userTopics.isEmpty() || isInCollection
+        return includedTopics.isEmpty()
     }
 }

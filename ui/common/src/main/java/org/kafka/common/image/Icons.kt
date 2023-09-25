@@ -13,17 +13,14 @@ import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
 import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Cross
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
-import compose.icons.tablericons.ArrowForward
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.ChevronUpLeft
-import compose.icons.tablericons.Circle0
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock

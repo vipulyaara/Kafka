@@ -27,6 +27,9 @@ data class Item constructor(
 ) : BaseEntity {
     val isAudio: Boolean
         get() = mediaType == "audio"
+    
+    val isInappropriate: Boolean
+        get() = collection?.contains("no-preview") == true
 }
 
 @Immutable

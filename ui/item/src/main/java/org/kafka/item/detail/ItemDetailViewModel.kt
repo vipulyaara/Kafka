@@ -10,6 +10,8 @@ import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isShareEnabled
 import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -55,7 +57,7 @@ class ItemDetailViewModel @Inject constructor(
     private val updateFavorite: UpdateFavorite,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
-    private val dynamicDeepLinkHandler: DynamicDeepLinkHandler,
+    private val remoteConfig: RemoteConfig,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
     private val appReviewManager: AppReviewManager,
@@ -167,13 +169,14 @@ class ItemDetailViewModel @Inject constructor(
         navigator.navigate(ItemDescription.createRoute(currentRoot, itemId))
     }
 
+    fun isShareEnabled() = remoteConfig.isShareEnabled()
+
     fun shareItemText(context: Context) {
         analytics.log { this.shareItem(itemId) }
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
-        val deepLink = dynamicDeepLinkHandler.createDeepLinkUri(link)
-        val text = context.getString(R.string.check_out_on_kafka, itemTitle, deepLink).trimIndent()
+        val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
 
         context.shareText(text)
     }

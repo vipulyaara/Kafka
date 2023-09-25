@@ -1,6 +1,6 @@
 # Kafka
 
-[Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available in more than 100 languages, all free and in the public domain.
+[Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available across a multitude of genres and languages, all free and in the public domain.
 
 
 ## Download
@@ -34,7 +34,7 @@
 Kafka implements MVVM with interactors using all the latest android frameworks.<br/>
 Parts of the architecture are inspired by [Tivi](https://github.com/chrisbanes/tivi). Download and audio features are copied from [DatMusic](https://github.com/alashow/datmusic-android).
 
-The app uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html), [Jetpack compose](https://developer.android.com/jetpack/compose) with Material3 theming, [Room](https://developer.android.com/topic/libraries/architecture/room), [Retrofit2](https://github.com/square/retrofit), [Dagger Hilt](https://dagger.dev/hilt/), [ExoPlayer](https://github.com/google/ExoPlayer)
+The app uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html), [Jetpack compose](https://developer.android.com/jetpack/compose), Material3, [Room](https://developer.android.com/topic/libraries/architecture/room), [Retrofit2](https://github.com/square/retrofit), [Dagger Hilt](https://dagger.dev/hilt/), [ExoPlayer](https://github.com/google/ExoPlayer)
 
 
 ![final-architecture](https://user-images.githubusercontent.com/6247940/75632907-cb5f5780-5c00-11ea-974d-ff7a5e8b0a21.png)

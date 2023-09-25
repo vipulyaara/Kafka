@@ -2,13 +2,11 @@ package ui.common.theme.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val brandRed = Color(0xffff006a)
 val brandBlue = Color(0xff0067DD)
 val white = Color(0xFFFFFFFF)
 val whiteCream = Color(0xFFFAFAFA)

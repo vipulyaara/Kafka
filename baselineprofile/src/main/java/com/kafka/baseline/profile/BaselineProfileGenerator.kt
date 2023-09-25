@@ -1,5 +1,6 @@
 package com.kafka.baseline.profile
 
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -47,43 +48,40 @@ class BaselineProfileGenerator {
             pressHome()
             startActivityAndWait()
 
-//            val initialTags = listOf(0, 1, 2).map { "row_$it" }
-//            val allTags = listOf(0, 1, 2, 3, 4).map { "row_$it" }
-
-            device.wait(Until.hasObject(By.res("homepage_feed_items")), 20_000)
-
-            val homepageFeed = device.findObject(By.res("homepage_feed_items"))
-
-//            initialTags.forEach {
-//                device.wait(Until.hasObject(By.res(it)), 10_000)
-//            }
-//
-//            val row = allTags.mapNotNull { tag ->
-//                device.findObject(By.res(tag))
-//            }
-
-//            row.forEach { scrollable ->
-//                scrollable.setGestureMargin(device.displayWidth / 10)
-//                repeat(3) {
-//                    scrollable.fling(Direction.RIGHT)
-//                    scrollable.fling(Direction.LEFT)
-//                }
-//                homepageFeed.scroll(Direction.DOWN, 20f)
-//            }
-
-            homepageFeed.setGestureMargin(device.displayWidth / 10)
-            homepageFeed.fling(Direction.DOWN)
-            homepageFeed.fling(Direction.UP)
-
-            device.pressBack()
-
-            // For example:
-            // 1. Wait until the content is asynchronously loaded
-            // 2. Scroll the feed content
-            // 3. Navigate to detail screen
-
-            // Check UiAutomator documentation for more information how to interact with the app.
-            // https://d.android.com/training/testing/other-components/ui-automator
+            waitForAsyncContent()
+            scrollHomepageJourney()
+//            goToItemDetailJourney()
         }
     }
+
+    private fun MacrobenchmarkScope.waitForAsyncContent() {
+        device.wait(Until.hasObject(By.res(homepageListKey)), 20_000)
+//        val contentList = device.findObject(By.res(homepageListKey))
+        // Wait until a snack collection item within the list is rendered.
+//        contentList.wait(Until.hasObject(By.res("snack_collection")), 5_000)
+    }
+
+    fun MacrobenchmarkScope.scrollHomepageJourney() {
+        val list = device.findObject(By.res(homepageListKey))
+        // Set gesture margin to avoid triggering gesture navigation.
+        list.setGestureMargin(device.displayWidth / 5)
+        list.fling(Direction.DOWN)
+        list.fling(Direction.DOWN)
+        list.fling(Direction.UP)
+        list.fling(Direction.UP)
+        device.waitForIdle()
+    }
+
+    private fun MacrobenchmarkScope.goToItemDetailJourney() {
+        val snackList = device.findObject(By.res(homepageListKey))
+        val snacks = snackList.findObjects(By.res("content_item"))
+        // Select snack from the list based on running iteration.
+//        val index = (iteration ?: 0) % snacks.size
+        snacks[0].click()
+        // Wait until the screen is gone = the detail is shown.
+        device.wait(Until.gone(By.res(homepageListKey)), 5_000)
+        device.pressBack()
+    }
+
+    private val homepageListKey = "homepage_feed_items"
 }

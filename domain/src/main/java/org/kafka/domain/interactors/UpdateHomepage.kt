@@ -4,6 +4,9 @@ import com.kafka.data.feature.homepage.HomepageRepository
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
@@ -19,18 +22,19 @@ class UpdateHomepage @Inject constructor(
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
-            val homepageIds = homepageRepository.getHomepageIds().reversed()
-            val unfetchedIds = homepageIds.filter { !itemRepository.exists(it) }
+            homepageRepository.getHomepageIds().mapAsync { ids ->
+                val unFetchedIds = ids.filter { !itemRepository.exists(it) }
 
-            // only fetch if some item doesn't exist in the database already
-            if (unfetchedIds.isNotEmpty()) {
-                // archive api does not allow large number of ids in a single query
-                val items = unfetchedIds.map { it.trim() }.chunked(100).map {
-                    val query = ArchiveQuery().booksByIdentifiers(it)
-                    itemRepository.updateQuery(buildRemoteQuery(query))
+                if (unFetchedIds.isNotEmpty()) {
+                    val query = ArchiveQuery().booksByIdentifiers(unFetchedIds)
+                    val items = itemRepository.updateQuery(buildRemoteQuery(query))
+                    itemRepository.saveItems(items)
                 }
-                itemRepository.saveItems(items.flatten())
             }
         }
     }
 }
+
+private suspend fun <T, R> List<T>.mapAsync(
+    mapper: suspend (T) -> R
+): List<R> = coroutineScope { map { async { mapper(it) } }.awaitAll() }

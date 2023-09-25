@@ -21,6 +21,7 @@ data class Doc(
     @SerialName("downloads")
     val downloads: Int,
     @SerialName("format")
+    @Serializable(with = StringListSerializer::class)
     val format: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,

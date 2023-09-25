@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -42,9 +43,12 @@ import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.FeaturedItem
+import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.Item
+import org.kafka.ui.components.item.ItemPlaceholder
 import org.kafka.ui.components.item.ItemSmall
 import org.kafka.ui.components.item.RowItem
+import org.kafka.ui.components.item.RowItemPlaceholder
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -124,34 +128,20 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.FeaturedItem -> {
-                    items(
-                        items = collection.items,
-                        key = { "featured_${it.itemId}" },
-                        contentType = { "featured" }
-                    ) { item ->
-                        FeaturedItem(
-                            item = item,
-                            label = collection.label,
-                            imageUrl = collection.image,
-                            onClick = { openItemDetail(item.itemId) },
-                            modifier = Modifier
-                                .padding(horizontal = Dimens.Gutter)
-                                .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
-                        )
-                    }
+                    featuredItems(collection, openItemDetail)
                 }
 
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, goToSubject)
-                        ItemsRow(collection.items, openItemDetail)
+                        RowItems(collection.items, openItemDetail)
                     }
                 }
 
                 is HomepageCollection.Grid -> {
                     item(key = collection.key, contentType = "grid") {
                         SubjectItems(collection.labels, goToSubject)
-                        ItemsGrid(
+                        GridItems(
                             items = collection.items,
                             openItemDetail = openItemDetail,
                             modifier = Modifier.testTag("row_$index")
@@ -161,21 +151,7 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Column -> {
                     item(key = collection.key) { SubjectItems(collection.labels, goToSubject) }
-                    items(
-                        items = collection.items,
-                        key = { it.itemId },
-                        contentType = { it.javaClass }
-                    ) { item ->
-                        Item(
-                            item = item,
-                            modifier = Modifier
-                                .clickable { openItemDetail(item.itemId) }
-                                .padding(
-                                    horizontal = Dimens.Gutter,
-                                    vertical = Dimens.Spacing06
-                                )
-                        )
-                    }
+                    columnItems(collection, openItemDetail)
                 }
             }
         }
@@ -195,8 +171,35 @@ private fun HomepageFeedItems(
     }
 }
 
+private fun LazyListScope.featuredItems(
+    collection: HomepageCollection.FeaturedItem,
+    openItemDetail: (String) -> Unit
+) {
+    if (collection.items.isNotEmpty()) {
+        items(
+            items = collection.items,
+            key = { "featured_${it.itemId}" },
+            contentType = { "featured" }
+        ) { item ->
+            FeaturedItem(
+                item = item,
+                label = collection.label,
+                imageUrl = collection.image,
+                onClick = { openItemDetail(item.itemId) },
+                modifier = Modifier
+                    .padding(horizontal = Dimens.Gutter)
+                    .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
+            )
+        }
+    } else {
+        item(key = "featured_placeholder_${collection.image}") {
+            FeaturedItemPlaceholder()
+        }
+    }
+}
+
 @Composable
-private fun ItemsRow(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
+private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
     LazyRow(
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
@@ -204,23 +207,63 @@ private fun ItemsRow(items: ImmutableList<Item>, openItemDetail: (String) -> Uni
         ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {
+        if (items.isNotEmpty()) {
+            items(
+                items = items,
+                key = { it.itemId },
+                contentType = { it.javaClass }
+            ) { item ->
+                RowItem(
+                    item = item,
+                    modifier = Modifier
+                        .widthIn(max = Dimens.CoverSizeLarge.width)
+                        .clickable { openItemDetail(item.itemId) }
+                )
+            }
+        } else {
+            items(count = PlaceholderItemCount, key = { index -> "row_placeholder_$index" }) {
+                RowItemPlaceholder()
+            }
+        }
+    }
+}
+
+private fun LazyListScope.columnItems(
+    collection: HomepageCollection.Column,
+    openItemDetail: (String) -> Unit
+) {
+    if (collection.items.isNotEmpty()) {
         items(
-            items = items,
+            items = collection.items,
             key = { it.itemId },
             contentType = { it.javaClass }
         ) { item ->
-            RowItem(
+            Item(
                 item = item,
                 modifier = Modifier
-                    .widthIn(max = Dimens.CoverSizeLarge.width)
                     .clickable { openItemDetail(item.itemId) }
+                    .padding(
+                        horizontal = Dimens.Gutter,
+                        vertical = Dimens.Spacing06
+                    )
+            )
+        }
+    } else {
+        items(
+            count = PlaceholderItemCount,
+            key = { index -> "column_placeholder_${collection.key}_$index" }) {
+            ItemPlaceholder(
+                Modifier.padding(
+                    horizontal = Dimens.Gutter,
+                    vertical = Dimens.Spacing06
+                )
             )
         }
     }
 }
 
 @Composable
-private fun ItemsGrid(
+private fun GridItems(
     items: ImmutableList<Item>,
     openItemDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -268,3 +311,4 @@ private val subjectModifier = Modifier
 
 private const val HorizontalGridHeight = 290
 private const val RowItemMaxWidth = 350
+private const val PlaceholderItemCount = 5

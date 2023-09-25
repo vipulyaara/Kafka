@@ -49,6 +49,7 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.deeplink.Config
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.feedback.FeedbackScreen
@@ -170,7 +171,8 @@ private fun NavGraphBuilder.addPlayer(root: RootScreen) {
         PlaybackSheet(
             onClose = { navigator.goBack() },
             goToItem = { playbackViewModel.goToAlbum() },
-            goToCreator = { playbackViewModel.goToCreator() }
+            goToCreator = { playbackViewModel.goToCreator() },
+            playerTheme = playbackViewModel.playerTheme,
         )
     }
 }

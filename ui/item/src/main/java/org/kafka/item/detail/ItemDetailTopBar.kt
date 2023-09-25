@@ -29,15 +29,17 @@ internal fun TopBar(
     onShareClicked: () -> Unit,
     onBackPressed: () -> Unit,
     lazyGridState: LazyGridState,
-    isShareVisible: Boolean = false
+    isShareVisible: Boolean = true
 ) {
     val isRaised by remember { derivedStateOf { lazyGridState.firstVisibleItemIndex > 2 } }
 
     val containerColor by animateColorAsState(
-        if (isRaised) MaterialTheme.colorScheme.primary else Color.Transparent
+        targetValue = if (isRaised) MaterialTheme.colorScheme.primary else Color.Transparent,
+        label = "container_color"
     )
     val contentColor by animateColorAsState(
-        if (isRaised) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+        targetValue = if (isRaised) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+        label = "content_color"
     )
 
     TopBar(

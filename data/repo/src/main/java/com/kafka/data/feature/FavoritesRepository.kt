@@ -1,5 +1,6 @@
 package com.kafka.data.feature
 
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
 import com.kafka.data.entities.FavoriteItem
@@ -16,6 +17,7 @@ class FavoritesRepository @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     fun observeFavorites(uid: String) = firestoreGraph.getFavoritesCollection(uid)
+        .orderBy("createdAt", Query.Direction.DESCENDING)
         .snapshots()
         .map { snapshots ->
             snapshots.map { it.toObject<FavoriteItem>() }

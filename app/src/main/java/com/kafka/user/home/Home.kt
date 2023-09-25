@@ -25,6 +25,7 @@ import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
+import com.sarahang.playback.ui.sheet.materialYouPlayerTheme
 import org.kafka.analytics.logger.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
@@ -40,6 +41,7 @@ internal fun Home(
     navController: NavHostController,
     analytics: Analytics,
     modifier: Modifier = Modifier,
+    playerTheme: String = materialYouPlayerTheme,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
 ) {
@@ -78,7 +80,8 @@ internal fun Home(
                         navController = navController,
                         selectedTab = selectedTab,
                         isPlayerActive = isPlayerActive,
-                        analytics = analytics
+                        analytics = analytics,
+                        playerTheme = playerTheme
                     )
                 }
             ) { paddings ->
@@ -96,7 +99,8 @@ private fun BottomBar(
     navController: NavHostController,
     selectedTab: RootScreen,
     isPlayerActive: Boolean,
-    analytics: Analytics
+    analytics: Analytics,
+    playerTheme: String
 ) {
     val navigator = LocalNavigator.current
     val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
@@ -109,7 +113,8 @@ private fun BottomBar(
                     .zIndex(2f),
                 openPlaybackSheet = {
                     navigator.navigate(Screen.Player.createRoute(currentRoot))
-                }
+                },
+                playerTheme = playerTheme,
             )
 
             HomeNavigationBar(
