@@ -186,6 +186,7 @@ internal class DownloaderImpl @Inject constructor(
     }
 
     private suspend fun enqueueDownloadRequest(downloadRequest: DownloadRequest, request: Request): DownloadEnqueueResult<Request> {
+        debug { "Enqueueing download request: $request" }
         val enqueueResult = fetcher.enqueue(request)
 
         if (enqueueResult is DownloadEnqueueSuccessful) {

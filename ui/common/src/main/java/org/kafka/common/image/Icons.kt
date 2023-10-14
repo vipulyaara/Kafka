@@ -24,6 +24,7 @@ import compose.icons.tablericons.ChevronUpLeft
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
+import compose.icons.tablericons.Copy
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
@@ -49,6 +50,7 @@ object Icons {
     val Home: ImageVector = TablerIcons.Home
     val HomeActive: ImageVector = TablerIcons.Home2
     val Search: ImageVector = TablerIcons.Search
+    val Copy: ImageVector = TablerIcons.Copy
     val Check: ImageVector = TablerIcons.CircleCheck
     val SearchActive: ImageVector = FeatherIcons.Search
     val Library: ImageVector = TablerIcons.Bookmark

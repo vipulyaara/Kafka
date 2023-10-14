@@ -18,6 +18,7 @@ dependencies {
 	implementation libs.hilt.android
 
 	implementation project(':core:analytics')
+	implementation project(':core:remote-config')
 	implementation project(':data:repo')
 	implementation project(':ui:common')
 	implementation libs.fetch
