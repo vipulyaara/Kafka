@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kafka.user.home.bottombar.HomeNavigationBar
 import com.kafka.user.home.bottombar.rail.ResizableHomeNavigationRail
 import com.sarahang.playback.core.PlaybackConnection
@@ -75,14 +77,16 @@ internal fun Home(
                 modifier = Modifier.weight(12f),
                 snackbarHost = { DismissableSnackbarHost(snackbarHostState) },
                 bottomBar = {
-                    BottomBar(
-                        isWideLayout = isWideLayout,
-                        navController = navController,
-                        selectedTab = selectedTab,
-                        isPlayerActive = isPlayerActive,
-                        analytics = analytics,
-                        playerTheme = playerTheme
-                    )
+                    if (shouldShowBottomBar(navController)) {
+                        BottomBar(
+                            isWideLayout = isWideLayout,
+                            navController = navController,
+                            selectedTab = selectedTab,
+                            isPlayerActive = isPlayerActive,
+                            analytics = analytics,
+                            playerTheme = playerTheme
+                        )
+                    }
                 }
             ) { paddings ->
                 ProvideScaffoldPadding(paddings) {
@@ -128,4 +132,13 @@ private fun BottomBar(
             )
         }
     else Spacer(Modifier.navigationBarsPadding())
+}
+
+
+@Composable
+private fun shouldShowBottomBar(navController: NavController): Boolean {
+    val currentRoute by navController.currentBackStackEntryAsState()
+    val destination = currentRoute?.destination?.route?.split("/")?.getOrNull(1)
+
+    return destination != "reader"
 }

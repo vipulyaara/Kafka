@@ -2,7 +2,6 @@ package com.kafka.reader
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.launch
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
+import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
 import org.kafka.reader.R
 import org.kafka.ui.components.MessageBox
@@ -86,7 +86,7 @@ private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
                 IconResource(
                     imageVector = Icons.XCircle,
                     tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.simpleClickable {
                         scope.launch { downloader.cancel(downloadInfo.id) }
                     }
                 )

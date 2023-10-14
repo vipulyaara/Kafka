@@ -1,27 +1,28 @@
 [versions]
 accompanist = "0.33.0-alpha"
-agp = "8.1.0"
+agp = "8.1.2"
 androidxhilt = "1.0.0"
-androidxlifecycle = "2.6.1"
-navigation = "2.7.1"
+androidxlifecycle = "2.6.2"
+navigation = "2.7.3"
 androidxtest = "1.5.2"
 coil = "2.4.0"
 compose-bom = "2023.09.00-alpha03"
 constraintlayout = "1.1.0-alpha12"
-composecompiler = "1.5.2"
+composecompiler = "1.5.3"
 composesnapshot = "-" # a single character = no snapshot
 coroutines = "1.7.3"
 dagger = "2.47"
 hilt = "2.47"
 icons = "1.0.0"
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 kotlin-immutable = "0.3.5"
 ktlint = "0.40.0"
 material3 = "1.2.0-alpha06"
+mixpanel = "7.0.0"
 okhttp = "4.11.0"
-paging = "3.2.0"
+paging = "3.2.1"
 retrofit = "2.9.0"
-room = "2.6.0-beta01"
+room = "2.6.0-rc01"
 threetenbp = "1.5.2"
 serialization = "1.5.0"
 exoplayer = "2.19.1"
@@ -32,14 +33,14 @@ pdfviewer = "3.2.0-beta.1"
 compileSdk = "34"
 minSdk = "24"
 targetSdk = "33"
-core-ktx = "1.10.1"
+core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 uiautomator = "2.2.0"
-benchmark-macro-junit4 = "1.2.0-beta05"
-androidx-baselineprofile = "1.2.0-alpha13"
+benchmark-macro-junit4 = "1.2.0-rc01"
+androidx-baselineprofile = "1.2.0-rc01"
 profileinstaller = "1.3.1"
 androidx-appcompat-appcompat = "1.6.1"
 material = "1.9.0"
@@ -49,13 +50,13 @@ review = "2.0.1"
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
-cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "2.7.1" }
+cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "2.8.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:1.9.0-1.0.12"
-gms-googleServices = "com.google.gms.google-services:4.3.15"
-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.5"
-spotless = "com.diffplug.spotless:6.18.0"
+ksp = "com.google.devtools.ksp:1.9.0-1.0.13"
+gms-googleServices = "com.google.gms.google-services:4.4.0"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
+spotless = "com.diffplug.spotless:6.21.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
@@ -76,7 +77,7 @@ accompanist-web = { module = "com.google.accompanist:accompanist-webview", versi
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
-rebugger = "com.github.theapache64:rebugger:1.0.0-alpha05"
+rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 proguard-snippets = "com.infstory:proguard-snippets:1.0.0"
 media = "androidx.media:media:1.6.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
@@ -91,9 +92,9 @@ androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
 androidx-activity = "androidx.activity:activity:1.7.2"
 androidx-appcompat-resources = "androidx.appcompat:appcompat-resources:1.6.1"
 androidx-archCoreTesting = "androidx.arch.core:core-testing:2.2.0"
-androidx-browser = "androidx.browser:browser:1.5.0"
+androidx-browser = "androidx.browser:browser:1.6.0"
 androidx-collection = "androidx.collection:collection-ktx:1.2.0"
-androidx-core = "androidx.core:core-ktx:1.10.1"
+androidx-core = "androidx.core:core-ktx:1.12.0"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
 androidx-emoji = "androidx.emoji:emoji:1.1.0"
 
@@ -123,7 +124,7 @@ lottie-compose = "com.airbnb.android:lottie-compose:6.0.1"
 
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
-androidx-paging-compose = "androidx.paging:paging-compose:3.2.0-rc01"
+androidx-paging-compose = "androidx.paging:paging-compose:3.2.1"
 
 androidx-palette = "androidx.palette:palette:1.0.0"
 
@@ -168,15 +169,15 @@ fetch = "com.github.alashow:Fetch:3.1.62"
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:32.2.0"
-google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.7"
-google-gmsGoogleServices = "com.google.gms:google-services:4.3.15"
+google-bom = "com.google.firebase:firebase-bom:32.3.1"
+google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
+google-gmsGoogleServices = "com.google.gms:google-services:4.4.0"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.2"
 google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
 google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
-google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.2"
+google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3"
 google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-performance = { module = "com.google.firebase:firebase-perf-ktx" }
@@ -206,14 +207,16 @@ icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", ve
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
 icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons", version.ref = "icons" }
 
-leakCanary = "com.squareup.leakcanary:leakcanary-android:2.11"
+leakCanary = "com.squareup.leakcanary:leakcanary-android:2.12"
 leakCanary-process = "com.squareup.leakcanary:leakcanary-android-process:2.9.1"
 
 okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
+mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanel" }
+
 retrofit-gsonConverter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
 retrofit-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 pdfviewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "pdfviewer" }
 
@@ -222,7 +225,7 @@ timber = "com.jakewharton.timber:timber:5.0.1"
 tracing = "androidx.tracing:tracing-ktx:1.1.0"
 dataStore = "androidx.datastore:datastore-preferences:1.0.0"
 truth = "com.google.truth:truth:1.1.3"
-jsoup = "org.jsoup:jsoup:1.15.1"
+jsoup = "org.jsoup:jsoup:1.16.1"
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }

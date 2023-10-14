@@ -4,27 +4,27 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.mixpanel.android.mpmetrics.MixpanelAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import org.kafka.analytics.EventRepository
 import org.kafka.analytics.data.UserDataRepository
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseAnalytics @Inject constructor(
+class AnalyticsImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @ProcessLifetime private val scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,
-
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
+    private val mixPanel = MixpanelAPI.getInstance(context, MIXPANEL_TOKEN, true)
 
     init {
         scope.launch {
@@ -38,8 +38,11 @@ class FirebaseAnalytics @Inject constructor(
 
     override fun log(eventInfo: EventInfo) {
         val (eventName, map) = eventInfo
+        val params = map.filterValues { it != null }
         debug { "Logging event: $eventName, $map" }
-        firebaseAnalytics.logEvent(eventName, map.filterValues { it != null }.asBundle())
+
+        firebaseAnalytics.logEvent(eventName, params.asBundle())
+        mixPanel.track(eventName, JSONObject(map))
     }
 
     override fun updateUserProperty(userData: UserData) {
@@ -47,11 +50,7 @@ class FirebaseAnalytics @Inject constructor(
         firebaseAnalytics.setUserProperty("country", userData.country)
     }
 
-    override fun logScreenView(
-        label: String,
-        route: String?,
-        arguments: Any?,
-    ) {
+    override fun logScreenView(label: String, route: String?, arguments: Any?) {
         try {
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
                 param(FirebaseAnalytics.Param.SCREEN_NAME, label)
@@ -68,12 +67,37 @@ class FirebaseAnalytics @Inject constructor(
                             param("screen_arg_$key", value)
                         }
                     }
+
                     arguments != null -> param("screen_arg", arguments.toString())
                 }
             }
         } catch (t: Throwable) {
             // Ignore, Firebase might not be setup for this project
         }
+
+        trackMixpanelScreenView(label = label, route = route, arguments = arguments)
+    }
+
+    private fun trackMixpanelScreenView(label: String, route: String?, arguments: Any?) {
+        mixPanel.track("screen_view", JSONObject().apply {
+            put("screen_name", label)
+            if (route != null) put("screen_route", route)
+
+            // Expand out the rest of the parameters
+            when {
+                arguments is Bundle -> {
+                    for (key in arguments.keySet()) {
+                        val value = arguments.getString(key).toString()
+                        // We don't want to include the label or route twice
+                        if (value == label || value == route) continue
+
+                        put("screen_arg_$key", value)
+                    }
+                }
+
+                arguments != null -> put("screen_arg", arguments.toString())
+            }
+        })
     }
 
     companion object {
@@ -84,25 +108,10 @@ class FirebaseAnalytics @Inject constructor(
     }
 }
 
+private const val MIXPANEL_TOKEN = "585c722380a63246958feef231cd1932"
+
 fun Map<String, String?>.asBundle() = Bundle().apply {
     entries.forEach {
         putString(it.key, it.value)
     }
 }
-
-typealias LogArgs = Map<String, Any?>?
-
-fun FirebaseAnalytics.event(event: String, args: LogArgs = null) {
-    Timber.d("Logging event: $event, $args")
-    logEvent(
-        event.replace(".", "_").lowercase(),
-        Bundle().apply { args?.forEach { putString(it.key, it.value.toString()) } })
-}
-
-fun FirebaseAnalytics.click(event: String, args: LogArgs = null) = event("click.$event", args)
-
-fun Context.event(event: String, args: LogArgs = null) =
-    FirebaseAnalytics.getInstance(this).event(event, args)
-
-fun Context.click(event: String, args: LogArgs = null) =
-    FirebaseAnalytics.getInstance(this).click(event, args)

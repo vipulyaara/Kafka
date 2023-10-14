@@ -24,5 +24,7 @@ dependencies {
 
     implementation libs.hilt.android
 
+    implementation libs.mixpanel
+
     kapt libs.hilt.compiler
 }

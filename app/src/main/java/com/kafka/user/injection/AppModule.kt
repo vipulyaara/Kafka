@@ -35,6 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.AppReviewManager
+import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
@@ -111,7 +112,7 @@ class AppModule {
 abstract class AppModuleBinds {
 
     @Binds
-    abstract fun bindLogger(firebaseLogger: org.kafka.analytics.logger.FirebaseAnalytics): Analytics
+    abstract fun bindLogger(firebaseLogger: AnalyticsImpl): Analytics
 
     @Binds
     @IntoSet
