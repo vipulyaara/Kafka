@@ -169,7 +169,7 @@ class ItemDetailViewModel @Inject constructor(
         navigator.navigate(ItemDescription.createRoute(currentRoot, itemId))
     }
 
-    fun isShareEnabled() = remoteConfig.isShareEnabled()
+    fun isShareEnabled() = remoteConfig.isShareEnabled() && state.value.itemDetail != null
 
     fun shareItemText(context: Context) {
         analytics.log { this.shareItem(itemId) }
