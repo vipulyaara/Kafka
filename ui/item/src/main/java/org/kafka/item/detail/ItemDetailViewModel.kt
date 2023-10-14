@@ -41,8 +41,8 @@ import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.ItemDescription
 import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
-import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.navigation.deeplink.Navigation
 import javax.inject.Inject
 
@@ -179,6 +179,11 @@ class ItemDetailViewModel @Inject constructor(
         val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
 
         context.shareText(text)
+    }
+
+    fun openArchiveItem() {
+        analytics.log { this.openArchiveItem(itemId) }
+        navigator.navigate(Screen.Web.createRoute(currentRoot, Config.archiveDetailUrl(itemId)))
     }
 
     fun showAppRatingIfNeeded(context: Context) {

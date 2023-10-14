@@ -83,6 +83,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
             TopBar(
                 lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
+                onShareLongClicked = { viewModel.openArchiveItem() },
                 onBackPressed = { navigator.goBack() },
                 isShareVisible = viewModel.isShareEnabled()
             )

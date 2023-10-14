@@ -46,8 +46,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:host="vipulyaara.github.io" />
-                <data android:pathPrefix="/kafka" />
+                <data android:host="kafka-books.web.app" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -56,8 +55,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:host="www.vipulyaara.github.io" />
-                <data android:pathPrefix="/kafka" />
+                <data android:host="www.kafka-books.web.app" />
             </intent-filter>
         </activity>
 

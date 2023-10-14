@@ -27,7 +27,9 @@ fun WebView(url: String, goBack: () -> Unit) {
 
     Scaffold(topBar = {
         Column {
-            TopBar(navigationIcon = { BackButton { goBack() } })
+            TopBar(
+                title = webViewState.pageTitle.orEmpty(),
+                navigationIcon = { BackButton { goBack() } })
             AnimatedVisibility(webViewState.isLoading) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }

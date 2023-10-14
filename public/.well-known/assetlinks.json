@@ -1,0 +1,39 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kafka.user",
+      "sha256_cert_fingerprints": [
+        "4E:52:3B:D3:E6:6B:08:16:E4:ED:E5:90:24:06:9B:7F:68:4F:25:5E:59:67:DA:E9:6D:25:CB:F6:22:2E:7E:A3",
+        "5A:32:2E:AF:B6:DC:82:2F:15:66:DC:5B:00:A7:37:9C:63:90:2C:1E:B0:46:94:C1:B1:B8:C8:F1:00:D0:2D:DB"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kafka.user.debug",
+      "sha256_cert_fingerprints": [
+        "58:7A:25:D2:44:76:38:DB:B4:73:75:98:80:EC:64:A5:46:22:23:6B:2F:52:91:93:AB:52:FF:23:A7:97:95:39"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kafka.user.rc",
+      "sha256_cert_fingerprints": [
+        "58:7A:25:D2:44:76:38:DB:B4:73:75:98:80:EC:64:A5:46:22:23:6B:2F:52:91:93:AB:52:FF:23:A7:97:95:39"
+      ]
+    }
+  }
+]

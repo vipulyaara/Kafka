@@ -3,9 +3,7 @@ package org.kafka.item.detail
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,6 +25,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun TopBar(
     onShareClicked: () -> Unit,
+    onShareLongClicked: () -> Unit,
     onBackPressed: () -> Unit,
     lazyGridState: LazyGridState,
     isShareVisible: Boolean = true
@@ -49,17 +48,26 @@ internal fun TopBar(
         },
         actions = {
             if (isShareVisible) {
-                ShareIcon(isRaised, onShareClicked)
+                ShareIcon(
+                    isRaised = isRaised,
+                    onClick = onShareClicked,
+                    onLongClick = onShareLongClicked
+                )
             }
         }
     )
 }
 
 @Composable
-private fun ShareIcon(isRaised: Boolean, onShareClicked: () -> Unit) {
+private fun ShareIcon(
+    isRaised: Boolean,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
     AnimatedVisibilityFade(!isRaised) {
         IconButton(
-            onClick = { onShareClicked() },
+            onClick = onClick,
+            onLongClick = onLongClick,
             modifier = Modifier.padding(Dimens.Spacing08)
         ) {
             IconResource(
