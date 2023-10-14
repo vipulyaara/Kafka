@@ -187,7 +187,10 @@ private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
     composable(
         Screen.ItemDetail.createRoute(root),
         arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-        deepLinks = listOf(navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" })
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" },
+            navDeepLink { uriPattern = "${Config.BASE_URL_ALT}item/{itemId}" },
+        )
     ) {
         ItemDetail()
     }
