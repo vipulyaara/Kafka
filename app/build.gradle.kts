@@ -13,8 +13,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 43
-        versionName = "0.4.0"
+        versionCode = 44
+        versionName = "0.5.0"
     }
 
     compileOptions {
@@ -131,6 +131,7 @@ dependencies {
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
     implementation(libs.fetch)
+    implementation(libs.fetch.okhttp)
     implementation(libs.firestore.ktx)
     implementation(libs.google.analytics)
     implementation(libs.google.auth)

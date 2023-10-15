@@ -165,7 +165,9 @@ compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
 
-fetch = "com.github.alashow:Fetch:3.1.62"
+fetch = "androidx.tonyodev.fetch2:xfetch2:3.1.6"
+fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
+
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
