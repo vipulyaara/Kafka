@@ -20,7 +20,7 @@ class BuildArchiveQuery @Inject constructor(private val dispatchers: CoroutineDi
     data class QueryItem(val key: String, val value: String, val joiner: String = "")
 
     data class ArchiveQuery(
-        var queries: MutableList<QueryItem> = mutableListOf()
+        var queries: MutableList<QueryItem> = mutableListOf(),
     )
 
     data class Params(val query: Query)

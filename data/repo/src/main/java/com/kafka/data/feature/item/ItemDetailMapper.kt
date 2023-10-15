@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ItemDetailMapper @Inject constructor(
     private val fileDao: FileDao,
     private val itemDao: ItemDao,
-    private val fileMapper: FileMapper
+    private val fileMapper: FileMapper,
 ) {
     suspend fun map(from: ItemDetailResponse): ItemDetail {
         debug { "mapping item detail: ${from.files.joinToString { it.name }}" }
@@ -35,7 +35,7 @@ class ItemDetailMapper @Inject constructor(
                 ?.map { it.substring(0, it.length.coerceAtMost(50)) }
                 ?.map { it.trim() }
                 ?.filter { it.isNotEmpty() },
-            rating = itemDao.getOrNull(from.metadata.identifier)?.rating
+            rating = itemDao.getOrNull(from.metadata.identifier)?.rating,
         ).also {
             insertFiles(from, it)
         }
@@ -51,8 +51,8 @@ class ItemDetailMapper @Inject constructor(
     private fun String.extension() = split(".").last()
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
-        it.name.startsWith("cover_")
-                && (it.name.endsWith("jpg") || it.name.endsWith("png"))
+        it.name.startsWith("cover_") &&
+            (it.name.endsWith("jpg") || it.name.endsWith("png"))
     }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
         ?: "https://archive.org/services/img/${metadata.identifier}"
 
@@ -62,7 +62,7 @@ class ItemDetailMapper @Inject constructor(
                 file = file,
                 item = item,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.getOrNull(file.name)?.localUri
+                localUri = fileDao.getOrNull(file.name)?.localUri,
             )
         }.filter { supportedExtensions.contains(it.extension) }
 
@@ -73,4 +73,3 @@ class ItemDetailMapper @Inject constructor(
 fun String?.format() = Html.fromHtml(this, 0)?.toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"
-

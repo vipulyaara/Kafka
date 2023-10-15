@@ -14,7 +14,7 @@ import javax.inject.Inject
 @Reusable
 class FavoritesRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) {
     fun observeFavorites(uid: String) = firestoreGraph.getFavoritesCollection(uid)
         .orderBy("createdAt", Query.Direction.DESCENDING)

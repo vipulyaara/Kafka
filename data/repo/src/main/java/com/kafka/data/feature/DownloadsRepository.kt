@@ -10,7 +10,7 @@ import javax.inject.Inject
 @Reusable
 class DownloadsRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) {
     suspend fun addDownload(downloadItem: DownloadItem) {
         accountRepository.currentFirebaseUser?.uid?.let {

@@ -27,4 +27,3 @@ enum class SearchFilter {
         fun all() = values().toList()
     }
 }
-

@@ -18,7 +18,7 @@ class ObserveDownloadedItems @Inject constructor(
     private val observeDownloads: ObserveDownloads,
     private val downloadInfoMapper: DownloadInfoMapper,
     private val itemDao: ItemDao,
-    private val fileDao: FileDao
+    private val fileDao: FileDao,
 ) : SubjectInteractor<Unit, List<ItemWithDownload>>() {
 
     override fun createObservable(params: Unit): Flow<List<ItemWithDownload>> {
@@ -36,7 +36,7 @@ class ObserveDownloadedItems @Inject constructor(
                     downloadRequest = fileDownloadItem.downloadRequest,
                     downloadInfo = downloadInfoMapper.map(fileDownloadItem.downloadInfo),
                     file = file,
-                    item = item
+                    item = item,
                 )
             }.distinctBy { it.item.itemId }
         }.flowOn(dispatchers.io)

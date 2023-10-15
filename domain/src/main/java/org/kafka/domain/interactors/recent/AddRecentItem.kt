@@ -11,7 +11,7 @@ import javax.inject.Inject
 class AddRecentItem @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val itemDetailDao: ItemDetailDao,
-    private val updateRecentItem: UpdateRecentItem
+    private val updateRecentItem: UpdateRecentItem,
 ) : Interactor<AddRecentItem.Params>() {
 
     override suspend fun doWork(params: Params) {

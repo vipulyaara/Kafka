@@ -22,8 +22,8 @@ const val databaseName = "kafka.db"
     includes = [
         RoomDatabaseModule::class,
         DatabaseDaoModule::class,
-        DatabaseModuleBinds::class
-    ]
+        DatabaseModuleBinds::class,
+    ],
 )
 class DatabaseModule
 
@@ -34,7 +34,9 @@ class RoomDatabaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
-            context, KafkaRoomDatabase::class.java, databaseName
+            context,
+            KafkaRoomDatabase::class.java,
+            databaseName,
         ).fallbackToDestructiveMigration()
         if (Debug.isDebuggerConnected()) {
             builder.allowMainThreadQueries()

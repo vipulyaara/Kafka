@@ -31,7 +31,7 @@ class DownloaderModule {
     @Provides
     @Singleton
     fun fetchNotificationManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): FetchNotificationManager = DownloaderNotificationManager(context)
 
     @Provides
@@ -40,7 +40,7 @@ class DownloaderModule {
         @ApplicationContext context: Context,
         @Named("downloader") okHttpClient: OkHttpClient,
         notificationManager: FetchNotificationManager,
-        remoteConfig: RemoteConfig
+        remoteConfig: RemoteConfig,
     ): Fetch {
         val downloaderType = if (remoteConfig.downloaderType() == "parallel") {
             FetchDownloader.FileDownloaderType.PARALLEL
@@ -60,6 +60,4 @@ class DownloaderModule {
         Fetch.Impl.setDefaultInstanceConfiguration(fetcherConfig)
         return Fetch.Impl.getInstance(fetcherConfig)
     }
-
-
 }

@@ -9,4 +9,3 @@ fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 fun RemoteConfig.isShareEnabled() = getBoolean(IS_SHARE_ENABLED)
 
 fun RemoteConfig.downloaderType() = get(DOWNLOADER_TYPE)
-

@@ -23,11 +23,11 @@ data class Item constructor(
     val subject: String? = null,
     val uploader: String? = null,
     val position: Int = 0,
-    val rating: Double? = null
+    val rating: Double? = null,
 ) : BaseEntity {
     val isAudio: Boolean
         get() = mediaType == "audio"
-    
+
     val isInappropriate: Boolean
         get() = collection?.contains("no-preview") == true
 }

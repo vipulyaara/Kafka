@@ -49,10 +49,10 @@ class FetchDownloadManager @Inject constructor(
                 continuation.resume(
                     DownloadEnqueueFailed(
                         error.throwable
-                            ?: IOException("Download error: ${error.name}, code=${error.value}")
-                    )
+                            ?: IOException("Download error: ${error.name}, code=${error.value}"),
+                    ),
                 )
-            }
+            },
         )
     }
 
@@ -126,58 +126,58 @@ class FetchDownloadManager @Inject constructor(
 }
 
 // Note: Currently not used
- sealed class Downloadable(
-    val download: Download
- )
+sealed class Downloadable(
+    val download: Download,
+)
 
- object DownloadUninitialized : Downloadable(DownloadInfo())
+object DownloadUninitialized : Downloadable(DownloadInfo())
 
- class DownloadCompleted(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadAdded(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadResumed(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadPaused(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadCanceled(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadRemoved(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadDeleted(
-    download: Download
- ) : Downloadable(download)
-
- class DownloadQueued(
+class DownloadCompleted(
     download: Download,
-    val waitingOnNetwork: Boolean
- ) : Downloadable(download)
+) : Downloadable(download)
 
- class DownloadError(
+class DownloadAdded(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadResumed(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadPaused(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadCanceled(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadRemoved(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadDeleted(
+    download: Download,
+) : Downloadable(download)
+
+class DownloadQueued(
+    download: Download,
+    val waitingOnNetwork: Boolean,
+) : Downloadable(download)
+
+class DownloadError(
     download: Download,
     val error: Error,
-    val throwable: Throwable?
- ) : Downloadable(download)
+    val throwable: Throwable?,
+) : Downloadable(download)
 
- class DownloadProgress(
+class DownloadProgress(
     download: Download,
     val etaInMilliSeconds: Long,
-    val downloadedBytesPerSecond: Long
- ) : Downloadable(download)
+    val downloadedBytesPerSecond: Long,
+) : Downloadable(download)
 
- fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
+fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
     val fetchListener = object : AbstractFetchListener() {
         override fun onAdded(download: Download) {
             super.onAdded(download)
@@ -228,4 +228,4 @@ class FetchDownloadManager @Inject constructor(
     awaitClose {
         fetch.removeListener(fetchListener)
     }
- }
+}

@@ -15,7 +15,7 @@ import javax.inject.Inject
  * */
 class ObserveRecentTextItem @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val recentTextDao: RecentTextDao
+    private val recentTextDao: RecentTextDao,
 ) : SubjectInteractor<String, RecentTextItem?>() {
 
     override fun createObservable(params: String): Flow<RecentTextItem?> {

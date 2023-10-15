@@ -31,7 +31,7 @@ class BuildRemoteQuery @Inject constructor() {
     private fun buildSameKeyQueries(key: String, items: List<QueryItem>): String {
         var query = ""
         if (key == _mediaType) query += "+AND+"
-        query += "${key}:("
+        query += "$key:("
 
         items.forEach {
             query += "${it.value} ${it.joiner} "

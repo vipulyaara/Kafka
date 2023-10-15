@@ -32,7 +32,7 @@ class DownloaderNotificationManager(private val context: Context) :
 
     override fun getActionPendingIntent(
         downloadNotification: DownloadNotification,
-        actionType: DownloadNotification.ActionType
+        actionType: DownloadNotification.ActionType,
     ): PendingIntent {
         val intent = Intent(notificationManagerAction)
         intent.putExtra(EXTRA_NAMESPACE, downloadNotification.namespace)
@@ -53,7 +53,7 @@ class DownloaderNotificationManager(private val context: Context) :
             context,
             downloadNotification.notificationId + action,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // all this overriding just to add this flag
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE, // all this overriding just to add this flag
         )
     }
 
@@ -67,7 +67,7 @@ class DownloaderNotificationManager(private val context: Context) :
                     title
                 }
             },
-            context
+            context,
         )
     }
 }

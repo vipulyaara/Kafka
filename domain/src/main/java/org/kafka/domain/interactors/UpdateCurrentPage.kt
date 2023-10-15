@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UpdateCurrentPage @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val recentTextDao: RecentTextDao
+    private val recentTextDao: RecentTextDao,
 ) : Interactor<UpdateCurrentPage.Params>() {
 
     override suspend fun doWork(params: Params) {

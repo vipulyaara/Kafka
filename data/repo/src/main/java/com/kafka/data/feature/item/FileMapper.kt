@@ -25,7 +25,7 @@ class FileMapper @Inject constructor() {
             readerUrl = if (extension.isText()) URL("$prefix/$name").toString() else null,
             downloadUrl = URL("$prefix/$name").toString(),
             coverImage = item.coverImage,
-            localUri = localUri
+            localUri = localUri,
         )
     }
 }

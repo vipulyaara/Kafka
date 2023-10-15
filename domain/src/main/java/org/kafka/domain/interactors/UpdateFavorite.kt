@@ -19,7 +19,7 @@ class UpdateFavorite @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val itemDetailDao: ItemDetailDao,
     private val analytics: Analytics,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : Interactor<UpdateFavorite.Params>() {
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
@@ -45,7 +45,7 @@ class UpdateFavorite @Inject constructor(
             title = itemDetail.title.orEmpty(),
             creator = itemDetail.creator.orEmpty(),
             mediaType = itemDetail.mediaType.orEmpty(),
-            coverImage = itemDetail.coverImage.orEmpty()
+            coverImage = itemDetail.coverImage.orEmpty(),
         )
     }
 

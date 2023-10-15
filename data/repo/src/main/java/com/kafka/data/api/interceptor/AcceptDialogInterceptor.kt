@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-class AcceptDialogInterceptor @Inject constructor(): Interceptor {
+class AcceptDialogInterceptor @Inject constructor() : Interceptor {
     private val headerName = "AcceptDialog"
     private val headerValue = "application/json"
 

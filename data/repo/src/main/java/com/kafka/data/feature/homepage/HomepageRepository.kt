@@ -16,11 +16,11 @@ import javax.inject.Inject
 class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
-    private val firebaseTopics: FirebaseTopics
+    private val firebaseTopics: FirebaseTopics,
 ) {
     fun observeHomepageCollection() = combine(
         firestoreGraph.homepageCollection.snapshots,
-        firebaseTopics.topics
+        firebaseTopics.topics,
     ) { homepageResponse, topics ->
         homepageResponse to topics
     }.flatMapLatest {
@@ -59,9 +59,9 @@ class HomepageRepository @Inject constructor(
 
     private fun HomepageCollectionResponse.filterByTopics(userTopics: List<String>): Boolean {
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
-        return collectionTopics.isEmpty()
-                || userTopics.isEmpty()
-                || shouldShowCollection(userTopics, collectionTopics)
+        return collectionTopics.isEmpty() ||
+            userTopics.isEmpty() ||
+            shouldShowCollection(userTopics, collectionTopics)
     }
 
     private fun shouldShowCollection(userTopics: List<String>, collectionTopics: List<String>): Boolean {

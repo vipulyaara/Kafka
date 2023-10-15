@@ -32,7 +32,7 @@ class BuildLocalQuery @Inject constructor() {
             val newValue = it.value
                 .replace(' ', '%')
                 .replace("'", " ")
-            where += "$newKey like '%${newValue}%'${it.joiner.toLocalJoiner()}"
+            where += "$newKey like '%$newValue%'${it.joiner.toLocalJoiner()}"
         }
         where += ")"
 
@@ -52,5 +52,4 @@ class BuildLocalQuery @Inject constructor() {
     }
 
     private fun String.sanitizeForRoom() = if (this == _identifier) "itemId" else this
-
 }

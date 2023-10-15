@@ -17,7 +17,7 @@ sealed class HomepageCollectionResponse {
         val items: List<HomepageBanner> = listOf(),
         override val index: Int,
         override val enabled: Boolean = true,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -28,7 +28,7 @@ sealed class HomepageCollectionResponse {
         val image: List<FirebaseImage>? = null,
         override val index: Int,
         override val enabled: Boolean = true,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -36,7 +36,7 @@ sealed class HomepageCollectionResponse {
     data class RecentItems(
         override val index: Int,
         override val enabled: Boolean = true,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -47,7 +47,7 @@ sealed class HomepageCollectionResponse {
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
         override val index: Int = 0,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -58,7 +58,7 @@ sealed class HomepageCollectionResponse {
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
         override val index: Int = 0,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
@@ -69,14 +69,14 @@ sealed class HomepageCollectionResponse {
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
         override val index: Int = 0,
-        override val topics: String = ""
+        override val topics: String = "",
     ) : HomepageCollectionResponse()
 
     @Serializable
     data class Unknown(
         override val enabled: Boolean = false,
         override val topics: String = "",
-        override val index: Int = -1
+        override val index: Int = -1,
     ) : HomepageCollectionResponse()
 }
 
@@ -88,7 +88,7 @@ data class HomepageBanner(
     val action: Action = Action.Search,
     val imageUrl: String = "",
     val keyword: String? = null,
-    val index: Int = 0
+    val index: Int = 0,
 ) {
     @Serializable
     enum class Action {
@@ -96,7 +96,7 @@ data class HomepageBanner(
         Search,
 
         @SerialName("item_detail")
-        ItemDetail
+        ItemDetail,
     }
 }
 
@@ -105,5 +105,5 @@ data class FirebaseImage(
     @DocumentId
     val ref: String,
     val downloadURL: String,
-    val name: String = ""
+    val name: String = "",
 )

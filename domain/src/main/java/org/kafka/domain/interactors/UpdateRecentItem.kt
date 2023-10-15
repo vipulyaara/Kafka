@@ -7,7 +7,7 @@ import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateRecentItem @Inject constructor(
-    private val firestoreGraph: FirestoreGraph
+    private val firestoreGraph: FirestoreGraph,
 ) : Interactor<RecentItem>() {
     override suspend fun doWork(params: RecentItem) {
         val document = firestoreGraph.recentItemsCollection.document(params.fileId)

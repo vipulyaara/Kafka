@@ -18,7 +18,7 @@ data class RecentItem(
     val coverUrl: String,
     val creator: String,
     val mediaType: String,
-    val createdAt: Long
+    val createdAt: Long,
 ) {
     constructor() : this(
         fileId = "",
@@ -27,7 +27,7 @@ data class RecentItem(
         coverUrl = "",
         creator = "",
         mediaType = "",
-        createdAt = 0
+        createdAt = 0,
     )
 
     companion object {
@@ -39,7 +39,7 @@ data class RecentItem(
                 coverUrl = item.coverImage.orEmpty(),
                 creator = item.creator.orEmpty(),
                 mediaType = item.mediaType.orEmpty(),
-                createdAt = System.currentTimeMillis()
+                createdAt = System.currentTimeMillis(),
             )
         }
     }
@@ -75,7 +75,7 @@ data class RecentTextItem(
 data class RecentAudioItem(
     @PrimaryKey val fileId: String,
     val currentTimestamp: Long,
-    val duration: Long
+    val duration: Long,
 ) : BaseEntity {
     val progress: Int
         get() = (currentTimestamp * 100 / duration).toInt()
@@ -84,7 +84,7 @@ data class RecentAudioItem(
 @Immutable
 data class RecentItemWithProgress(
     val recentItem: RecentItem,
-    val percentage: Int
+    val percentage: Int,
 ) {
     val progress: Float
         get() = percentage / 100f

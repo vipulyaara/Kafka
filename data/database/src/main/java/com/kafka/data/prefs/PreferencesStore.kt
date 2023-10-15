@@ -73,7 +73,8 @@ fun PreferencesStore.observeTheme(): Flow<Theme> {
 enum class Theme {
     LIGHT,
     DARK,
-    SYSTEM;
+    SYSTEM,
+    ;
 
     companion object {
         val DEFAULT = SYSTEM
@@ -83,7 +84,8 @@ enum class Theme {
 enum class ContentType {
     AUDIO,
     TEXT,
-    BOTH;
+    BOTH,
+    ;
 
     val mediaTypes
         get() = when (this) {

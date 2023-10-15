@@ -21,8 +21,8 @@ data class File(
     val readerUrl: String?,
     val downloadUrl: String?,
     val coverImage: String?,
-    val localUri: String? = null
-): BaseEntity {
+    val localUri: String? = null,
+) : BaseEntity {
     companion object {
         val audioExtensions = listOf("mp3", "wav", "aac", "ogg", "flac")
         val textExtensions = listOf("pdf", "txt")
@@ -60,7 +60,6 @@ data class File(
     }
 }
 
-
 fun String?.isText() = File.textExtensions.contains(this?.lowercase())
 fun String?.isAudio() = File.audioExtensions.contains(this?.lowercase())
 
@@ -68,4 +67,3 @@ fun File.isPlayable() = File.playableExtensions.contains(extension?.lowercase())
 fun File.isAudio() = this.extension.isAudio()
 fun File.isText() = this.extension.isText()
 fun File.isTxt() = this.extension.equals("txt", true)
-

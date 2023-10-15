@@ -11,7 +11,7 @@ data class Homepage(val collection: ImmutableList<HomepageCollection>) {
     val continueReadingItems: ImmutableList<RecentItemWithProgress>
         get() = collection.recentItems.subList(
             fromIndex = 0,
-            toIndex = ContinueReadingItemsThreshold.coerceAtMost(collection.recentItems.size)
+            toIndex = ContinueReadingItemsThreshold.coerceAtMost(collection.recentItems.size),
         )
 
     val hasSearchPrompt: Boolean
@@ -33,7 +33,7 @@ sealed class HomepageCollection {
     @Immutable
     data class Banners(
         val items: ImmutableList<HomepageBanner>,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
@@ -41,13 +41,13 @@ sealed class HomepageCollection {
         val label: String?,
         val items: ImmutableList<Item>,
         val image: String? = null,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
     data class RecentItems(
         val items: ImmutableList<RecentItemWithProgress>,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
@@ -55,7 +55,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
@@ -65,7 +65,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
@@ -75,7 +75,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
-        override val enabled: Boolean = true
+        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }

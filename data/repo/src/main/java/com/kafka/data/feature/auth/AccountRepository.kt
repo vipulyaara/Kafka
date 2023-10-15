@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * */
 @Singleton
 class AccountRepository @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
 ) {
     val currentFirebaseUser
         get() = auth.currentUser

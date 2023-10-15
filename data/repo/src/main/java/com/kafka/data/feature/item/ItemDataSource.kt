@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ItemDataSource @Inject constructor(
     private val archiveService: ArchiveService,
     private val itemMapper: ItemMapper,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) {
 
     suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {

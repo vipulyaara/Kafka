@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class AddRecentSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val recentSearchDao: RecentSearchDao
+    private val recentSearchDao: RecentSearchDao,
 ) : Interactor<String>() {
 
     override suspend fun doWork(params: String) {

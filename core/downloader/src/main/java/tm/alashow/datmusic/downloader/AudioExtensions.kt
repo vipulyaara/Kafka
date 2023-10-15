@@ -35,8 +35,9 @@ fun File.createDocumentFile(parent: DocumentFile): DocumentFile {
 }
 
 fun File.documentFile(parent: DocumentFile): DocumentFile {
-    if (!parent.exists())
+    if (!parent.exists()) {
         throw FileNotFoundException("Parent folder doesn't exist")
+    }
 
     val mainArtist = creator ?: "Unknown"
     val artistFolder = parent.getOrCreateDir(mainArtist)

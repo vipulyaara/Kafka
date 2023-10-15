@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "followed_creator",
     indices = [
-        Index(value = ["itemId"], unique = true)
+        Index(value = ["itemId"], unique = true),
     ],
     foreignKeys = [
         ForeignKey(
             entity = ItemDetail::class,
             parentColumns = arrayOf("itemId"),
-            childColumns = arrayOf("itemId")
-        )
-    ]
+            childColumns = arrayOf("itemId"),
+        ),
+    ],
 )
 data class FollowedCreator(
-    @PrimaryKey val itemId: String = ""
+    @PrimaryKey val itemId: String = "",
 ) : BaseEntity

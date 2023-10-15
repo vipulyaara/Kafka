@@ -43,13 +43,13 @@ interface KafkaDatabase {
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,
-        DownloadRequest::class
+        DownloadRequest::class,
     ],
     version = 4,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class)
-    ]
+        AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
+    ],
 )
 @TypeConverters(AppTypeConverters::class)
 abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {

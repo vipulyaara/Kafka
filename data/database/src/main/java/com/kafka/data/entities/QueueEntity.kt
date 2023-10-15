@@ -8,5 +8,5 @@ data class QueueEntity constructor(
     @PrimaryKey(autoGenerate = false) var id: Long = 0,
     var currentSeekPos: Long = 0,
     var currentSongId: String? = null,
-    var isPlaying: Boolean = false
+    var isPlaying: Boolean = false,
 ) : BaseEntity

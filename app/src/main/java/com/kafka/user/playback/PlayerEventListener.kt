@@ -1,3 +1,4 @@
+@file:Suppress("ktlint:standard:filename")
 package com.kafka.user.playback
 
 import com.sarahang.playback.core.apis.PlayerEventLogger

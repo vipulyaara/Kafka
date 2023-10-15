@@ -5,7 +5,7 @@ import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class RemoveRecentItem @Inject constructor(
-    private val firestoreGraph: FirestoreGraph
+    private val firestoreGraph: FirestoreGraph,
 ) : Interactor<String>() {
     override suspend fun doWork(params: String) {
         val document = firestoreGraph.recentItemsCollection.document(params)

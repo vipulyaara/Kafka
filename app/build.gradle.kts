@@ -89,6 +89,9 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.google.bom))
+
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)

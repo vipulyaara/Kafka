@@ -11,7 +11,7 @@ class ItemDetailDataSource @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val itemDetailDao: ItemDetailDao,
     private val itemDetailMapper: ItemDetailMapper,
-    private val archiveService: ArchiveService
+    private val archiveService: ArchiveService,
 ) {
     suspend fun updateItemDetail(contentId: String) = resultApiCall(dispatchers.io) {
         itemDetailMapper.map(archiveService.getItemDetail(contentId))

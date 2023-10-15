@@ -66,4 +66,3 @@ sealed class Screen(private val route: String) {
 }
 
 fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
-

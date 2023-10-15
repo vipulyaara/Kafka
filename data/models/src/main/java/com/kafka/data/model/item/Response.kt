@@ -10,5 +10,5 @@ data class Response(
     @SerialName("numFound")
     val numFound: Int,
     @SerialName("start")
-    val start: Int
+    val start: Int,
 )

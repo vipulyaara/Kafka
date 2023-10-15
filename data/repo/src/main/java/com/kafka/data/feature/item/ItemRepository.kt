@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 class ItemRepository @Inject constructor(
     private val itemLocalDataSource: ItemLocalDataSource,
-    private val remoteDataSource: ItemDataSource
+    private val remoteDataSource: ItemDataSource,
 ) {
     fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) =
         itemLocalDataSource.observeQueryItems(simpleSQLiteQuery)

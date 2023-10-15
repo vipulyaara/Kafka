@@ -23,7 +23,7 @@ interface FirebaseTopics {
 class FirebaseTopicsImpl @Inject constructor(
     @ProcessLifetime private val processScope: CoroutineScope,
     private val firebaseMessaging: FirebaseMessaging,
-    private val preferencesStore: PreferencesStore
+    private val preferencesStore: PreferencesStore,
 ) : FirebaseTopics {
     private val topicsFlow =
         preferencesStore.data.map { it[topicPreferenceKey] ?: emptySet() }

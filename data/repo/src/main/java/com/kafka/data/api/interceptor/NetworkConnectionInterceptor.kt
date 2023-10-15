@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class NetworkConnectionInterceptor @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

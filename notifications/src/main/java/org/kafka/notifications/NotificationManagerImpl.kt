@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 
 class NotificationManagerImpl(
     application: Application,
-    private val notificationManager: NotificationManagerCompat
+    private val notificationManager: NotificationManagerCompat,
 ) : NotificationManager {
 
     private val context = application.applicationContext
@@ -40,7 +40,7 @@ class NotificationManagerImpl(
         createNotificationChannel(channel)
 
         builder = NotificationCompat.Builder(
-            context, channel.id
+            context, channel.id,
         ).apply {
             setContentTitle(notification.title)
             setContentText(notification.message)
@@ -64,10 +64,14 @@ class NotificationManagerImpl(
             mapIntent.setPackage("com.google.android.apps.maps")
 
             return PendingIntent.getActivity(
-                /* context = */ context,
-                /* requestCode = */ 100,
-                /* intent = */ mapIntent,
-                /* flags = */ 0
+                /* context = */
+                context,
+                /* requestCode = */
+                100,
+                /* intent = */
+                mapIntent,
+                /* flags = */
+                0,
             )
         }
 
@@ -77,7 +81,7 @@ class NotificationManagerImpl(
                 val notificationChannel = NotificationChannel(
                     channel.id,
                     channel.name,
-                    IMPORTANCE_DEFAULT
+                    IMPORTANCE_DEFAULT,
                 )
                 notificationManager.createNotificationChannel(notificationChannel)
             }

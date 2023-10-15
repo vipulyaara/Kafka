@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ObserveQueryItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val buildLocalQuery: BuildLocalQuery,
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
 ) : SubjectInteractor<ObserveQueryItems.Params, List<Item>>() {
 
     override fun createObservable(params: Params): Flow<List<Item>> {

@@ -57,7 +57,7 @@ class DownloadInfoMapper @Inject constructor() {
             Locale.ENGLISH,
             "%.1f %sB",
             this / unit.toDouble().pow(exp.toDouble()),
-            pre
+            pre,
         )
     }
 }

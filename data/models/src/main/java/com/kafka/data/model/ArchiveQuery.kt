@@ -22,7 +22,7 @@ const val joinerOr = "OR"
 data class QueryItem(val key: String, val value: String, val joiner: String = "")
 
 data class ArchiveQuery(
-    var queries: MutableList<QueryItem> = mutableListOf()
+    var queries: MutableList<QueryItem> = mutableListOf(),
 )
 
 fun ArchiveQuery.booksByIdentifiers(identifiers: String): ArchiveQuery {
