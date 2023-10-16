@@ -2,6 +2,14 @@
 
 [Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available across a multitude of genres and languages, all free and in the public domain.
 
+- 41 million books and text; 14.5 million audio recordings - tagged and searchable with filters
+- New content added continuously by the community as well as Kafka Archives
+- Audio player for seamless background playback
+- Text reader for reading PDFs with features like continue-reading
+- Mark content as favorite and build your own library
+- Download content on your device and share it freely - or share within the app with convenient deep linking
+- Dark theme with MaterialYou colors
+
 
 ## Download
 
