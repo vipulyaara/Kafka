@@ -4,7 +4,7 @@
 
 - 41 million books and text; 14.5 million audio recordings - tagged and searchable with filters
 - New content added continuously by the community as well as Kafka Archives
-- Audio player for seamless background playback
+- Audio player for seamless background playback, sleep timer and playback speed controls
 - Text reader for reading PDFs with features like continue-reading
 - Mark content as favorite and build your own library
 - Download content on your device and share it freely - or share within the app with convenient deep linking
