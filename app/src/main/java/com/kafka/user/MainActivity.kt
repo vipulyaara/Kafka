@@ -11,6 +11,7 @@ import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import org.kafka.navigation.rememberBottomSheetNavigator
+import timber.log.Timber
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 import javax.inject.Inject
@@ -40,6 +41,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        navController.handleDeepLink(intent)
+        if (::navController.isInitialized) {
+            navController.handleDeepLink(intent)
+        } else {
+            Timber.e(Error("navController is not initialized. isFinishing $isFinishing"))
+        }
     }
 }
