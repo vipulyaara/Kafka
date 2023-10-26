@@ -33,6 +33,7 @@
 ## How to run
  - Clone the repo
  - Clone [Sarahang](https://github.com/vipulyaara/Sarahang) in the same parent folder as Kafka.<br/>Sarahang is the audio player being used in Kafka and not yet provided through maven.
+ - Add `google_server_client_id=xxx` in your `local.properties` file
  - Run project
 
 `google-services.json` for debug flavour is added to the repository.
