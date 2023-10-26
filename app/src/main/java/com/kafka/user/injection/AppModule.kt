@@ -12,11 +12,10 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.kafka.recommendations.FirebaseTopicsInitializer
-import org.kafka.base.AppInitializer
 import com.kafka.recommendations.FirebaseTopics
 import com.kafka.recommendations.FirebaseTopicsImpl
-import org.kafka.base.ProcessLifetime
+import com.kafka.recommendations.FirebaseTopicsInitializer
+import com.kafka.user.BuildConfig
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
@@ -33,10 +32,13 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.AppReviewManager
+import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.logger.AnalyticsImpl
+import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
+import org.kafka.base.GoogleClientIdProvider
+import org.kafka.base.ProcessLifetime
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
@@ -69,7 +71,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseMessaging(app: Application): FirebaseMessaging {
+    fun provideFirebaseMessaging(): FirebaseMessaging {
         return FirebaseMessaging.getInstance()
     }
 
@@ -105,6 +107,12 @@ class AppModule {
     @Provides
     fun provideFirestoreKt(firebaseFirestore: FirebaseFirestore) =
         dev.gitlive.firebase.firestore.FirebaseFirestore(firebaseFirestore)
+
+
+    @Provides
+    fun provideGoogleClientIdProvider() = object : GoogleClientIdProvider {
+        override val apiKey: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
+    }
 }
 
 @InstallIn(SingletonComponent::class)

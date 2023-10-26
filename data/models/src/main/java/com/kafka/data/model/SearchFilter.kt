@@ -8,7 +8,7 @@ enum class SearchFilter {
     companion object {
         private fun fromString(value: String): SearchFilter {
             debug { "SearchFilter.fromString: $value" }
-            return values().firstOrNull { it.name.lowercase() == value.lowercase() } ?: Name
+            return entries.firstOrNull { it.name.lowercase() == value.lowercase() } ?: Name
         }
 
         fun from(value: String): List<SearchFilter> {
@@ -21,9 +21,9 @@ enum class SearchFilter {
         }
 
         fun allString(): String {
-            return values().toList().joinToString(",") { it.name }
+            return entries.joinToString(",") { it.name }
         }
 
-        fun all() = values().toList()
+        fun all() = entries
     }
 }

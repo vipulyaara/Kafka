@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
@@ -13,8 +15,11 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 45
-        versionName = "0.5.1"
+        versionCode = 46
+        versionName = "0.6.0"
+
+        val googleServerClientId: String = gradleLocalProperties(rootDir).getProperty("google_server_client_id")
+        buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
     }
 
     compileOptions {
@@ -86,6 +91,9 @@ android {
         checkDependencies =  true
         warning += "AutoboxingStateCreation"
     }
+
+    buildFeatures.buildConfig = true
+
 }
 
 dependencies {

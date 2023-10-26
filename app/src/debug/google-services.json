@@ -15,6 +15,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "577294117898-g1vm8lfab12a90elj1c9ima8bfnmkie0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kafka.user.debug",
+            "certificate_hash": "8cc268d3d35cd0dc631ff5fc774d4cff3f9dedc9"
+          }
+        },
+        {
+          "client_id": "577294117898-gtt9m1mm85tomi5fdpnp2hqeevf4udtl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1lV11eH3UdewwBDfNX_AmGTCN2LU-9ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577294117898-gtt9m1mm85tomi5fdpnp2hqeevf4udtl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577294117898:android:48c125bdb091206f0d83f3",
+        "android_client_info": {
+          "package_name": "com.kafka.user.rc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577294117898-r6o83cao65al491ieg0mb7mbo3m7su49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kafka.user.rc",
+            "certificate_hash": "8cc268d3d35cd0dc631ff5fc774d4cff3f9dedc9"
+          }
+        },
+        {
           "client_id": "577294117898-gtt9m1mm85tomi5fdpnp2hqeevf4udtl.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -13,4 +13,5 @@
     <string name="app_version" translatable="false">app version %1$s</string>
     <string name="go_to_favorites" translatable="false">Go to Favorites</string>
     <string name="login_rationale" translatable="false">Login to sync profile across devices and installs</string>
+    <string name="continue_with_google">Continue with Google</string>
 </resources>

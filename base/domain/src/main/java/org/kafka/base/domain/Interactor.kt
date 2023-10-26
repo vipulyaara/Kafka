@@ -5,6 +5,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -12,9 +13,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 abstract class Interactor<in P> {
     suspend operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
@@ -85,12 +91,49 @@ abstract class SubjectInteractor<P, T> {
     fun errors(): Flow<Throwable> = errorState.asSharedFlow()
 }
 
-abstract class SuspendingWorkInteractor<P : Any, T> : SubjectInteractor<P, T>() {
-    override fun createObservable(params: P): Flow<T> = flow {
-        emit(doWork(params))
+abstract class ResultInteractor<in P, R> {
+    private val count = AtomicInteger(0)
+    private val loadingState = MutableStateFlow(count.get())
+
+    val inProgress: Flow<Boolean> = loadingState.map { it > 0 }.distinctUntilChanged()
+
+    private fun addLoader() {
+        loadingState.value = count.incrementAndGet()
     }
 
-    abstract suspend fun doWork(params: P): T
+    private fun removeLoader() {
+        loadingState.value = count.decrementAndGet()
+    }
+
+    suspend operator fun invoke(
+        params: P,
+        timeout: Duration = DefaultTimeout,
+    ): Result<R> = try {
+        addLoader()
+        runCatching {
+            withTimeout(timeout) {
+                doWork(params)
+            }
+        }
+    } finally {
+        removeLoader()
+    }
+
+    protected abstract suspend fun doWork(params: P): R
+
+    companion object {
+        internal val DefaultTimeout = 5.minutes
+    }
+}
+
+inline fun Result<*>.onException(
+    block: (Throwable) -> Unit,
+) {
+    val e = exceptionOrNull()
+    when {
+        e is CancellationException -> throw e
+        e != null -> block(e)
+    }
 }
 
 operator fun <T> SubjectInteractor<Unit, T>.invoke() = invoke(Unit)

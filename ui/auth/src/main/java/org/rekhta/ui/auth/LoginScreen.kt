@@ -1,5 +1,9 @@
 package org.rekhta.ui.auth
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,13 +29,18 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Brands
+import compose.icons.fontawesomeicons.brands.Google
 import org.kafka.auth.R
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.simpleClickable
+import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.material.BackButton
@@ -50,6 +61,14 @@ fun LoginScreen() {
     val authViewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            authViewModel.handleGoogleCredentials(result.data)
+        }
+    }
+
     if (authViewState.currentUser != null) {
         navigator.goBack()
     }
@@ -66,9 +85,11 @@ fun LoginScreen() {
             if (authViewState.currentUser == null) {
                 Login(
                     modifier = Modifier,
+                    isGoogleLoginEnabled = authViewState.isGoogleLoginEnabled,
                     login = authViewModel::login,
                     signup = authViewModel::signup,
-                    forgotPassword = authViewModel::forgotPassword
+                    forgotPassword = authViewModel::forgotPassword,
+                    signInWithGoogle = { authViewModel.signInWithGoogle(launcher) }
                 )
             }
 
@@ -81,13 +102,15 @@ fun LoginScreen() {
 
 @Composable
 private fun Login(
+    isGoogleLoginEnabled: Boolean,
     login: (email: String, password: String) -> Unit,
     signup: (email: String, password: String) -> Unit,
     forgotPassword: (email: String) -> Unit,
+    signInWithGoogle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var loginState by rememberSavableMutableState { LoginState.Login }
-    val onFocusChanged: (FocusState) -> Unit = {  }
+    val onFocusChanged: (FocusState) -> Unit = { }
 
     Column(
         modifier = modifier
@@ -118,13 +141,34 @@ private fun Login(
             forgotPassword = { email -> forgotPassword(email) }
         )
 
-        Spacer(modifier = Modifier.weight(0.4f))
+        Spacer(modifier = Modifier.weight(0.2f))
+
+        if (isGoogleLoginEnabled) {
+            SignInWithGoogle(onClick = signInWithGoogle)
+        }
+
+        Spacer(modifier = Modifier.weight(0.2f))
 
         SignupPrompt(loginState) {
             loginState = if (loginState.isLogin) LoginState.Signup else LoginState.Login
         }
 
         Spacer(modifier = Modifier.weight(0.1f))
+    }
+}
+
+@Composable
+private fun SignInWithGoogle(onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        IconResource(
+            imageVector = FontAwesomeIcons.Brands.Google,
+            modifier = Modifier.size(Dimens.Spacing24)
+        )
+        Spacer(modifier = Modifier.width(Dimens.Spacing16))
+        Text(
+            text = stringResource(R.string.continue_with_google),
+            style = MaterialTheme.typography.titleSmall
+        )
     }
 }
 

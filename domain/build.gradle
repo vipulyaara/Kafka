@@ -27,4 +27,5 @@ dependencies {
     implementation libs.google.auth
     implementation libs.google.coroutines
     implementation libs.google.firestore
+    implementation libs.google.playservices.auth
 }
