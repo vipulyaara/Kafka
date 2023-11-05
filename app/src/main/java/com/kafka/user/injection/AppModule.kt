@@ -12,9 +12,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.kafka.recommendations.FirebaseTopics
-import com.kafka.recommendations.FirebaseTopicsImpl
-import com.kafka.recommendations.FirebaseTopicsInitializer
+import com.kafka.recommendations.topic.FirebaseTopics
+import com.kafka.recommendations.topic.FirebaseTopicsImpl
+import com.kafka.recommendations.topic.FirebaseTopicsInitializer
 import com.kafka.user.BuildConfig
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import com.kafka.user.initializer.FirebaseInitializer
@@ -37,8 +37,8 @@ import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.GoogleClientIdProvider
 import org.kafka.base.ProcessLifetime
+import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
@@ -110,8 +110,9 @@ class AppModule {
 
 
     @Provides
-    fun provideGoogleClientIdProvider() = object : GoogleClientIdProvider {
-        override val apiKey: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
+    fun provideGoogleClientIdProvider() = object : SecretsProvider {
+        override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
+        override val pipelessAuthToken: String = BuildConfig.PIPELESS_AUTH_TOKEN
     }
 }
 

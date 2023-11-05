@@ -42,8 +42,6 @@ data class Doc(
     val title: List<String>,
     @SerialName("week")
     val week: Int? = 0,
-    @SerialName("year")
-    val year: String? = null,
     @SerialName("avg_rating")
     val rating: Double? = null,
 )

@@ -13,7 +13,6 @@ import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.RecentTextDao
-import com.kafka.data.dao.SearchDao
 import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
@@ -26,7 +25,6 @@ import com.kafka.data.entities.RecentTextItem
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
     fun fileDao(): FileDao
-    fun searchDao(): SearchDao
     fun itemDao(): ItemDao
     fun recentSearchDao(): RecentSearchDao
     fun recentTextDao(): RecentTextDao

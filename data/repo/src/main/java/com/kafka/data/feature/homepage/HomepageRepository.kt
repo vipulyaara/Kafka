@@ -2,7 +2,7 @@ package com.kafka.data.feature.homepage
 
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
-import com.kafka.recommendations.FirebaseTopics
+import com.kafka.recommendations.topic.FirebaseTopics
 import dagger.Reusable
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.collections.immutable.toPersistentList

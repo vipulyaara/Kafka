@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AppInsightsSettings">
+    <option name="selectedTabId" value="Android Vitals" />
     <option name="tabSettings">
       <map>
         <entry key="Android Vitals">
@@ -27,11 +28,16 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.kafka.user.debug" />
-                  <option name="mobileSdkAppId" value="1:577294117898:android:1da10a3ca24c29a60d83f3" />
+                  <option name="appId" value="com.kafka.user" />
+                  <option name="mobileSdkAppId" value="1:577294117898:android:6964f76f6d1535f8" />
                   <option name="projectId" value="kafka-books" />
                   <option name="projectNumber" value="577294117898" />
                 </ConnectionSetting>
+              </option>
+              <option name="failureTypes">
+                <list>
+                  <option value="FATAL" />
+                </list>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="THIRTY_DAYS" />

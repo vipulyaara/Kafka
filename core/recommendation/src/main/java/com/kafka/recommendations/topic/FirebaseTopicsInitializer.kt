@@ -1,4 +1,4 @@
-package com.kafka.recommendations
+package com.kafka.recommendations.topic
 
 import android.app.Application
 import org.kafka.analytics.data.UserDataRepository

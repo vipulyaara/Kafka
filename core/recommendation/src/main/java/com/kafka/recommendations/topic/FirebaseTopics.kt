@@ -1,4 +1,4 @@
-package com.kafka.recommendations
+package com.kafka.recommendations.topic
 
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.google.firebase.messaging.FirebaseMessaging

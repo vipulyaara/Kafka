@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+    api project(':core:remote-config')
     api project(':data:repo')
     implementation libs.kotlin.coroutines.android
 

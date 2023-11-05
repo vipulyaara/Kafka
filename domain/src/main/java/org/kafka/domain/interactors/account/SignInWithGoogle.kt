@@ -8,14 +8,14 @@ import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.GoogleClientIdProvider
+import org.kafka.base.SecretsProvider
 import org.kafka.base.domain.ResultInteractor
 import javax.inject.Inject
 
 class SignInWithGoogle @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val application: Application,
-    private val googleClientIdProvider: GoogleClientIdProvider
+    private val secretsProvider: SecretsProvider
 ) : ResultInteractor<Unit, IntentSender>() {
 
     override suspend fun doWork(params: Unit): IntentSender {
@@ -25,7 +25,7 @@ class SignInWithGoogle @Inject constructor(
             val tokenRequest = GoogleIdTokenRequestOptions.Builder()
                 .setSupported(true)
                 .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(googleClientIdProvider.apiKey.orEmpty())
+                .setServerClientId(secretsProvider.googleServerClientId.orEmpty())
                 .build()
 
             val signInRequest = BeginSignInRequest.Builder()

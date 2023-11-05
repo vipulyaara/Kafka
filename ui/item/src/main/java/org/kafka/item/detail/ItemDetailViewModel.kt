@@ -32,6 +32,8 @@ import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
+import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
+import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
@@ -55,6 +57,7 @@ class ItemDetailViewModel @Inject constructor(
     private val addRecentItem: AddRecentItem,
     private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
+    private val postRecommendationEvent: PostRecommendationEvent,
     private val playbackConnection: PlaybackConnection,
     private val navigator: Navigator,
     private val remoteConfig: RemoteConfig,
@@ -111,6 +114,10 @@ class ItemDetailViewModel @Inject constructor(
         } else {
             analytics.log { readItem(itemId) }
             openReader(itemId)
+        }
+
+        viewModelScope.launch {
+            postRecommendationEvent.invoke(RecommendationEvent.UseContent(itemId)).collect()
         }
     }
 
