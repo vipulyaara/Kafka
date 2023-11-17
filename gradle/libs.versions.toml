@@ -155,7 +155,7 @@ compose-foundation-foundation = { module = "androidx.compose.foundation:foundati
 compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended" }
 compose-material-material = { module = "androidx.compose.material:material" }
-compose-material-material3 = { module = "androidx.compose.material3:material3"  }
+compose-material-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -163,7 +163,7 @@ compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
-compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout"}
+compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout" }
 
 fetch = "androidx.tonyodev.fetch2:xfetch2:3.1.6"
 fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
@@ -171,20 +171,20 @@ fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:32.4.0"
+google-bom = "com.google.firebase:firebase-bom:32.5.0"
 google-crashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
 google-gmsGoogleServices = "com.google.gms:google-services:4.4.0"
 google-perfPlug = "com.google.firebase:perf-plugin:1.4.2"
-google-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
-google-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
-google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links-ktx" }
-google-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+google-analytics = { module = "com.google.firebase:firebase-analytics" }
+google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links" }
+google-auth = { module = "com.google.firebase:firebase-auth" }
 google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3"
-google-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
-google-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-performance = { module = "com.google.firebase:firebase-perf-ktx" }
+google-firestore = { module = "com.google.firebase:firebase-firestore" }
+google-messaging = { module = "com.google.firebase:firebase-messaging" }
+google-performance = { module = "com.google.firebase:firebase-perf" }
 google-playservices-auth = "com.google.android.gms:play-services-auth:20.7.0"
-google-remoteConfig = { module = "com.google.firebase:firebase-config-ktx" }
+google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }

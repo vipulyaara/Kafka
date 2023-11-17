@@ -14,10 +14,9 @@ class ItemDetailDataSource @Inject constructor(
     private val archiveService: ArchiveService,
 ) {
     suspend fun updateItemDetail(contentId: String) = resultApiCall(dispatchers.io) {
-        itemDetailMapper.map(archiveService.getItemDetail(contentId))
-            .let {
-                debug { "Item detail is $it" }
-                itemDetailDao.insert(it)
-            }
+        itemDetailMapper.map(archiveService.getItemDetail(contentId)).let {
+            debug { "Item detail is $it" }
+            itemDetailDao.insert(it)
+        }
     }
 }

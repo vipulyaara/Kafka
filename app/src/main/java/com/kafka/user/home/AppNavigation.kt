@@ -25,6 +25,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
+import com.kafka.reader.online.OnlineReader
 import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
 import com.sarahang.playback.ui.activityHiltViewModel
@@ -112,6 +113,7 @@ private fun NavGraphBuilder.addHomeRoot() {
         addLogin(RootScreen.Home)
         addPlayer(RootScreen.Home)
         addWebView(RootScreen.Home)
+        addOnlineReader(RootScreen.Home)
     }
 }
 
@@ -126,6 +128,8 @@ private fun NavGraphBuilder.addSearchRoot() {
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
         addPlayer(RootScreen.Search)
+        addWebView(RootScreen.Search)
+        addOnlineReader(RootScreen.Search)
     }
 }
 
@@ -141,6 +145,8 @@ private fun NavGraphBuilder.addLibraryRoot() {
         addReader(RootScreen.Library)
         addSearch(RootScreen.Library)
         addPlayer(RootScreen.Library)
+        addWebView(RootScreen.Library)
+        addOnlineReader(RootScreen.Library)
     }
 }
 
@@ -237,6 +243,15 @@ private fun NavGraphBuilder.addWebView(root: RootScreen) {
     ) {
         val navigator = LocalNavigator.current
         WebView(it.arguments?.getString("url").orEmpty(), navigator::goBack)
+    }
+}
+
+private fun NavGraphBuilder.addOnlineReader(root: RootScreen) {
+    composable(
+        route = Screen.OnlineReader.createRoute(root),
+        arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+    ) {
+        OnlineReader()
     }
 }
 

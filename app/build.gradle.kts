@@ -15,8 +15,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 48
-        versionName = "0.7.0"
+        versionCode = 49
+        versionName = "0.8.0"
 
         val googleServerClientId: String = gradleLocalProperties(rootDir).getProperty("google_server_client_id")
         val pipelessAuthToken: String = gradleLocalProperties(rootDir).getProperty("pipeless_auth_token")

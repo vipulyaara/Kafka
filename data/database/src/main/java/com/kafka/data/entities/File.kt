@@ -67,3 +67,5 @@ fun File.isPlayable() = File.playableExtensions.contains(extension?.lowercase())
 fun File.isAudio() = this.extension.isAudio()
 fun File.isText() = this.extension.isText()
 fun File.isTxt() = this.extension.equals("txt", true)
+
+fun File.nameWithoutExtension() = name.substringBeforeLast(".")

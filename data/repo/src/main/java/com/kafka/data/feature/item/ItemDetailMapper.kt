@@ -44,15 +44,13 @@ class ItemDetailMapper @Inject constructor(
     private fun List<File>.primaryFile(mediaType: String?) =
         if (mediaType == "texts") getTextFile() else firstOrNull()
 
-    private fun List<File>.getTextFile() =
-        firstOrNull { it.name.extension() == "pdf" }
-            ?: firstOrNull { it.name.extension() == "txt" }
+    private fun List<File>.getTextFile() = firstOrNull { it.name.extension() == "pdf" }
 
     private fun String.extension() = split(".").last()
 
     private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
         it.name.startsWith("cover_") &&
-            (it.name.endsWith("jpg") || it.name.endsWith("png"))
+                (it.name.endsWith("jpg") || it.name.endsWith("png"))
     }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
         ?: "https://archive.org/services/img/${metadata.identifier}"
 

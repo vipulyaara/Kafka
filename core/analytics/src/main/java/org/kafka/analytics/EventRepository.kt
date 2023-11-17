@@ -24,10 +24,14 @@ class EventRepository @Inject constructor() {
         "source" to source,
     )
 
-    fun readItem(itemId: String, source: String? = null) = "read_item" to mapOf(
-        "item_id" to itemId,
-        "source" to source,
-    )
+    fun readItem(itemId: String, type: String = "offline", source: String? = null) =
+        "read_item" to mapOf(
+            "item_id" to itemId,
+            "type" to type,
+            "source" to source,
+        )
+
+    fun fileNotSupported(itemId: String) = "file_not_supported" to mapOf("item_id" to itemId)
 
     fun homeTabSwitched(tab: String, source: String? = null) = "home_tab_switched" to mapOf(
         "tab" to tab,
@@ -85,7 +89,10 @@ class EventRepository @Inject constructor() {
 
     fun logoutClicked() = "logout_clicked" to mapOf<String, String>()
 
-    fun shareItem(itemId: String) = "share_item" to mapOf("item_id" to itemId)
+    fun shareItem(itemId: String, source: String) = "share_item" to mapOf(
+        "item_id" to itemId,
+        "source" to source
+    )
 
     fun openArchiveItem(itemId: String) = "open_archive_item" to mapOf("item_id" to itemId)
 

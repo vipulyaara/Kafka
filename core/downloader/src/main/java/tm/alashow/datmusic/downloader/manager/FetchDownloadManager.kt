@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2022, Alashov Berkeli
- * All rights reserved.
- */
 package tm.alashow.datmusic.downloader.manager
 
 import com.tonyodev.fetch2.AbstractFetchListener

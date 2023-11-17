@@ -14,13 +14,13 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.ObserveRecentTextItem
-import org.kafka.domain.observers.library.ObserveDownloadItem
+import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
 @HiltViewModel
 class ReaderViewModel @Inject constructor(
-    private val observeDownloadItem: ObserveDownloadItem,
+    private val observeDownloadByFileId: ObserveDownloadByFileId,
     private val observeRecentItem: ObserveRecentTextItem,
     private val downloader: Downloader,
     savedStateHandle: SavedStateHandle
@@ -29,7 +29,7 @@ class ReaderViewModel @Inject constructor(
     private var fileId = savedStateHandle.getStateFlow("fileId", "")
 
     val readerState = combine(
-        observeDownloadItem.flow,
+        observeDownloadByFileId.flow,
         observeRecentItem.flow,
         uiMessageManager.message,
     ) { download, readable, message ->
@@ -43,7 +43,7 @@ class ReaderViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            observeDownloadItem(fileId.value)
+            observeDownloadByFileId(fileId.value)
         }
 
         viewModelScope.launch {

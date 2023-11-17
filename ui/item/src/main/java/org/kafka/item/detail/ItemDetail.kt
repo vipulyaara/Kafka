@@ -158,7 +158,8 @@ private fun ItemDetail(
 
                 item(span = { GridItemSpan(GridItemSpan) }) {
                     ItemDetailActions(
-                        itemDetail = state.itemDetail!!,
+                        itemId = state.itemDetail!!.itemId,
+                        isAudio = state.itemDetail.isAudio,
                         onPrimaryAction = onPrimaryAction,
                         openFiles = openFiles,
                         isFavorite = state.isFavorite,
@@ -302,7 +303,7 @@ private fun ItemDetailPreview() {
     AppTheme {
         ItemDetail(
             state = ItemDetailViewState(
-                itemDetail = FakeItemData.itemDetail,
+                itemDetail = FakeItemData.fakeItemDetail,
                 isFavorite = true,
                 itemsByCreator = FakeItemData.items
             ),

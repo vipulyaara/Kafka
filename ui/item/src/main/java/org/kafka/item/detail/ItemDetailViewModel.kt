@@ -6,11 +6,13 @@ import android.content.ContextWrapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +23,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kafka.analytics.AppReviewManager
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
@@ -36,12 +37,15 @@ import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
+import org.kafka.domain.observers.library.ObserveDownloadByItemId
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.ItemDescription
+import org.kafka.navigation.Screen.OnlineReader
+import org.kafka.navigation.Screen.Reader
 import org.kafka.navigation.Screen.Search
 import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
@@ -51,6 +55,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
+    observeDownloadByItemId: ObserveDownloadByItemId,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateItems: UpdateItems,
@@ -76,13 +81,14 @@ class ItemDetailViewModel @Inject constructor(
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading ->
-        debug { "ItemDetailViewModel: $itemDetail" }
+        observeDownloadByItemId.flow
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
-            isLoading = isLoading
+            isLoading = isLoading,
+            downloadItem = downloadItem
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -92,6 +98,12 @@ class ItemDetailViewModel @Inject constructor(
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
+        observeDownloadByItemId(
+            ObserveDownloadByItemId.Params(
+                itemId = itemId,
+                statuses = listOf(DownloadStatus.COMPLETED)
+            )
+        )
 
         refresh()
     }
@@ -112,7 +124,6 @@ class ItemDetailViewModel @Inject constructor(
             analytics.log { playItem(itemId) }
             playbackConnection.playAlbum(itemId)
         } else {
-            analytics.log { readItem(itemId) }
             openReader(itemId)
         }
 
@@ -128,11 +139,22 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
-        itemDetail?.primaryFile?.let {
+
+        if (itemDetail?.primaryFile != null) {
             addRecentItem(itemId)
-            navigator.navigate(Screen.Reader.createRoute(navigator.currentRoot.value, it))
-        } ?: viewModelScope.launch {
-            snackbarManager.addMessage(UiMessage(R.string.file_type_is_not_supported))
+
+            if (state.value.downloadItem == null && remoteConfig.isOnlineReaderEnabled()) {
+                analytics.log { readItem(itemId = itemId, type = "online") }
+                navigator.navigate(OnlineReader.createRoute(currentRoot, itemDetail.itemId))
+            } else {
+                analytics.log { readItem(itemId = itemId, type = "offline") }
+                navigator.navigate(Reader.createRoute(currentRoot, itemDetail.primaryFile!!))
+            }
+        } else {
+            analytics.log { fileNotSupported(itemId = itemId) }
+            viewModelScope.launch {
+                snackbarManager.addMessage(UiMessage(R.string.file_type_is_not_supported))
+            }
         }
     }
 
@@ -179,7 +201,7 @@ class ItemDetailViewModel @Inject constructor(
     fun isShareEnabled() = remoteConfig.isShareEnabled() && state.value.itemDetail != null
 
     fun shareItemText(context: Context) {
-        analytics.log { this.shareItem(itemId) }
+        analytics.log { this.shareItem(itemId, "item_detail") }
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()

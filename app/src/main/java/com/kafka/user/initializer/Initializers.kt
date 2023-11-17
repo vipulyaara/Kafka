@@ -2,17 +2,16 @@ package com.kafka.user.initializer
 
 import android.app.Application
 import android.util.Log
-import com.google.firebase.FirebaseApp
+import com.google.firebase.Firebase
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
+import com.google.firebase.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
-import org.kafka.base.AppInitializer
-import org.kafka.base.ProcessLifetime
 import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
+import org.kafka.base.ProcessLifetime
 import org.threeten.bp.zone.ZoneRulesProvider
 import timber.log.Timber
 import javax.inject.Inject
@@ -51,7 +50,6 @@ class FirebaseInitializer @Inject constructor(
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
             Firebase.initialize(application)
-            FirebaseApp.initializeApp(application)
         }
     }
 }
