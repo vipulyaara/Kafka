@@ -30,7 +30,7 @@ object FakeItemData {
         coverImage = coverUrl,
     )
 
-    val items = persistentListOf(item0, item1, item2)
+    val fakeItems = persistentListOf(item0, item1, item2)
 
     val fakeItemDetail = ItemDetail(
         itemId = "123",

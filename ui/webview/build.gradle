@@ -21,7 +21,6 @@ dependencies {
     api project(':ui:common')
     api project(':ui:components')
     api libs.accompanist.flowlayout
-    api libs.accompanist.navigation.animation
     api libs.accompanist.navigation.material
     api libs.accompanist.placeholder
     api libs.accompanist.swiperefresh

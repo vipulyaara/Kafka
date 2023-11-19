@@ -33,6 +33,7 @@ import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.base.debug
 import org.kafka.common.extensions.collectEvent
 import org.kafka.homepage.Homepage
+import org.kafka.homepage.recent.RecentScreen
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.detail.description.DescriptionDialog
 import org.kafka.item.files.Files
@@ -114,6 +115,7 @@ private fun NavGraphBuilder.addHomeRoot() {
         addPlayer(RootScreen.Home)
         addWebView(RootScreen.Home)
         addOnlineReader(RootScreen.Home)
+        addRecentItems(RootScreen.Home)
     }
 }
 
@@ -231,6 +233,12 @@ private fun NavGraphBuilder.addProfile(root: RootScreen) {
 private fun NavGraphBuilder.addFeedback(root: RootScreen) {
     bottomSheet(route = Screen.Feedback.createRoute(root)) {
         FeedbackScreen()
+    }
+}
+
+private fun NavGraphBuilder.addRecentItems(root: RootScreen) {
+    composable(route = Screen.RecentItems.createRoute(root)) {
+        RecentScreen()
     }
 }
 

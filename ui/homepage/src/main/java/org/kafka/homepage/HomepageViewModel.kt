@@ -97,6 +97,11 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Search.createRoute(RootScreen.Search))
     }
 
+    fun openRecentItems() {
+        analytics.log { this.openRecentItems() }
+        navigator.navigate(Screen.RecentItems.createRoute(RootScreen.Home))
+    }
+
     fun onBannerClick(banner: HomepageBanner) {
         when (banner.action) {
             HomepageBanner.Action.Search -> navigator.navigate(

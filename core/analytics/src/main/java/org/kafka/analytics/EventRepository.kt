@@ -105,4 +105,6 @@ class EventRepository @Inject constructor() {
     fun forgotPasswordSuccess() = "forgot_password_success" to mapOf<String, String>()
 
     fun themeChanged(theme: String) = "theme_changed" to mapOf("theme" to theme)
+
+    fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 }

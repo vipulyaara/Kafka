@@ -305,7 +305,7 @@ private fun ItemDetailPreview() {
             state = ItemDetailViewState(
                 itemDetail = FakeItemData.fakeItemDetail,
                 isFavorite = true,
-                itemsByCreator = FakeItemData.items
+                itemsByCreator = FakeItemData.fakeItems
             ),
             modifier = Modifier.background(Color.White),
             openDescription = {},

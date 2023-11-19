@@ -126,7 +126,6 @@ dependencies {
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
-    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.navigation.material)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
