@@ -9,6 +9,6 @@ data class User(
     val email: String?,
     val imageUrl: String? = null,
     val anonymous: Boolean,
-) : BaseEntity {
+) {
     constructor() : this("", "", null, null, false)
 }

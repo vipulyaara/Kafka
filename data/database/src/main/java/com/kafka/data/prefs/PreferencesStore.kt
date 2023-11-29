@@ -3,6 +3,7 @@ package com.kafka.data.prefs
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -62,19 +63,23 @@ class PreferencesStore @Inject constructor(@ApplicationContext private val conte
 }
 
 val THEME = stringPreferencesKey("theme")
+val TRUE_CONTRAST = booleanPreferencesKey("true_contrast")
 
 fun PreferencesStore.observeTheme(): Flow<Theme> {
     return get(THEME, Theme.DEFAULT.name)
         .map { theme ->
-            Theme.values().firstOrNull { it.name.equals(theme, true) } ?: Theme.SYSTEM
+            Theme.entries.firstOrNull { it.name.equals(theme, true) } ?: Theme.SYSTEM
         }
+}
+
+fun PreferencesStore.observeTrueContrast(): Flow<Boolean> {
+    return get(TRUE_CONTRAST, true)
 }
 
 enum class Theme {
     LIGHT,
     DARK,
-    SYSTEM,
-    ;
+    SYSTEM;
 
     companion object {
         val DEFAULT = SYSTEM
@@ -84,8 +89,7 @@ enum class Theme {
 enum class ContentType {
     AUDIO,
     TEXT,
-    BOTH,
-    ;
+    BOTH;
 
     val mediaTypes
         get() = when (this) {

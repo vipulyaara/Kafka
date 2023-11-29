@@ -41,6 +41,7 @@ import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Share
+import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
@@ -87,6 +88,7 @@ object Icons {
     val ArrowForward = TablerIcons.ArrowRight
     val Vinyl = KafkaIcons.Vinyl
     val Moon = TablerIcons.Moon
+    val Sun = TablerIcons.Sun
     val Logout = TablerIcons.Logout
     val Feedback = TablerIcons.Message
 }

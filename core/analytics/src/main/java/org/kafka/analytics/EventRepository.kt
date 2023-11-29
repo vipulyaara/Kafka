@@ -106,5 +106,9 @@ class EventRepository @Inject constructor() {
 
     fun themeChanged(theme: String) = "theme_changed" to mapOf("theme" to theme)
 
+    fun trueContrastChanged(trueContrast: Boolean) = "true_contrast_changed" to mapOf(
+        "true_contrast" to trueContrast.toString()
+    )
+
     fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 }

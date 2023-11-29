@@ -13,7 +13,7 @@ data class FavoriteItem(
     val coverImage: String = "",
     @ServerTimestamp
     val createdAt: Date = Date(),
-) : BaseEntity
+)
 
 fun FavoriteItem.toItem() = Item(
     itemId = itemId,

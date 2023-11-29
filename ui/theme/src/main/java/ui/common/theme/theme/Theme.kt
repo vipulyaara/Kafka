@@ -9,6 +9,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,24 +23,34 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
+import com.kafka.data.prefs.observeTrueContrast
 
 @Composable
 fun AppTheme(
     dynamicColor: Boolean = isAtLeastS(),
     isDarkTheme: Boolean = isSystemInDarkTheme(),
+    isTrueContrast: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && isDarkTheme -> if (isAtLeastS()) {
-            dynamicDarkColorScheme(LocalContext.current)
-                .copy(background = Color.Black, surface = Color.Black)
+            if (isTrueContrast) {
+                dynamicDarkColorScheme(LocalContext.current)
+                    .copy(background = Color.Black, surface = Color.Black)
+            } else {
+                dynamicDarkColorScheme(LocalContext.current)
+            }
         } else {
             DarkAppColors
         }
 
         dynamicColor && !isDarkTheme -> if (isAtLeastS()) {
-            dynamicLightColorScheme(LocalContext.current)
-                .copy(background = Color.White, surface = Color.White)
+            if (isTrueContrast) {
+                dynamicLightColorScheme(LocalContext.current)
+                    .copy(background = Color.White, surface = Color.White)
+            } else {
+                dynamicLightColorScheme(LocalContext.current)
+            }
         } else {
             LightAppColors
         }
@@ -56,7 +67,11 @@ fun AppTheme(
         systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = isLight)
     }
 
-    MaterialTheme(colorScheme = colorScheme, typography = KafkaTypography, content = content)
+    val themeColor = if (isDarkTheme) ThemeColor.Dark else ThemeColor.Light
+
+    CompositionLocalProvider(LocalThemeColor provides themeColor) {
+        MaterialTheme(colorScheme = colorScheme, typography = KafkaTypography, content = content)
+    }
 }
 
 val KafkaTypography by lazy {
@@ -124,4 +139,10 @@ fun PreferencesStore.shouldUseDarkColors(): Boolean {
         Theme.LIGHT -> false
         else -> isSystemInDarkTheme()
     }
+}
+
+@Composable
+fun PreferencesStore.shouldUseTrueContrast(): Boolean {
+    val themePreference by remember { observeTrueContrast() }.collectAsState(true)
+    return themePreference
 }

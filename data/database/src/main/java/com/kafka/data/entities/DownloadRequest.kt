@@ -1,7 +1,3 @@
-/*
- * Copyright (C) 2021, Alashov Berkeli
- * All rights reserved.
- */
 package com.kafka.data.entities
 
 import androidx.room.ColumnInfo
@@ -40,7 +36,7 @@ data class DownloadRequest(
         override fun toString() = name
 
         companion object {
-            private val map = values().associateBy { it.name }
+            private val map = entries.associateBy { it.name }
 
             fun from(value: String) = map[value] ?: Audio
         }

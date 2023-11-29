@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.THEME
+import com.kafka.data.prefs.TRUE_CONTRAST
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
+import com.kafka.data.prefs.observeTrueContrast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -44,11 +46,13 @@ class ProfileViewModel @Inject constructor(
     val state: StateFlow<ProfileViewState> = combine(
         observeUser.flow,
         preferencesStore.observeTheme(),
+        preferencesStore.observeTrueContrast(),
         loadingCounter.observable,
-    ) { user, theme, isLoading ->
+    ) { user, theme, trueContrast, isLoading ->
         ProfileViewState(
             currentUser = user,
             theme = theme,
+            trueContrast = trueContrast,
             appVersion = getVersionName(),
             isLoading = isLoading
         )
@@ -71,6 +75,13 @@ class ProfileViewModel @Inject constructor(
 
             preferencesStore.save(THEME, newTheme)
             analytics.log { themeChanged(newTheme) }
+        }
+    }
+
+    fun toggleTrueContrast() {
+        viewModelScope.launch {
+            preferencesStore.save(TRUE_CONTRAST, !state.value.trueContrast)
+            analytics.log { trueContrastChanged(!state.value.trueContrast) }
         }
     }
 
@@ -114,9 +125,7 @@ class ProfileViewModel @Inject constructor(
 data class ProfileViewState(
     val currentUser: User? = null,
     val theme: Theme = Theme.DEFAULT,
+    val trueContrast: Boolean = false,
     val appVersion: String? = null,
     val isLoading: Boolean = true
-) {
-    val userName: String
-        get() = currentUser?.displayName.takeIf { it?.isNotEmpty() == true } ?: "Profile"
-}
+)

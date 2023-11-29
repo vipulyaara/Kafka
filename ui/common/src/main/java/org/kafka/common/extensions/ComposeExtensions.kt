@@ -5,7 +5,9 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -65,4 +67,12 @@ fun <T> collectEvent(
             collector(it)
         }
     }
+}
+
+@Composable
+fun ProvideInteractiveEnforcement(enforce: Boolean = true, content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+        LocalMinimumInteractiveComponentEnforcement provides enforce,
+        content = content
+    )
 }

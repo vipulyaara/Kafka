@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  */
 @Immutable
 @Entity
-data class Item constructor(
+data class Item(
     @PrimaryKey val itemId: String = "",
     @Embedded(prefix = "creator_") val creator: Creator? = null,
     val language: List<String>? = null,
