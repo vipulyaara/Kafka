@@ -45,9 +45,16 @@ class SearchViewModel @Inject constructor(
             .map { SearchFilter.from(it) },
         observeSearchItems.flow,
         observeRecentSearch.flow,
-        loadingState.observable,
-        ::SearchViewState
-    ).stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
+        loadingState.observable
+    ) { keyword, filters, items, recentSearches, isLoading ->
+        SearchViewState(
+            keyword = keyword,
+            filters = filters,
+            items = items,
+            recentSearches = recentSearches,
+            isLoading = isLoading
+        )
+    }.stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
         val filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()

@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.data.prefs.SAFE_MODE
 import com.kafka.data.prefs.THEME
 import com.kafka.data.prefs.TRUE_CONTRAST
 import com.kafka.data.prefs.Theme
+import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
 import com.kafka.data.prefs.observeTrueContrast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,12 +49,14 @@ class ProfileViewModel @Inject constructor(
         observeUser.flow,
         preferencesStore.observeTheme(),
         preferencesStore.observeTrueContrast(),
+        preferencesStore.observeSafeMode(),
         loadingCounter.observable,
-    ) { user, theme, trueContrast, isLoading ->
+    ) { user, theme, trueContrast, safeMode, isLoading ->
         ProfileViewState(
             currentUser = user,
             theme = theme,
             trueContrast = trueContrast,
+            safeMode = safeMode,
             appVersion = getVersionName(),
             isLoading = isLoading
         )
@@ -82,6 +86,13 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesStore.save(TRUE_CONTRAST, !state.value.trueContrast)
             analytics.log { trueContrastChanged(!state.value.trueContrast) }
+        }
+    }
+
+    fun toggleSafeMode() {
+        viewModelScope.launch {
+            preferencesStore.save(SAFE_MODE, !state.value.safeMode)
+            analytics.log { safeModeChanged(!state.value.safeMode) }
         }
     }
 
@@ -126,6 +137,7 @@ data class ProfileViewState(
     val currentUser: User? = null,
     val theme: Theme = Theme.DEFAULT,
     val trueContrast: Boolean = false,
+    val safeMode: Boolean = false,
     val appVersion: String? = null,
     val isLoading: Boolean = true
 )

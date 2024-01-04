@@ -64,6 +64,7 @@ class PreferencesStore @Inject constructor(@ApplicationContext private val conte
 
 val THEME = stringPreferencesKey("theme")
 val TRUE_CONTRAST = booleanPreferencesKey("true_contrast")
+val SAFE_MODE = booleanPreferencesKey("safe_mode")
 
 fun PreferencesStore.observeTheme(): Flow<Theme> {
     return get(THEME, Theme.DEFAULT.name)
@@ -74,6 +75,10 @@ fun PreferencesStore.observeTheme(): Flow<Theme> {
 
 fun PreferencesStore.observeTrueContrast(): Flow<Boolean> {
     return get(TRUE_CONTRAST, true)
+}
+
+fun PreferencesStore.observeSafeMode(): Flow<Boolean> {
+    return get(SAFE_MODE, false)
 }
 
 enum class Theme {

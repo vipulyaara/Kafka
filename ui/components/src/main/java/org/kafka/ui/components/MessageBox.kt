@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,7 +24,8 @@ fun MessageBox(
     text: String,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onIconClick: () -> Unit = {}
 ) {
     Surface(
         modifier = modifier,
@@ -38,7 +40,7 @@ fun MessageBox(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onClick() }
-                .padding(Dimens.Spacing20),
+                .padding(Dimens.Spacing16),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -49,7 +51,12 @@ fun MessageBox(
             )
 
             if (icon != null) {
-                IconResource(imageVector = icon, tint = MaterialTheme.colorScheme.primary)
+                IconResource(
+                    imageVector = icon,
+                    modifier = Modifier.size(Dimens.Spacing20),
+                    tint = MaterialTheme.colorScheme.primary,
+                    onClick = onIconClick
+                )
             }
         }
     }

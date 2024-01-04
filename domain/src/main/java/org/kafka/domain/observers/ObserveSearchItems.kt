@@ -6,7 +6,6 @@ import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import org.kafka.domain.interactors.buildQuery
@@ -25,7 +24,7 @@ class ObserveSearchItems @Inject constructor(
         } else {
             itemRepository.observeQueryItems(
                 buildLocalQuery(buildQuery(params.keyword, params.searchFilter)),
-            ).map { it.filterNot { it.isInappropriate } }.flowOn(dispatchers.io)
+            ).flowOn(dispatchers.io)
         }
     }
 

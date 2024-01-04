@@ -50,6 +50,26 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
             }
         )
 
+        val adultContentDescription = if (state.safeMode) {
+            stringResource(R.string.adult_content_is_hidden)
+        } else {
+            stringResource(R.string.adult_content_is_shown)
+        }
+
+        MenuItem(
+            text = stringResource(R.string.safe_mode),
+            description = adultContentDescription,
+            icon = Icons.SafeMode,
+            onClick = { profileViewModel.toggleSafeMode() },
+            endContent = {
+                ProvideInteractiveEnforcement(false) {
+                    Switch(
+                        checked = state.safeMode,
+                        onCheckedChange = { profileViewModel.toggleSafeMode() })
+                }
+            }
+        )
+
         MenuItem(
             text = stringResource(id = R.string.send_feedback),
             icon = Icons.Feedback,
@@ -71,6 +91,7 @@ private fun MenuItem(
     text: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
+    description: String? = null,
     contentDescription: String? = null,
     onClick: () -> Unit,
     endContent: @Composable (() -> Unit)? = null
@@ -91,11 +112,21 @@ private fun MenuItem(
         )
         Spacer(modifier = Modifier.width(Dimens.Spacing16))
 
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+        Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing04)) {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            description?.let {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+        }
 
         endContent?.let { content ->
             Spacer(modifier = Modifier.weight(1f))

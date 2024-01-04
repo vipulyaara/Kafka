@@ -43,6 +43,7 @@ import compose.icons.tablericons.Search
 import compose.icons.tablericons.Share
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
+import compose.icons.tablericons.Umbrella
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 import org.kafka.common.image.kafkaicons.Vinyl
@@ -91,4 +92,5 @@ object Icons {
     val Sun = TablerIcons.Sun
     val Logout = TablerIcons.Logout
     val Feedback = TablerIcons.Message
+    val SafeMode = TablerIcons.Umbrella
 }

@@ -110,5 +110,9 @@ class EventRepository @Inject constructor() {
         "true_contrast" to trueContrast.toString()
     )
 
+    fun safeModeChanged(enabled: Boolean) = "safe_mode_changed" to mapOf(
+        "safe_mode_content" to enabled.toString()
+    )
+
     fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 }
