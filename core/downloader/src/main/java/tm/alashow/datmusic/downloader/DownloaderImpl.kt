@@ -30,7 +30,7 @@ import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueSuccessful
-import tm.alashow.datmusic.downloader.manager.FetchDownloadManager
+import tm.alashow.datmusic.downloader.manager.RawDownloadManager
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.Optional
@@ -41,7 +41,7 @@ import com.kafka.data.entities.File as FileEntity
 @Singleton
 internal class DownloaderImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
-    private val fetcher: FetchDownloadManager,
+    private val fetcher: RawDownloadManager,
     private val preferences: PreferencesStore,
     private val repo: DownloadRequestsDao,
     private val fileDao: FileDao,
@@ -50,7 +50,8 @@ internal class DownloaderImpl @Inject constructor(
 ) : Downloader {
 
     companion object {
-        private const val INTENT_READ_WRITE_FLAG = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        private const val INTENT_READ_WRITE_FLAG =
+            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     }
 
     private val newDownloadIdState = Channel<String>(Channel.CONFLATED)
@@ -117,10 +118,10 @@ internal class DownloaderImpl @Inject constructor(
 
         return when (val enqueueResult = enqueueDownloadRequest(downloadRequest, fetchRequest)) {
             is DownloadEnqueueSuccessful -> {
-//                downloaderMessage(AudioDownloadQueued)
                 newDownloadIdState.send(downloadRequest.id)
                 true
             }
+
             is DownloadEnqueueFailed -> {
                 Timber.e(enqueueResult.toString())
                 downloaderEvent(DownloaderEvent.DownloaderFetchError(enqueueResult.error))
@@ -148,17 +149,20 @@ internal class DownloaderImpl @Inject constructor(
                         Timber.i("Retriable download exists, cancelling the old one and allowing enqueue.")
                         return true
                     }
+
                     Status.PAUSED -> {
                         Timber.i("Resuming paused download because of new request")
                         fetcher.resume(oldRequest.requestId)
                         downloaderMessage(AudioDownloadResumedExisting)
                         return false
                     }
+
                     Status.NONE, Status.QUEUED, Status.DOWNLOADING -> {
                         Timber.i("File already queued, doing nothing")
                         downloaderMessage(AudioDownloadAlreadyQueued)
                         return false
                     }
+
                     Status.COMPLETED -> {
                         val fileExists = downloadInfo.fileUri.toDocumentFile(appContext).exists()
                         return if (!fileExists) {
@@ -171,6 +175,7 @@ internal class DownloaderImpl @Inject constructor(
                             false
                         }
                     }
+
                     else -> {
                         Timber.d("Existing download was requested with unhandled status, doing nothing: Status: ${downloadInfo.status}")
                         downloaderMessage(AudioDownloadExistingUnknownStatus(downloadInfo.status))
@@ -186,7 +191,10 @@ internal class DownloaderImpl @Inject constructor(
         return true
     }
 
-    private suspend fun enqueueDownloadRequest(downloadRequest: DownloadRequest, request: Request): DownloadEnqueueResult<Request> {
+    private suspend fun enqueueDownloadRequest(
+        downloadRequest: DownloadRequest,
+        request: Request
+    ): DownloadEnqueueResult<Request> {
         debug { "Enqueueing download request: $request" }
         val enqueueResult = fetcher.enqueue(request)
 
@@ -269,9 +277,11 @@ internal class DownloaderImpl @Inject constructor(
 
     override val hasDownloadsLocation = downloadsLocationUri.map { it.isPresent }
 
-    override fun requestNewDownloadsLocation() = downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
+    override fun requestNewDownloadsLocation() =
+        downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
 
-    override suspend fun setDownloadsLocation(folder: File) = setDownloadsLocation(DocumentFile.fromFile(folder))
+    override suspend fun setDownloadsLocation(folder: File) =
+        setDownloadsLocation(DocumentFile.fromFile(folder))
 
     override suspend fun setDownloadsLocation(documentFile: DocumentFile) {
         require(documentFile.exists()) { "Downloads location must be existing" }

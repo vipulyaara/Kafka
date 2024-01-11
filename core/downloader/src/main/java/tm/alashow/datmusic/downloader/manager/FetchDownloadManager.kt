@@ -35,65 +35,34 @@ class FetchDownloadManager @Inject constructor(
         }.flatten()
     }
 
-    override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> = suspendCoroutine { continuation ->
-        fetch.enqueue(
-            request,
-            { request ->
-                continuation.resume(DownloadEnqueueSuccessful(request))
-            },
-            { error ->
-                continuation.resume(
-                    DownloadEnqueueFailed(
-                        error.throwable
-                            ?: IOException("Download error: ${error.name}, code=${error.value}"),
-                    ),
-                )
-            },
-        )
-    }
+    override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> =
+        suspendCoroutine { continuation ->
+            fetch.enqueue(
+                request,
+                { request ->
+                    continuation.resume(DownloadEnqueueSuccessful(request))
+                },
+                { error ->
+                    continuation.resume(
+                        DownloadEnqueueFailed(
+                            error.throwable
+                                ?: IOException("Download error: ${error.name}, code=${error.value}"),
+                        ),
+                    )
+                },
+            )
+        }
 
     override suspend fun getDownload(id: Int): Download? = suspendCoroutine { continuation ->
         fetch.getDownload(id) { continuation.resume(it) }
-    }
-
-    override suspend fun getDownloads(): List<Download> = suspendCoroutine { continuation ->
-        fetch.getDownloads { continuation.resume(it) }
     }
 
     override suspend fun getDownloadsWithIdsAndStatuses(ids: Set<Int>): List<Download> {
         return fetch.getDownloadsByIdsChunked(ids.toList())
     }
 
-    override suspend fun getDownloadsWithStatuses(statuses: List<Status>): List<Download> =
-        suspendCoroutine { continuation ->
-            when (statuses.isEmpty()) {
-                true -> fetch.getDownloads { continuation.resume(it) }
-                else -> fetch.getDownloadsWithStatus(statuses) { continuation.resume(it) }
-            }
-        }
-
-    override suspend fun pause(id: Int) {
-        fetch.pause(id)
-    }
-
     override suspend fun resume(id: Int) {
         fetch.resume(id)
-    }
-
-    override suspend fun cancel(id: Int) {
-        fetch.cancel(id)
-    }
-
-    override suspend fun retry(id: Int) {
-        fetch.retry(id)
-    }
-
-    override suspend fun remove(id: Int) {
-        fetch.remove(id)
-    }
-
-    override suspend fun delete(id: Int) {
-        fetch.delete(id)
     }
 
     override suspend fun pause(ids: List<Int>) {
@@ -110,6 +79,10 @@ class FetchDownloadManager @Inject constructor(
 
     override suspend fun remove(ids: List<Int>) {
         fetch.remove(ids)
+    }
+
+    override suspend fun delete(id: Int) {
+        fetch.delete(id)
     }
 
     override suspend fun retry(ids: List<Int>) {
@@ -200,7 +173,11 @@ fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
             trySend(DownloadPaused(download))
         }
 
-        override fun onProgress(download: Download, etaInMilliSeconds: Long, downloadedBytesPerSecond: Long) {
+        override fun onProgress(
+            download: Download,
+            etaInMilliSeconds: Long,
+            downloadedBytesPerSecond: Long
+        ) {
             super.onProgress(download, etaInMilliSeconds, downloadedBytesPerSecond)
             trySend(DownloadProgress(download, etaInMilliSeconds, downloadedBytesPerSecond))
         }
