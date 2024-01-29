@@ -11,7 +11,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
@@ -28,7 +32,6 @@ import com.kafka.reader.ReaderScreen
 import com.kafka.reader.online.OnlineReader
 import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
-import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.base.debug
 import org.kafka.common.extensions.collectEvent
@@ -59,17 +62,6 @@ internal fun AppNavigation(
     collectEvent(navigator.queue) { event ->
         when (event) {
             is NavigationEvent.Destination -> {
-                // switch tabs first because of a bug in navigation that doesn't allow
-                // changing tabs when destination is opened from a different tab
-//                event.root?.route?.let {
-//                    navController.navigate(it) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        launchSingleTop = true
-//                        restoreState = true
-//                    }
-//                }
                 navController.navigate(event.route)
             }
 
@@ -285,3 +277,6 @@ internal fun NavController.currentScreenAsState(): State<RootScreen> {
     return selectedItem
 }
 
+@Composable
+inline fun <reified T : ViewModel> activityHiltViewModel() =
+    hiltViewModel<T>(LocalView.current.findViewTreeViewModelStoreOwner()!!)

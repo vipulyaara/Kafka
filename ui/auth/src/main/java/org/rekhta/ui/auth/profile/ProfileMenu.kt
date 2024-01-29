@@ -37,18 +37,20 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
             endContent = { SubtitleEndContent(subtitle = state.theme.name.lowercase()) }
         )
 
-        MenuItem(
-            text = stringResource(R.string.true_contrast),
-            icon = Icons.Sun,
-            onClick = { profileViewModel.toggleTrueContrast() },
-            endContent = {
-                ProvideInteractiveEnforcement(false) {
-                    Switch(
-                        checked = state.trueContrast,
-                        onCheckedChange = { profileViewModel.toggleTrueContrast() })
+        if (trueContrastPrefEnabled) {
+            MenuItem(
+                text = stringResource(R.string.true_contrast),
+                icon = Icons.Sun,
+                onClick = { profileViewModel.toggleTrueContrast() },
+                endContent = {
+                    ProvideInteractiveEnforcement(false) {
+                        Switch(
+                            checked = state.trueContrast,
+                            onCheckedChange = { profileViewModel.toggleTrueContrast() })
+                    }
                 }
-            }
-        )
+            )
+        }
 
         val adultContentDescription = if (state.safeMode) {
             stringResource(R.string.adult_content_is_hidden)

@@ -74,11 +74,11 @@ fun PreferencesStore.observeTheme(): Flow<Theme> {
 }
 
 fun PreferencesStore.observeTrueContrast(): Flow<Boolean> {
-    return get(TRUE_CONTRAST, true)
+    return get(TRUE_CONTRAST, TRUE_CONTRAST_DEFAULT)
 }
 
 fun PreferencesStore.observeSafeMode(): Flow<Boolean> {
-    return get(SAFE_MODE, false)
+    return get(SAFE_MODE, SAFE_MODE_DEFAULT)
 }
 
 enum class Theme {
@@ -107,3 +107,6 @@ enum class ContentType {
         val DEFAULT = BOTH
     }
 }
+
+const val TRUE_CONTRAST_DEFAULT = true
+const val SAFE_MODE_DEFAULT = false

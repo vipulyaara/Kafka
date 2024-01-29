@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.SAFE_MODE
+import com.kafka.data.prefs.SAFE_MODE_DEFAULT
 import com.kafka.data.prefs.THEME
 import com.kafka.data.prefs.TRUE_CONTRAST
+import com.kafka.data.prefs.TRUE_CONTRAST_DEFAULT
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
@@ -136,8 +138,10 @@ class ProfileViewModel @Inject constructor(
 data class ProfileViewState(
     val currentUser: User? = null,
     val theme: Theme = Theme.DEFAULT,
-    val trueContrast: Boolean = false,
-    val safeMode: Boolean = false,
+    val trueContrast: Boolean = TRUE_CONTRAST_DEFAULT,
+    val safeMode: Boolean = SAFE_MODE_DEFAULT,
     val appVersion: String? = null,
     val isLoading: Boolean = true
 )
+
+const val trueContrastPrefEnabled = false
