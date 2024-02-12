@@ -10,12 +10,11 @@ compose-bom = "2024.01.00"
 constraintlayout = "1.1.0-alpha13"
 composecompiler = "1.5.4"
 coroutines = "1.7.3"
-dagger = "2.48"
-hilt = "2.48"
+dagger = "2.50"
 icons = "1.0.0"
 kotlin = "1.9.20"
 kotlin-immutable = "0.3.7"
-material3 = "1.2.0-beta02"
+material3 = "1.2.0-rc01"
 mixpanel = "7.0.0"
 okhttp = "4.12.0"
 paging = "3.2.1"
@@ -49,7 +48,7 @@ gms-googleServices = "com.google.gms.google-services:4.4.0"
 firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
 spotless = "com.diffplug.spotless:6.24.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 
@@ -78,8 +77,8 @@ androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref =
 androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.1.0"
 androidx-hilt-navigation = { module = "androidx.hilt:hilt-navigation", version.ref = "androidxhilt" }
 
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
