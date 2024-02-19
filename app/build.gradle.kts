@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId = "com.kafka.user"
         versionCode = 52
-        versionName = "0.12.0"
+        versionName = libs.versions.versionname.toString()
 
         val googleServerClientId: String = gradleLocalProperties(rootDir).getProperty("google_server_client_id")
         val pipelessAuthToken: String = gradleLocalProperties(rootDir).getProperty("pipeless_auth_token")
@@ -49,6 +49,15 @@ android {
             "fabric/*.properties",
             "META-INF/*.properties",
         )
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile= file("keystore.jks")
+            storePassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyPassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyAlias = System.getenv("RELEASE_SIGNING_ALIAS")
+        }
     }
 
     buildTypes {
