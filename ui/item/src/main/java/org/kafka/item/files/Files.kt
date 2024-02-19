@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
 import kotlinx.coroutines.CoroutineScope
-import org.kafka.common.extensions.elevation
+import org.kafka.common.extensions.Elevation.elevation
 import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.navigation.LocalNavigator

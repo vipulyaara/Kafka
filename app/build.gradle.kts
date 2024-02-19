@@ -16,10 +16,13 @@ android {
     defaultConfig {
         applicationId = "com.kafka.user"
         versionCode = 52
-        versionName = "0.12.0"
+        versionName = libs.versions.versionname.toString()
 
-        val googleServerClientId: String = gradleLocalProperties(rootDir).getProperty("google_server_client_id")
-        val pipelessAuthToken: String = gradleLocalProperties(rootDir).getProperty("pipeless_auth_token")
+        val root = gradleLocalProperties(rootDir)
+        val googleServerClientId: String = (root.getProperty("GOOGLE_SERVER_CLIENT_ID")
+            ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")) as String
+        val pipelessAuthToken: String = (root.getProperty("PIPELESS_AUTH_TOKEN")
+            ?: System.getenv("PIPELESS_AUTH_TOKEN")) as String
 
         buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
         buildConfigField("String", "PIPELESS_AUTH_TOKEN", pipelessAuthToken)
@@ -49,6 +52,15 @@ android {
             "fabric/*.properties",
             "META-INF/*.properties",
         )
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore.jks")
+            storePassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyPassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyAlias = System.getenv("RELEASE_SIGNING_ALIAS")
+        }
     }
 
     buildTypes {
@@ -81,7 +93,7 @@ android {
         }
     }
 
-    namespace  = "com.kafka.user"
+    namespace = "com.kafka.user"
 
     lint {
         baseline = file("lint-baseline.xml")
@@ -91,7 +103,7 @@ android {
         ignoreTestSources = true
         // Make the build fail on any lint errors
         abortOnError = true
-        checkDependencies =  true
+        checkDependencies = true
         warning += "AutoboxingStateCreation"
     }
 

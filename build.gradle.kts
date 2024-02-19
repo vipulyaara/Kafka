@@ -141,3 +141,9 @@ fun Project.configureAndroidProject() {
         }
     }
 }
+
+tasks.register("appVersionName") {
+    doLast {
+        println(libs.versions.versionname)
+    }
+}
