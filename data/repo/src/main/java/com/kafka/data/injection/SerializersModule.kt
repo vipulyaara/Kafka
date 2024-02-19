@@ -16,6 +16,6 @@ class SerializersModule {
     internal fun provideHomepageResponsePolymorphicDefaultPair(): SerializationPolymorphicDefaultPair<*> =
         SerializationPolymorphicDefaultPair(
             base = HomepageCollectionResponse::class,
-            default = HomepageCollectionResponse.Unknown::class
+            default = HomepageCollectionResponse.Unknown::class,
         )
 }

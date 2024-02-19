@@ -18,7 +18,7 @@ import javax.inject.Inject
  */
 class ObserveItemDetail @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val itemDetailDao: ItemDetailDao
+    private val itemDetailDao: ItemDetailDao,
 ) : SubjectInteractor<ObserveItemDetail.Param, ItemDetail?>() {
 
     override fun createObservable(params: Param): Flow<ItemDetail?> {

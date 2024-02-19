@@ -10,12 +10,12 @@ import com.tonyodev.fetch2.database.DownloadInfo
 
 sealed class DownloadItem(
     open val downloadRequest: DownloadRequest,
-    open val downloadInfo: Download
+    open val downloadInfo: Download,
 )
 
 data class FileDownloadItem(
     override val downloadRequest: DownloadRequest,
-    override val downloadInfo: Download
+    override val downloadInfo: Download,
 ) : DownloadItem(downloadRequest, downloadInfo) {
     companion object {
         fun from(downloadRequest: DownloadRequest, downloadInfo: Download? = null) =

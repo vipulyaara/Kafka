@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ResetPassword @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : Interactor<ResetPassword.Params>() {
 
     override suspend fun doWork(params: Params) {

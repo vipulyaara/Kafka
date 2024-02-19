@@ -11,7 +11,7 @@ import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 class FirestoreGraph @Inject constructor(
     private val firestoreKt: FirebaseFirestoreKt,
     private val firestore: FirebaseFirestore,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
 ) {
     val recentItemsCollection
         get() = getRecentItemsCollection(auth.currentUser!!.uid)

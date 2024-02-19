@@ -24,5 +24,5 @@ data class ItemDetailResponse(
     @SerialName("uniq")
     val uniq: Int = 0,
     @SerialName("workable_servers")
-    val workableServers: List<String> = emptyList()
+    val workableServers: List<String> = emptyList(),
 )

@@ -3,6 +3,7 @@ package com.kafka.user.playback
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.dao.FileDao
+import com.kafka.data.model.SearchFilter
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getPlayerTheme
 import com.sarahang.playback.core.PlaybackConnection
@@ -14,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
+import org.kafka.navigation.Screen.Search.createRoute
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +46,7 @@ class PlaybackViewModel @Inject constructor(
         viewModelScope.launch {
             val currentRoot = navigator.currentRoot.value
             val creator = playbackConnection.nowPlaying.value.artist
-            navigator.navigate(Screen.Search.createRoute(currentRoot, creator))
+            navigator.navigate(createRoute(currentRoot, creator, SearchFilter.Creator.name))
         }
     }
 }

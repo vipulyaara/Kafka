@@ -79,25 +79,28 @@ class AnalyticsImpl @Inject constructor(
     }
 
     private fun trackMixpanelScreenView(label: String, route: String?, arguments: Any?) {
-        mixPanel.track("screen_view", JSONObject().apply {
-            put("screen_name", label)
-            if (route != null) put("screen_route", route)
+        mixPanel.track(
+            "screen_view",
+            JSONObject().apply {
+                put("screen_name", label)
+                if (route != null) put("screen_route", route)
 
-            // Expand out the rest of the parameters
-            when {
-                arguments is Bundle -> {
-                    for (key in arguments.keySet()) {
-                        val value = arguments.getString(key).toString()
-                        // We don't want to include the label or route twice
-                        if (value == label || value == route) continue
+                // Expand out the rest of the parameters
+                when {
+                    arguments is Bundle -> {
+                        for (key in arguments.keySet()) {
+                            val value = arguments.getString(key).toString()
+                            // We don't want to include the label or route twice
+                            if (value == label || value == route) continue
 
-                        put("screen_arg_$key", value)
+                            put("screen_arg_$key", value)
+                        }
                     }
-                }
 
-                arguments != null -> put("screen_arg", arguments.toString())
-            }
-        })
+                    arguments != null -> put("screen_arg", arguments.toString())
+                }
+            },
+        )
     }
 
     companion object {

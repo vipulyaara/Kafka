@@ -22,6 +22,7 @@ private val IconButtonSizeModifier = Modifier.size(48.dp)
 
 @Composable
 fun IconButton(
+    imageVector: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -30,7 +31,6 @@ fun IconButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     tint: Color = MaterialTheme.colorScheme.onBackground,
     contentDescription: String? = null,
-    imageVector: ImageVector
 ) {
     IconButton(
         onClick = onClick,

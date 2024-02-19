@@ -11,7 +11,7 @@ class SignUpUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val signInUser: SignInUser,
     private val dispatchers: CoroutineDispatchers,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : Interactor<SignUpUser.Params>() {
 
     override suspend fun doWork(params: Params) {

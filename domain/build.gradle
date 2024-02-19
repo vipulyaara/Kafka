@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+    api project(':core:remote-config')
     api project(':data:repo')
     implementation libs.kotlin.coroutines.android
 
@@ -27,4 +28,5 @@ dependencies {
     implementation libs.google.auth
     implementation libs.google.coroutines
     implementation libs.google.firestore
+    implementation libs.google.playservices.auth
 }

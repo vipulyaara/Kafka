@@ -5,6 +5,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val brandBlue = Color(0xff0067DD)
@@ -17,8 +18,23 @@ val Asphalt = Color(0xFF2c3e50)
 
 val error = Color(0xffBA0550)
 
+enum class ThemeColor {
+    Light, Dark;
+
+    val isDark: Boolean
+        get() = this == Dark
+}
+
+val LocalThemeColor = staticCompositionLocalOf<ThemeColor> {
+    error("No LocalThemeColor given")
+}
+
 val ColorScheme.shadowMaterial
-    @Composable get() = if (isSystemInLightTheme()) primary.copy(alpha = 0.5f) else primary.copy(alpha = 0.2f)
+    @Composable get() = if (isSystemInLightTheme()) {
+        primary.copy(alpha = 0.5f)
+    } else {
+        primary.copy(alpha = 0.2f)
+    }
 
 @Composable
 fun isSystemInLightTheme() = !isSystemInDarkTheme()

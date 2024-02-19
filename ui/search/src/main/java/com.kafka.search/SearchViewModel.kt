@@ -41,13 +41,20 @@ class SearchViewModel @Inject constructor(
 
     val state: StateFlow<SearchViewState> = combine(
         savedStateHandle.getStateFlow(extraKeyword, ""),
-        savedStateHandle.getStateFlow(extraFilters, SearchFilter.allString())
+        savedStateHandle.getStateFlow(extraFilters, SearchFilter.Name.name)
             .map { SearchFilter.from(it) },
         observeSearchItems.flow,
         observeRecentSearch.flow,
-        loadingState.observable,
-        ::SearchViewState
-    ).stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
+        loadingState.observable
+    ) { keyword, filters, items, recentSearches, isLoading ->
+        SearchViewState(
+            keyword = keyword,
+            filters = filters,
+            items = items,
+            recentSearches = recentSearches,
+            isLoading = isLoading
+        )
+    }.stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
         val filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()

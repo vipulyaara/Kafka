@@ -10,5 +10,5 @@ data class ResponseHeader(
     @SerialName("params")
     val params: Params,
     @SerialName("status")
-    val status: Int
+    val status: Int,
 )

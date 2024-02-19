@@ -12,7 +12,7 @@ interface NotificationManager {
     fun buildNotification(
         push: Push,
         pendingIntent: PendingIntent?,
-        notificationBuilder: NotificationBuilder = {}
+        notificationBuilder: NotificationBuilder = {},
     ): Notification
 
     fun showNotification(id: Int, notification: Notification?)
@@ -27,7 +27,7 @@ interface NotificationManager {
 data class Push(
     val notification: Notification,
     val channel: Channel,
-    val actions: List<Action>
+    val actions: List<Action>,
 ) {
     data class Action(val title: String, @DrawableRes val resId: Int)
     data class Channel(val id: String, val name: String)

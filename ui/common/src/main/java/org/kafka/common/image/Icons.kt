@@ -24,6 +24,7 @@ import compose.icons.tablericons.ChevronUpLeft
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
+import compose.icons.tablericons.Copy
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
@@ -40,7 +41,9 @@ import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Share
+import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
+import compose.icons.tablericons.Umbrella
 import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 import org.kafka.common.image.kafkaicons.Vinyl
@@ -49,6 +52,7 @@ object Icons {
     val Home: ImageVector = TablerIcons.Home
     val HomeActive: ImageVector = TablerIcons.Home2
     val Search: ImageVector = TablerIcons.Search
+    val Copy: ImageVector = TablerIcons.Copy
     val Check: ImageVector = TablerIcons.CircleCheck
     val SearchActive: ImageVector = FeatherIcons.Search
     val Library: ImageVector = TablerIcons.Bookmark
@@ -85,6 +89,8 @@ object Icons {
     val ArrowForward = TablerIcons.ArrowRight
     val Vinyl = KafkaIcons.Vinyl
     val Moon = TablerIcons.Moon
+    val Sun = TablerIcons.Sun
     val Logout = TablerIcons.Logout
     val Feedback = TablerIcons.Message
+    val SafeMode = TablerIcons.Umbrella
 }

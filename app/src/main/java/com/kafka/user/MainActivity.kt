@@ -11,8 +11,10 @@ import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import org.kafka.navigation.rememberBottomSheetNavigator
+import timber.log.Timber
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.shouldUseTrueContrast
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,7 +31,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController = rememberNavController(bottomSheetNavigator)
-            AppTheme(isDarkTheme = preferencesStore.shouldUseDarkColors()) {
+            AppTheme(
+                isDarkTheme = preferencesStore.shouldUseDarkColors(),
+                isTrueContrast = preferencesStore.shouldUseTrueContrast()
+            ) {
                 MainScreen(
                     navController = navController,
                     bottomSheetNavigator = bottomSheetNavigator
@@ -40,6 +45,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        navController.handleDeepLink(intent)
+        if (::navController.isInitialized) {
+            navController.handleDeepLink(intent)
+        } else {
+            Timber.e(Error("navController is not initialized. isFinishing $isFinishing"))
+        }
     }
 }

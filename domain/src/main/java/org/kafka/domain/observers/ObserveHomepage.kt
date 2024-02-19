@@ -15,13 +15,13 @@ import javax.inject.Inject
 class ObserveHomepage @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers,
     private val observeRecentItems: ObserveRecentItems,
-    private val homepageRepository: HomepageRepository
+    private val homepageRepository: HomepageRepository,
 ) : SubjectInteractor<Unit, Homepage>() {
 
     override fun createObservable(params: Unit): Flow<Homepage> {
         return combine(
             observeRecentItems.execute(Unit),
-            homepageRepository.observeHomepageCollection()
+            homepageRepository.observeHomepageCollection(),
         ) { recentItems, collection ->
             debug { "ObserveHomepage: collection=$collection" }
             val collectionWithRecentItems = collection.mapNotNull {

@@ -1,8 +1,7 @@
 package org.kafka.navigation
 
 import com.kafka.data.model.SearchFilter
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+import org.kafka.base.extensions.encodeUrl
 
 sealed class RootScreen(val route: String) {
     data object Home : RootScreen("home_root")
@@ -20,6 +19,7 @@ sealed class Screen(private val route: String) {
     data object Home : Screen("home")
     data object Login : Screen("login")
     data object Player : Screen("player")
+    data object RecentItems : Screen("recent_items")
 
     data object ItemDetail : Screen("item/{itemId}") {
         fun createRoute(root: RootScreen, itemId: String): String {
@@ -63,7 +63,10 @@ sealed class Screen(private val route: String) {
             return "${root.route}/web/${url.encodeUrl()}"
         }
     }
+
+    data object OnlineReader : Screen("reader_online/{itemId}") {
+        fun createRoute(root: RootScreen, itemId: String): String {
+            return "${root.route}/reader_online/${itemId}"
+        }
+    }
 }
-
-fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
-

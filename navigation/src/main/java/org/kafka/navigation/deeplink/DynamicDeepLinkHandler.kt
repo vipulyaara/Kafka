@@ -10,6 +10,6 @@ interface DynamicDeepLinkHandler {
 
     companion object {
         fun itemDetailLink(itemId: String) =
-            Uri.parse("https://www.archive.org/details/?id=${itemId}")
+            Uri.parse("https://www.archive.org/details/?id=$itemId")
     }
 }

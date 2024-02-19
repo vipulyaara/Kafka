@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LogoutUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val signInAnonymously: SignInAnonymously,
-    private val coroutineDispatchers: CoroutineDispatchers
+    private val coroutineDispatchers: CoroutineDispatchers,
 ) : Interactor<Unit>() {
 
     override suspend fun doWork(params: Unit) {

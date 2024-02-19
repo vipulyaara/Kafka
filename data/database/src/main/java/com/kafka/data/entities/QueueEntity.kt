@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "queue_meta_data")
-data class QueueEntity constructor(
+data class QueueEntity(
     @PrimaryKey(autoGenerate = false) var id: Long = 0,
     var currentSeekPos: Long = 0,
     var currentSongId: String? = null,
-    var isPlaying: Boolean = false
+    var isPlaying: Boolean = false,
 ) : BaseEntity

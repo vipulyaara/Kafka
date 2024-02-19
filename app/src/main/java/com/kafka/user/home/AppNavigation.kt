@@ -1,9 +1,5 @@
 package com.kafka.user.home
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,12 +11,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavBackStackEntry
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -32,13 +29,14 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.material.bottomSheet
 import com.kafka.reader.ReaderScreen
+import com.kafka.reader.online.OnlineReader
 import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
-import com.sarahang.playback.ui.activityHiltViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.base.debug
 import org.kafka.common.extensions.collectEvent
 import org.kafka.homepage.Homepage
+import org.kafka.homepage.recent.RecentScreen
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.detail.description.DescriptionDialog
 import org.kafka.item.files.Files
@@ -64,17 +62,6 @@ internal fun AppNavigation(
     collectEvent(navigator.queue) { event ->
         when (event) {
             is NavigationEvent.Destination -> {
-                // switch tabs first because of a bug in navigation that doesn't allow
-                // changing tabs when destination is opened from a different tab
-//                event.root?.route?.let {
-//                    navController.navigate(it) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        launchSingleTop = true
-//                        restoreState = true
-//                    }
-//                }
                 navController.navigate(event.route)
             }
 
@@ -119,6 +106,8 @@ private fun NavGraphBuilder.addHomeRoot() {
         addLogin(RootScreen.Home)
         addPlayer(RootScreen.Home)
         addWebView(RootScreen.Home)
+        addOnlineReader(RootScreen.Home)
+        addRecentItems(RootScreen.Home)
     }
 }
 
@@ -133,6 +122,8 @@ private fun NavGraphBuilder.addSearchRoot() {
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
         addPlayer(RootScreen.Search)
+        addWebView(RootScreen.Search)
+        addOnlineReader(RootScreen.Search)
     }
 }
 
@@ -148,6 +139,8 @@ private fun NavGraphBuilder.addLibraryRoot() {
         addReader(RootScreen.Library)
         addSearch(RootScreen.Library)
         addPlayer(RootScreen.Library)
+        addWebView(RootScreen.Library)
+        addOnlineReader(RootScreen.Library)
     }
 }
 
@@ -187,7 +180,10 @@ private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
     composable(
         Screen.ItemDetail.createRoute(root),
         arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-        deepLinks = listOf(navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" })
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" },
+            navDeepLink { uriPattern = "${Config.BASE_URL_ALT}item/{itemId}" },
+        )
     ) {
         ItemDetail()
     }
@@ -232,6 +228,12 @@ private fun NavGraphBuilder.addFeedback(root: RootScreen) {
     }
 }
 
+private fun NavGraphBuilder.addRecentItems(root: RootScreen) {
+    composable(route = Screen.RecentItems.createRoute(root)) {
+        RecentScreen()
+    }
+}
+
 private fun NavGraphBuilder.addWebView(root: RootScreen) {
     composable(
         route = Screen.Web.createRoute(root),
@@ -241,6 +243,15 @@ private fun NavGraphBuilder.addWebView(root: RootScreen) {
     ) {
         val navigator = LocalNavigator.current
         WebView(it.arguments?.getString("url").orEmpty(), navigator::goBack)
+    }
+}
+
+private fun NavGraphBuilder.addOnlineReader(root: RootScreen) {
+    composable(
+        route = Screen.OnlineReader.createRoute(root),
+        arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+    ) {
+        OnlineReader()
     }
 }
 
@@ -266,36 +277,6 @@ internal fun NavController.currentScreenAsState(): State<RootScreen> {
     return selectedItem
 }
 
-@ExperimentalAnimationApi
-private fun AnimatedContentTransitionScope<*>.defaultEnterTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): EnterTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeIn()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeIn() + slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start)
-}
-
-@ExperimentalAnimationApi
-private fun AnimatedContentTransitionScope<*>.defaultExitTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): ExitTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeOut()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeOut() + slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start)
-}
-
-private val NavDestination.hostNavGraph: NavGraph
-    get() = hierarchy.first { it is NavGraph } as NavGraph
-
+@Composable
+inline fun <reified T : ViewModel> activityHiltViewModel() =
+    hiltViewModel<T>(LocalView.current.findViewTreeViewModelStoreOwner()!!)

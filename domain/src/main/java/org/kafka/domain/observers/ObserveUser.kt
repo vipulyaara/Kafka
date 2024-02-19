@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class ObserveUser @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : SubjectInteractor<ObserveUser.Params, User?>() {
 
     override fun createObservable(params: Params): Flow<User?> {
@@ -33,7 +33,7 @@ class ObserveUser @Inject constructor(
             displayName = it.displayName.orEmpty(),
             email = it.email,
             imageUrl = it.photoUrl.toString(),
-            anonymous = it.isAnonymous
+            anonymous = it.isAnonymous,
         )
     }
 

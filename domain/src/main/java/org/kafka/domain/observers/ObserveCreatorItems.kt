@@ -18,7 +18,7 @@ import javax.inject.Inject
 class ObserveCreatorItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val observeQueryItems: ObserveQueryItems,
-    private val itemDao: ItemDao
+    private val itemDao: ItemDao,
 ) : SubjectInteractor<ObserveCreatorItems.Params, ImmutableList<Item>>() {
 
     override fun createObservable(params: Params): Flow<ImmutableList<Item>> {
@@ -31,7 +31,6 @@ class ObserveCreatorItems @Inject constructor(
                 } ?: flowOf(emptyList())
             }
             .map { it.filterNot { it.itemId == params.itemId }.toPersistentList() }
-
     }
 
     data class Params(val itemId: String)

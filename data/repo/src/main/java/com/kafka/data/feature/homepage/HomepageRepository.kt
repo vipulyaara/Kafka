@@ -2,7 +2,7 @@ package com.kafka.data.feature.homepage
 
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
-import com.kafka.recommendations.FirebaseTopics
+import com.kafka.recommendations.topic.FirebaseTopics
 import dagger.Reusable
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.collections.immutable.toPersistentList
@@ -16,11 +16,11 @@ import javax.inject.Inject
 class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
-    private val firebaseTopics: FirebaseTopics
+    private val firebaseTopics: FirebaseTopics,
 ) {
     fun observeHomepageCollection() = combine(
         firestoreGraph.homepageCollection.snapshots,
-        firebaseTopics.topics
+        firebaseTopics.topics,
     ) { homepageResponse, topics ->
         homepageResponse to topics
     }.flatMapLatest {
@@ -59,9 +59,9 @@ class HomepageRepository @Inject constructor(
 
     private fun HomepageCollectionResponse.filterByTopics(userTopics: List<String>): Boolean {
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
-        return collectionTopics.isEmpty()
-                || userTopics.isEmpty()
-                || shouldShowCollection(userTopics, collectionTopics)
+        return collectionTopics.isEmpty() ||
+            userTopics.isEmpty() ||
+            shouldShowCollection(userTopics, collectionTopics)
     }
 
     private fun shouldShowCollection(userTopics: List<String>, collectionTopics: List<String>): Boolean {

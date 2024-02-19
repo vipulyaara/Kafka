@@ -17,7 +17,7 @@ fun rememberBottomSheetNavigator(
         initialValue = ModalBottomSheetValue.Hidden,
         animationSpec = animationSpec,
         confirmValueChange = { true },
-        skipHalfExpanded = skipHalfExpanded
+        skipHalfExpanded = skipHalfExpanded,
     )
 
     return remember(sheetState) {

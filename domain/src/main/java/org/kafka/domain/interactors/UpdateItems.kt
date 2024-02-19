@@ -12,7 +12,7 @@ import javax.inject.Inject
 class UpdateItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val buildRemoteQuery: BuildRemoteQuery,
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
 ) : Interactor<UpdateItems.Params>() {
 
     override suspend fun doWork(params: Params) {

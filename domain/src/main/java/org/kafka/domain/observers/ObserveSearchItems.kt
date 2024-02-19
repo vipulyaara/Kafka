@@ -23,7 +23,7 @@ class ObserveSearchItems @Inject constructor(
             flowOf(emptyList())
         } else {
             itemRepository.observeQueryItems(
-                buildLocalQuery(buildQuery(params.keyword, params.searchFilter))
+                buildLocalQuery(buildQuery(params.keyword, params.searchFilter)),
             ).flowOn(dispatchers.io)
         }
     }

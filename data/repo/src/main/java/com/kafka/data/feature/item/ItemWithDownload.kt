@@ -11,7 +11,7 @@ data class ItemWithDownload(
     val downloadRequest: DownloadRequest,
     val downloadInfo: DownloadInfo,
     val file: File,
-    val item: Item
+    val item: Item,
 )
 
 @Immutable
@@ -20,7 +20,7 @@ data class DownloadInfo(
     val progress: Float,
     val status: DownloadStatus,
     val fileUri: Uri,
-    val sizeStatus: String?
+    val sizeStatus: String?,
 )
 
 enum class DownloadStatus {
@@ -32,7 +32,8 @@ enum class DownloadStatus {
     FAILED,
     REMOVED,
     DELETED,
-    UNKNOWN;
+    UNKNOWN,
+    ;
 
     fun isActive() = this == DOWNLOADING || this == PAUSED
 }

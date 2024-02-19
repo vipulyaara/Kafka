@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ObserveRecentSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val recentSearchDao: RecentSearchDao
+    private val recentSearchDao: RecentSearchDao,
 ) : SubjectInteractor<Unit, List<String>>() {
 
     override fun createObservable(params: Unit): Flow<List<String>> {

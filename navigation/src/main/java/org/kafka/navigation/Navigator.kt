@@ -39,7 +39,7 @@ fun NavigatorHost(content: @Composable () -> Unit) {
 @Composable
 private fun NavigatorHost(
     navigator: Navigator,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(LocalNavigator provides navigator, content = content)
 }

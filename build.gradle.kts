@@ -32,22 +32,8 @@ allprojects {
         maven(url = "https://androidx.dev/snapshots/latest/artifacts/repository")
     }
 
-    apply(plugin = rootProject.libs.plugins.spotless.get().pluginId)
-    configure<SpotlessExtension> {
-        kotlin {
-            target("**/*.kt")
-            targetExclude("$buildDir/**/*.kt")
-            targetExclude("bin/**/*.kt")
-            ktlint(libs.versions.ktlint.get())
-            licenseHeaderFile(rootProject.file("spotless/copyright.txt"))
-        }
-        kotlinGradle {
-            target("**/*.kts")
-            targetExclude("$buildDir/**/*.kts")
-            ktlint(libs.versions.ktlint.get())
-            licenseHeaderFile(rootProject.file("spotless/copyright.txt"), "(^(?![\\/ ]\\*).*$)")
-        }
-    }
+
+    apply(from = rootProject.file("spotless/spotless.gradle"))
 
     // Configure Java to use our chosen language level. Kotlin will automatically
     // pick this up

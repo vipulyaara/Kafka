@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Doc(
-    @SerialName("genre")
+    @SerialName("collection")
     @Serializable(with = StringListSerializer::class)
     val collection: List<String>? = null,
     @SerialName("creator")
@@ -42,8 +42,6 @@ data class Doc(
     val title: List<String>,
     @SerialName("week")
     val week: Int? = 0,
-    @SerialName("year")
-    val year: String? = null,
     @SerialName("avg_rating")
     val rating: Double? = null,
 )

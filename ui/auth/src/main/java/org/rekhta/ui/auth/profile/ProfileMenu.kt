@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.auth.R
+import org.kafka.common.extensions.ProvideInteractiveEnforcement
 import org.kafka.common.image.Icons
 import ui.common.theme.theme.Dimens
 
@@ -30,9 +32,44 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
     Column {
         MenuItem(
             text = stringResource(id = R.string.change_theme),
-            subtitle = state.theme.name.lowercase(),
             icon = Icons.Moon,
-            onClick = { profileViewModel.toggleTheme() }
+            onClick = { profileViewModel.toggleTheme() },
+            endContent = { SubtitleEndContent(subtitle = state.theme.name.lowercase()) }
+        )
+
+        if (trueContrastPrefEnabled) {
+            MenuItem(
+                text = stringResource(R.string.true_contrast),
+                icon = Icons.Sun,
+                onClick = { profileViewModel.toggleTrueContrast() },
+                endContent = {
+                    ProvideInteractiveEnforcement(false) {
+                        Switch(
+                            checked = state.trueContrast,
+                            onCheckedChange = { profileViewModel.toggleTrueContrast() })
+                    }
+                }
+            )
+        }
+
+        val adultContentDescription = if (state.safeMode) {
+            stringResource(R.string.adult_content_is_hidden)
+        } else {
+            stringResource(R.string.adult_content_is_shown)
+        }
+
+        MenuItem(
+            text = stringResource(R.string.safe_mode),
+            description = adultContentDescription,
+            icon = Icons.SafeMode,
+            onClick = { profileViewModel.toggleSafeMode() },
+            endContent = {
+                ProvideInteractiveEnforcement(false) {
+                    Switch(
+                        checked = state.safeMode,
+                        onCheckedChange = { profileViewModel.toggleSafeMode() })
+                }
+            }
         )
 
         MenuItem(
@@ -56,9 +93,10 @@ private fun MenuItem(
     text: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    subtitle: String? = null,
+    description: String? = null,
     contentDescription: String? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    endContent: @Composable (() -> Unit)? = null
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
@@ -76,19 +114,34 @@ private fun MenuItem(
         )
         Spacer(modifier = Modifier.width(Dimens.Spacing16))
 
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-
-        subtitle?.let {
-            Spacer(modifier = Modifier.weight(1f))
+        Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing04)) {
             Text(
-                text = subtitle,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.tertiary
+                text = text,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
+
+            description?.let {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+        }
+
+        endContent?.let { content ->
+            Spacer(modifier = Modifier.weight(1f))
+            content()
         }
     }
+}
+
+@Composable
+private fun SubtitleEndContent(subtitle: String) {
+    Text(
+        text = subtitle,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.tertiary
+    )
 }

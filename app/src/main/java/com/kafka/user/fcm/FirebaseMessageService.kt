@@ -7,13 +7,13 @@ import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import org.kafka.base.ProcessLifetime
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.CoroutineDispatchers
+import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
 import org.kafka.notifications.NotificationManager
 import javax.inject.Inject
@@ -61,7 +61,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
             preferencesStore.save(fcmTokenPreferenceKey, token)
         }
     }
-
 
     private fun Context.mainActivityIntent(): PendingIntent {
         val intent = Intent(this, MainActivity::class.java)

@@ -21,7 +21,8 @@ class ReadTextFromUri @Inject constructor(private val application: Application) 
 
             while (withContext(Dispatchers.IO) {
                     r.readLine()
-                }.also { line = it } != null) {
+                }.also { line = it } != null
+            ) {
                 if (lineNumber % 30 == 0) {
                     pages.add(page.toString())
                     page.clear()

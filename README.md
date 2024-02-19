@@ -2,12 +2,22 @@
 
 [Kafka](https://www.kafkaarchives.com) uses www.archive.org to serve millions of audiobooks and pdf books available across a multitude of genres and languages, all free and in the public domain.
 
+- 41 million books and text; 14.5 million audio recordings - tagged and searchable with filters
+- New content added continuously by the community as well as Kafka Archives
+- Audio player for seamless background playback, sleep timer and playback speed controls
+- Text reader for reading PDFs with features like continue-reading
+- Mark content as favorite and build your own library
+- Download content on your device and share it freely - or share within the app with convenient deep linking
+- Dark theme with MaterialYou colors
+
 
 ## Download
 
 <a href="https://play.google.com/store/apps/details?id=com.kafka.user" target="_blank">
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240 />
 </a>
+
+Or [Download APK](https://github.com/vipulyaara/Kafka/raw/develop/app/release/app-release.apk)
 
 ## Demo
 
@@ -25,6 +35,7 @@
 ## How to run
  - Clone the repo
  - Clone [Sarahang](https://github.com/vipulyaara/Sarahang) in the same parent folder as Kafka.<br/>Sarahang is the audio player being used in Kafka and not yet provided through maven.
+ - Add `google_server_client_id=xxx` and `pipeless_auth_token=xxx` in your `local.properties` file. You can use arbitrary values, these tokens only provide additional functionalities.
  - Run project
 
 `google-services.json` for debug flavour is added to the repository.

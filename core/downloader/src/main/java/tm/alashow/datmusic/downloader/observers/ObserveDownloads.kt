@@ -32,7 +32,7 @@ class ObserveDownloads @Inject constructor(
     }
 
     private fun fetcherDownloads(
-        downloadRequests: List<DownloadRequest> = emptyList()
+        downloadRequests: List<DownloadRequest> = emptyList(),
     ): Flow<List<Pair<DownloadRequest, Download>>> = flow {
         val requestsById = downloadRequests.associateBy { it.requestId }
         while (true) {

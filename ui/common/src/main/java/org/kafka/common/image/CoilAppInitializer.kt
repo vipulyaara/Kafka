@@ -5,9 +5,9 @@ import android.content.Context
 import coil.Coil
 import coil.ImageLoader
 import coil.disk.DiskCache
-import org.kafka.base.AppInitializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
+import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import java.io.File
 import javax.inject.Inject
