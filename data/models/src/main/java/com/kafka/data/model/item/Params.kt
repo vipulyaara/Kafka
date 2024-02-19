@@ -18,5 +18,5 @@ data class Params(
     @SerialName("start")
     val start: Int,
     @SerialName("wt")
-    val wt: String
+    val wt: String,
 )

@@ -13,4 +13,4 @@ data class DownloadItem(
     val creator: String = "",
     val mediaType: String = "",
     val coverImage: String = "",
-) : BaseEntity
+)

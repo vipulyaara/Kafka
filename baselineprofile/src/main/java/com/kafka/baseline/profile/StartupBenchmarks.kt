@@ -69,7 +69,7 @@ class StartupBenchmarks {
                 homepageFeed.fling(Direction.UP)
 
                 device.pressBack()
-            }
+            },
         )
     }
 }

@@ -7,7 +7,7 @@ import com.kafka.data.model.item.SearchResponse
 import javax.inject.Inject
 
 class ItemMapper @Inject constructor() {
-     fun map(from: SearchResponse): List<Item> {
+    fun map(from: SearchResponse): List<Item> {
         return from.response?.docs?.map { doc -> doc.toItem() }.orEmpty()
     }
 
@@ -23,7 +23,7 @@ class ItemMapper @Inject constructor() {
         genre = this.subject,
         position = this.downloads,
         subject = subject?.joinToString(","),
-        rating = this.rating
+        rating = this.rating,
     )
 }
 

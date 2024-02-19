@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class UserDataRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
 ) {
     fun getUserData(): UserData =
         UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())

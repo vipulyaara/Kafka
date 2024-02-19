@@ -1,0 +1,18 @@
+apply plugin:  "com.diffplug.spotless"
+spotless {
+    java {
+        target '**/*.java'
+        googleJavaFormat().aosp()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+    kotlin {
+        target "**/*.kt"
+        trimTrailingWhitespace()
+        ktlint()
+        indentWithSpaces()
+        endWithNewline()
+    }
+}

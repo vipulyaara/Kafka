@@ -21,14 +21,14 @@ import javax.inject.Inject
 class ObserveRecentItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,
-    private val recentItemRepository: RecentItemRepository
+    private val recentItemRepository: RecentItemRepository,
 ) : SubjectInteractor<Unit, ImmutableList<RecentItemWithProgress>>() {
 
     override fun createObservable(params: Unit): Flow<ImmutableList<RecentItemWithProgress>> {
         return accountRepository.observeCurrentFirebaseUser()
             .filterNotNull()
             .flatMapLatest { user -> recentItemRepository.observeRecentItems(user.uid) }
-            .map { it.map { RecentItemWithProgress(it, 0) } } //todo: add actual progress
+            .map { it.map { RecentItemWithProgress(it, 0) } } // todo: add actual progress
             .onStart { emit(emptyList()) }
             .map { it.toPersistentList() }
             .flowOn(dispatchers.io)

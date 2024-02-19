@@ -74,7 +74,8 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
                         goToSubject = viewModel::openSubject,
-                        onBannerClick = viewModel::onBannerClick
+                        onBannerClick = viewModel::onBannerClick,
+                        openRecentItems = viewModel::openRecentItems
                     )
                 }
 
@@ -102,7 +103,8 @@ private fun HomepageFeedItems(
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
-    onBannerClick: (HomepageBanner) -> Unit
+    onBannerClick: (HomepageBanner) -> Unit,
+    openRecentItems: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.testTag("homepage_feed_items"),
@@ -122,7 +124,8 @@ private fun HomepageFeedItems(
                             readingList = homepage.continueReadingItems,
                             openItemDetail = openRecentItemDetail,
                             removeRecentItem = removeRecentItem,
-                            modifier = Modifier.padding(top = Dimens.Gutter)
+                            modifier = Modifier.padding(top = Dimens.Gutter),
+                            openRecentItems = openRecentItems
                         )
                     }
                 }

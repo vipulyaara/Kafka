@@ -28,7 +28,7 @@ class DownloadInitializer @Inject constructor(
     private val downloadsRepository: DownloadsRepository,
     private val fileDao: FileDao,
     private val itemDao: ItemDao,
-    private val downloadRequestsDao: DownloadRequestsDao
+    private val downloadRequestsDao: DownloadRequestsDao,
 ) : AppInitializer {
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
@@ -75,5 +75,5 @@ fun Download.asDownloadItem(file: File, item: Item) = DownloadItem(
     itemTitle = item.title.orEmpty(),
     creator = item.creator?.name.orEmpty(),
     mediaType = item.mediaType.orEmpty(),
-    coverImage = item.coverImage.orEmpty()
+    coverImage = item.coverImage.orEmpty(),
 )

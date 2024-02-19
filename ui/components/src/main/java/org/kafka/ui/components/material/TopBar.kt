@@ -43,15 +43,28 @@ fun TopBar(
     )
 }
 
-
 @Composable
-fun BackButton(modifier: Modifier = Modifier, goBack: () -> Unit) {
+fun BackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     IconButton(
-        onClick = { goBack() },
+        onClick = { onClick() },
         modifier = modifier
     ) {
         IconResource(
             imageVector = Icons.Back,
+            tint = MaterialTheme.colorScheme.primary,
+            contentDescription = stringResource(R.string.cd_back)
+        )
+    }
+}
+
+@Composable
+fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    IconButton(
+        onClick = { onClick() },
+        modifier = modifier
+    ) {
+        IconResource(
+            imageVector = Icons.X,
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = stringResource(R.string.cd_back)
         )

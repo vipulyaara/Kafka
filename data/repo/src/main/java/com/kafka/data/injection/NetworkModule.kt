@@ -61,7 +61,7 @@ class NetworkModule {
     fun retrofit(
         client: OkHttpClient,
         json: Json,
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -71,7 +71,7 @@ class NetworkModule {
 
     @Provides
     fun provideService(
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): ArchiveService {
         return retrofit.create(ArchiveService::class.java)
     }
@@ -83,9 +83,11 @@ class NetworkModule {
     ) = getBaseBuilder(cache)
         .readTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
-        })
+        .addInterceptor(
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            },
+        )
         .build()
 
     @Suppress("UNCHECKED_CAST")
@@ -93,7 +95,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideSerializersModule(
-        polymorphicDefaultPairs: Set<@JvmSuppressWildcards SerializationPolymorphicDefaultPair<*>>
+        polymorphicDefaultPairs: Set<@JvmSuppressWildcards SerializationPolymorphicDefaultPair<*>>,
     ): SerializersModule = SerializersModule {
         polymorphicDefaultPairs.forEach { (base, default) ->
             polymorphicDefaultDeserializer(base as KClass<Any>) { default.serializer() }

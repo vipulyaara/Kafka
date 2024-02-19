@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
@@ -6,15 +8,21 @@ plugins {
     alias(libs.plugins.gms.googleServices)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
-    id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 42
-        versionName = "0.3.0"
+        versionCode = 52
+        versionName = "0.12.0"
+
+        val googleServerClientId: String = gradleLocalProperties(rootDir).getProperty("google_server_client_id")
+        val pipelessAuthToken: String = gradleLocalProperties(rootDir).getProperty("pipeless_auth_token")
+
+        buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
+        buildConfigField("String", "PIPELESS_AUTH_TOKEN", pipelessAuthToken)
     }
 
     compileOptions {
@@ -86,9 +94,15 @@ android {
         checkDependencies =  true
         warning += "AutoboxingStateCreation"
     }
+
+    buildFeatures.buildConfig = true
+
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.google.bom))
+
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
@@ -112,7 +126,6 @@ dependencies {
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
-    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.navigation.material)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
@@ -131,6 +144,7 @@ dependencies {
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
     implementation(libs.fetch)
+    implementation(libs.fetch.okhttp)
     implementation(libs.firestore.ktx)
     implementation(libs.google.analytics)
     implementation(libs.google.auth)

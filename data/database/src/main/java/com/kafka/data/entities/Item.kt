@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  */
 @Immutable
 @Entity
-data class Item constructor(
+data class Item(
     @PrimaryKey val itemId: String = "",
     @Embedded(prefix = "creator_") val creator: Creator? = null,
     val language: List<String>? = null,
@@ -23,11 +23,11 @@ data class Item constructor(
     val subject: String? = null,
     val uploader: String? = null,
     val position: Int = 0,
-    val rating: Double? = null
+    val rating: Double? = null,
 ) : BaseEntity {
     val isAudio: Boolean
         get() = mediaType == "audio"
-    
+
     val isInappropriate: Boolean
         get() = collection?.contains("no-preview") == true
 }

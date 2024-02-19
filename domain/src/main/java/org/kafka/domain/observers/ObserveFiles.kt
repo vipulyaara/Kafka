@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ObserveFiles @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val fileDao: FileDao
+    private val fileDao: FileDao,
 ) : SubjectInteractor<ObserveFiles.Param, List<File>>() {
 
     override fun createObservable(params: Param): Flow<List<File>> {

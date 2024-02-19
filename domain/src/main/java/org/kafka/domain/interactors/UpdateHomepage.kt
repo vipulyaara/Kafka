@@ -17,7 +17,7 @@ class UpdateHomepage @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val homepageRepository: HomepageRepository,
     private val itemRepository: ItemRepository,
-    private val buildRemoteQuery: BuildRemoteQuery
+    private val buildRemoteQuery: BuildRemoteQuery,
 ) : Interactor<Unit>() {
 
     override suspend fun doWork(params: Unit) {
@@ -36,5 +36,5 @@ class UpdateHomepage @Inject constructor(
 }
 
 private suspend fun <T, R> List<T>.mapAsync(
-    mapper: suspend (T) -> R
+    mapper: suspend (T) -> R,
 ): List<R> = coroutineScope { map { async { mapper(it) } }.awaitAll() }

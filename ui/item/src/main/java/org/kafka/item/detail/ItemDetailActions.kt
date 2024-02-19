@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.components.WIDE_LAYOUT_MIN_WIDTH
 import org.kafka.common.image.Icons
 import org.kafka.common.test.testTagUi
@@ -29,11 +29,13 @@ import org.kafka.common.widgets.IconResource
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.item.R
 import org.kafka.ui.components.material.FloatingButton
+import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun ItemDetailActions(
-    itemDetail: ItemDetail,
+    itemId: String,
+    isAudio: Boolean,
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
@@ -59,16 +61,18 @@ fun ItemDetailActions(
                 Icon(
                     icon = Icons.Download,
                     contentDescription = stringResource(R.string.cd_files),
-                    modifier = Modifier.align(Alignment.Center).testTagUi("download_files"),
-                    onClicked = { openFiles(itemDetail.itemId) }
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .testTagUi("download_files"),
+                    onClicked = { openFiles(itemId) }
                 )
             }
 
             FloatingButton(
-                text = stringResource(if (itemDetail.isAudio) R.string.play else R.string.read),
+                text = stringResource(if (isAudio) R.string.play else R.string.read),
                 modifier = Modifier.weight(0.8f),
-                onClickLabel = stringResource(if (itemDetail.isAudio) R.string.play else R.string.read),
-                onClicked = { onPrimaryAction(itemDetail.itemId) }
+                onClickLabel = stringResource(if (isAudio) R.string.play else R.string.read),
+                onClicked = { onPrimaryAction(itemId) }
             )
         }
     }
@@ -126,5 +130,20 @@ private fun Icon(
         IconButton(onClick = onClicked, modifier = Modifier.align(Alignment.Center)) {
             IconResource(imageVector = icon, contentDescription = contentDescription)
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ActionsPreview() {
+    AppTheme {
+        ItemDetailActions(
+            itemId = "123",
+            isAudio = false,
+            onPrimaryAction = {},
+            openFiles = {},
+            isFavorite = false,
+            toggleFavorite = {}
+        )
     }
 }

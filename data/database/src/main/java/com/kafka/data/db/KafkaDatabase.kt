@@ -13,7 +13,6 @@ import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.RecentTextDao
-import com.kafka.data.dao.SearchDao
 import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
@@ -26,7 +25,6 @@ import com.kafka.data.entities.RecentTextItem
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
     fun fileDao(): FileDao
-    fun searchDao(): SearchDao
     fun itemDao(): ItemDao
     fun recentSearchDao(): RecentSearchDao
     fun recentTextDao(): RecentTextDao
@@ -43,13 +41,13 @@ interface KafkaDatabase {
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,
-        DownloadRequest::class
+        DownloadRequest::class,
     ],
     version = 4,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class)
-    ]
+        AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
+    ],
 )
 @TypeConverters(AppTypeConverters::class)
 abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {

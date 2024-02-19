@@ -12,17 +12,19 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
-    fun map(collection: List<HomepageCollectionResponse>) = combine(collection.map {
-        when (it) {
-            is HomepageCollectionResponse.Row -> it.mapRows()
-            is HomepageCollectionResponse.Column -> it.mapColumn()
-            is HomepageCollectionResponse.Banners -> it.mapBanners()
-            is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
-            is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
-            is HomepageCollectionResponse.Grid -> it.mapGrid()
-            is HomepageCollectionResponse.Unknown -> flowOf()
-        }
-    }) { it.toList() }
+    fun map(collection: List<HomepageCollectionResponse>) = combine(
+        collection.map {
+            when (it) {
+                is HomepageCollectionResponse.Row -> it.mapRows()
+                is HomepageCollectionResponse.Column -> it.mapColumn()
+                is HomepageCollectionResponse.Banners -> it.mapBanners()
+                is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
+                is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
+                is HomepageCollectionResponse.Grid -> it.mapGrid()
+                is HomepageCollectionResponse.Unknown -> flowOf()
+            }
+        },
+    ) { it.toList() }
 
     private fun HomepageCollectionResponse.Row.mapRows(): Flow<HomepageCollection.Row> {
         val itemIdList = itemIds.split(", ")
@@ -31,11 +33,10 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             HomepageCollection.Row(
                 labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
-                clickable = clickable
+                clickable = clickable,
             )
         }
     }
-
 
     private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {
         val itemIdList = itemIds.split(", ")
@@ -44,7 +45,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             HomepageCollection.Column(
                 labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
-                clickable = clickable
+                clickable = clickable,
             )
         }
     }
@@ -56,7 +57,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             HomepageCollection.Grid(
                 labels = label.splitLabel().toPersistentList(),
                 items = sortedItems.toPersistentList(),
-                clickable = clickable
+                clickable = clickable,
             )
         }
     }
@@ -74,7 +75,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
                 label = label,
                 items = items.toPersistentList(),
                 image = image?.randomOrNull()?.downloadURL,
-                enabled = enabled
+                enabled = enabled,
             )
         }
 

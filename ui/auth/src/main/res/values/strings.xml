@@ -9,8 +9,13 @@
     <string name="logged_out" translatable="false">Logged out successfully</string>
     <string name="send_feedback" translatable="false">Send Feedback</string>
     <string name="change_theme" translatable="false">App Theme</string>
+    <string name="true_contrast" translatable="false">True Contrast Color</string>
     <string name="logout" translatable="false">Logout</string>
     <string name="app_version" translatable="false">app version %1$s</string>
     <string name="go_to_favorites" translatable="false">Go to Favorites</string>
     <string name="login_rationale" translatable="false">Login to sync profile across devices and installs</string>
+    <string name="continue_with_google" translatable="false">Continue with Google</string>
+    <string name="safe_mode" translatable="false">Safe Mode</string>
+    <string name="adult_content_is_shown" translatable="false">Adult content is shown</string>
+    <string name="adult_content_is_hidden" translatable="false">Adult content is hidden</string>
 </resources>

@@ -23,7 +23,7 @@ data class ItemDetail(
     val metadata: List<String>? = null,
     val primaryFile: String? = null,
     val subject: List<String>? = null,
-    val rating: Double? = null
+    val rating: Double? = null,
 ) : BaseEntity {
     val uiRating: Int
         get() = (rating ?: 0.0).toInt()

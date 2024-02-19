@@ -46,7 +46,7 @@ internal class DownloaderImpl @Inject constructor(
     private val repo: DownloadRequestsDao,
     private val fileDao: FileDao,
     private val analytics: Analytics,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
 ) : Downloader {
 
     companion object {
@@ -91,8 +91,9 @@ internal class DownloaderImpl @Inject constructor(
     override suspend fun enqueueFile(file: FileEntity): Boolean {
         Timber.d("Enqueue audio: $file")
         val downloadRequest = DownloadRequest.fromAudio(file)
-        if (!validateNewAudioRequest(downloadRequest))
+        if (!validateNewAudioRequest(downloadRequest)) {
             return false
+        }
 
         // save audio to db so Downloads won't depend on given audios existence in audios table
         fileDao.insert(file)
@@ -186,6 +187,7 @@ internal class DownloaderImpl @Inject constructor(
     }
 
     private suspend fun enqueueDownloadRequest(downloadRequest: DownloadRequest, request: Request): DownloadEnqueueResult<Request> {
+        debug { "Enqueueing download request: $request" }
         val enqueueResult = fetcher.enqueue(request)
 
         if (enqueueResult is DownloadEnqueueSuccessful) {
@@ -236,14 +238,15 @@ internal class DownloaderImpl @Inject constructor(
      */
     override suspend fun getAudioDownload(
         audioId: String,
-        vararg allowedStatuses: Status
+        vararg allowedStatuses: Status,
     ): Optional<FileDownloadItem> {
         if (repo.exists(audioId) > 0) {
             val request = repo.entry(audioId).first()
             val downloadInfo = fetcher.getDownload(request.requestId)
             if (downloadInfo != null) {
-                if (downloadInfo.status in allowedStatuses)
+                if (downloadInfo.status in allowedStatuses) {
                     return Optional.of(FileDownloadItem.from(request, downloadInfo))
+                }
             }
         }
         return Optional.empty()
@@ -257,9 +260,11 @@ internal class DownloaderImpl @Inject constructor(
     }
 
     override val downloadLocation = downloadsLocationUri.map {
-        if (it.isPresent)
+        if (it.isPresent) {
             getPathFromUri(it.get())
-        else null
+        } else {
+            null
+        }
     }
 
     override val hasDownloadsLocation = downloadsLocationUri.map { it.isPresent }
@@ -306,7 +311,7 @@ internal class DownloaderImpl @Inject constructor(
         if (current.isPresent) {
             appContext.contentResolver.releasePersistableUriPermission(
                 current.get(),
-                INTENT_READ_WRITE_FLAG
+                INTENT_READ_WRITE_FLAG,
             )
         }
         preferences.save(DOWNLOADS_LOCATION, "")
@@ -323,7 +328,9 @@ internal class DownloaderImpl @Inject constructor(
                     .firstOrNull { it.uri == uri && it.isWritePermission && it.isReadPermission } != null
             if (!writeableAndReadable) {
                 requestNewDownloadsLocation()
-            } else return uri
+            } else {
+                return uri
+            }
         }
 
         return null
@@ -352,7 +359,7 @@ internal class DownloaderImpl @Inject constructor(
 
     private fun fileExistsFromPreviousSession(
         downloadLocationUri: Uri,
-        fileName: String
+        fileName: String,
     ): Boolean {
         val downloadsLocationFolder = downloadLocationUri.toDocumentFile(appContext)
         val file = downloadsLocationFolder.findFile(fileName)

@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class ObserveFavoriteStatus @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val observeFavorites: ObserveFavorites
+    private val observeFavorites: ObserveFavorites,
 ) : SubjectInteractor<ObserveFavoriteStatus.Params, Boolean>() {
 
     override fun createObservable(params: Params): Flow<Boolean> {

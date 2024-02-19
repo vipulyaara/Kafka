@@ -21,7 +21,6 @@ dependencies {
     api project(':ui:theme')
 
     implementation libs.accompanist.flowlayout
-    implementation libs.accompanist.navigation.animation
     implementation libs.accompanist.navigation.material
     implementation libs.accompanist.systemuicontroller
     api libs.androidx.core

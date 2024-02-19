@@ -5,7 +5,7 @@ import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class SignInAnonymously @Inject constructor(
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) : Interactor<Unit>() {
 
     override suspend fun doWork(params: Unit) {

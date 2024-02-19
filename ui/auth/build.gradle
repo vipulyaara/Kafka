@@ -23,6 +23,7 @@ dependencies {
     implementation project(':data:repo')
     implementation project(':domain')
     implementation project(':navigation')
+    implementation project(':core:remote-config')
     implementation project(':ui:common')
     implementation project(':ui:components')
     implementation libs.accompanist.placeholder

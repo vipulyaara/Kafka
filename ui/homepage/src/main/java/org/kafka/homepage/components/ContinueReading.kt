@@ -32,6 +32,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -64,13 +65,35 @@ internal fun ContinueReading(
     readingList: ImmutableList<RecentItemWithProgress>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
-    removeRecentItem: (String) -> Unit
+    removeRecentItem: (String) -> Unit,
+    openRecentItems: () -> Unit
 ) {
+    val showAllAction = remember(readingList) { readingList.size > 2 }
+
     Column(modifier = modifier) {
-        LabelMedium(
-            text = stringResource(id = R.string.continue_reading),
-            modifier = Modifier.padding(horizontal = Dimens.Gutter)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            LabelMedium(
+                text = stringResource(id = R.string.continue_reading),
+                modifier = Modifier.padding(horizontal = Dimens.Gutter)
+            )
+
+            if (showAllAction) {
+                TextButton(
+                    onClick = openRecentItems,
+                    modifier = Modifier.padding(end = Dimens.Spacing04)
+                ) {
+                    Text(
+                        text = stringResource(R.string.see_all),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+            }
+        }
+
         LazyRow(
             contentPadding = PaddingValues(Dimens.Spacing12),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
@@ -79,8 +102,7 @@ internal fun ContinueReading(
                 ContinueReadingItem(
                     item = continueReading,
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
-                    onItemRemoved = { removeRecentItem(it) },
-                    modifier = Modifier.animateItemPlacement()
+                    onItemRemoved = { removeRecentItem(it) }
                 )
             }
         }
@@ -225,7 +247,7 @@ private fun Progress(progress: Float) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         LinearProgressIndicator(
-            progress = progress,
+            progress = { progress },
             modifier = Modifier
                 .height(Dimens.Spacing04)
                 .width(116.dp)

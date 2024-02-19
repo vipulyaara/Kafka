@@ -57,8 +57,9 @@ class ReaderProgressInitializer @Inject constructor(
                 val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
                     .getOrElse { emptyList() } else emptyList()
                 val textFile = recentTextItemMapper.map(download, pages, file)
+                val currentPage = recentTextDao.getOrNull(file.fileId)?.currentPage ?: 1
 
-                recentTextDao.insert(textFile)
+                recentTextDao.insert(textFile.copy(currentPage = currentPage))
             }
         }
     }

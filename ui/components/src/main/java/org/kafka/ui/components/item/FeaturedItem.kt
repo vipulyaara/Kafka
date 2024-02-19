@@ -24,6 +24,7 @@ import com.kafka.data.entities.Item
 import org.kafka.common.image.Icons
 import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalThemeColor
 
 @Composable
 fun FeaturedItem(
@@ -33,6 +34,14 @@ fun FeaturedItem(
     imageUrl: String? = null,
     onClick: () -> Unit = {}
 ) {
+    val scrim = scrim(
+        if (LocalThemeColor.current.isDark) {
+            MaterialTheme.colorScheme.background
+        } else {
+            Color.Black
+        }
+    )
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -52,7 +61,7 @@ fun FeaturedItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomStart)
-                    .background(Scrim)
+                    .background(scrim)
                     .padding(Dimens.Gutter)
             ) {
                 Text(
@@ -95,6 +104,6 @@ fun FeaturedItemPlaceholder() {
     )
 }
 
-private val Scrim = Brush.verticalGradient(
-    listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f), Color.Black)
+private fun scrim(color: Color) = Brush.verticalGradient(
+    listOf(Color.Transparent, color.copy(alpha = 0.6f), color)
 )

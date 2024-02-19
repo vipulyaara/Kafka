@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class UpdateCurrentTimestamp @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val recentAudioDao: RecentAudioDao
+    private val recentAudioDao: RecentAudioDao,
 ) : Interactor<UpdateCurrentTimestamp.Params>() {
 
     override suspend fun doWork(params: Params) {

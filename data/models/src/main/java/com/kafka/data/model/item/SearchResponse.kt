@@ -8,5 +8,5 @@ data class SearchResponse(
     @SerialName("response")
     val response: Response? = null,
     @SerialName("responseHeader")
-    val responseHeader: ResponseHeader? = null
+    val responseHeader: ResponseHeader? = null,
 )

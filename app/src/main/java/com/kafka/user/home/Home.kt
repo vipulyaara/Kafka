@@ -140,5 +140,5 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
     val currentRoute by navController.currentBackStackEntryAsState()
     val destination = currentRoute?.destination?.route?.split("/")?.getOrNull(1)
 
-    return destination != "reader"
+    return destination != "reader" && destination != "reader_online"
 }

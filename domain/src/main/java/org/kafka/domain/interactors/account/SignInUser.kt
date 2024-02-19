@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SignInUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : Interactor<SignInUser.Params>() {
 
     override suspend fun doWork(params: Params) {

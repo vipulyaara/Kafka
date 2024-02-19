@@ -6,9 +6,8 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlinx-serialization'
 }
-
-room {
-    schemaLocationDir.set(file("$projectDir/schemas"))
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 kapt {

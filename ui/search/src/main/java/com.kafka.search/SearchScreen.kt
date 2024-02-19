@@ -76,7 +76,7 @@ private fun Search(
 
     if (!searchViewState.items.isNullOrEmpty()) {
         LazyColumn(contentPadding = paddingValues) {
-            items(searchViewState.items!!) { item ->
+            items(searchViewState.items) { item ->
                 Item(
                     item = item,
                     modifier = Modifier
