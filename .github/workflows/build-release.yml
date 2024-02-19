@@ -11,6 +11,13 @@ jobs:
   release-signing-build:
     name: Release Signing Build
     runs-on: ubuntu-latest
+    env:
+      RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+      RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+      RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+      RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
+      GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
+      PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v3
