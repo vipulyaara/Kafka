@@ -30,12 +30,6 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
 
-      - name: Copy google server token
-        run: echo 'GOOGLE_SERVER_CLIENT_ID=${{ secrets.GOOGLE_SERVER_CLIENT_ID }}' > ./local.properties
-
-      - name: Copy pipeless token
-        run: echo 'PIPELESS_AUTH_TOKEN=${{ secrets.PIPELESS_AUTH_TOKEN }}' > ./local.properties
-
       - name: Decode Keystore
         env:
           ENCODED_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
@@ -50,6 +44,8 @@ jobs:
           RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
           RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
           RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
+          GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
+          PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
         run:
           ./gradlew assembleRelease
 
