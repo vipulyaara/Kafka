@@ -54,5 +54,5 @@ include ':ui:webview'
 
 include ':core-playback'
 include ':ui-playback'
-project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
-project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
+project(':core-playback').projectDir = new File(settingsDir, '/Sarahang/core-playback')
+project(':ui-playback').projectDir = new File(settingsDir, '/Sarahang/ui-playback')

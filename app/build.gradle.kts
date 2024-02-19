@@ -18,8 +18,11 @@ android {
         versionCode = 52
         versionName = libs.versions.versionname.toString()
 
-        val googleServerClientId: String = (properties["GOOGLE_SERVER_CLIENT_ID"] ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")) as String
-        val pipelessAuthToken: String = (properties["PIPELESS_AUTH_TOKEN"] ?: System.getenv("PIPELESS_AUTH_TOKEN")) as String
+        val root = gradleLocalProperties(rootDir)
+        val googleServerClientId: String = (root.getProperty("GOOGLE_SERVER_CLIENT_ID")
+            ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")) as String
+        val pipelessAuthToken: String = (root.getProperty("PIPELESS_AUTH_TOKEN")
+            ?: System.getenv("PIPELESS_AUTH_TOKEN")) as String
 
         buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
         buildConfigField("String", "PIPELESS_AUTH_TOKEN", pipelessAuthToken)
