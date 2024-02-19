@@ -1,5 +1,5 @@
-name: Release Signing
-run-name: Release Build Signing
+name: Build Signed Release
+run-name: Build Signed Release
 
 on:
   push:
@@ -82,4 +82,4 @@ jobs:
           name: Release - ${{env.version_name}}
           generate_release_notes: true
           prerelease: true
-          files: app/build/outputs/bundle/kafka/app-release.apk
+          files: app/build/outputs/apk/release/app-release.apk
