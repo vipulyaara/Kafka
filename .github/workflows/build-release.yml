@@ -4,7 +4,7 @@ run-name: Build Signed Release
 on:
   push:
     branches:
-      - 'release_management'
+      - 'main'
 permissions:
   contents: write
 jobs:
