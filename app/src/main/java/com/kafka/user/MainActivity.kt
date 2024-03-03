@@ -7,10 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
-import org.kafka.navigation.rememberBottomSheetNavigator
 import timber.log.Timber
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
@@ -45,10 +45,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (::navController.isInitialized) {
+        if (::navController.isInitialized && intent != null) {
             navController.handleDeepLink(intent)
         } else {
-            Timber.e(Error("navController is not initialized. isFinishing $isFinishing"))
+            Timber.e(Error("navController is not initialized or intent is null. isFinishing = $isFinishing, intent = $intent"))
         }
     }
 }
