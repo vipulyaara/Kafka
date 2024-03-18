@@ -42,14 +42,20 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
         debug { "Received FCM message: $message" }
 
-        when {
-            message.data.isNotEmpty() -> notificationManager.buildNotification(
-                push = pushMapper.map(message),
-                pendingIntent = mainActivityIntent()
-            )
+        if (message.data.isNotEmpty()) {
+            val contentId = message.data["itemId"]
 
-            else -> super.onMessageReceived(message)
+            debug { "FCM contentId $contentId" }
         }
+
+//        when {
+//            message.data.isNotEmpty() -> notificationManager.buildNotification(
+//                push = pushMapper.map(message),
+//                pendingIntent = mainActivityIntent()
+//            )
+//
+//            else -> super.onMessageReceived(message)
+//        }
     }
 
     override fun onNewToken(token: String) {

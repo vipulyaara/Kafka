@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -13,19 +13,26 @@ plugins {
 }
 
 android {
+    buildFeatures.buildConfig = true
+
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 52
+        versionCode = 53
         versionName = libs.versions.versionname.toString()
 
-        val root = gradleLocalProperties(rootDir)
-        val googleServerClientId: String = (root.getProperty("GOOGLE_SERVER_CLIENT_ID")
-            ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")) as String
-        val pipelessAuthToken: String = (root.getProperty("PIPELESS_AUTH_TOKEN")
-            ?: System.getenv("PIPELESS_AUTH_TOKEN")) as String
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
 
-        buildConfigField("String", "GOOGLE_SERVER_CLIENT_ID", googleServerClientId)
-        buildConfigField("String", "PIPELESS_AUTH_TOKEN", pipelessAuthToken)
+        buildConfigField(
+            "String",
+            "GOOGLE_SERVER_CLIENT_ID",
+            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
+        )
+        buildConfigField(
+            "String",
+            "PIPELESS_AUTH_TOKEN",
+            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
+        )
     }
 
     compileOptions {
@@ -106,8 +113,6 @@ android {
         checkDependencies = true
         warning += "AutoboxingStateCreation"
     }
-
-    buildFeatures.buildConfig = true
 
 }
 
