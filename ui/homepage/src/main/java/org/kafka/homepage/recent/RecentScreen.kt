@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentItem
 import kotlinx.collections.immutable.ImmutableList
-import org.kafka.common.extensions.Elevation.elevation
+import org.kafka.common.extensions.elevation
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import org.kafka.navigation.LocalNavigator
