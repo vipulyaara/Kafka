@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 52
+        versionCode = 53
         versionName = libs.versions.versionname.toString()
 
         val properties = Properties()
