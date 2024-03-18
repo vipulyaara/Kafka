@@ -7,10 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.home.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
+import org.kafka.navigation.rememberBottomSheetNavigator
 import timber.log.Timber
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
