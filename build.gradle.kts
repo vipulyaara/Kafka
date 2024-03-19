@@ -1,5 +1,5 @@
+
 import com.android.build.gradle.BaseExtension
-import com.diffplug.gradle.spotless.SpotlessExtension
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
@@ -139,11 +139,5 @@ fun Project.configureAndroidProject() {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
         }
-    }
-}
-
-tasks.register("appVersionName") {
-    doLast {
-        println(libs.versions.versionname)
     }
 }
