@@ -17,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 54
-        versionName = "0.14.0"
+        versionCode = 55
+        versionName = "0.15.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -26,7 +26,7 @@ android {
         buildConfigField(
             "String",
             "GOOGLE_SERVER_CLIENT_ID",
-            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
+            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString() ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
         )
         buildConfigField(
             "String",

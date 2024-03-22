@@ -110,7 +110,7 @@ class AppModule {
 
 
     @Provides
-    fun provideGoogleClientIdProvider() = object : SecretsProvider {
+    fun provideSecretsProvider() = object : SecretsProvider {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
         override val pipelessAuthToken: String = BuildConfig.PIPELESS_AUTH_TOKEN
     }
