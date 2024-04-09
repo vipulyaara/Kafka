@@ -25,7 +25,7 @@ fun MessageBox(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     onClick: () -> Unit = {},
-    onIconClick: () -> Unit = {}
+    onIconClick: () -> Unit = onClick
 ) {
     Surface(
         modifier = modifier,
