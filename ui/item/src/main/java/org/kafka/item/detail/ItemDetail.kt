@@ -245,12 +245,12 @@ private fun SharedTransitionScope.ItemHeader(
             LoadImage(
                 data = coverImage,
                 modifier = Modifier
+                    .size(Dimens.CoverSizeDetail)
+                    .clip(RoundedCornerShape(Dimens.Spacing08))
                     .sharedElement(
                         state = rememberSharedContentState(key = coverImage),
                         animatedVisibilityScope = animatedContentScope
                     )
-                    .size(Dimens.CoverSizeDetail)
-                    .clip(RoundedCornerShape(Dimens.Spacing08))
             )
 
             Spacer(Modifier.height(Dimens.Spacing24))

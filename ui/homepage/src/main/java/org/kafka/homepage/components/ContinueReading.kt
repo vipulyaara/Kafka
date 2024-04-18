@@ -241,12 +241,12 @@ private fun SharedTransitionScope.CoverImage(
             model = item.coverUrl,
             contentDescription = null,
             modifier = Modifier
+                .size(64.dp, 76.dp)
+                .background(MaterialTheme.colorScheme.surface)
                 .sharedElement(
                     state = rememberSharedContentState(key = item.coverUrl),
                     animatedVisibilityScope = animatedContentScope
-                )
-                .size(64.dp, 76.dp)
-                .background(MaterialTheme.colorScheme.surface),
+                ),
             contentScale = ContentScale.Crop
         )
     }
