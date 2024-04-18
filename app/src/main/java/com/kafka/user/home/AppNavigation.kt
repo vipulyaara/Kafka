@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.kafka.user.home
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -74,50 +79,52 @@ internal fun AppNavigation(
         }
     }
 
-    NavHost(
-        modifier = modifier.fillMaxSize(),
-        navController = navController,
-        startDestination = RootScreen.Home.route,
-        enterTransition = { fadeIn(tween(200)) },
-        exitTransition = { fadeOut(tween(200)) },
-        popEnterTransition = { fadeIn(tween(200)) },
-        popExitTransition = { fadeOut(tween(200)) }
-    ) {
-        addHomeRoot()
-        addSearchRoot()
-        addLibraryRoot()
+    SharedTransitionLayout(modifier = Modifier.fillMaxSize()) {
+        NavHost(
+            modifier = modifier.fillMaxSize(),
+            navController = navController,
+            startDestination = RootScreen.Home.route,
+            enterTransition = { fadeIn(tween(200)) },
+            exitTransition = { fadeOut(tween(200)) },
+            popEnterTransition = { fadeIn(tween(200)) },
+            popExitTransition = { fadeOut(tween(200)) }
+        ) {
+            navigation(
+                route = RootScreen.Home.route,
+                startDestination = Screen.Home.createRoute(RootScreen.Home)
+            ) {
+                composable(Screen.Home.createRoute(RootScreen.Home)) {
+                    Homepage(this)
+                }
+
+                addItemDetail(RootScreen.Home, this@SharedTransitionLayout)
+                addItemDescription(RootScreen.Home)
+                addFiles(RootScreen.Home)
+                addReader(RootScreen.Home)
+                addLibrary(RootScreen.Home)
+                addProfile(RootScreen.Home)
+                addFeedback(RootScreen.Home)
+                addSearch(RootScreen.Home)
+                addLogin(RootScreen.Home)
+                addPlayer(RootScreen.Home)
+                addWebView(RootScreen.Home)
+                addOnlineReader(RootScreen.Home)
+                addRecentItems(RootScreen.Home)
+            }
+
+            addSearchRoot(this@SharedTransitionLayout)
+            addLibraryRoot(this@SharedTransitionLayout)
+        }
     }
 }
 
-private fun NavGraphBuilder.addHomeRoot() {
-    navigation(
-        route = RootScreen.Home.route,
-        startDestination = Screen.Home.createRoute(RootScreen.Home)
-    ) {
-        addHome(RootScreen.Home)
-        addItemDetail(RootScreen.Home)
-        addItemDescription(RootScreen.Home)
-        addFiles(RootScreen.Home)
-        addReader(RootScreen.Home)
-        addLibrary(RootScreen.Home)
-        addProfile(RootScreen.Home)
-        addFeedback(RootScreen.Home)
-        addSearch(RootScreen.Home)
-        addLogin(RootScreen.Home)
-        addPlayer(RootScreen.Home)
-        addWebView(RootScreen.Home)
-        addOnlineReader(RootScreen.Home)
-        addRecentItems(RootScreen.Home)
-    }
-}
-
-private fun NavGraphBuilder.addSearchRoot() {
+private fun NavGraphBuilder.addSearchRoot(sharedTransitionScope: SharedTransitionScope) {
     navigation(
         route = RootScreen.Search.route,
         startDestination = Screen.Search.createRoute(RootScreen.Search)
     ) {
         addSearch(RootScreen.Search)
-        addItemDetail(RootScreen.Search)
+        addItemDetail(RootScreen.Search, sharedTransitionScope)
         addItemDescription(RootScreen.Search)
         addFiles(RootScreen.Search)
         addReader(RootScreen.Search)
@@ -127,13 +134,13 @@ private fun NavGraphBuilder.addSearchRoot() {
     }
 }
 
-private fun NavGraphBuilder.addLibraryRoot() {
+private fun NavGraphBuilder.addLibraryRoot(sharedTransitionScope: SharedTransitionScope) {
     navigation(
         route = RootScreen.Library.route,
         startDestination = Screen.Library.createRoute(RootScreen.Library)
     ) {
         addLibrary(RootScreen.Library)
-        addItemDetail(RootScreen.Library)
+        addItemDetail(RootScreen.Library, sharedTransitionScope)
         addItemDescription(RootScreen.Library)
         addFiles(RootScreen.Library)
         addReader(RootScreen.Library)
@@ -142,12 +149,6 @@ private fun NavGraphBuilder.addLibraryRoot() {
         addWebView(RootScreen.Library)
         addOnlineReader(RootScreen.Library)
         addLogin(RootScreen.Library)
-    }
-}
-
-private fun NavGraphBuilder.addHome(root: RootScreen) {
-    composable(Screen.Home.createRoute(root)) {
-        Homepage()
     }
 }
 
@@ -177,7 +178,10 @@ private fun NavGraphBuilder.addLibrary(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
+private fun NavGraphBuilder.addItemDetail(
+    root: RootScreen,
+    sharedTransitionScope: SharedTransitionScope
+) {
     composable(
         Screen.ItemDetail.createRoute(root),
         arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
@@ -186,7 +190,7 @@ private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
             navDeepLink { uriPattern = "${Config.BASE_URL_ALT}item/{itemId}" },
         )
     ) {
-        ItemDetail()
+        sharedTransitionScope.ItemDetail(this)
     }
 }
 

@@ -25,7 +25,7 @@ dependencies {
     api project(':data:database')
     implementation project(':core:recommendation')
     implementation libs.androidx.collection
-    implementation libs.androidx.core
+    implementation libs.androidx.core.ktx
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime

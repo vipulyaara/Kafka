@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package org.kafka.homepage
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,7 +60,10 @@ import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
+fun SharedTransitionScope.Homepage(
+    animatedContentScope: AnimatedContentScope,
+    viewModel: HomepageViewModel = hiltViewModel()
+) {
     LogCompositions(tag = "Homepage Feed items")
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
@@ -70,12 +78,14 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
                         openItemDetail = viewModel::openItemDetail,
+                        openItemDetails = viewModel::openItemDetails,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
                         goToSubject = viewModel::openSubject,
                         onBannerClick = viewModel::onBannerClick,
-                        openRecentItems = viewModel::openRecentItems
+                        openRecentItems = viewModel::openRecentItems,
+                        animatedContentScope = animatedContentScope
                     )
                 }
 
@@ -96,10 +106,12 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun HomepageFeedItems(
+private fun SharedTransitionScope.HomepageFeedItems(
+    animatedContentScope: AnimatedContentScope,
     homepage: Homepage,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
+    openItemDetails: (Item) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -125,7 +137,8 @@ private fun HomepageFeedItems(
                             openItemDetail = openRecentItemDetail,
                             removeRecentItem = removeRecentItem,
                             modifier = Modifier.padding(top = Dimens.Gutter),
-                            openRecentItems = openRecentItems
+                            openRecentItems = openRecentItems,
+                            animatedContentScope = animatedContentScope
                         )
                     }
                 }
@@ -137,7 +150,11 @@ private fun HomepageFeedItems(
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, goToSubject)
-                        RowItems(collection.items, openItemDetail)
+                        RowItems(
+                            items = collection.items,
+                            openItemDetail = openItemDetails,
+                            animatedContentScope = animatedContentScope
+                        )
                     }
                 }
 
@@ -154,7 +171,7 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Column -> {
                     item(key = collection.key) { SubjectItems(collection.labels, goToSubject) }
-                    columnItems(collection, openItemDetail)
+                    columnItems(collection, openItemDetails)
                 }
             }
         }
@@ -202,7 +219,11 @@ private fun LazyListScope.featuredItems(
 }
 
 @Composable
-private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
+private fun SharedTransitionScope.RowItems(
+    items: ImmutableList<Item>,
+    openItemDetail: (Item) -> Unit,
+    animatedContentScope: AnimatedContentScope
+) {
     LazyRow(
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
@@ -220,7 +241,8 @@ private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Uni
                     item = item,
                     modifier = Modifier
                         .widthIn(max = Dimens.CoverSizeLarge.width)
-                        .clickable { openItemDetail(item.itemId) }
+                        .clickable { openItemDetail(item) },
+                    animatedContentScope = animatedContentScope
                 )
             }
         } else {
@@ -233,7 +255,7 @@ private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Uni
 
 private fun LazyListScope.columnItems(
     collection: HomepageCollection.Column,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (Item) -> Unit
 ) {
     if (collection.items.isNotEmpty()) {
         items(
@@ -244,7 +266,7 @@ private fun LazyListScope.columnItems(
             Item(
                 item = item,
                 modifier = Modifier
-                    .clickable { openItemDetail(item.itemId) }
+                    .clickable { openItemDetail(item) }
                     .padding(
                         horizontal = Dimens.Gutter,
                         vertical = Dimens.Spacing06

@@ -15,6 +15,7 @@ data class ItemDetailViewState(
     val isLoading: Boolean = false,
     val downloadItem: ItemWithDownload? = null,
     val ctaText: String? = null,
+    val itemDetailPlaceholder: ItemDetailPlaceholder? = null
 ) {
     val hasItemsByCreator
         get() = !itemsByCreator.isNullOrEmpty()
@@ -24,4 +25,20 @@ data class ItemDetailViewState(
             debug { "isFullScreenLoading $isLoading $itemDetail" }
             return isLoading && itemDetail == null
         }
+
+    val title: String
+        get() = itemDetail?.title ?: itemDetailPlaceholder?.title.orEmpty()
+
+    val creator: String
+        get() = itemDetail?.creator ?: itemDetailPlaceholder?.author.orEmpty()
+
+    val coverImage: String
+        get() = itemDetail?.coverImage ?: itemDetailPlaceholder?.coverImage.orEmpty()
 }
+
+data class ItemDetailPlaceholder(
+    val itemId: String,
+    val title: String,
+    val author: String,
+    val coverImage: String
+)

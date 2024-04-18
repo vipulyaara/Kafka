@@ -34,7 +34,7 @@ dependencies {
     api project(':base:network')
     api project(':data:models')
     api libs.androidx.collection
-    api libs.androidx.core
+    api libs.androidx.core.ktx
     api libs.androidx.paging.runtime
     api libs.androidx.room.ktx
     api libs.androidx.room.paging

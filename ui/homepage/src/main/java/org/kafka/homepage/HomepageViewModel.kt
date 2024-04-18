@@ -2,6 +2,7 @@ package org.kafka.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.Item
 import com.kafka.data.model.SearchFilter
 import com.kafka.data.model.homepage.HomepageBanner
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -75,6 +76,19 @@ class HomepageViewModel @Inject constructor(
     fun openItemDetail(itemId: String) {
         analytics.log { openItemDetail(itemId, "homepage") }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+    }
+
+    fun openItemDetails(item: Item) {
+        analytics.log { openItemDetail(item.itemId, "homepage") }
+        navigator.navigate(
+            Screen.ItemDetail.createRoute(
+                root = navigator.currentRoot.value,
+                itemId = item.itemId,
+                title = item.title,
+                creator = item.creator?.name,
+                coverImage = item.coverImage
+            )
+        )
     }
 
     fun openRecentItemDetail(itemId: String) {

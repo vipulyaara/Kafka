@@ -18,8 +18,10 @@ android {
 }
 
 dependencies {
+    api(platform(libs.compose.bom))
+
     api libs.accompanist.systemuicontroller
-    api libs.androidx.core
+    api libs.androidx.core.ktx
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
     api libs.compose.animation.animation

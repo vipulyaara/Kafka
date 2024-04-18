@@ -35,9 +35,10 @@ import ui.common.theme.theme.Dimens
 fun ItemDetailActions(
     itemId: String,
     ctaText: String,
+    isFavorite: Boolean,
+    modifier: Modifier = Modifier,
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
-    isFavorite: Boolean,
     toggleFavorite: () -> Unit
 ) {
     Box(Modifier.fillMaxWidth()) {

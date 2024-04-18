@@ -164,12 +164,13 @@ fun ItemSmall(
 }
 
 @Composable
-fun ItemTitleSmall(title: String?, maxLines: Int = 1) {
+fun ItemTitleSmall(title: String?, modifier: Modifier = Modifier, maxLines: Int = 1) {
     Text(
         text = title.orEmpty(),
         style = MaterialTheme.typography.titleSmall,
         maxLines = maxLines,
-        overflow = TextOverflow.Ellipsis
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier
     )
 }
 

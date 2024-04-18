@@ -23,7 +23,7 @@ dependencies {
     implementation libs.accompanist.flowlayout
     implementation libs.accompanist.navigation.material
     implementation libs.accompanist.systemuicontroller
-    api libs.androidx.core
+    api libs.androidx.core.ktx
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
     api libs.androidx.lifecycle.process
@@ -34,6 +34,7 @@ dependencies {
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
     api libs.compose.foundation.layout
+    api libs.compose.material.material
     api libs.compose.material.material3
     api libs.compose.runtime.runtime
     api libs.compose.ui.tooling

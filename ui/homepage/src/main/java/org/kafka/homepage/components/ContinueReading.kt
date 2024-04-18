@@ -1,5 +1,7 @@
 package org.kafka.homepage.components
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -61,7 +63,8 @@ import org.kafka.ui.components.item.ItemTitleSmall
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun ContinueReading(
+internal fun SharedTransitionScope.ContinueReading(
+    animatedContentScope: AnimatedContentScope,
     readingList: ImmutableList<RecentItemWithProgress>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
@@ -102,7 +105,8 @@ internal fun ContinueReading(
                 ContinueReadingItem(
                     item = continueReading,
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
-                    onItemRemoved = { removeRecentItem(it) }
+                    onItemRemoved = { removeRecentItem(it) },
+                    animatedContentScope = animatedContentScope
                 )
             }
         }
@@ -110,7 +114,8 @@ internal fun ContinueReading(
 }
 
 @Composable
-private fun ContinueReadingItem(
+private fun SharedTransitionScope.ContinueReadingItem(
+    animatedContentScope: AnimatedContentScope,
     item: RecentItemWithProgress,
     modifier: Modifier = Modifier,
     onItemRemoved: (String) -> Unit,
@@ -135,10 +140,10 @@ private fun ContinueReadingItem(
                 modifier = Modifier.padding(Dimens.Spacing08),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
-                CoverImage(recentItem)
+                CoverImage(item = recentItem, animatedContentScope)
 
                 ItemDescription(
-                    title = { ItemTitleSmall(recentItem.title, 1) },
+                    title = { ItemTitleSmall(recentItem.title) },
                     creator = { ItemCreatorSmall(recentItem.creator) },
                     mediaType = { ItemMediaType(recentItem.mediaType) },
                     modifier = Modifier.fillMaxWidth()
@@ -180,14 +185,14 @@ private fun BoxScope.RemoveRecentItemButton(
     onItemRemoved: (String) -> Unit,
     continueReading: RecentItem
 ) {
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "transition")
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = .90f,
         animationSpec = infiniteRepeatable(
             animation = tween(500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = "scale"
     )
     val rotation by infiniteTransition.animateFloat(
         initialValue = -10f,
@@ -195,7 +200,7 @@ private fun BoxScope.RemoveRecentItemButton(
         animationSpec = infiniteRepeatable(
             animation = tween(230, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = "rotation"
     )
 
     if (isInEditMode) {
@@ -220,9 +225,13 @@ private fun BoxScope.RemoveRecentItemButton(
 }
 
 @Composable
-private fun CoverImage(item: RecentItem) {
+private fun SharedTransitionScope.CoverImage(
+    item: RecentItem,
+    animatedContentScope: AnimatedContentScope,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .shadowMaterial(
                 elevation = Dimens.Spacing08,
                 shape = RoundedCornerShape(Dimens.Spacing04)
@@ -232,6 +241,10 @@ private fun CoverImage(item: RecentItem) {
             model = item.coverUrl,
             contentDescription = null,
             modifier = Modifier
+                .sharedElement(
+                    state = rememberSharedContentState(key = item.coverUrl),
+                    animatedVisibilityScope = animatedContentScope
+                )
                 .size(64.dp, 76.dp)
                 .background(MaterialTheme.colorScheme.surface),
             contentScale = ContentScale.Crop

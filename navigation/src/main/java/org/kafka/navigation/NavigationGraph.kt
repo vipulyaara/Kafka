@@ -21,9 +21,15 @@ sealed class Screen(private val route: String) {
     data object Player : Screen("player")
     data object RecentItems : Screen("recent_items")
 
-    data object ItemDetail : Screen("item/{itemId}") {
-        fun createRoute(root: RootScreen, itemId: String): String {
-            return "${root.route}/item/$itemId"
+    data object ItemDetail : Screen("item/{itemId}?title={title}&creator={creator}&coverImage={coverImage}") {
+        fun createRoute(
+            root: RootScreen,
+            itemId: String,
+            title: String? = "",
+            creator: String? = "",
+            coverImage: String? = "",
+        ): String {
+            return "${root.route}/item/$itemId?title=$title&creator=$creator&coverImage=$coverImage"
         }
     }
 

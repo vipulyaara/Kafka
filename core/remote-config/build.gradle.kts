@@ -16,7 +16,7 @@ dependencies {
     implementation(project(":core:analytics"))
     implementation(project(":base:domain"))
 
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

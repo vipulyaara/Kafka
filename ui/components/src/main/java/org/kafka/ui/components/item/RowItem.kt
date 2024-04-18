@@ -1,5 +1,7 @@
 package org.kafka.ui.components.item
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +21,21 @@ import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun RowItem(item: Item, modifier: Modifier = Modifier) {
+fun SharedTransitionScope.RowItem(
+    item: Item,
+    animatedContentScope: AnimatedContentScope,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         CoverImage(
             data = item.coverImage,
             size = Dimens.CoverSizeLarge,
             placeholder = placeholder(item.mediaType),
-            shape = RoundedCornerShape(Dimens.RadiusMedium)
+            shape = RoundedCornerShape(Dimens.RadiusMedium),
+            imageModifier = Modifier.sharedElement(
+                state = rememberSharedContentState(key = item.coverImage.orEmpty()),
+                animatedVisibilityScope = animatedContentScope
+            )
         )
 
         Column(
@@ -34,7 +44,13 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
                 horizontal = Dimens.Spacing04
             )
         ) {
-            ItemTitleSmall(title = item.title.orEmpty())
+            ItemTitleSmall(
+                title = item.title.orEmpty(),
+                modifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(key = item.title.orEmpty()),
+                    animatedVisibilityScope = animatedContentScope
+                )
+            )
             Spacer(modifier = Modifier.height(Dimens.Spacing02))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),

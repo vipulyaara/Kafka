@@ -12,7 +12,7 @@ dependencies {
     implementation(project(":data:database"))
     implementation(project(":core:analytics"))
 
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.firestore.ktx)
     implementation(libs.dataStore)
     implementation(libs.google.analytics)

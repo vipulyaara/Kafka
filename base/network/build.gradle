@@ -18,7 +18,7 @@ android {
 dependencies {
     api project(':base:domain')
     api libs.androidx.collection
-    api libs.androidx.core
+    api libs.androidx.core.ktx
     api libs.androidx.paging.runtime
     api libs.dataStore
     api libs.kotlin.coroutines.core

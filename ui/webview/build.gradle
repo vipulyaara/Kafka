@@ -26,7 +26,7 @@ dependencies {
     api libs.accompanist.swiperefresh
     api libs.accompanist.systemuicontroller
     api libs.accompanist.web
-    api libs.androidx.core
+    api libs.androidx.core.ktx
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
     api libs.androidx.lifecycle.livedata.ktx

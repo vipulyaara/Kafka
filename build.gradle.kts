@@ -87,7 +87,8 @@ allprojects {
                 "-opt-in=androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi",
                 "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-                "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
+                "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                "-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi",
             )
 
             if (project.hasProperty("tivi.enableComposeCompilerReports")) {
