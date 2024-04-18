@@ -35,6 +35,7 @@ import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
+import org.kafka.domain.interactors.recent.PlayAudio
 import org.kafka.domain.interactors.recent.IsResumableAudio
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
@@ -77,25 +78,42 @@ class ItemDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
+
+    private val itemDetailPlaceholder = combine(
+        savedStateHandle.getStateFlow("itemId", ""),
+        savedStateHandle.getStateFlow("title", ""),
+        savedStateHandle.getStateFlow("creator", ""),
+        savedStateHandle.getStateFlow("coverImage", "")
+    ) { itemId, title, creator, coverImage ->
+        ItemDetailPlaceholder(
+            itemId = itemId,
+            title = title,
+            author = creator,
+            coverImage = coverImage
+        )
+    }
+
     private val loadingState = ObservableLoadingCounter()
     private val currentRoot
         get() = navigator.currentRoot.value
 
-    val state: StateFlow<ItemDetailViewState> = combine(
+    val state: StateFlow<ItemDetailViewState> = org.kafka.base.combine(
         observeItemDetail.flow.onEach { updateItemsByAuthor(it?.creator) },
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
         observeDownloadByItemId.flow,
-        isResumableAudio.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio ->
+        isResumableAudio.flow,
+        itemDetailPlaceholder
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio, placeholder ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
             isLoading = isLoading,
             downloadItem = downloadItem,
-            ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty()
+            ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
+            itemDetailPlaceholder = placeholder
         )
     }.stateInDefault(
         scope = viewModelScope,
