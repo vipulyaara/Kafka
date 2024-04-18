@@ -1,27 +1,14 @@
 package com.kafka.data.model
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonTransformingSerializer
 
-object StringListSerializer : KSerializer<List<String>> {
-    override val descriptor: SerialDescriptor = String.serializer().descriptor
-
-    override fun deserialize(decoder: Decoder): List<String> {
-        val surrogate = try {
-            decoder.decodeSerializableValue(ListSerializer(String.serializer()))
-                .joinToString(",")
-        } catch (ex: Exception) {
-            decoder.decodeSerializableValue(String.serializer())
-        }
-        return surrogate.split(",")
-    }
-
-    override fun serialize(encoder: Encoder, value: List<String>) {
-        val surrogate = value.joinToString(",")
-        encoder.encodeSerializableValue(String.serializer(), surrogate)
-    }
+object StringListSerializer :
+    JsonTransformingSerializer<List<String>>(ListSerializer(String.serializer())) {
+    // If response is not an array, then it is a single object that should be wrapped into the array
+    override fun transformDeserialize(element: JsonElement): JsonElement =
+        if (element !is JsonArray) JsonArray(listOf(element)) else element
 }
