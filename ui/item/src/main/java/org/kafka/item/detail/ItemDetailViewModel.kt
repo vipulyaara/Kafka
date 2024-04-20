@@ -16,6 +16,7 @@ import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isShareEnabled
+import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -26,7 +27,6 @@ import org.kafka.analytics.logger.Analytics
 import org.kafka.base.combine
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
@@ -97,7 +97,7 @@ class ItemDetailViewModel @Inject constructor(
     private val currentRoot
         get() = navigator.currentRoot.value
 
-    val state: StateFlow<ItemDetailViewState> = org.kafka.base.combine(
+    val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { updateItemsByAuthor(it?.creator) },
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
@@ -137,7 +137,6 @@ class ItemDetailViewModel @Inject constructor(
     private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
-                .collectStatus(loadingState, snackbarManager)
         }
 
         observeCreatorItems(ObserveCreatorItems.Params(itemId))
@@ -194,7 +193,6 @@ class ItemDetailViewModel @Inject constructor(
         creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
             viewModelScope.launch {
                 updateItems(UpdateItems.Params(it))
-                    .collectStatus(loadingState, snackbarManager)
             }
         }
     }

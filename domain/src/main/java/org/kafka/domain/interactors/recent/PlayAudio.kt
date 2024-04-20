@@ -14,9 +14,9 @@ class PlayAudio @Inject constructor(
 
     override suspend fun doWork(params: String) {
         val item = itemDetailDao.get(params)
-        val audio = recentAudioDao.getByAlbumId(params)
+//        val audio = recentAudioDao.getByAlbumId(params)
 
-        val index = item.files?.indexOf(audio?.fileId)?.coerceAtLeast(0) ?: 0
+        val index = item.files?.indexOf("audio?.fileId")?.coerceAtLeast(0) ?: 0
 
         playbackConnection.playAlbum(params, index)
     }
