@@ -163,7 +163,7 @@ private fun HomepageFeedItems(
             item(key = "search_prompt") {
                 MessageBox(
                     text = stringResource(R.string.find_many_more_on_the_search_page),
-                    icon = Icons.ArrowForward,
+                    trailingIcon = Icons.ArrowForward,
                     onClick = { goToSearch() },
                     modifier = Modifier
                         .padding(Dimens.Gutter)
