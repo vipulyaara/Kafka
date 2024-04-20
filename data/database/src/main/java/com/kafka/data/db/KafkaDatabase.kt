@@ -43,10 +43,11 @@ interface KafkaDatabase {
         RecentAudioItem::class,
         DownloadRequest::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
+        AutoMigration(from = 4, to = 5),
     ],
 )
 @TypeConverters(AppTypeConverters::class)
