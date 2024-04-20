@@ -23,7 +23,8 @@ import ui.common.theme.theme.Dimens
 fun MessageBox(
     text: String,
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null,
+    leadingIcon: ImageVector? = null,
+    trailingIcon: ImageVector? = null,
     onClick: () -> Unit = {},
     onIconClick: () -> Unit = onClick
 ) {
@@ -41,18 +42,27 @@ fun MessageBox(
                 .fillMaxWidth()
                 .clickable { onClick() }
                 .padding(Dimens.Spacing16),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (leadingIcon != null) {
+                IconResource(
+                    imageVector = leadingIcon,
+                    modifier = Modifier.size(Dimens.Spacing20),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f)
             )
 
-            if (icon != null) {
+            if (trailingIcon != null) {
                 IconResource(
-                    imageVector = icon,
+                    imageVector = trailingIcon,
                     modifier = Modifier.size(Dimens.Spacing20),
                     tint = MaterialTheme.colorScheme.primary,
                     onClick = onIconClick

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
+import org.kafka.domain.observers.ObserveUser
 import org.kafka.domain.observers.library.ObserveFavorites
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
     observeFavorites: ObserveFavorites,
     preferencesStore: PreferencesStore,
+    observeUser: ObserveUser,
     private val analytics: Analytics,
     private val navigator: Navigator,
 ) : ViewModel() {
@@ -34,12 +36,22 @@ class FavoriteViewModel @Inject constructor(
     val state: StateFlow<FavoriteViewState> = combine(
         observeFavorites.flow,
         layoutType.map { LayoutType.valueOf(it) },
-    ) { favorites, layout ->
-        FavoriteViewState(favoriteItems = favorites, layoutType = layout)
+        observeUser.flow
+    ) { favorites, layout, user ->
+        FavoriteViewState(
+            favoriteItems = favorites,
+            layoutType = layout,
+            isUserLoggedIn = user != null
+        )
     }.stateInDefault(
         scope = viewModelScope,
         initialValue = FavoriteViewState(),
     )
+
+    init {
+        observeFavorites(Unit)
+        observeUser(ObserveUser.Params())
+    }
 
     fun updateLayoutType(layoutType: LayoutType) {
         this.layoutType.value = layoutType.name
@@ -50,13 +62,14 @@ class FavoriteViewModel @Inject constructor(
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 
-    init {
-        observeFavorites(Unit)
+    fun goToLogin() {
+        navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
     }
 }
 
 @Immutable
 data class FavoriteViewState(
     val favoriteItems: List<Item>? = null,
-    val layoutType: LayoutType = LayoutType.List
+    val layoutType: LayoutType = LayoutType.List,
+    val isUserLoggedIn: Boolean = false
 )
