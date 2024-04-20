@@ -23,6 +23,9 @@ abstract class RecentAudioDao : EntityDao<RecentAudioItem> {
     @Query("select * from recent_audio where fileId = :fileId")
     abstract suspend fun get(fileId: String): RecentAudioItem?
 
+    @Query("select * from recent_audio where albumId = :albumId")
+    abstract suspend fun getByAlbumId(albumId: String): RecentAudioItem?
+
     @Query("select * from recent_audio where fileId = :fileId")
     abstract fun observe(fileId: String): Flow<RecentAudioItem>
 
