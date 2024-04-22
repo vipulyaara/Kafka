@@ -17,7 +17,6 @@ import com.kafka.recommendations.topic.FirebaseTopicsImpl
 import com.kafka.recommendations.topic.FirebaseTopicsInitializer
 import com.kafka.user.BuildConfig
 import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
-import com.kafka.user.initializer.AudioItemInitializer
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
@@ -160,10 +159,6 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
-
-    @Binds
-    @IntoSet
-    abstract fun provideAudioItemInitializer(bind: AudioItemInitializer): AppInitializer
 
     @Singleton
     @Binds
