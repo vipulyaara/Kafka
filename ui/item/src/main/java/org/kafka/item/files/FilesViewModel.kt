@@ -95,6 +95,7 @@ fun File.asAudio() = Audio(
     title = title,
     artist = creator,
     album = itemTitle,
+    albumId = itemId,
     duration = duration,
     playbackUrl = playbackUrl.orEmpty(),
     coverImage = coverImage

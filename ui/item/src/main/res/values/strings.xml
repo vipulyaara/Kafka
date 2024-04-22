@@ -2,6 +2,7 @@
 <resources>
     <string name="file_type_is_not_supported" translatable="false">File type is not supported</string>
     <string name="play" translatable="false">Play</string>
+    <string name="resume" translatable="false">Resume</string>
     <string name="read" translatable="false">Read</string>
     <string name="more_by_author" translatable="false">More by author</string>
     <string name="check_out_on_kafka" translatable="false">"\n            Check out %1$s on Kafka\n            \n            %2$s\n        "</string>

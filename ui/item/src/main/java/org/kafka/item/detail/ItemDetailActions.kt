@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,13 +34,13 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun ItemDetailActions(
     itemId: String,
-    isAudio: Boolean,
+    ctaText: String,
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
     toggleFavorite: () -> Unit
 ) {
-    BoxWithConstraints(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth()) {
         Row(
             Modifier
                 .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
@@ -69,9 +68,9 @@ fun ItemDetailActions(
             }
 
             FloatingButton(
-                text = stringResource(if (isAudio) R.string.play else R.string.read),
+                text = ctaText,
                 modifier = Modifier.weight(0.8f),
-                onClickLabel = stringResource(if (isAudio) R.string.play else R.string.read),
+                onClickLabel = ctaText,
                 onClicked = { onPrimaryAction(itemId) }
             )
         }
@@ -139,7 +138,7 @@ private fun ActionsPreview() {
     AppTheme {
         ItemDetailActions(
             itemId = "123",
-            isAudio = false,
+            ctaText = "Read",
             onPrimaryAction = {},
             openFiles = {},
             isFavorite = false,
