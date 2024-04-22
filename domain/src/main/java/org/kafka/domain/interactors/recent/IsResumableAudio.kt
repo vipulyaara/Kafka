@@ -9,6 +9,10 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
+/**
+ * Checks if the item has been played before.
+ * It does not explicitly check if the item is an audio item but if it exists in recent audios then it must be an audio.
+ * */
 class IsResumableAudio @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val recentAudioDao: RecentAudioDao,
@@ -16,13 +20,13 @@ class IsResumableAudio @Inject constructor(
 ) : SubjectInteractor<IsResumableAudio.Params, Boolean>() {
 
     override fun createObservable(params: Params): Flow<Boolean> {
-        return recentAudioDao.observeByAlbumId(params.albumId).map { recentAudio ->
-            val files = audioDataSource.findAudiosByItemId(params.albumId)
+        return recentAudioDao.observeByAlbumId(params.itemId).map { recentAudio ->
+            val files = audioDataSource.findAudiosByItemId(params.itemId)
 
             files.map { it.id }.indexOf(recentAudio?.fileId) > 0
         }.flowOn(dispatchers.io)
     }
 
-    data class Params(val albumId: String)
+    data class Params(val itemId: String)
 
 }
