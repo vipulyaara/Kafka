@@ -31,9 +31,9 @@ data class RecentItem(
     )
 
     companion object {
-        fun fromItem(item: ItemDetail): RecentItem {
+        fun fromItem(item: ItemDetail, fileId: String = item.files!!.first()): RecentItem {
             return RecentItem(
-                fileId = item.files!!.first(),
+                fileId = fileId,
                 itemId = item.itemId,
                 title = item.title.orEmpty(),
                 coverUrl = item.coverImage.orEmpty(),
@@ -73,9 +73,10 @@ data class RecentTextItem(
 @Immutable
 @Entity(tableName = "recent_audio")
 data class RecentAudioItem(
-    @PrimaryKey val fileId: String,
-    val currentTimestamp: Long,
-    val duration: Long,
+    @PrimaryKey val albumId: String,
+    val fileId: String,
+    val currentTimestamp: Long = 0,
+    val duration: Long = 0,
 ) : BaseEntity {
     val progress: Int
         get() = (currentTimestamp * 100 / duration).toInt()

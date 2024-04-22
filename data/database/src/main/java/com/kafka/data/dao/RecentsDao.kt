@@ -20,15 +20,12 @@ abstract class RecentTextDao : EntityDao<RecentTextItem> {
 
 @Dao
 abstract class RecentAudioDao : EntityDao<RecentAudioItem> {
-    @Query("select * from recent_audio where fileId = :fileId")
-    abstract suspend fun get(fileId: String): RecentAudioItem?
+    @Query("select * from recent_audio where albumId = :albumId")
+    abstract suspend fun getByAlbumId(albumId: String): RecentAudioItem?
 
-    @Query("select * from recent_audio where fileId = :fileId")
-    abstract fun observe(fileId: String): Flow<RecentAudioItem>
+    @Query("select * from recent_audio where albumId = :albumId")
+    abstract fun observeByAlbumId(albumId: String): Flow<RecentAudioItem?>
 
-    @Query("select * from recent_audio where fileId IN (:fileIds)")
-    abstract fun observe(fileIds: List<String>): Flow<List<RecentAudioItem>>
-
-    @Query("update recent_audio set currentTimestamp = :timestamp where fileId = :fileId")
-    abstract suspend fun updateTimestamp(fileId: String, timestamp: Long)
+    @Query("update recent_audio set fileId = :fileId where albumId = :albumId")
+    abstract suspend fun updateNowPlaying(albumId: String, fileId: String)
 }
