@@ -95,7 +95,11 @@ internal fun ContinueReading(
         }
 
         LazyRow(
-            contentPadding = PaddingValues(horizontal = Dimens.Spacing12),
+            contentPadding = PaddingValues(
+                start = Dimens.Spacing12,
+                end = Dimens.Spacing12,
+                bottom = Dimens.Spacing12
+            ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
         ) {
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
