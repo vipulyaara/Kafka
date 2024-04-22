@@ -4,7 +4,7 @@ import android.app.Application
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.entities.RecentAudioItem
 import com.sarahang.playback.core.PlaybackConnection
-import com.sarahang.playback.core.album
+import com.sarahang.playback.core.albumId
 import com.sarahang.playback.core.fileId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -15,6 +15,12 @@ import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
 import javax.inject.Inject
 
+/**
+ * An [AppInitializer] that updates the the currently playing audio.
+ *
+ * It listens to the [PlaybackConnection.nowPlaying] and updates the recent audio item
+ * so that it can be played from last item when the user plays the album again.
+ */
 class AudioProgressInitializer @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val dispatchers: CoroutineDispatchers,
@@ -25,24 +31,18 @@ class AudioProgressInitializer @Inject constructor(
     override fun init(application: Application) {
         coroutineScope.launch(dispatchers.io) {
             playbackConnection.nowPlaying
-//                .filter { it.position % 5L == 0L && it.position != 0L }
                 .collectLatest { timestamp ->
                     debug { "Updating progress for $timestamp" }
 
-                    val albumId = playbackConnection.nowPlaying.value.album
-
-                    playbackConnection.nowPlaying.value.fileId?.let { fileId ->
-                        val audioItem = recentAudioDao.get(fileId)
-                        if (audioItem == null) {
-                            val audio = RecentAudioItem(
-                                fileId = fileId,
-                                albumId = albumId,
-                                currentTimestamp = 0,
-                                duration = 0
-                            )
-                            recentAudioDao.insert(audio)
-                        } else {
-                            recentAudioDao.updateTimestamp(fileId, 0)
+                    playbackConnection.nowPlaying.value.albumId?.let { albumId ->
+                        playbackConnection.nowPlaying.value.fileId?.let { fileId ->
+                            val audioItem = recentAudioDao.getByAlbumId(albumId)
+                            if (audioItem == null) {
+                                val audio = RecentAudioItem(fileId = fileId, albumId = albumId)
+                                recentAudioDao.insert(audio)
+                            } else {
+                                recentAudioDao.updateNowPlaying(albumId = albumId, fileId = fileId)
+                            }
                         }
                     }
                 }

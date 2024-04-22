@@ -1,11 +1,13 @@
 package org.kafka.item.detail
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
@@ -14,25 +16,26 @@ import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isShareEnabled
-import com.sarahang.playback.core.PlaybackConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kafka.analytics.AppReviewManager
 import org.kafka.analytics.logger.Analytics
+import org.kafka.base.combine
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
+import org.kafka.domain.interactors.ResumeAlbum
 import org.kafka.domain.interactors.UpdateFavorite
 import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
+import org.kafka.domain.interactors.recent.IsResumableAudio
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
@@ -56,6 +59,7 @@ import javax.inject.Inject
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     observeDownloadByItemId: ObserveDownloadByItemId,
+    isResumableAudio: IsResumableAudio,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateItems: UpdateItems,
@@ -63,12 +67,13 @@ class ItemDetailViewModel @Inject constructor(
     private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
     private val postRecommendationEvent: PostRecommendationEvent,
-    private val playbackConnection: PlaybackConnection,
+    private val resumeAlbum: ResumeAlbum,
     private val navigator: Navigator,
     private val remoteConfig: RemoteConfig,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
     private val appReviewManager: AppReviewManager,
+    private val application: Application,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
@@ -81,14 +86,16 @@ class ItemDetailViewModel @Inject constructor(
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
-        observeDownloadByItemId.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem ->
+        observeDownloadByItemId.flow,
+        isResumableAudio.flow
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
             isLoading = isLoading,
-            downloadItem = downloadItem
+            downloadItem = downloadItem,
+            ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty()
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -98,6 +105,7 @@ class ItemDetailViewModel @Inject constructor(
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
+        isResumableAudio(IsResumableAudio.Params(itemId))
         observeDownloadByItemId(
             ObserveDownloadByItemId.Params(
                 itemId = itemId,
@@ -122,7 +130,7 @@ class ItemDetailViewModel @Inject constructor(
         if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
             analytics.log { playItem(itemId) }
-            playbackConnection.playAlbum(itemId)
+            viewModelScope.launch { resumeAlbum(itemId).collect() }
         } else {
             openReader(itemId)
         }
@@ -228,6 +236,17 @@ class ItemDetailViewModel @Inject constructor(
         is ContextWrapper -> baseContext.getActivity()
         else -> null
     }
+
+    private fun ctaText(itemDetail: ItemDetail, isResumableAudio: Boolean) =
+        if (itemDetail.isAudio) {
+            if (isResumableAudio) {
+                application.getString(R.string.resume)
+            } else {
+                application.getString(R.string.play)
+            }
+        } else {
+            application.getString(R.string.read)
+        }
 }
 
 private const val itemOpenThresholdForAppReview = 20

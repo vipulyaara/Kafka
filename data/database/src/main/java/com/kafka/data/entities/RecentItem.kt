@@ -73,10 +73,10 @@ data class RecentTextItem(
 @Immutable
 @Entity(tableName = "recent_audio")
 data class RecentAudioItem(
-    @PrimaryKey val fileId: String,
-    val albumId: String?,
-    val currentTimestamp: Long,
-    val duration: Long,
+    @PrimaryKey val albumId: String,
+    val fileId: String,
+    val currentTimestamp: Long = 0,
+    val duration: Long = 0,
 ) : BaseEntity {
     val progress: Int
         get() = (currentTimestamp * 100 / duration).toInt()

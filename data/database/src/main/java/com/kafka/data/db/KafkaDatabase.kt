@@ -3,6 +3,7 @@ package com.kafka.data.db
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteTable
+import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
@@ -47,11 +48,13 @@ interface KafkaDatabase {
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
-        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 4, to = 5, spec = KafkaRoomDatabase.RecentAudioMigration::class),
     ],
 )
 @TypeConverters(AppTypeConverters::class)
 abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
     @DeleteTable(tableName = "user")
     class UserRemovalMigration : AutoMigrationSpec
+    @RenameColumn(tableName = "recent_audio", fromColumnName = "fileId", toColumnName = "albumId")
+    class RecentAudioMigration : AutoMigrationSpec
 }

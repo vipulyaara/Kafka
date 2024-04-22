@@ -17,16 +17,19 @@ android {
 dependencies {
     api project(':core:remote-config')
     api project(':data:repo')
-    implementation libs.kotlin.coroutines.android
 
-    implementation platform(libs.google.bom)
     implementation project(':base:domain')
     implementation project(':core:analytics')
     implementation project(':core:downloader')
+    implementation project(':core-playback')
+
+    implementation platform(libs.google.bom)
+
     implementation libs.firestore.ktx
     implementation libs.fetch
     implementation libs.google.auth
     implementation libs.google.coroutines
     implementation libs.google.firestore
     implementation libs.google.playservices.auth
+    implementation libs.kotlin.coroutines.android
 }

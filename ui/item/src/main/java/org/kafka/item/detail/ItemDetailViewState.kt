@@ -13,7 +13,8 @@ data class ItemDetailViewState(
     val itemDetail: ItemDetail? = null,
     val itemsByCreator: ImmutableList<Item>? = null,
     val isLoading: Boolean = false,
-    val downloadItem: ItemWithDownload? = null
+    val downloadItem: ItemWithDownload? = null,
+    val ctaText: String? = null,
 ) {
     val hasItemsByCreator
         get() = !itemsByCreator.isNullOrEmpty()

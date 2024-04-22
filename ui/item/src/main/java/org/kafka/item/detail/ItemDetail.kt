@@ -134,7 +134,6 @@ private fun ItemDetail(
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
-
     Box(modifier.fillMaxSize()) {
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
@@ -159,7 +158,7 @@ private fun ItemDetail(
                 item(span = { GridItemSpan(GridItemSpan) }) {
                     ItemDetailActions(
                         itemId = state.itemDetail!!.itemId,
-                        isAudio = state.itemDetail.isAudio,
+                        ctaText = state.ctaText.orEmpty(),
                         onPrimaryAction = onPrimaryAction,
                         openFiles = openFiles,
                         isFavorite = state.isFavorite,
