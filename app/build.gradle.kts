@@ -17,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 55
-        versionName = "0.15.0"
+        versionCode = 56
+        versionName = "0.16.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
