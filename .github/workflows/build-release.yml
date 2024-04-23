@@ -1,85 +1,85 @@
-name: Build Signed Release
-run-name: Build Signed Release
-
-on:
-  push:
-    branches:
-      - 'main'
-permissions:
-  contents: write
-jobs:
-  release-signing-build:
-    name: Release Signing Build
-    runs-on: ubuntu-latest
-    env:
-      RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
-      RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-      RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-      RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
-      GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
-      PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Checkout Sarahang
-        uses: actions/checkout@v3
-        with:
-          repository: vipulyaara/sarahang
-          path: Sarahang
-          ref: master
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: setup JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Create Google Services JSON File
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
-
-      - name: Decode Keystore
-        env:
-          ENCODED_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
-          DECODED_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
-        run: |
-          echo $ENCODED_KEYSTORE > keystore_base64.txt
-          base64 -d keystore_base64.txt > $DECODED_KEYSTORE_PATH
-
-      - name: Sign and Build Release Bundle
-        env:
-          RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
-          RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
-          GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
-          PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
-        run:
-          ./gradlew assembleRelease
-
-      - name: Retrieve Version
-        run: |
-          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q versionname)"
-        id: android_version
-
-      - name: Get version
-        run: |
-          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
-
-      - name: Create Release on Github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{env.version_name}}
-          name: Release - ${{env.version_name}}
-          generate_release_notes: true
-          prerelease: true
-          files: app/build/outputs/apk/release/app-release.apk
+#name: Build Signed Release
+#run-name: Build Signed Release
+#
+#on:
+#  push:
+#    branches:
+#      - 'main'
+#permissions:
+#  contents: write
+#jobs:
+#  release-signing-build:
+#    name: Release Signing Build
+#    runs-on: ubuntu-latest
+#    env:
+#      RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+#      RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+#      RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+#      RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
+#      GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
+#      PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Checkout Sarahang
+#        uses: actions/checkout@v3
+#        with:
+#          repository: vipulyaara/sarahang
+#          path: Sarahang
+#          ref: master
+#
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#
+#      - name: setup JDK 17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: gradle
+#
+#      - name: Create Google Services JSON File
+#        env:
+#          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+#        run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
+#
+#      - name: Decode Keystore
+#        env:
+#          ENCODED_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+#          DECODED_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+#        run: |
+#          echo $ENCODED_KEYSTORE > keystore_base64.txt
+#          base64 -d keystore_base64.txt > $DECODED_KEYSTORE_PATH
+#
+#      - name: Sign and Build Release Bundle
+#        env:
+#          RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+#          RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+#          RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
+#          RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
+#          GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
+#          PIPELESS_AUTH_TOKEN: ${{ secrets.PIPELESS_AUTH_TOKEN }}
+#        run:
+#          ./gradlew assembleRelease
+#
+#      - name: Retrieve Version
+#        run: |
+#          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q versionname)"
+#        id: android_version
+#
+#      - name: Get version
+#        run: |
+#          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+#
+#      - name: Create Release on Github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: v${{env.version_name}}
+#          name: Release - ${{env.version_name}}
+#          generate_release_notes: true
+#          prerelease: true
+#          files: app/build/outputs/apk/release/app-release.apk
