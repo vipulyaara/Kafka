@@ -43,9 +43,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (::navController.isInitialized && intent != null) {
+        if (::navController.isInitialized) {
             navController.handleDeepLink(intent)
         } else {
             Timber.e(Error("navController is not initialized or intent is null. isFinishing = $isFinishing, intent = $intent"))

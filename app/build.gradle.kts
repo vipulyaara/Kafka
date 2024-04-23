@@ -143,7 +143,6 @@ dependencies {
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
-    implementation(libs.accompanist.navigation.material)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.hilt.compose)
@@ -156,6 +155,7 @@ dependencies {
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material.navigation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.util)
