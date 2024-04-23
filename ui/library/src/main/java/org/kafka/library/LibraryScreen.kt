@@ -19,7 +19,7 @@ import org.kafka.ui.components.scaffoldPadding
 fun LibraryScreen() {
     Scaffold { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            val pagerState = rememberPagerState(pageCount = { LibraryTab.values().size })
+            val pagerState = rememberPagerState(pageCount = { LibraryTab.entries.size })
 
             Column(
                 modifier = Modifier
@@ -28,12 +28,12 @@ fun LibraryScreen() {
             ) {
                 Tabs(
                     pagerState = pagerState,
-                    tabs = LibraryTab.values().map { it.name }.toPersistentList(),
+                    tabs = LibraryTab.entries.map { it.name }.toPersistentList(),
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 HorizontalPager(modifier = Modifier.fillMaxSize(), state = pagerState) { page ->
-                    when (LibraryTab.values()[page]) {
+                    when (LibraryTab.entries[page]) {
                         LibraryTab.Favorites -> Favorites()
                         LibraryTab.Downloads -> Downloads()
                     }

@@ -20,7 +20,7 @@ class ItemDetailMapper @Inject constructor(
 
         return ItemDetail(
             itemId = from.metadata.identifier,
-            language = from.metadata.languages?.joinToString(),
+            language = from.metadata.languages?.map { it.split(";") }?.flatten()?.joinToString(),
             title = from.metadata.title?.dismissUpperCase(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
             creator = from.metadata.creator?.take(5)?.joinToString()?.sanitizeForRoom(),
@@ -30,11 +30,13 @@ class ItemDetailMapper @Inject constructor(
             coverImage = from.findCoverImage(),
             metadata = from.metadata.collection,
             primaryFile = from.files.primaryFile(from.metadata.mediatype)?.fileId,
-            subject = from.metadata.subject
-                ?.subList(0, from.metadata.subject!!.size.coerceAtMost(12))
-                ?.map { it.substring(0, it.length.coerceAtMost(50)) }
-                ?.map { it.trim() }
-                ?.filter { it.isNotEmpty() },
+            subject = run {
+                val subjects = from.metadata.subject?.map { it.split(";") }?.flatten()
+                subjects?.subList(0, subjects.size.coerceAtMost(12))
+                    ?.map { it.substring(0, it.length.coerceAtMost(50)) }
+                    ?.map { it.trim() }
+                    ?.filter { it.isNotEmpty() }
+            },
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating,
         ).also {
             insertFiles(from, it)
