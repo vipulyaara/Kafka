@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class FileDao : EntityDao<File> {
 
+    @Query("select * from File where fileId = :fileId")
+    abstract fun observe(fileId: String): Flow<File?>
+
     @Query("select * from File where itemId = :itemId ORDER BY name")
     abstract fun observeByItemId(itemId: String): Flow<List<File>>
 

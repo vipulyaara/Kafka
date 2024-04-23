@@ -52,7 +52,7 @@ data class RecentTextItem(
     val currentPage: Int, // starts at 1
     val localUri: String,
     val type: Type,
-    val pages: List<Page>,
+    val pages: List<Page> = emptyList(),
 ) : BaseEntity {
     enum class Type {
         PDF, TXT;
