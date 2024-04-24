@@ -34,7 +34,7 @@ Or [Download APK from releases](https://github.com/vipulyaara/Kafka/releases)
 
 ## How to run
  - Clone the repo
- - Clone [Sarahang](https://github.com/vipulyaara/Sarahang) in the root folder (Kafka).<br/>Sarahang is the audio player being used in Kafka and not yet provided through maven.
+ - Clone [Sarahang](https://github.com/vipulyaara/Sarahang) in the same parent folder as Kafka.<br/>Sarahang is the audio player being used in Kafka and not yet provided through maven.
  - Add `google_server_client_id=xxx` and `pipeless_auth_token=xxx` in your `local.properties` file. You can use arbitrary values, these tokens only provide additional functionalities.
  - Run project
 
