@@ -17,7 +17,7 @@
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=240 />
 </a>
 
-Or [Download APK](https://github.com/vipulyaara/Kafka/raw/develop/app/release/app-release.apk)
+Or [Download APK from releases](https://github.com/vipulyaara/Kafka/releases)
 
 ## Demo
 
