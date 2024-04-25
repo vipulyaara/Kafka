@@ -2,9 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kapt {

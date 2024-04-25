@@ -23,12 +23,12 @@ class HomepageRepository @Inject constructor(
         firebaseTopics.topics,
     ) { homepageResponse, topics ->
         homepageResponse to topics
-    }.flatMapLatest {
-        it.first.toHomepage(it.second)
+    }.flatMapLatest { pair ->
+        pair.first.toHomepage(pair.second)
     }
 
     private fun QuerySnapshot.toHomepage(topics: List<String>) =
-        documents.map { it.data(HomepageCollectionResponse.serializer()) }
+        documents.map { it.data<HomepageCollectionResponse>() }
             .filter { it.enabled }
             .filter { it.filterByTopics(topics) }
             .sortedBy { it.index }
@@ -42,7 +42,7 @@ class HomepageRepository @Inject constructor(
     suspend fun getHomepageIds() = firestoreGraph.homepageCollection.get()
         .documents
         .asSequence()
-        .map { it.data(HomepageCollectionResponse.serializer()) }
+        .map { documentSnapshot -> documentSnapshot.data<HomepageCollectionResponse>() }
         .sortedBy { it.index }
         .filter { it.enabled }
         .mapNotNull {
@@ -60,11 +60,14 @@ class HomepageRepository @Inject constructor(
     private fun HomepageCollectionResponse.filterByTopics(userTopics: List<String>): Boolean {
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
         return collectionTopics.isEmpty() ||
-            userTopics.isEmpty() ||
-            shouldShowCollection(userTopics, collectionTopics)
+                userTopics.isEmpty() ||
+                shouldShowCollection(userTopics, collectionTopics)
     }
 
-    private fun shouldShowCollection(userTopics: List<String>, collectionTopics: List<String>): Boolean {
+    private fun shouldShowCollection(
+        userTopics: List<String>,
+        collectionTopics: List<String>
+    ): Boolean {
         val includedTopics = collectionTopics.filter { !it.startsWith("-") }.toSet()
         val excludedTopics =
             collectionTopics.filter { it.startsWith("-") }.map { it.substring(1) }.toSet()

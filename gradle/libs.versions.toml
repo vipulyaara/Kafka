@@ -142,7 +142,7 @@ google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 
-firestore-ktx = "dev.gitlive:firebase-firestore:1.8.0"
+firestore-ktx = "dev.gitlive:firebase-firestore:1.12.0"
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }

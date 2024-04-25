@@ -9,13 +9,13 @@ import kotlinx.serialization.Serializable
 sealed class HomepageCollectionResponse {
     abstract val enabled: Boolean
     abstract val topics: String
-    abstract val index: Int
+    abstract val index: Float
 
     @Serializable
     @SerialName("banners")
     data class Banners(
         val items: List<HomepageBanner> = listOf(),
-        override val index: Int,
+        override val index: Float,
         override val enabled: Boolean = true,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
@@ -26,7 +26,7 @@ sealed class HomepageCollectionResponse {
         val label: String? = null,
         val itemIds: String,
         val image: List<FirebaseImage>? = null,
-        override val index: Int,
+        override val index: Float,
         override val enabled: Boolean = true,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
@@ -34,7 +34,7 @@ sealed class HomepageCollectionResponse {
     @Serializable
     @SerialName("recentItems")
     data class RecentItems(
-        override val index: Int,
+        override val index: Float,
         override val enabled: Boolean = true,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
@@ -46,7 +46,7 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0,
+        override val index: Float = 0f,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
 
@@ -57,7 +57,7 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0,
+        override val index: Float = 0f,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
 
@@ -68,7 +68,7 @@ sealed class HomepageCollectionResponse {
         val itemIds: String,
         val clickable: Boolean = true,
         override val enabled: Boolean = true,
-        override val index: Int = 0,
+        override val index: Float = 0f,
         override val topics: String = "",
     ) : HomepageCollectionResponse()
 
@@ -76,7 +76,7 @@ sealed class HomepageCollectionResponse {
     data class Unknown(
         override val enabled: Boolean = false,
         override val topics: String = "",
-        override val index: Int = -1,
+        override val index: Float = -1f,
     ) : HomepageCollectionResponse()
 }
 
