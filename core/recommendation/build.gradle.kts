@@ -13,9 +13,9 @@ dependencies {
     implementation(project(":core:analytics"))
 
     implementation(libs.core.ktx)
-    implementation(libs.firestore.ktx)
     implementation(libs.dataStore)
     implementation(libs.google.analytics)
+    implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.coroutines)
 }

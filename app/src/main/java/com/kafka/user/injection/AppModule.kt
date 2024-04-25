@@ -104,12 +104,6 @@ class AppModule {
     @Provides
     fun provideFirestore() = FirebaseFirestore.getInstance()
 
-    @Singleton
-    @Provides
-    fun provideFirestoreKt(firebaseFirestore: FirebaseFirestore) =
-        dev.gitlive.firebase.firestore.FirebaseFirestore(firebaseFirestore)
-
-
     @Provides
     fun provideSecretsProvider() = object : SecretsProvider {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID

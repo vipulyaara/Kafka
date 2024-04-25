@@ -1,8 +1,8 @@
 package com.kafka.data.feature
 
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.snapshots
-import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.snapshots
+import com.google.firebase.firestore.toObject
 import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
@@ -19,9 +19,7 @@ class FavoritesRepository @Inject constructor(
     fun observeFavorites(uid: String) = firestoreGraph.getFavoritesCollection(uid)
         .orderBy("createdAt", Query.Direction.DESCENDING)
         .snapshots()
-        .map { snapshots ->
-            snapshots.map { it.toObject<FavoriteItem>() }
-        }
+        .map { snapshots -> snapshots.map { it.toObject<FavoriteItem>() } }
 
     suspend fun updateFavorite(favoriteItem: FavoriteItem, isFavorite: Boolean) {
         accountRepository.currentFirebaseUser?.uid

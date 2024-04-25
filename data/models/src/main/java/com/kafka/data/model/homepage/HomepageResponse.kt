@@ -102,7 +102,7 @@ data class HomepageBanner(
 
 @Serializable
 data class FirebaseImage(
-    @DocumentId
+    @com.google.firebase.firestore.DocumentId
     val ref: String,
     val downloadURL: String,
     val name: String = "",

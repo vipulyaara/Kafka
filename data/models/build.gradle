@@ -21,7 +21,9 @@ dependencies {
 
     implementation project(':base:domain')
     implementation project(':base:network')
-    implementation libs.firestore.ktx
+
+    implementation platform(libs.google.bom)
+
     implementation libs.androidx.collection
     implementation libs.androidx.core
     implementation libs.androidx.paging.runtime
@@ -30,6 +32,7 @@ dependencies {
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime
     implementation libs.dataStore
+    implementation libs.google.firestore
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.serialization

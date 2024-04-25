@@ -15,7 +15,7 @@ class UpdateFeedback @Inject constructor(
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             val email = params.email ?: auth.currentUser?.email
-            firestoreGraph.feedbackCollection.document.set(
+            firestoreGraph.feedbackCollection.document().set(
                 mapOf("text" to params.text, "email" to email),
             )
         }
