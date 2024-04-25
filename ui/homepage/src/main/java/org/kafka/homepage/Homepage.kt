@@ -34,6 +34,8 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
@@ -69,6 +71,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                 AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
+                        recommendedContent = viewModel.recommendedContent,
                         openItemDetail = viewModel::openItemDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
@@ -98,6 +101,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 @Composable
 private fun HomepageFeedItems(
     homepage: Homepage,
+    recommendedContent: List<Item>,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
@@ -111,6 +115,13 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
+            if (index == 2 && recommendedContent.isNotEmpty()) {
+                item(key = "recommendation", contentType = "row") {
+                    SubjectItems(persistentListOf(stringResource(R.string.recommended_for_you))) {}
+                    RowItems(recommendedContent.toImmutableList(), openItemDetail)
+                }
+            }
+
             when (collection) {
                 is HomepageCollection.Banners -> {
                     item(key = "carousels", contentType = "carousels") {
