@@ -9,4 +9,5 @@
     <string name="cd_profile" translatable="false">Profile</string>
     <string name="cd_remove_from_reading_list" translatable="false">Remove from reading list</string>
     <string name="see_all" translatable="false">See All</string>
+    <string name="recommended_for_you" translatable="false">Recommended for you</string>
 </resources>
