@@ -1,7 +1,6 @@
 package com.kafka.user
 
 import android.app.Application
-import com.kafka.user.fcm.FcmTokenGenerator
 import com.kafka.user.initializer.AppInitializers
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -13,9 +12,6 @@ import javax.inject.Inject
 class KafkaApplication : Application() {
     @Inject
     lateinit var initializers: AppInitializers
-
-    @Inject
-    lateinit var fcmTokenGenerator: FcmTokenGenerator
 
     override fun onCreate() {
         super.onCreate()

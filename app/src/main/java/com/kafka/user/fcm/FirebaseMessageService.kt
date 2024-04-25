@@ -41,21 +41,14 @@ class FirebaseMessageService : FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         debug { "Received FCM message: $message" }
+    }
 
-        if (message.data.isNotEmpty()) {
-            val contentId = message.data["itemId"]
-
-            debug { "FCM contentId $contentId" }
+    override fun handleIntent(intent: Intent?) {
+        // workaround to swap custom deeplink key to standard one
+        val newIntent = intent?.let { safeIntent ->
+            safeIntent.putExtra(EXTRA_LINK_TAG, safeIntent.getStringExtra(EXTRA_DEEPLINK_URL))
         }
-
-//        when {
-//            message.data.isNotEmpty() -> notificationManager.buildNotification(
-//                push = pushMapper.map(message),
-//                pendingIntent = mainActivityIntent()
-//            )
-//
-//            else -> super.onMessageReceived(message)
-//        }
+        super.handleIntent(newIntent)
     }
 
     override fun onNewToken(token: String) {
@@ -77,6 +70,9 @@ class FirebaseMessageService : FirebaseMessagingService() {
         }
     }
 }
+
+const val EXTRA_DEEPLINK_URL = "deeplink_url"
+const val EXTRA_LINK_TAG = "gcm.n.link_android"
 
 private val fcmTokenPreferenceKey = stringPreferencesKey("fcm_token")
 
