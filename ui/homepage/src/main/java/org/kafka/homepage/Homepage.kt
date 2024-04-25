@@ -34,7 +34,6 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
@@ -42,6 +41,7 @@ import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
+import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.FeaturedItem
@@ -117,7 +117,10 @@ private fun HomepageFeedItems(
         homepage.collection.forEachIndexed { index, collection ->
             if (index == 2 && recommendedContent.isNotEmpty()) {
                 item(key = "recommendation", contentType = "row") {
-                    SubjectItems(persistentListOf(stringResource(R.string.recommended_for_you))) {}
+                    LabelMedium(
+                        text = stringResource(id = R.string.recommended_for_you),
+                        modifier = subjectModifier
+                    )
                     RowItems(recommendedContent.toImmutableList(), openItemDetail)
                 }
             }

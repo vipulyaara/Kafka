@@ -51,6 +51,7 @@ import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
 import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.image.Icons
+import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.homepage.R
 import org.kafka.ui.components.LabelMedium
@@ -72,7 +73,9 @@ internal fun ContinueReading(
 
     Column(modifier = modifier) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .simpleClickable { openRecentItems() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
