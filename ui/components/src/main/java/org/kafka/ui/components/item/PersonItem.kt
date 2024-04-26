@@ -35,6 +35,7 @@ fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),
+        color = pastelColors[color],
         tonalElevation = Dimens.Elevation08
     ) {
         Column(
