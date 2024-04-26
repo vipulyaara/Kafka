@@ -44,17 +44,18 @@ fun CoverImage(
     iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
-    elevation: Dp = 2.dp,
+    elevation: Dp = Dimens.Elevation08,
+    tonalElevation: Dp = Dimens.Elevation02,
     isNoPreview: Boolean = false
 ) {
     val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier
     Surface(
-        tonalElevation = elevation,
+        tonalElevation = tonalElevation,
         color = containerColor,
         shape = shape,
         modifier = modifier
             .then(sizeMod)
-            .shadowMaterial(Dimens.Spacing08, shape)
+            .shadowMaterial(elevation, shape)
     ) {
         Image(
             data = if (isNoPreview) null else data,

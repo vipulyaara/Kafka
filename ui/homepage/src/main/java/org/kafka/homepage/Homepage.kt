@@ -49,6 +49,8 @@ import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
 import org.kafka.ui.components.item.ItemSmall
+import org.kafka.ui.components.item.PersonItem
+import org.kafka.ui.components.item.PersonItemPlaceholder
 import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.RowItemPlaceholder
 import org.kafka.ui.components.item.SubjectItem
@@ -78,7 +80,8 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         goToSearch = viewModel::openSearch,
                         goToSubject = viewModel::openSubject,
                         onBannerClick = viewModel::onBannerClick,
-                        openRecentItems = viewModel::openRecentItems
+                        openRecentItems = viewModel::openRecentItems,
+                        goToCreator = viewModel::openCreator
                     )
                 }
 
@@ -107,6 +110,7 @@ private fun HomepageFeedItems(
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
+    goToCreator: (String) -> Unit,
     onBannerClick: (HomepageBanner) -> Unit,
     openRecentItems: () -> Unit
 ) {
@@ -143,6 +147,16 @@ private fun HomepageFeedItems(
                             removeRecentItem = removeRecentItem,
                             modifier = Modifier.padding(top = Dimens.Gutter),
                             openRecentItems = openRecentItems
+                        )
+                    }
+                }
+
+                is HomepageCollection.Authors -> {
+                    item(key = "authors", contentType = "person_row") {
+                        Authors(
+                            titles = collection.items,
+                            images = collection.images,
+                            goToCreator = goToCreator
                         )
                     }
                 }
@@ -248,6 +262,37 @@ private fun RowItems(
         } else {
             items(count = PlaceholderItemCount, key = { index -> "row_placeholder_$index" }) {
                 RowItemPlaceholder()
+            }
+        }
+    }
+}
+
+@Composable
+private fun Authors(
+    titles: ImmutableList<String>,
+    images: ImmutableList<String>,
+    modifier: Modifier = Modifier,
+    goToCreator: (String) -> Unit
+) {
+    LazyRow(
+        modifier = modifier.padding(vertical = Dimens.Spacing12),
+        contentPadding = PaddingValues(
+            horizontal = Dimens.Gutter,
+            vertical = Dimens.Spacing08
+        ),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        if (titles.isNotEmpty()) {
+            items(titles.size) { index ->
+                PersonItem(
+                    title = titles[index],
+                    imageUrl = images.getOrElse(index) { "" },
+                    modifier = Modifier.clickable { goToCreator(titles[index]) }
+                )
+            }
+        } else {
+            items(count = PlaceholderItemCount, key = { index -> "authors_placeholder_$index" }) {
+                PersonItemPlaceholder()
             }
         }
     }

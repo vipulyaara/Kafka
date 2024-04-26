@@ -71,3 +71,36 @@ internal val LightAppColors = lightColorScheme(
     onError = white,
     outline = darkGrey800
 )
+
+val pastelColors = listOf(
+    Color(0xFFD8A7B1), // Pastel pink
+    Color(0xFFAACFCF), // Pastel blue
+    Color(0xFFEFD9C1), // Pastel peach
+    Color(0xFFB5EAD7), // Pastel green
+    Color(0xFFDAC4F7), // Pastel lavender
+    Color(0xFFF3D9E9), // Pastel rose
+    Color(0xFFD5E5E7), // Pastel turquoise
+    Color(0xFFE9EBF8), // Pastel lilac
+    Color(0xFFEAD3CB), // Pastel coral
+    Color(0xFFB9D1EA),  // Pastel sky blue
+    Color(0xFFE2B6C9), // Pastel mauve
+    Color(0xFFC3E6CB), // Pastel mint
+    Color(0xFFE5D9AA), // Pastel yellow
+    Color(0xFFC1C6E4), // Pastel periwinkle
+    Color(0xFFE3D0BA), // Pastel apricot
+    Color(0xFFC1E0E3), // Pastel aqua
+    Color(0xFFF4DFE6), // Pastel blush
+    Color(0xFFD8ECC3), // Pastel pistachio
+    Color(0xFFE1D0F5), // Pastel lavender pink
+    Color(0xFFF5E1D1),  // Pastel peach pink
+    Color(0xFFC9E3E8), // Pastel sky
+    Color(0xFFE0C9E3), // Pastel lavender
+    Color(0xFFF2D7CB), // Pastel salmon
+    Color(0xFFD5E8D4), // Pastel mint green
+    Color(0xFFE8D2E2), // Pastel orchid
+    Color(0xFFE3E8C9), // Pastel lime
+    Color(0xFFF5E8D9), // Pastel peach
+    Color(0xFFD9E5F5), // Pastel cornflower
+    Color(0xFFF5E5D9), // Pastel beige
+    Color(0xFFE5D9F5)  // Pastel violet
+)

@@ -36,7 +36,9 @@ object Dimens {
 
     val Gutter = 16.dp
 
+    val Elevation02 = 2.dp
     val Elevation04 = 4.dp
+    val Elevation08 = 8.dp
 
     val RadiusSmall = Radius04
     val RadiusMedium = Radius08

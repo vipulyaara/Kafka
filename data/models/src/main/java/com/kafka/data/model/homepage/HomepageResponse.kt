@@ -32,6 +32,17 @@ sealed class HomepageCollectionResponse {
     ) : HomepageCollectionResponse()
 
     @Serializable
+    @SerialName("person")
+    data class Authors(
+        val itemIds: String,
+        val image: List<FirebaseImage>,
+        val clickable: Boolean = true,
+        override val enabled: Boolean = true,
+        override val index: Float,
+        override val topics: String = "",
+    ) : HomepageCollectionResponse()
+
+    @Serializable
     @SerialName("recentItems")
     data class RecentItems(
         override val index: Float,
