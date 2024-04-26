@@ -116,12 +116,15 @@ private fun HomepageFeedItems(
     ) {
         homepage.collection.forEachIndexed { index, collection ->
             if (index == 2 && recommendedContent.isNotEmpty()) {
-                item(key = "recommendation", contentType = "row") {
+                item(key = "recommendations", contentType = "row") {
                     LabelMedium(
                         text = stringResource(id = R.string.recommended_for_you),
                         modifier = subjectModifier
                     )
-                    RowItems(recommendedContent.toImmutableList(), openItemDetail)
+                    RowItems(
+                        items = recommendedContent.toImmutableList(),
+                        openItemDetail = openItemDetail
+                    )
                 }
             }
 
@@ -151,7 +154,7 @@ private fun HomepageFeedItems(
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, goToSubject)
-                        RowItems(collection.items, openItemDetail)
+                        RowItems(items = collection.items, openItemDetail = openItemDetail)
                     }
                 }
 
@@ -216,8 +219,13 @@ private fun LazyListScope.featuredItems(
 }
 
 @Composable
-private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
+private fun RowItems(
+    items: ImmutableList<Item>,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit
+) {
     LazyRow(
+        modifier = modifier,
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
             vertical = Dimens.Spacing08
