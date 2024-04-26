@@ -45,12 +45,12 @@ class HomepageRepository @Inject constructor(
         .map { documentSnapshot -> documentSnapshot.data<HomepageCollectionResponse>() }
         .sortedBy { it.index }
         .filter { it.enabled }
-        .mapNotNull {
-            when (it) {
-                is HomepageCollectionResponse.Column -> it.itemIds.split(", ")
-                is HomepageCollectionResponse.FeaturedItem -> it.itemIds.split(", ")
-                is HomepageCollectionResponse.Row -> it.itemIds.split(", ")
-                is HomepageCollectionResponse.Grid -> it.itemIds.split(", ")
+        .mapNotNull { collection ->
+            when (collection) {
+                is HomepageCollectionResponse.Column -> collection.itemIds.split(", ")
+                is HomepageCollectionResponse.FeaturedItem -> collection.itemIds.split(", ")
+                is HomepageCollectionResponse.Row -> collection.itemIds.split(", ")
+                is HomepageCollectionResponse.Grid -> collection.itemIds.split(", ")
                 else -> null
             }
         }

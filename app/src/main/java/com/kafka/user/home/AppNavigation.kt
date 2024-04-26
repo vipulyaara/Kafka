@@ -152,7 +152,18 @@ private fun NavGraphBuilder.addHome(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addSearch(root: RootScreen) {
-    composable(Screen.Search.createRoute(root)) {
+    composable(
+        Screen.Search.createRoute(root),
+        arguments = listOf(
+            navArgument("keyword") { type = NavType.StringType },
+            navArgument("filters") { type = NavType.StringType }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}search?keyword={keyword}&filters={filters}"
+            },
+        )
+    ) {
         SearchScreen()
     }
 }
