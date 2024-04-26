@@ -117,7 +117,7 @@ private fun FavoriteItemGrid(
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
-        columns = GridCells.Fixed(LayoutType.values().size),
+        columns = GridCells.Fixed(LayoutType.entries.size),
         contentPadding = padding
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
