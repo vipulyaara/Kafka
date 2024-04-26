@@ -94,6 +94,8 @@ internal fun ContinueReading(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
+            } else {
+                Spacer(modifier = Modifier.height(Dimens.Spacing40))
             }
         }
 
