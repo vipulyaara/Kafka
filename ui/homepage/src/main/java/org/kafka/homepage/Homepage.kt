@@ -151,7 +151,7 @@ private fun HomepageFeedItems(
                     }
                 }
 
-                is HomepageCollection.Authors -> {
+                is HomepageCollection.PersonRow -> {
                     item(key = "authors", contentType = "person_row") {
                         Authors(
                             titles = collection.items,

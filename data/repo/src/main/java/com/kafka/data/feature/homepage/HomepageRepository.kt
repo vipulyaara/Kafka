@@ -4,11 +4,13 @@ import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.recommendations.topic.FirebaseTopics
 import dagger.Reusable
+import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.modules.SerializersModule
 import org.kafka.base.debug
 import javax.inject.Inject
 
@@ -17,6 +19,7 @@ class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
     private val firebaseTopics: FirebaseTopics,
+    private val serializerModule: SerializersModule
 ) {
     fun observeHomepageCollection() = combine(
         firestoreGraph.homepageCollection.snapshots,
@@ -28,7 +31,8 @@ class HomepageRepository @Inject constructor(
     }
 
     private fun QuerySnapshot.toHomepage(topics: List<String>) =
-        documents.map { it.data<HomepageCollectionResponse>() }
+        documents
+            .map { documentSnapshot -> documentSnapshot.getHomepageData() }
             .filter { it.enabled }
             .filter { it.filterByTopics(topics) }
             .sortedBy { it.index }
@@ -42,7 +46,7 @@ class HomepageRepository @Inject constructor(
     suspend fun getHomepageIds() = firestoreGraph.homepageCollection.get()
         .documents
         .asSequence()
-        .map { documentSnapshot -> documentSnapshot.data<HomepageCollectionResponse>() }
+        .map { documentSnapshot -> documentSnapshot.getHomepageData() }
         .sortedBy { it.index }
         .filter { it.enabled }
         .mapNotNull { collection ->
@@ -81,5 +85,9 @@ class HomepageRepository @Inject constructor(
         }
 
         return includedTopics.isEmpty()
+    }
+
+    private fun DocumentSnapshot.getHomepageData() = data<HomepageCollectionResponse> {
+        serializersModule = serializerModule
     }
 }

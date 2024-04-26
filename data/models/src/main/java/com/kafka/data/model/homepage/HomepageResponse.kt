@@ -33,7 +33,7 @@ sealed class HomepageCollectionResponse {
 
     @Serializable
     @SerialName("person")
-    data class Authors(
+    data class PersonRow(
         val itemIds: String,
         val image: List<FirebaseImage>,
         val clickable: Boolean = true,

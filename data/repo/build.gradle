@@ -30,6 +30,7 @@ dependencies {
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime
     implementation libs.dataStore
+    implementation libs.firestore.common.ktx
     implementation libs.firestore.ktx
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core

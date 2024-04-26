@@ -127,7 +127,7 @@ fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
 
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:32.8.0"
+google-bom = "com.google.firebase:firebase-bom:32.8.1"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links" }
@@ -136,13 +136,14 @@ google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
-google-playservices-auth = "com.google.android.gms:play-services-auth:21.0.0"
+google-playservices-auth = "com.google.android.gms:play-services-auth:21.1.0"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 
 firestore-ktx = "dev.gitlive:firebase-firestore:1.12.0"
+firestore-common-ktx = "dev.gitlive:firebase-common:1.12.0"
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
