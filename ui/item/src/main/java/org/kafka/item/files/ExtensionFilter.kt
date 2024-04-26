@@ -3,8 +3,10 @@ package org.kafka.item.files
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
@@ -28,6 +30,7 @@ import ui.common.theme.theme.Dimens
 internal fun ExtensionFilter(
     actionLabels: ImmutableList<String>,
     selectedFilter: String?,
+    itemsCount: Int,
     onItemSelected: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,11 +44,23 @@ internal fun ExtensionFilter(
             border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
             modifier = Modifier
         ) {
-            Text(
-                text = selectedFilter ?: "all",
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.animateContentSize()
-            )
+            Row(
+                modifier = Modifier.animateContentSize(),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(
+                    text = selectedFilter ?: "all",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = itemsCount.toString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+            }
+
         }
 
         Box {

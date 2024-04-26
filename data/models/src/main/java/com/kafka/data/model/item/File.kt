@@ -1,5 +1,6 @@
 package com.kafka.data.model.item
 
+import com.kafka.data.model.StringListSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,8 +10,9 @@ data class File(
     val album: String? = null,
     @SerialName("artist")
     val artist: String? = null,
+    @Serializable(with = StringListSerializer::class)
     @SerialName("creator")
-    val creator: String? = null,
+    val creator: List<String>? = null,
     @SerialName("format")
     val format: String? = null,
     @SerialName("genres")

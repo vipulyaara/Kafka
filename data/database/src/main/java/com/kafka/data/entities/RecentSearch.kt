@@ -15,3 +15,5 @@ data class RecentSearch(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
     @ColumnInfo(name = "search_term") var searchTerm: String = "",
 ) : BaseEntity
+
+//todo: add search filter to recent search

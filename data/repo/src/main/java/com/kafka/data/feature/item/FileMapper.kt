@@ -18,7 +18,7 @@ class FileMapper @Inject constructor() {
             name = name,
             title = title ?: name.removeSuffix(".$extension"),
             extension = extension,
-            creator = (creator ?: artist) ?: item.creator,
+            creator = (creator?.joinToString(", ") ?: artist) ?: item.creator,
             time = length,
             format = format.orEmpty(),
             playbackUrl = if (extension.isAudio()) URL("$prefix/$name").toString() else null,
