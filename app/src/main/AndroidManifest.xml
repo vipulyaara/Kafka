@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/Theme.Kafka"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="false">
 
         <profileable
             android:shell="true"
