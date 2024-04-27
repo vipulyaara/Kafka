@@ -119,7 +119,7 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
-            if (index == 2 && recommendedContent.isNotEmpty()) {
+            if (index == 3 && recommendedContent.isNotEmpty()) {
                 item(key = "recommendations", contentType = "row") {
                     LabelMedium(
                         text = stringResource(id = R.string.recommended_for_you),
