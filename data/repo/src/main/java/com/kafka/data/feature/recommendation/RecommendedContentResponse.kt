@@ -1,6 +1,5 @@
 package com.kafka.data.feature.recommendation
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
