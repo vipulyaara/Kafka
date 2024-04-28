@@ -74,6 +74,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
                         recommendedContent = viewModel.recommendedContent,
+                        recommendationRowIndex = viewModel.recommendationRowIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
@@ -105,6 +106,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     recommendedContent: List<Item>,
+    recommendationRowIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
@@ -119,7 +121,7 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
-            if (index == 3 && recommendedContent.isNotEmpty()) {
+            if (index == recommendationRowIndex && recommendedContent.isNotEmpty()) {
                 item(key = "recommendations", contentType = "row") {
                     LabelMedium(
                         text = stringResource(id = R.string.recommended_for_you),

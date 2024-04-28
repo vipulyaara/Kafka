@@ -8,6 +8,7 @@ const val RECOMMENDATION_ENABLED = "recommendation_data_enabled"
 const val VIEW_RECOMMENDATION_ENABLED = "view_recommendation_data_enabled"
 const val USE_RECOMMENDATION_ENABLED = "use_recommendation_data_enabled"
 const val RECOMMENDATION_ROW_ENABLED = "recommendation_row_enabled"
+const val RECOMMENDATION_ROW_INDEX  = "recommendation_row_index"
 const val ONLINE_READER_ENABLED = "online_reader_enabled"
 const val EXACT_ALARM_ENABLED = "exact_alarm_enabled"
 
@@ -26,6 +27,8 @@ fun RemoteConfig.isViewRecommendationEnabled() = getBoolean(VIEW_RECOMMENDATION_
 fun RemoteConfig.isUseRecommendationEnabled() = getBoolean(USE_RECOMMENDATION_ENABLED)
 
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
+
+fun RemoteConfig.recommendationRowIndex() = getLong(RECOMMENDATION_ROW_INDEX)
 
 fun RemoteConfig.isOnlineReaderEnabled() = getBoolean(ONLINE_READER_ENABLED)
 

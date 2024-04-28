@@ -10,6 +10,7 @@ import com.kafka.data.model.SearchFilter
 import com.kafka.data.model.homepage.HomepageBanner
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
+import com.kafka.remote.config.recommendationRowIndex
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -44,6 +45,7 @@ class HomepageViewModel @Inject constructor(
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     var recommendedContent by mutableStateOf(emptyList<Item>())
+    val recommendationRowIndex = remoteConfig.recommendationRowIndex().toInt()
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
