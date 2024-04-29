@@ -33,4 +33,4 @@ data class PdfState(
     val onPageChange: (Int) -> Unit = { _ -> }
 )
 
-const val MaxZoom = 6f
+const val MaxZoom = 10f

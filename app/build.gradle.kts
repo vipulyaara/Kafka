@@ -17,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 58
-        versionName = "0.18.0"
+        versionCode = 59
+        versionName = "0.19.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -112,13 +112,6 @@ android {
         abortOnError = true
         checkDependencies = true
         warning += "AutoboxingStateCreation"
-    }
-
-    dependenciesInfo {
-        // Disables dependency metadata when building APKs.
-        includeInApk = false
-        // Disables dependency metadata when building Android App Bundles.
-        includeInBundle = false
     }
 }
 
