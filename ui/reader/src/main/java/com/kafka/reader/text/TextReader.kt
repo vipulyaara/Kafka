@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.reader.controls.GoToPage
 import kotlinx.coroutines.launch
@@ -42,15 +41,21 @@ internal fun TextReader(
         viewModel.observeTextFile(fileId)
     }
 
-    viewState.recentItem?.let {
-        val lazyListState = rememberLazyListState(it.currentPage)
+    viewState.recentItem?.let { recentTextItem ->
+        val lazyListState = rememberLazyListState(recentTextItem.currentPage)
         val currentPage by remember { derivedStateOf { lazyListState.firstVisibleItemIndex } }
 
-        LaunchedEffect(it, currentPage) {
+        LaunchedEffect(recentTextItem, currentPage) {
             viewModel.onPageChanged(fileId, currentPage)
         }
 
-        TextReader(modifier, viewModel, it, currentPage, lazyListState)
+        TextReader(
+            modifier = modifier,
+            viewModel = viewModel,
+            pages = viewState.pages,
+            currentPage = currentPage,
+            lazyListState = lazyListState
+        )
     }
 }
 
@@ -58,7 +63,7 @@ internal fun TextReader(
 private fun TextReader(
     modifier: Modifier,
     viewModel: TextReaderViewModel,
-    recentTextItem: RecentTextItem,
+    pages: List<RecentTextItem.Page>,
     currentPage: Int = 0,
     lazyListState: LazyListState = rememberLazyListState()
 ) {
@@ -68,7 +73,7 @@ private fun TextReader(
 
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(contentPadding = scaffoldPadding, state = lazyListState) {
-                items(recentTextItem.pages, key = { it.index }) { page ->
+                items(pages, key = { it.index }) { page ->
                     Page(
                         page = page,
                         modifier = Modifier.simpleClickable { viewModel.toggleControls() }

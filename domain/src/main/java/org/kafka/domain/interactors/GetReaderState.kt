@@ -52,8 +52,7 @@ class GetReaderState @Inject constructor(
         fileId = fileId,
         currentPage = currentPage,
         localUri = "",
-        type = RecentTextItem.Type.PDF,
-        pages = emptyList()
+        type = RecentTextItem.Type.PDF
     )
 }
 

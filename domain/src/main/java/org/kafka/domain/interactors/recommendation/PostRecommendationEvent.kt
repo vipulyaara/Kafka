@@ -6,6 +6,8 @@ import com.kafka.data.feature.recommendation.RecommendationRelationship
 import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationEnabled
+import com.kafka.remote.config.isUseRecommendationEnabled
+import com.kafka.remote.config.isViewRecommendationEnabled
 import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
@@ -28,15 +30,23 @@ class PostRecommendationEvent @Inject constructor(
 
         when (params) {
             is RecommendationEvent.ViewContent -> {
-                objectFrom = RecommendationObject.User(userId)
-                relationship = RecommendationRelationship.Viewed
-                objectTo = RecommendationObject.Content(params.contentId)
+                if (remoteConfig.isViewRecommendationEnabled()) {
+                    objectFrom = RecommendationObject.User(userId)
+                    relationship = RecommendationRelationship.Viewed
+                    objectTo = RecommendationObject.Content(params.contentId)
+                } else {
+                    return@withContext
+                }
             }
 
             is RecommendationEvent.UseContent -> {
-                objectFrom = RecommendationObject.User(userId)
-                relationship = RecommendationRelationship.Used
-                objectTo = RecommendationObject.Content(params.contentId)
+                if (remoteConfig.isUseRecommendationEnabled()) {
+                    objectFrom = RecommendationObject.User(userId)
+                    relationship = RecommendationRelationship.Used
+                    objectTo = RecommendationObject.Content(params.contentId)
+                } else {
+                    return@withContext
+                }
             }
 
             is RecommendationEvent.FavoriteContent -> {

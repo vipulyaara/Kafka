@@ -51,6 +51,13 @@ sealed class HomepageCollection {
     ) : HomepageCollection()
 
     @Immutable
+    data class PersonRow(
+        val items: ImmutableList<String>,
+        val images: ImmutableList<String>,
+        override val enabled: Boolean = true,
+    ) : HomepageCollection()
+
+    @Immutable
     data class Row(
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,

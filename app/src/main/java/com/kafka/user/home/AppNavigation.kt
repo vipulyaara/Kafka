@@ -36,7 +36,7 @@ import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.base.debug
 import org.kafka.common.extensions.collectEvent
 import org.kafka.homepage.Homepage
-import org.kafka.homepage.recent.RecentScreen
+import org.kafka.homepage.recent.RecentItemsScreen
 import org.kafka.item.detail.ItemDetail
 import org.kafka.item.detail.description.DescriptionDialog
 import org.kafka.item.files.Files
@@ -152,7 +152,18 @@ private fun NavGraphBuilder.addHome(root: RootScreen) {
 }
 
 private fun NavGraphBuilder.addSearch(root: RootScreen) {
-    composable(Screen.Search.createRoute(root)) {
+    composable(
+        Screen.Search.createRoute(root),
+        arguments = listOf(
+            navArgument("keyword") { type = NavType.StringType },
+            navArgument("filters") { type = NavType.StringType }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = "${Config.BASE_URL}search?keyword={keyword}&filters={filters}"
+            },
+        )
+    ) {
         SearchScreen()
     }
 }
@@ -231,7 +242,7 @@ private fun NavGraphBuilder.addFeedback(root: RootScreen) {
 
 private fun NavGraphBuilder.addRecentItems(root: RootScreen) {
     composable(route = Screen.RecentItems.createRoute(root)) {
-        RecentScreen()
+        RecentItemsScreen()
     }
 }
 

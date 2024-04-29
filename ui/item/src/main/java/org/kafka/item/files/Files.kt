@@ -60,12 +60,14 @@ private fun Files(
 ) {
     val downloader: Downloader = LocalDownloader.current
     val scope: CoroutineScope = rememberCoroutineScope()
+    val itemsCount = remember(viewState.filteredFiles) { viewState.filteredFiles.size }
 
     LazyColumn(state = lazyListState, contentPadding = scaffoldPadding()) {
         stickyHeader {
             ExtensionFilter(
                 actionLabels = viewState.actionLabels,
                 selectedFilter = selectedExtension,
+                itemsCount = itemsCount,
                 onItemSelected = { selectExtension(it) },
                 modifier = Modifier.fillMaxWidth()
             )

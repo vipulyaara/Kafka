@@ -18,12 +18,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
 
 fun TextStyle.alignCenter() = merge(TextStyle(textAlign = TextAlign.Center))
+
+fun TextStyle.medium() = merge(TextStyle(fontWeight = FontWeight.Medium))
+
+fun TextStyle.semiBold() = merge(TextStyle(fontWeight = FontWeight.SemiBold))
 
 @Composable
 inline fun <T> rememberMutableState(

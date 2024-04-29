@@ -34,12 +34,14 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
+import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.FeaturedItem
@@ -47,6 +49,8 @@ import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
 import org.kafka.ui.components.item.ItemSmall
+import org.kafka.ui.components.item.PersonItem
+import org.kafka.ui.components.item.PersonItemPlaceholder
 import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.RowItemPlaceholder
 import org.kafka.ui.components.item.SubjectItem
@@ -69,13 +73,16 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                 AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
+                        recommendedContent = viewModel.recommendedContent,
+                        recommendationRowIndex = viewModel.recommendationRowIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
                         goToSubject = viewModel::openSubject,
                         onBannerClick = viewModel::onBannerClick,
-                        openRecentItems = viewModel::openRecentItems
+                        openRecentItems = viewModel::openRecentItems,
+                        goToCreator = viewModel::openCreator
                     )
                 }
 
@@ -98,11 +105,14 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 @Composable
 private fun HomepageFeedItems(
     homepage: Homepage,
+    recommendedContent: List<Item>,
+    recommendationRowIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
+    goToCreator: (String) -> Unit,
     onBannerClick: (HomepageBanner) -> Unit,
     openRecentItems: () -> Unit
 ) {
@@ -111,6 +121,19 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
+            if (index == recommendationRowIndex && recommendedContent.isNotEmpty()) {
+                item(key = "recommendations", contentType = "row") {
+                    LabelMedium(
+                        text = stringResource(id = R.string.recommended_for_you),
+                        modifier = subjectModifier
+                    )
+                    RowItems(
+                        items = recommendedContent.toImmutableList(),
+                        openItemDetail = openItemDetail
+                    )
+                }
+            }
+
             when (collection) {
                 is HomepageCollection.Banners -> {
                     item(key = "carousels", contentType = "carousels") {
@@ -130,6 +153,16 @@ private fun HomepageFeedItems(
                     }
                 }
 
+                is HomepageCollection.PersonRow -> {
+                    item(key = "authors", contentType = "person_row") {
+                        Authors(
+                            titles = collection.items,
+                            images = collection.images,
+                            goToCreator = goToCreator
+                        )
+                    }
+                }
+
                 is HomepageCollection.FeaturedItem -> {
                     featuredItems(collection, openItemDetail)
                 }
@@ -137,7 +170,7 @@ private fun HomepageFeedItems(
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, goToSubject)
-                        RowItems(collection.items, openItemDetail)
+                        RowItems(items = collection.items, openItemDetail = openItemDetail)
                     }
                 }
 
@@ -202,8 +235,13 @@ private fun LazyListScope.featuredItems(
 }
 
 @Composable
-private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Unit) {
+private fun RowItems(
+    items: ImmutableList<Item>,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit
+) {
     LazyRow(
+        modifier = modifier,
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
             vertical = Dimens.Spacing08
@@ -226,6 +264,37 @@ private fun RowItems(items: ImmutableList<Item>, openItemDetail: (String) -> Uni
         } else {
             items(count = PlaceholderItemCount, key = { index -> "row_placeholder_$index" }) {
                 RowItemPlaceholder()
+            }
+        }
+    }
+}
+
+@Composable
+private fun Authors(
+    titles: ImmutableList<String>,
+    images: ImmutableList<String>,
+    modifier: Modifier = Modifier,
+    goToCreator: (String) -> Unit
+) {
+    LazyRow(
+        modifier = modifier.padding(vertical = Dimens.Spacing12),
+        contentPadding = PaddingValues(
+            horizontal = Dimens.Gutter,
+            vertical = Dimens.Spacing08
+        ),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        if (titles.isNotEmpty()) {
+            items(titles.size) { index ->
+                PersonItem(
+                    title = titles[index],
+                    imageUrl = images.getOrElse(index) { "" },
+                    modifier = Modifier.clickable { goToCreator(titles[index]) }
+                )
+            }
+        } else {
+            items(count = PlaceholderItemCount, key = { index -> "authors_placeholder_$index" }) {
+                PersonItemPlaceholder()
             }
         }
     }

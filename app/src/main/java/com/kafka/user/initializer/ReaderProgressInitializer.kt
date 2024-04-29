@@ -7,7 +7,6 @@ import com.kafka.data.dao.RecentTextDao
 import com.kafka.data.entities.File
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.isText
-import com.kafka.data.entities.isTxt
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Status
@@ -18,7 +17,6 @@ import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
-import org.kafka.domain.interactors.ReadTextFromUri
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
 
@@ -28,7 +26,6 @@ import javax.inject.Inject
 class ReaderProgressInitializer @Inject constructor(
     private val fetch: Fetch,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
-    private val readTextFromUri: ReadTextFromUri,
     private val downloadRequestsDao: DownloadRequestsDao,
     private val fileDao: FileDao,
     private val recentTextItemMapper: RecentTextItemMapper,
@@ -54,9 +51,7 @@ class ReaderProgressInitializer @Inject constructor(
             }
 
             if (file != null && file.isText()) {
-                val pages = if (file.isTxt()) readTextFromUri(download.fileUri)
-                    .getOrElse { emptyList() } else emptyList()
-                val textFile = recentTextItemMapper.map(download, pages, file)
+                val textFile = recentTextItemMapper.map(download, file)
                 val currentPage = recentTextDao.getOrNull(file.fileId)?.currentPage ?: 1
 
                 recentTextDao.insert(textFile.copy(currentPage = currentPage))
@@ -66,13 +61,11 @@ class ReaderProgressInitializer @Inject constructor(
 }
 
 class RecentTextItemMapper @Inject constructor() {
-    fun map(download: Download, pages: List<String>, file: File): RecentTextItem {
-        val filePages = pages.mapIndexed { index, s -> RecentTextItem.Page(index + 1, s) }
+    fun map(download: Download, file: File): RecentTextItem {
         return RecentTextItem(
             fileId = file.fileId,
             currentPage = 1,
             type = RecentTextItem.Type.fromString(file.extension),
-            pages = filePages,
             localUri = download.fileUri.toString()
         )
     }

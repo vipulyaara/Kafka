@@ -32,7 +32,7 @@ internal fun SearchFilterChips(
     modifier: Modifier = Modifier
 ) {
     LazyRow(modifier = modifier) {
-        items(SearchFilter.values()) { filter ->
+        items(SearchFilter.entries) { filter ->
             val selected = selectedFilters.contains(filter)
             FilterChip(
                 filter = filter,

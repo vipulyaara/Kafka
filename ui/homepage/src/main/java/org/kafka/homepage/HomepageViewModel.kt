@@ -1,9 +1,16 @@
 package org.kafka.homepage
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.Item
 import com.kafka.data.model.SearchFilter
 import com.kafka.data.model.homepage.HomepageBanner
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isRecommendationRowEnabled
+import com.kafka.remote.config.recommendationRowIndex
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -16,6 +23,7 @@ import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.domain.interactors.UpdateHomepage
 import org.kafka.domain.interactors.recent.RemoveRecentItem
+import org.kafka.domain.interactors.recommendation.GetRecommendedContent
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
@@ -26,14 +34,18 @@ import javax.inject.Inject
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
+    observeUser: ObserveUser,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
-    observeUser: ObserveUser,
+    private val getRecommendedContent: GetRecommendedContent,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val loadingCounter: ObservableLoadingCounter
+    private val loadingCounter: ObservableLoadingCounter,
+    private val remoteConfig: RemoteConfig
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
+    var recommendedContent by mutableStateOf(emptyList<Item>())
+    val recommendationRowIndex = remoteConfig.recommendationRowIndex().toInt()
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
@@ -46,6 +58,12 @@ class HomepageViewModel @Inject constructor(
     init {
         observeHomepage(Unit)
         observeUser(ObserveUser.Params())
+
+        viewModelScope.launch {
+            if (remoteConfig.isRecommendationRowEnabled()) {
+                recommendedContent = getRecommendedContent(Unit).getOrNull().orEmpty()
+            }
+        }
 
         updateItems()
     }
@@ -100,6 +118,17 @@ class HomepageViewModel @Inject constructor(
     fun openRecentItems() {
         analytics.log { this.openRecentItems() }
         navigator.navigate(Screen.RecentItems.createRoute(RootScreen.Home))
+    }
+
+    fun openCreator(name: String) {
+        analytics.log { this.openRecentItems() }
+        navigator.navigate(
+            Screen.Search.createRoute(
+                root = RootScreen.Home,
+                keyword = name,
+                filter = SearchFilter.Creator.name
+            )
+        )
     }
 
     fun onBannerClick(banner: HomepageBanner) {

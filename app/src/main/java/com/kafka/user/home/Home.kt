@@ -62,14 +62,16 @@ internal fun Home(
         val maxWidth = maxWidth
 
         Row(Modifier.fillMaxSize()) {
-            if (isWideLayout) {
+            if (isWideLayout && shouldShowBottomBar(navController)) {
                 ResizableHomeNavigationRail(
                     availableWidth = maxWidth,
                     selectedTab = selectedTab,
                     navController = navController,
                     analytics = analytics,
                     onPlayingArtistClick = {
-                        navController.navigate(Screen.Search.createRoute(RootScreen.Search, nowPlaying.artist))
+                        navController.navigate(
+                            Screen.Search.createRoute(RootScreen.Search, nowPlaying.artist)
+                        )
                     },
                 )
             }

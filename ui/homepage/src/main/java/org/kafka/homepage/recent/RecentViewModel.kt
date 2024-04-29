@@ -7,9 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
+import org.kafka.domain.interactors.recent.RemoveAllRecentItems
 import org.kafka.domain.observers.ObserveRecentItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
@@ -18,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecentViewModel @Inject constructor(
     observeRecentItems: ObserveRecentItems,
+    private val removeAllRecentItems: RemoveAllRecentItems,
     private val navigator: Navigator,
     private val analytics: Analytics
 ) : ViewModel() {
@@ -35,6 +39,13 @@ class RecentViewModel @Inject constructor(
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId) }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+    }
+
+    fun clearAllRecentItems() {
+        analytics.log { this.clearRecentItems() }
+        viewModelScope.launch {
+            removeAllRecentItems(Unit).collect()
+        }
     }
 }
 

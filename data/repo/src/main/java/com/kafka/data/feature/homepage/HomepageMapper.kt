@@ -21,10 +21,11 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
                 is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
                 is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
                 is HomepageCollectionResponse.Grid -> it.mapGrid()
-                is HomepageCollectionResponse.Unknown -> flowOf()
+                is HomepageCollectionResponse.PersonRow -> it.mapPersonRow()
+                is HomepageCollectionResponse.Unknown -> flowOf(null)
             }
         },
-    ) { it.toList() }
+    ) { it.filterNotNull().toList() }
 
     private fun HomepageCollectionResponse.Row.mapRows(): Flow<HomepageCollection.Row> {
         val itemIdList = itemIds.split(", ")
@@ -36,6 +37,18 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
                 clickable = clickable,
             )
         }
+    }
+
+    private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
+        val itemIdList = itemIds.split(", ")
+
+        val personRow = HomepageCollection.PersonRow(
+            items = itemIdList.toPersistentList(),
+            images = image.map { it.downloadURL }.toPersistentList(),
+            enabled = enabled,
+        )
+
+        return flowOf(personRow)
     }
 
     private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {

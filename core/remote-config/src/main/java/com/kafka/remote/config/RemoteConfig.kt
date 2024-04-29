@@ -40,6 +40,8 @@ class RemoteConfig @Inject constructor(private val json: Json) {
 
     fun getBoolean(key: String): Boolean = remoteConfig.getBoolean(key)
 
+    fun getLong(key: String): Long = remoteConfig.getLong(key)
+
     private fun optional(key: String): String? = get(key).let { it.ifBlank { null } }
 
     private fun <T> optional(key: String, serializer: KSerializer<T>): T? {
