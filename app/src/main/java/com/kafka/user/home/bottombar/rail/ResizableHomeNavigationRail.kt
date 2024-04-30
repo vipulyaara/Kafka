@@ -44,7 +44,6 @@ internal fun RowScope.ResizableHomeNavigationRail(
         maxWeight = maxWeight,
         dragOffset = dragOffset,
         setDragOffset = setDragOffset,
-        analyticsPrefix = "home.navigationRail",
     ) { resizableModifier ->
         HomeNavigationRail(
             selectedTab = selectedTab,
