@@ -17,6 +17,6 @@ class UserDataRepository @Inject constructor(
     fun getUserCountry(): String? {
         val telephonyManager =
             context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return "US"
+        return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
     }
 }
