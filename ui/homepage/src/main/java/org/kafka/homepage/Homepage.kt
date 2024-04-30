@@ -122,7 +122,7 @@ private fun HomepageFeedItems(
     ) {
         homepage.collection.forEachIndexed { index, collection ->
             if (index == recommendationRowIndex && recommendedContent.isNotEmpty()) {
-                item(key = "recommendations", contentType = "row") {
+                item(key = "recommendations") {
                     LabelMedium(
                         text = stringResource(id = R.string.recommended_for_you),
                         modifier = subjectModifier
