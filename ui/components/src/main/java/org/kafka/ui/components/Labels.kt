@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 fun LabelMedium(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        style = MaterialTheme.typography.titleMedium,
         modifier = modifier,
+        style = MaterialTheme.typography.titleMedium,
     )
 }
 

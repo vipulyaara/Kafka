@@ -13,18 +13,17 @@ import org.kafka.base.domain.ResultInteractor
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 
-class GetRecommendedContent @Inject constructor(
+class GetRelatedContent @Inject constructor(
     private val recommendationRepository: RecommendationRepository,
     private val itemRepository: ItemRepository,
     private val buildRemoteQuery: BuildRemoteQuery,
     private val firebaseAuth: FirebaseAuth,
     private val dispatchers: CoroutineDispatchers
-) : ResultInteractor<Unit, List<Item>>() {
+) : ResultInteractor<String, List<Item>>() {
 
-    override suspend fun doWork(params: Unit): List<Item> = withContext(dispatchers.io) {
+    override suspend fun doWork(params: String): List<Item> = withContext(dispatchers.io) {
         if (firebaseAuth.currentUser != null) {
-            val response = recommendationRepository
-                .getRecommendedContent(firebaseAuth.currentUser!!.uid)
+            val response = recommendationRepository.getRelatedContent(params)
             val itemIds = response.getOrThrow().items.map { it.objectX.id }
 
             val query = ArchiveQuery().booksByIdentifiers(itemIds)

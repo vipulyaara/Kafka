@@ -13,4 +13,5 @@
     <string name="cd_download" translatable="false">Download</string>
     <string name="cd_download_file" translatable="false">Download file</string>
     <string name="cd_favorite" translatable="false">Favorite</string>
+    <string name="you_might_also_like" translatable="false">You might also like</string>
 </resources>
