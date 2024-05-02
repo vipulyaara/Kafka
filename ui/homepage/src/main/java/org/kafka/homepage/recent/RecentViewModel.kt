@@ -37,7 +37,7 @@ class RecentViewModel @Inject constructor(
     }
 
     fun openItemDetail(itemId: String) {
-        analytics.log { this.openItemDetail(itemId) }
+        analytics.log { this.openItemDetail(itemId = itemId, source = "reading_list") }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 

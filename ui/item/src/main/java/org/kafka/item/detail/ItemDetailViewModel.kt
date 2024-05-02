@@ -208,8 +208,8 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    fun openItemDetail(itemId: String) {
-        analytics.log { this.openItemDetail(itemId) }
+    fun openItemDetail(itemId: String, source: String) {
+        analytics.log { this.openItemDetail(itemId = itemId, source = source) }
         navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
     }
 
@@ -270,3 +270,5 @@ class ItemDetailViewModel @Inject constructor(
 }
 
 private const val itemOpenThresholdForAppReview = 20
+const val itemDetailSourceRelated = "item_detail/related"
+const val itemDetailSourceCreator = "item_detail/creator"

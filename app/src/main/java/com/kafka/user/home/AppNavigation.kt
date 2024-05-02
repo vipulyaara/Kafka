@@ -142,6 +142,7 @@ private fun NavGraphBuilder.addLibraryRoot() {
         addWebView(RootScreen.Library)
         addOnlineReader(RootScreen.Library)
         addLogin(RootScreen.Library)
+        addProfile(RootScreen.Library)
     }
 }
 

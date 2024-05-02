@@ -138,7 +138,7 @@ private fun ItemDetail(
     openFiles: (String) -> Unit,
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
-    openItemDetail: (String) -> Unit,
+    openItemDetail: (String, String) -> Unit,
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
@@ -191,7 +191,9 @@ private fun ItemDetail(
                     item {
                         RelatedItems(
                             items = relatedContent.toImmutableList(),
-                            openItemDetail = openItemDetail
+                            openItemDetail = { itemId ->
+                                openItemDetail(itemId, itemDetailSourceRelated)
+                            }
                         )
                     }
                 }
@@ -208,7 +210,7 @@ private fun ItemDetail(
                         Item(
                             item = item,
                             modifier = Modifier
-                                .clickable { openItemDetail(item.itemId) }
+                                .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
                                 .padding(
                                     vertical = Dimens.Spacing06,
                                     horizontal = Dimens.Gutter
@@ -337,7 +339,7 @@ private fun ItemDetailPreview() {
             openFiles = {},
             toggleFavorite = {},
             openSubject = {},
-            openItemDetail = {}
+            openItemDetail = { _, _ -> }
         )
     }
 }
