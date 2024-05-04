@@ -28,6 +28,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.material.bottomSheet
+import com.kafka.data.model.SearchFilter
 import com.kafka.reader.ReaderScreen
 import com.kafka.reader.online.OnlineReader
 import com.kafka.search.SearchScreen
@@ -156,8 +157,14 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
     composable(
         Screen.Search.createRoute(root),
         arguments = listOf(
-            navArgument("keyword") { type = NavType.StringType },
-            navArgument("filters") { type = NavType.StringType }
+            navArgument("keyword") {
+                type = NavType.StringType
+                defaultValue = ""
+            },
+            navArgument("filters") {
+                type = NavType.StringType
+                defaultValue = SearchFilter.Name.name
+            }
         ),
         deepLinks = listOf(
             navDeepLink {

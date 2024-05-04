@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
-import org.kafka.navigation.Screen.Search.createRoute
+import org.kafka.navigation.Screen.Search
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +46,12 @@ class PlaybackViewModel @Inject constructor(
         viewModelScope.launch {
             val currentRoot = navigator.currentRoot.value
             val creator = playbackConnection.nowPlaying.value.artist
-            navigator.navigate(createRoute(currentRoot, creator, SearchFilter.Creator.name))
+
+            navigator.navigate(Search.createRoute(
+                root = currentRoot,
+                keyword = creator,
+                filter = SearchFilter.Creator.name
+            ))
         }
     }
 }
