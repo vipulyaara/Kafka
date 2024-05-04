@@ -76,6 +76,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         recommendedContent = viewModel.recommendedContent,
                         recommendationRowIndex = viewModel.recommendationRowIndex,
                         openItemDetail = viewModel::openItemDetail,
+                        openRecommendationDetail = viewModel::openRecommendationDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
@@ -109,6 +110,7 @@ private fun HomepageFeedItems(
     recommendationRowIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
+    openRecommendationDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -129,7 +131,7 @@ private fun HomepageFeedItems(
                     )
                     RowItems(
                         items = recommendedContent.toImmutableList(),
-                        openItemDetail = openItemDetail
+                        openItemDetail = openRecommendationDetail
                     )
                 }
             }
