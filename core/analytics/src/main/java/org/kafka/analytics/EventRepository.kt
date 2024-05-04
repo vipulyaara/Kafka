@@ -19,9 +19,10 @@ class EventRepository @Inject constructor() {
             "name" to name,
         )
 
-    fun playItem(itemId: String, source: String? = null) = "play_item" to mapOf(
+    fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(
         "item_id" to itemId,
         "source" to source,
+        "index" to index.toString(),
     )
 
     fun readItem(itemId: String, type: String = "offline", source: String? = null) =

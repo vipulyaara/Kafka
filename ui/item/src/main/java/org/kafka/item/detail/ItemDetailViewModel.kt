@@ -141,7 +141,6 @@ class ItemDetailViewModel @Inject constructor(
     fun onPrimaryAction(itemId: String) {
         if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
-            analytics.log { playItem(itemId) }
             viewModelScope.launch { resumeAlbum(itemId).collect() }
         } else {
             openReader(itemId)
