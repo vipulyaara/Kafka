@@ -178,9 +178,9 @@ private fun HomepageFeedItems(
                     item(key = collection.key, contentType = "grid") {
                         SubjectItems(collection.labels, goToSubject)
                         GridItems(
-                            items = collection.items,
+                            collection = collection,
                             openItemDetail = openItemDetail,
-                            modifier = Modifier.testTag("row_$index")
+                            modifier = Modifier.testTag("grid_$index")
                         )
                     }
                 }
@@ -336,7 +336,7 @@ private fun LazyListScope.columnItems(
 
 @Composable
 private fun GridItems(
-    items: ImmutableList<Item>,
+    collection: HomepageCollection.Grid,
     openItemDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyGridState = rememberLazyGridState()
@@ -346,21 +346,34 @@ private fun GridItems(
         modifier = modifier.height(HorizontalGridHeight.dp),
         state = lazyListState
     ) {
-        items(
-            items = items,
-            key = { it.itemId },
-            contentType = { "item" }
-        ) { item ->
-            ItemSmall(
-                item = item,
-                modifier = Modifier
-                    .widthIn(max = RowItemMaxWidth.dp)
-                    .clickable { openItemDetail(item.itemId) }
-                    .padding(
+        if (collection.items.isNotEmpty()) {
+            items(
+                items = collection.items,
+                key = { it.itemId },
+                contentType = { "item" }
+            ) { item ->
+                ItemSmall(
+                    item = item,
+                    modifier = Modifier
+                        .widthIn(max = RowItemMaxWidth.dp)
+                        .clickable { openItemDetail(item.itemId) }
+                        .padding(
+                            horizontal = Dimens.Gutter,
+                            vertical = Dimens.Spacing06
+                        )
+                )
+            }
+        } else {
+            items(
+                count = PlaceholderItemCount,
+                key = { index -> "grid_placeholder_${collection.key}_$index" }) {
+                ItemPlaceholder(
+                    Modifier.padding(
                         horizontal = Dimens.Gutter,
                         vertical = Dimens.Spacing06
                     )
-            )
+                )
+            }
         }
     }
 }
@@ -383,4 +396,4 @@ private val subjectModifier = Modifier
 
 private const val HorizontalGridHeight = 290
 private const val RowItemMaxWidth = 350
-private const val PlaceholderItemCount = 5
+private const val PlaceholderItemCount = 6
