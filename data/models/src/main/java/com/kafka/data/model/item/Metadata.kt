@@ -25,22 +25,12 @@ data class Metadata(
     val subject: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,
-    @SerialName("licenseurl")
-    val licenseurl: String? = null,
     @SerialName("mediatype")
     val mediatype: String? = null,
-    @SerialName("publicdate")
-    val publicdate: String? = null,
     @SerialName("runtime")
     val runtime: String? = null,
-    @SerialName("source")
-    val source: String? = null,
-    @SerialName("taper")
-    val taper: String? = null,
     @SerialName("title")
     val title: String? = null,
-    @SerialName("year")
-    val year: String? = null,
     @SerialName("language")
     @Serializable(with = StringListSerializer::class)
     val languages: List<String>? = null,
