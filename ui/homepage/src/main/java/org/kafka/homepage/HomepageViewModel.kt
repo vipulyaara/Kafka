@@ -90,8 +90,12 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
     }
 
-    fun openItemDetail(itemId: String) {
-        analytics.log { openItemDetail(itemId, "homepage") }
+    fun openRecommendationDetail(itemId: String) {
+        openItemDetail(itemId, "recommendation")
+    }
+
+    fun openItemDetail(itemId: String, source: String = "homepage") {
+        analytics.log { openItemDetail(itemId, source) }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 

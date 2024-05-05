@@ -4,9 +4,13 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.model.ArchiveQuery
@@ -15,6 +19,7 @@ import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isOnlineReaderEnabled
+import com.kafka.remote.config.isRelatedContentRowEnabled
 import com.kafka.remote.config.isShareEnabled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -36,6 +41,7 @@ import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.interactors.recent.IsResumableAudio
+import org.kafka.domain.interactors.recommendation.GetRelatedContent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
@@ -67,6 +73,7 @@ class ItemDetailViewModel @Inject constructor(
     private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
     private val postRecommendationEvent: PostRecommendationEvent,
+    private val getRelatedContent: GetRelatedContent,
     private val resumeAlbum: ResumeAlbum,
     private val navigator: Navigator,
     private val remoteConfig: RemoteConfig,
@@ -74,15 +81,20 @@ class ItemDetailViewModel @Inject constructor(
     private val analytics: Analytics,
     private val appReviewManager: AppReviewManager,
     private val application: Application,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     private val loadingState = ObservableLoadingCounter()
     private val currentRoot
         get() = navigator.currentRoot.value
 
+    var recommendedContent by mutableStateOf(emptyList<Item>())
+
     val state: StateFlow<ItemDetailViewState> = combine(
-        observeItemDetail.flow.onEach { updateItemsByAuthor(it?.creator) },
+        observeItemDetail.flow.onEach { item ->
+            updateItemsByCreator(item?.creator)
+            updateRelatedItems(item?.itemId)
+        },
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
         loadingState.observable,
@@ -95,7 +107,7 @@ class ItemDetailViewModel @Inject constructor(
             isFavorite = isFavorite,
             isLoading = isLoading,
             downloadItem = downloadItem,
-            ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty()
+            ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -129,7 +141,6 @@ class ItemDetailViewModel @Inject constructor(
     fun onPrimaryAction(itemId: String) {
         if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
-            analytics.log { playItem(itemId) }
             viewModelScope.launch { resumeAlbum(itemId).collect() }
         } else {
             openReader(itemId)
@@ -172,11 +183,19 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    private fun updateItemsByAuthor(creator: String?) {
-        creator?.let { ArchiveQuery().booksByAuthor(it) }?.let {
+    private fun updateItemsByCreator(creator: String?) {
+        creator?.let { ArchiveQuery().booksByAuthor(it) }?.let { query ->
             viewModelScope.launch {
-                updateItems(UpdateItems.Params(it))
+                updateItems(UpdateItems.Params(query))
                     .collectStatus(loadingState, snackbarManager)
+            }
+        }
+    }
+
+    private fun updateRelatedItems(itemId: String?) {
+        if (itemId != null && remoteConfig.isRelatedContentRowEnabled()) {
+            viewModelScope.launch {
+                recommendedContent = getRelatedContent(itemId).getOrNull().orEmpty()
             }
         }
     }
@@ -188,8 +207,8 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    fun openItemDetail(itemId: String) {
-        analytics.log { this.openItemDetail(itemId) }
+    fun openItemDetail(itemId: String, source: String) {
+        analytics.log { this.openItemDetail(itemId = itemId, source = source) }
         navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
     }
 
@@ -250,3 +269,5 @@ class ItemDetailViewModel @Inject constructor(
 }
 
 private const val itemOpenThresholdForAppReview = 20
+const val itemDetailSourceRelated = "item_detail/related"
+const val itemDetailSourceCreator = "item_detail/creator"

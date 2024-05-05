@@ -2,6 +2,7 @@ package com.kafka.data.feature.recommendation.network
 
 import com.kafka.data.feature.recommendation.ContentRecommendationRequestBody
 import com.kafka.data.feature.recommendation.RecommendedContentResponse
+import com.kafka.data.feature.recommendation.RelatedContentRequestBody
 import com.kafka.data.model.recommendation.RecommendationRequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.Body
@@ -19,5 +20,11 @@ interface RecommendationService {
     suspend fun getRecommendedContent(
         @Path("app_id") appId: Int,
         @Body body: ContentRecommendationRequestBody,
+    ): RecommendedContentResponse
+
+    @POST("apps/{app_id}/algos/recommendations/related-content")
+    suspend fun getRelatedContent(
+        @Path("app_id") appId: Int,
+        @Body body: RelatedContentRequestBody,
     ): RecommendedContentResponse
 }

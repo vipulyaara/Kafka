@@ -20,9 +20,14 @@ class RecommendationRepository @Inject constructor(
     private val dispatchers: CoroutineDispatchers
 ) {
 
-    suspend fun getRecommendations(userId: String) = resultApiCall(dispatchers.io) {
+    suspend fun getRecommendedContent(userId: String) = resultApiCall(dispatchers.io) {
         val requestBody = ContentRecommendationRequestBody.fromUser(userId)
         recommendationService.getRecommendedContent(pipelessAppId, requestBody)
+    }
+
+    suspend fun getRelatedContent(contentId: String) = resultApiCall(dispatchers.io) {
+        val requestBody = RelatedContentRequestBody.fromContent(contentId)
+        recommendationService.getRelatedContent(pipelessAppId, requestBody)
     }
 
     suspend fun postEvent(

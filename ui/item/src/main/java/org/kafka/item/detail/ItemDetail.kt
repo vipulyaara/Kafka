@@ -3,21 +3,26 @@ package org.kafka.item.detail
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -32,16 +37,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -57,6 +62,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
+import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
@@ -106,6 +112,7 @@ private fun ItemDetail(
 
     ItemDetail(
         state = state,
+        relatedContent = viewModel.recommendedContent,
         openDescription = viewModel::showDescription,
         goToCreator = viewModel::goToCreator,
         onPrimaryAction = {
@@ -124,13 +131,14 @@ private fun ItemDetail(
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
+    relatedContent: List<Item>,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
-    openItemDetail: (String) -> Unit,
+    openItemDetail: (String, String) -> Unit,
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
@@ -166,12 +174,26 @@ private fun ItemDetail(
                     )
                 }
 
-                if (!state.itemDetail?.subject.isNullOrEmpty()) {
+                if (state.hasSubjects) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        Subjects(
-                            subjects = state.itemDetail!!.immutableSubjects,
-                            modifier = Modifier.padding(Dimens.Spacing16),
-                            onClicked = openSubject
+                        FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
+                            state.itemDetail!!.immutableSubjects.forEach {
+                                SubjectItem(
+                                    text = it,
+                                    modifier = Modifier.padding(Dimens.Spacing04),
+                                    onClicked = { openSubject(it) })
+                            }
+                        }
+                    }
+                }
+
+                if (relatedContent.isNotEmpty()) {
+                    item {
+                        RelatedItems(
+                            items = relatedContent.toImmutableList(),
+                            openItemDetail = { itemId ->
+                                openItemDetail(itemId, itemDetailSourceRelated)
+                            }
                         )
                     }
                 }
@@ -180,7 +202,7 @@ private fun ItemDetail(
                     item(span = { GridItemSpan(GridItemSpan) }) {
                         LabelMedium(
                             text = stringResource(R.string.more_by_author),
-                            modifier = Modifier.padding(Dimens.Spacing16)
+                            modifier = Modifier.padding(Dimens.Gutter)
                         )
                     }
 
@@ -188,7 +210,7 @@ private fun ItemDetail(
                         Item(
                             item = item,
                             modifier = Modifier
-                                .clickable { openItemDetail(item.itemId) }
+                                .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
                                 .padding(
                                     vertical = Dimens.Spacing06,
                                     horizontal = Dimens.Gutter
@@ -262,37 +284,40 @@ private fun ItemDescription(
 }
 
 @Composable
-fun ratingText(rating: Int): AnnotatedString {
-    return AnnotatedString.Builder().apply {
-        repeat(rating) {
-            append("✪")
-        }
-        repeat(MaxRating - rating) {
-            append("✪")
-        }
-
-        addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 0, rating)
-        append("   ")
-    }.toAnnotatedString()
-}
-
-@Composable
-private fun Subjects(
-    subjects: ImmutableList<String>,
+private fun RelatedItems(
+    items: ImmutableList<Item>,
     modifier: Modifier = Modifier,
-    onClicked: (String) -> Unit
+    openItemDetail: (String) -> Unit
 ) {
-    FlowRow(modifier = modifier) {
-        subjects.forEach {
-            SubjectItem(
-                text = it,
-                modifier = Modifier.padding(Dimens.Spacing04),
-                onClicked = { onClicked(it) })
+    Column(modifier = modifier) {
+        LabelMedium(
+            text = stringResource(R.string.you_might_also_like),
+            modifier = Modifier.padding(Dimens.Gutter)
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(
+                horizontal = Dimens.Gutter,
+                vertical = Dimens.Spacing06
+            ),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+        ) {
+            items(
+                items = items,
+                key = { it.itemId },
+                contentType = { it.javaClass }
+            ) { item ->
+                RowItem(
+                    item = item,
+                    modifier = Modifier
+                        .widthIn(max = Dimens.CoverSizeLarge.width)
+                        .clickable { openItemDetail(item.itemId) }
+                )
+            }
         }
     }
 }
 
-private const val MaxRating = 5
 private const val GridItemSpan = 1
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE)
@@ -306,6 +331,7 @@ private fun ItemDetailPreview() {
                 isFavorite = true,
                 itemsByCreator = FakeItemData.fakeItems
             ),
+            relatedContent = listOf(),
             modifier = Modifier.background(Color.White),
             openDescription = {},
             goToCreator = {},
@@ -313,7 +339,7 @@ private fun ItemDetailPreview() {
             openFiles = {},
             toggleFavorite = {},
             openSubject = {},
-            openItemDetail = {}
+            openItemDetail = { _, _ -> }
         )
     }
 }

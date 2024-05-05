@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,7 +28,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
 import org.kafka.common.test.testTagUi
 import org.kafka.item.detail.ItemDetailViewModel
-import org.kafka.item.detail.ratingText
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 
@@ -92,3 +92,20 @@ internal fun DescriptionText(
         )
     }
 }
+
+@Composable
+private fun ratingText(rating: Int): AnnotatedString {
+    return AnnotatedString.Builder().apply {
+        repeat(rating) {
+            append("✪")
+        }
+        repeat(MaxRating - rating) {
+            append("✪")
+        }
+
+        addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 0, rating)
+        append("   ")
+    }.toAnnotatedString()
+}
+
+private const val MaxRating = 5

@@ -48,7 +48,7 @@ class DownloadsViewModel @Inject constructor(
     }
 
     fun openItemDetail(itemId: String) {
-        analytics.log { this.openItemDetail(itemId) }
+        analytics.log { this.openItemDetail(itemId = itemId, source = "downloads") }
         navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
     }
 

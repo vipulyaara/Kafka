@@ -2,8 +2,11 @@ package org.kafka.analytics.logger
 
 import android.content.Context
 import android.os.Bundle
+import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.crashlytics.crashlytics
+import com.google.firebase.crashlytics.setCustomKeys
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +27,7 @@ class AnalyticsImpl @Inject constructor(
     private val eventRepository: EventRepository,
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
+    private val crashlytics by lazy { Firebase.crashlytics }
     private val mixPanel = MixpanelAPI.getInstance(context, MIXPANEL_TOKEN, true)
 
     init {
@@ -48,6 +52,17 @@ class AnalyticsImpl @Inject constructor(
     override fun updateUserProperty(userData: UserData) {
         firebaseAnalytics.setUserProperty("userId", userData.userId)
         firebaseAnalytics.setUserProperty("country", userData.country)
+
+        if (userData.userId != null) {
+            crashlytics.setUserId(userData.userId)
+            mixPanel.identify(userData.userId)
+        }
+
+        crashlytics.setCustomKeys {
+            if (userData.country != null) {
+                key("country", userData.country)
+            }
+        }
     }
 
     override fun logScreenView(label: String, route: String?, arguments: Any?) {
