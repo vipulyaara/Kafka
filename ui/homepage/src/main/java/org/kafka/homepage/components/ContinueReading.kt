@@ -75,7 +75,7 @@ internal fun ContinueReading(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .simpleClickable { openRecentItems() },
+                .simpleClickable { if (showAllAction) openRecentItems() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {

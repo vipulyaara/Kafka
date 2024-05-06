@@ -43,7 +43,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = "com.google.devtools.ksp:1.9.23-1.0.19"
 gms-googleServices = "com.google.gms.google-services:4.4.1"
-firebase-crashlytics = "com.google.firebase.crashlytics:3.0.0"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
 spotless = "com.diffplug.spotless:6.25.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
@@ -123,7 +123,7 @@ fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
 
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:33.0.0"
+google-bom = "com.google.firebase:firebase-bom:32.8.1"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links" }
