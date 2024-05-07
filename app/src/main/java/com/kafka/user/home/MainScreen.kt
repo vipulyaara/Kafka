@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,11 @@ import tm.alashow.datmusic.ui.downloader.DownloaderHost
 @Composable
 fun MainScreen(navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
     val mainViewModel = hiltViewModel<MainViewModel>()
+    val context = LocalContext.current
+
+    ForceUpdateDialog(
+        show = mainViewModel.isUpdateRequired,
+        update = { mainViewModel.updateApp(context) })
 
     LaunchedEffect(mainViewModel, navController) {
         navController.currentBackStackEntryFlow.collectLatest { entry ->

@@ -12,6 +12,7 @@ const val RECOMMENDATION_ROW_INDEX  = "recommendation_row_index"
 const val RELATED_CONTENT_ROW_ENABLED = "related_content_row_enabled"
 const val ONLINE_READER_ENABLED = "online_reader_enabled"
 const val EXACT_ALARM_ENABLED = "exact_alarm_enabled"
+const val MIN_SUPPORTED_VERSION = "min_supported_version"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -36,3 +37,5 @@ fun RemoteConfig.isRelatedContentRowEnabled() = getBoolean(RELATED_CONTENT_ROW_E
 fun RemoteConfig.isOnlineReaderEnabled() = getBoolean(ONLINE_READER_ENABLED)
 
 fun RemoteConfig.isExactAlarmEnabled() = getBoolean(EXACT_ALARM_ENABLED)
+
+fun RemoteConfig.minSupportedVersion() = getLong(MIN_SUPPORTED_VERSION)
