@@ -1,6 +1,7 @@
 package org.kafka.item.files
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -18,8 +19,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
+import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
+import org.kafka.domain.interactors.DownloadFile
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
@@ -36,12 +39,15 @@ class FilesViewModel @Inject constructor(
     private val addRecentItem: AddRecentItem,
     private val playbackConnection: PlaybackConnection,
     private val downloader: Downloader,
+    private val downloadFile: DownloadFile,
     private val navigator: Navigator,
     private val analytics: Analytics
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     var selectedExtension by mutableStateOf(null as String?)
+
+    var progress: Float by mutableFloatStateOf(0.5f)
 
     val state: StateFlow<FilesViewState> = combine(
         observeFiles.flow,
@@ -80,7 +86,13 @@ class FilesViewModel @Inject constructor(
 
     fun onDownloadClicked(file: File) {
         analytics.log { downloadFile(file.fileId, file.itemId) }
-        viewModelScope.launch { downloader.enqueueFile(file.fileId) }
+        viewModelScope.launch {
+            downloadFile(DownloadFile.Params(file.downloadUrl.orEmpty(), file.name)).collect { state ->
+                debug { "Download state: $state"}
+//                progress = if (state is DownloadState.Downloading) state.progress / 100f else 0.5f
+            }
+        }
+//        viewModelScope.launch { downloader.enqueueFile(file.fileId) }
     }
 
     private fun actionLabels(files: List<File>) =

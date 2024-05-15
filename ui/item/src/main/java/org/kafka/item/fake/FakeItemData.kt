@@ -6,7 +6,7 @@ import com.kafka.data.entities.ItemDetail
 import kotlinx.collections.immutable.persistentListOf
 
 object FakeItemData {
-    private val coverUrl =
+    private const val coverUrl =
         "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&&fm=jpg&w=400&fit=max"
 
     private val item0 = Item(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -39,6 +40,7 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
         ProvideScaffoldPadding(padding = padding) {
             Files(
                 viewState = viewState,
+                progress = viewModel.progress,
                 selectedExtension = viewModel.selectedExtension,
                 selectExtension = { viewModel.selectedExtension = it },
                 onFileClicked = viewModel::onFileClicked,
@@ -52,6 +54,7 @@ fun Files(viewModel: FilesViewModel = hiltViewModel()) {
 @Composable
 private fun Files(
     viewState: FilesViewState,
+    progress: Float,
     selectedExtension: String?,
     selectExtension: (String?) -> Unit,
     onFileClicked: (File) -> Unit,
@@ -71,6 +74,12 @@ private fun Files(
                 onItemSelected = { selectExtension(it) },
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+
+        item {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                progress = { progress })
         }
 
         items(items = viewState.filteredFiles, key = { it.fileId }) { file ->

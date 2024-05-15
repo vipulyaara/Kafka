@@ -2,9 +2,12 @@ package com.kafka.data.api
 
 import com.kafka.data.model.item.ItemDetailResponse
 import com.kafka.data.model.item.SearchResponse
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
@@ -23,4 +26,8 @@ interface ArchiveService {
 
     @GET("/metadata/{id}")
     suspend fun getItemDetail(@Path("id") id: String?): ItemDetailResponse
+
+    @Streaming
+    @GET
+    suspend fun downloadFile(@Url url: String): ResponseBody
 }

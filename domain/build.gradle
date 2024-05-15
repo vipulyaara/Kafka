@@ -23,6 +23,8 @@ dependencies {
     implementation project(':core:downloader')
     implementation project(':core-playback')
 
+    implementation  "com.github.khushpanchal:Ketch:1.0.0"
+
     implementation platform(libs.google.bom)
 
     implementation libs.firestore.ktx

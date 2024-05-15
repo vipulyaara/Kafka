@@ -35,22 +35,23 @@ class FetchDownloadManager @Inject constructor(
         }.flatten()
     }
 
-    override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> = suspendCoroutine { continuation ->
-        fetch.enqueue(
-            request,
-            { request ->
-                continuation.resume(DownloadEnqueueSuccessful(request))
-            },
-            { error ->
-                continuation.resume(
-                    DownloadEnqueueFailed(
-                        error.throwable
-                            ?: IOException("Download error: ${error.name}, code=${error.value}"),
-                    ),
-                )
-            },
-        )
-    }
+    override suspend fun enqueue(request: Request): DownloadEnqueueResult<Request> =
+        suspendCoroutine { continuation ->
+            fetch.enqueue(
+                request,
+                { request ->
+                    continuation.resume(DownloadEnqueueSuccessful(request))
+                },
+                { error ->
+                    continuation.resume(
+                        DownloadEnqueueFailed(
+                            error.throwable
+                                ?: IOException("Download error: ${error.name}, code=${error.value}"),
+                        ),
+                    )
+                },
+            )
+        }
 
     override suspend fun getDownload(id: Int): Download? = suspendCoroutine { continuation ->
         fetch.getDownload(id) { continuation.resume(it) }
@@ -200,7 +201,11 @@ fun createFetchListener(fetch: Fetch): Flow<Downloadable?> = callbackFlow {
             trySend(DownloadPaused(download))
         }
 
-        override fun onProgress(download: Download, etaInMilliSeconds: Long, downloadedBytesPerSecond: Long) {
+        override fun onProgress(
+            download: Download,
+            etaInMilliSeconds: Long,
+            downloadedBytesPerSecond: Long
+        ) {
             super.onProgress(download, etaInMilliSeconds, downloadedBytesPerSecond)
             trySend(DownloadProgress(download, etaInMilliSeconds, downloadedBytesPerSecond))
         }
