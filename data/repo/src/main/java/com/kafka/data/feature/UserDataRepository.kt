@@ -1,10 +1,9 @@
-package org.kafka.analytics.data
+package com.kafka.data.feature
 
 import android.content.Context
 import android.telephony.TelephonyManager
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.kafka.analytics.logger.UserData
 import javax.inject.Inject
 
 class UserDataRepository @Inject constructor(
@@ -20,3 +19,5 @@ class UserDataRepository @Inject constructor(
         return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
     }
 }
+
+data class UserData(val userId: String? = null, val country: String? = null)

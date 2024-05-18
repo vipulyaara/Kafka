@@ -8,9 +8,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":base:domain"))
-    implementation(project(":data:database"))
-    implementation(project(":core:analytics"))
+    implementation(projects.base.domain)
+    implementation(projects.core.analytics)
+    implementation(projects.data.database)
+    implementation(projects.data.repo)
 
     implementation(libs.androidx.core)
     implementation(libs.firestore.ktx)

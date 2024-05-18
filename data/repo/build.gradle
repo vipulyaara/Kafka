@@ -23,7 +23,6 @@ dependencies {
     api project(':base:network')
     api project(':data:models')
     api project(':data:database')
-    implementation project(':core:recommendation')
     implementation libs.androidx.collection
     implementation libs.androidx.core
     implementation libs.androidx.room.ktx

@@ -1,7 +1,7 @@
 package com.kafka.recommendations.topic
 
 import android.app.Application
-import org.kafka.analytics.data.UserDataRepository
+import com.kafka.data.feature.UserDataRepository
 import org.kafka.base.AppInitializer
 import javax.inject.Inject
 
