@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.accompanist.web.WebContent
 import com.google.accompanist.web.WebViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -19,6 +20,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.asUiMessage
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
+import org.kafka.common.toast
 import org.kafka.domain.interactors.GetReaderState
 import org.kafka.domain.interactors.ReaderState
 import org.kafka.domain.interactors.UpdateCurrentPage
@@ -27,6 +29,7 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
 import org.kafka.reader.R
+import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,10 +39,11 @@ class OnlineReaderViewModel @Inject constructor(
     private val navigator: Navigator,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
+    private val downloader: Downloader,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val itemId: String = savedStateHandle["itemId"] ?: error("Url not provided")
-    private val readerState = MutableStateFlow<ReaderState?>(null)
+    val readerState = MutableStateFlow<ReaderState?>(null)
 
     val urlState = MutableStateFlow("")
 
@@ -70,6 +74,15 @@ class OnlineReaderViewModel @Inject constructor(
                 val currentPage = url.getCurrentPageFromReaderUrl()
                 val fileId = readerState.value!!.fileId
                 updateCurrentPage.invoke(UpdateCurrentPage.Params(fileId, currentPage)).collect()
+            }
+        }
+    }
+
+    fun downloadItem(context: Context) {
+        context.toast("Downloading in background...")
+        viewModelScope.launch(Dispatchers.IO) {
+            if (readerState.value != null) {
+                downloader.enqueueFile(readerState.value!!.fileId)
             }
         }
     }
