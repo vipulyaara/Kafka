@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -110,6 +111,7 @@ internal fun ContinueReading(
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
+                    modifier = Modifier.animateItemPlacement(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )
@@ -189,14 +191,14 @@ private fun BoxScope.RemoveRecentItemButton(
     onItemRemoved: (String) -> Unit,
     continueReading: RecentItem
 ) {
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "infinite")
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = .90f,
         animationSpec = infiniteRepeatable(
             animation = tween(500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = "scale"
     )
     val rotation by infiniteTransition.animateFloat(
         initialValue = -10f,
@@ -204,13 +206,15 @@ private fun BoxScope.RemoveRecentItemButton(
         animationSpec = infiniteRepeatable(
             animation = tween(230, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = "rotation"
     )
 
     if (isInEditMode) {
         IconButton(
             modifier = Modifier
                 .size(Dimens.Spacing44)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface)
                 .align(Alignment.TopEnd)
                 .graphicsLayer {
                     scaleX = scale
