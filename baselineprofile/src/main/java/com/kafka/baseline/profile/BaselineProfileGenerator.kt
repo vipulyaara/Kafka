@@ -39,7 +39,11 @@ class BaselineProfileGenerator {
 
     @Test
     fun generate() {
-        rule.collect("com.kafka.user") {
+        rule.collect(
+            packageName = "com.kafka.user",
+            // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
+            includeInStartupProfile = true
+        ) {
             // This block defines the app's critical user journey. Here we are interested in
             // optimizing for app startup. But you can also navigate and scroll
             // through your most important UI.
