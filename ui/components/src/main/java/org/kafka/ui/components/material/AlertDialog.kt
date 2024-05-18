@@ -1,7 +1,5 @@
 package org.kafka.ui.components.material
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -13,21 +11,17 @@ fun AlertDialog(
     title: String,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    confirmButton: @Composable RowScope.() -> Unit,
-    cancelButton: @Composable (RowScope.() -> Unit)? = null,
+    confirmButton: @Composable () -> Unit,
+    cancelButton: @Composable (() -> Unit)? = null,
 ) {
     androidx.compose.material3.AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        title = {
-            Text(text = title, style = MaterialTheme.typography.bodyMedium)
-        },
-        confirmButton = {
-            Row {
-                confirmButton()
-                if (cancelButton != null) {
-                    cancelButton()
-                }
+        title = { Text(text = title, style = MaterialTheme.typography.bodyMedium) },
+        confirmButton = confirmButton,
+        dismissButton = {
+            if (cancelButton != null) {
+                cancelButton()
             }
         }
     )
