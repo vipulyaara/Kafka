@@ -68,8 +68,7 @@ fun Item(
             CoverImage(
                 data = coverImage,
                 placeholder = placeholder(mediaType),
-                size = Dimens.CoverSizeMedium,
-                isNoPreview = isInAppropriate
+                size = Dimens.CoverSizeMedium
             )
 
             if (isInAppropriate) {
