@@ -95,6 +95,8 @@ class EventRepository @Inject constructor() {
         "source" to source
     )
 
+    fun shareApp() = "share_app" to mapOf<String, String>()
+
     fun openArchiveItem(itemId: String) = "open_archive_item" to mapOf("item_id" to itemId)
 
     fun setDownloadLocation(location: String) = "set_download_location" to mapOf(
@@ -118,4 +120,6 @@ class EventRepository @Inject constructor() {
     fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 
     fun clearRecentItems() = "clear_recent_items" to mapOf<String, String>()
+
+    fun showAppReviewDialog() = "show_review_dialog" to mapOf<String, String>()
 }
