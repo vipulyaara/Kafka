@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -34,14 +35,6 @@ fun FeaturedItem(
     imageUrl: String? = null,
     onClick: () -> Unit = {}
 ) {
-    val scrim = scrim(
-        if (LocalThemeColor.current.isDark) {
-            MaterialTheme.colorScheme.background
-        } else {
-            Color.Black
-        }
-    )
-
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -57,35 +50,50 @@ fun FeaturedItem(
                     .aspectRatio(1f)
             )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomStart)
-                    .background(scrim)
-                    .padding(Dimens.Gutter)
-            ) {
-                Text(
-                    text = label ?: item.title.orEmpty(),
-                    style = MaterialTheme.typography.headlineMedium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.White
-                )
+            if (!label.isNullOrBlank()) {
+                TextOverlay(label = label, item = item)
+            }
+        }
+    }
+}
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08)
-                ) {
-                    item.creator?.let { creator ->
-                        Text(
-                            text = creator.name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            color = Color.White.copy(alpha = 0.6f),
-                        )
-                    }
-                }
+@Composable
+private fun BoxScope.TextOverlay(label: String, item: Item) {
+    val scrim = scrim(
+        if (LocalThemeColor.current.isDark) {
+            MaterialTheme.colorScheme.background
+        } else {
+            Color.Black
+        }
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomStart)
+            .background(scrim)
+            .padding(Dimens.Gutter)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.headlineMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.White
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08)
+        ) {
+            item.creator?.let { creator ->
+                Text(
+                    text = creator.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.White.copy(alpha = 0.6f),
+                )
             }
         }
     }
