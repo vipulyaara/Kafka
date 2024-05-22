@@ -28,6 +28,7 @@ import compose.icons.tablericons.Copy
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
+import compose.icons.tablericons.Gift
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
@@ -93,4 +94,5 @@ object Icons {
     val Logout = TablerIcons.Logout
     val Feedback = TablerIcons.Message
     val SafeMode = TablerIcons.Umbrella
+    val Gift = TablerIcons.Gift
 }

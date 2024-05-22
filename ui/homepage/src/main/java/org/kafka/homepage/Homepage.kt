@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -63,6 +64,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
     LogCompositions(tag = "Homepage Feed items")
 
     val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -75,6 +77,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         homepage = viewState.homepage,
                         recommendedContent = viewModel.recommendedContent,
                         recommendationRowIndex = viewModel.recommendationRowIndex,
+                        appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecommendationDetail = viewModel::openRecommendationDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
@@ -83,7 +86,8 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         goToSubject = viewModel::openSubject,
                         onBannerClick = viewModel::onBannerClick,
                         openRecentItems = viewModel::openRecentItems,
-                        goToCreator = viewModel::openCreator
+                        goToCreator = viewModel::openCreator,
+                        shareApp = { viewModel.shareApp(context) }
                     )
                 }
 
@@ -107,6 +111,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     recommendedContent: List<Item>,
+    appShareIndex: Int,
     recommendationRowIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
@@ -116,7 +121,8 @@ private fun HomepageFeedItems(
     goToSubject: (String) -> Unit,
     goToCreator: (String) -> Unit,
     onBannerClick: (HomepageBanner) -> Unit,
-    openRecentItems: () -> Unit
+    openRecentItems: () -> Unit,
+    shareApp: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.testTag("homepage_feed_items"),
@@ -132,6 +138,18 @@ private fun HomepageFeedItems(
                     RowItems(
                         items = recommendedContent.toImmutableList(),
                         openItemDetail = openRecommendationDetail
+                    )
+                }
+            }
+
+            if (index == appShareIndex) {
+                item {
+                    MessageBox(
+                        text = stringResource(R.string.share_app_prompt),
+                        trailingIcon = Icons.Share,
+                        leadingIcon = Icons.Gift,
+                        modifier = Modifier.padding(Dimens.Gutter),
+                        onClick = shareApp
                     )
                 }
             }
