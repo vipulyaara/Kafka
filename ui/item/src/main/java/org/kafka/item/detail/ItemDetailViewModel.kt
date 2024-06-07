@@ -163,7 +163,7 @@ class ItemDetailViewModel @Inject constructor(
             addRecentItem(itemId)
 
             if (state.value.downloadItem == null && remoteConfig.isOnlineReaderEnabled()) {
-                analytics.log { readItem(itemId = itemId, type = "online") }
+                logOnlineReader(itemDetail = itemDetail)
                 navigator.navigate(OnlineReader.createRoute(currentRoot, itemDetail.itemId))
             } else {
                 analytics.log { readItem(itemId = itemId, type = "offline") }
@@ -238,7 +238,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun openArchiveItem() {
-        analytics.log { this.openArchiveItem(itemId) }
+        analytics.log { this.openArchiveItem(itemId, state.value.itemDetail?.isAccessRestricted) }
         navigator.navigate(Screen.Web.createRoute(currentRoot, Config.archiveDetailUrl(itemId)))
     }
 
@@ -254,6 +254,16 @@ class ItemDetailViewModel @Inject constructor(
         is Activity -> this
         is ContextWrapper -> baseContext.getActivity()
         else -> null
+    }
+
+    private fun logOnlineReader(itemDetail: ItemDetail) {
+        analytics.log {
+            readItem(
+                itemId = itemDetail.itemId,
+                type = "online",
+                isRestrictedAccess = itemDetail.isAccessRestricted
+            )
+        }
     }
 
     private fun ctaText(itemDetail: ItemDetail, isResumableAudio: Boolean) =
