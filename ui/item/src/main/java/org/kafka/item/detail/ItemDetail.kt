@@ -51,6 +51,7 @@ import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
+import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.LoadImage
@@ -60,6 +61,7 @@ import org.kafka.item.fake.FakeItemData
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.LabelMedium
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.RowItem
@@ -123,6 +125,7 @@ private fun ItemDetail(
         toggleFavorite = viewModel::updateFavorite,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
+        openArchiveItem = viewModel::openArchiveItem,
         modifier = modifier,
         lazyGridState = lazyGridState
     )
@@ -139,6 +142,7 @@ private fun ItemDetail(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
+    openArchiveItem: () -> Unit,
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
@@ -170,14 +174,21 @@ private fun ItemDetail(
                         onPrimaryAction = onPrimaryAction,
                         openFiles = openFiles,
                         isFavorite = state.isFavorite,
+                        showDownloads = state.showDownloads,
                         toggleFavorite = toggleFavorite
                     )
+                }
+
+                if (state.itemDetail!!.isAccessRestricted) {
+                    item(span = { GridItemSpan(GridItemSpan) }) {
+                        AccessRestricted(openArchiveItem)
+                    }
                 }
 
                 if (state.hasSubjects) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
                         FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
-                            state.itemDetail!!.immutableSubjects.forEach {
+                            state.itemDetail.immutableSubjects.forEach {
                                 SubjectItem(
                                     text = it,
                                     modifier = Modifier.padding(Dimens.Spacing04),
@@ -318,6 +329,16 @@ private fun RelatedItems(
     }
 }
 
+@Composable
+private fun AccessRestricted(onClick: () -> Unit) {
+    MessageBox(
+        text = stringResource(R.string.restricted_access),
+        trailingIcon = Icons.ArrowForward,
+        modifier = Modifier.padding(Dimens.Spacing24),
+        onClick = onClick
+    )
+}
+
 private const val GridItemSpan = 1
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE)
@@ -339,7 +360,8 @@ private fun ItemDetailPreview() {
             openFiles = {},
             toggleFavorite = {},
             openSubject = {},
-            openItemDetail = { _, _ -> }
+            openItemDetail = { _, _ -> },
+            openArchiveItem = { }
         )
     }
 }

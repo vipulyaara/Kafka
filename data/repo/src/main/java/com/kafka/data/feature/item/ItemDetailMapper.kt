@@ -38,6 +38,7 @@ class ItemDetailMapper @Inject constructor(
                     ?.filter { it.isNotEmpty() }
             },
             rating = itemDao.getOrNull(from.metadata.identifier)?.rating,
+            isAccessRestricted = from.metadata.accessRestrictedItem
         ).also {
             insertFiles(from, it)
         }

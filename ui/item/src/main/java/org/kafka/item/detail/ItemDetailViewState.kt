@@ -22,6 +22,9 @@ data class ItemDetailViewState(
     val hasSubjects
         get() = !itemDetail?.subject.isNullOrEmpty()
 
+    val showDownloads
+        get() = itemDetail?.isAccessRestricted == false
+
     val isFullScreenLoading: Boolean
         get() {
             debug { "isFullScreenLoading $isLoading $itemDetail" }

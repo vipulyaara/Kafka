@@ -24,6 +24,7 @@ data class ItemDetail(
     val primaryFile: String? = null,
     val subject: List<String>? = null,
     val rating: Double? = null,
+    val isAccessRestricted: Boolean = false
 ) : BaseEntity {
     val uiRating: Int
         get() = (rating ?: 0.0).toInt()
