@@ -38,7 +38,7 @@ internal fun HomeNavigationBar(
     ) {
         HomeNavigationItems.forEach { item ->
             NavigationBarItem(
-                modifier= Modifier.testTagUi("home_tab_${item.labelResId}"),
+                modifier = Modifier.testTagUi("home_tab_${item.labelResId}"),
                 selected = selectedTab == item.rootScreen,
                 onClick = { onNavigationSelected(item.rootScreen) },
                 icon = {

@@ -1,5 +1,6 @@
 package org.kafka.homepage
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,27 +22,31 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
+import org.kafka.common.shareText
 import org.kafka.domain.interactors.UpdateHomepage
 import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.interactors.recommendation.GetRecommendedContent
 import org.kafka.domain.observers.ObserveHomepage
+import org.kafka.domain.observers.ObserveShareAppIndex
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.deeplink.Config
 import javax.inject.Inject
 
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     observeUser: ObserveUser,
+    observeShareAppIndex: ObserveShareAppIndex,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
     private val getRecommendedContent: GetRecommendedContent,
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val loadingCounter: ObservableLoadingCounter,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     var recommendedContent by mutableStateOf(emptyList<Item>())
@@ -51,6 +56,7 @@ class HomepageViewModel @Inject constructor(
         observeHomepage.flow,
         observeUser.flow,
         loadingCounter.observable,
+        observeShareAppIndex.flow,
         uiMessageManager.message,
         ::HomepageViewState
     ).stateInDefault(scope = viewModelScope, initialValue = HomepageViewState())
@@ -58,6 +64,7 @@ class HomepageViewModel @Inject constructor(
     init {
         observeHomepage(Unit)
         observeUser(ObserveUser.Params())
+        observeShareAppIndex(Unit)
 
         viewModelScope.launch {
             if (remoteConfig.isRecommendationRowEnabled()) {
@@ -133,6 +140,11 @@ class HomepageViewModel @Inject constructor(
                 filter = SearchFilter.Creator.name
             )
         )
+    }
+
+    fun shareApp(context: Context) {
+        analytics.log { this.shareApp() }
+        context.shareText(context.getString(R.string.share_app_message, Config.PLAY_STORE_URL))
     }
 
     fun onBannerClick(banner: HomepageBanner) {

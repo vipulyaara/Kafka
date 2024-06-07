@@ -14,4 +14,6 @@
     <string name="clear_recent_dialog_title" translatable="false">Are you sure you want to remove all items from Reading List?</string>
     <string name="remove_all" translatable="false">Remove all</string>
     <string name="cancel" translatable="false">Cancel</string>
+    <string name="share_app_prompt" translatable="false">Support Kafka by sharing the app with someone who might enjoy it.</string>
+    <string name="share_app_message" translatable="false">Check out Kafka, the app with millions of free books and audios: %1$s</string>
 </resources>

@@ -6,8 +6,7 @@ androidxlifecycle = "2.7.0"
 navigation = "2.7.7"
 coil = "2.6.0"
 compose-alpha = "2024.01.00-alpha01"
-compose-bom = "2024.04.00"
-constraintlayout = "1.1.0-alpha13"
+compose-bom = "2024.05.00"
 composecompiler = "1.5.12"
 coroutines = "1.8.0"
 dagger = "2.51"
@@ -20,14 +19,13 @@ okhttp = "4.12.0"
 paging = "3.2.1"
 retrofit = "2.9.0"
 room = "2.6.1"
-threetenbp = "1.5.2"
 serialization = "1.6.3"
 exoplayer = "2.19.1"
 pdfviewer = "3.2.0-beta.1"
 compileSdk = "34"
 minSdk = "24"
 targetSdk = "33"
-core-ktx = "1.13.0"
+core-ktx = "1.13.1"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 uiautomator = "2.3.0"
@@ -69,9 +67,9 @@ rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.8.2"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.0"
 androidx-collection = "androidx.collection:collection-ktx:1.4.0"
-androidx-core = "androidx.core:core-ktx:1.12.0"
+androidx-core = "androidx.core:core-ktx:1.13.1"
 
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxhilt" }
 androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.2.0"
@@ -81,7 +79,6 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidxlifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxlifecycle" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxlifecycle" }
@@ -120,7 +117,6 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout" }
 
 fetch = "androidx.tonyodev.fetch2:xfetch2:3.1.6"
 fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
@@ -136,9 +132,8 @@ google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
-google-playservices-auth = "com.google.android.gms:play-services-auth:21.1.0"
+google-playservices-auth = "com.google.android.gms:play-services-auth:21.1.1"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
-google-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 
@@ -169,9 +164,8 @@ pdfviewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "
 threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
 timber = "com.jakewharton.timber:timber:5.0.1"
 tracing = "androidx.tracing:tracing-ktx:1.2.0"
-dataStore = "androidx.datastore:datastore-preferences:1.0.0"
+dataStore = "androidx.datastore:datastore-preferences:1.1.1"
 jsoup = "org.jsoup:jsoup:1.16.1"
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }

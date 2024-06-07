@@ -10,6 +10,7 @@ data class HomepageViewState(
     val homepage: Homepage = Homepage.Empty,
     val user: User? = null,
     val isLoading: Boolean = true,
+    val appShareIndex: Int = -1,
     val message: UiMessage? = null
 ) {
     val isFullScreenError: Boolean

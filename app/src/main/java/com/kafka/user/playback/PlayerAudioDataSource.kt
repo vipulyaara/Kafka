@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class PlayerAudioDataSource @Inject constructor(private val fileDao: FileDao) : AudioDataSource {
     override suspend fun getByIds(ids: List<String>): List<Audio> {
-        return fileDao.getByIds(ids)
+        return fileDao.getByIds(ids.take(SQL_QUERY_LIMIT))
             .sortedBy { it.format }
             .map { it.asAudio() }
     }
@@ -29,3 +29,5 @@ class PlayerAudioDataSource @Inject constructor(private val fileDao: FileDao) : 
             .map { it.asAudio() }
     }
 }
+
+const val SQL_QUERY_LIMIT = 990

@@ -17,4 +17,7 @@
     <string name="home" translatable="false">Home</string>
 
     <string name="notifications.defaultChannel" translatable="false">Default channel</string>
+    <string name="update_available" translatable="false">Update Available</string>
+    <string name="force_update_message" translatable="false">This version is outdated. Please update the app to continue using it.</string>
+    <string name="update" translatable="false">Update</string>
 </resources>

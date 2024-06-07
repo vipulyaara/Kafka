@@ -1,13 +1,12 @@
 package com.kafka.data.feature.homepage
 
+import com.kafka.data.feature.UserDataRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
-import com.kafka.recommendations.topic.FirebaseTopics
 import dagger.Reusable
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
@@ -18,23 +17,19 @@ import javax.inject.Inject
 class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
-    private val firebaseTopics: FirebaseTopics,
+    private val userDataRepository: UserDataRepository,
     private val serializerModule: SerializersModule
 ) {
-    fun observeHomepageCollection() = combine(
-        firestoreGraph.homepageCollection.snapshots,
-        firebaseTopics.topics,
-    ) { homepageResponse, topics ->
-        homepageResponse to topics
-    }.flatMapLatest { pair ->
-        pair.first.toHomepage(pair.second)
-    }
+    fun observeHomepageCollection() =
+        firestoreGraph.homepageCollection.snapshots.flatMapLatest {
+            it.toHomepage(userDataRepository.getUserCountry())
+        }
 
-    private fun QuerySnapshot.toHomepage(topics: List<String>) =
+    private fun QuerySnapshot.toHomepage(country: String?) =
         documents
             .map { documentSnapshot -> documentSnapshot.getHomepageData() }
             .filter { it.enabled }
-            .filter { it.filterByTopics(topics) }
+            .filter { it.filterByTopics(country) }
             .sortedBy { it.index }
             .also { debug { "homepage is : $it" } }
             .run { homepageMapper.map(this) }
@@ -61,11 +56,12 @@ class HomepageRepository @Inject constructor(
         .distinct()
         .toList()
 
-    private fun HomepageCollectionResponse.filterByTopics(userTopics: List<String>): Boolean {
+    private fun HomepageCollectionResponse.filterByTopics(country: String?): Boolean {
         val collectionTopics = this.topics.split(", ").filter { it.isNotEmpty() }
-        return collectionTopics.isEmpty() ||
-                userTopics.isEmpty() ||
-                shouldShowCollection(userTopics, collectionTopics)
+        return collectionTopics.isEmpty() || country == null || shouldShowCollection(
+            userTopics = listOf(country),
+            collectionTopics = collectionTopics
+        )
     }
 
     private fun shouldShowCollection(
@@ -73,8 +69,8 @@ class HomepageRepository @Inject constructor(
         collectionTopics: List<String>
     ): Boolean {
         val includedTopics = collectionTopics.filter { !it.startsWith("-") }.toSet()
-        val excludedTopics =
-            collectionTopics.filter { it.startsWith("-") }.map { it.substring(1) }.toSet()
+        val excludedTopics = collectionTopics.filter { it.startsWith("-") }
+            .map { it.substring(1) }.toSet()
 
         for (userTopic in userTopics) {
             if (excludedTopics.any { userTopic.contains(it) }) {

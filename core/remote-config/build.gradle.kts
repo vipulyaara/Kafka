@@ -2,10 +2,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
-    id("kotlinx-serialization")
 }
 
 android {
@@ -16,7 +16,7 @@ dependencies {
     implementation(project(":core:analytics"))
     implementation(project(":base:domain"))
 
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

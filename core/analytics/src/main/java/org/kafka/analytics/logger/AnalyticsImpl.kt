@@ -7,13 +7,14 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
+import com.kafka.data.feature.UserData
+import com.kafka.data.feature.UserDataRepository
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.kafka.analytics.EventRepository
-import org.kafka.analytics.data.UserDataRepository
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
 import javax.inject.Inject
@@ -54,13 +55,13 @@ class AnalyticsImpl @Inject constructor(
         firebaseAnalytics.setUserProperty("country", userData.country)
 
         if (userData.userId != null) {
-            crashlytics.setUserId(userData.userId)
+            crashlytics.setUserId(userData.userId!!)
             mixPanel.identify(userData.userId)
         }
 
         crashlytics.setCustomKeys {
             if (userData.country != null) {
-                key("country", userData.country)
+                key("country", userData.country!!)
             }
         }
     }

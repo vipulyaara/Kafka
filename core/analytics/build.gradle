@@ -16,7 +16,8 @@ android {
 
 dependencies {
     implementation project(':base:domain')
-    
+    implementation project(':data:repo')
+
     implementation platform(libs.google.bom)
     implementation libs.google.analytics
     implementation libs.google.auth

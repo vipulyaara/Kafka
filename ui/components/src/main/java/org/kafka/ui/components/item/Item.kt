@@ -19,15 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.theapache64.rebugger.Rebugger
+import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
 import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.IconResource
+import org.kafka.ui.components.R
 import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
@@ -57,13 +60,32 @@ fun Item(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
     ) {
-        CoverImage(
-            data = coverImage,
-            placeholder = placeholder(mediaType),
-            size = Dimens.CoverSizeMedium,
-            modifier = Modifier.align(Alignment.CenterVertically),
-            isNoPreview = isInAppropriate
-        )
+        Box(
+            modifier = Modifier
+                .size(Dimens.CoverSizeMedium)
+                .align(Alignment.CenterVertically)
+        ) {
+            CoverImage(
+                data = coverImage,
+                placeholder = placeholder(mediaType),
+                size = Dimens.CoverSizeMedium
+            )
+
+            if (isInAppropriate) {
+                Text(
+                    text = stringResource(R.string.explicit),
+                    style = MaterialTheme.typography.labelSmall.alignCenter(),
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .clip(RoundedCornerShape(Dimens.Spacing04))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .padding(vertical = Dimens.Spacing04)
+                )
+            }
+        }
 
         ItemDescription(title = { ItemTitleMedium(title) },
             creator = { ItemCreatorSmall(creator) },
@@ -231,6 +253,7 @@ private fun ItemPreview() {
             creator = "Christopher Nolan",
             mediaType = "audio",
             coverImage = "",
+            isInAppropriate = true,
             modifier = Modifier.background(Color.White)
         )
     }
