@@ -238,7 +238,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun openArchiveItem() {
-        analytics.log { this.openArchiveItem(itemId, state.value.itemDetail?.isAccessRestricted) }
+        analytics.log { this.openArchiveItem(itemId) }
         navigator.navigate(Screen.Web.createRoute(currentRoot, Config.archiveDetailUrl(itemId)))
     }
 

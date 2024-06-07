@@ -125,7 +125,6 @@ private fun ItemDetail(
         toggleFavorite = viewModel::updateFavorite,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
-        openArchiveItem = viewModel::openArchiveItem,
         modifier = modifier,
         lazyGridState = lazyGridState
     )
@@ -142,7 +141,6 @@ private fun ItemDetail(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
-    openArchiveItem: () -> Unit,
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
@@ -181,7 +179,7 @@ private fun ItemDetail(
 
                 if (state.itemDetail!!.isAccessRestricted) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        AccessRestricted(openArchiveItem)
+                        AccessRestricted { onPrimaryAction(state.itemDetail.itemId) }
                     }
                 }
 
@@ -360,8 +358,7 @@ private fun ItemDetailPreview() {
             openFiles = {},
             toggleFavorite = {},
             openSubject = {},
-            openItemDetail = { _, _ -> },
-            openArchiveItem = { }
+            openItemDetail = { _, _ -> }
         )
     }
 }

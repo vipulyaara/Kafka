@@ -105,13 +105,7 @@ class EventRepository @Inject constructor() {
 
     fun shareApp() = "share_app" to mapOf<String, String>()
 
-    fun openArchiveItem(
-        itemId: String,
-        isRestrictedAccess: Boolean? = null
-    ) = "open_archive_item" to mapOf(
-        "item_id" to itemId,
-        "restricted_access" to isRestrictedAccess.toString()
-    )
+    fun openArchiveItem(itemId: String) = "open_archive_item" to mapOf("item_id" to itemId)
 
     fun setDownloadLocation(location: String) = "set_download_location" to mapOf(
         "location" to location,
