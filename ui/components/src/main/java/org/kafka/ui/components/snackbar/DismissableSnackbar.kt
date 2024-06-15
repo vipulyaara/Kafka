@@ -9,7 +9,6 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -31,7 +30,7 @@ fun DismissableSnackbarHost(hostState: SnackbarHostState, modifier: Modifier = M
 }
 
 /**
- * Wrapper around [Snackbar] to make it swipe-dismissable, using [SwipeToDismiss].
+ * Wrapper around [Snackbar] to make it swipe-dismissable.
  */
 @Composable
 fun SwipeDismissSnackbar(

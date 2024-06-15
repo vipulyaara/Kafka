@@ -36,6 +36,7 @@ import compose.icons.tablericons.Logout
 import compose.icons.tablericons.Message
 import compose.icons.tablericons.Microphone
 import compose.icons.tablericons.Moon
+import compose.icons.tablericons.Photo
 import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Search
@@ -44,7 +45,6 @@ import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.Umbrella
 import compose.icons.tablericons.X
-import org.kafka.common.image.kafkaicons.Vinyl
 
 object Icons {
     val Home: ImageVector = TablerIcons.Home
@@ -82,7 +82,7 @@ object Icons {
     val Eye = TablerIcons.Eye
     val EyeOff = TablerIcons.EyeOff
     val ArrowForward = TablerIcons.ArrowRight
-    val Vinyl = KafkaIcons.Vinyl
+    val Photo = TablerIcons.Photo
     val Moon = TablerIcons.Moon
     val Sun = TablerIcons.Sun
     val Logout = TablerIcons.Logout

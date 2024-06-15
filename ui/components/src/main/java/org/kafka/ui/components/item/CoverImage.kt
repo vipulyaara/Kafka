@@ -40,7 +40,7 @@ fun CoverImage(
     contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     contentScale: ContentScale = ContentScale.FillHeight,
     shape: Shape = RoundedCornerShape(Dimens.Spacing04),
-    placeholder: ImageVector = Icons.Vinyl,
+    placeholder: ImageVector = Icons.Photo,
     iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
