@@ -2,21 +2,21 @@
 accompanist = "0.34.0"
 agp = "8.3.2"
 androidxhilt = "1.2.0"
-androidxlifecycle = "2.7.0"
+androidxlifecycle = "2.8.2"
 navigation = "2.7.7"
 coil = "2.6.0"
 compose-alpha = "2024.01.00-alpha01"
-compose-bom = "2024.05.00"
+compose-bom = "2024.06.00"
 composecompiler = "1.5.12"
 coroutines = "1.8.0"
-dagger = "2.51"
+dagger = "2.51.1"
 icons = "1.0.0"
 kotlin = "1.9.23"
 kotlin-immutable = "0.3.7"
 material3 = "1.2.1"
 mixpanel = "7.0.0"
 okhttp = "4.12.0"
-paging = "3.2.1"
+paging = "3.3.0"
 retrofit = "2.9.0"
 room = "2.6.1"
 serialization = "1.6.3"
@@ -42,8 +42,8 @@ cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = "com.google.devtools.ksp:1.9.23-1.0.19"
-gms-googleServices = "com.google.gms.google-services:4.4.1"
-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
+gms-googleServices = "com.google.gms.google-services:4.4.2"
+firebase-crashlytics = "com.google.firebase.crashlytics:3.0.1"
 spotless = "com.diffplug.spotless:6.25.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
@@ -91,7 +91,7 @@ lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
 
 androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
-androidx-paging-compose = "androidx.paging:paging-compose:3.2.1"
+androidx-paging-compose = "androidx.paging:paging-compose:3.3.0"
 
 androidx-palette = "androidx.palette:palette:1.0.0"
 
@@ -123,7 +123,7 @@ fetch-okhttp = "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
 
 dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 
-google-bom = "com.google.firebase:firebase-bom:32.8.1"
+google-bom = "com.google.firebase:firebase-bom:33.1.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links" }
@@ -132,7 +132,7 @@ google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
-google-playservices-auth = "com.google.android.gms:play-services-auth:21.1.1"
+google-playservices-auth = "com.google.android.gms:play-services-auth:21.2.0"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
