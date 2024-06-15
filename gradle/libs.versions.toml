@@ -126,7 +126,6 @@ dagger-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 google-bom = "com.google.firebase:firebase-bom:33.1.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-google-dynamic_links = { module = "com.google.firebase:firebase-dynamic-links" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
 google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0"
 google-firestore = { module = "com.google.firebase:firebase-firestore" }

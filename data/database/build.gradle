@@ -47,7 +47,6 @@ dependencies {
     implementation libs.compose.runtime.runtime
 
     implementation platform(libs.google.bom)
-    implementation libs.google.dynamic.links
     implementation libs.google.firestore
     implementation libs.jsoup
 

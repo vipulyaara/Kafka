@@ -58,7 +58,7 @@ fun DownloadStatusIcons(
                 modifier = Modifier.align(Alignment.Center),
                 strokeWidth = 2.dp,
                 strokeCap = StrokeCap.Round,
-                progress = progress
+                progress = { progress }
             )
         }
 

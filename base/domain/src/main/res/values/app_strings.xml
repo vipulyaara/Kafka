@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search.title" translatable="false">Search</string>
-    <string name="search.hint" translatable="false">Songs, albums, artists</string>
-    <string name="search.hint.query" translatable="false">Search query</string>
-
-    <string name="search.audios" translatable="false">Songs</string>
-    <string name="search.artists" translatable="false">Artists</string>
-    <string name="search.albums" translatable="false">Albums</string>
-    <string name="search.minerva" translatable="false">Minerva</string>
-    <string name="search.flacs" translatable="false">Flacs</string>
-
-    <string name="artists.detail.title" translatable="false">Artist</string>
-
-    <string name="albums.detail.title" translatable="false">Album</string>
 
     <string name="audio.menu.cd" translatable="false">Audio menu</string>
     <string name="audio.menu.play" translatable="false">Play</string>
@@ -31,64 +18,11 @@
     <string name="downloader.enqueue.audio.existing.deleted" translatable="false">The item is deleted</string>
     <string name="downloader.enqueue.audio.existing.unknown" translatable="false">Download request exists but has unhandled status: %1$s</string>
 
-    <string name="downloads.title" translatable="false">Downloads</string>
-    <string name="downloads.empty" translatable="false">No Downloads</string>
-
-    <string name="downloads.download.status.paused" translatable="false">Paused</string>
-    <string name="downloads.download.status.queued" translatable="false">Queued</string>
-    <string name="downloads.download.status.downloading" translatable="false">Downloading</string>
-    <string name="downloads.download.status.failed" translatable="false">Failed</string>
-    <string name="downloads.download.status.cancelled" translatable="false">Cancelled</string>
-
-    <string name="downloads.download.play" translatable="false">Play</string>
-    <string name="downloads.download.playNext" translatable="false">Play next</string>
-    <string name="downloads.download.pause" translatable="false">Pause</string>
-    <string name="downloads.download.resume" translatable="false">Resume</string>
-    <string name="downloads.download.cancel" translatable="false">Cancel</string>
-    <string name="downloads.download.retry" translatable="false">Retry</string>
-    <string name="downloads.download.open" translatable="false">Open file</string>
-    <string name="downloads.download.remove" translatable="false">Remove</string>
-    <string name="downloads.download.delete" translatable="false">Delete file</string>
-
     <string name="playback.queueTitle.audio" translatable="false">Playing from queue</string>
     <string name="playback.queueTitle.downloads" translatable="false">Playing from downloads</string>
     <string name="playback.queueTitle.artist" translatable="false">Playing from artist</string>
-    <string name="playback.queueTitle.artist.value" translatable="false">Playing from artist</string>
     <string name="playback.queueTitle.album" translatable="false">Playing from album</string>
     <string name="playback.queueTitle.search" translatable="false">Playing from search</string>
-
-    <string name="settings.title" translatable="false">Settings</string>
-
-    <string name="settings.theme" translatable="false">Theme</string>
-    <string name="settings.theme.darkMode" translatable="false">Dark mode</string>
-    <string name="settings.theme.colorPalette" translatable="false">Color palette</string>
-
-    <string name="settings.downloads" translatable="false">Downloads</string>
-    <string name="settings.downloads.location" translatable="false">Downloads location</string>
-    <string name="settings.downloads.location.select" translatable="false">Select</string>
-    <string name="settings.downloads.location.change" translatable="false">Change</string>
-    <string name="settings.downloads.songsGrouping" translatable="false">Songs folder grouping</string>
-    <string name="settings.downloads.songsGrouping.byAlbum" translatable="false">By Album</string>
-    <string name="settings.downloads.songsGrouping.byAlbum.example" translatable="false">/Artist/Album/Song</string>
-    <string name="settings.downloads.songsGrouping.byArtist" translatable="false">By Artist</string>
-    <string name="settings.downloads.songsGrouping.byArtist.example" translatable="false">/Artist/Song</string>
-    <string name="settings.downloads.songsGrouping.flat" translatable="false">Flat</string>
-    <string name="settings.downloads.songsGrouping.flat.example" translatable="false">/Song</string>
-
-    <string name="settings.about" translatable="false">About</string>
-    <string name="settings.about.author" translatable="false">Author</string>
-    <string name="settings.about.author.text" translatable="false">Alashov Berkeli</string>
-    <string name="settings.about.author.link" translatable="false">https://alashov.com</string>
-    <string name="settings.about.community" translatable="false">Community</string>
-    <string name="settings.about.community.text" translatable="false">t.me/datmusictesters</string>
-    <string name="settings.about.community.link" translatable="false">https://t.me/datmusictesters</string>
-    <string name="settings.about.version" translatable="false">Version</string>
-
-    <string name="captcha.title" translatable="false">Captcha error</string>
-    <string name="captcha.hint" translatable="false">Type letters above</string>
-    <string name="captcha.reload" translatable="false">Reload</string>
-    <string name="captcha.empty" translatable="false">Captcha cannot be empty</string>
-    <string name="captcha.submit" translatable="false">Send</string>
 
     <string name="error.keyError" translatable="false">The server is not responding</string>
     <string name="error.unavailable" translatable="false">The server is unavailable</string>

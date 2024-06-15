@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <files-path name="files" path="." />
-    <cache-path name="caches" path="." />
-    <external-path name="externals" path="."/>
-    <root-path name="externals" path="/storage/" />
-    <external-files-path name="external_files" path="." />
-    <external-cache-path name="external_caches" path="."/>
-</paths>

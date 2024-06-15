@@ -16,7 +16,6 @@
   -->
 
 <resources>
-
     <style name="Platform.Theme.Kafka" parent="android:Theme.Material">
         <item name="android:colorBackground">#000</item>
     </style>

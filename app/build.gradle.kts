@@ -167,7 +167,6 @@ dependencies {
     implementation(libs.google.analytics)
     implementation(libs.google.auth)
     implementation(libs.google.crashlytics)
-    implementation(libs.google.dynamic.links)
     implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)

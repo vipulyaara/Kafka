@@ -1,22 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">Kafka</string>
-    <string name="desc_a_country_doctor" translatable="false">I’ve already been in all the sick rooms, far and wide, and I tell you your wound is not so bad. Made in a tight corner with two blows from an axe. Many people offer their side and hardly hear the axe in the forest, to say nothing of the fact that it’s coming closer to them.”</string>
-    <string name="short_desc_a_country_doctor" translatable="false">I’ve already been in all the sick rooms, far and wide, and I tell you your wound is not so bad.</string>
-    <string name="review_1" translatable="false">⍟⍟⍟⍟⍟“Young friend,” I say, “your mistake is that you have no perspective. I’ve already been in all the sick rooms, far and wide, and I tell you your wound is not so bad. Made in a tight corner with two blows from an axe. Many people offer their side and hardly hear the axe in the forest, to say nothing of the fact that it’s coming closer to them.”</string>
     <string name="cancel" translatable="false">Cancel</string>
-    <string name="see_reviews" translatable="false">See Reviews</string>
 
-    <string name="pause" translatable="false">Pause</string>
     <string name="play" translatable="false">Play</string>
-    <string name="next">Next</string>
-    <string name="previous" translatable="false">Previous</string>
-    <string name="dark_mode" translatable="false">Dark mode</string>
     <string name="library" translatable="false">Library</string>
-    <string name="title_dynamicfeature" translatable="false">Module Title</string>
     <string name="bottom_bar_search" translatable="false">Search</string>
     <string name="home" translatable="false">Home</string>
 
-    <string name="notifications.defaultChannel" translatable="false">Default channel</string>
     <string name="update_available" translatable="false">Update Available</string>
     <string name="force_update_message" translatable="false">This version is outdated. Please update the app to continue using it.</string>
     <string name="update" translatable="false">Update</string>
