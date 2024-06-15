@@ -11,7 +11,6 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
 import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
-import compose.icons.feathericons.User
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
@@ -20,7 +19,6 @@ import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
-import compose.icons.tablericons.ChevronUpLeft
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
@@ -45,7 +43,6 @@ import compose.icons.tablericons.Share
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.Umbrella
-import compose.icons.tablericons.World
 import compose.icons.tablericons.X
 import org.kafka.common.image.kafkaicons.Vinyl
 
@@ -60,11 +57,8 @@ object Icons {
     val LibraryActive: ImageVector = TablerIcons.Book
     val Profile: ImageVector = FontAwesomeIcons.Solid.UserCircle
     val Files: ImageVector = FeatherIcons.File
-    val ProfileActive: ImageVector = FeatherIcons.User
-    val GoToTop: ImageVector = TablerIcons.ChevronUpLeft
     val List: ImageVector = TablerIcons.LayoutList
     val Grid: ImageVector = TablerIcons.LayoutGrid
-    val Web: ImageVector = TablerIcons.World
     val Share: ImageVector = TablerIcons.Share
     val Heart = TablerIcons.Heart
     val Download = TablerIcons.Download

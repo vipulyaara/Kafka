@@ -35,5 +35,3 @@ data class ItemDetail(
     val immutableSubjects: ImmutableList<String>
         get() = subject.orEmpty().toPersistentList()
 }
-
-fun ItemDetail?.webUrl() = "https://archive.org/details/${this?.itemId}/mode/1up?view=theater"

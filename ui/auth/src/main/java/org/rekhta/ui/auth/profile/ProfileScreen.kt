@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.User
 import org.kafka.auth.R
-import org.kafka.common.animation.Delayed
 import org.kafka.common.simpleClickable
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens

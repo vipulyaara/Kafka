@@ -1,14 +1,10 @@
 package com.kafka.user.fcm
 
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
-import android.content.Context
 import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.kafka.data.prefs.PreferencesStore
-import com.kafka.user.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -30,9 +26,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
     @Inject
     lateinit var dispatchers: CoroutineDispatchers
-
-    @Inject
-    lateinit var pushMapper: PushMapper
 
     @Inject
     lateinit var notificationManager: NotificationManager
@@ -58,15 +51,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
         processScope.launch(dispatchers.io) {
             preferencesStore.save(fcmTokenPreferenceKey, token)
-        }
-    }
-
-    private fun Context.mainActivityIntent(): PendingIntent {
-        val intent = Intent(this, MainActivity::class.java)
-
-        return TaskStackBuilder.create(this).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
     }
 }

@@ -1,4 +1,3 @@
-@file:Suppress("DEPRECATION")
 package org.kafka.ui.components.placeholder
 
 import androidx.compose.material3.MaterialTheme

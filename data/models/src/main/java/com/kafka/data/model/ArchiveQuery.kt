@@ -16,7 +16,6 @@ const val _subject = "subject"
 const val _creator_remote = "creator"
 const val _title = "title"
 
-const val joinerAnd = "AND"
 const val joinerOr = "OR"
 
 data class QueryItem(val key: String, val value: String, val joiner: String = "")

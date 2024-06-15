@@ -7,14 +7,8 @@ package tm.alashow.datmusic.downloader
 import org.kafka.downloader.R
 import tm.alashow.datmusic.downloader.DownloaderEvent.ChooseDownloadsLocation.message
 
-typealias DownloaderEvents = List<DownloaderEvent>
-
-data class DownloaderEventsError(val events: DownloaderEvents) : Throwable(), UiMessageConvertable {
-    override fun toUiMessage() = events.first().toUiMessage()
-}
-
 sealed class DownloaderEvent : UiMessageConvertable {
-    object ChooseDownloadsLocation : DownloaderEvent() {
+    data object ChooseDownloadsLocation : DownloaderEvent() {
         val message = DownloadMessage.Resource(R.string.downloader_enqueue_downloadsLocationNotSelected)
     }
 

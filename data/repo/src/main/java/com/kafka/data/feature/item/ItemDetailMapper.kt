@@ -5,6 +5,7 @@ import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.File.Companion.supportedExtensions
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.model._mediaTypeText
 import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
 import org.kafka.base.debug
@@ -45,7 +46,7 @@ class ItemDetailMapper @Inject constructor(
     }
 
     private fun List<File>.primaryFile(mediaType: String?) =
-        if (mediaType == "texts") getTextFile() else firstOrNull()
+        if (mediaType == _mediaTypeText) getTextFile() else firstOrNull()
 
     private fun List<File>.getTextFile() = firstOrNull { it.name.extension() == "pdf" }
 
