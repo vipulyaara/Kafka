@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.gms.googleServices)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -40,15 +41,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    composeCompiler {
+        enableStrongSkippingMode = true
+        includeSourceInformation = true
+    }
+
     buildFeatures {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
-    }
-
-    packagingOptions {
+    packaging {
         packagingOptions.resources.excludes += setOf(
             // Exclude AndroidX version files
             "META-INF/*.version",

@@ -2,8 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+    alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -11,9 +12,6 @@ android {
         compose true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
-    }
     namespace 'ui.common.theme'
 }
 

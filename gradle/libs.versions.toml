@@ -7,11 +7,10 @@ navigation = "2.7.7"
 coil = "2.6.0"
 compose-alpha = "2024.01.00-alpha01"
 compose-bom = "2024.06.00"
-composecompiler = "1.5.12"
 coroutines = "1.8.0"
 dagger = "2.51.1"
 icons = "1.0.0"
-kotlin = "1.9.23"
+kotlin = "2.0.0"
 kotlin-immutable = "0.3.7"
 material3 = "1.2.1"
 mixpanel = "7.0.0"
@@ -40,8 +39,9 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:1.9.23-1.0.19"
+ksp = "com.google.devtools.ksp:2.0.0-1.0.21"
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.1"
 spotless = "com.diffplug.spotless:6.25.0"
