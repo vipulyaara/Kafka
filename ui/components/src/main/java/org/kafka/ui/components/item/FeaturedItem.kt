@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.entities.Item
 import org.kafka.common.image.Icons
@@ -33,6 +34,7 @@ fun FeaturedItem(
     modifier: Modifier = Modifier,
     label: String? = null,
     imageUrl: String? = null,
+    shape: Shape = CoverDefaults.shape,
     onClick: () -> Unit = {}
 ) {
     Surface(
@@ -45,6 +47,7 @@ fun FeaturedItem(
             CoverImage(
                 data = imageUrl ?: item.coverImage,
                 placeholder = if (item.isAudio) Icons.Audio else Icons.Texts,
+                shape = shape,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
