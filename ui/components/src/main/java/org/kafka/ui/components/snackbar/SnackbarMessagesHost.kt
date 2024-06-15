@@ -7,7 +7,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.collectEvent
+import org.kafka.common.extensions.CollectEvent
 import org.kafka.common.snackbar.asString
 import org.kafka.common.widgets.LocalSnackbarHostState
 
@@ -23,7 +23,7 @@ internal fun SnackbarMessagesHost(
 ) {
     val coroutine = rememberCoroutineScope()
     val context = LocalContext.current
-    collectEvent(viewModel.messages) {
+    CollectEvent(viewModel.messages) {
         coroutine.launch {
             val message = it.message.asString(context)
             val actionLabel = it.action?.label?.asString(context)

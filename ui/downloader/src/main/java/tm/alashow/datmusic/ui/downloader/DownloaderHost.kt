@@ -20,7 +20,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.ui.downloader.R
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.collectEvent
+import org.kafka.common.extensions.CollectEvent
 import timber.log.Timber
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
@@ -39,7 +39,7 @@ private fun DownloaderHost(
     content: @Composable () -> Unit
 ) {
     var downloadsLocationDialogShown by remember { mutableStateOf(false) }
-    collectEvent(downloader.downloaderEvents) { event ->
+    CollectEvent(downloader.downloaderEvents) { event ->
         when (event) {
             DownloaderEvent.ChooseDownloadsLocation -> {
                 downloadsLocationDialogShown = true

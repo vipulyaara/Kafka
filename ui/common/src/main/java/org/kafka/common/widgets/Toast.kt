@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun toast(message: String, duration: Int = Toast.LENGTH_SHORT) =
+fun Toast(message: String, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(LocalContext.current, message, duration).show()
