@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.Item
 import com.kafka.data.model.SearchFilter
-import com.kafka.data.model.homepage.HomepageBanner
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
 import com.kafka.remote.config.recommendationRowIndex
@@ -145,17 +144,5 @@ class HomepageViewModel @Inject constructor(
     fun shareApp(context: Context) {
         analytics.log { this.shareApp() }
         context.shareText(context.getString(R.string.share_app_message, Config.PLAY_STORE_URL))
-    }
-
-    fun onBannerClick(banner: HomepageBanner) {
-        when (banner.action) {
-            HomepageBanner.Action.Search -> navigator.navigate(
-                Screen.Search.createRoute(RootScreen.Search, banner.keyword)
-            )
-
-            HomepageBanner.Action.ItemDetail -> navigator.navigate(
-                Screen.ItemDetail.createRoute(navigator.currentRoot.value, banner.keyword.orEmpty())
-            )
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.kafka.data.model.homepage
 
-import androidx.compose.runtime.Immutable
 import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -10,15 +9,6 @@ sealed class HomepageCollectionResponse {
     abstract val enabled: Boolean
     abstract val topics: String
     abstract val index: Float
-
-    @Serializable
-    @SerialName("banners")
-    data class Banners(
-        val items: List<HomepageBanner> = listOf(),
-        override val index: Float,
-        override val enabled: Boolean = true,
-        override val topics: String = "",
-    ) : HomepageCollectionResponse()
 
     @Serializable
     @SerialName("featuredItem")
@@ -89,26 +79,6 @@ sealed class HomepageCollectionResponse {
         override val topics: String = "",
         override val index: Float = -1f,
     ) : HomepageCollectionResponse()
-}
-
-@Serializable
-@Immutable
-data class HomepageBanner(
-    @DocumentId
-    val id: String = "",
-    val action: Action = Action.Search,
-    val imageUrl: String = "",
-    val keyword: String? = null,
-    val index: Int = 0,
-) {
-    @Serializable
-    enum class Action {
-        @SerialName("search")
-        Search,
-
-        @SerialName("item_detail")
-        ItemDetail,
-    }
 }
 
 @Serializable

@@ -1,7 +1,6 @@
 package com.kafka.data.entities
 
 import androidx.compose.runtime.Immutable
-import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -31,18 +30,14 @@ sealed class HomepageCollection {
     abstract val enabled: Boolean
 
     @Immutable
-    data class Banners(
-        val items: ImmutableList<HomepageBanner>,
-        override val enabled: Boolean = true,
-    ) : HomepageCollection()
-
-    @Immutable
     data class FeaturedItem(
         val label: String?,
         val items: ImmutableList<Item>,
-        val image: String? = null,
+        val image: ImmutableList<String> = persistentListOf(),
         override val enabled: Boolean = true,
-    ) : HomepageCollection()
+    ) : HomepageCollection() {
+        val heroImage = image.firstOrNull().orEmpty()
+    }
 
     @Immutable
     data class RecentItems(

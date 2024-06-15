@@ -17,7 +17,6 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             when (it) {
                 is HomepageCollectionResponse.Row -> it.mapRows()
                 is HomepageCollectionResponse.Column -> it.mapColumn()
-                is HomepageCollectionResponse.Banners -> it.mapBanners()
                 is HomepageCollectionResponse.FeaturedItem -> it.mapFeatured()
                 is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
                 is HomepageCollectionResponse.Grid -> it.mapGrid()
@@ -75,19 +74,21 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         }
     }
 
-    private fun HomepageCollectionResponse.Banners.mapBanners() =
-        flowOf(HomepageCollection.Banners(items = items.toPersistentList(), enabled = enabled))
-
     // todo: items are filled later on domain layer, find a way to fill them here
     private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
         flowOf(HomepageCollection.RecentItems(persistentListOf(), enabled))
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured() =
         itemDao.observe(itemIds.split(", ")).map { items ->
+            val itemIdsIndexMap = itemIds.split(", ")
+                .withIndex()
+                .associate { it.value to it.index }
+            val sortedItems = items.sortedBy { itemIdsIndexMap[it.itemId] ?: Int.MAX_VALUE }
+
             HomepageCollection.FeaturedItem(
                 label = label,
-                items = items.toPersistentList(),
-                image = image?.randomOrNull()?.downloadURL,
+                items = sortedItems.toPersistentList(),
+                image = image?.map { it.downloadURL }?.toPersistentList() ?: persistentListOf(),
                 enabled = enabled,
             )
         }

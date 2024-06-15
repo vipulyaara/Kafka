@@ -33,7 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
-import com.kafka.data.model.homepage.HomepageBanner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -84,7 +83,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
                         goToSubject = viewModel::openSubject,
-                        onBannerClick = viewModel::onBannerClick,
                         openRecentItems = viewModel::openRecentItems,
                         goToCreator = viewModel::openCreator,
                         shareApp = { viewModel.shareApp(context) }
@@ -120,7 +118,6 @@ private fun HomepageFeedItems(
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
     goToCreator: (String) -> Unit,
-    onBannerClick: (HomepageBanner) -> Unit,
     openRecentItems: () -> Unit,
     shareApp: () -> Unit
 ) {
@@ -155,12 +152,6 @@ private fun HomepageFeedItems(
             }
 
             when (collection) {
-                is HomepageCollection.Banners -> {
-                    item(key = "carousels", contentType = "carousels") {
-                        Carousels(carouselItems = collection.items, onBannerClick = onBannerClick)
-                    }
-                }
-
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
                         ContinueReading(
@@ -174,7 +165,7 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.PersonRow -> {
-                    item(key = "authors", contentType = "person_row") {
+                    item(contentType = "person_row") {
                         Authors(
                             titles = collection.items,
                             images = collection.images,
@@ -184,7 +175,17 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.FeaturedItem -> {
-                    featuredItems(collection, openItemDetail)
+                    if (collection.items.size > 1) {
+                        item {
+                            Carousels(
+                                carouselItems = collection.items,
+                                images = collection.image,
+                                onBannerClick = openItemDetail
+                            )
+                        }
+                    } else {
+                        featuredItems(collection = collection, openItemDetail = openItemDetail)
+                    }
                 }
 
                 is HomepageCollection.Row -> {
@@ -240,7 +241,7 @@ private fun LazyListScope.featuredItems(
             FeaturedItem(
                 item = item,
                 label = collection.label,
-                imageUrl = collection.image,
+                imageUrl = collection.heroImage,
                 onClick = { openItemDetail(item.itemId) },
                 modifier = Modifier
                     .padding(horizontal = Dimens.Gutter)
