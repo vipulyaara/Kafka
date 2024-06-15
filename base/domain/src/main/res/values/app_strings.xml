@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="audio.menu.cd" translatable="false">Audio menu</string>
     <string name="audio.menu.play" translatable="false">Play</string>
     <string name="audio.menu.playNext" translatable="false">Play next</string>
     <string name="audio.menu.download" translatable="false">Download</string>
@@ -17,12 +16,6 @@
     <string name="downloader.enqueue.audio.existing.completed" translatable="false">This item was already downloaded</string>
     <string name="downloader.enqueue.audio.existing.deleted" translatable="false">The item is deleted</string>
     <string name="downloader.enqueue.audio.existing.unknown" translatable="false">Download request exists but has unhandled status: %1$s</string>
-
-    <string name="playback.queueTitle.audio" translatable="false">Playing from queue</string>
-    <string name="playback.queueTitle.downloads" translatable="false">Playing from downloads</string>
-    <string name="playback.queueTitle.artist" translatable="false">Playing from artist</string>
-    <string name="playback.queueTitle.album" translatable="false">Playing from album</string>
-    <string name="playback.queueTitle.search" translatable="false">Playing from search</string>
 
     <string name="error.keyError" translatable="false">The server is not responding</string>
     <string name="error.unavailable" translatable="false">The server is unavailable</string>

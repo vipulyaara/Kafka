@@ -25,10 +25,6 @@ class MediaTypeManager @Inject constructor(
         .stateInDefault(coroutineScope, MediaType.Audio)
 
     val mediaType: MediaType = mediaTypeFlow.value
-
-    fun updateMediaType(mediaType: MediaType) {
-        mediaTypeState.value = mediaType.name
-    }
 }
 
 enum class MediaType {
