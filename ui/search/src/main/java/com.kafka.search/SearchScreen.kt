@@ -49,7 +49,7 @@ fun SearchScreen() {
                 searchViewState = searchViewState,
                 selectedFilters = searchViewState.selectedFilters,
                 onFilterClicked = { searchViewModel.toggleFilter(it) },
-                selectedMediaTypes = searchViewModel.mediaTypes,
+                selectedMediaTypes = searchViewModel.selectedMediaTypes,
                 onMediaTypeClicked = { searchViewModel.toggleMediaType(it) },
                 onSearchClicked = { query, filters, mediaTypes ->
                     searchViewModel.setQuery(query)

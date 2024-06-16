@@ -40,7 +40,10 @@ class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
-    internal val mediaTypes = mutableStateListOf<MediaType>().apply { addAll(MediaType.entries) }
+    internal val selectedMediaTypes = mutableStateListOf<MediaType>()
+        .apply { addAll(MediaType.entries) }
+    private val selectedFilters
+        get() = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
 
     val state: StateFlow<SearchViewState> = combine(
         savedStateHandle.getStateFlow(extraKeyword, ""),
@@ -60,17 +63,20 @@ class SearchViewModel @Inject constructor(
     }.stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
-        val filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
         search(
             keyword = keywordInitialValue,
-            filters = SearchFilter.from(filters),
-            mediaTypes = mediaTypes
+            filters = SearchFilter.from(selectedFilters),
+            mediaTypes = selectedMediaTypes
         )
 
         observeRecentSearch(Unit)
     }
 
-    fun search(keyword: String, filters: List<SearchFilter>, mediaTypes: List<MediaType>) {
+    fun search(
+        keyword: String = state.value.keyword,
+        filters: List<SearchFilter> = SearchFilter.from(selectedFilters),
+        mediaTypes: List<MediaType> = selectedMediaTypes
+    ) {
         observeSearchItems(ObserveSearchItems.Params(keyword, filters, mediaTypes.toList()))
 
         viewModelScope.launch {
@@ -102,7 +108,11 @@ class SearchViewModel @Inject constructor(
     private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
             val selectedFilters = state.value.selectedFilters
-            val params = AddRecentSearch.Params(keyword, selectedFilters, mediaTypes.toList())
+            val params = AddRecentSearch.Params(
+                searchTerm = keyword,
+                filters = selectedFilters,
+                mediaTypes = selectedMediaTypes.toList()
+            )
             addRecentSearch.invoke(params).collect()
         }
     }
@@ -116,15 +126,23 @@ class SearchViewModel @Inject constructor(
         }
 
         savedStateHandle[extraFilters] = SearchFilter.toString(selectedFilters)
+
+        if (state.value.keyword.isNotEmpty()) {
+            search(filters = selectedFilters)
+        }
     }
 
     fun toggleMediaType(mediaType: MediaType) {
-        if (mediaTypes.contains(mediaType)) {
-            if (mediaTypes.size > 1) {
-                mediaTypes.remove(mediaType)
+        if (selectedMediaTypes.contains(mediaType)) {
+            if (selectedMediaTypes.size > 1) {
+                selectedMediaTypes.remove(mediaType)
             }
         } else {
-            mediaTypes.add(mediaType)
+            selectedMediaTypes.add(mediaType)
+        }
+
+        if (state.value.keyword.isNotEmpty()) {
+            search(mediaTypes = selectedMediaTypes)
         }
     }
 
