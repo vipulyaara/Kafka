@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.kafka.data.entities.RecentSearch
 import org.kafka.common.animation.Delayed
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconResource
@@ -24,8 +25,8 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun RecentSearches(
-    recentSearches: List<String>,
-    onSearchClicked: (String) -> Unit,
+    recentSearches: List<RecentSearch>,
+    onSearchClicked: (RecentSearch) -> Unit,
     onRemoveSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
@@ -34,17 +35,17 @@ fun RecentSearches(
         LazyColumn(contentPadding = contentPadding) {
             item {
                 LabelMedium(
-                    stringResource(R.string.recent_searches),
-                    Modifier.padding(Dimens.Spacing16)
+                    text = stringResource(R.string.recent_searches),
+                    modifier = Modifier.padding(Dimens.Spacing16)
                 )
             }
 
-            items(recentSearches, key = { it }) {
+            items(recentSearches) { recentSearch ->
                 RecentSearchItem(
-                    searchTerm = it,
+                    recentSearch = recentSearch,
                     onSearchClicked = onSearchClicked,
                     onRemoveSearch = onRemoveSearch,
-                    modifier = Modifier.animateItemPlacement()
+                    modifier = Modifier.animateItem()
                 )
             }
         }
@@ -52,29 +53,29 @@ fun RecentSearches(
 }
 
 @Composable
- fun RecentSearchItem(
-    searchTerm: String,
+fun RecentSearchItem(
+    recentSearch: RecentSearch,
     modifier: Modifier = Modifier,
-    onSearchClicked: (String) -> Unit,
+    onSearchClicked: (RecentSearch) -> Unit,
     onRemoveSearch: (String) -> Unit
 ) {
     SelectionContainer {
         Row(
             modifier = modifier
-                .clickable(onClick = { onSearchClicked(searchTerm) })
+                .clickable(onClick = { onSearchClicked(recentSearch) })
                 .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing08),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = searchTerm,
+                text = recentSearch.searchTerm,
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             IconResource(
                 modifier = Modifier
-                    .clickable(onClick = { onRemoveSearch(searchTerm) })
+                    .clickable(onClick = { onRemoveSearch(recentSearch.searchTerm) })
                     .padding(10.dp)
                     .size(Dimens.Spacing24),
                 imageVector = Icons.XCircle

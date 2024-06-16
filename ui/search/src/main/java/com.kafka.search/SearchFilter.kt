@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
@@ -35,7 +36,28 @@ internal fun SearchFilterChips(
         items(SearchFilter.entries) { filter ->
             val selected = selectedFilters.contains(filter)
             FilterChip(
-                filter = filter,
+                title = filter.name,
+                selected = selected,
+                modifier = Modifier
+                    .padding(horizontal = Dimens.Spacing02)
+                    .animateContentSize(),
+                onClick = { onFilterClicked(filter) },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun MediaTypeChips(
+    selectedMediaTypes: List<MediaType>,
+    onFilterClicked: (MediaType) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        MediaType.entries.forEach { filter ->
+            val selected = selectedMediaTypes.contains(filter)
+            FilterChip(
+                title = filter.name,
                 selected = selected,
                 modifier = Modifier
                     .padding(horizontal = Dimens.Spacing02)
@@ -49,22 +71,22 @@ internal fun SearchFilterChips(
 @Composable
 private fun FilterChip(
     modifier: Modifier,
-    filter: SearchFilter,
+    title: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
     val boarderColor by animateColorAsState(
-        if (selected) colorScheme.secondaryContainer else colorScheme.surfaceVariant
+        if (selected) colorScheme.secondaryContainer else colorScheme.surfaceVariant, label = ""
     )
     val containerColor by animateColorAsState(
-        if (selected) colorScheme.secondaryContainer else colorScheme.background
+        if (selected) colorScheme.secondaryContainer else colorScheme.background, label = ""
     )
 
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.RadiusMedium),
         color = containerColor,
-        border = BorderStroke(Dimens.Spacing01, boarderColor)
+        border = BorderStroke(Dimens.Spacing01, boarderColor),
     ) {
         Row(
             modifier = Modifier
@@ -81,7 +103,7 @@ private fun FilterChip(
                 )
             }
             Text(
-                text = filter.name,
+                text = title,
                 style = MaterialTheme.typography.labelMedium,
                 color = contentColorFor(containerColor)
             )

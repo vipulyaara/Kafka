@@ -37,8 +37,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -209,9 +212,22 @@ private fun ItemDetail(
 
                 if (state.hasItemsByCreator) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
+                        val text = buildAnnotatedString {
+                            append(stringResource(R.string.more_by))
+                            append(" ")
+
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(state.itemDetail.creator)
+                            }
+                        }
+
                         LabelMedium(
-                            text = stringResource(R.string.more_by_author),
-                            modifier = Modifier.padding(Dimens.Gutter)
+                            text = text,
+                            modifier = Modifier
+                                .simpleClickable { goToCreator(state.itemDetail.creator) }
+                                .padding(Dimens.Gutter),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
@@ -230,7 +246,7 @@ private fun ItemDetail(
 
                 if (state.isLoading) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        Delayed(modifier = Modifier.animateItemPlacement()) {
+                        Delayed(modifier = Modifier.animateItem()) {
                             InfiniteProgressBar()
                         }
                     }
@@ -340,7 +356,6 @@ private fun AccessRestricted(onClick: () -> Unit) {
 private const val GridItemSpan = 1
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE)
 @Composable
 private fun ItemDetailPreview() {
     AppTheme {

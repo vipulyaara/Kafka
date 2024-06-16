@@ -2,13 +2,13 @@ package org.kafka.domain.interactors
 
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import com.kafka.data.model.booksByAuthor
 import com.kafka.data.model.booksBySubject
 import com.kafka.data.model.booksByTitleKeyword
 import com.kafka.data.model.filterByType
 import com.kafka.data.model.joinerOr
-import com.kafka.data.prefs.ContentType
 import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
@@ -24,19 +24,23 @@ class SearchQueryItems @Inject constructor(
     override suspend fun doWork(params: Params): Unit = withContext(dispatchers.io) {
         if (params.keyword.isEmpty()) return@withContext
 
-        val archiveQuery = buildQuery(params.keyword, params.searchFilter)
+        val archiveQuery = buildQuery(params.keyword, params.searchFilter, params.mediaTypes)
         itemRepository.updateQuery(buildRemoteQuery(archiveQuery)).let {
             itemRepository.saveItems(it)
         }
     }
 
-    data class Params(val keyword: String, val searchFilter: List<SearchFilter>)
+    data class Params(
+        val keyword: String,
+        val searchFilter: List<SearchFilter>,
+        val mediaTypes: List<MediaType>
+    )
 }
 
 internal fun buildQuery(
     keyword: String,
     searchFilters: List<SearchFilter> = SearchFilter.entries,
-    contentType: ContentType = ContentType.DEFAULT,
+    mediaTypes: List<MediaType> = MediaType.entries,
 ): ArchiveQuery {
     val query = ArchiveQuery()
     searchFilters.forEach {
@@ -48,5 +52,5 @@ internal fun buildQuery(
         }
     }
 
-    return query.filterByType(contentType.mediaTypes)
+    return query.filterByType(mediaTypes.map { it.value })
 }

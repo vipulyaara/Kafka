@@ -1,8 +1,10 @@
 package com.kafka.search
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +40,7 @@ class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
+    internal val mediaTypes = mutableStateListOf<MediaType>().apply { addAll(MediaType.entries) }
 
     val state: StateFlow<SearchViewState> = combine(
         savedStateHandle.getStateFlow(extraKeyword, ""),
@@ -49,7 +52,7 @@ class SearchViewModel @Inject constructor(
     ) { keyword, filters, items, recentSearches, isLoading ->
         SearchViewState(
             keyword = keyword,
-            filters = filters,
+            selectedFilters = filters,
             items = items,
             recentSearches = recentSearches,
             isLoading = isLoading
@@ -58,21 +61,36 @@ class SearchViewModel @Inject constructor(
 
     init {
         val filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
-        search(keywordInitialValue, SearchFilter.from(filters))
+        search(
+            keyword = keywordInitialValue,
+            filters = SearchFilter.from(filters),
+            mediaTypes = mediaTypes
+        )
 
         observeRecentSearch(Unit)
     }
 
-    fun search(keyword: String, filters: List<SearchFilter>) {
-        observeSearchItems(ObserveSearchItems.Params(keyword, filters))
+    fun search(keyword: String, filters: List<SearchFilter>, mediaTypes: List<MediaType>) {
+        observeSearchItems(ObserveSearchItems.Params(keyword, filters, mediaTypes.toList()))
 
         viewModelScope.launch {
-            searchQueryItems(SearchQueryItems.Params(keyword, filters))
-                .collectStatus(loadingState, snackbarManager)
+            searchQueryItems(
+                SearchQueryItems.Params(
+                    keyword = keyword,
+                    searchFilter = filters,
+                    mediaTypes = mediaTypes.toList()
+                )
+            ).collectStatus(loadingState, snackbarManager)
         }
 
         if (keyword.isNotEmpty()) {
-            analytics.log { searchQuery(keyword, filters.map { it.name }) }
+            analytics.log {
+                searchQuery(
+                    keyword = keyword,
+                    filters = filters.map { it.name },
+                    mediaTypes = mediaTypes.map { it.value }
+                )
+            }
             addRecentSearch(keyword)
         }
     }
@@ -83,19 +101,31 @@ class SearchViewModel @Inject constructor(
 
     private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
-            addRecentSearch.invoke(keyword).collect()
+            val selectedFilters = state.value.selectedFilters
+            val params = AddRecentSearch.Params(keyword, selectedFilters, mediaTypes.toList())
+            addRecentSearch.invoke(params).collect()
         }
     }
 
     fun toggleFilter(filter: SearchFilter) {
-        val filters = state.value.filters.toMutableList()
-        if (filters.contains(filter)) {
-            filters.remove(filter)
+        val selectedFilters = state.value.selectedFilters.toMutableList()
+        if (selectedFilters.contains(filter)) {
+            selectedFilters.remove(filter)
         } else {
-            filters.add(filter)
+            selectedFilters.add(filter)
         }
 
-        savedStateHandle[extraFilters] = SearchFilter.toString(filters)
+        savedStateHandle[extraFilters] = SearchFilter.toString(selectedFilters)
+    }
+
+    fun toggleMediaType(mediaType: MediaType) {
+        if (mediaTypes.contains(mediaType)) {
+            if (mediaTypes.size > 1) {
+                mediaTypes.remove(mediaType)
+            }
+        } else {
+            mediaTypes.add(mediaType)
+        }
     }
 
     fun removeRecentSearch(keyword: String) {

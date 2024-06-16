@@ -4,11 +4,15 @@ import org.kafka.analytics.logger.AnalyticsImpl
 import javax.inject.Inject
 
 class EventRepository @Inject constructor() {
-    fun searchQuery(keyword: String, filters: List<String>? = null) =
-        AnalyticsImpl.SEARCH to mapOf(
-            "keyword" to keyword,
-            "filters" to filters?.joinToString(),
-        )
+    fun searchQuery(
+        keyword: String,
+        filters: List<String>? = null,
+        mediaTypes: List<String>? = null
+    ) = AnalyticsImpl.SEARCH to mapOf(
+        "keyword" to keyword,
+        "filters" to filters?.joinToString(),
+        "media_types" to mediaTypes?.joinToString(),
+    )
 
     fun removeRecentSearch(keyword: String) = "remove_recent_search" to mapOf("keyword" to keyword)
 

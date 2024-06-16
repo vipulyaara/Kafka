@@ -2,6 +2,7 @@ package org.kafka.domain.observers
 
 import com.kafka.data.entities.Item
 import com.kafka.data.feature.item.ItemRepository
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -22,11 +23,15 @@ class ObserveSearchItems @Inject constructor(
         return if (params.keyword.isEmpty()) {
             flowOf(emptyList())
         } else {
-            itemRepository.observeQueryItems(
-                buildLocalQuery(buildQuery(params.keyword, params.searchFilter)),
-            ).flowOn(dispatchers.io)
+            val query = buildQuery(params.keyword, params.searchFilter, params.mediaTypes)
+            itemRepository.observeQueryItems(buildLocalQuery(query))
+                .flowOn(dispatchers.io)
         }
     }
 
-    data class Params(val keyword: String, val searchFilter: List<SearchFilter>)
+    data class Params(
+        val keyword: String,
+        val searchFilter: List<SearchFilter>,
+        val mediaTypes: List<MediaType>
+    )
 }

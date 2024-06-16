@@ -1,6 +1,5 @@
 package com.kafka.data.model
 
-sealed class MediaType {
-    data object Text : MediaType()
-    data object Audio : MediaType()
+enum class MediaType(val value: String) {
+    Text(_mediaTypeText), Audio(_mediaTypeAudio);
 }

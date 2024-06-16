@@ -44,7 +44,7 @@ interface KafkaDatabase {
         RecentAudioItem::class,
         DownloadRequest::class,
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),

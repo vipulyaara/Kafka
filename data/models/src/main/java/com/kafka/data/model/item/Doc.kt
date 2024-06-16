@@ -32,8 +32,6 @@ data class Doc(
     val language: List<String>? = null,
     @SerialName("mediatype")
     val mediatype: String,
-    @SerialName("month")
-    val month: Int? = 0,
     @SerialName("subject")
     @Serializable(with = StringListSerializer::class)
     val subject: List<String>? = null,

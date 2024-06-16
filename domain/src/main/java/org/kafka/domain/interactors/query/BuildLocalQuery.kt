@@ -2,10 +2,10 @@ package org.kafka.domain.interactors.query
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.QueryItem
 import com.kafka.data.model._identifier
 import com.kafka.data.model._mediaType
-import com.kafka.data.prefs.ContentType
 import org.kafka.base.debug
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class BuildLocalQuery @Inject constructor() {
 
         val mediaTypeQuery = queries.filter { it.key == _mediaType }
             .takeIf { it.isNotEmpty() }
-            ?: ContentType.DEFAULT.mediaTypes.map { QueryItem(_mediaType, it) }
+            ?: MediaType.entries.map { QueryItem(_mediaType, it.value) }
 
         queries.removeIf { it.key == _mediaType }
 

@@ -1,6 +1,7 @@
 package org.kafka.domain.observers
 
 import com.kafka.data.dao.RecentSearchDao
+import com.kafka.data.entities.RecentSearch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -11,15 +12,12 @@ import javax.inject.Inject
 class ObserveRecentSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val recentSearchDao: RecentSearchDao,
-) : SubjectInteractor<Unit, List<String>>() {
+) : SubjectInteractor<Unit, List<RecentSearch>>() {
 
-    override fun createObservable(params: Unit): Flow<List<String>> {
+    override fun createObservable(params: Unit): Flow<List<RecentSearch>> {
         return recentSearchDao.observeRecentSearch()
-            .map {
-                it.take(MaxRecentSearches)
-                    .distinctBy { it.searchTerm }
-                    .map { it.searchTerm }
-            }.flowOn(dispatchers.io)
+            .map { it.take(MaxRecentSearches).distinctBy { it.searchTerm } }
+            .flowOn(dispatchers.io)
     }
 }
 
