@@ -41,7 +41,7 @@ cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.0.0-1.0.21"
+ksp = "com.google.devtools.ksp:2.0.0-1.0.22"
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.1"
 spotless = "com.diffplug.spotless:6.25.0"
@@ -127,7 +127,7 @@ google-bom = "com.google.firebase:firebase-bom:33.1.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
-google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0"
+google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1"
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
@@ -149,7 +149,7 @@ icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", ve
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
 icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons", version.ref = "icons" }
 
-leakCanary = "com.squareup.leakcanary:leakcanary-android:2.13"
+leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 
 okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
