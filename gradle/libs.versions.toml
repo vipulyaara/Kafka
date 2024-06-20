@@ -112,6 +112,7 @@ compose-foundation-layout = { module = "androidx.compose.foundation:foundation-l
 compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended" }
 compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+compose-material-navigation = { module = "androidx.compose.material:material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
