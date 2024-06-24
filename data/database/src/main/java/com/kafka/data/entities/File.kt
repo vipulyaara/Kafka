@@ -3,8 +3,6 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val mediaTypeAudio = "audio"
-
 @Entity
 data class File(
     @PrimaryKey val fileId: String,
