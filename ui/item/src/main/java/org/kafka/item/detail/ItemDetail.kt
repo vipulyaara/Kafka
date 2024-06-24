@@ -182,7 +182,7 @@ private fun ItemDetail(
 
                 if (state.itemDetail!!.isAccessRestricted) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        AccessRestricted { onPrimaryAction(state.itemDetail.itemId) }
+                        AccessRestricted(state.itemDetail.isAudio) { onPrimaryAction(state.itemDetail.itemId) }
                     }
                 }
 
@@ -344,12 +344,18 @@ private fun RelatedItems(
 }
 
 @Composable
-private fun AccessRestricted(onClick: () -> Unit) {
+private fun AccessRestricted(isAudio: Boolean, onClick: () -> Unit) {
+    val message = if (isAudio) {
+        stringResource(R.string.audio_access_restricted_message)
+    } else {
+        stringResource(R.string.text_access_restricted_message)
+    }
+
     MessageBox(
-        text = stringResource(R.string.restricted_access),
-        trailingIcon = Icons.ArrowForward,
+        text = message,
+        trailingIcon = if (isAudio) null else Icons.ArrowForward,
         modifier = Modifier.padding(Dimens.Spacing24),
-        onClick = onClick
+        onClick = if (isAudio) null else onClick
     )
 }
 

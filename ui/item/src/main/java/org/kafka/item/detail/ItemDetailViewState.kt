@@ -23,7 +23,7 @@ data class ItemDetailViewState(
         get() = !itemDetail?.subject.isNullOrEmpty()
 
     val showDownloads
-        get() = itemDetail?.isAccessRestricted == false
+        get() = itemDetail?.isAccessRestricted == false || itemDetail?.isAudio == true
 
     val isFullScreenLoading: Boolean
         get() {

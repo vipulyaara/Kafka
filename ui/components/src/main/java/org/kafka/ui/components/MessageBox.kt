@@ -25,8 +25,8 @@ fun MessageBox(
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
-    onClick: () -> Unit = {},
-    onIconClick: () -> Unit = onClick
+    onClick: (() -> Unit)? = null,
+    onIconClick: (() -> Unit)? = onClick
 ) {
     Surface(
         modifier = modifier,
@@ -40,7 +40,7 @@ fun MessageBox(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClick() }
+                .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
                 .padding(Dimens.Spacing16),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
             verticalAlignment = Alignment.CenterVertically
@@ -65,7 +65,7 @@ fun MessageBox(
                     imageVector = trailingIcon,
                     modifier = Modifier.size(Dimens.Spacing20),
                     tint = MaterialTheme.colorScheme.primary,
-                    onClick = onIconClick
+                    onClick = onIconClick ?: {}
                 )
             }
         }
