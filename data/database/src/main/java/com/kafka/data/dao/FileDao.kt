@@ -22,11 +22,10 @@ abstract class FileDao : EntityDao<File> {
     abstract suspend fun getByItemId(itemId: String): List<File>
 
     suspend fun playerFilesByItemId(itemId: String): List<File> {
-        return getByItemId(itemId)
-            .groupBy { it.format }
-            .filter { it.key.contains("mp3", true) }
-            .filterKeys { it.contains("mp3", true) }
-            .values.flatten()
+        val items = getByItemId(itemId).groupBy { it.extension }
+        val selectedFormat = File.playableExtensions.firstOrNull { it in items.keys }
+
+        return selectedFormat?.let { items[it] } ?: emptyList()
     }
 
     @Query("select * from File where fileId = :fileId")

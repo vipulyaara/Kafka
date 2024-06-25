@@ -22,11 +22,12 @@ data class File(
     val localUri: String? = null,
 ) : BaseEntity {
     companion object {
-        val audioExtensions = listOf("mp3", "wav", "aac", "ogg", "flac")
+        val audioExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")
         val textExtensions = listOf("pdf", "txt")
         val supportedExtensions = audioExtensions + textExtensions
 
-        val playableExtensions = listOf("mp3", "wav")
+        // extensions that show up in player, in order of preference
+        val playableExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")
     }
 
     val duration: Long
