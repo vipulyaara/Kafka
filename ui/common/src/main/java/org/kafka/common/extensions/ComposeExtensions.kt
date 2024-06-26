@@ -61,7 +61,7 @@ fun AnimatedVisibilityFade(
 }
 
 @Composable
-fun <T> collectEvent(
+fun <T> CollectEvent(
     flow: Flow<T>,
     lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,

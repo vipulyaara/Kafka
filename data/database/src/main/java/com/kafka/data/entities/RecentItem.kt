@@ -1,9 +1,10 @@
 package com.kafka.data.entities
 
+import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.errorprone.annotations.Keep
+
 import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.Serializable
 

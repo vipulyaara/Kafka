@@ -33,6 +33,7 @@ object Dimens {
     val Radius08 = Spacing08
     val Radius12 = Spacing12
     val Radius16 = Spacing16
+    val Radius20 = Spacing20
 
     val Gutter = 16.dp
 

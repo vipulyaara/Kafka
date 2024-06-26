@@ -1,35 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Rekhta</string>
 
-    <string name="prefilled_userName" translatable="false">vipulyaara@gmail.com</string>
-    <string name="prefilled_password" translatable="false">Vipul0</string>
-
-    <string name="error_server_response" translatable="false">The server could not complete the request.</string>
-    <string name="error_response_malformed" translatable="false">Response from the server was not formatted correctly.</string>
-    <string name="format_error_server_message" translatable="false">Message: \"%s\"</string>
-    <string name="error_network_error" translatable="false">Cannot connect to the Internet.</string>
-    <string name="share_via" translatable="false">Share Via</string>
-
-    <string name="sher_collection">Sher Collection</string>
-    <string name="shayri_collection">Shayri Collection</string>
-    <string name="prose_collection">Prose Collection</string>
-    <string name="image_shayari">Image Shayri</string>
-    <string name="did_you_know">Did you know</string>
-
-    <string name="pref_theme_light_value" translatable="false">light</string>
-    <string name="pref_theme_dark_value" translatable="false">dark</string>
-
-    <string name="player_library" translatable="false">Player</string>
     <string name="library" translatable="false">Library</string>
-    <string name="bottom_bar_profile">Profile</string>
-    <string name="next" translatable="false">Next</string>
-    <string name="previous" translatable="false">Previous</string>
-    <string name="share" translatable="false">Share</string>
-    <string name="like" translatable="false">Like</string>
-    <string name="copy" translatable="false">Copy</string>
-    <string name="see_ghazal" translatable="false">See Ghazal</string>
 
-    <string name="unknown" translatable="false">Unknown</string>
-
-    <string name="search_relevant_content">Most relevant content</string>
 </resources>

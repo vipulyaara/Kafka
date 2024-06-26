@@ -1,4 +1,3 @@
-@file:Suppress("DEPRECATION")
 package org.kafka.ui.components.placeholder
 
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +36,7 @@ fun PlaceholderDefaults.fadeHighlightColor(
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     alpha: Float = 0.3f,
 ): Color = backgroundColor.copy(alpha = alpha)
+
 
 /**
  * Returns the value used as the the `highlightColor` parameter value of

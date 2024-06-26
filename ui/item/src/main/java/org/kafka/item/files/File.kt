@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import com.kafka.data.entities.File
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource

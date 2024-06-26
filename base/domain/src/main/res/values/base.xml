@@ -1,79 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="notifications.defaultChannel" translatable="false">Default channel</string>
 
-    <string name="generic.back" translatable="false">Back</string>
-    <string name="generic.close" translatable="false">Close</string>
-    <string name="generic.clear" translatable="false">Clear</string>
     <string name="generic.clipboard.copied" translatable="false">Copied</string>
 
-    <string name="dialog.warning" translatable="false">Warning</string>
-    <string name="dialog.confirm" translatable="false">Confirm</string>
-    <string name="dialog.confirm.no" translatable="false">No</string>
-    <string name="dialog.confirm.yes" translatable="false">@string/dialog.ok</string>
-    <string name="dialog.ok" translatable="false">@android:string/ok</string>
-    <string name="dialog.dismiss" translatable="false">@string/generic.close</string>
-
-    <string name="unknown" translatable="false">Unknown</string>
-    <string name="error.title" translatable="false">Error</string>
-    <string name="error.subtitle" translatable="false">Whoops :(</string>
-    <string name="error.tryAgain" translatable="false">Try again</string>
     <string name="error.network" translatable="false">Network could not be reached</string>
     <string name="error.server" translatable="false">Server could not be reached</string>
     <string name="error.auth" translatable="false">Authorization error</string>
-    <string name="error.noAuth" translatable="false">You need to login</string>
     <string name="error.notFound" translatable="false">Resource could not be found</string>
-    <string name="error.api" translatable="false">API error</string>
-    <string name="error.empty.title" translatable="false">Empty</string>
-    <string name="error.empty" translatable="false">No results</string>
-    <string name="error.blank" translatable="false">Must not be empty</string>
     <string name="error.unknown" translatable="false">Unknown error</string>
-    <string name="error.errorLogOut" translatable="false">Log out failed, try resetting app settings</string>
-    <string name="error.alreadyLogined" translatable="false">Already logged in</string>
-    <string name="error.loading" translatable="false">Loading failed. Tap to retry</string>
     <string name="error.retry" translatable="false">Retry</string>
-    <string name="error.serverUnavailable" translatable="false">Server unavailable</string>
 
-    <string name="time.duration" translatable="false">%1$d hour %2$d min.</string>
-    <string name="time.duration.minutes" translatable="false">%1$d minute</string>
-
-    <string-array name="months">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
-    </string-array>
-
-    <string-array name="months.short">
-        <item>Jan</item>
-        <item>Feb</item>
-        <item>Mar</item>
-        <item>Apr</item>
-        <item>May</item>
-        <item>Jun</item>
-        <item>Jul</item>
-        <item>Aug</item>
-        <item>Sept</item>
-        <item>Oct</item>
-        <item>Nov</item>
-        <item>Dec</item>
-    </string-array>
-
-    <string-array name="weeks.short">
-        <item>Mon</item>
-        <item>Tue</item>
-        <item>Wed</item>
-        <item>Th</item>
-        <item>Fri</item>
-        <item>Sat</item>
-        <item>Sun</item>
-    </string-array>
 </resources>

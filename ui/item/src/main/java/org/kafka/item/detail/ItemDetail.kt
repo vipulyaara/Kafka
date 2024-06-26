@@ -37,8 +37,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,6 +54,7 @@ import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
+import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.LoadImage
@@ -60,6 +64,7 @@ import org.kafka.item.fake.FakeItemData
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.LabelMedium
+import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.RowItem
@@ -170,14 +175,21 @@ private fun ItemDetail(
                         onPrimaryAction = onPrimaryAction,
                         openFiles = openFiles,
                         isFavorite = state.isFavorite,
+                        showDownloads = state.showDownloads,
                         toggleFavorite = toggleFavorite
                     )
+                }
+
+                if (state.itemDetail!!.isAccessRestricted) {
+                    item(span = { GridItemSpan(GridItemSpan) }) {
+                        AccessRestricted(state.itemDetail.isAudio) { onPrimaryAction(state.itemDetail.itemId) }
+                    }
                 }
 
                 if (state.hasSubjects) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
                         FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
-                            state.itemDetail!!.immutableSubjects.forEach {
+                            state.itemDetail.immutableSubjects.forEach {
                                 SubjectItem(
                                     text = it,
                                     modifier = Modifier.padding(Dimens.Spacing04),
@@ -200,9 +212,22 @@ private fun ItemDetail(
 
                 if (state.hasItemsByCreator) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
+                        val text = buildAnnotatedString {
+                            append(stringResource(R.string.more_by))
+                            append(" ")
+
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(state.itemDetail.creator)
+                            }
+                        }
+
                         LabelMedium(
-                            text = stringResource(R.string.more_by_author),
-                            modifier = Modifier.padding(Dimens.Gutter)
+                            text = text,
+                            modifier = Modifier
+                                .simpleClickable { goToCreator(state.itemDetail.creator) }
+                                .padding(Dimens.Gutter),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
@@ -221,7 +246,7 @@ private fun ItemDetail(
 
                 if (state.isLoading) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        Delayed(modifier = Modifier.animateItemPlacement()) {
+                        Delayed(modifier = Modifier.animateItem()) {
                             InfiniteProgressBar()
                         }
                     }
@@ -318,10 +343,25 @@ private fun RelatedItems(
     }
 }
 
+@Composable
+private fun AccessRestricted(isAudio: Boolean, onClick: () -> Unit) {
+    val message = if (isAudio) {
+        stringResource(R.string.audio_access_restricted_message)
+    } else {
+        stringResource(R.string.text_access_restricted_message)
+    }
+
+    MessageBox(
+        text = message,
+        trailingIcon = if (isAudio) null else Icons.ArrowForward,
+        modifier = Modifier.padding(Dimens.Spacing24),
+        onClick = if (isAudio) null else onClick
+    )
+}
+
 private const val GridItemSpan = 1
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE)
 @Composable
 private fun ItemDetailPreview() {
     AppTheme {

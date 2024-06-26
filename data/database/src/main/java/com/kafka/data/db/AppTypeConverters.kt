@@ -2,7 +2,8 @@ package com.kafka.data.db
 
 import androidx.room.TypeConverter
 import com.kafka.data.entities.RecentTextItem
-import kotlinx.serialization.decodeFromString
+import com.kafka.data.model.MediaType
+import com.kafka.data.model.SearchFilter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.threeten.bp.LocalDateTime
@@ -41,4 +42,16 @@ class AppTypeConverters {
 
     @TypeConverter
     fun fromLocalDateTime(value: LocalDateTime): String = localDateFormat.format(value)
+
+    @TypeConverter
+    fun stringToMediaType(data: String) = json.decodeFromString<List<MediaType>>(data)
+
+    @TypeConverter
+    fun mediaTypeToString(data: List<MediaType>) = json.encodeToString(data)
+
+    @TypeConverter
+    fun stringToSearchFilter(data: String) = json.decodeFromString<List<SearchFilter>>(data)
+
+    @TypeConverter
+    fun searchFilterToString(data: List<SearchFilter>) = json.encodeToString(data)
 }

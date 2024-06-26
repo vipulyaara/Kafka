@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.gms.googleServices)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -17,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 61
-        versionName = "0.21.0"
+        versionCode = 66
+        versionName = "0.26.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -40,15 +41,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    composeCompiler {
+        enableStrongSkippingMode = true
+        includeSourceInformation = true
+    }
+
     buildFeatures {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composecompiler.get()
-    }
-
-    packagingOptions {
+    packaging {
         packagingOptions.resources.excludes += setOf(
             // Exclude AndroidX version files
             "META-INF/*.version",
@@ -165,7 +167,6 @@ dependencies {
     implementation(libs.google.analytics)
     implementation(libs.google.auth)
     implementation(libs.google.crashlytics)
-    implementation(libs.google.dynamic.links)
     implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)

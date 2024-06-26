@@ -356,13 +356,4 @@ internal class DownloaderImpl @Inject constructor(
         }
         return file
     }
-
-    private fun fileExistsFromPreviousSession(
-        downloadLocationUri: Uri,
-        fileName: String,
-    ): Boolean {
-        val downloadsLocationFolder = downloadLocationUri.toDocumentFile(appContext)
-        val file = downloadsLocationFolder.findFile(fileName)
-        return file != null && file.exists()
-    }
 }

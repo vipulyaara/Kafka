@@ -34,4 +34,6 @@ data class Metadata(
     @SerialName("language")
     @Serializable(with = StringListSerializer::class)
     val languages: List<String>? = null,
+    @SerialName("access-restricted-item")
+    val accessRestrictedItem: Boolean = false,
 )

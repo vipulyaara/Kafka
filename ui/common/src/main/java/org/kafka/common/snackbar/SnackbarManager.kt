@@ -41,7 +41,7 @@ class SnackbarManager @Inject constructor() {
 
     fun addMessage(message: UiMessage) = addMessage(SnackbarMessage<Unit>(message))
 
-    fun addMessage(message: SnackbarMessage<*>) {
+    private fun addMessage(message: SnackbarMessage<*>) {
         if (message.message !in shownMessages) {
             messagesChannel.trySend(message)
             shownMessages.add(message.message)

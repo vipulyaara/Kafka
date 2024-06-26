@@ -15,10 +15,4 @@ internal class InternalPreferencesStore @Inject constructor(
             settings.remove(key)
         }
     }
-
-    suspend fun <T> save(key: Preferences.Key<T>, value: T) {
-        context.dataStore.edit { settings ->
-            settings[key] = value
-        }
-    }
 }

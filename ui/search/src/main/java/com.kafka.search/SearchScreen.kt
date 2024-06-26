@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
@@ -46,11 +47,13 @@ fun SearchScreen() {
                 searchText = searchViewState.keyword,
                 setSearchText = { searchViewModel.setQuery(it) },
                 searchViewState = searchViewState,
-                selectedFilters = searchViewState.filters,
+                selectedFilters = searchViewState.selectedFilters,
                 onFilterClicked = { searchViewModel.toggleFilter(it) },
-                onSearchClicked = {
-                    searchViewModel.setQuery(it)
-                    searchViewModel.search(it, searchViewState.filters)
+                selectedMediaTypes = searchViewModel.selectedMediaTypes,
+                onMediaTypeClicked = { searchViewModel.toggleMediaType(it) },
+                onSearchClicked = { query, filters, mediaTypes ->
+                    searchViewModel.setQuery(query)
+                    searchViewModel.search(query, filters, mediaTypes)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = { searchViewModel.openItemDetail(it) }
@@ -66,7 +69,9 @@ private fun Search(
     searchViewState: SearchViewState,
     selectedFilters: List<SearchFilter>,
     onFilterClicked: (SearchFilter) -> Unit,
-    onSearchClicked: (String) -> Unit,
+    selectedMediaTypes: List<MediaType>,
+    onMediaTypeClicked: (MediaType) -> Unit,
+    onSearchClicked: (String, List<SearchFilter>, List<MediaType>) -> Unit,
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit
 ) {
@@ -90,7 +95,9 @@ private fun Search(
     AnimatedVisibilityFade(searchText.isEmpty() && searchViewState.canShowRecentSearches) {
         RecentSearches(
             recentSearches = searchViewState.recentSearches!!,
-            onSearchClicked = onSearchClicked,
+            onSearchClicked = { search ->
+                onSearchClicked(search.searchTerm, selectedFilters, selectedMediaTypes)
+            },
             onRemoveSearch = removeRecentSearch,
             contentPadding = paddingValues
         )
@@ -102,7 +109,7 @@ private fun Search(
         SearchWidget(
             searchText = searchText,
             setSearchText = setSearchText,
-            onImeAction = onSearchClicked,
+            onImeAction = { query -> onSearchClicked(query, selectedFilters, selectedMediaTypes) },
             modifier = Modifier.padding(top = topScaffoldPadding())
         )
 
@@ -113,7 +120,16 @@ private fun Search(
                 .fillMaxWidth()
                 .padding(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing08)
         ) {
-            SearchFilterChips(selectedFilters = selectedFilters, onFilterClicked = onFilterClicked)
+            Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing08)) {
+                SearchFilterChips(
+                    selectedFilters = selectedFilters,
+                    onFilterClicked = onFilterClicked
+                )
+                MediaTypeChips(
+                    selectedMediaTypes = selectedMediaTypes,
+                    onFilterClicked = onMediaTypeClicked
+                )
+            }
             InfiniteProgressBarSmall(
                 show = searchViewState.isLoading,
                 modifier = Modifier.height(Dimens.Spacing24)

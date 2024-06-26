@@ -91,7 +91,7 @@ private fun Progress(progress: Float) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         LinearProgressIndicator(
-            progress = progress,
+            progress = { progress },
             modifier = Modifier
                 .height(Dimens.Spacing04)
                 .weight(1f)

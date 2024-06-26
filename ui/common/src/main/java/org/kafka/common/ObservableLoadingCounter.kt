@@ -43,7 +43,7 @@ suspend fun Flow<InvokeStatus>.collectStatus(
         InvokeSuccess -> counter.removeLoader()
         is InvokeError -> {
             Timber.i(status.throwable)
-            uiMessageManager?.emitMessage(status.throwable.toUiMessage())
+            uiMessageManager.emitMessage(status.throwable.toUiMessage())
             counter.removeLoader()
         }
     }

@@ -2,17 +2,14 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
-    id 'kotlin-kapt'
 }
 
 android {
     buildFeatures {
         compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composecompiler.get()
     }
 
     namespace 'org.kafka.homepage'

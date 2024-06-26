@@ -65,7 +65,7 @@ class BaselineProfileGenerator {
 //        contentList.wait(Until.hasObject(By.res("snack_collection")), 5_000)
     }
 
-    fun MacrobenchmarkScope.scrollHomepageJourney() {
+    private fun MacrobenchmarkScope.scrollHomepageJourney() {
         val list = device.findObject(By.res(homepageListKey))
         // Set gesture margin to avoid triggering gesture navigation.
         list.setGestureMargin(device.displayWidth / 5)

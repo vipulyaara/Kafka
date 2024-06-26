@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.kafka.data.model._mediaTypeAudio
+import com.kafka.data.model._mediaTypeText
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -98,9 +100,9 @@ enum class ContentType {
 
     val mediaTypes
         get() = when (this) {
-            AUDIO -> listOf("audio")
-            TEXT -> listOf("texts")
-            BOTH -> listOf("texts", "audio")
+            AUDIO -> listOf(_mediaTypeAudio)
+            TEXT -> listOf(_mediaTypeText)
+            BOTH -> listOf(_mediaTypeText, _mediaTypeAudio)
         }
 
     companion object {

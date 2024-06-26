@@ -10,8 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -174,10 +174,11 @@ internal fun LoginTextField(
         else loginTextField.visualTransformation,
         onValueChange = { onValueChange(it) },
         textStyle = MaterialTheme.typography.titleSmall,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedLabelColor = MaterialTheme.colorScheme.secondary,
             unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
-            containerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            focusedContainerColor = MaterialTheme.colorScheme.background,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
         ),
@@ -204,7 +205,6 @@ internal enum class LoginTextField(
     val visualTransformation: VisualTransformation,
     val imeAction: ImeAction
 ) {
-    Name("Name", KeyboardType.Text, VisualTransformation.None, ImeAction.Next),
     Username("Email", KeyboardType.Email, VisualTransformation.None, ImeAction.Next),
     Password("Password", KeyboardType.Password, PasswordVisualTransformation(), ImeAction.Done)
 }

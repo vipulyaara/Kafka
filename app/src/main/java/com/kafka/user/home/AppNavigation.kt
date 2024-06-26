@@ -35,7 +35,7 @@ import com.kafka.search.SearchScreen
 import com.kafka.user.playback.PlaybackViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
 import org.kafka.base.debug
-import org.kafka.common.extensions.collectEvent
+import org.kafka.common.extensions.CollectEvent
 import org.kafka.homepage.Homepage
 import org.kafka.homepage.recent.RecentItemsScreen
 import org.kafka.item.detail.ItemDetail
@@ -60,7 +60,7 @@ internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navigator: Navigator = LocalNavigator.current
 ) {
-    collectEvent(navigator.queue) { event ->
+    CollectEvent(navigator.queue) { event ->
         when (event) {
             is NavigationEvent.Destination -> {
                 navController.navigate(event.route)

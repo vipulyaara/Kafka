@@ -30,7 +30,7 @@ class UiMessageManager {
 
     suspend fun emitMessage(message: UiMessage) {
         mutex.withLock {
-            _messages.value = _messages.value + message
+            _messages.value += message
         }
     }
 

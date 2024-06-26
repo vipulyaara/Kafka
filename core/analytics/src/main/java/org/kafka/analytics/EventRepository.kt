@@ -4,20 +4,27 @@ import org.kafka.analytics.logger.AnalyticsImpl
 import javax.inject.Inject
 
 class EventRepository @Inject constructor() {
-    fun searchQuery(keyword: String, filters: List<String>? = null) =
-        AnalyticsImpl.SEARCH to mapOf(
-            "keyword" to keyword,
-            "filters" to filters?.joinToString(),
-        )
+    fun searchQuery(
+        keyword: String,
+        filters: List<String>? = null,
+        mediaTypes: List<String>? = null
+    ) = AnalyticsImpl.SEARCH to mapOf(
+        "keyword" to keyword,
+        "filters" to filters?.joinToString(),
+        "media_types" to mediaTypes?.joinToString(),
+    )
 
     fun removeRecentSearch(keyword: String) = "remove_recent_search" to mapOf("keyword" to keyword)
 
-    fun openItemDetail(itemId: String, source: String? = null, name: String? = null) =
-        "open_item_detail" to mapOf(
-            "item_id" to itemId,
-            "source" to source,
-            "name" to name,
-        )
+    fun openItemDetail(
+        itemId: String,
+        source: String? = null,
+        name: String? = null,
+    ) = "open_item_detail" to mapOf(
+        "item_id" to itemId,
+        "source" to source,
+        "name" to name,
+    )
 
     fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(
         "item_id" to itemId,
@@ -25,11 +32,16 @@ class EventRepository @Inject constructor() {
         "index" to index.toString(),
     )
 
-    fun readItem(itemId: String, type: String = "offline", source: String? = null) =
+    fun readItem(
+        itemId: String, type: String = "offline",
+        source: String? = null,
+        isRestrictedAccess: Boolean? = null
+    ) =
         "read_item" to mapOf(
             "item_id" to itemId,
             "type" to type,
             "source" to source,
+            "restricted_access" to isRestrictedAccess.toString(),
         )
 
     fun fileNotSupported(itemId: String) = "file_not_supported" to mapOf("item_id" to itemId)

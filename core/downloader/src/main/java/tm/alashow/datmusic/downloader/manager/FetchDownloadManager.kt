@@ -5,7 +5,6 @@ import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
-import com.tonyodev.fetch2.database.DownloadInfo
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -125,8 +124,6 @@ class FetchDownloadManager @Inject constructor(
 sealed class Downloadable(
     val download: Download,
 )
-
-object DownloadUninitialized : Downloadable(DownloadInfo())
 
 class DownloadCompleted(
     download: Download,

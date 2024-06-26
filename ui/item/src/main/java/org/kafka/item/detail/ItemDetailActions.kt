@@ -38,6 +38,7 @@ fun ItemDetailActions(
     onPrimaryAction: (String) -> Unit,
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
+    showDownloads: Boolean = true,
     toggleFavorite: () -> Unit
 ) {
     Box(Modifier.fillMaxWidth()) {
@@ -56,15 +57,17 @@ fun ItemDetailActions(
                 ) { toggleFavorite() }
             }
 
-            Box(modifier = Modifier.weight(0.2f)) {
-                Icon(
-                    icon = Icons.Download,
-                    contentDescription = stringResource(R.string.cd_files),
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .testTagUi("download_files"),
-                    onClicked = { openFiles(itemId) }
-                )
+            if (showDownloads) {
+                Box(modifier = Modifier.weight(0.2f)) {
+                    Icon(
+                        icon = Icons.Download,
+                        contentDescription = stringResource(R.string.cd_files),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .testTagUi("download_files"),
+                        onClicked = { openFiles(itemId) }
+                    )
+                }
             }
 
             FloatingButton(

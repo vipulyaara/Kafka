@@ -39,5 +39,6 @@ object FakeItemData {
         coverImage = coverUrl,
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc.",
         subject = listOf("Insect", "Existential", "Classics", "Fiction"),
+        isAccessRestricted = true
     )
 }

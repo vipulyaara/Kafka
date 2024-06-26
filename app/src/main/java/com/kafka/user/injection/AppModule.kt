@@ -16,7 +16,6 @@ import com.kafka.recommendations.topic.FirebaseTopics
 import com.kafka.recommendations.topic.FirebaseTopicsImpl
 import com.kafka.recommendations.topic.FirebaseTopicsInitializer
 import com.kafka.user.BuildConfig
-import com.kafka.user.deeplink.FirebaseDynamicDeepLinkHandler
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
@@ -41,7 +40,6 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
-import org.kafka.navigation.deeplink.DynamicDeepLinkHandler
 import org.kafka.notifications.NotificationManager
 import org.kafka.notifications.NotificationManagerImpl
 import tm.alashow.datmusic.downloader.DownloadInitializer
@@ -163,11 +161,6 @@ abstract class AppModuleBinds {
     @Singleton
     @Binds
     abstract fun provideNotificationManager(bind: NotificationManagerImpl): NotificationManager
-
-    @Binds
-    abstract fun deepLinkHandler(
-        firebaseDynamicDeepLinkHandler: FirebaseDynamicDeepLinkHandler
-    ): DynamicDeepLinkHandler
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
