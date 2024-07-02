@@ -35,7 +35,8 @@ internal fun Carousels(
                 label = item.title,
                 imageUrl = images.getOrNull(index),
                 onClick = { onBannerClick(item.itemId) },
-                shape = RoundedCornerShape(Dimens.Radius20)
+                shape = RoundedCornerShape(Dimens.Radius20),
+                modifier = Modifier.padding(horizontal = Dimens.Spacing04)
             )
         }
     }
