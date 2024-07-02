@@ -116,3 +116,10 @@
 -keep class app.rive.runtime.** { *; }
 
 -keep class com.shockwave.**
+
+-if public class androidx.compose.ui.platform.AndroidCompositionLocals_androidKt {
+    public static *** getLocalLifecycleOwner();
+}
+-keep public class androidx.compose.ui.platform.AndroidCompositionLocals_androidKt {
+    public static *** getLocalLifecycleOwner();
+}

@@ -120,7 +120,9 @@ class SearchViewModel @Inject constructor(
     fun toggleFilter(filter: SearchFilter) {
         val selectedFilters = state.value.selectedFilters.toMutableList()
         if (selectedFilters.contains(filter)) {
-            selectedFilters.remove(filter)
+            if (selectedFilters.size > 1) {
+                selectedFilters.remove(filter)
+            }
         } else {
             selectedFilters.add(filter)
         }
