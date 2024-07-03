@@ -28,7 +28,7 @@ import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.materialYouPlayerTheme
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen

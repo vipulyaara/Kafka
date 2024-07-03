@@ -17,9 +17,9 @@ android {
 }
 
 dependencies {
-    api api(project(':ui:common',))
-    api(project("::ui:theme"))
-	api(project(":core:downloader"))
+	api projects.core.downloader
+	api projects.ui.common
+	api projects.ui.theme
 
 	implementation libs.timber
 

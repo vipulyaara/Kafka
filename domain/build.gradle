@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.cacheFixPlugin)
-    id 'kotlin-kapt'
 }
 
 kapt {
@@ -15,13 +15,13 @@ android {
 }
 
 dependencies {
-    api project(':core:remote-config')
-    api project(':data:repo')
+    implementation projects.base.domain
+    implementation projects.core.analytics
+    implementation projects.core.downloader
+    implementation projects.corePlayback
 
-    implementation project(':base:domain')
-    implementation project(':core:analytics')
-    implementation project(':core:downloader')
-    implementation project(':core-playback')
+    api projects.core.remoteConfig
+    api projects.data.repo
 
     implementation platform(libs.google.bom)
 

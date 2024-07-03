@@ -19,7 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sarahang.playback.ui.components.ResizableLayout
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.selectRootScreen
 

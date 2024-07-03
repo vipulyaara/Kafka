@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
 }
@@ -15,16 +15,17 @@ android {
 }
 
 dependencies {
-    implementation project(':base:domain')
-    implementation project(':base:network')
-    implementation project(':core:analytics')
-    implementation project(':data:repo')
-    implementation project(':domain')
-    implementation project(':navigation')
-    implementation project(':ui:common')
-    implementation project(':ui:components')
-    implementation project(':ui:item')
-    implementation project(':ui:library')
+    implementation projects.base.domain
+    implementation projects.base.network
+    implementation projects.core.analytics
+    implementation projects.data.repo
+    implementation projects.domain
+    implementation projects.navigation
+    implementation projects.ui.common
+    implementation projects.ui.components
+    implementation projects.ui.item
+    implementation projects.ui.library
+
     implementation libs.hilt.android
 
     kapt libs.hilt.compiler

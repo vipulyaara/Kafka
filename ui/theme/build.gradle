@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
@@ -16,6 +16,10 @@ android {
 }
 
 dependencies {
+    implementation projects.base.domain
+    implementation projects.core.analytics
+    implementation projects.data.repo
+
     api libs.accompanist.systemuicontroller
     api libs.androidx.core
     api libs.androidx.hilt.compose
@@ -32,9 +36,6 @@ dependencies {
     api libs.kotlin.serialization
     api libs.palette
 
-    implementation project(':base:domain')
-    implementation project(':core:analytics')
-    implementation project(':data:repo')
     implementation libs.hilt.android
     implementation libs.kotlin.stdlib
 

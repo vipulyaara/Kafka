@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
 }
@@ -15,9 +15,10 @@ android {
 }
 
 dependencies {
-    api project('::ui:theme')
-    api project(':ui:common')
-    api project(':ui:components')
+    api projects.ui.common
+    api projects.ui.components
+    api projects.ui.theme
+
     api libs.accompanist.flowlayout
     api libs.accompanist.navigation.material
     api libs.accompanist.placeholder
@@ -32,13 +33,11 @@ dependencies {
     api libs.androidx.lifecycle.runtime
     api libs.androidx.lifecycle.viewmodel.compose
     api libs.androidx.lifecycle.viewmodel.ktx
-    //    debugApi libs.compose.ui.test.manifest
     api libs.androidx.paging.compose
     api libs.coil.compose
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
     api libs.compose.foundation.layout
-    //    api libs.compose.livedata
     api libs.compose.material.material3
     api libs.compose.runtime.runtime
     api libs.compose.ui.tooling

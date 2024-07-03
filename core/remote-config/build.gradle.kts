@@ -13,8 +13,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:analytics"))
-    implementation(project(":base:domain"))
+    implementation(projects.base.domain)
+    implementation(projects.core.analytics)
 
     implementation(libs.androidx.core)
     implementation(libs.hilt.android)

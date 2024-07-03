@@ -22,7 +22,6 @@ import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.ThreeTenBpInitializer
-import com.kafka.user.review.AppReviewManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -32,9 +31,6 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.kafka.analytics.AppReviewManager
-import org.kafka.analytics.logger.Analytics
-import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
@@ -42,6 +38,10 @@ import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.notifications.NotificationManager
 import org.kafka.notifications.NotificationManagerImpl
+import org.kafka.play.AppReviewManager
+import org.kafka.play.AppReviewManagerImpl
+import org.kafka.play.logger.Analytics
+import org.kafka.play.logger.AnalyticsImpl
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import javax.inject.Named
 import javax.inject.Singleton

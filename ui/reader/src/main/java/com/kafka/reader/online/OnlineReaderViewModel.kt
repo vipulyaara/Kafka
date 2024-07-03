@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.base.domain.onException
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.asUiMessage

@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.domain.observers.library.ObserveFavorites

@@ -1,7 +1,7 @@
-package org.kafka.analytics.logger
+package org.kafka.play.logger
 
 import com.kafka.data.feature.UserData
-import org.kafka.analytics.EventRepository
+import org.kafka.play.EventRepository
 
 interface Analytics {
     fun log(eventInfo: EventInfo)

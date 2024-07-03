@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.base.debug
 import org.kafka.common.snackbar.SnackbarManager
 import timber.log.Timber

@@ -15,20 +15,22 @@ android {
 }
 
 dependencies {
-    implementation project(':base:domain')
-    implementation project(':base:network')
-    implementation project(':core:analytics')
-    implementation project(':core-playback')
-    implementation project(':core:remote-config')
-    implementation project(':data:repo')
-    implementation project(':domain')
-    implementation project(':navigation')
-    implementation project(':notifications')
-    implementation project(':ui:common')
-    implementation project(':ui:components')
-    implementation project(':ui:downloader')
-    implementation project(':ui:library')
-    implementation project(':ui-playback')
+    implementation projects.base.domain
+    implementation projects.base.network
+    implementation projects.core.analytics
+    implementation projects.core.play
+    implementation projects.corePlayback
+    implementation projects.core.remoteConfig
+    implementation projects.data.repo
+    implementation projects.domain
+    implementation projects.navigation
+    implementation projects.notifications
+    implementation projects.ui.common
+    implementation projects.ui.components
+    implementation projects.ui.downloader
+    implementation projects.ui.library
+    implementation projects.uiPlayback
+
     implementation libs.fetch
     implementation libs.hilt.android
     implementation libs.rebugger
