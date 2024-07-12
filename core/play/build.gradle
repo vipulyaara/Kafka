@@ -11,21 +11,17 @@ kapt {
 }
 
 android {
-    namespace 'org.kafka.analytics'
+    namespace 'org.kafka.core.play'
 }
 
 dependencies {
-    implementation(projects.base.domain)
-    implementation(projects.data.repo)
+    implementation projects.base.domain
+    implementation projects.core.analytics
+    implementation projects.data.database
 
-    implementation platform(libs.google.bom)
-    implementation libs.google.analytics
-    implementation libs.google.auth
-    implementation libs.google.crashlytics
+    implementation libs.google.review
 
     implementation libs.hilt.android
-
-    implementation libs.mixpanel
 
     kapt libs.hilt.compiler
 }

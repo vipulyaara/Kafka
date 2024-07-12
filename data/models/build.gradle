@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.cacheFixPlugin)
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 kapt {
@@ -17,10 +17,11 @@ android {
 }
 
 dependencies {
+    implementation(projects.base.domain)
+    implementation(projects.base.network)
+
     ksp libs.androidx.room.compiler
 
-    implementation project(':base:domain')
-    implementation project(':base:network')
     implementation libs.firestore.ktx
     implementation libs.androidx.collection
     implementation libs.androidx.core

@@ -26,8 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kafka.analytics.AppReviewManager
-import org.kafka.analytics.logger.Analytics
 import org.kafka.base.combine
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -59,6 +57,8 @@ import org.kafka.navigation.Screen.Search
 import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
+import org.kafka.play.AppReviewManager
+import org.kafka.play.logger.Analytics
 import javax.inject.Inject
 
 @HiltViewModel
@@ -162,7 +162,10 @@ class ItemDetailViewModel @Inject constructor(
         if (itemDetail?.primaryFile != null) {
             addRecentItem(itemId)
 
-            if (state.value.downloadItem == null && remoteConfig.isOnlineReaderEnabled()) {
+            val isOnlineReaderEnabled =
+                state.value.downloadItem == null && remoteConfig.isOnlineReaderEnabled()
+
+            if (isOnlineReaderEnabled || itemDetail.isAccessRestricted) {
                 logOnlineReader(itemDetail = itemDetail)
                 navigator.navigate(OnlineReader.createRoute(currentRoot, itemDetail.itemId))
             } else {
@@ -274,7 +277,11 @@ class ItemDetailViewModel @Inject constructor(
                 application.getString(R.string.play)
             }
         } else {
-            application.getString(R.string.read)
+            if (itemDetail.isAccessRestricted) {
+                application.getString(R.string.borrow)
+            } else {
+                application.getString(R.string.read)
+            }
         }
 }
 

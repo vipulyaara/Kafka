@@ -3,7 +3,7 @@ package org.kafka.domain.interactors
 import com.kafka.data.dao.RecentAudioDao
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.apis.AudioDataSource
-import org.kafka.analytics.logger.Analytics
+import org.kafka.play.logger.Analytics
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject
 

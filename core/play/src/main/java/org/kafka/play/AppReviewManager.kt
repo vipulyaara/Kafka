@@ -1,4 +1,4 @@
-package com.kafka.user.review
+package org.kafka.play
 
 import android.app.Activity
 import android.content.Context
@@ -7,12 +7,17 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.kafka.data.prefs.PreferencesStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import org.kafka.analytics.AppReviewManager
-import org.kafka.analytics.logger.Analytics
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
+import org.kafka.play.logger.Analytics
 import javax.inject.Inject
 import javax.inject.Singleton
+
+interface AppReviewManager {
+    fun showReviewDialog(activity: Activity)
+    suspend fun incrementItemOpenCount()
+    val totalItemOpens: Int
+}
 
 @Singleton
 class AppReviewManagerImpl @Inject constructor(
@@ -22,8 +27,9 @@ class AppReviewManagerImpl @Inject constructor(
     preferencesStore: PreferencesStore,
 ) : AppReviewManager {
     private val manager = ReviewManagerFactory.create(context)
-    private val itemOpensPrefKey =
-        intPreferencesKey("item_opens") // this is actually used when user plays/reads an item, not when user opens the item
+
+    // this is actually used when user plays/reads an item, not when user opens the item
+    private val itemOpensPrefKey = intPreferencesKey("item_opens")
 
     private val itemOpens = preferencesStore.getStateFlow(
         keyName = itemOpensPrefKey, scope = coroutineScope, initialValue = 0
@@ -40,9 +46,6 @@ class AppReviewManagerImpl @Inject constructor(
         }
     }
 
-    /**
-     * Review dialog is shown based on item opens count
-     * */
     override suspend fun incrementItemOpenCount() {
         itemOpens.value++
     }

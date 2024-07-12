@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.cacheFixPlugin)
 }
 
 android {
@@ -15,6 +15,10 @@ android {
 }
 
 dependencies {
+
+    implementation(projects.data.repo)
+    implementation(projects.ui.common)
+
     implementation libs.accompanist.navigation.material
     implementation libs.androidx.core
     implementation libs.androidx.hilt.compose
@@ -24,8 +28,6 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel.compose
     implementation libs.androidx.lifecycle.viewmodel.ktx
 
-    implementation project(':data:repo')
-    implementation project(':ui:common')
     implementation libs.androidx.navigation.compose
     implementation libs.compose.material.material
     implementation libs.compose.runtime.runtime

@@ -1,9 +1,9 @@
 plugins {
 	alias(libs.plugins.android.library)
-	alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.cacheFixPlugin)
+	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.kotlin.kapt)
 	alias(libs.plugins.hilt)
-	id 'kotlin-kapt'
 }
 
 android {
@@ -15,12 +15,13 @@ repositories {
 }
 
 dependencies {
+	implementation projects.core.analytics
+	implementation projects.core.remoteConfig
+	implementation projects.data.repo
+	implementation projects.ui.common
+
 	implementation libs.hilt.android
 
-	implementation project(':core:analytics')
-	implementation project(':core:remote-config')
-	implementation project(':data:repo')
-	implementation project(':ui:common')
 	implementation libs.fetch
 	implementation libs.fetch.okhttp
 

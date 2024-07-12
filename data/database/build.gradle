@@ -27,9 +27,10 @@ android {
 dependencies {
     ksp libs.androidx.room.compiler
 
-    api project(':base:domain')
-    api project(':base:network')
-    api project(':data:models')
+    api projects.base.domain
+    api projects.base.network
+    api projects.data.models
+
     api libs.androidx.collection
     api libs.androidx.core
     api libs.androidx.paging.runtime

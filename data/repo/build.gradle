@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 kapt {
@@ -17,12 +17,13 @@ android {
 }
 
 dependencies {
+    api projects.base.domain
+    api projects.base.network
+    api projects.data.models
+    api projects.data.database
+
     ksp libs.androidx.room.compiler
 
-    api project(':base:domain')
-    api project(':base:network')
-    api project(':data:models')
-    api project(':data:database')
     implementation libs.androidx.collection
     implementation libs.androidx.core
     implementation libs.androidx.room.ktx

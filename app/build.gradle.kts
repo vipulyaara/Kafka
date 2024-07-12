@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 68
-        versionName = "0.28.0"
+        versionCode = 69
+        versionName = "0.29.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -124,6 +124,7 @@ dependencies {
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
+    implementation(projects.core.play)
     implementation(projects.corePlayback)
     implementation(projects.core.recommendation)
     implementation(projects.core.remoteConfig)
@@ -171,6 +172,7 @@ dependencies {
     implementation(libs.google.messaging)
     implementation(libs.google.performance)
     implementation(libs.google.review)
+    implementation(libs.google.appupdate)
     implementation(libs.hilt.android)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)

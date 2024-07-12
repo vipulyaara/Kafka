@@ -15,11 +15,8 @@ android {
 }
 
 dependencies {
-    api project(':ui:theme')
+    api projects.ui.theme
 
-    implementation libs.accompanist.flowlayout
-    implementation libs.accompanist.navigation.material
-    implementation libs.accompanist.systemuicontroller
     api libs.androidx.core
     api libs.androidx.hilt.compose
     api libs.androidx.hilt.navigation
@@ -36,6 +33,10 @@ dependencies {
     api libs.compose.ui.tooling
     api libs.compose.ui.ui
     api libs.compose.ui.util
+
+    implementation libs.accompanist.flowlayout
+    implementation libs.accompanist.navigation.material
+    implementation libs.accompanist.systemuicontroller
     implementation libs.icons.feather
     implementation libs.icons.font.awesome
     implementation libs.icons.tabler
