@@ -1,7 +1,7 @@
 [versions]
 accompanist = "0.34.0"
 appupdate = "2.1.0"
-agp = "8.5.0"
+agp = "8.5.1"
 androidxhilt = "1.2.0"
 androidxlifecycle = "2.8.3"
 navigation = "2.7.7"
