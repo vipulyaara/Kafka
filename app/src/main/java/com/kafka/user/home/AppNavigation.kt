@@ -319,7 +319,7 @@ private fun SwitchStatusBarsOnPlayer(navController: NavHostController) {
     val view = LocalView.current
     val useDarkTheme = LocalTheme.current.shouldUseDarkColors()
 
-    DisposableEffect(destination, useDarkTheme) {
+    DisposableEffect(isPlayerUp, useDarkTheme) {
         val activity = view.context as Activity
         WindowCompat.getInsetsController(activity.window, activity.window.decorView).apply {
             isAppearanceLightStatusBars = if (isPlayerUp) useDarkTheme else !useDarkTheme
