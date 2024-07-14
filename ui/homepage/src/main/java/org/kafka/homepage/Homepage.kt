@@ -36,6 +36,7 @@ import com.kafka.data.entities.Item
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
+import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
@@ -238,10 +239,13 @@ private fun LazyListScope.featuredItems(
             key = { "featured_${it.itemId}" },
             contentType = { "featured" }
         ) { item ->
+            val image by rememberSavableMutableState(collection.image) {
+                collection.image.randomOrNull().orEmpty()
+            }
             FeaturedItem(
                 item = item,
                 label = collection.label,
-                imageUrl = collection.heroImage,
+                imageUrl = image,
                 onClick = { openItemDetail(item.itemId) },
                 modifier = Modifier
                     .padding(horizontal = Dimens.Gutter)
