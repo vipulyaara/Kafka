@@ -14,6 +14,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -133,7 +134,12 @@ fun isAtLeastS(): Boolean {
 fun PreferencesStore.shouldUseDarkColors(): Boolean {
     val themePreference by remember { observeTheme() }.collectAsState(Theme.SYSTEM)
 
-    return when (themePreference) {
+    return themePreference.shouldUseDarkColors()
+}
+
+@Composable
+fun Theme.shouldUseDarkColors(): Boolean {
+    return when (this) {
         Theme.SYSTEM -> isSystemInDarkTheme()
         Theme.DARK -> true
         Theme.LIGHT -> false
@@ -145,4 +151,8 @@ fun PreferencesStore.shouldUseDarkColors(): Boolean {
 fun PreferencesStore.shouldUseTrueContrast(): Boolean {
     val themePreference by remember { observeTrueContrast() }.collectAsState(true)
     return themePreference
+}
+
+val LocalTheme = staticCompositionLocalOf<Theme> {
+    error("LocalTheme not provided")
 }

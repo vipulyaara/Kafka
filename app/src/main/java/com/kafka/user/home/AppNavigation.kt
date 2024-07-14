@@ -53,6 +53,8 @@ import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.auth.feedback.FeedbackScreen
 import org.rekhta.ui.auth.profile.ProfileScreen
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.shouldUseDarkColors
 
 @Composable
 internal fun AppNavigation(
@@ -186,6 +188,7 @@ private fun NavGraphBuilder.addPlayer(root: RootScreen) {
             goToItem = { playbackViewModel.goToAlbum() },
             goToCreator = { playbackViewModel.goToCreator() },
             playerTheme = playbackViewModel.playerTheme,
+            useDarkTheme = LocalTheme.current.shouldUseDarkColors()
         )
     }
 }

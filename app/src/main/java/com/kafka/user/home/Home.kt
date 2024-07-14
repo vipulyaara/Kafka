@@ -28,15 +28,17 @@ import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.materialYouPlayerTheme
-import org.kafka.play.logger.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.selectRootScreen
+import org.kafka.play.logger.Analytics
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.snackbar.DismissableSnackbarHost
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.shouldUseDarkColors
 
 @Composable
 internal fun Home(
@@ -114,6 +116,7 @@ private fun BottomBar(
     if (!isWideLayout)
         Column {
             MiniPlayer(
+                useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
                 modifier = Modifier
                     .padding(Dimens.Spacing08)
                     .zIndex(2f),

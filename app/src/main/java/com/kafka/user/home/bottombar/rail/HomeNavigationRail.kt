@@ -52,6 +52,8 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.shouldUseDarkColors
 
 internal object HomeNavigationRailDefaults {
     val ActiveColor @Composable get() = MaterialTheme.colorScheme.primary
@@ -183,6 +185,7 @@ internal fun HomeNavigationRail(
                         modifier = Modifier
                             .padding(Dimens.Spacing08)
                             .zIndex(2f),
+                        useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
                         openPlaybackSheet = {
                             navigator.navigate(Screen.Player.createRoute(currentRoot))
                         }

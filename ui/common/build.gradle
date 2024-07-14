@@ -16,6 +16,7 @@ android {
 
 dependencies {
     api projects.ui.theme
+    implementation projects.data.repo
 
     api libs.androidx.core
     api libs.androidx.hilt.compose
@@ -42,7 +43,6 @@ dependencies {
     implementation libs.icons.tabler
     implementation libs.tracing
 
-    implementation project(':data:repo')
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib
 }
