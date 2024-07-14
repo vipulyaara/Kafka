@@ -1,5 +1,6 @@
 package com.kafka.user.home
 
+import android.app.Activity
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,11 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
@@ -23,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
@@ -76,6 +80,8 @@ internal fun AppNavigation(
             else -> Unit
         }
     }
+
+    SwitchStatusBarsOnPlayer(navController)
 
     NavHost(
         modifier = modifier.fillMaxSize(),
@@ -303,3 +309,24 @@ internal fun NavController.currentScreenAsState(): State<RootScreen> {
 @Composable
 inline fun <reified T : ViewModel> activityHiltViewModel() =
     hiltViewModel<T>(LocalView.current.findViewTreeViewModelStoreOwner()!!)
+
+@Composable
+private fun SwitchStatusBarsOnPlayer(navController: NavHostController) {
+    val currentRoute by navController.currentBackStackEntryAsState()
+    val destination = currentRoute?.destination?.route?.split("/")?.getOrNull(1)
+    val isPlayerUp = destination == "player"
+
+    val view = LocalView.current
+    val useDarkTheme = LocalTheme.current.shouldUseDarkColors()
+
+    DisposableEffect(destination, useDarkTheme) {
+        val activity = view.context as Activity
+        WindowCompat.getInsetsController(activity.window, activity.window.decorView).apply {
+            isAppearanceLightStatusBars = if (isPlayerUp) useDarkTheme else !useDarkTheme
+        }
+
+        onDispose {
+
+        }
+    }
+}
