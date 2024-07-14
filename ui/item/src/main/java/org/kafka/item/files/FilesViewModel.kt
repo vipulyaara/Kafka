@@ -55,10 +55,10 @@ class FilesViewModel @Inject constructor(
         FilesViewState(
             title = files.firstOrNull()?.itemTitle.orEmpty(),
             files = files,
-            filteredFiles = filteredFiles(files = files, selectedExtension = selectedExtension),
-            actionLabels = actionLabels(files = files),
             downloads = downloads,
             isLoading = isLoading,
+            actionLabels = actionLabels(files = files),
+            filteredFiles = filteredFiles(files = files, selectedExtension = selectedExtension),
             downloadsWarningMessage = remoteConfig.downloadsWarningMessage()
         )
     }.stateInDefault(scope = viewModelScope, initialValue = FilesViewState())
