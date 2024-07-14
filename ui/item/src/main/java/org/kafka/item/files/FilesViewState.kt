@@ -13,5 +13,6 @@ data class FilesViewState(
     val files: List<File> = emptyList(),
     val filteredFiles: List<File> = emptyList(),
     val actionLabels: ImmutableList<String> = persistentListOf(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val downloadsWarningMessage: String = ""
 )

@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.File
 import com.kafka.data.entities.isAudio
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.downloadsWarningMessage
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.Audio
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.play.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.domain.interactors.recent.AddRecentItem
@@ -25,6 +26,7 @@ import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
+import org.kafka.play.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
@@ -37,7 +39,8 @@ class FilesViewModel @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val downloader: Downloader,
     private val navigator: Navigator,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val remoteConfig: RemoteConfig
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
@@ -52,10 +55,11 @@ class FilesViewModel @Inject constructor(
         FilesViewState(
             title = files.firstOrNull()?.itemTitle.orEmpty(),
             files = files,
-            filteredFiles = filteredFiles(files, selectedExtension),
-            actionLabels = actionLabels(files),
+            filteredFiles = filteredFiles(files = files, selectedExtension = selectedExtension),
+            actionLabels = actionLabels(files = files),
             downloads = downloads,
-            isLoading = isLoading
+            isLoading = isLoading,
+            downloadsWarningMessage = remoteConfig.downloadsWarningMessage()
         )
     }.stateInDefault(scope = viewModelScope, initialValue = FilesViewState())
 
