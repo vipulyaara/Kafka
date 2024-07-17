@@ -79,8 +79,9 @@ fun InfiniteTransition.BouncingDot(
             tween(600),
             RepeatMode.Reverse,
             initialStartOffset = startOffset
-        )
+        ), label = "bounce"
     )
+
     Box(
         modifier
             .padding(3.dp)
