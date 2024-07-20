@@ -19,6 +19,7 @@ android {
 dependencies {
     api projects.base.domain
     api projects.base.network
+    api projects.core.remoteConfig
     api projects.data.models
     api projects.data.database
 

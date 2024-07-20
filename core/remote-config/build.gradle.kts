@@ -14,7 +14,6 @@ android {
 
 dependencies {
     implementation(projects.base.domain)
-    implementation(projects.core.analytics)
 
     implementation(libs.androidx.core)
     implementation(libs.hilt.android)
