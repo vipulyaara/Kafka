@@ -52,11 +52,19 @@ class ItemDetailMapper @Inject constructor(
 
     private fun String.extension() = split(".").last()
 
-    private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
-        it.name.startsWith("cover_") &&
-                (it.name.endsWith("jpg") || it.name.endsWith("png"))
-    }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
-        ?: "https://archive.org/services/img/${metadata.identifier}"
+    private fun ItemDetailResponse.findCoverImage(): String {
+        val coverFile = files.firstOrNull {
+            it.name.startsWith("cover_") && (it.name.endsWith("jpg") || it.name.endsWith("png"))
+        }
+
+        return if (coverFile != null) {
+            "https://archive.org/download/${metadata.identifier}/${coverFile.name}"
+        } else if (files.map { it.name }.any { it == "__ia_thumb.jpg" }) {
+            "https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?w=500&auto=format&fit=crop&q=80"
+        } else {
+            "https://archive.org/services/img/${metadata.identifier}"
+        }
+    }
 
     private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
         val files = from.files.map { file ->
