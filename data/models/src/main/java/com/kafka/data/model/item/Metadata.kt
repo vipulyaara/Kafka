@@ -30,7 +30,8 @@ data class Metadata(
     @SerialName("runtime")
     val runtime: String? = null,
     @SerialName("title")
-    val title: String? = null,
+    @Serializable(with = StringListSerializer::class)
+    val title: List<String>? = null,
     @SerialName("language")
     @Serializable(with = StringListSerializer::class)
     val languages: List<String>? = null,

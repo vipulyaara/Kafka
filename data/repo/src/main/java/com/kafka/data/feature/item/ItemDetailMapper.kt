@@ -22,7 +22,7 @@ class ItemDetailMapper @Inject constructor(
         return ItemDetail(
             itemId = from.metadata.identifier,
             language = from.metadata.languages?.map { it.split(";") }?.flatten()?.joinToString(),
-            title = from.metadata.title?.dismissUpperCase(),
+            title = from.metadata.title?.firstOrNull()?.dismissUpperCase(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
             creator = from.metadata.creator?.take(5)?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
