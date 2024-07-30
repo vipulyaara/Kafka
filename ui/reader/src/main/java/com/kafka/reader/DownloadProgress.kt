@@ -97,7 +97,7 @@ private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
 
 @Composable
 private fun Progress(progress: Float) {
-    val progressState by animateFloatAsState(targetValue = progress)
+    val progressState by animateFloatAsState(targetValue = progress, label = "progress")
 
     Row(
         modifier = Modifier,

@@ -27,6 +27,8 @@ dependencies {
     implementation projects.ui.downloader
     implementation projects.ui.webview
 
+    implementation libs.accompanist.web
+
     implementation libs.hilt.android
     implementation libs.pdfviewer
 

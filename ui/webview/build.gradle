@@ -21,38 +21,38 @@ dependencies {
     implementation projects.ui.components
     implementation projects.ui.theme
 
-    api libs.accompanist.flowlayout
-    api libs.accompanist.navigation.material
-    api libs.accompanist.placeholder
-    api libs.accompanist.swiperefresh
-    api libs.accompanist.systemuicontroller
-    api libs.accompanist.web
-    api libs.androidx.core
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
-    api libs.androidx.lifecycle.livedata.ktx
-    api libs.androidx.lifecycle.process
-    api libs.androidx.lifecycle.runtime
-    api libs.androidx.lifecycle.viewmodel.compose
-    api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.coil.compose
-    api libs.compose.animation.animation
-    api libs.compose.foundation.foundation
-    api libs.compose.foundation.layout
-    api libs.compose.material.material3
-    api libs.compose.runtime.runtime
-    api libs.compose.ui.tooling
-    api libs.compose.ui.ui
-    api libs.compose.ui.util
-    api libs.icons.feather
-    api libs.icons.font.awesome
-    api libs.icons.tabler
-    api libs.lottie.compose
-    api libs.lottie.core
-    api libs.tracing
+    implementation libs.accompanist.flowlayout
+    implementation libs.accompanist.navigation.material
+    implementation libs.accompanist.placeholder
+    implementation libs.accompanist.swiperefresh
+    implementation libs.accompanist.systemuicontroller
+    implementation libs.accompanist.web
 
-    androidTestApi libs.compose.ui.test
+    implementation libs.androidx.core
+    implementation libs.androidx.hilt.compose
+    implementation libs.androidx.hilt.navigation
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.lifecycle.process
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.viewmodel.ktx
 
     implementation libs.coil.coil
-    implementation libs.kotlin.stdlib
+    implementation libs.coil.compose
+    implementation libs.compose.animation.animation
+    implementation libs.compose.foundation.foundation
+    implementation libs.compose.foundation.layout
+    implementation libs.compose.material.material3
+    implementation libs.compose.runtime.runtime
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.ui.ui
+    implementation libs.compose.ui.util
+    implementation libs.icons.feather
+    implementation libs.icons.font.awesome
+    implementation libs.icons.tabler
+    implementation libs.lottie.compose
+    implementation libs.lottie.core
+    implementation libs.tracing
+
+    androidTestApi libs.compose.ui.test
 }

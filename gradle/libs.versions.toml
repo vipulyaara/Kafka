@@ -93,7 +93,6 @@ lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
 androidx-palette = "androidx.palette:palette:1.0.0"
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 

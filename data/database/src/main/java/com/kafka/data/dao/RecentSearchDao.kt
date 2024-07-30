@@ -14,7 +14,4 @@ abstract class RecentSearchDao : EntityDao<RecentSearch> {
 
     @Query("DELETE FROM recent_search WHERE search_term = :searchTerm")
     abstract suspend fun delete(searchTerm: String)
-
-    @Query("DELETE FROM recent_search")
-    abstract suspend fun deleteAll()
 }

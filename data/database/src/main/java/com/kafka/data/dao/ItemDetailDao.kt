@@ -14,12 +14,6 @@ abstract class ItemDetailDao : EntityDao<ItemDetail> {
     @Query("select * from ItemDetail where itemId = :itemId")
     abstract fun observeItemDetail(itemId: String): Flow<ItemDetail?>
 
-    @Query("select * from ItemDetail")
-    abstract fun observeItemDetail(): Flow<List<ItemDetail>>
-
     @Query("select * from ItemDetail where itemId = :itemId")
     abstract suspend fun get(itemId: String): ItemDetail
-
-    @Query("select * from ItemDetail where itemId = :itemId")
-    abstract suspend fun itemDetailOrNull(itemId: String): ItemDetail?
 }
