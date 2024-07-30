@@ -59,8 +59,6 @@ class ItemDetailMapper @Inject constructor(
 
         return if (coverFile != null) {
             "https://archive.org/download/${metadata.identifier}/${coverFile.name}"
-        } else if (files.map { it.name }.any { it == "__ia_thumb.jpg" }) {
-            "https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?w=500&auto=format&fit=crop&q=80"
         } else {
             "https://archive.org/services/img/${metadata.identifier}"
         }
