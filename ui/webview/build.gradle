@@ -15,9 +15,11 @@ android {
 }
 
 dependencies {
-    api projects.ui.common
-    api projects.ui.components
-    api projects.ui.theme
+    implementation projects.base.domain
+    implementation projects.data.repo
+    implementation projects.ui.common
+    implementation projects.ui.components
+    implementation projects.ui.theme
 
     api libs.accompanist.flowlayout
     api libs.accompanist.navigation.material
@@ -33,7 +35,6 @@ dependencies {
     api libs.androidx.lifecycle.runtime
     api libs.androidx.lifecycle.viewmodel.compose
     api libs.androidx.lifecycle.viewmodel.ktx
-    api libs.androidx.paging.compose
     api libs.coil.compose
     api libs.compose.animation.animation
     api libs.compose.foundation.foundation
@@ -52,8 +53,6 @@ dependencies {
 
     androidTestApi libs.compose.ui.test
 
-    implementation project(':base:domain')
-    implementation project(':data:repo')
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib
 }

@@ -40,7 +40,7 @@ allprojects {
     plugins.withType<JavaBasePlugin>().configureEach {
         extensions.configure<JavaPluginExtension> {
             toolchain {
-                languageVersion.set(JavaLanguageVersion.of(11))
+                languageVersion.set(JavaLanguageVersion.of(17))
             }
         }
     }
@@ -122,8 +122,8 @@ fun Project.configureAndroidProject() {
         // Can remove this once https://issuetracker.google.com/issues/260059413 is fixed.
         // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
     }
 }
