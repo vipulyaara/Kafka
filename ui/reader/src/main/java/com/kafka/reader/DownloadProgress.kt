@@ -43,9 +43,9 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DownloadAnimation()
-            Progress(downloadInfo.progress)
+            Progress(progress = downloadInfo.progress)
             Spacer(modifier = Modifier.height(Dimens.Spacing24))
-            Actions(downloadInfo, modifier = Modifier)
+            Actions(downloadInfo = downloadInfo)
             Spacer(modifier = Modifier.height(Dimens.Spacing48))
             MessageBox(text = stringResource(R.string.downloading_hint))
         }
@@ -53,7 +53,7 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
 }
 
 @Composable
-private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
+private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier = Modifier) {
     val downloader = LocalDownloader.current
     val scope = rememberCoroutineScope()
 
@@ -97,7 +97,7 @@ private fun Actions(downloadInfo: DownloadInfo, modifier: Modifier) {
 
 @Composable
 private fun Progress(progress: Float) {
-    val progressState by animateFloatAsState(targetValue = progress)
+    val progressState by animateFloatAsState(targetValue = progress, label = "progress")
 
     Row(
         modifier = Modifier,

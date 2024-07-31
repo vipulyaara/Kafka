@@ -35,9 +35,7 @@ sealed class HomepageCollection {
         val items: ImmutableList<Item>,
         val image: ImmutableList<String> = persistentListOf(),
         override val enabled: Boolean = true,
-    ) : HomepageCollection() {
-        val heroImage = image.randomOrNull().orEmpty()
-    }
+    ) : HomepageCollection()
 
     @Immutable
     data class RecentItems(

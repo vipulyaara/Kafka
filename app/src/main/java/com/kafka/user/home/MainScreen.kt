@@ -20,17 +20,26 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.kafka.data.prefs.Theme
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
+import com.sarahang.playback.ui.color.ColorExtractor
+import com.sarahang.playback.ui.color.LocalColorExtractor
 import kotlinx.coroutines.flow.collectLatest
 import org.kafka.base.debug
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.NavigatorHost
 import org.kafka.ui.components.snackbar.SnackbarMessagesHost
 import tm.alashow.datmusic.ui.downloader.DownloaderHost
+import ui.common.theme.theme.LocalTheme
 
 @Composable
-fun MainScreen(navController: NavHostController, bottomSheetNavigator: BottomSheetNavigator) {
+fun MainScreen(
+    navController: NavHostController,
+    bottomSheetNavigator: BottomSheetNavigator,
+    colorExtractor: ColorExtractor,
+    theme: Theme
+) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val context = LocalContext.current
 
@@ -48,24 +57,28 @@ fun MainScreen(navController: NavHostController, bottomSheetNavigator: BottomShe
 
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-        SnackbarMessagesHost()
-        CompositionHosts {
-            ModalBottomSheetLayout(
-                bottomSheetNavigator = bottomSheetNavigator,
-                sheetShape = MaterialTheme.shapes.large.copy(
-                    bottomStart = CornerSize(0.dp),
-                    bottomEnd = CornerSize(0.dp),
-                ),
-                sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-                sheetContentColor = MaterialTheme.colorScheme.onSurface,
-                scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f),
-            ) {
-                Home(
-                    navController = navController,
-                    analytics = mainViewModel.analytics,
-                    modifier = Modifier.semantics { testTagsAsResourceId = true },
-                    playerTheme = mainViewModel.playerTheme,
-                )
+        CompositionLocalProvider(LocalColorExtractor provides colorExtractor) {
+            CompositionLocalProvider(LocalTheme provides theme) {
+                SnackbarMessagesHost()
+                CompositionHosts {
+                    ModalBottomSheetLayout(
+                        bottomSheetNavigator = bottomSheetNavigator,
+                        sheetShape = MaterialTheme.shapes.large.copy(
+                            bottomStart = CornerSize(0.dp),
+                            bottomEnd = CornerSize(0.dp),
+                        ),
+                        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+                        sheetContentColor = MaterialTheme.colorScheme.onSurface,
+                        scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f),
+                    ) {
+                        Home(
+                            navController = navController,
+                            analytics = mainViewModel.analytics,
+                            modifier = Modifier.semantics { testTagsAsResourceId = true },
+                            playerTheme = mainViewModel.playerTheme,
+                        )
+                    }
+                }
             }
         }
     }

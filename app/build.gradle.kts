@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 70
-        versionName = "0.30.0"
+        versionCode = 72
+        versionName = "0.32.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -37,8 +37,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     composeCompiler {
@@ -163,7 +163,6 @@ dependencies {
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
     implementation(libs.fetch)
-    implementation(libs.fetch.okhttp)
     implementation(libs.firestore.ktx)
     implementation(libs.google.analytics)
     implementation(libs.google.auth)

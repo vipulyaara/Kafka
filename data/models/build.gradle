@@ -25,9 +25,7 @@ dependencies {
     implementation libs.firestore.ktx
     implementation libs.androidx.collection
     implementation libs.androidx.core
-    implementation libs.androidx.paging.runtime
     implementation libs.androidx.room.ktx
-    implementation libs.androidx.room.paging
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime
     implementation libs.dataStore

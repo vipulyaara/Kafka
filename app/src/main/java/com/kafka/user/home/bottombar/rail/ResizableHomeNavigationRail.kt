@@ -7,21 +7,19 @@ package com.kafka.user.home.bottombar.rail
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sarahang.playback.ui.components.ResizableLayout
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
-import org.kafka.play.logger.Analytics
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.selectRootScreen
+import org.kafka.play.logger.Analytics
 
 @Composable
 internal fun RowScope.ResizableHomeNavigationRail(
@@ -61,9 +59,8 @@ internal fun RowScope.ResizableHomeNavigationRail(
                 .fillMaxHeight()
                 .align(Alignment.CenterEnd)
         ) {
-            Divider(
+            VerticalDivider(
                 modifier = Modifier
-                    .width(1.dp)
                     .fillMaxHeight()
                     .align(Alignment.CenterEnd)
             )

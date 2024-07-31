@@ -3,6 +3,8 @@ package com.kafka.data.feature.homepage
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.model.homepage.HomepageCollectionResponse
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isHomepageItemsShuffleEnabled
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +13,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
+class HomepageMapper @Inject constructor(
+    private val itemDao: ItemDao,
+    private val remoteConfig: RemoteConfig
+) {
+    // todo: rows are shuffled every time a cms change happens
+    private val shuffleEnabled by lazy { remoteConfig.isHomepageItemsShuffleEnabled() }
+
     fun map(collection: List<HomepageCollectionResponse>) = combine(
         collection.map {
             when (it) {
@@ -27,7 +35,10 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
     ) { it.filterNotNull().toList() }
 
     private fun HomepageCollectionResponse.Row.mapRows(): Flow<HomepageCollection.Row> {
-        val itemIdList = itemIds.split(", ")
+        val itemIdList = itemIds.split(", ").run {
+            if (shuffleEnabled) shuffled() else this
+        }
+
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Row(
@@ -51,7 +62,10 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
     }
 
     private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {
-        val itemIdList = itemIds.split(", ")
+        val itemIdList = itemIds.split(", ").run {
+            if (shuffleEnabled) shuffled() else this
+        }
+
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Column(
@@ -63,7 +77,10 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
     }
 
     private fun HomepageCollectionResponse.Grid.mapGrid(): Flow<HomepageCollection.Grid> {
-        val itemIdList = itemIds.split(", ")
+        val itemIdList = itemIds.split(", ").run {
+            if (shuffleEnabled) shuffled() else this
+        }
+
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Grid(

@@ -30,14 +30,11 @@ val LocalThemeColor = staticCompositionLocalOf<ThemeColor> {
 }
 
 val ColorScheme.shadowMaterial
-    @Composable get() = if (isSystemInLightTheme()) {
-        primary.copy(alpha = 0.5f)
-    } else {
+    @Composable get() = if (isSystemInDarkTheme()) {
         primary.copy(alpha = 0.2f)
+    } else {
+        primary.copy(alpha = 0.5f)
     }
-
-@Composable
-fun isSystemInLightTheme() = !isSystemInDarkTheme()
 
 internal val DarkAppColors = darkColorScheme(
     primary = brandBlue,

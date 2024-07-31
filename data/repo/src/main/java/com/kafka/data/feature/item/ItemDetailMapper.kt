@@ -22,7 +22,7 @@ class ItemDetailMapper @Inject constructor(
         return ItemDetail(
             itemId = from.metadata.identifier,
             language = from.metadata.languages?.map { it.split(";") }?.flatten()?.joinToString(),
-            title = from.metadata.title?.dismissUpperCase(),
+            title = from.metadata.title?.firstOrNull()?.dismissUpperCase(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
             creator = from.metadata.creator?.take(5)?.joinToString()?.sanitizeForRoom(),
             collection = from.metadata.collection?.joinToString(),
@@ -52,11 +52,17 @@ class ItemDetailMapper @Inject constructor(
 
     private fun String.extension() = split(".").last()
 
-    private fun ItemDetailResponse.findCoverImage() = files.firstOrNull {
-        it.name.startsWith("cover_") &&
-                (it.name.endsWith("jpg") || it.name.endsWith("png"))
-    }?.let { "https://archive.org/download/${metadata.identifier}/${it.name}" }
-        ?: "https://archive.org/services/img/${metadata.identifier}"
+    private fun ItemDetailResponse.findCoverImage(): String {
+        val coverFile = files.firstOrNull {
+            it.name.startsWith("cover_") && (it.name.endsWith("jpg") || it.name.endsWith("png"))
+        }
+
+        return if (coverFile != null) {
+            "https://archive.org/download/${metadata.identifier}/${coverFile.name}"
+        } else {
+            "https://archive.org/services/img/${metadata.identifier}"
+        }
+    }
 
     private suspend fun insertFiles(from: ItemDetailResponse, item: ItemDetail) {
         val files = from.files.map { file ->

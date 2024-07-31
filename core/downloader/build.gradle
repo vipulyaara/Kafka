@@ -23,7 +23,6 @@ dependencies {
 	implementation libs.hilt.android
 
 	implementation libs.fetch
-	implementation libs.fetch.okhttp
 
 	kapt libs.hilt.compiler
 }

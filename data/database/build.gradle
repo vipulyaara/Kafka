@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
 }
+
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
@@ -27,23 +28,21 @@ android {
 dependencies {
     ksp libs.androidx.room.compiler
 
-    api projects.base.domain
-    api projects.base.network
-    api projects.data.models
+    implementation projects.base.domain
+    implementation projects.base.network
+    implementation projects.data.models
 
-    api libs.androidx.collection
-    api libs.androidx.core
-    api libs.androidx.paging.runtime
-    api libs.androidx.room.ktx
-    api libs.androidx.room.paging
-    api libs.androidx.room.runtime
-    api libs.dataStore
-    api libs.hilt.android
-    api libs.kotlin.coroutines.core
-    api libs.kotlin.serialization
-    api libs.kotlin.stdlib
-    api libs.retrofit.serialization
-    api libs.threeTenAbp
+    implementation libs.androidx.collection
+    implementation libs.androidx.core
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.runtime
+    implementation libs.dataStore
+    implementation libs.hilt.android
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.serialization
+    implementation libs.kotlin.stdlib
+    implementation libs.retrofit.serialization
+    implementation libs.threeTenAbp
 
     implementation libs.compose.runtime.runtime
 

@@ -23,6 +23,4 @@ dependencies {
     api libs.retrofit.retrofit
     api libs.timber
     api libs.kotlin.immutable
-
-    implementation libs.androidx.paging.common
 }

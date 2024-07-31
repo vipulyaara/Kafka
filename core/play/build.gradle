@@ -19,6 +19,8 @@ dependencies {
     implementation projects.core.analytics
     implementation projects.data.database
 
+    implementation libs.dataStore
+
     implementation libs.google.review
 
     implementation libs.hilt.android
