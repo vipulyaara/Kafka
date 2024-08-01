@@ -138,6 +138,7 @@ google-appupdate = { module = "com.google.android.play:app-update-ktx", version.
 
 firestore-ktx = "dev.gitlive:firebase-firestore:1.13.0"
 firestore-common-ktx = "dev.gitlive:firebase-common:1.13.0"
+firebase-remote-config = "dev.gitlive:firebase-config:1.13.0"
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
