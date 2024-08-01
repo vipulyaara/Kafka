@@ -127,7 +127,6 @@ dependencies {
     implementation(projects.core.downloader)
     implementation(projects.core.play)
     implementation(projects.corePlayback)
-    implementation(projects.core.recommendation)
     implementation(projects.core.remoteConfig)
     implementation(projects.data.repo)
     implementation(projects.domain)
