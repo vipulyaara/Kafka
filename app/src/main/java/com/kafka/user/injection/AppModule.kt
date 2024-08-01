@@ -12,8 +12,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.kafka.recommendations.topic.FirebaseTopics
-import com.kafka.recommendations.topic.FirebaseTopicsImpl
 import com.kafka.user.BuildConfig
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
@@ -159,7 +157,4 @@ abstract class AppModuleBinds {
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
-
-    @Binds
-    abstract fun provideFirebaseTopics(firebaseTopics: FirebaseTopicsImpl): FirebaseTopics
 }
