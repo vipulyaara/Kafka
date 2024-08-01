@@ -21,8 +21,9 @@ data class File(
     val length: String? = null,
     @SerialName("name")
     val name: String,
+    @Serializable(with = StringListSerializer::class)
     @SerialName("size")
-    val size: String? = null,
+    val size: List<String>? = null,
     @SerialName("title")
     val title: String? = null,
     @SerialName("source")

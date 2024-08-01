@@ -24,9 +24,7 @@ dependencies {
     implementation projects.ui.common
     implementation projects.ui.components
 
-    implementation libs.accompanist.placeholder
     implementation libs.hilt.android
-    implementation libs.icons.font.awesome
 
     kapt libs.hilt.compiler
 }

@@ -18,9 +18,6 @@ dependencies {
     api libs.dagger.dagger
     api libs.kotlin.coroutines.core
     api libs.kotlin.stdlib
-    api libs.okhttp.loggingInterceptor
-    api libs.okhttp.okhttp
-    api libs.retrofit.retrofit
     api libs.timber
     api libs.kotlin.immutable
 }

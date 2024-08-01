@@ -26,12 +26,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.ui.components.material.OutlinedTextFieldDefaults
 import org.kafka.ui.components.material.PrimaryButton
+import org.kafka.ui.components.placeholder.PlaceholderHighlight
+import org.kafka.ui.components.placeholder.placeholder
+import org.kafka.ui.components.placeholder.shimmer
 import ui.common.theme.theme.Dimens
 
 @Composable

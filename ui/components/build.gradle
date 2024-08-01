@@ -16,6 +16,11 @@ android {
 }
 
 dependencies {
+    implementation projects.base.domain
+    implementation projects.data.repo
+    implementation projects.ui.common
+    implementation projects.ui.downloader
+
     implementation libs.accompanist.systemuicontroller
     implementation libs.androidx.core
     implementation libs.androidx.hilt.compose
@@ -34,11 +39,6 @@ dependencies {
     implementation libs.palette
     implementation libs.rebugger
 
-    implementation project('::ui:theme')
-    implementation project(':base:domain')
-    implementation project(':data:repo')
-    implementation project(':ui:common')
-    implementation project(':ui:downloader')
     implementation libs.hilt.android
     implementation libs.kotlin.stdlib
 

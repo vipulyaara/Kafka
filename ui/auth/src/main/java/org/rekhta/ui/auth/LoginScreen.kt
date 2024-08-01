@@ -33,12 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
-import compose.icons.fontawesomeicons.brands.Google
 import org.kafka.auth.R
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberSavableMutableState
+import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
 import org.kafka.navigation.LocalNavigator
@@ -161,7 +159,7 @@ private fun Login(
 private fun SignInWithGoogle(onClick: () -> Unit) {
     Button(onClick = onClick) {
         IconResource(
-            imageVector = FontAwesomeIcons.Brands.Google,
+            imageVector = Icons.Google,
             modifier = Modifier.size(Dimens.Spacing24)
         )
         Spacer(modifier = Modifier.width(Dimens.Spacing16))
