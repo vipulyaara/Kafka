@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.kafka.base.ProcessLifetime
-import timber.log.Timber
+import org.kafka.base.errorLog
 import javax.inject.Inject
 
 interface FirebaseTopics {
@@ -36,7 +36,7 @@ class FirebaseTopicsImpl @Inject constructor(
                 try {
                     firebaseMessaging.subscribeToTopic(topic).await()
                 } catch (e: Exception) {
-                    Timber.e(e, "Failed to subscribe to topic $topic")
+                    errorLog(e) { "Failed to subscribe to topic $topic" }
                 }
             }
         }
@@ -49,7 +49,7 @@ class FirebaseTopicsImpl @Inject constructor(
             try {
                 firebaseMessaging.unsubscribeFromTopic(topic).await()
             } catch (e: Exception) {
-                Timber.e(e, "Failed to unsubscribe topic $topic")
+                errorLog(e) { "Failed to unsubscribe topic $topic" }
             }
         }
     }

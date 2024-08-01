@@ -15,6 +15,6 @@ class KafkaApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initializers.init(this)
+        initializers.init()
     }
 }

@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="generic.clipboard.copied" translatable="false">Copied</string>
+    <string name="error.keyError" translatable="false">The server is not responding</string>
+    <string name="error.unavailable" translatable="false">The server is unavailable</string>
 
     <string name="error.network" translatable="false">Network could not be reached</string>
     <string name="error.server" translatable="false">Server could not be reached</string>
@@ -9,5 +9,4 @@
     <string name="error.notFound" translatable="false">Resource could not be found</string>
     <string name="error.unknown" translatable="false">Unknown error</string>
     <string name="error.retry" translatable="false">Retry</string>
-
 </resources>

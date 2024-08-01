@@ -9,9 +9,9 @@ import org.kafka.base.domain.InvokeError
 import org.kafka.base.domain.InvokeStarted
 import org.kafka.base.domain.InvokeStatus
 import org.kafka.base.domain.InvokeSuccess
+import org.kafka.base.i
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.toUiMessage
-import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -42,7 +42,7 @@ suspend fun Flow<InvokeStatus>.collectStatus(
         InvokeStarted -> counter.addLoader()
         InvokeSuccess -> counter.removeLoader()
         is InvokeError -> {
-            Timber.i(status.throwable)
+            i(status.throwable) { "Error loading" }
             uiMessageManager.emitMessage(status.throwable.toUiMessage())
             counter.removeLoader()
         }
@@ -60,7 +60,7 @@ suspend fun Flow<InvokeStatus>.collectStatus(
         InvokeStarted -> counter.addLoader()
         InvokeSuccess -> counter.removeLoader()
         is InvokeError -> {
-            Timber.i(status.throwable)
+            i(status.throwable) { "Error loading" }
             snackbarManager?.addMessage(status.throwable.toUiMessage())
             counter.removeLoader()
         }

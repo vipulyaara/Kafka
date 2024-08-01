@@ -27,7 +27,8 @@ android {
         buildConfigField(
             "String",
             "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString() ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
+            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
+                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
         )
         buildConfigField(
             "String",
@@ -175,6 +176,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
+    implementation(libs.kermit.crashlytics)
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization)

@@ -9,7 +9,6 @@ import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import java.nio.channels.ClosedChannelException
 import javax.net.ssl.SSLException
-import org.kafka.base.R
 
 @StringRes
 fun Throwable?.localizedMessage(): Int = when (this) {
@@ -23,6 +22,7 @@ fun Throwable?.localizedMessage(): Int = when (this) {
             else -> R.string.error_unknown
         }
     }
+
     else -> when {
         isNetworkException() -> R.string.error_network
         else -> R.string.error_unknown

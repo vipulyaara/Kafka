@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.kafka.base.R
+import org.kafka.common.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +30,7 @@ class SnackbarManager @Inject constructor() {
     suspend fun addError(
         error: Throwable,
         retryLabel: UiMessage = UiMessage.Resource(R.string.error_retry),
-        onRetry: () -> Unit
+        onRetry: () -> Unit,
     ) {
         val action = SnackbarAction(retryLabel, onRetry)
         val message = SnackbarMessage(UiMessage.Error(error), action)
@@ -64,7 +64,8 @@ class SnackbarManager @Inject constructor() {
      */
     suspend fun <T : SnackbarMessage<*>> observeMessageAction(message: T): T? {
         val result = merge(
-            actionDismissedMessageChannel.receiveAsFlow().filter { it == message }.map { null }, // map to null because it's dismissed
+            actionDismissedMessageChannel.receiveAsFlow().filter { it == message }
+                .map { null }, // map to null because it's dismissed
             actionPerformedMessageChannel.receiveAsFlow().filter { it == message },
         ).firstOrNull()
         return if (result == message) message else null

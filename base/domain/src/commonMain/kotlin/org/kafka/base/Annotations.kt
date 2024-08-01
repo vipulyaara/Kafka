@@ -1,4 +1,5 @@
 @file:Suppress("ktlint:standard:filename")
+
 package org.kafka.base
 
 import javax.inject.Qualifier

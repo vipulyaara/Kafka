@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Rekhta</string>
 
+    <string name="error.retry" translatable="false">Retry</string>
+    <string name="error.unknown" translatable="false">Unknown error</string>
     <string name="library" translatable="false">Library</string>
-
 </resources>

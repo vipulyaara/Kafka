@@ -8,20 +8,23 @@ navigation = "2.7.7"
 coil = "2.6.0"
 compose-alpha = "2024.01.00-alpha01"
 compose-bom = "2024.06.00"
+compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
 dagger = "2.51.1"
 icons = "1.0.0"
 kotlin = "2.0.10-RC"
 kotlin-immutable = "0.3.7"
+kotlininject = "0.7.1"
 material3 = "1.2.1"
 media3 = "1.3.1"
 mixpanel = "7.0.0"
 okhttp = "4.12.0"
+pdfviewer = "3.2.0-beta.1"
 retrofit = "2.9.0"
 room = "2.6.1"
 serialization = "1.7.1"
-exoplayer = "2.19.1"
-pdfviewer = "3.2.0-beta.1"
+spotless = "6.25.0"
+
 compileSdk = "34"
 minSdk = "24"
 targetSdk = "34"
@@ -33,12 +36,16 @@ benchmark-macro-junit4 = "1.2.4"
 androidx-baselineprofile = "1.2.4"
 profileinstaller = "1.3.1"
 review = "2.0.1"
+junit = "4.13.2"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -57,12 +64,8 @@ accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiper
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-#accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-web = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
-
-exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
-exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayer" }
 
 rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
@@ -136,11 +139,21 @@ google-appupdate = { module = "com.google.android.play:app-update-ktx", version.
 firestore-ktx = "dev.gitlive:firebase-firestore:1.12.0"
 firestore-common-ktx = "dev.gitlive:firebase-common:1.12.0"
 
+kermit = "co.touchlab:kermit:2.0.4"
+kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
+
+kinject = "com.chrynan.inject:inject:1.2.0"
+
+kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlininject" }
+kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlininject" }
+
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
+
+kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
 
 icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", version.ref = "icons" }
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
@@ -175,3 +188,11 @@ uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", versi
 benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-rules = { group = "androidx.test", name = "rules", version = "1.6.1" }
+
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }

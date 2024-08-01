@@ -1,5 +1,6 @@
 package org.kafka.base.domain
 
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
@@ -15,9 +16,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -35,7 +33,6 @@ abstract class Interactor<in P> {
                 emit(InvokeError(t))
             }
         }.catch { t ->
-            Timber.e(t.localizedMessage ?: t.toString())
             emit(InvokeError(t))
         }
     }
@@ -45,7 +42,7 @@ abstract class Interactor<in P> {
     protected abstract suspend fun doWork(params: P)
 
     companion object {
-        private val defaultTimeoutMs = TimeUnit.MINUTES.toMillis(10)
+        private val defaultTimeoutMs = 10.minutes.inWholeMilliseconds
     }
 }
 
@@ -92,8 +89,8 @@ abstract class SubjectInteractor<P, T> {
 }
 
 abstract class ResultInteractor<in P, R> {
-    private val count = AtomicInteger(0)
-    private val loadingState = MutableStateFlow(count.get())
+    private val count = atomic(0)
+    private val loadingState = MutableStateFlow(count.value)
 
     val inProgress: Flow<Boolean> = loadingState.map { it > 0 }.distinctUntilChanged()
 
