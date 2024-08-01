@@ -136,8 +136,8 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
-firestore-ktx = "dev.gitlive:firebase-firestore:1.12.0"
-firestore-common-ktx = "dev.gitlive:firebase-common:1.12.0"
+firestore-ktx = "dev.gitlive:firebase-firestore:1.13.0"
+firestore-common-ktx = "dev.gitlive:firebase-common:1.13.0"
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"

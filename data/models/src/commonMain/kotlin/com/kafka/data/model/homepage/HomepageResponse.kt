@@ -1,6 +1,5 @@
 package com.kafka.data.model.homepage
 
-import com.google.firebase.firestore.DocumentId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -83,7 +82,7 @@ sealed class HomepageCollectionResponse {
 
 @Serializable
 data class FirebaseImage(
-    @DocumentId
+    @SerialName("id")
     val ref: String,
     val downloadURL: String,
     val name: String = "",
