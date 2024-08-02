@@ -131,7 +131,6 @@ dependencies {
     implementation(projects.data.repo)
     implementation(projects.domain)
     implementation(projects.navigation)
-    implementation(projects.notifications)
     implementation(projects.ui.auth)
     implementation(projects.ui.common)
     implementation(projects.ui.components)

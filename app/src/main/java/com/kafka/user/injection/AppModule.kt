@@ -2,7 +2,6 @@ package com.kafka.user.injection
 
 import android.app.Application
 import android.content.Context
-import androidx.core.app.NotificationManagerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -33,8 +32,6 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
-import org.kafka.notifications.NotificationManager
-import org.kafka.notifications.NotificationManagerImpl
 import org.kafka.play.AppReviewManager
 import org.kafka.play.AppReviewManagerImpl
 import org.kafka.play.logger.Analytics
@@ -82,13 +79,6 @@ class AppModule {
         io = Dispatchers.IO,
         computation = Dispatchers.Default,
         main = Dispatchers.Main
-    )
-
-    @Singleton
-    @Provides
-    fun provideNotificationManager(application: Application) = NotificationManagerImpl(
-        application,
-        NotificationManagerCompat.from(application.applicationContext)
     )
 
     @Singleton
@@ -150,10 +140,6 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
-
-    @Singleton
-    @Binds
-    abstract fun provideNotificationManager(bind: NotificationManagerImpl): NotificationManager
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
