@@ -14,7 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.auth.R
 import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.domain.onException

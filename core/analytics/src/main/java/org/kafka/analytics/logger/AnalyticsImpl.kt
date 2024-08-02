@@ -1,4 +1,4 @@
-package org.kafka.play.logger
+package org.kafka.analytics.logger
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import org.kafka.play.EventRepository
+import org.kafka.analytics.EventRepository
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
 import javax.inject.Inject

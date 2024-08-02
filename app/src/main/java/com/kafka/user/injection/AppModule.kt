@@ -34,8 +34,8 @@ import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.play.AppReviewManager
 import org.kafka.play.AppReviewManagerImpl
-import org.kafka.play.logger.Analytics
-import org.kafka.play.logger.AnalyticsImpl
+import org.kafka.analytics.logger.Analytics
+import org.kafka.analytics.logger.AnalyticsImpl
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import javax.inject.Named
 import javax.inject.Singleton

@@ -26,7 +26,7 @@ import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 

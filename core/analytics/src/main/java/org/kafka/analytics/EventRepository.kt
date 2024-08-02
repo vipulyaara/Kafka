@@ -1,6 +1,6 @@
-package org.kafka.play
+package org.kafka.analytics
 
-import org.kafka.play.logger.AnalyticsImpl
+import org.kafka.analytics.logger.AnalyticsImpl
 import javax.inject.Inject
 
 class EventRepository @Inject constructor() {

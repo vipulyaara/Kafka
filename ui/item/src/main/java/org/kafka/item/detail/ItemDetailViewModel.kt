@@ -58,7 +58,7 @@ import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
 import org.kafka.play.AppReviewManager
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import javax.inject.Inject
 
 @HiltViewModel
