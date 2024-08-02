@@ -1,6 +1,6 @@
 @file:Suppress("ktlint:standard:filename")
 
-package org.kafka.base.network
+package com.kafka.data
 
 import android.accounts.NetworkErrorException
 import kotlinx.coroutines.CoroutineDispatcher

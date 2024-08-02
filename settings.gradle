@@ -17,7 +17,6 @@ rootProject.name = "kafka"
 
 include ':app'
 include ':base:domain'
-include ':base:network'
 include ':baselineprofile'
 include ':core:analytics'
 include ':core:downloader'

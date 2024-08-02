@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
-import org.kafka.notifications.NotificationManager
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -26,9 +25,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
     @Inject
     lateinit var dispatchers: CoroutineDispatchers
-
-    @Inject
-    lateinit var notificationManager: NotificationManager
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)

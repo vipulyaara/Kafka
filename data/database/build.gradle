@@ -26,10 +26,7 @@ android {
 }
 
 dependencies {
-    ksp libs.androidx.room.compiler
-
     implementation projects.base.domain
-    implementation projects.base.network
     implementation projects.data.models
 
     implementation libs.androidx.collection
@@ -44,6 +41,7 @@ dependencies {
     implementation libs.retrofit.serialization
     implementation libs.threeTenAbp
 
+    implementation(platform(libs.compose.bom))
     implementation libs.compose.runtime.runtime
 
     implementation platform(libs.google.bom)
@@ -51,4 +49,5 @@ dependencies {
     implementation libs.jsoup
 
     kapt libs.hilt.compiler
+    ksp libs.androidx.room.compiler
 }

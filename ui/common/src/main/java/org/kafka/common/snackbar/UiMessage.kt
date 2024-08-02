@@ -1,7 +1,7 @@
 package org.kafka.common.snackbar
 
 import android.content.Context
-import org.kafka.base.network.localizedMessage
+import com.kafka.data.api.localizedMessage
 import org.kafka.common.R
 
 sealed class UiMessage {

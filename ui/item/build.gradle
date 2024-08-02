@@ -16,7 +16,6 @@ android {
 
 dependencies {
     implementation projects.base.domain
-    implementation projects.base.network
     implementation projects.core.analytics
     implementation projects.core.play
     implementation projects.corePlayback

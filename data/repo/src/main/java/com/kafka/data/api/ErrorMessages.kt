@@ -1,6 +1,7 @@
-package org.kafka.base.network
+package com.kafka.data.api
 
 import androidx.annotation.StringRes
+import com.kafka.data.R
 import retrofit2.HttpException
 import java.io.InterruptedIOException
 import java.net.ProtocolException
