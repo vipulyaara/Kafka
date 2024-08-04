@@ -1,4 +1,4 @@
-package org.rekhta.ui.auth.feedback
+package org.rekhta.ui.profile.feedback
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize

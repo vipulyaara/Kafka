@@ -139,6 +139,7 @@ dependencies {
     implementation(projects.ui.item)
     implementation(projects.ui.library)
     implementation(projects.uiPlayback)
+    implementation(projects.ui.profile)
     implementation(projects.ui.reader)
     implementation(projects.ui.search)
     implementation(projects.ui.theme)

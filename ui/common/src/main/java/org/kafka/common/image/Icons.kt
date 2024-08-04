@@ -19,6 +19,7 @@ import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
+import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.CircleCheck
@@ -92,4 +93,5 @@ object Icons {
     val SafeMode = TablerIcons.Umbrella
     val Gift = TablerIcons.Gift
     val Google = FontAwesomeIcons.Brands.Google
+    val Bell = TablerIcons.Bell
 }

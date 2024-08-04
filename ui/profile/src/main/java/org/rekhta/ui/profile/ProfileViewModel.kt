@@ -1,7 +1,12 @@
-package org.rekhta.ui.auth.profile
+package org.rekhta.ui.profile
 
 import android.app.Application
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,11 +22,11 @@ import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
 import com.kafka.data.prefs.observeTrueContrast
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
-import org.kafka.auth.R
+import org.kafka.base.combine
 import org.kafka.base.domain.InvokeSuccess
 import org.kafka.base.errorLog
 import org.kafka.base.extensions.stateInDefault
@@ -33,6 +38,7 @@ import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
+import org.kafka.profile.R
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,23 +49,26 @@ class ProfileViewModel @Inject constructor(
     private val logoutUser: LogoutUser,
     private val analytics: Analytics,
     private val navigator: Navigator,
-    observeUser: ObserveUser
+    observeUser: ObserveUser,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
+    private val notificationsEnabled = MutableStateFlow(true)
 
     val state: StateFlow<ProfileViewState> = combine(
         observeUser.flow,
         preferencesStore.observeTheme(),
         preferencesStore.observeTrueContrast(),
         preferencesStore.observeSafeMode(),
+        notificationsEnabled,
         loadingCounter.observable,
-    ) { user, theme, trueContrast, safeMode, isLoading ->
+    ) { user, theme, trueContrast, safeMode, notificationsEnabled, isLoading ->
         ProfileViewState(
             currentUser = user,
             theme = theme,
             trueContrast = trueContrast,
             safeMode = safeMode,
             appVersion = getVersionName(),
+            notificationsEnabled = notificationsEnabled,
             isLoading = isLoading
         )
     }.stateInDefault(
@@ -132,6 +141,23 @@ class ProfileViewModel @Inject constructor(
             null
         }
     }
+
+    internal fun determineNotificationsEnabled() {
+        val notificationManager =
+            application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationsEnabled.value = notificationManager.areNotificationsEnabled()
+    }
+
+    internal fun openNotificationSettings(context: Context) {
+        analytics.log { openNotificationsSettings() }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            }
+            context.startActivity(intent)
+        }
+    }
 }
 
 @Immutable
@@ -140,8 +166,9 @@ data class ProfileViewState(
     val theme: Theme = Theme.DEFAULT,
     val trueContrast: Boolean = TRUE_CONTRAST_DEFAULT,
     val safeMode: Boolean = SAFE_MODE_DEFAULT,
+    val notificationsEnabled: Boolean = true,
     val appVersion: String? = null,
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
 )
 
 const val trueContrastPrefEnabled = false

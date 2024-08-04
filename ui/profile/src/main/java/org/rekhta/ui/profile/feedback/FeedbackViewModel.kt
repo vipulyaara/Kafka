@@ -1,4 +1,4 @@
-package org.rekhta.ui.auth.feedback
+package org.rekhta.ui.profile.feedback
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

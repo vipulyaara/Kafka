@@ -1,4 +1,4 @@
-package org.rekhta.ui.auth.profile
+package org.rekhta.ui.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.User
-import org.kafka.auth.R
 import org.kafka.common.simpleClickable
+import org.kafka.profile.R
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 

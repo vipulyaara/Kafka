@@ -55,8 +55,8 @@ import org.kafka.navigation.Screen
 import org.kafka.navigation.deeplink.Config
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
-import org.rekhta.ui.auth.feedback.FeedbackScreen
-import org.rekhta.ui.auth.profile.ProfileScreen
+import org.rekhta.ui.profile.feedback.FeedbackScreen
+import org.rekhta.ui.profile.ProfileScreen
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 

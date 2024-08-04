@@ -1,4 +1,4 @@
-package org.rekhta.ui.auth.profile
+package org.rekhta.ui.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,20 +14,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.kafka.auth.R
 import org.kafka.common.extensions.ProvideInteractiveEnforcement
 import org.kafka.common.image.Icons
+import org.kafka.profile.R
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
     val state by profileViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        profileViewModel.determineNotificationsEnabled()
+    }
 
     Column {
         MenuItem(
@@ -47,6 +53,26 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
                         Switch(
                             checked = state.trueContrast,
                             onCheckedChange = { profileViewModel.toggleTrueContrast() })
+                    }
+                }
+            )
+        }
+
+        val context = LocalContext.current
+        if (!state.notificationsEnabled) {
+            MenuItem(
+                text = stringResource(R.string.notifications),
+                description = stringResource(R.string.notifications_toggle_description),
+                icon = Icons.Bell,
+                onClick = { profileViewModel.openNotificationSettings(context) },
+                endContent = {
+                    ProvideInteractiveEnforcement(false) {
+                        Switch(
+                            checked = false,
+                            onCheckedChange = {
+                                profileViewModel.openNotificationSettings(context)
+                            }
+                        )
                     }
                 }
             )
@@ -96,7 +122,7 @@ private fun MenuItem(
     description: String? = null,
     contentDescription: String? = null,
     onClick: () -> Unit,
-    endContent: @Composable (() -> Unit)? = null
+    endContent: @Composable (() -> Unit)? = null,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
@@ -114,7 +140,10 @@ private fun MenuItem(
         )
         Spacer(modifier = Modifier.width(Dimens.Spacing16))
 
-        Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing04)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall,
@@ -131,7 +160,6 @@ private fun MenuItem(
         }
 
         endContent?.let { content ->
-            Spacer(modifier = Modifier.weight(1f))
             content()
         }
     }
