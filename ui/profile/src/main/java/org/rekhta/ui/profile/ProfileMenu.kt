@@ -28,7 +28,7 @@ import org.kafka.profile.R
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
+internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit) {
     val state by profileViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -64,12 +64,16 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel) {
                 text = stringResource(R.string.notifications),
                 description = stringResource(R.string.notifications_toggle_description),
                 icon = Icons.Bell,
-                onClick = { profileViewModel.openNotificationSettings(context) },
+                onClick = {
+                    dismiss()
+                    profileViewModel.openNotificationSettings(context)
+                },
                 endContent = {
                     ProvideInteractiveEnforcement(false) {
                         Switch(
                             checked = false,
                             onCheckedChange = {
+                                dismiss()
                                 profileViewModel.openNotificationSettings(context)
                             }
                         )

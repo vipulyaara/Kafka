@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.User
 import org.kafka.common.simpleClickable
+import org.kafka.navigation.LocalNavigator
 import org.kafka.profile.R
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
@@ -29,8 +30,9 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
+    val navigator = LocalNavigator.current
     val viewState by profileViewModel.state.collectAsStateWithLifecycle()
 
     CompositeSurface(modifier = modifier.padding(horizontal = Dimens.Spacing24)) {
@@ -52,7 +54,9 @@ fun ProfileScreen(
                     .padding(horizontal = Dimens.Spacing12)
             )
 
-            ProfileMenu(profileViewModel = profileViewModel)
+            ProfileMenu(profileViewModel = profileViewModel) {
+                navigator.goBack()
+            }
 
             viewState.appVersion?.let { version ->
                 Text(
@@ -87,7 +91,7 @@ private fun ProfileHeader(
     userName: String?,
     currentUser: User?,
     profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(modifier = modifier, shape = MaterialTheme.shapes.large) {
         if (isLoading) {
@@ -106,7 +110,7 @@ private fun ProfileHeader(
 private fun UserProfileHeader(
     displayName: String?,
     modifier: Modifier = Modifier,
-    goToFavorites: () -> Unit
+    goToFavorites: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -133,7 +137,7 @@ private fun UserProfileHeader(
 @Composable
 private fun LoginPrompt(
     modifier: Modifier = Modifier,
-    openLogin: () -> Unit
+    openLogin: () -> Unit,
 ) {
     Column(
         modifier = modifier
