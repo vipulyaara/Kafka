@@ -19,7 +19,7 @@ import com.sarahang.playback.ui.components.ResizableLayout
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.selectRootScreen
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 
 @Composable
 internal fun RowScope.ResizableHomeNavigationRail(

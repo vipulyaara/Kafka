@@ -11,7 +11,7 @@ import com.kafka.user.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.common.goToPlayStore
 import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject

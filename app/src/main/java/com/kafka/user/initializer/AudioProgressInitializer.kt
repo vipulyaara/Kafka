@@ -1,6 +1,5 @@
 package com.kafka.user.initializer
 
-import android.app.Application
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.entities.RecentAudioItem
 import com.sarahang.playback.core.PlaybackConnection
@@ -28,14 +27,14 @@ class AudioProgressInitializer @Inject constructor(
     @ProcessLifetime private val coroutineScope: CoroutineScope,
 ) : AppInitializer {
 
-    override fun init(application: Application) {
+    override fun init() {
         coroutineScope.launch(dispatchers.io) {
             playbackConnection.nowPlaying
                 .collectLatest { timestamp ->
                     debug { "Updating progress for $timestamp" }
 
                     playbackConnection.nowPlaying.value.albumId?.let { albumId ->
-                        playbackConnection.nowPlaying.value.fileId?.let { fileId ->
+                        playbackConnection.nowPlaying.value.fileId.let { fileId ->
                             val audioItem = recentAudioDao.getByAlbumId(albumId)
                             if (audioItem == null) {
                                 val audio = RecentAudioItem(fileId = fileId, albumId = albumId)

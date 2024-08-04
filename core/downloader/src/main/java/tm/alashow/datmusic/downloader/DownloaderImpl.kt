@@ -22,10 +22,11 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
-import org.kafka.play.logger.Analytics
 import org.kafka.base.debug
+import org.kafka.base.errorLog
+import org.kafka.base.i
 import org.kafka.common.snackbar.SnackbarManager
-import timber.log.Timber
+import org.kafka.analytics.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
@@ -50,7 +51,8 @@ internal class DownloaderImpl @Inject constructor(
 ) : Downloader {
 
     companion object {
-        private const val INTENT_READ_WRITE_FLAG = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        private const val INTENT_READ_WRITE_FLAG =
+            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     }
 
     private val newDownloadIdState = Channel<String>(Channel.CONFLATED)
@@ -78,7 +80,7 @@ internal class DownloaderImpl @Inject constructor(
     private var pendingEnqueableAudio: FileEntity? = null
 
     override suspend fun enqueueFile(fileId: String): Boolean {
-        Timber.d("Enqueue requested for: $fileId")
+        debug { "Enqueue requested for: $fileId" }
         fileDao.entry(fileId).firstOrNull()?.apply {
             return enqueueFile(this)
         }
@@ -89,7 +91,7 @@ internal class DownloaderImpl @Inject constructor(
      * Tries to enqueue given audio or issues error events in case of failure.
      */
     override suspend fun enqueueFile(file: FileEntity): Boolean {
-        Timber.d("Enqueue audio: $file")
+        debug { "Enqueue audio: $file" }
         val downloadRequest = DownloadRequest.fromAudio(file)
         if (!validateNewAudioRequest(downloadRequest)) {
             return false
@@ -121,8 +123,9 @@ internal class DownloaderImpl @Inject constructor(
                 newDownloadIdState.send(downloadRequest.id)
                 true
             }
+
             is DownloadEnqueueFailed -> {
-                Timber.e(enqueueResult.toString())
+                errorLog { enqueueResult.toString() }
                 downloaderEvent(DownloaderEvent.DownloaderFetchError(enqueueResult.error))
                 false
             }
@@ -145,40 +148,44 @@ internal class DownloaderImpl @Inject constructor(
                     Status.FAILED, Status.CANCELLED -> {
                         fetcher.delete(downloadInfo.id)
                         repo.delete(oldRequest.id)
-                        Timber.i("Retriable download exists, cancelling the old one and allowing enqueue.")
+                        i { "Retriable download exists, cancelling the old one and allowing enqueue." }
                         return true
                     }
+
                     Status.PAUSED -> {
-                        Timber.i("Resuming paused download because of new request")
+                        i { "Resuming paused download because of new request" }
                         fetcher.resume(oldRequest.requestId)
                         downloaderMessage(AudioDownloadResumedExisting)
                         return false
                     }
+
                     Status.NONE, Status.QUEUED, Status.DOWNLOADING -> {
-                        Timber.i("File already queued, doing nothing")
+                        i { "File already queued, doing nothing" }
                         downloaderMessage(AudioDownloadAlreadyQueued)
                         return false
                     }
+
                     Status.COMPLETED -> {
                         val fileExists = downloadInfo.fileUri.toDocumentFile(appContext).exists()
                         return if (!fileExists) {
                             fetcher.delete(downloadInfo.id)
                             repo.delete(oldRequest.id)
-                            Timber.i("Completed status but file doesn't exist, allowing enqueue.")
+                            i { "Completed status but file doesn't exist, allowing enqueue." }
                             true
                         } else {
-                            Timber.i("Completed status and file exists, doing nothing.")
+                            i { "Completed status and file exists, doing nothing." }
                             false
                         }
                     }
+
                     else -> {
-                        Timber.d("Existing download was requested with unhandled status, doing nothing: Status: ${downloadInfo.status}")
+                        debug { "Existing download was requested with unhandled status, doing nothing: Status: ${downloadInfo.status}" }
                         downloaderMessage(AudioDownloadExistingUnknownStatus(downloadInfo.status))
                         return false
                     }
                 }
             } else {
-                Timber.d("Download request exists but there's no download info, deleting old request and allowing enqueue.")
+                debug { "Download request exists but there's no download info, deleting old request and allowing enqueue." }
                 repo.delete(oldRequest.id)
                 return true
             }
@@ -186,7 +193,10 @@ internal class DownloaderImpl @Inject constructor(
         return true
     }
 
-    private suspend fun enqueueDownloadRequest(downloadRequest: DownloadRequest, request: Request): DownloadEnqueueResult<Request> {
+    private suspend fun enqueueDownloadRequest(
+        downloadRequest: DownloadRequest,
+        request: Request,
+    ): DownloadEnqueueResult<Request> {
         debug { "Enqueueing download request: $request" }
         val enqueueResult = fetcher.enqueue(request)
 
@@ -195,7 +205,7 @@ internal class DownloaderImpl @Inject constructor(
             try {
                 repo.insert(downloadRequest.copy(requestId = newRequest.id))
             } catch (e: Exception) {
-                Timber.e(e, "Failed to insert audio request")
+                errorLog(e) { "Failed to insert audio request" }
                 downloaderMessage(DownloadMessage.Error(e))
             }
         }
@@ -269,9 +279,11 @@ internal class DownloaderImpl @Inject constructor(
 
     override val hasDownloadsLocation = downloadsLocationUri.map { it.isPresent }
 
-    override fun requestNewDownloadsLocation() = downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
+    override fun requestNewDownloadsLocation() =
+        downloaderEvent(DownloaderEvent.ChooseDownloadsLocation)
 
-    override suspend fun setDownloadsLocation(folder: File) = setDownloadsLocation(DocumentFile.fromFile(folder))
+    override suspend fun setDownloadsLocation(folder: File) =
+        setDownloadsLocation(DocumentFile.fromFile(folder))
 
     override suspend fun setDownloadsLocation(documentFile: DocumentFile) {
         require(documentFile.exists()) { "Downloads location must be existing" }
@@ -282,7 +294,7 @@ internal class DownloaderImpl @Inject constructor(
 
     override suspend fun setDownloadsLocation(uri: Uri?) {
         if (uri == null) {
-            Timber.e("Downloads URI is null")
+            errorLog { "Downloads URI is null" }
             downloaderMessage(DownloadsUnknownError)
             return
         }
@@ -291,7 +303,7 @@ internal class DownloaderImpl @Inject constructor(
         preferences.save(DOWNLOADS_LOCATION, uri.toString())
 
         pendingEnqueableAudio?.apply {
-            Timber.d("Consuming pending enqueuable audio download")
+            debug { "Consuming pending enqueuable audio download" }
             enqueueFile(this)
             pendingEnqueableAudio = null
         }
@@ -343,7 +355,7 @@ internal class DownloaderImpl @Inject constructor(
             val downloadsLocationFolder = downloadsLocationUri.toDocumentFile(appContext)
             audio.documentFile(downloadsLocationFolder)
         } catch (e: Exception) {
-            Timber.e(e, "Error while creating new audio file")
+            errorLog(e) { "Error while creating new audio file" }
             when (e) {
                 is FileNotFoundException -> {
                     downloaderMessage(DownloadsFolderNotFound)

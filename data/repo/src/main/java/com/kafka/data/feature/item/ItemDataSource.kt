@@ -2,8 +2,8 @@ package com.kafka.data.feature.item
 
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
+import com.kafka.data.resultApiCall
 import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.network.resultApiCall
 import javax.inject.Inject
 
 /**

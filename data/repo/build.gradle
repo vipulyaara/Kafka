@@ -18,7 +18,6 @@ android {
 
 dependencies {
     api projects.base.domain
-    api projects.base.network
     api projects.core.remoteConfig
     api projects.data.models
     api projects.data.database
@@ -30,15 +29,20 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime
-    implementation libs.dataStore
     implementation libs.firestore.common.ktx
     implementation libs.firestore.ktx
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.serialization
     implementation libs.kotlin.stdlib
+
+    implementation libs.okhttp.loggingInterceptor
+    implementation libs.okhttp.okhttp
+    implementation libs.retrofit.retrofit
     implementation libs.retrofit.serialization
-    implementation libs.threeTenAbp
+
+    api libs.dataStore
+    api libs.threeTenAbp
 
     implementation platform(libs.google.bom)
     implementation libs.google.auth

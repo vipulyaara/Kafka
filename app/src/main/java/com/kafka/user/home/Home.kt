@@ -33,7 +33,7 @@ import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.selectRootScreen
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.snackbar.DismissableSnackbarHost
 import ui.common.theme.theme.Dimens

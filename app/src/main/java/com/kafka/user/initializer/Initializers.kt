@@ -1,75 +1,59 @@
 package com.kafka.user.initializer
 
-import android.app.Application
-import android.util.Log
+import android.content.Context
+import co.touchlab.kermit.ExperimentalKermitApi
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
+import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
 import com.google.firebase.Firebase
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kafka.remote.config.RemoteConfig
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.threeten.bp.zone.ZoneRulesProvider
-import timber.log.Timber
 import javax.inject.Inject
 
+@OptIn(ExperimentalKermitApi::class)
 class LoggerInitializer @Inject constructor() : AppInitializer {
-    override fun init(application: Application) {
-        Timber.plant(Timber.DebugTree())
-
-        try {
-            Timber.plant(CrashlyticsTree(FirebaseCrashlytics.getInstance()))
-        } catch (e: IllegalStateException) {
-            // Firebase is likely not setup in this project. Ignore the exception
-        }
-    }
-}
-
-private class CrashlyticsTree(
-    private val firebaseCrashlytics: FirebaseCrashlytics,
-) : Timber.Tree() {
-    override fun isLoggable(tag: String?, priority: Int): Boolean {
-        return priority >= Log.INFO
-    }
-
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        firebaseCrashlytics.log(message)
-        if (t != null) {
-            firebaseCrashlytics.recordException(t)
-        }
+    override fun init() {
+        Logger.setLogWriters(CrashlyticsLogWriter(minCrashSeverity = Severity.Error))
     }
 }
 
 class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    @ProcessLifetime private val coroutineScope: CoroutineScope
+    @ProcessLifetime private val coroutineScope: CoroutineScope,
+    @ApplicationContext private val context: Context,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         coroutineScope.launch(dispatchers.io) {
-            Firebase.initialize(application)
+            Firebase.initialize(context)
         }
     }
 }
 
 class ThreeTenBpInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    @ProcessLifetime private val coroutineScope: CoroutineScope
+    @ProcessLifetime private val coroutineScope: CoroutineScope,
+    @ApplicationContext private val context: Context,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         coroutineScope.launch(dispatchers.io) {
-            AndroidThreeTen.init(application)
+            AndroidThreeTen.init(context)
             ZoneRulesProvider.getAvailableZoneIds()
         }
     }
 }
 
 class RemoteConfigInitializer @Inject constructor(
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         remoteConfig
     }
 }

@@ -15,8 +15,8 @@ import com.kafka.data.prefs.observeTheme
 import com.kafka.user.home.MainScreen
 import com.sarahang.playback.ui.color.ColorExtractor
 import dagger.hilt.android.AndroidEntryPoint
+import org.kafka.base.errorLog
 import org.kafka.navigation.rememberBottomSheetNavigator
-import timber.log.Timber
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 import ui.common.theme.theme.shouldUseTrueContrast
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
         if (::navController.isInitialized && intent != null) { // intent is somehow null
             navController.handleDeepLink(intent)
         } else {
-            Timber.e(Error("navController is not initialized or intent is null. isFinishing = $isFinishing, intent = $intent"))
+            errorLog(Error("navController is not initialized or intent is null. isFinishing = $isFinishing, intent = $intent"))
         }
     }
 }

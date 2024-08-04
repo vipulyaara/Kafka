@@ -27,7 +27,8 @@ android {
         buildConfigField(
             "String",
             "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString() ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
+            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
+                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
         )
         buildConfigField(
             "String",
@@ -126,12 +127,10 @@ dependencies {
     implementation(projects.core.downloader)
     implementation(projects.core.play)
     implementation(projects.corePlayback)
-    implementation(projects.core.recommendation)
     implementation(projects.core.remoteConfig)
     implementation(projects.data.repo)
     implementation(projects.domain)
     implementation(projects.navigation)
-    implementation(projects.notifications)
     implementation(projects.ui.auth)
     implementation(projects.ui.common)
     implementation(projects.ui.components)
@@ -175,6 +174,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
+    implementation(libs.kermit.crashlytics)
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization)

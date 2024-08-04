@@ -17,7 +17,6 @@ android {
 
 dependencies {
     implementation projects.base.domain
-    implementation projects.base.network
     implementation projects.core.analytics
     implementation projects.core.downloader
     implementation projects.domain

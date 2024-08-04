@@ -1,6 +1,5 @@
 package tm.alashow.datmusic.downloader
 
-import android.app.Application
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
@@ -30,7 +29,7 @@ class DownloadInitializer @Inject constructor(
     private val itemDao: ItemDao,
     private val downloadRequestsDao: DownloadRequestsDao,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         coroutineScope.launch(dispatchers.io) {
             createFetchListener(fetch).collectLatest {
                 when (it?.download?.status) {
