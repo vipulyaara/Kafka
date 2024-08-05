@@ -1,5 +1,6 @@
 package org.kafka.ui.components.item
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import org.kafka.common.image.Icons
 import org.kafka.ui.components.placeholder.placeholderDefault
@@ -34,14 +36,23 @@ fun FeaturedItem(
     modifier: Modifier = Modifier,
     label: String? = null,
     imageUrl: String? = null,
-    shape: Shape = CoverDefaults.shape,
-    onClick: () -> Unit = {}
+    shape: Shape = RoundedCornerShape(16.dp),
+    onClick: () -> Unit = {},
 ) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(Dimens.RadiusMedium)
+        shape = shape,
+        border = BorderStroke(
+            width = 2.dp,
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.onSurface.copy(0.4f),
+                    Color.Transparent,
+                )
+            ),
+        )
     ) {
         Box {
             CoverImage(
@@ -54,14 +65,14 @@ fun FeaturedItem(
             )
 
             if (!label.isNullOrBlank()) {
-                TextOverlay(label = label, item = item)
+                TextOverlay(label = label, item = item, shape = shape)
             }
         }
     }
 }
 
 @Composable
-private fun BoxScope.TextOverlay(label: String, item: Item) {
+private fun BoxScope.TextOverlay(label: String, item: Item, shape: Shape) {
     val scrim = scrim(
         if (LocalThemeColor.current.isDark) {
             MaterialTheme.colorScheme.background
@@ -74,6 +85,7 @@ private fun BoxScope.TextOverlay(label: String, item: Item) {
         modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.BottomStart)
+            .clip(shape)
             .background(scrim)
             .padding(Dimens.Gutter)
     ) {

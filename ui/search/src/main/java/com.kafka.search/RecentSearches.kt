@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.RecentSearch
 import org.kafka.common.animation.Delayed
 import org.kafka.common.image.Icons
+import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
 import org.kafka.ui.components.LabelMedium
@@ -57,7 +58,7 @@ fun RecentSearchItem(
     recentSearch: RecentSearch,
     modifier: Modifier = Modifier,
     onSearchClicked: (RecentSearch) -> Unit,
-    onRemoveSearch: (String) -> Unit
+    onRemoveSearch: (String) -> Unit,
 ) {
     SelectionContainer {
         Row(
@@ -75,7 +76,7 @@ fun RecentSearchItem(
 
             IconResource(
                 modifier = Modifier
-                    .clickable(onClick = { onRemoveSearch(recentSearch.searchTerm) })
+                    .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
                     .padding(10.dp)
                     .size(Dimens.Spacing24),
                 imageVector = Icons.XCircle

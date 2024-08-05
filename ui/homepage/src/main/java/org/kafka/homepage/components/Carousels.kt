@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.kafka.data.entities.Item
@@ -20,13 +19,15 @@ internal fun Carousels(
     images: List<String>,
     onBannerClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    lazyListState: LazyListState = rememberLazyListState()
+    lazyListState: LazyListState = rememberLazyListState(),
 ) {
     val state = rememberPagerState { carouselItems.size }
 
     HorizontalPager(
         state = state,
-        modifier = modifier.padding(Dimens.Spacing02),
+        modifier = modifier
+            .padding(Dimens.Spacing02)
+            .padding(top = Dimens.Spacing12, bottom = Dimens.Spacing08),
         contentPadding = PaddingValues(horizontal = Dimens.Spacing12),
     ) { index ->
         carouselItems.getOrNull(index)?.let { item ->
@@ -35,7 +36,6 @@ internal fun Carousels(
                 label = item.title,
                 imageUrl = images.getOrNull(index),
                 onClick = { onBannerClick(item.itemId) },
-                shape = RoundedCornerShape(Dimens.Radius20),
                 modifier = Modifier.padding(horizontal = Dimens.Spacing04)
             )
         }
