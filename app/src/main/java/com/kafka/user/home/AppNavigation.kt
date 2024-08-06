@@ -55,8 +55,8 @@ import org.kafka.navigation.Screen
 import org.kafka.navigation.deeplink.Config
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
-import org.rekhta.ui.profile.feedback.FeedbackScreen
 import org.rekhta.ui.profile.ProfileScreen
+import org.rekhta.ui.profile.feedback.FeedbackScreen
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -171,7 +171,7 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
             },
             navArgument("filters") {
                 type = NavType.StringType
-                defaultValue = SearchFilter.Name.name
+                defaultValue = SearchFilter.allString()
             }
         ),
         deepLinks = listOf(
