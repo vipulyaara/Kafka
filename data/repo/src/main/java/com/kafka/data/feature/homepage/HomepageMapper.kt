@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class HomepageMapper @Inject constructor(
     private val itemDao: ItemDao,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) {
     // todo: rows are shuffled every time a cms change happens
     private val shuffleEnabled by lazy { remoteConfig.isHomepageItemsShuffleEnabled() }
@@ -29,6 +29,7 @@ class HomepageMapper @Inject constructor(
                 is HomepageCollectionResponse.RecentItems -> it.mapRecentItems()
                 is HomepageCollectionResponse.Grid -> it.mapGrid()
                 is HomepageCollectionResponse.PersonRow -> it.mapPersonRow()
+                is HomepageCollectionResponse.Subjects -> it.mapSubjects()
                 is HomepageCollectionResponse.Unknown -> flowOf(null)
             }
         },
@@ -59,6 +60,17 @@ class HomepageMapper @Inject constructor(
         )
 
         return flowOf(personRow)
+    }
+
+    private fun HomepageCollectionResponse.Subjects.mapSubjects(): Flow<HomepageCollection.Subjects> {
+        val itemIdList = itemIds.split(", ").shuffled()
+
+        val subjects = HomepageCollection.Subjects(
+            items = itemIdList.toPersistentList(),
+            enabled = enabled,
+        )
+
+        return flowOf(subjects)
     }
 
     private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {

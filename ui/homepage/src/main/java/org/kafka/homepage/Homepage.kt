@@ -1,6 +1,7 @@
 package org.kafka.homepage
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +49,7 @@ import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.FeaturedItem
 import org.kafka.ui.components.item.FeaturedItemPlaceholder
+import org.kafka.ui.components.item.GenreItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
 import org.kafka.ui.components.item.ItemSmall
@@ -55,6 +58,7 @@ import org.kafka.ui.components.item.PersonItemPlaceholder
 import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.RowItemPlaceholder
 import org.kafka.ui.components.item.SubjectItem
+import org.kafka.ui.components.material.StaggeredFlowRow
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -120,7 +124,7 @@ private fun HomepageFeedItems(
     goToSubject: (String) -> Unit,
     goToCreator: (String) -> Unit,
     openRecentItems: () -> Unit,
-    shareApp: () -> Unit
+    shareApp: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.testTag("homepage_feed_items"),
@@ -172,6 +176,22 @@ private fun HomepageFeedItems(
                             images = collection.images,
                             goToCreator = goToCreator
                         )
+                    }
+                }
+
+                is HomepageCollection.Subjects -> {
+                    item {
+                        StaggeredFlowRow(
+                            modifier = Modifier
+                                .horizontalScroll(rememberScrollState())
+                                .padding(Dimens.Gutter),
+                            horizontalSpacing = Dimens.Spacing08,
+                            verticalSpacing = Dimens.Spacing08
+                        ) {
+                            collection.items.forEach { subject ->
+                                GenreItem(text = subject, onClicked = { goToSubject(subject) })
+                            }
+                        }
                     }
                 }
 
@@ -231,7 +251,7 @@ private fun HomepageFeedItems(
 
 private fun LazyListScope.featuredItems(
     collection: HomepageCollection.FeaturedItem,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
     if (collection.items.isNotEmpty()) {
         items(
@@ -263,7 +283,7 @@ private fun LazyListScope.featuredItems(
 private fun RowItems(
     items: ImmutableList<Item>,
     modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
     LazyRow(
         modifier = modifier,
@@ -299,7 +319,7 @@ private fun Authors(
     titles: ImmutableList<String>,
     images: ImmutableList<String>,
     modifier: Modifier = Modifier,
-    goToCreator: (String) -> Unit
+    goToCreator: (String) -> Unit,
 ) {
     LazyRow(
         modifier = modifier.padding(vertical = Dimens.Spacing12),
@@ -327,7 +347,7 @@ private fun Authors(
 
 private fun LazyListScope.columnItems(
     collection: HomepageCollection.Column,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
     if (collection.items.isNotEmpty()) {
         items(
@@ -364,7 +384,7 @@ private fun GridItems(
     collection: HomepageCollection.Grid,
     openItemDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
-    lazyListState: LazyGridState = rememberLazyGridState()
+    lazyListState: LazyGridState = rememberLazyGridState(),
 ) {
     LazyHorizontalGrid(
         rows = GridCells.Fixed(3),

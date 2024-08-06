@@ -1,6 +1,5 @@
 package org.kafka.ui.components.item
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,16 +42,7 @@ fun FeaturedItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = shape,
-        border = BorderStroke(
-            width = 2.dp,
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    MaterialTheme.colorScheme.onSurface.copy(0.4f),
-                    Color.Transparent,
-                )
-            ),
-        )
+        shape = shape
     ) {
         Box {
             CoverImage(

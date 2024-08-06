@@ -40,6 +40,15 @@ sealed class HomepageCollectionResponse {
     ) : HomepageCollectionResponse()
 
     @Serializable
+    @SerialName("subject")
+    data class Subjects(
+        val itemIds: String,
+        override val index: Float,
+        override val enabled: Boolean = true,
+        override val topics: String = "",
+    ) : HomepageCollectionResponse()
+
+    @Serializable
     @SerialName("row")
     data class Row(
         val label: String,
