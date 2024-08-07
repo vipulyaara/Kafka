@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.domain.interactors.recent.AddRecentItem
@@ -26,7 +27,6 @@ import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
-import org.kafka.analytics.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
@@ -83,7 +83,7 @@ class FilesViewModel @Inject constructor(
     }
 
     fun onDownloadClicked(file: File) {
-        analytics.log { downloadFile(file.fileId, file.itemId) }
+        analytics.log { downloadFile(file.fileId, file.itemId, "files") }
         viewModelScope.launch { downloader.enqueueFile(file.fileId) }
     }
 

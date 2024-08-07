@@ -65,9 +65,10 @@ class EventRepository @Inject constructor() {
         "item_id" to itemId,
     )
 
-    fun downloadFile(fileId: String, itemId: String) = "download_file" to mapOf(
+    fun downloadFile(fileId: String, itemId: String, source: String? = null) = "download_file" to mapOf(
         "item_id" to itemId,
         "file_id" to fileId,
+        "source" to source,
     )
 
     fun addRecentItem(itemId: String, title: String? = null) = "add_recent_item" to mapOf(

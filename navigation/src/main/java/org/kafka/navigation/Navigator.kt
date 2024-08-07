@@ -46,8 +46,10 @@ private fun NavigatorHost(
 
 sealed class NavigationEvent(open val route: String) {
     object Back : NavigationEvent("Back")
-    data class Destination(override val route: String, val root: RootScreen? = null) :
-        NavigationEvent(route)
+    data class Destination(
+        override val route: String,
+        val root: RootScreen? = null
+    ) : NavigationEvent(route)
 
     override fun toString() = route
 }

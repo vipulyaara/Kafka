@@ -29,6 +29,7 @@ import compose.icons.tablericons.Copy
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
+import compose.icons.tablericons.FileText
 import compose.icons.tablericons.Gift
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
@@ -94,4 +95,5 @@ object Icons {
     val Gift = TablerIcons.Gift
     val Google = FontAwesomeIcons.Brands.Google
     val Bell = TablerIcons.Bell
+    val ReadOffline = TablerIcons.FileText
 }
