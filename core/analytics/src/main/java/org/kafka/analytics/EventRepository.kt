@@ -7,7 +7,7 @@ class EventRepository @Inject constructor() {
     fun searchQuery(
         keyword: String,
         filters: List<String>? = null,
-        mediaTypes: List<String>? = null
+        mediaTypes: List<String>? = null,
     ) = AnalyticsImpl.SEARCH to mapOf(
         "keyword" to keyword,
         "filters" to filters?.joinToString(),
@@ -35,7 +35,7 @@ class EventRepository @Inject constructor() {
     fun readItem(
         itemId: String, type: String = "offline",
         source: String? = null,
-        isRestrictedAccess: Boolean? = null
+        isRestrictedAccess: Boolean? = null,
     ) =
         "read_item" to mapOf(
             "item_id" to itemId,
@@ -65,11 +65,12 @@ class EventRepository @Inject constructor() {
         "item_id" to itemId,
     )
 
-    fun downloadFile(fileId: String, itemId: String, source: String? = null) = "download_file" to mapOf(
-        "item_id" to itemId,
-        "file_id" to fileId,
-        "source" to source,
-    )
+    fun downloadFile(fileId: String, itemId: String, source: String? = null) =
+        "download_file" to mapOf(
+            "item_id" to itemId,
+            "file_id" to fileId,
+            "source" to source,
+        )
 
     fun addRecentItem(itemId: String, title: String? = null) = "add_recent_item" to mapOf(
         "item_id" to itemId,
