@@ -21,6 +21,16 @@
             font-family: Arial, sans-serif;
         }
 
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Optional, ensures full viewport height */
+        }
+
+        .content {
+            flex: 1;
+        }
+
         /* Container to center the buttons */
         .button-container {
             display: flex;
@@ -112,6 +122,27 @@
           }
         }
 
+        footer {
+             text-align: center;
+             padding: 20px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Adjust gap as needed */
+        }
+
+        .social-media-icons img {
+            width: 30px; /* Adjust size as needed */
+            height: 30px;
+        }
+
+        .spacer {
+           margin: 20px; /* Adjust margin as needed */
+        }
+
         /* Responsive layout for larger screens */
         @media (min-width: 768px) {
             .button-container {
@@ -120,6 +151,7 @@
         }
     </style>
 </head>
+
 <body>
 <div class="button-container">
     <button class="button button-1" role="button"
@@ -133,5 +165,20 @@
             onclick="window.location.href='https://github.com/vipulyaara/Kafka'">See Code
     </button>
 </div>
+
+<footer>
+    <div class="social-media-icons">
+        <div class="spacer"></div>
+        <a href="https://www.instagram.com/kafka.archives/" target="_blank">
+            <img src="images/instagram.svg" alt="Instagram" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100094699020751" target="_blank">
+            <img src="images/facebook.svg" alt="Facebook" />
+        </a>
+        <a href="https://whatsapp.com/channel/0029VagY1jF0gcfR87ggBA40" target="_blank">
+            <img src="images/whatsapp.svg" alt="WhatsApp" />
+        </a>
+    </div>
+</footer>
 </body>
 </html>
