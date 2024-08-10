@@ -48,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import com.sarahang.playback.ui.color.DynamicTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.kafka.base.debug
@@ -88,20 +89,25 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
 
     val lazyGridState = rememberLazyGridState()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(
-                lazyGridState = lazyGridState,
-                onShareClicked = { viewModel.shareItemText(context) },
-                onShareLongClicked = { viewModel.openArchiveItem() },
-                onBackPressed = { navigator.goBack() },
-                isShareVisible = viewModel.isShareEnabled()
-            )
-        }
-    ) { padding ->
-        ProvideScaffoldPadding(padding = padding) {
-            ItemDetail(state = state, viewModel = viewModel, lazyGridState = lazyGridState)
+    ItemDetailTheme(
+        isDynamicThemeEnabled = state.isDynamicThemeEnabled,
+        model = state.itemDetail?.coverImage
+    ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopBar(
+                    lazyGridState = lazyGridState,
+                    onShareClicked = { viewModel.shareItemText(context) },
+                    onShareLongClicked = { viewModel.openArchiveItem() },
+                    onBackPressed = { navigator.goBack() },
+                    isShareVisible = viewModel.isShareEnabled()
+                )
+            }
+        ) { padding ->
+            ProvideScaffoldPadding(padding = padding) {
+                ItemDetail(state = state, viewModel = viewModel, lazyGridState = lazyGridState)
+            }
         }
     }
 }
@@ -111,7 +117,7 @@ private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
     modifier: Modifier = Modifier,
-    lazyGridState: LazyGridState = rememberLazyGridState()
+    lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
     val context = LocalContext.current
 
@@ -145,7 +151,7 @@ private fun ItemDetail(
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
     modifier: Modifier = Modifier,
-    lazyGridState: LazyGridState = rememberLazyGridState()
+    lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
     Box(modifier.fillMaxSize()) {
         InfiniteProgressBar(
@@ -260,7 +266,7 @@ private fun ItemDetail(
 private fun ItemDescription(
     itemDetail: ItemDetail,
     showDescription: (String) -> Unit,
-    goToCreator: (String?) -> Unit
+    goToCreator: (String?) -> Unit,
 ) {
     SelectionContainer(Modifier.fillMaxWidth()) {
         Column(
@@ -312,7 +318,7 @@ private fun ItemDescription(
 private fun RelatedItems(
     items: ImmutableList<Item>,
     modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         LabelMedium(
@@ -357,6 +363,21 @@ private fun AccessRestricted(isAudio: Boolean, onClick: () -> Unit) {
         modifier = Modifier.padding(Dimens.Spacing24),
         onClick = if (isAudio) null else onClick
     )
+}
+
+@Composable
+private fun ItemDetailTheme(
+    isDynamicThemeEnabled: Boolean,
+    model: Any?,
+    content: @Composable () -> Unit,
+) {
+    if (isDynamicThemeEnabled) {
+        DynamicTheme(model) {
+            content()
+        }
+    } else {
+        content()
+    }
 }
 
 private const val GridItemSpan = 1

@@ -15,6 +15,7 @@ const val MIN_SUPPORTED_VERSION = "min_supported_version"
 const val SHARE_APP_INDEX = "share_app_index"
 const val DOWNLOADS_WARNING_MESSAGE = "downloads_warning_message"
 const val HOMEPAGE_ITEMS_SHUFFLE_ENABLED = "homepage_items_shuffle_enabled"
+const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -45,3 +46,5 @@ fun RemoteConfig.shareAppIndex() = getLong(SHARE_APP_INDEX)
 fun RemoteConfig.downloadsWarningMessage() = get(DOWNLOADS_WARNING_MESSAGE)
 
 fun RemoteConfig.isHomepageItemsShuffleEnabled() = getBoolean(HOMEPAGE_ITEMS_SHUFFLE_ENABLED)
+
+fun RemoteConfig.isItemDetailDynamicThemeEnabled() = getBoolean(ITEM_DETAIL_DYNAMIC_THEME_ENABLED)

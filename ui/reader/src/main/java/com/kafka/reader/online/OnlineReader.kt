@@ -152,6 +152,7 @@ fun DownloadIcon(
     } else {
         IconButton(
             imageVector = Icons.Download,
+            tint = MaterialTheme.colorScheme.primary,
             contentDescription = stringResource(R.string.cd_download_file),
             onClick = onDownloadClicked
         )
