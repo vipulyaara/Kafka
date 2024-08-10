@@ -19,7 +19,7 @@ data class Doc(
     @Serializable(with = StringListSerializer::class)
     val description: List<String>? = null,
     @SerialName("downloads")
-    val downloads: Int = 0,
+    val downloads: Long = 0,
     @SerialName("format")
     @Serializable(with = StringListSerializer::class)
     val format: List<String>? = null,

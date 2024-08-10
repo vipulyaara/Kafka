@@ -23,7 +23,7 @@ class ItemMapper @Inject constructor() {
         coverImage = "https://archive.org/services/img/$identifier",
         collection = this.collection,
         genre = this.subject,
-        position = this.downloads,
+        position = this.downloads.toInt(),
         subject = subject?.joinToString(","),
         rating = this.rating,
     )

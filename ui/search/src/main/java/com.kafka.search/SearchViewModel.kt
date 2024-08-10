@@ -4,24 +4,26 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
+import org.kafka.base.domain.onException
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
+import org.kafka.common.snackbar.toUiMessage
 import org.kafka.domain.interactors.AddRecentSearch
 import org.kafka.domain.interactors.RemoveRecentSearch
 import org.kafka.domain.interactors.SearchQueryItems
 import org.kafka.domain.observers.ObserveRecentSearch
-import org.kafka.domain.observers.ObserveSearchItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.Screen
 import javax.inject.Inject
@@ -32,7 +34,6 @@ class SearchViewModel @Inject constructor(
     private val addRecentSearch: AddRecentSearch,
     private val removeRecentSearch: RemoveRecentSearch,
     private val searchQueryItems: SearchQueryItems,
-    private val observeSearchItems: ObserveSearchItems,
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
@@ -44,12 +45,13 @@ class SearchViewModel @Inject constructor(
         .apply { addAll(MediaType.entries) }
     private val selectedFilters
         get() = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
+    private val searchResults = MutableStateFlow<List<Item>>(listOf())
 
     val state: StateFlow<SearchViewState> = combine(
         savedStateHandle.getStateFlow(extraKeyword, ""),
         savedStateHandle.getStateFlow(extraFilters, SearchFilter.Name.name)
             .map { SearchFilter.from(it) },
-        observeSearchItems.flow,
+        searchResults,
         observeRecentSearch.flow,
         loadingState.observable
     ) { keyword, filters, items, recentSearches, isLoading ->
@@ -77,16 +79,20 @@ class SearchViewModel @Inject constructor(
         filters: List<SearchFilter> = SearchFilter.from(selectedFilters),
         mediaTypes: List<MediaType> = selectedMediaTypes
     ) {
-        observeSearchItems(ObserveSearchItems.Params(keyword, filters, mediaTypes.toList()))
-
         viewModelScope.launch {
-            searchQueryItems(
+            loadingState.addLoader()
+
+            searchResults.value = searchQueryItems(
                 SearchQueryItems.Params(
                     keyword = keyword,
                     searchFilter = filters,
                     mediaTypes = mediaTypes.toList()
                 )
-            ).collectStatus(loadingState, snackbarManager)
+            ).also { result ->
+                result.onException { snackbarManager.addMessage(it.toUiMessage()) }
+            }.getOrElse { emptyList() }
+
+            loadingState.removeLoader()
         }
 
         if (keyword.isNotEmpty()) {
