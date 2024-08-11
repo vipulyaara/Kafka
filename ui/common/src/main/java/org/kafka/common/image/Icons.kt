@@ -11,12 +11,15 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
 import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
+import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.brands.Google
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
+import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.CircleCheck
@@ -26,6 +29,7 @@ import compose.icons.tablericons.Copy
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
+import compose.icons.tablericons.FileText
 import compose.icons.tablericons.Gift
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
@@ -89,4 +93,7 @@ object Icons {
     val Feedback = TablerIcons.Message
     val SafeMode = TablerIcons.Umbrella
     val Gift = TablerIcons.Gift
+    val Google = FontAwesomeIcons.Brands.Google
+    val Bell = TablerIcons.Bell
+    val ReadOffline = TablerIcons.FileText
 }

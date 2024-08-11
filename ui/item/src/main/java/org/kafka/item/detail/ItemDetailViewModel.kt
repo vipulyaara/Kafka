@@ -18,6 +18,7 @@ import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isRelatedContentRowEnabled
 import com.kafka.remote.config.isShareEnabled
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.kafka.analytics.logger.Analytics
 import org.kafka.base.combine
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -58,7 +60,6 @@ import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
 import org.kafka.play.AppReviewManager
-import org.kafka.play.logger.Analytics
 import javax.inject.Inject
 
 @HiltViewModel
@@ -108,6 +109,7 @@ class ItemDetailViewModel @Inject constructor(
             isLoading = isLoading,
             downloadItem = downloadItem,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
+            isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled()
         )
     }.stateInDefault(
         scope = viewModelScope,

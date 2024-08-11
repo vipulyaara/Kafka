@@ -14,7 +14,7 @@ class FileMapper @Inject constructor() {
             fileId = fileId,
             itemId = item.itemId,
             itemTitle = item.title,
-            size = size?.toLongOrNull(),
+            size = size?.firstOrNull()?.toLongOrNull(),
             name = name,
             title = title ?: name.removeSuffix(".$extension"),
             extension = extension,

@@ -8,7 +8,6 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.kafka.base.debug
 import org.kafka.base.errorLog
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,7 +48,6 @@ class RemoteConfig @Inject constructor(private val json: Json) {
             try {
                 json.decodeFromString(serializer, it.orEmpty())
             } catch (e: SerializationException) {
-                Timber.e(e)
                 errorLog(e) { "Error parsing remote config" }
                 null
             }

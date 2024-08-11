@@ -52,11 +52,12 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.ROOT_SCREENS
 import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
+import org.kafka.navigation.Screen.Reader
 import org.kafka.navigation.deeplink.Config
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
-import org.rekhta.ui.auth.feedback.FeedbackScreen
-import org.rekhta.ui.auth.profile.ProfileScreen
+import org.rekhta.ui.profile.ProfileScreen
+import org.rekhta.ui.profile.feedback.FeedbackScreen
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -64,7 +65,7 @@ import ui.common.theme.theme.shouldUseDarkColors
 internal fun AppNavigation(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    navigator: Navigator = LocalNavigator.current
+    navigator: Navigator = LocalNavigator.current,
 ) {
     CollectEvent(navigator.queue) { event ->
         when (event) {
@@ -92,13 +93,13 @@ internal fun AppNavigation(
         popEnterTransition = { fadeIn(tween(200)) },
         popExitTransition = { fadeOut(tween(200)) }
     ) {
-        addHomeRoot()
-        addSearchRoot()
-        addLibraryRoot()
+        addHomeRoot(navController)
+        addSearchRoot(navController)
+        addLibraryRoot(navController)
     }
 }
 
-private fun NavGraphBuilder.addHomeRoot() {
+private fun NavGraphBuilder.addHomeRoot(navController: NavController) {
     navigation(
         route = RootScreen.Home.route,
         startDestination = Screen.Home.createRoute(RootScreen.Home)
@@ -115,12 +116,12 @@ private fun NavGraphBuilder.addHomeRoot() {
         addLogin(RootScreen.Home)
         addPlayer(RootScreen.Home)
         addWebView(RootScreen.Home)
-        addOnlineReader(RootScreen.Home)
+        addOnlineReader(RootScreen.Home, navController)
         addRecentItems(RootScreen.Home)
     }
 }
 
-private fun NavGraphBuilder.addSearchRoot() {
+private fun NavGraphBuilder.addSearchRoot(navController: NavController) {
     navigation(
         route = RootScreen.Search.route,
         startDestination = Screen.Search.createRoute(RootScreen.Search)
@@ -132,11 +133,11 @@ private fun NavGraphBuilder.addSearchRoot() {
         addReader(RootScreen.Search)
         addPlayer(RootScreen.Search)
         addWebView(RootScreen.Search)
-        addOnlineReader(RootScreen.Search)
+        addOnlineReader(RootScreen.Search, navController)
     }
 }
 
-private fun NavGraphBuilder.addLibraryRoot() {
+private fun NavGraphBuilder.addLibraryRoot(navController: NavController) {
     navigation(
         route = RootScreen.Library.route,
         startDestination = Screen.Library.createRoute(RootScreen.Library)
@@ -149,7 +150,7 @@ private fun NavGraphBuilder.addLibraryRoot() {
         addSearch(RootScreen.Library)
         addPlayer(RootScreen.Library)
         addWebView(RootScreen.Library)
-        addOnlineReader(RootScreen.Library)
+        addOnlineReader(RootScreen.Library, navController)
         addLogin(RootScreen.Library)
         addProfile(RootScreen.Library)
     }
@@ -171,7 +172,7 @@ private fun NavGraphBuilder.addSearch(root: RootScreen) {
             },
             navArgument("filters") {
                 type = NavType.StringType
-                defaultValue = SearchFilter.Name.name
+                defaultValue = SearchFilter.allString()
             }
         ),
         deepLinks = listOf(
@@ -275,12 +276,19 @@ private fun NavGraphBuilder.addWebView(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addOnlineReader(root: RootScreen) {
+private fun NavGraphBuilder.addOnlineReader(root: RootScreen, navController: NavController) {
     composable(
         route = Screen.OnlineReader.createRoute(root),
         arguments = listOf(navArgument("itemId") { type = NavType.StringType })
     ) {
-        OnlineReader()
+        val currentRoot by navController.currentScreenAsState()
+        val currentDestination = navController.currentDestination?.route
+
+        OnlineReader { fileId ->
+            navController.navigate(Reader.createRoute(currentRoot, fileId)) {
+                popUpTo(currentDestination.orEmpty()) { inclusive = true }
+            }
+        }
     }
 }
 

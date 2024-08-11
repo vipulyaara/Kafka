@@ -6,8 +6,8 @@ import com.kafka.data.model.recommendation.RecommendationRequestBody.Recommendat
 import com.kafka.data.model.recommendation.RecommendationRequestBody.RecommendationEvent.EndObject
 import com.kafka.data.model.recommendation.RecommendationRequestBody.RecommendationEvent.Relationship
 import com.kafka.data.model.recommendation.RecommendationRequestBody.RecommendationEvent.StartObject
+import com.kafka.data.resultApiCall
 import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.network.resultApiCall
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale

@@ -46,7 +46,10 @@ fun RecentItemsScreen(viewModel: RecentViewModel = hiltViewModel()) {
     ClearConfirmationDialog(
         clearRecentItemsConfirmation = clearRecentItemsConfirmation,
         toggleConfirmation = { clearRecentItemsConfirmation = it },
-        clearRecentItems = viewModel::clearAllRecentItems
+        clearRecentItems = {
+            viewModel.clearAllRecentItems()
+            navigator.goBack()
+        }
     )
 
     Scaffold(topBar = {
@@ -71,7 +74,7 @@ private fun RecentItems(
     items: ImmutableList<RecentItem>,
     openItemDetail: (String) -> Unit,
     lazyListState: LazyListState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         state = lazyListState,
@@ -99,7 +102,7 @@ private fun RecentItems(
 private fun RecentTopBar(
     lazyListState: LazyListState = rememberLazyListState(),
     navigator: Navigator = LocalNavigator.current,
-    clearRecentItems: () -> Unit
+    clearRecentItems: () -> Unit,
 ) {
     TopBar(
         title = stringResource(id = R.string.continue_reading),
@@ -121,7 +124,7 @@ private fun RecentTopBar(
 private fun ClearConfirmationDialog(
     clearRecentItemsConfirmation: Boolean,
     toggleConfirmation: (Boolean) -> Unit,
-    clearRecentItems: () -> Unit
+    clearRecentItems: () -> Unit,
 ) {
     if (clearRecentItemsConfirmation) {
         AlertDialog(

@@ -1,6 +1,5 @@
 package com.kafka.user.initializer
 
-import android.app.Application
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.RecentTextDao
@@ -30,9 +29,9 @@ class ReaderProgressInitializer @Inject constructor(
     private val fileDao: FileDao,
     private val recentTextItemMapper: RecentTextItemMapper,
     private val dispatchers: CoroutineDispatchers,
-    private val recentTextDao: RecentTextDao
+    private val recentTextDao: RecentTextDao,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         coroutineScope.launch(dispatchers.io) {
             createFetchListener(fetch).collectLatest {
                 if (it?.download?.status == Status.COMPLETED) {

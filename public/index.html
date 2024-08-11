@@ -1,89 +1,184 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kafka Archives - Millions of text and audiobooks</title>
     <meta name="description" content="Millions of text and audiobooks, all free and open source">
-    <meta name="keywords" content="Audiobooks, pdf, books, internet archive, archive.org, Kafka archives">
-    <meta name="author" content="Codrops">
+    <meta name="keywords"
+          content="Audiobooks, pdf, books, internet archive, archive.org, Kafka archives">
+    <meta name="author" content="Vipul Kumar">
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://use.typekit.net/dba6omz.css">
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script>document.documentElement.className = "js";
+    <style>
+        /* General Reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
 
-var supportsCssVars = function supportsCssVars() {
-  var e,
-      t = document.createElement("style");
-  return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e;
-};
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Optional, ensures full viewport height */
+        }
 
-supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+        .content {
+            flex: 1;
+        }
+
+        /* Container to center the buttons */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .button {
+          align-items: center;
+          border: 2px solid #111;
+          border-radius: 8px;
+          box-sizing: border-box;
+          color: #111;
+          cursor: pointer;
+          display: flex;
+          font-family: Inter, sans-serif;
+          font-size: 16px;
+          font-weight: 600;
+          height: 48px;
+          justify-content: center;
+          line-height: 24px;
+          max-width: 100%;
+          padding: 0 25px;
+          position: relative;
+          text-align: center;
+          text-decoration: none;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+          width: max-content;
+        }
+
+        .button:after {
+          background-color: #111;
+          border-radius: 8px;
+          content: "";
+          display: block;
+          height: 48px;
+          left: 0;
+          width: 100%;
+          position: absolute;
+          top: -2px;
+          transform: translate(8px, 8px);
+          transition: transform .2s ease-out;
+          z-index: -1;
+        }
+
+        .button:hover:after {
+          transform: translate(0, 0);
+        }
+
+        .button:active {
+          background-color: #ffdeda;
+          outline: 0;
+        }
+
+        .button:hover {
+          outline: 0;
+        }
+
+        .button-1 {
+            background-color: #A7C7E7;
+        }
+
+        .button-2 {
+            background-color: #B2E7A7;
+        }
+
+        .button-3 {
+            background-color: #E7A7A7;
+        }
+
+        .button-1:active {
+            background-color: #84B7EA;
+        }
+
+        .button-2:active {
+             background-color: #9BD68F;
+        }
+
+        .button-3:active {
+             background-color: #D69595;
+        }
+
+        @media (min-width: 768px) {
+          .button {
+            padding: 0 40px;
+          }
+        }
+
+        footer {
+             text-align: center;
+             padding: 20px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Adjust gap as needed */
+        }
+
+        .social-media-icons img {
+            width: 30px; /* Adjust size as needed */
+            height: 30px;
+        }
+
+        .spacer {
+           margin: 20px; /* Adjust margin as needed */
+        }
+
+        /* Responsive layout for larger screens */
+        @media (min-width: 768px) {
+            .button-container {
+                flex-direction: row;
+            }
+        }
+    </style>
 </head>
 
-<body class="demo-3 loading">
-<main>
-    <h1 class="title">Kafka Archives</h1>
-    <nav class="menu">
-        <a class="menu__item" href="https://play.google.com/store/apps/details?id=com.kafka.user">
-            <svg class="menu__text" viewBox="0 0 150 20" preserveAspectRatio="xMinYMid meet">
-                <defs>
-                    <filter id="goo-1">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"></feGaussianBlur>
-                        <feColorMatrix in="blur" mode="matrix" values="	1 0 0 0 0
-																			0 1 0 0 0  
-																			1 0 1 0 0  
-																			0 0 0 18 -8" result="goo"></feColorMatrix>
-                        <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
-                    </filter>
-                </defs>
-                <g>
-                    <text x="0" y="15">Download Kafka</text>
-                    <text x="0" y="15">Play Store</text>
-                </g>
-            </svg>
-        </a>
-        <a class="menu__item" href="https://www.kafkaarchives.com">
-            <svg class="menu__text" viewBox="0 0 150 20" preserveAspectRatio="xMinYMid meet">
-                <defs>
-                    <filter id="goo-2">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"></feGaussianBlur>
-                        <feColorMatrix in="blur" mode="matrix" values="	1 0 0 0 0
-																			0 1 0 0 0  
-																			1 0 1 0 0  
-																			0 0 0 18 -8" result="goo"></feColorMatrix>
-                        <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
-                    </filter>
-                </defs>
-                <g>
-                    <text x="0" y="15">Visit</text>
-                    <text x="0" y="15">Website</text>
-                </g>
-            </svg>
-        </a>
-        <a class="menu__item" href="https://github.com/vipulyaara/Kafka">
-            <svg class="menu__text" viewBox="0 0 150 20" preserveAspectRatio="xMinYMid meet">
-                <defs>
-                    <filter id="goo-3">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"></feGaussianBlur>
-                        <feColorMatrix in="blur" mode="matrix" values="	1 0 0 0 0
-																			0 1 0 0 0  
-																			1 0 1 0 0  
-																			0 0 0 18 -8" result="goo"></feColorMatrix>
-                        <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
-                    </filter>
-                </defs>
-                <g>
-                    <text x="0" y="15">See Code</text>
-                    <text x="0" y="15">Github</text>
-                </g>
-            </svg>
-        </a>
-    </nav>
-</main>
-<script src="/demo.js"></script>
-</body>
+<body>
+<div class="button-container">
+    <button class="button button-1" role="button"
+            onclick="window.location.href='https://play.google.com/store/apps/details?id=com.kafka.user'">
+        Download Kafka
+    </button>
+    <button class="button button-2" role="button"
+            onclick="window.location.href='https://www.kafkaarchives.com'">Visit Website
+    </button>
+    <button class="button button-3" role="button"
+            onclick="window.location.href='https://github.com/vipulyaara/Kafka'">See Code
+    </button>
+</div>
 
+<footer>
+    <div class="social-media-icons">
+        <div class="spacer"></div>
+        <a href="https://www.instagram.com/kafka.archives/" target="_blank">
+            <img src="images/instagram.svg" alt="Instagram" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100094699020751" target="_blank">
+            <img src="images/facebook.svg" alt="Facebook" />
+        </a>
+        <a href="https://whatsapp.com/channel/0029VagY1jF0gcfR87ggBA40" target="_blank">
+            <img src="images/whatsapp.svg" alt="WhatsApp" />
+        </a>
+    </div>
+</footer>
+</body>
 </html>

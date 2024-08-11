@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 72
-        versionName = "0.32.0"
+        versionCode = 75
+        versionName = "0.35.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -27,7 +27,8 @@ android {
         buildConfigField(
             "String",
             "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString() ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
+            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
+                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
         )
         buildConfigField(
             "String",
@@ -126,12 +127,10 @@ dependencies {
     implementation(projects.core.downloader)
     implementation(projects.core.play)
     implementation(projects.corePlayback)
-    implementation(projects.core.recommendation)
     implementation(projects.core.remoteConfig)
     implementation(projects.data.repo)
     implementation(projects.domain)
     implementation(projects.navigation)
-    implementation(projects.notifications)
     implementation(projects.ui.auth)
     implementation(projects.ui.common)
     implementation(projects.ui.components)
@@ -140,6 +139,7 @@ dependencies {
     implementation(projects.ui.item)
     implementation(projects.ui.library)
     implementation(projects.uiPlayback)
+    implementation(projects.ui.profile)
     implementation(projects.ui.reader)
     implementation(projects.ui.search)
     implementation(projects.ui.theme)
@@ -175,6 +175,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
+    implementation(libs.kermit.crashlytics)
     implementation(libs.kotlin.coroutines.android)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization)

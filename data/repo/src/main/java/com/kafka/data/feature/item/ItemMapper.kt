@@ -8,7 +8,9 @@ import javax.inject.Inject
 
 class ItemMapper @Inject constructor() {
     fun map(from: SearchResponse): List<Item> {
-        return from.response?.docs?.map { doc -> doc.toItem() }.orEmpty()
+        return from.response?.docs
+            ?.map { doc -> doc.toItem() }
+            .orEmpty()
     }
 
     private fun Doc.toItem() = Item(
@@ -21,7 +23,7 @@ class ItemMapper @Inject constructor() {
         coverImage = "https://archive.org/services/img/$identifier",
         collection = this.collection,
         genre = this.subject,
-        position = this.downloads,
+        position = this.downloads.toInt(),
         subject = subject?.joinToString(","),
         rating = this.rating,
     )

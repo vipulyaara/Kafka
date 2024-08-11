@@ -44,7 +44,11 @@ internal fun TopBar(
     TopBar(
         containerColor = Color.Transparent,
         navigationIcon = {
-            BackIcon(onBackPressed, containerColor, contentColor)
+            BackIcon(
+                onBackPressed = onBackPressed,
+                containerColor = containerColor,
+                contentColor = contentColor
+            )
         },
         actions = {
             if (isShareVisible) {

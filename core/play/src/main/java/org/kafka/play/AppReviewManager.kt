@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import org.kafka.play.logger.Analytics
+import org.kafka.analytics.logger.Analytics
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
 import javax.inject.Inject

@@ -1,6 +1,5 @@
 package org.kafka.common.image
 
-import android.app.Application
 import android.content.Context
 import coil.Coil
 import coil.ImageLoader
@@ -17,9 +16,9 @@ class CoilAppInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
-    override fun init(application: Application) {
+    override fun init() {
         Coil.setImageLoader {
-            ImageLoader.Builder(application)
+            ImageLoader.Builder(context)
                 .okHttpClient(okHttpClient)
                 .dispatcher(dispatchers.io)
                 .fetcherDispatcher(dispatchers.io)

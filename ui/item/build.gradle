@@ -16,7 +16,6 @@ android {
 
 dependencies {
     implementation projects.base.domain
-    implementation projects.base.network
     implementation projects.core.analytics
     implementation projects.core.play
     implementation projects.corePlayback
@@ -24,7 +23,6 @@ dependencies {
     implementation projects.data.repo
     implementation projects.domain
     implementation projects.navigation
-    implementation projects.notifications
     implementation projects.ui.common
     implementation projects.ui.components
     implementation projects.ui.downloader
@@ -33,6 +31,7 @@ dependencies {
 
     implementation libs.fetch
     implementation libs.hilt.android
+    implementation libs.material.kolor
     implementation libs.rebugger
 
     kapt libs.hilt.compiler

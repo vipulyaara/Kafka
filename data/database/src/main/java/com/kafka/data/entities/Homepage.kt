@@ -79,6 +79,15 @@ sealed class HomepageCollection {
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
+
+    @Immutable
+    data class Subjects(
+        val items: ImmutableList<String>,
+        val clickable: Boolean = true,
+        override val enabled: Boolean = true,
+    ) : HomepageCollection() {
+        val key = items.joinToString(separator = ",")
+    }
 }
 
 private const val ContinueReadingItemsThreshold = 10

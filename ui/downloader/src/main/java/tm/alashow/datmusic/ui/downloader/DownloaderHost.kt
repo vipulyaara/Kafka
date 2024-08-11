@@ -4,6 +4,7 @@
  */
 package tm.alashow.datmusic.ui.downloader
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -21,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.ui.downloader.R
 import kotlinx.coroutines.launch
 import org.kafka.common.extensions.CollectEvent
-import timber.log.Timber
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 
@@ -36,7 +36,7 @@ fun DownloaderHost(content: @Composable () -> Unit) {
 @Composable
 private fun DownloaderHost(
     downloader: Downloader,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     var downloadsLocationDialogShown by remember { mutableStateOf(false) }
     CollectEvent(downloader.downloaderEvents) { event ->
@@ -71,7 +71,7 @@ private fun DownloadsLocationDialog(
                 try {
                     downloader.setDownloadsLocation(it)
                 } catch (e: Exception) {
-                    Timber.e(e, "download location failed")
+                    Log.e("DownloaderHost", "${e.localizedMessage} download location failed")
                 }
             }
         }

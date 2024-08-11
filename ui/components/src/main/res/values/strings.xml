@@ -9,4 +9,5 @@
     <string name="cd_resume_download">Resume download</string>
     <string name="cd_retry_download">Retry download</string>
     <string name="explicit">Explicit</string>
+    <string name="cd_download_file">Download</string>
 </resources>
