@@ -74,6 +74,8 @@ import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.shouldUseDarkColors
 
 @Composable
 fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
@@ -372,7 +374,7 @@ private fun ItemDetailTheme(
     content: @Composable () -> Unit,
 ) {
     if (isDynamicThemeEnabled) {
-        DynamicTheme(model) {
+        DynamicTheme(model = model, useDarkTheme = LocalTheme.current.shouldUseDarkColors()) {
             content()
         }
     } else {
