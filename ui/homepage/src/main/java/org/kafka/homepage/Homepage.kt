@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -37,6 +40,7 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import org.kafka.ads.admob.RowAd
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
@@ -294,11 +298,16 @@ private fun RowItems(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {
         if (items.isNotEmpty()) {
-            items(
+            itemsIndexed(
                 items = items,
-                key = { it.itemId },
-                contentType = { it.javaClass }
-            ) { item ->
+                key = { index, it -> it.itemId },
+                contentType = { index, it -> it.javaClass }
+            ) { index, item ->
+                if (index == 0) {
+                    RowAd()
+                    Spacer(Modifier.width(Dimens.Spacing12))
+                }
+
                 RowItem(
                     item = item,
                     modifier = Modifier

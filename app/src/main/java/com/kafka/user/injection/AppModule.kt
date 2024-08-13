@@ -27,6 +27,9 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.kafka.ads.admob.NativeAdInitializer
+import org.kafka.analytics.logger.Analytics
+import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
@@ -34,8 +37,6 @@ import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.play.AppReviewManager
 import org.kafka.play.AppReviewManagerImpl
-import org.kafka.analytics.logger.Analytics
-import org.kafka.analytics.logger.AnalyticsImpl
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import javax.inject.Named
 import javax.inject.Singleton
@@ -140,6 +141,10 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideMetaAdInitializer(bind: NativeAdInitializer): AppInitializer
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager

@@ -123,6 +123,7 @@ dependencies {
     implementation(platform(libs.google.bom))
 
     implementation(projects.base.domain)
+    implementation(projects.core.ads)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
     implementation(projects.core.play)
