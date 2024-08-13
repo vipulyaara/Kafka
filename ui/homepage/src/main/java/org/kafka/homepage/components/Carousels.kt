@@ -28,15 +28,15 @@ internal fun Carousels(
         modifier = modifier
             .padding(Dimens.Spacing02)
             .padding(top = Dimens.Spacing12, bottom = Dimens.Spacing08),
-        contentPadding = PaddingValues(horizontal = Dimens.Spacing12),
+        contentPadding = PaddingValues(horizontal = Dimens.Spacing28),
+        pageSpacing = Dimens.Spacing04,
     ) { index ->
         carouselItems.getOrNull(index)?.let { item ->
             FeaturedItem(
                 item = item,
                 label = item.title,
                 imageUrl = images.getOrNull(index),
-                onClick = { onBannerClick(item.itemId) },
-                modifier = Modifier.padding(horizontal = Dimens.Spacing04)
+                onClick = { onBannerClick(item.itemId) }
             )
         }
     }
