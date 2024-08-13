@@ -114,6 +114,7 @@ compose-material-material3 = { module = "androidx.compose.material3:material3", 
 compose-material-navigation = { module = "androidx.compose.material:material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
@@ -127,6 +128,7 @@ google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
 google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1"
+google-admob = "com.google.android.gms:play-services-ads:23.3.0"
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
@@ -135,6 +137,8 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
+
+facebook-ads = "com.facebook.android:audience-network-sdk:6.7.0"
 
 firestore-ktx = "dev.gitlive:firebase-firestore:1.13.0"
 firestore-common-ktx = "dev.gitlive:firebase-common:1.13.0"

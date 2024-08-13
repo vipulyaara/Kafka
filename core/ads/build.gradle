@@ -1,0 +1,35 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.kapt)
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
+
+android {
+    namespace 'org.kafka.core.ads'
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation projects.base.domain
+    implementation projects.core.analytics
+    implementation projects.ui.common
+    implementation projects.ui.components
+
+    implementation libs.compose.ui.viewbinding
+
+    implementation libs.google.admob
+
+    implementation libs.hilt.android
+
+    kapt libs.hilt.compiler
+}
