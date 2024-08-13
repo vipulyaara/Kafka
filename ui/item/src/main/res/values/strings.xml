@@ -13,7 +13,6 @@
     <string name="cd_download_file" translatable="false">Download file</string>
     <string name="cd_favorite" translatable="false">Favorite</string>
     <string name="you_might_also_like" translatable="false">You might also like</string>
-    <string name="text_access_restricted_message" translatable="false">This item has restricted access. You can borrow it for free by logging into the website.</string>
     <string name="more_by" translatable="false">More by</string>
     <string name="audio_access_restricted_message">This item is available with audio samples only</string>
     <string name="borrow">Borrow/Read</string>

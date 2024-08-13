@@ -190,7 +190,10 @@ private fun ItemDetail(
 
                 if (state.itemDetail!!.isAccessRestricted) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        AccessRestricted(state.itemDetail.isAudio) { onPrimaryAction(state.itemDetail.itemId) }
+                        AccessRestricted(
+                            isAudio = state.itemDetail.isAudio,
+                            borrowableBookMessage = state.borrowableBookMessage
+                        ) { onPrimaryAction(state.itemDetail.itemId) }
                     }
                 }
 
@@ -352,11 +355,11 @@ private fun RelatedItems(
 }
 
 @Composable
-private fun AccessRestricted(isAudio: Boolean, onClick: () -> Unit) {
+private fun AccessRestricted(isAudio: Boolean, borrowableBookMessage: String, onClick: () -> Unit) {
     val message = if (isAudio) {
         stringResource(R.string.audio_access_restricted_message)
     } else {
-        stringResource(R.string.text_access_restricted_message)
+        borrowableBookMessage
     }
 
     MessageBox(
