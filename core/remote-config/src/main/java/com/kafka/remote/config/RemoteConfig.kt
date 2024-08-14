@@ -1,44 +1,45 @@
 package com.kafka.remote.config
 
-import com.chrynan.inject.Inject
-import com.chrynan.inject.Singleton
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.remoteconfig.get
-import dev.gitlive.firebase.remoteconfig.remoteConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import org.kafka.base.ProcessLifetime
+import org.kafka.base.debug
 import org.kafka.base.errorLog
+import javax.inject.Inject
+import javax.inject.Singleton
 
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
 @Singleton
-class RemoteConfig @Inject constructor(
-    private val json: Json,
-    @ProcessLifetime private val processScope: CoroutineScope,
-) {
+class RemoteConfig @Inject constructor(private val json: Json) {
 
-    private val remoteConfig by lazy { Firebase.remoteConfig }
+    private val remoteConfig by lazy {
+        Firebase.remoteConfig.apply {
+            val config = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = REMOTE_CONFIG_FETCH_INTERVAL_SECONDS
+            }
+            setConfigSettingsAsync(config)
+        }
+    }
 
     init {
         try {
-            processScope.launch {
-                remoteConfig.settings { minimumFetchIntervalInSeconds = REMOTE_CONFIG_FETCH_INTERVAL_SECONDS }
-                remoteConfig.fetchAndActivate()
+            remoteConfig.fetchAndActivate().addOnCompleteListener {
+                debug { "Fetch and activate remote config completed" }
             }
         } catch (e: Exception) {
             errorLog(e) { "Error fetching remote config" }
         }
     }
 
-    fun get(key: String): String = remoteConfig[key]
+    fun get(key: String): String = remoteConfig.getString(key)
 
-    fun getBoolean(key: String): Boolean = remoteConfig[key]
+    fun getBoolean(key: String): Boolean = remoteConfig.getBoolean(key)
 
-    fun getLong(key: String): Long = remoteConfig[key]
+    fun getLong(key: String): Long = remoteConfig.getLong(key)
 
     private fun optional(key: String): String? = get(key).let { it.ifBlank { null } }
 
