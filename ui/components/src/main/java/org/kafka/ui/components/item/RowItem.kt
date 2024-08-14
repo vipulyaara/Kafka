@@ -14,17 +14,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.kafka.data.entities.Item
 import org.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun RowItem(item: Item, modifier: Modifier = Modifier) {
+    RowItem(
+        coverImage = item.coverImage,
+        title = item.title,
+        mediaType = item.mediaType,
+        creator = item.creator?.name,
+        placeholder = placeholder(item.mediaType),
+        modifier = modifier
+    )
+}
+
+@Composable
+fun RowItem(
+    coverImage: Any?,
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    mediaType: String? = null,
+    creator: String? = null,
+    placeholder: ImageVector = CoverDefaults.placeholder,
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         CoverImage(
-            data = item.coverImage,
+            data = coverImage,
             size = Dimens.CoverSizeLarge,
-            placeholder = placeholder(item.mediaType),
+            placeholder = placeholder,
             shape = RoundedCornerShape(Dimens.RadiusMedium)
         )
 
@@ -34,14 +54,16 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
                 horizontal = Dimens.Spacing04
             )
         ) {
-            ItemTitleSmall(title = item.title.orEmpty())
+            ItemTitleSmall(title = title.orEmpty())
             Spacer(modifier = Modifier.height(Dimens.Spacing02))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ItemMediaType(mediaType = item.mediaType, size = Dimens.IconSizeSmall)
-                ItemCreatorSmall(creator = item.creator?.name)
+                if (mediaType != null) {
+                    ItemMediaType(mediaType = mediaType, size = Dimens.IconSizeSmall)
+                }
+                ItemCreatorSmall(creator = creator)
             }
         }
     }

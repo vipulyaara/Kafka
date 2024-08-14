@@ -74,6 +74,8 @@ import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.shouldUseDarkColors
 
 @Composable
 fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
@@ -188,7 +190,10 @@ private fun ItemDetail(
 
                 if (state.itemDetail!!.isAccessRestricted) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        AccessRestricted(state.itemDetail.isAudio) { onPrimaryAction(state.itemDetail.itemId) }
+                        AccessRestricted(
+                            isAudio = state.itemDetail.isAudio,
+                            borrowableBookMessage = state.borrowableBookMessage
+                        ) { onPrimaryAction(state.itemDetail.itemId) }
                     }
                 }
 
@@ -350,11 +355,11 @@ private fun RelatedItems(
 }
 
 @Composable
-private fun AccessRestricted(isAudio: Boolean, onClick: () -> Unit) {
+private fun AccessRestricted(isAudio: Boolean, borrowableBookMessage: String, onClick: () -> Unit) {
     val message = if (isAudio) {
         stringResource(R.string.audio_access_restricted_message)
     } else {
-        stringResource(R.string.text_access_restricted_message)
+        borrowableBookMessage
     }
 
     MessageBox(
@@ -372,7 +377,7 @@ private fun ItemDetailTheme(
     content: @Composable () -> Unit,
 ) {
     if (isDynamicThemeEnabled) {
-        DynamicTheme(model) {
+        DynamicTheme(model = model, useDarkTheme = LocalTheme.current.shouldUseDarkColors()) {
             content()
         }
     } else {

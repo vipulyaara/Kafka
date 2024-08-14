@@ -18,6 +18,7 @@ import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isRelatedContentRowEnabled
@@ -109,7 +110,9 @@ class ItemDetailViewModel @Inject constructor(
             isLoading = isLoading,
             downloadItem = downloadItem,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
-            isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled()
+            isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
+            borrowableBookMessage = remoteConfig.borrowableBookMessage()
+                .replace("||", "\n")
         )
     }.stateInDefault(
         scope = viewModelScope,

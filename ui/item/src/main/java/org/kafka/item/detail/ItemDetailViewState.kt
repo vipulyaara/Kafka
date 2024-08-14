@@ -15,7 +15,8 @@ data class ItemDetailViewState(
     val isLoading: Boolean = false,
     val downloadItem: ItemWithDownload? = null,
     val ctaText: String? = null,
-    val isDynamicThemeEnabled: Boolean = false
+    val isDynamicThemeEnabled: Boolean = false,
+    val borrowableBookMessage: String = ""
 ) {
     val hasItemsByCreator
         get() = !itemsByCreator.isNullOrEmpty()

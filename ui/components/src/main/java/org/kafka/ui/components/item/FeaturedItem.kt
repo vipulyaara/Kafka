@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
@@ -38,6 +39,29 @@ fun FeaturedItem(
     shape: Shape = RoundedCornerShape(16.dp),
     onClick: () -> Unit = {},
 ) {
+    FeaturedItem(
+        coverImage = item.coverImage,
+        creator = item.creator?.name,
+        modifier = modifier,
+        placeHolder = if (item.isAudio) Icons.Audio else Icons.Texts,
+        label = label,
+        imageUrl = imageUrl,
+        shape = shape,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun FeaturedItem(
+    coverImage: Any?,
+    modifier: Modifier = Modifier,
+    creator: String? = null,
+    label: String? = null,
+    imageUrl: String? = null,
+    placeHolder: ImageVector = CoverDefaults.placeholder,
+    shape: Shape = RoundedCornerShape(16.dp),
+    onClick: () -> Unit = {},
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -46,8 +70,8 @@ fun FeaturedItem(
     ) {
         Box {
             CoverImage(
-                data = imageUrl ?: item.coverImage,
-                placeholder = if (item.isAudio) Icons.Audio else Icons.Texts,
+                data = imageUrl ?: coverImage,
+                placeholder = placeHolder,
                 shape = shape,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -55,14 +79,14 @@ fun FeaturedItem(
             )
 
             if (!label.isNullOrBlank()) {
-                TextOverlay(label = label, item = item, shape = shape)
+                TextOverlay(label = label, creator = creator, shape = shape)
             }
         }
     }
 }
 
 @Composable
-private fun BoxScope.TextOverlay(label: String, item: Item, shape: Shape) {
+private fun BoxScope.TextOverlay(label: String, creator: String?, shape: Shape) {
     val scrim = scrim(
         if (LocalThemeColor.current.isDark) {
             MaterialTheme.colorScheme.background
@@ -91,9 +115,9 @@ private fun BoxScope.TextOverlay(label: String, item: Item, shape: Shape) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08)
         ) {
-            item.creator?.let { creator ->
+            creator?.let { creator ->
                 Text(
-                    text = creator.name,
+                    text = creator,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
