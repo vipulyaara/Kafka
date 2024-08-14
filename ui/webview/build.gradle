@@ -25,7 +25,6 @@ dependencies {
     implementation libs.accompanist.navigation.material
     implementation libs.accompanist.placeholder
     implementation libs.accompanist.swiperefresh
-    implementation libs.accompanist.systemuicontroller
     implementation libs.accompanist.web
 
     implementation libs.androidx.core

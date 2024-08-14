@@ -10,7 +10,6 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -20,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
@@ -58,14 +56,6 @@ fun AppTheme(
 
         isDarkTheme -> DarkAppColors
         else -> LightAppColors
-    }
-
-    val systemUiController = rememberSystemUiController()
-    val isLight = !isDarkTheme
-
-    SideEffect {
-        systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = isLight)
-        systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = isLight)
     }
 
     val themeColor = if (isDarkTheme) ThemeColor.Dark else ThemeColor.Light
