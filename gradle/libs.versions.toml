@@ -71,7 +71,7 @@ media = "androidx.media:media:1.7.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.9.1"
-androidx-collection = "androidx.collection:collection-ktx:1.4.2"
+androidx-collection = "androidx.collection:collection-ktx:1.4.3"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxhilt" }
