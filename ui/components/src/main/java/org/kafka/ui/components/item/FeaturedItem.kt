@@ -101,7 +101,7 @@ private fun BoxScope.TextOverlay(label: String, creator: String?, shape: Shape) 
             .align(Alignment.BottomStart)
             .clip(shape)
             .background(scrim)
-            .padding(Dimens.Gutter)
+            .padding(Dimens.Spacing24)
     ) {
         Text(
             text = label,

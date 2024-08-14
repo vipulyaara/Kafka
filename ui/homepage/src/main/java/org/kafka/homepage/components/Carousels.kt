@@ -28,7 +28,7 @@ internal fun Carousels(
         modifier = modifier
             .padding(Dimens.Spacing02)
             .padding(top = Dimens.Spacing12, bottom = Dimens.Spacing08),
-        contentPadding = PaddingValues(horizontal = Dimens.Spacing28),
+        contentPadding = PaddingValues(horizontal = Dimens.Spacing24),
         pageSpacing = Dimens.Spacing04,
     ) { index ->
         carouselItems.getOrNull(index)?.let { item ->
