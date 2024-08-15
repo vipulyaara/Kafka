@@ -128,6 +128,7 @@ dependencies {
     implementation(projects.core.play)
     implementation(projects.corePlayback)
     implementation(projects.core.remoteConfig)
+    implementation(projects.data.prefs)
     implementation(projects.data.repo)
     implementation(projects.domain)
     implementation(projects.navigation)

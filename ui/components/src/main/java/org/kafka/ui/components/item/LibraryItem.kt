@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import com.kafka.data.entities.Item
-import org.kafka.common.widgets.LoadImage
+import org.kafka.common.image.LoadImage
 import org.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
 

@@ -36,7 +36,7 @@ val ColorScheme.shadowMaterial
         primary.copy(alpha = 0.5f)
     }
 
-internal val DarkAppColors = darkColorScheme(
+val DarkAppColors = darkColorScheme(
     primary = brandBlue,
     secondary = textSecondaryDark,
     background = darkGrey800,
@@ -52,7 +52,7 @@ internal val DarkAppColors = darkColorScheme(
     onSecondary = white,
 )
 
-internal val LightAppColors = lightColorScheme(
+val LightAppColors = lightColorScheme(
     primary = brandBlue,
     secondary = Asphalt,
     background = whiteCream,

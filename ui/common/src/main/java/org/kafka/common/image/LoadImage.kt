@@ -1,4 +1,4 @@
-package org.kafka.common.widgets
+package org.kafka.common.image
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

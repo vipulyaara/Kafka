@@ -2,15 +2,15 @@ package com.kafka.user.injection
 
 import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.kafka.data.prefs.PreferencesStore
 import com.kafka.user.BuildConfig
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
@@ -27,6 +27,8 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.kafka.analytics.logger.Analytics
+import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
@@ -34,16 +36,8 @@ import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.play.AppReviewManager
 import org.kafka.play.AppReviewManagerImpl
-import org.kafka.analytics.logger.Analytics
-import org.kafka.analytics.logger.AnalyticsImpl
 import tm.alashow.datmusic.downloader.DownloadInitializer
-import javax.inject.Named
 import javax.inject.Singleton
-
-/**
- * DI module that provides objects which will live during the application lifecycle.
- */
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app")
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -68,10 +62,16 @@ class AppModule {
         return FirebaseMessaging.getInstance()
     }
 
-    @Named("app")
-    @Provides
+    private val dataStoreFileName = "app_preferences.preferences_pb"
+
     @Singleton
-    fun provideDataStorePreferences(@ApplicationContext context: Context) = context.dataStore
+    @Provides
+    fun providePreferenceStore(
+        @ApplicationContext context: Context,
+    ): PreferencesStore = PreferencesStore(
+        PreferenceDataStoreFactory.create(
+        produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
+    ))
 
     @Singleton
     @Provides

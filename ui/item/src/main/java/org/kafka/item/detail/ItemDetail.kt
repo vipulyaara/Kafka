@@ -56,9 +56,9 @@ import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
+import org.kafka.common.image.LoadImage
 import org.kafka.common.simpleClickable
 import org.kafka.common.test.testTagUi
-import org.kafka.common.widgets.LoadImage
 import org.kafka.item.R
 import org.kafka.item.detail.description.DescriptionText
 import org.kafka.item.fake.FakeItemData

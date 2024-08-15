@@ -1,16 +1,12 @@
 package com.kafka.data.prefs
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import com.kafka.data.model._mediaTypeAudio
-import com.kafka.data.model._mediaTypeText
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -19,30 +15,25 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
-import javax.inject.Inject
 
-private const val STORE_NAME = "app_preferences"
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = STORE_NAME)
-
-class PreferencesStore @Inject constructor(@ApplicationContext private val context: Context) {
-
+@OptIn(FlowPreview::class)
+class PreferencesStore(private val dataStore: DataStore<Preferences>) {
     suspend fun <T> remove(key: Preferences.Key<T>) {
-        context.dataStore.edit { settings ->
+        dataStore.edit { settings ->
             settings.remove(key)
         }
     }
 
     suspend fun <T> save(key: Preferences.Key<T>, value: T) {
-        context.dataStore.edit { settings ->
+        dataStore.edit { settings ->
             settings[key] = value
         }
     }
 
     val data: Flow<Preferences>
-        get() = context.dataStore.data
+        get() = dataStore.data
 
-    fun <T> get(key: Preferences.Key<T>, defaultValue: T): Flow<T> = context.dataStore.data
+    fun <T> get(key: Preferences.Key<T>, defaultValue: T): Flow<T> = dataStore.data
         .map { preferences -> preferences[key] ?: return@map defaultValue }
 
     fun <T> getStateFlow(
@@ -90,23 +81,6 @@ enum class Theme {
 
     companion object {
         val DEFAULT = SYSTEM
-    }
-}
-
-enum class ContentType {
-    AUDIO,
-    TEXT,
-    BOTH;
-
-    val mediaTypes
-        get() = when (this) {
-            AUDIO -> listOf(_mediaTypeAudio)
-            TEXT -> listOf(_mediaTypeText)
-            BOTH -> listOf(_mediaTypeText, _mediaTypeAudio)
-        }
-
-    companion object {
-        val DEFAULT = BOTH
     }
 }
 

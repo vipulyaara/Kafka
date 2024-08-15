@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation projects.base.domain
     implementation projects.data.models
+    api projects.data.prefs
 
     implementation libs.androidx.collection
     implementation libs.androidx.core
