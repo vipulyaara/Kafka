@@ -47,7 +47,6 @@ dependencies {
     implementation libs.icons.tabler
     implementation libs.lottie.compose
     implementation libs.lottie.core
-    implementation libs.tracing
 
     androidTestApi libs.compose.ui.test
 }

@@ -47,7 +47,6 @@ dependencies {
     implementation platform(libs.google.bom)
     implementation libs.google.auth
     implementation libs.google.firestore
-    implementation libs.jsoup
 
     kapt libs.hilt.compiler
 }

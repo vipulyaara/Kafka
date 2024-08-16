@@ -185,8 +185,6 @@ dependencies {
     implementation(libs.okhttp.okhttp)
     implementation(libs.retrofit.serialization)
     implementation(libs.threeTenAbp)
-    implementation(libs.timber)
-    implementation(libs.tracing)
     implementation(libs.profileinstaller)
 
     debugImplementation(libs.leakCanary)
