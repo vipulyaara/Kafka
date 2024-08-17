@@ -131,7 +131,7 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openCreator(name: String) {
-        analytics.log { this.openRecentItems() }
+        analytics.log { this.openCreator() }
         navigator.navigate(
             Screen.Search.createRoute(
                 root = RootScreen.Home,

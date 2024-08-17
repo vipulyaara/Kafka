@@ -138,4 +138,6 @@ class EventRepository @Inject constructor() {
     fun showAppReviewDialog() = "show_review_dialog" to mapOf<String, String>()
 
     fun openNotificationsSettings() = "open_notifications_settings" to mapOf<String, String>()
+
+    fun openCreator() = "open_creator" to mapOf<String, String>()
 }
