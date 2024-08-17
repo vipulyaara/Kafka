@@ -84,7 +84,7 @@ class SearchViewModel @Inject constructor(
 
             searchResults.value = searchQueryItems(
                 SearchQueryItems.Params(
-                    keyword = keyword,
+                    keyword = keyword.trim(),
                     searchFilter = filters,
                     mediaTypes = mediaTypes.toList()
                 )
