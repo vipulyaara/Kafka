@@ -90,4 +90,4 @@ sealed class HomepageCollection {
     }
 }
 
-private const val ContinueReadingItemsThreshold = 20
+private const val ContinueReadingItemsThreshold = 30
