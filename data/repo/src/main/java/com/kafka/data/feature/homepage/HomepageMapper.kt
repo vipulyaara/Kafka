@@ -44,12 +44,14 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
     }
 
     private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
-        val itemIdList = itemIds.split(", ")
+        val indices = itemIds.split(", ").indices
             .run { if (shuffle) shuffled() else this }
+        val itemIdList = indices.map { index -> itemIds.split(", ")[index] }
+        val images = indices.map { index -> image.getOrNull(index) }
 
         val personRow = HomepageCollection.PersonRow(
             items = itemIdList.toPersistentList(),
-            images = image.map { it.downloadURL }.toPersistentList(),
+            images = images.mapNotNull { it?.downloadURL }.toPersistentList(),
             enabled = enabled,
             clickable = clickable,
             shuffle = shuffle
