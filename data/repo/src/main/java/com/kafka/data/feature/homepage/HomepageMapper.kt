@@ -5,6 +5,7 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -115,10 +116,15 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
     private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
         flowOf(HomepageCollection.RecentItems(persistentListOf(), enabled))
 
-    private fun HomepageCollectionResponse.FeaturedItem.mapFeatured() =
-        itemDao.observe(itemIds.split(", ")).map { items ->
-            val itemIdsIndexMap = itemIds.split(", ")
-                .run { if (shuffle) shuffleInSync() else this }
+    private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {
+        val indices = itemIds.split(", ").indices
+            .run { if (shuffle) shuffleInSync() else this }
+
+        val sortedItemIds = indices.map { index -> itemIds.split(", ")[index] }
+        val images = indices.map { index -> image?.getOrNull(index) }
+
+        return itemDao.observe(sortedItemIds).map { items ->
+            val itemIdsIndexMap = sortedItemIds
                 .withIndex()
                 .associate { it.value to it.index }
             val sortedItems = items.sortedBy { itemIdsIndexMap[it.itemId] ?: Int.MAX_VALUE }
@@ -126,11 +132,12 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             HomepageCollection.FeaturedItem(
                 label = label,
                 items = sortedItems.toPersistentList(),
-                image = image?.map { it.downloadURL }?.toPersistentList() ?: persistentListOf(),
+                image = images.mapNotNull { it?.downloadURL }.toImmutableList(),
                 enabled = enabled,
                 shuffle = shuffle
             )
         }
+    }
 
     private fun String?.splitLabel(separator: String = ", ") =
         this.orEmpty().split(separator).filter { it.isNotEmpty() }
