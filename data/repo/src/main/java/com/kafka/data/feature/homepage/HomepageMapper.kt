@@ -38,7 +38,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.Row.mapRows(): Flow<HomepageCollection.Row> {
         val itemIdList = itemIds.split(", ")
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
 
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
@@ -53,7 +53,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
         val indices = itemIds.split(", ").indices
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
         val itemIdList = indices.map { index -> itemIds.split(", ")[index] }
         val images = indices.map { index -> image.getOrNull(index) }
 
@@ -70,7 +70,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.Subjects.mapSubjects(): Flow<HomepageCollection.Subjects> {
         val itemIdList = itemIds.split(", ")
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
 
         val subjects = HomepageCollection.Subjects(
             items = itemIdList.toPersistentList(),
@@ -84,7 +84,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.Column.mapColumn(): Flow<HomepageCollection.Column> {
         val itemIdList = itemIds.split(", ")
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
 
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
@@ -99,7 +99,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.Grid.mapGrid(): Flow<HomepageCollection.Grid> {
         val itemIdList = itemIds.split(", ")
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
 
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
@@ -118,7 +118,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {
         val indices = itemIds.split(", ").indices
-            .run { if (shuffle) shuffleInSync() else this }
+            .let { if (shuffle) it.shuffleInSync() else it }
 
         val sortedItemIds = indices.map { index -> itemIds.split(", ")[index] }
         val images = indices.map { index -> image?.getOrNull(index) }
