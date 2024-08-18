@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 @Composable
 internal actual fun colorScheme(
     useDarkColors: Boolean,
+    useTrueContrast: Boolean
 ): ColorScheme = if (useDarkColors) {
     DarkAppColors
 } else {

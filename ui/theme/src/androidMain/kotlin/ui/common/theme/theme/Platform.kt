@@ -6,18 +6,32 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
 internal actual fun colorScheme(
     useDarkColors: Boolean,
+    useTrueContrast: Boolean,
 ): ColorScheme = when {
     isAtLeastS() && useDarkColors -> {
-        dynamicDarkColorScheme(LocalContext.current)
+        dynamicDarkColorScheme(LocalContext.current).run {
+            if (useTrueContrast) {
+                copy(background = Color.Black, surface = Color.Black)
+            } else {
+                this
+            }
+        }
     }
 
     isAtLeastS() && !useDarkColors -> {
-        dynamicLightColorScheme(LocalContext.current)
+        dynamicLightColorScheme(LocalContext.current).run {
+            if (useTrueContrast) {
+                copy(background = Color.White, surface = Color.White)
+            } else {
+                this
+            }
+        }
     }
 
     useDarkColors -> DarkAppColors

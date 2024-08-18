@@ -15,6 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isTrueContrastEnabled
 import com.kafka.user.home.MainScreen
 import com.sarahang.playback.ui.color.ColorExtractor
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +24,6 @@ import org.kafka.base.errorLog
 import org.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
-import ui.common.theme.theme.shouldUseTrueContrast
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +33,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     internal lateinit var colorExtractor: ColorExtractor
+
+    @Inject
+    internal lateinit var remoteConfig: RemoteConfig
 
     private lateinit var navController: NavHostController
 
@@ -52,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
             AppTheme(
                 isDarkTheme = preferencesStore.shouldUseDarkColors(),
-                isTrueContrast = preferencesStore.shouldUseTrueContrast()
+                isTrueContrast = remoteConfig.isTrueContrastEnabled()
             ) {
                 MainScreen(
                     navController = navController,

@@ -27,7 +27,7 @@ fun AppTheme(
 
     CompositionLocalProvider(LocalThemeColor provides themeColor) {
         MaterialTheme(
-            colorScheme = colorScheme(isDarkTheme),
+            colorScheme = colorScheme(isDarkTheme, isTrueContrast),
             typography = KafkaTypography,
             content = content
         )

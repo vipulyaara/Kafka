@@ -34,6 +34,7 @@ sealed class HomepageCollection {
         val label: String?,
         val items: ImmutableList<Item>,
         val image: ImmutableList<String> = persistentListOf(),
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection()
 
@@ -47,6 +48,8 @@ sealed class HomepageCollection {
     data class PersonRow(
         val items: ImmutableList<String>,
         val images: ImmutableList<String>,
+        val clickable: Boolean = true,
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection()
 
@@ -55,6 +58,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
@@ -65,6 +69,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
@@ -75,6 +80,7 @@ sealed class HomepageCollection {
         val labels: ImmutableList<String>,
         val items: ImmutableList<Item>,
         val clickable: Boolean = true,
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
@@ -84,6 +90,7 @@ sealed class HomepageCollection {
     data class Subjects(
         val items: ImmutableList<String>,
         val clickable: Boolean = true,
+        val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = items.joinToString(separator = ",")
