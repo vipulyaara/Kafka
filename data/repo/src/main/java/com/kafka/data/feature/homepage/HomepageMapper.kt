@@ -45,6 +45,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
         val itemIdList = itemIds.split(", ")
+            .run { if (shuffle) shuffled() else this }
 
         val personRow = HomepageCollection.PersonRow(
             items = itemIdList.toPersistentList(),
