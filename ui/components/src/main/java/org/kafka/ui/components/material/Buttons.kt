@@ -24,7 +24,7 @@ fun FloatingButton(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onClickLabel: String? = null,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     Surface(
         modifier = modifier
@@ -37,6 +37,7 @@ fun FloatingButton(
         Text(
             text = text,
             style = MaterialTheme.typography.labelMedium.alignCenter(),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 14.dp)
@@ -49,7 +50,7 @@ fun PrimaryButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Button(
         modifier = modifier,

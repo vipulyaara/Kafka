@@ -39,7 +39,7 @@ fun ItemDetailActions(
     openFiles: (String) -> Unit,
     isFavorite: Boolean,
     showDownloads: Boolean = true,
-    toggleFavorite: () -> Unit
+    toggleFavorite: () -> Unit,
 ) {
     Box(Modifier.fillMaxWidth()) {
         Row(
@@ -84,10 +84,10 @@ fun ItemDetailActions(
 private fun FavoriteIcon(
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     val background by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
-    val iconTint by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
+    val iconTint by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)
     val icon = if (isFavorite) Icons.HeartFilled else Icons.Heart
     val contentDescription =
         if (isFavorite) R.string.cd_remove_from_favorites else R.string.cd_add_to_favorites
@@ -120,7 +120,7 @@ private fun Icon(
     icon: ImageVector,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -130,7 +130,11 @@ private fun Icon(
             .clickable { onClicked() }
     ) {
         IconButton(onClick = onClicked, modifier = Modifier.align(Alignment.Center)) {
-            IconResource(imageVector = icon, contentDescription = contentDescription)
+            IconResource(
+                imageVector = icon,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                contentDescription = contentDescription
+            )
         }
     }
 }
