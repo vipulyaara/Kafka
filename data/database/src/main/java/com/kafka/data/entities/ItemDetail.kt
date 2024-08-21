@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.kafka.data.model._mediaTypeAudio
+import com.kafka.data.model._mediaTypeText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -32,6 +33,9 @@ data class ItemDetail(
 
     val isAudio
         get() = this.mediaType == _mediaTypeAudio
+
+    val isText
+        get() = this.mediaType == _mediaTypeText
 
     val immutableSubjects: ImmutableList<String>
         get() = subject.orEmpty().toPersistentList()

@@ -54,6 +54,7 @@ import org.kafka.navigation.RootScreen
 import org.kafka.navigation.Screen
 import org.kafka.navigation.Screen.Reader
 import org.kafka.navigation.deeplink.Config
+import org.kafka.summary.SummaryScreen
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.profile.ProfileScreen
@@ -118,6 +119,7 @@ private fun NavGraphBuilder.addHomeRoot(navController: NavController) {
         addWebView(RootScreen.Home)
         addOnlineReader(RootScreen.Home, navController)
         addRecentItems(RootScreen.Home)
+        addSummary(RootScreen.Home)
     }
 }
 
@@ -134,6 +136,7 @@ private fun NavGraphBuilder.addSearchRoot(navController: NavController) {
         addPlayer(RootScreen.Search)
         addWebView(RootScreen.Search)
         addOnlineReader(RootScreen.Search, navController)
+        addSummary(RootScreen.Search)
     }
 }
 
@@ -153,6 +156,7 @@ private fun NavGraphBuilder.addLibraryRoot(navController: NavController) {
         addOnlineReader(RootScreen.Library, navController)
         addLogin(RootScreen.Library)
         addProfile(RootScreen.Library)
+        addSummary(RootScreen.Library)
     }
 }
 
@@ -261,6 +265,12 @@ private fun NavGraphBuilder.addFeedback(root: RootScreen) {
 private fun NavGraphBuilder.addRecentItems(root: RootScreen) {
     composable(route = Screen.RecentItems.createRoute(root)) {
         RecentItemsScreen()
+    }
+}
+
+private fun NavGraphBuilder.addSummary(root: RootScreen) {
+    composable(route = Screen.Summary.createRoute(root)) {
+        SummaryScreen()
     }
 }
 

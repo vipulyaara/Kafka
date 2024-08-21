@@ -38,6 +38,7 @@ include ':ui:item'
 include ':ui:profile'
 include ':ui:reader'
 include ':ui:search'
+include ':ui:summary'
 include ':ui:webview'
 
 include ':core-playback'

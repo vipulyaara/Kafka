@@ -155,6 +155,7 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
 
 kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.0"
 
 icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", version.ref = "icons" }
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
@@ -162,12 +163,19 @@ icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons"
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 
+markdown-compose = "com.github.jeziellago:compose-markdown:0.5.3"
+
 media3-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media3" }
 media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3" }
 
 okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+
+openai-kotlin-bom = "com.aallam.openai:openai-client-bom:3.8.2"
+openai-client = { module = "com.aallam.openai:openai-client" }
+
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp" }
 
 material-kolor = "com.materialkolor:material-kolor:1.7.0"
 

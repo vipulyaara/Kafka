@@ -40,7 +40,7 @@ fun GenreItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit
         color = MaterialTheme.colorScheme.background,
         border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.secondary),
         tonalElevation = 0.dp,
-        shadowElevation = 2.dp
+        shadowElevation = 0.dp
     ) {
         Text(
             text = text,

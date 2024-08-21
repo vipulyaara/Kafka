@@ -17,6 +17,7 @@ const val DOWNLOADS_WARNING_MESSAGE = "downloads_warning_message"
 const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled"
 const val BORROWABLE_BOOK_MESSAGE = "borrowable_book_message"
 const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
+const val SUMMARY_ENABLED = "summary_enabled"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -48,6 +49,8 @@ fun RemoteConfig.downloadsWarningMessage() = get(DOWNLOADS_WARNING_MESSAGE)
 
 fun RemoteConfig.isItemDetailDynamicThemeEnabled() = getBoolean(ITEM_DETAIL_DYNAMIC_THEME_ENABLED)
 
-fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE)
+fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE).replace("||", "\n")
 
 fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
+
+fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)

@@ -139,5 +139,9 @@ class EventRepository @Inject constructor() {
 
     fun openNotificationsSettings() = "open_notifications_settings" to mapOf<String, String>()
 
-    fun openCreator() = "open_creator" to mapOf<String, String>()
+    fun openCreator(source: String = "") = "open_creator" to mapOf("source" to source)
+
+    fun openSummary(itemId: String) = "open_summary" to mapOf(
+        "item_id" to itemId
+    )
 }
