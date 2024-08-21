@@ -32,7 +32,7 @@ internal fun Carousels(
     ) {
         HorizontalPager(
             state = state,
-            modifier = modifier.padding(Dimens.Spacing02),
+            modifier = Modifier.padding(Dimens.Spacing02),
             contentPadding = PaddingValues(horizontal = Dimens.Spacing24),
             pageSpacing = Dimens.Spacing04,
         ) { index ->
