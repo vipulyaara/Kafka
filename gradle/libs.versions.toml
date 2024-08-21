@@ -12,6 +12,7 @@ compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
 dagger = "2.51.1"
 icons = "1.0.0"
+haze="0.7.3"
 kotlin = "2.0.10"
 kotlin-immutable = "0.3.7"
 kotlininject = "0.7.1"
@@ -139,6 +140,8 @@ google-appupdate = { module = "com.google.android.play:app-update-ktx", version.
 firestore-ktx = "dev.gitlive:firebase-firestore:1.13.0"
 firestore-common-ktx = "dev.gitlive:firebase-common:1.13.0"
 firebase-remote-config = "dev.gitlive:firebase-config:1.13.0"
+
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
