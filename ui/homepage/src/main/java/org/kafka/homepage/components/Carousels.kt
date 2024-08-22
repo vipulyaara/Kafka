@@ -2,6 +2,7 @@ package org.kafka.homepage.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,6 +47,7 @@ internal fun Carousels(
             }
         }
 
+        Spacer(modifier = Modifier.padding(top = Dimens.Gutter))
         CircleIndicator(state = state, modifier = Modifier.padding(horizontal = Dimens.Gutter))
     }
 }

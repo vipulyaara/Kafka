@@ -22,7 +22,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun CircleIndicator(state: PagerState, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.height(Dimens.Spacing40),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
