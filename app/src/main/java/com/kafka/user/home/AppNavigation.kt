@@ -1,10 +1,16 @@
 package com.kafka.user.home
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -20,6 +26,7 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
@@ -85,15 +92,13 @@ internal fun AppNavigation(
 
     SwitchStatusBarsOnPlayer(navController)
 
-    NavHost(
-        modifier = modifier.fillMaxSize(),
+    NavHost(modifier = modifier.fillMaxSize(),
         navController = navController,
         startDestination = RootScreen.Home.route,
-        enterTransition = { fadeIn(tween(200)) },
-        exitTransition = { fadeOut(tween(200)) },
-        popEnterTransition = { fadeIn(tween(200)) },
-        popExitTransition = { fadeOut(tween(200)) }
-    ) {
+        enterTransition = { enter() },
+        exitTransition = { fadeOut() },
+        popEnterTransition = { fadeIn() },
+        popExitTransition = { exit() }) {
         addHomeRoot(navController)
         addSearchRoot(navController)
         addLibraryRoot(navController)
@@ -102,8 +107,7 @@ internal fun AppNavigation(
 
 private fun NavGraphBuilder.addHomeRoot(navController: NavController) {
     navigation(
-        route = RootScreen.Home.route,
-        startDestination = Screen.Home.createRoute(RootScreen.Home)
+        route = RootScreen.Home.route, startDestination = Screen.Home.createRoute(RootScreen.Home)
     ) {
         addHome(RootScreen.Home)
         addItemDetail(RootScreen.Home)
@@ -168,18 +172,13 @@ private fun NavGraphBuilder.addHome(root: RootScreen) {
 
 private fun NavGraphBuilder.addSearch(root: RootScreen) {
     composable(
-        Screen.Search.createRoute(root),
-        arguments = listOf(
-            navArgument("keyword") {
-                type = NavType.StringType
-                defaultValue = ""
-            },
-            navArgument("filters") {
-                type = NavType.StringType
-                defaultValue = SearchFilter.allString()
-            }
-        ),
-        deepLinks = listOf(
+        Screen.Search.createRoute(root), arguments = listOf(navArgument("keyword") {
+            type = NavType.StringType
+            defaultValue = ""
+        }, navArgument("filters") {
+            type = NavType.StringType
+            defaultValue = SearchFilter.allString()
+        }), deepLinks = listOf(
             navDeepLink {
                 uriPattern = "${Config.BASE_URL}search?keyword={keyword}&filters={filters}"
             },
@@ -277,9 +276,7 @@ private fun NavGraphBuilder.addSummary(root: RootScreen) {
 private fun NavGraphBuilder.addWebView(root: RootScreen) {
     composable(
         route = Screen.Web.createRoute(root),
-        arguments = listOf(
-            navArgument("url") { type = NavType.StringType }
-        )
+        arguments = listOf(navArgument("url") { type = NavType.StringType })
     ) {
         val navigator = LocalNavigator.current
         WebView(it.arguments?.getString("url").orEmpty(), navigator::goBack)
@@ -322,6 +319,18 @@ internal fun NavController.currentScreenAsState(): State<RootScreen> {
     }
 
     return selectedItem
+}
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(): EnterTransition {
+    return slideIntoContainer(Start, tween(200)) {
+        (it / 1.5).toInt()
+    } + fadeIn(tween(200))
+}
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(): ExitTransition {
+    return slideOutOfContainer(End, tween(200)) {
+        (it / 1.5).toInt()
+    } + fadeOut(tween(200))
 }
 
 @Composable
