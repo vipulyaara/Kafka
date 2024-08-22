@@ -26,7 +26,7 @@ fun StaggeredFlowRow(
         content = content
     ) { measurables, constraints ->
         val widths = measurables.map { it.maxIntrinsicWidth(height = constraints.maxHeight) }
-        val totalWidth = maxOf(configuration.screenWidthDp.dp.roundToPx(), 2000)
+        val totalWidth = maxOf(configuration.screenWidthDp.dp.roundToPx(), 2400)
         val horizontalSpacingPx = horizontalSpacing.roundToPx()
         val verticalSpacingPx = verticalSpacing.roundToPx()
 

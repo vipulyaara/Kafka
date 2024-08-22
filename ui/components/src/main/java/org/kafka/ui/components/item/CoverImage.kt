@@ -35,7 +35,7 @@ fun CoverImage(
     data: Any?,
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
-    size: DpSize = CoverDefaults.size,
+    size: DpSize =  DpSize.Unspecified,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     contentScale: ContentScale = ContentScale.FillHeight,
@@ -122,6 +122,5 @@ private fun Image(
 
 object CoverDefaults {
     val shape = RoundedCornerShape(Dimens.Spacing04)
-    val size = DpSize.Unspecified
     val placeholder = Icons.Photo
 }

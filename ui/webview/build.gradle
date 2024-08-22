@@ -7,10 +7,6 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
     namespace 'org.kafka.webview'
 }
 
@@ -25,7 +21,6 @@ dependencies {
     implementation libs.accompanist.navigation.material
     implementation libs.accompanist.placeholder
     implementation libs.accompanist.swiperefresh
-    implementation libs.accompanist.systemuicontroller
     implementation libs.accompanist.web
 
     implementation libs.androidx.core
@@ -52,7 +47,6 @@ dependencies {
     implementation libs.icons.tabler
     implementation libs.lottie.compose
     implementation libs.lottie.core
-    implementation libs.tracing
 
     androidTestApi libs.compose.ui.test
 }

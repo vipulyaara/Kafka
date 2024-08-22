@@ -28,6 +28,12 @@ sealed class Screen(private val route: String) {
         }
     }
 
+    data object Summary : Screen("summary/{itemId}") {
+        fun createRoute(root: RootScreen, itemId: String): String {
+            return "${root.route}/summary/$itemId"
+        }
+    }
+
     data object ItemDescription : Screen("item_description/{itemId}") {
         fun createRoute(root: RootScreen, itemId: String): String {
             return "${root.route}/item_description/$itemId"

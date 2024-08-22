@@ -28,6 +28,9 @@ class FirestoreGraph @Inject constructor(
     val feedbackCollection: CollectionReference
         get() = firestoreKt.collection("feedback")
 
+    val summaryCollection: CollectionReference
+        get() = firestoreKt.collection("summary")
+
     fun getFavoritesCollection(id: String) = firestore
         .collection("favorites")
         .document(id)

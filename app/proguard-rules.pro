@@ -123,3 +123,4 @@
 -keep public class androidx.compose.ui.platform.AndroidCompositionLocals_androidKt {
     public static *** getLocalLifecycleOwner();
 }
+-dontwarn org.slf4j.impl.StaticLoggerBinder

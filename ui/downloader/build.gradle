@@ -21,8 +21,6 @@ dependencies {
 	api projects.ui.common
 	api projects.ui.theme
 
-	implementation libs.timber
-
 	implementation libs.hilt.android
 	kapt libs.hilt.compiler
 }

@@ -23,6 +23,7 @@ import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isRelatedContentRowEnabled
 import com.kafka.remote.config.isShareEnabled
+import com.kafka.remote.config.isSummaryEnabled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -68,6 +69,7 @@ class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     observeDownloadByItemId: ObserveDownloadByItemId,
     isResumableAudio: IsResumableAudio,
+    savedStateHandle: SavedStateHandle,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateItems: UpdateItems,
@@ -83,7 +85,6 @@ class ItemDetailViewModel @Inject constructor(
     private val analytics: Analytics,
     private val appReviewManager: AppReviewManager,
     private val application: Application,
-    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     private val loadingState = ObservableLoadingCounter()
@@ -111,8 +112,8 @@ class ItemDetailViewModel @Inject constructor(
             downloadItem = downloadItem,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
-            borrowableBookMessage = remoteConfig.borrowableBookMessage()
-                .replace("||", "\n")
+            borrowableBookMessage = remoteConfig.borrowableBookMessage(),
+            isSummaryEnabled = remoteConfig.isSummaryEnabled() && (itemDetail?.isText ?: false)
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -226,6 +227,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun goToCreator(keyword: String?) {
+        analytics.log { this.openCreator("item_detail") }
         navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Creator.name))
     }
 
@@ -248,6 +250,11 @@ class ItemDetailViewModel @Inject constructor(
     fun openArchiveItem() {
         analytics.log { this.openArchiveItem(itemId) }
         navigator.navigate(Screen.Web.createRoute(currentRoot, Config.archiveDetailUrl(itemId)))
+    }
+
+    fun openSummary(itemId: String) {
+        analytics.log { this.openSummary(itemId) }
+        navigator.navigate(Screen.Summary.createRoute(currentRoot, itemId))
     }
 
     fun showAppRatingIfNeeded(context: Context) {

@@ -20,6 +20,7 @@ dependencies {
 	implementation projects.data.repo
 	implementation projects.ui.common
 
+	implementation libs.androidx.documentfile
 	implementation libs.hilt.android
 
 	implementation libs.fetch

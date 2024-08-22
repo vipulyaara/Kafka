@@ -8,10 +8,6 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
     namespace 'org.kafka.ui.components'
 }
 
@@ -21,7 +17,6 @@ dependencies {
     implementation projects.ui.common
     implementation projects.ui.downloader
 
-    implementation libs.accompanist.systemuicontroller
     implementation libs.androidx.core
     implementation libs.androidx.hilt.compose
     implementation libs.androidx.hilt.navigation

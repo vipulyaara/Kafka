@@ -38,7 +38,7 @@ fun MainScreen(
     navController: NavHostController,
     bottomSheetNavigator: BottomSheetNavigator,
     colorExtractor: ColorExtractor,
-    theme: Theme
+    theme: Theme,
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val context = LocalContext.current
@@ -55,29 +55,25 @@ fun MainScreen(
 
     RequestNotificationPermission()
 
-    val snackbarHostState = remember { SnackbarHostState() }
-    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-        CompositionLocalProvider(LocalColorExtractor provides colorExtractor) {
-            CompositionLocalProvider(LocalTheme provides theme) {
-                SnackbarMessagesHost()
-                CompositionHosts {
-                    ModalBottomSheetLayout(
-                        bottomSheetNavigator = bottomSheetNavigator,
-                        sheetShape = MaterialTheme.shapes.large.copy(
-                            bottomStart = CornerSize(0.dp),
-                            bottomEnd = CornerSize(0.dp),
-                        ),
-                        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-                        sheetContentColor = MaterialTheme.colorScheme.onSurface,
-                        scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f),
-                    ) {
-                        Home(
-                            navController = navController,
-                            analytics = mainViewModel.analytics,
-                            modifier = Modifier.semantics { testTagsAsResourceId = true },
-                            playerTheme = mainViewModel.playerTheme,
-                        )
-                    }
+    CompositionLocalProvider(LocalColorExtractor provides colorExtractor) {
+        CompositionLocalProvider(LocalTheme provides theme) {
+            CompositionHosts {
+                ModalBottomSheetLayout(
+                    bottomSheetNavigator = bottomSheetNavigator,
+                    sheetShape = MaterialTheme.shapes.large.copy(
+                        bottomStart = CornerSize(0.dp),
+                        bottomEnd = CornerSize(0.dp),
+                    ),
+                    sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+                    sheetContentColor = MaterialTheme.colorScheme.onSurface,
+                    scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f),
+                ) {
+                    Home(
+                        navController = navController,
+                        analytics = mainViewModel.analytics,
+                        modifier = Modifier.semantics { testTagsAsResourceId = true },
+                        playerTheme = mainViewModel.playerTheme,
+                    )
                 }
             }
         }
@@ -86,11 +82,15 @@ fun MainScreen(
 
 @Composable
 private fun CompositionHosts(content: @Composable () -> Unit) {
-    NavigatorHost {
-        DownloaderHost {
-            PlaybackHost {
-                AudioActionHost {
-                    content()
+    val snackbarHostState = remember { SnackbarHostState() }
+    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+        NavigatorHost {
+            DownloaderHost {
+                PlaybackHost {
+                    AudioActionHost {
+                        SnackbarMessagesHost()
+                        content()
+                    }
                 }
             }
         }

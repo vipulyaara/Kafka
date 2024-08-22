@@ -44,10 +44,13 @@ dependencies {
     api libs.dataStore
     api libs.threeTenAbp
 
+    implementation platform(libs.openai.kotlin.bom)
+    implementation libs.openai.client
+    runtimeOnly libs.ktor.okhttp
+
     implementation platform(libs.google.bom)
     implementation libs.google.auth
     implementation libs.google.firestore
-    implementation libs.jsoup
 
     kapt libs.hilt.compiler
 }

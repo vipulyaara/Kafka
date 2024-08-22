@@ -7,10 +7,6 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
     namespace 'org.kafka.common'
 }
 
@@ -37,11 +33,9 @@ dependencies {
 
     implementation libs.accompanist.flowlayout
     implementation libs.accompanist.navigation.material
-    implementation libs.accompanist.systemuicontroller
     implementation libs.icons.feather
     implementation libs.icons.font.awesome
     implementation libs.icons.tabler
-    implementation libs.tracing
 
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib

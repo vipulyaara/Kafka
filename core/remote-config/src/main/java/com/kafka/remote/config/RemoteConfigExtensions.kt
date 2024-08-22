@@ -14,9 +14,10 @@ const val ONLINE_READER_ENABLED = "online_reader_enabled"
 const val MIN_SUPPORTED_VERSION = "min_supported_version"
 const val SHARE_APP_INDEX = "share_app_index"
 const val DOWNLOADS_WARNING_MESSAGE = "downloads_warning_message"
-const val HOMEPAGE_ITEMS_SHUFFLE_ENABLED = "homepage_items_shuffle_enabled"
 const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled"
 const val BORROWABLE_BOOK_MESSAGE = "borrowable_book_message"
+const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
+const val SUMMARY_ENABLED = "summary_enabled"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -46,8 +47,10 @@ fun RemoteConfig.shareAppIndex() = getLong(SHARE_APP_INDEX)
 
 fun RemoteConfig.downloadsWarningMessage() = get(DOWNLOADS_WARNING_MESSAGE)
 
-fun RemoteConfig.isHomepageItemsShuffleEnabled() = getBoolean(HOMEPAGE_ITEMS_SHUFFLE_ENABLED)
-
 fun RemoteConfig.isItemDetailDynamicThemeEnabled() = getBoolean(ITEM_DETAIL_DYNAMIC_THEME_ENABLED)
 
-fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE)
+fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE).replace("||", "\n")
+
+fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
+
+fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)

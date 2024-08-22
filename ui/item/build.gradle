@@ -7,10 +7,6 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
     namespace 'org.kafka.item'
 }
 

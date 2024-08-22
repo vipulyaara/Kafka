@@ -56,9 +56,9 @@ import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
+import org.kafka.common.image.LoadImage
 import org.kafka.common.simpleClickable
 import org.kafka.common.test.testTagUi
-import org.kafka.common.widgets.LoadImage
 import org.kafka.item.R
 import org.kafka.item.detail.description.DescriptionText
 import org.kafka.item.fake.FakeItemData
@@ -70,6 +70,7 @@ import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.SubjectItem
+import org.kafka.ui.components.item.SummaryMessage
 import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.AppTheme
@@ -136,6 +137,7 @@ private fun ItemDetail(
         toggleFavorite = viewModel::updateFavorite,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
+        openSummary = viewModel::openSummary,
         modifier = modifier,
         lazyGridState = lazyGridState
     )
@@ -152,6 +154,7 @@ private fun ItemDetail(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
+    openSummary: (String) -> Unit,
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
@@ -186,6 +189,19 @@ private fun ItemDetail(
                         showDownloads = state.showDownloads,
                         toggleFavorite = toggleFavorite
                     )
+                }
+
+                if (state.isSummaryEnabled) {
+                    item {
+                        SummaryMessage(
+                            text = stringResource(R.string.or_read_a_summary),
+                            modifier = modifier.padding(
+                                vertical = Dimens.Spacing08,
+                                horizontal = Dimens.Spacing24
+                            ),
+                            onClick = { openSummary(state.itemDetail!!.itemId) },
+                        )
+                    }
                 }
 
                 if (state.itemDetail!!.isAccessRestricted) {
@@ -405,7 +421,8 @@ private fun ItemDetailPreview() {
             openFiles = {},
             toggleFavorite = {},
             openSubject = {},
-            openItemDetail = { _, _ -> }
+            openItemDetail = { _, _ -> },
+            openSummary = {}
         )
     }
 }

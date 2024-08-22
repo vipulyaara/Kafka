@@ -38,14 +38,14 @@ fun GenreItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit
         modifier = modifier,
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.background,
-        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.secondary),
         tonalElevation = 0.dp,
-        shadowElevation = 2.dp
+        shadowElevation = 0.dp
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
                 .clickable { onClicked() }
                 .padding(

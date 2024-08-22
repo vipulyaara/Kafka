@@ -18,27 +18,22 @@ kapt {
 }
 
 android {
-    buildFeatures {
-        compose true
-    }
-
     namespace 'com.kafka.database'
 }
 
 dependencies {
     implementation projects.base.domain
     implementation projects.data.models
+    api projects.data.prefs
 
     implementation libs.androidx.collection
     implementation libs.androidx.core
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
-    implementation libs.dataStore
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.serialization
     implementation libs.kotlin.stdlib
-    implementation libs.retrofit.serialization
     implementation libs.threeTenAbp
 
     implementation(platform(libs.compose.bom))
@@ -46,7 +41,6 @@ dependencies {
 
     implementation platform(libs.google.bom)
     implementation libs.google.firestore
-    implementation libs.jsoup
 
     kapt libs.hilt.compiler
     ksp libs.androidx.room.compiler
