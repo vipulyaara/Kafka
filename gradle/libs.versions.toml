@@ -33,13 +33,10 @@ core-ktx = "1.13.1"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
-benchmark-macro-junit4 = "1.2.4"
-androidx-baselineprofile = "1.2.4"
+benchmark-macro-junit4 = "1.3.0"
+androidx-baselineprofile = "1.3.0"
 profileinstaller = "1.3.1"
 review = "2.0.1"
-junit = "4.13.2"
-appcompat = "1.7.0"
-material = "1.12.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -64,7 +61,6 @@ accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayo
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
-accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-web = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
 rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
@@ -203,6 +199,3 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
