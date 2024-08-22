@@ -32,7 +32,6 @@ dependencies {
     api libs.compose.ui.util
 
     implementation libs.accompanist.flowlayout
-    implementation libs.accompanist.navigation.material
     implementation libs.icons.feather
     implementation libs.icons.font.awesome
     implementation libs.icons.tabler

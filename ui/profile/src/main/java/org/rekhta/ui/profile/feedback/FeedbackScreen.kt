@@ -115,7 +115,7 @@ internal fun EmailTextField(
         },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         ),
@@ -144,7 +144,7 @@ internal fun FeedbackTextField(
         },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Default
         ),

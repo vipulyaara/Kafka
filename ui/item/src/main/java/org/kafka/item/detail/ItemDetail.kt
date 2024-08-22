@@ -273,7 +273,7 @@ private fun ItemDetail(
 
                 if (state.isLoading) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        Delayed(modifier = Modifier.animateItemPlacement()) {
+                        Delayed(modifier = Modifier.animateItem()) {
                             InfiniteProgressBar()
                         }
                     }

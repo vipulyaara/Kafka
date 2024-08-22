@@ -49,7 +49,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
                 icon = Icons.Sun,
                 onClick = { profileViewModel.toggleTrueContrast() },
                 endContent = {
-                    ProvideInteractiveEnforcement(false) {
+                    ProvideInteractiveEnforcement {
                         Switch(
                             checked = state.trueContrast,
                             onCheckedChange = { profileViewModel.toggleTrueContrast() })
@@ -69,7 +69,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
                     profileViewModel.openNotificationSettings(context)
                 },
                 endContent = {
-                    ProvideInteractiveEnforcement(false) {
+                    ProvideInteractiveEnforcement {
                         Switch(
                             checked = false,
                             onCheckedChange = {
@@ -94,7 +94,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
             icon = Icons.SafeMode,
             onClick = { profileViewModel.toggleSafeMode() },
             endContent = {
-                ProvideInteractiveEnforcement(false) {
+                ProvideInteractiveEnforcement {
                     Switch(
                         checked = state.safeMode,
                         onCheckedChange = { profileViewModel.toggleSafeMode() })

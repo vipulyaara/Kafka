@@ -18,7 +18,6 @@ dependencies {
     implementation projects.ui.theme
 
     implementation libs.accompanist.flowlayout
-    implementation libs.accompanist.navigation.material
     implementation libs.accompanist.placeholder
     implementation libs.accompanist.swiperefresh
     implementation libs.accompanist.web

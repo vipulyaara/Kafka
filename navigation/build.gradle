@@ -15,7 +15,6 @@ dependencies {
     implementation(projects.data.repo)
     implementation(projects.ui.common)
 
-    implementation libs.accompanist.navigation.material
     implementation libs.androidx.core
     implementation libs.androidx.hilt.compose
     implementation libs.androidx.hilt.navigation
@@ -26,6 +25,7 @@ dependencies {
 
     implementation libs.androidx.navigation.compose
     implementation libs.compose.material.material
+    implementation libs.compose.material.navigation
     implementation libs.compose.runtime.runtime
     implementation libs.hilt.android
 

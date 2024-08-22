@@ -2,7 +2,6 @@ package org.kafka.ui.components.item
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -64,10 +63,9 @@ fun FeaturedItem(
     onClick: () -> Unit = {},
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
+        modifier = modifier.fillMaxWidth(),
         border = BorderStroke(0.5.dp, gradient()),
+        onClick = onClick,
         shape = shape,
     ) {
         Box {

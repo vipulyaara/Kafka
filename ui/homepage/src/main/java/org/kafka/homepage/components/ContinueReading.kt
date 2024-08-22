@@ -111,7 +111,7 @@ internal fun ContinueReading(
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )
