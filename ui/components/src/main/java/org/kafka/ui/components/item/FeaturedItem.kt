@@ -1,6 +1,5 @@
 package org.kafka.ui.components.item
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +35,7 @@ fun FeaturedItem(
     modifier: Modifier = Modifier,
     label: String? = null,
     imageUrl: String? = null,
-    shape: Shape = RoundedCornerShape(16.dp),
+    shape: Shape = RoundedCornerShape(Dimens.Radius16),
     onClick: () -> Unit = {},
 ) {
     FeaturedItem(
@@ -62,12 +61,7 @@ fun FeaturedItem(
     shape: Shape = RoundedCornerShape(16.dp),
     onClick: () -> Unit = {},
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        border = BorderStroke(0.5.dp, gradient()),
-        onClick = onClick,
-        shape = shape,
-    ) {
+    Surface(modifier = modifier.fillMaxWidth(), onClick = onClick, shape = shape) {
         Box {
             CoverImage(
                 data = imageUrl ?: coverImage,
@@ -143,9 +137,4 @@ fun FeaturedItemPlaceholder() {
 
 private fun scrim(color: Color) = Brush.verticalGradient(
     listOf(Color.Transparent, color.copy(alpha = 0.6f), color)
-)
-
-@Composable
-private fun gradient(color: Color = MaterialTheme.colorScheme.onSurface) = Brush.verticalGradient(
-    listOf(Color.Transparent, color.copy(alpha = 0.6f), color.copy(alpha = 0.8f))
 )

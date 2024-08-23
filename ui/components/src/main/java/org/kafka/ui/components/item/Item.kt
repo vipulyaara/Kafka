@@ -54,7 +54,7 @@ fun Item(
     mediaType: String?,
     coverImage: String?,
     modifier: Modifier = Modifier,
-    isInAppropriate: Boolean = false
+    isInAppropriate: Boolean = false,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -98,7 +98,7 @@ fun ItemDescription(
     title: @Composable () -> Unit,
     creator: @Composable () -> Unit,
     mediaType: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(vertical = Dimens.Spacing04)) {
         title()
@@ -164,7 +164,7 @@ fun ItemSmall(
     creator: String?,
     mediaType: String?,
     coverImage: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),

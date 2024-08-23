@@ -38,7 +38,6 @@ import com.kafka.data.entities.Item
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
@@ -47,8 +46,6 @@ import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.item.FeaturedItem
-import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.GenreItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
@@ -81,6 +78,7 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                         homepage = viewState.homepage,
                         recommendedContent = viewModel.recommendedContent,
                         recommendationRowIndex = viewModel.recommendationRowIndex,
+                        showCarouselLabels = viewModel.showCarouselLabels,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecommendationDetail = viewModel::openRecommendationDetail,
@@ -116,6 +114,7 @@ private fun HomepageFeedItems(
     recommendedContent: List<Item>,
     appShareIndex: Int,
     recommendationRowIndex: Int,
+    showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
     openRecommendationDetail: (String) -> Unit,
@@ -196,16 +195,13 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.FeaturedItem -> {
-                    if (collection.items.size > 1) {
-                        item {
-                            Carousels(
-                                carouselItems = collection.items,
-                                images = collection.image,
-                                onBannerClick = openItemDetail
-                            )
-                        }
-                    } else {
-                        featuredItems(collection = collection, openItemDetail = openItemDetail)
+                    item {
+                        Carousels(
+                            carouselItems = collection.items,
+                            images = collection.image,
+                            showLabel = showCarouselLabels,
+                            onBannerClick = openItemDetail
+                        )
                     }
                 }
 
@@ -249,36 +245,6 @@ private fun HomepageFeedItems(
     }
 }
 
-private fun LazyListScope.featuredItems(
-    collection: HomepageCollection.FeaturedItem,
-    openItemDetail: (String) -> Unit,
-) {
-    if (collection.items.isNotEmpty()) {
-        items(
-            items = collection.items,
-            key = { "featured_${it.itemId}" },
-            contentType = { "featured" }
-        ) { item ->
-            val image by rememberSavableMutableState(collection.image) {
-                collection.image.randomOrNull().orEmpty()
-            }
-            FeaturedItem(
-                item = item,
-                label = collection.label,
-                imageUrl = image,
-                onClick = { openItemDetail(item.itemId) },
-                modifier = Modifier
-                    .padding(horizontal = Dimens.Gutter)
-                    .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
-            )
-        }
-    } else {
-        item(key = "featured_placeholder_${collection.image}") {
-            FeaturedItemPlaceholder()
-        }
-    }
-}
-
 @Composable
 private fun RowItems(
     items: ImmutableList<Item>,
@@ -289,7 +255,7 @@ private fun RowItems(
         modifier = modifier,
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
-            vertical = Dimens.Spacing08
+            vertical = Dimens.Spacing16
         ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {

@@ -18,6 +18,7 @@ const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled
 const val BORROWABLE_BOOK_MESSAGE = "borrowable_book_message"
 const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
 const val SUMMARY_ENABLED = "summary_enabled"
+const val SHOW_FEATURED_ITEM_LABELS = "show_featured_item_labels"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -35,7 +36,7 @@ fun RemoteConfig.isUseRecommendationEnabled() = getBoolean(USE_RECOMMENDATION_EN
 
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
 
-fun RemoteConfig.recommendationRowIndex() = getLong(RECOMMENDATION_ROW_INDEX)
+fun RemoteConfig.recommendationRowIndex() = getLong(RECOMMENDATION_ROW_INDEX).toInt()
 
 fun RemoteConfig.isRelatedContentRowEnabled() = getBoolean(RELATED_CONTENT_ROW_ENABLED)
 
@@ -54,3 +55,5 @@ fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE).replace(
 fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
 
 fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)
+
+fun RemoteConfig.showFeaturedItemLabels() = getBoolean(SHOW_FEATURED_ITEM_LABELS)
