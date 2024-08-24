@@ -16,18 +16,16 @@ class FavoritesRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val accountRepository: AccountRepository,
 ) {
-    fun observeFavorites(uid: String) = firestoreGraph.getFavoritesCollection(uid)
+    fun observeList(uid: String, listId: String) = firestoreGraph.getListCollection(uid, listId)
         .orderBy("createdAt", Query.Direction.DESCENDING)
         .snapshots()
-        .map { snapshots ->
-            snapshots.map { it.toObject<FavoriteItem>() }
-        }
+        .map { snapshots -> snapshots.map { it.toObject<FavoriteItem>() } }
 
-    suspend fun updateFavorite(favoriteItem: FavoriteItem, isFavorite: Boolean) {
+    suspend fun updateList(favoriteItem: FavoriteItem, listId: String, isAdded: Boolean) {
         accountRepository.currentFirebaseUser?.uid
-            ?.let { firestoreGraph.getFavoritesCollection(it) }
+            ?.let { firestoreGraph.getListCollection(it, listId) }
             ?.run {
-                if (isFavorite) {
+                if (isAdded) {
                     document(favoriteItem.itemId).set(favoriteItem)
                 } else {
                     document(favoriteItem.itemId).delete()

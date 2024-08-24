@@ -22,3 +22,5 @@ fun FavoriteItem.toItem() = Item(
     mediaType = mediaType,
     coverImage = coverImage,
 )
+
+const val listIdFavorites = "items"

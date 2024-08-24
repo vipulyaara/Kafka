@@ -3,6 +3,7 @@ package org.kafka.domain.interactors
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.listIdFavorites
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
@@ -37,7 +38,11 @@ class UpdateFavorite @Inject constructor(
             }
 
             val itemDetail = itemDetailDao.get(params.itemId)
-            favoritesRepository.updateFavorite(mapFavoriteItem(itemDetail), params.markFavorite)
+            favoritesRepository.updateList(
+                favoriteItem = mapFavoriteItem(itemDetail),
+                listId = listIdFavorites,
+                isAdded = params.markFavorite
+            )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }
 
             withContext(dispatchers.io) {
