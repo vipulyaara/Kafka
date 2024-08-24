@@ -38,7 +38,7 @@ fun SearchWidget(
     searchText: String,
     modifier: Modifier = Modifier,
     setSearchText: (String) -> Unit,
-    onImeAction: (String) -> Unit
+    onImeAction: (String) -> Unit,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -127,7 +127,7 @@ private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
 
 private val SearchKeyboardOptions = KeyboardOptions(
     capitalization = KeyboardCapitalization.Sentences,
-    autoCorrect = false,
+    autoCorrectEnabled = false,
     keyboardType = KeyboardType.Text,
     imeAction = ImeAction.Search
 )

@@ -51,9 +51,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideFirebaseAnalytics(app: Application): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(app).apply {
-            setUserId("")
-        }
+        return FirebaseAnalytics.getInstance(app)
     }
 
     @Singleton

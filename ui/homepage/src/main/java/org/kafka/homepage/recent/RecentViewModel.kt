@@ -15,7 +15,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.recent.RemoveAllRecentItems
 import org.kafka.domain.observers.ObserveRecentItems
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +38,7 @@ class RecentViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId = itemId, source = "reading_list") }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     fun clearAllRecentItems() {

@@ -15,7 +15,7 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.domain.observers.library.ObserveFavorites
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
 
@@ -59,11 +59,11 @@ class FavoriteViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId = itemId, source = "favorites") }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     fun goToLogin() {
-        navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Login)
     }
 }
 

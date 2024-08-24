@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -15,7 +16,6 @@ dependencies {
     implementation(projects.data.repo)
     implementation(projects.ui.common)
 
-    implementation libs.accompanist.navigation.material
     implementation libs.androidx.core
     implementation libs.androidx.hilt.compose
     implementation libs.androidx.hilt.navigation
@@ -26,8 +26,11 @@ dependencies {
 
     implementation libs.androidx.navigation.compose
     implementation libs.compose.material.material
+    implementation libs.compose.material.navigation
     implementation libs.compose.runtime.runtime
     implementation libs.hilt.android
+
+    implementation libs.kotlin.serialization
 
     kapt libs.hilt.compiler
 }

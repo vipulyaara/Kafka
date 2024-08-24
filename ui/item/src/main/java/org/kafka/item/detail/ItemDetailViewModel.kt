@@ -52,15 +52,16 @@ import org.kafka.domain.observers.library.ObserveDownloadByItemId
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
-import org.kafka.navigation.Screen.ItemDescription
-import org.kafka.navigation.Screen.OnlineReader
-import org.kafka.navigation.Screen.Reader
-import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
+import org.kafka.navigation.graph.Screen.ItemDescription
+import org.kafka.navigation.graph.Screen.OnlineReader
+import org.kafka.navigation.graph.Screen.Reader
+import org.kafka.navigation.graph.Screen.Search
 import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
+import org.kafka.navigation.graph.encodeUrl
 import org.kafka.play.AppReviewManager
 import javax.inject.Inject
 
@@ -88,9 +89,6 @@ class ItemDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
     private val loadingState = ObservableLoadingCounter()
-    private val currentRoot
-        get() = navigator.currentRoot.value
-
     var recommendedContent by mutableStateOf(emptyList<Item>())
 
     val state: StateFlow<ItemDetailViewState> = combine(
@@ -159,7 +157,7 @@ class ItemDetailViewModel @Inject constructor(
 
     fun openFiles(itemId: String) {
         analytics.log { this.openFiles(itemId) }
-        navigator.navigate(Screen.Files.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.Files(itemId))
     }
 
     private fun openReader(itemId: String) {
@@ -173,10 +171,10 @@ class ItemDetailViewModel @Inject constructor(
 
             if (isOnlineReaderEnabled || itemDetail.isAccessRestricted) {
                 logOnlineReader(itemDetail = itemDetail)
-                navigator.navigate(OnlineReader.createRoute(currentRoot, itemDetail.itemId))
+                navigator.navigate(OnlineReader(itemDetail.itemId))
             } else {
                 analytics.log { readItem(itemId = itemId, type = "offline") }
-                navigator.navigate(Reader.createRoute(currentRoot, itemDetail.primaryFile!!))
+                navigator.navigate(Reader(itemDetail.primaryFile!!))
             }
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }
@@ -218,21 +216,21 @@ class ItemDetailViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String, source: String) {
         analytics.log { this.openItemDetail(itemId = itemId, source = source) }
-        navigator.navigate(Screen.ItemDetail.createRoute(currentRoot, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     fun goToSubjectSubject(keyword: String) {
         analytics.log { this.openSubject(keyword, "item_detail") }
-        navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Subject.name))
+        navigator.navigate(Search(keyword, Subject.name), RootScreen.Search)
     }
 
     fun goToCreator(keyword: String?) {
         analytics.log { this.openCreator("item_detail") }
-        navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Creator.name))
+        navigator.navigate(Search(keyword.orEmpty(), Creator.name), RootScreen.Search)
     }
 
-    fun showDescription(itemId: String) {
-        navigator.navigate(ItemDescription.createRoute(currentRoot, itemId))
+    fun openItemDescription(itemId: String) {
+        navigator.navigate(ItemDescription(itemId))
     }
 
     fun isShareEnabled() = remoteConfig.isShareEnabled() && state.value.itemDetail != null
@@ -249,12 +247,12 @@ class ItemDetailViewModel @Inject constructor(
 
     fun openArchiveItem() {
         analytics.log { this.openArchiveItem(itemId) }
-        navigator.navigate(Screen.Web.createRoute(currentRoot, Config.archiveDetailUrl(itemId)))
+        navigator.navigate(Screen.Web(Config.archiveDetailUrl(itemId).encodeUrl()))
     }
 
     fun openSummary(itemId: String) {
         analytics.log { this.openSummary(itemId) }
-        navigator.navigate(Screen.Summary.createRoute(currentRoot, itemId))
+        navigator.navigate(Screen.Summary(itemId))
     }
 
     fun showAppRatingIfNeeded(context: Context) {

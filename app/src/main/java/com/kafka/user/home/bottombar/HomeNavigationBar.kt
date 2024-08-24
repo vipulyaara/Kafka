@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.kafka.common.test.testTagUi
-import org.kafka.navigation.RootScreen
+import org.kafka.navigation.graph.RootScreen
 
 internal object HomeNavigationBarDefaults {
     val colors

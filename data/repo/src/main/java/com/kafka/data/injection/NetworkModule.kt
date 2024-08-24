@@ -109,9 +109,9 @@ class NetworkModule {
             .writeTimeout(Config.API_TIMEOUT, TimeUnit.MILLISECONDS)
             .retryOnConnectionFailure(true)
     }
-}
 
-object Config {
-    val API_TIMEOUT = Duration.ofSeconds(40).toMillis()
-    val DOWNLOADER_TIMEOUT = Duration.ofMinutes(3).toMillis()
+    object Config {
+        val API_TIMEOUT = Duration.ofSeconds(40).toMillis()
+        val DOWNLOADER_TIMEOUT = Duration.ofMinutes(3).toMillis()
+    }
 }

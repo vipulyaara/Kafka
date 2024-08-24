@@ -127,7 +127,7 @@ private fun ItemDetail(
     ItemDetail(
         state = state,
         relatedContent = viewModel.recommendedContent,
-        openDescription = viewModel::showDescription,
+        openDescription = viewModel::openItemDescription,
         goToCreator = viewModel::goToCreator,
         onPrimaryAction = {
             viewModel.onPrimaryAction(it)
@@ -273,7 +273,7 @@ private fun ItemDetail(
 
                 if (state.isLoading) {
                     item(span = { GridItemSpan(GridItemSpan) }) {
-                        Delayed(modifier = Modifier.animateItemPlacement()) {
+                        Delayed(modifier = Modifier.animateItem()) {
                             InfiniteProgressBar()
                         }
                     }
