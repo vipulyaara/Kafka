@@ -17,9 +17,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sarahang.playback.ui.components.ResizableLayout
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.selectRootScreen
 import org.kafka.analytics.logger.Analytics
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.selectRootScreen
 
 @Composable
 internal fun RowScope.ResizableHomeNavigationRail(
@@ -46,7 +46,7 @@ internal fun RowScope.ResizableHomeNavigationRail(
         HomeNavigationRail(
             selectedTab = selectedTab,
             onNavigationSelected = { selected ->
-                analytics.log { homeTabSwitched(selected.route, "navigation_rail") }
+                analytics.log { homeTabSwitched(selected.analyticsKey, "navigation_rail") }
                 navController.selectRootScreen(selected)
             },
             onPlayingArtistClick = onPlayingArtistClick,

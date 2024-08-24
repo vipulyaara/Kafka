@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.kafka.user.R
 import org.kafka.common.image.Icons
-import org.kafka.navigation.RootScreen
+import org.kafka.navigation.graph.RootScreen
 
 internal val HomeNavigationItems = listOf(
     HomeNavigationItem.ImageVectorIcon(

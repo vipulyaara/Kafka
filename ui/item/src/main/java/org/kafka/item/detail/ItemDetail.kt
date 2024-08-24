@@ -127,7 +127,7 @@ private fun ItemDetail(
     ItemDetail(
         state = state,
         relatedContent = viewModel.recommendedContent,
-        openDescription = viewModel::showDescription,
+        openDescription = viewModel::openItemDescription,
         goToCreator = viewModel::goToCreator,
         onPrimaryAction = {
             viewModel.onPrimaryAction(it)

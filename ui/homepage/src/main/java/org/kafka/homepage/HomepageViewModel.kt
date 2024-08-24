@@ -30,8 +30,8 @@ import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveShareAppIndex
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
 import org.kafka.navigation.deeplink.Config
 import javax.inject.Inject
 
@@ -95,7 +95,7 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openProfile() {
-        navigator.navigate(Screen.Profile.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Profile)
     }
 
     fun openRecommendationDetail(itemId: String) {
@@ -104,43 +104,31 @@ class HomepageViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String, source: String = "homepage") {
         analytics.log { openItemDetail(itemId, source) }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     fun openRecentItemDetail(itemId: String) {
         analytics.log { openRecentItem(itemId) }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     fun openSubject(name: String) {
         analytics.log { openSubject(name, "homepage") }
-        navigator.navigate(
-            Screen.Search.createRoute(
-                root = RootScreen.Search,
-                keyword = name,
-                filter = SearchFilter.Subject.name
-            )
-        )
+        navigator.navigate(Screen.Search(name, SearchFilter.Subject.name), RootScreen.Search)
     }
 
     fun openSearch() {
-        navigator.navigate(Screen.Search.createRoute(RootScreen.Search))
+        navigator.navigate(Screen.Search(), RootScreen.Search)
     }
 
     fun openRecentItems() {
         analytics.log { this.openRecentItems() }
-        navigator.navigate(Screen.RecentItems.createRoute(RootScreen.Home))
+        navigator.navigate(Screen.RecentItems)
     }
 
     fun openCreator(name: String) {
         analytics.log { this.openCreator("homepage") }
-        navigator.navigate(
-            Screen.Search.createRoute(
-                root = RootScreen.Home,
-                keyword = name,
-                filter = SearchFilter.Creator.name
-            )
-        )
+        navigator.navigate(Screen.Search(name, SearchFilter.Creator.name), RootScreen.Search)
     }
 
     fun shareApp(context: Context) {

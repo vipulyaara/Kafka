@@ -26,7 +26,7 @@ import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveFiles
 import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
@@ -76,9 +76,7 @@ class FilesViewModel @Inject constructor(
         if (file.isAudio()) {
             playbackConnection.playAudio(file.asAudio())
         } else {
-            navigator.navigate(
-                Screen.Reader.createRoute(navigator.currentRoot.value, file.fileId)
-            )
+            navigator.navigate(Screen.Reader(file.fileId))
         }
     }
 

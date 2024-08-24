@@ -2,6 +2,11 @@ package org.kafka.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -11,17 +16,15 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.kafka.base.debug
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
+import org.kafka.navigation.graph.navigationRoute
 
 interface Navigator {
-    fun navigate(route: String)
+    fun navigate(route: Screen, root: RootScreen? = null)
     fun goBack()
-    fun updateRoot(root: RootScreen)
     val queue: Flow<NavigationEvent>
-    val currentRoot: StateFlow<RootScreen>
 }
 
 val LocalNavigator = staticCompositionLocalOf<Navigator> {
@@ -44,60 +47,63 @@ private fun NavigatorHost(
     CompositionLocalProvider(LocalNavigator provides navigator, content = content)
 }
 
-sealed class NavigationEvent(open val route: String) {
-    object Back : NavigationEvent("Back")
+sealed class NavigationEvent(open val route: Screen) {
+    data object Back : NavigationEvent(Screen.Back)
     data class Destination(
-        override val route: String,
-        val root: RootScreen? = null
+        override val route: Screen,
+        val root: RootScreen? = null,
     ) : NavigationEvent(route)
-
-    override fun toString() = route
 }
 
 class NavigatorImpl : Navigator {
     private val navigationQueue = Channel<NavigationEvent>(Channel.CONFLATED)
-    private val currentRootChannel = MutableStateFlow<RootScreen>(RootScreen.Home)
     override val queue = navigationQueue.receiveAsFlow()
-    override val currentRoot = currentRootChannel
 
-    override fun navigate(route: String) {
-        debug { "Navigating to $route" }
-
-        val rootPath = route.split("/").firstOrNull()
-        val rootScreen = ROOT_SCREENS.firstOrNull { it.route == rootPath }
-
-        debug { "Navigating to $route with root $rootScreen" }
-        navigationQueue.trySend(NavigationEvent.Destination(route, rootScreen))
-    }
-
-    override fun updateRoot(root: RootScreen) {
-        currentRootChannel.tryEmit(root)
+    override fun navigate(route: Screen, root: RootScreen?) {
+        navigationQueue.trySend(NavigationEvent.Destination(route, root))
     }
 
     override fun goBack() {
-        debug { "Going back" }
         navigationQueue.trySend(NavigationEvent.Back)
     }
 }
 
 fun NavController.selectRootScreen(tab: RootScreen) {
-    debug { "Selecting root screen $tab" }
-    navigate(tab.route) {
-        launchSingleTop = true
-        restoreState = true
-
+    navigate(tab) {
         popUpTo(graph.findStartDestination().id) {
             saveState = true
         }
+        launchSingleTop = true
+        restoreState = true
 
         val currentEntry = currentBackStackEntry
         val currentDestination = currentEntry?.destination
         val hostGraphRoute = currentDestination?.hostNavGraph?.route
-        val isReselected = hostGraphRoute == tab.route
+        val isReselected = hostGraphRoute == tab.navigationRoute
         if (isReselected) {
             navigateUp()
         }
     }
+}
+
+@Stable
+@Composable
+fun NavController.currentScreenAsState(): State<RootScreen> {
+    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
+    val rootScreens = ROOT_SCREENS
+    DisposableEffect(this) {
+        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+            rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.navigationRoute } }
+                ?.let { selectedItem.value = it }
+        }
+        addOnDestinationChangedListener(listener)
+
+        onDispose {
+            removeOnDestinationChangedListener(listener)
+        }
+    }
+
+    return selectedItem
 }
 
 val ROOT_SCREENS =

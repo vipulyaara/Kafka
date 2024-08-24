@@ -37,7 +37,7 @@ import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.interactors.account.LogoutUser
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import org.kafka.profile.R
 import javax.inject.Inject
 
@@ -121,16 +121,16 @@ class ProfileViewModel @Inject constructor(
 
     fun openFeedback() {
         navigator.goBack()
-        navigator.navigate(Screen.Feedback.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Feedback)
     }
 
     fun openLogin() {
         analytics.log { openLogin() }
-        navigator.navigate(Screen.Login.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Login)
     }
 
     fun openLibrary() {
-        navigator.navigate(Screen.Library.createRoute(navigator.currentRoot.value))
+        navigator.navigate(Screen.Library)
     }
 
     private fun getVersionName(): String? {

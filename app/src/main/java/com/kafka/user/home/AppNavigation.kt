@@ -1,24 +1,19 @@
 package com.kafka.user.home
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import android.app.Activity
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
@@ -28,18 +23,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
-import com.kafka.data.model.SearchFilter
+import androidx.navigation.toRoute
 import com.kafka.reader.ReaderScreen
 import com.kafka.reader.online.OnlineReader
 import com.kafka.search.SearchScreen
@@ -56,11 +48,9 @@ import org.kafka.library.LibraryScreen
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.ROOT_SCREENS
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
-import org.kafka.navigation.Screen.Reader
 import org.kafka.navigation.deeplink.Config
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
 import org.kafka.summary.SummaryScreen
 import org.kafka.webview.WebView
 import org.rekhta.ui.auth.LoginScreen
@@ -78,7 +68,25 @@ internal fun AppNavigation(
     CollectEvent(navigator.queue) { event ->
         when (event) {
             is NavigationEvent.Destination -> {
-                navController.navigate(event.route)
+                when (val screen = event.route) {
+                    is Screen.ItemDetail -> {
+                        navController.navigate(Screen.ItemDetail.route(screen.itemId))
+                    }
+
+                    is Screen.ItemDescription -> {
+                        navController.navigate(Screen.ItemDescription.route(screen.itemId))
+                    }
+
+                    Screen.Feedback,
+                    Screen.Player,
+                    -> {
+                        navController.navigate(Screen.Player.route)
+                    }
+
+                    else -> {
+                        navController.navigate(screen)
+                    }
+                }
             }
 
             is NavigationEvent.Back -> {
@@ -92,13 +100,15 @@ internal fun AppNavigation(
 
     SwitchStatusBarsOnPlayer(navController)
 
-    NavHost(modifier = modifier.fillMaxSize(),
+    NavHost(
+        modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = RootScreen.Home.route,
+        startDestination = RootScreen.Home,
         enterTransition = { enter() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
-        popExitTransition = { exit() }) {
+        popExitTransition = { exit() }
+    ) {
         addHomeRoot(navController)
         addSearchRoot(navController)
         addLibraryRoot(navController)
@@ -106,90 +116,64 @@ internal fun AppNavigation(
 }
 
 private fun NavGraphBuilder.addHomeRoot(navController: NavController) {
-    navigation(
-        route = RootScreen.Home.route, startDestination = Screen.Home.createRoute(RootScreen.Home)
-    ) {
-        addHome(RootScreen.Home)
-        addItemDetail(RootScreen.Home)
-        addItemDescription(RootScreen.Home)
-        addFiles(RootScreen.Home)
-        addReader(RootScreen.Home)
-        addLibrary(RootScreen.Home)
-        addProfile(RootScreen.Home)
-        addFeedback(RootScreen.Home)
-        addSearch(RootScreen.Home)
-        addLogin(RootScreen.Home)
-        addPlayer(RootScreen.Home)
-        addWebView(RootScreen.Home)
-        addOnlineReader(RootScreen.Home, navController)
-        addRecentItems(RootScreen.Home)
-        addSummary(RootScreen.Home)
+    navigation<RootScreen.Home>(startDestination = Screen.Home) {
+        addHome()
+        addItemDetailGroup(navController)
+        addLibrary()
+        addProfile()
+        addFeedback()
+        addSearch()
+        addLogin()
+        addPlayer()
+        addWebView()
+        addRecentItems()
     }
 }
 
 private fun NavGraphBuilder.addSearchRoot(navController: NavController) {
-    navigation(
-        route = RootScreen.Search.route,
-        startDestination = Screen.Search.createRoute(RootScreen.Search)
-    ) {
-        addSearch(RootScreen.Search)
-        addItemDetail(RootScreen.Search)
-        addItemDescription(RootScreen.Search)
-        addFiles(RootScreen.Search)
-        addReader(RootScreen.Search)
-        addPlayer(RootScreen.Search)
-        addWebView(RootScreen.Search)
-        addOnlineReader(RootScreen.Search, navController)
-        addSummary(RootScreen.Search)
+    navigation<RootScreen.Search>(startDestination = Screen.Search()) {
+        addSearch()
+        addItemDetailGroup(navController)
+        addPlayer()
+        addWebView()
     }
 }
 
 private fun NavGraphBuilder.addLibraryRoot(navController: NavController) {
-    navigation(
-        route = RootScreen.Library.route,
-        startDestination = Screen.Library.createRoute(RootScreen.Library)
-    ) {
-        addLibrary(RootScreen.Library)
-        addItemDetail(RootScreen.Library)
-        addItemDescription(RootScreen.Library)
-        addFiles(RootScreen.Library)
-        addReader(RootScreen.Library)
-        addSearch(RootScreen.Library)
-        addPlayer(RootScreen.Library)
-        addWebView(RootScreen.Library)
-        addOnlineReader(RootScreen.Library, navController)
-        addLogin(RootScreen.Library)
-        addProfile(RootScreen.Library)
-        addSummary(RootScreen.Library)
+    navigation<RootScreen.Library>(startDestination = Screen.Library) {
+        addLibrary()
+        addItemDetailGroup(navController)
+        addSearch()
+        addPlayer()
+        addWebView()
+        addLogin()
+        addProfile()
     }
 }
 
-private fun NavGraphBuilder.addHome(root: RootScreen) {
-    composable(Screen.Home.createRoute(root)) {
+private fun NavGraphBuilder.addItemDetailGroup(navController: NavController) {
+    addItemDetail()
+    addItemDescription()
+    addFiles()
+    addReader()
+    addOnlineReader(navController)
+    addSummary()
+}
+
+private fun NavGraphBuilder.addHome() {
+    composable<Screen.Home> {
         Homepage()
     }
 }
 
-private fun NavGraphBuilder.addSearch(root: RootScreen) {
-    composable(
-        Screen.Search.createRoute(root), arguments = listOf(navArgument("keyword") {
-            type = NavType.StringType
-            defaultValue = ""
-        }, navArgument("filters") {
-            type = NavType.StringType
-            defaultValue = SearchFilter.allString()
-        }), deepLinks = listOf(
-            navDeepLink {
-                uriPattern = "${Config.BASE_URL}search?keyword={keyword}&filters={filters}"
-            },
-        )
-    ) {
+private fun NavGraphBuilder.addSearch() {
+    composable<Screen.Search> {
         SearchScreen()
     }
 }
 
-private fun NavGraphBuilder.addPlayer(root: RootScreen) {
-    bottomSheet(Screen.Player.createRoute(root)) {
+private fun NavGraphBuilder.addPlayer() {
+    bottomSheet(Screen.Player.route) {
         val navigator = LocalNavigator.current
         val playbackViewModel = activityHiltViewModel<PlaybackViewModel>()
 
@@ -203,16 +187,15 @@ private fun NavGraphBuilder.addPlayer(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addLibrary(root: RootScreen) {
-    composable(Screen.Library.createRoute(root)) {
+private fun NavGraphBuilder.addLibrary() {
+    composable<Screen.Library> {
         LibraryScreen()
     }
 }
 
-private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
+private fun NavGraphBuilder.addItemDetail() {
     composable(
-        Screen.ItemDetail.createRoute(root),
-        arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
+        route = Screen.ItemDetail.route,
         deepLinks = listOf(
             navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" },
             navDeepLink { uriPattern = "${Config.BASE_URL_ALT}item/{itemId}" },
@@ -222,115 +205,93 @@ private fun NavGraphBuilder.addItemDetail(root: RootScreen) {
     }
 }
 
-private fun NavGraphBuilder.addItemDescription(root: RootScreen) {
-    bottomSheet(Screen.ItemDescription.createRoute(root)) {
+private fun NavGraphBuilder.addItemDescription() {
+    bottomSheet(Screen.ItemDescription.route) {
         DescriptionDialog()
     }
 }
 
-private fun NavGraphBuilder.addFiles(root: RootScreen) {
-    composable(Screen.Files.createRoute(root)) {
+private fun NavGraphBuilder.addFiles() {
+    composable<Screen.Files> {
         Files()
     }
 }
 
-private fun NavGraphBuilder.addReader(root: RootScreen) {
-    composable(Screen.Reader.createRoute(root)) {
+private fun NavGraphBuilder.addReader() {
+    composable<Screen.Reader> {
         ReaderScreen()
     }
 }
 
-private fun NavGraphBuilder.addLogin(root: RootScreen) {
-    composable(Screen.Login.createRoute(root)) {
+private fun NavGraphBuilder.addLogin() {
+    composable<Screen.Login> {
         LoginScreen()
     }
 }
 
-private fun NavGraphBuilder.addProfile(root: RootScreen) {
-    dialog(
-        route = Screen.Profile.createRoute(root),
-        dialogProperties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
+private fun NavGraphBuilder.addProfile() {
+    dialog<Screen.Profile>(dialogProperties = DialogProperties(usePlatformDefaultWidth = false)) {
         ProfileScreen()
     }
 }
 
-private fun NavGraphBuilder.addFeedback(root: RootScreen) {
-    bottomSheet(route = Screen.Feedback.createRoute(root)) {
+private fun NavGraphBuilder.addFeedback() {
+    bottomSheet(route = Screen.Feedback.route) {
         FeedbackScreen()
     }
 }
 
-private fun NavGraphBuilder.addRecentItems(root: RootScreen) {
-    composable(route = Screen.RecentItems.createRoute(root)) {
+private fun NavGraphBuilder.addRecentItems() {
+    composable<Screen.RecentItems> {
         RecentItemsScreen()
     }
 }
 
-private fun NavGraphBuilder.addSummary(root: RootScreen) {
-    composable(route = Screen.Summary.createRoute(root)) {
+private fun NavGraphBuilder.addSummary() {
+    composable<Screen.Summary> {
         SummaryScreen()
     }
 }
 
-private fun NavGraphBuilder.addWebView(root: RootScreen) {
-    composable(
-        route = Screen.Web.createRoute(root),
-        arguments = listOf(navArgument("url") { type = NavType.StringType })
-    ) {
+private fun NavGraphBuilder.addWebView() {
+    composable<Screen.Web> { backStackEntry ->
         val navigator = LocalNavigator.current
-        WebView(it.arguments?.getString("url").orEmpty(), navigator::goBack)
+        WebView(backStackEntry.toRoute<Screen.Web>().url, navigator::goBack)
     }
 }
 
-private fun NavGraphBuilder.addOnlineReader(root: RootScreen, navController: NavController) {
-    composable(
-        route = Screen.OnlineReader.createRoute(root),
-        arguments = listOf(navArgument("itemId") { type = NavType.StringType })
-    ) {
-        val currentRoot by navController.currentScreenAsState()
+private fun NavGraphBuilder.addOnlineReader(navController: NavController) {
+    composable<Screen.OnlineReader> {
         val currentDestination = navController.currentDestination?.route
 
         OnlineReader { fileId ->
-            navController.navigate(Reader.createRoute(currentRoot, fileId)) {
+            navController.navigate(Screen.Reader(fileId)) {
                 popUpTo(currentDestination.orEmpty()) { inclusive = true }
             }
         }
     }
 }
 
-// todo: app closes on back from player
+fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(): EnterTransition {
+    val initialNavGraph = initialState.destination.parent?.route
+    val targetNavGraph = targetState.destination.parent?.route
 
-@Stable
-@Composable
-internal fun NavController.currentScreenAsState(): State<RootScreen> {
-    val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
-    val rootScreens = ROOT_SCREENS
-    DisposableEffect(this) {
-        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-            rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.route } }
-                ?.let { selectedItem.value = it }
-        }
-        addOnDestinationChangedListener(listener)
-
-        onDispose {
-            removeOnDestinationChangedListener(listener)
-        }
+    if (initialNavGraph != targetNavGraph) {
+        return fadeIn()
     }
 
-    return selectedItem
-}
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(): EnterTransition {
-    return slideIntoContainer(Start, tween(200)) {
-        (it / 1.5).toInt()
-    } + fadeIn(tween(200))
+    return slideIntoContainer(Start) { (it / 1.5).toInt() } + fadeIn()
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(): ExitTransition {
-    return slideOutOfContainer(End, tween(200)) {
-        (it / 1.5).toInt()
-    } + fadeOut(tween(200))
+    val initialNavGraph = initialState.destination.parent?.route
+    val targetNavGraph = targetState.destination.parent?.route
+
+    if (initialNavGraph != targetNavGraph) {
+        return fadeOut()
+    }
+
+    return slideOutOfContainer(End) { (it / 1.5).toInt() } + fadeOut()
 }
 
 @Composable

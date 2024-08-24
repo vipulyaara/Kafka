@@ -25,7 +25,7 @@ import org.kafka.domain.interactors.RemoveRecentSearch
 import org.kafka.domain.interactors.SearchQueryItems
 import org.kafka.domain.observers.ObserveRecentSearch
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -163,7 +163,7 @@ class SearchViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId, "search") }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 }
 
