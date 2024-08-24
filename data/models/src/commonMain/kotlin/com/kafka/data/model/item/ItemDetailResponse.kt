@@ -5,24 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ItemDetailResponse(
-    @SerialName("created")
-    val created: Int,
-    @SerialName("d1")
-    val d1: String,
     @SerialName("dir")
     val dir: String,
     @SerialName("files")
     val files: List<File>,
     @SerialName("files_count")
-    val filesCount: Int,
-    @SerialName("item_size")
-    val itemSize: Long = 0L,
+    val filesCount: Int = 0,
     @SerialName("metadata")
     val metadata: Metadata,
     @SerialName("server")
     val server: String = "",
-    @SerialName("uniq")
-    val uniq: Int = 0,
-    @SerialName("workable_servers")
-    val workableServers: List<String> = emptyList(),
 )

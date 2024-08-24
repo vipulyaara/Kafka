@@ -25,8 +25,6 @@ data class Doc(
     val format: List<String>? = null,
     @SerialName("identifier")
     val identifier: String,
-    @SerialName("item_size")
-    val itemSize: Long,
     @SerialName("language")
     @Serializable(with = StringListSerializer::class)
     val language: List<String>? = null,
@@ -38,8 +36,6 @@ data class Doc(
     @SerialName("title")
     @Serializable(with = StringListSerializer::class)
     val title: List<String>,
-    @SerialName("week")
-    val week: Int? = 0,
     @SerialName("avg_rating")
     val rating: Double? = null,
 )

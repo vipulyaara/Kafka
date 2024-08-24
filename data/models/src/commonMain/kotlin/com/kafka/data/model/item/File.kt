@@ -26,8 +26,6 @@ data class File(
     val size: List<String>? = null,
     @SerialName("title")
     val title: String? = null,
-    @SerialName("source")
-    val source: String? = null,
 ) {
     // todo: improve file ids to make them unique
     // this will require a migration to new file ids which might be a breaking change
