@@ -49,12 +49,8 @@ class OnlineReaderViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val itemId: String = savedStateHandle["itemId"] ?: error("Url not provided")
-    private val readerState = MutableStateFlow<ReaderState?>(null)
+    val readerState = MutableStateFlow<ReaderState?>(null)
     private val urlState = MutableStateFlow("")
-
-    val webViewState = readerState.map { state ->
-        state?.url?.let { WebViewState(WebContent.Url(url = it)) }
-    }.stateInDefault(viewModelScope, null)
 
     val state: StateFlow<OnlineReaderState> = combine(
         urlState,
