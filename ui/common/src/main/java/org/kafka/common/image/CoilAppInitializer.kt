@@ -16,12 +16,14 @@ class CoilAppInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
+
     override fun init() {
         Coil.setImageLoader {
             ImageLoader.Builder(context)
                 .okHttpClient(okHttpClient)
                 .dispatcher(dispatchers.io)
                 .fetcherDispatcher(dispatchers.io)
+                .respectCacheHeaders(false)
                 .diskCache(
                     DiskCache.Builder().directory(File(context.cacheDir, "images_cache")).build()
                 )

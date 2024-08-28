@@ -30,9 +30,9 @@ import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveShareAppIndex
 import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen
-import org.kafka.navigation.deeplink.Config
 import javax.inject.Inject
 
 @HiltViewModel
