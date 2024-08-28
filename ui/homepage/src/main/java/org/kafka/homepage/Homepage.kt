@@ -255,7 +255,7 @@ private fun RowItems(
         modifier = modifier,
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
-            vertical = Dimens.Spacing16
+            vertical = Dimens.Spacing12
         ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {

@@ -22,11 +22,20 @@ class UpdateHomepage @Inject constructor(
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
-            homepageRepository.getHomepageIds().mapAsync { ids ->
-                val unFetchedIds = ids.filter { !itemRepository.exists(it) }
+            val unFetchedIds = homepageRepository.getHomepageIds().map { ids ->
+                ids.filter { !itemRepository.exists(it) }
+            }
 
-                if (unFetchedIds.isNotEmpty()) {
-                    val query = ArchiveQuery().booksByIdentifiers(unFetchedIds)
+            // If there are less than 50 un-fetched IDs, we make a single request
+            val formattedIds = if (unFetchedIds.sumOf { it.size } <= 50) {
+                listOf(unFetchedIds.flatten())
+            } else {
+                unFetchedIds
+            }
+
+            formattedIds.mapAsync { ids ->
+                if (ids.isNotEmpty()) {
+                    val query = ArchiveQuery().booksByIdentifiers(ids)
                     val items = itemRepository.updateQuery(buildRemoteQuery(query))
                     itemRepository.saveItems(items)
                 }
