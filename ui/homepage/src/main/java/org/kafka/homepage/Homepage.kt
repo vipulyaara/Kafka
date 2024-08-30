@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -158,13 +159,19 @@ private fun HomepageFeedItems(
             when (collection) {
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
-                        ContinueReading(
-                            readingList = homepage.continueReadingItems,
-                            openItemDetail = openRecentItemDetail,
-                            removeRecentItem = removeRecentItem,
-                            modifier = Modifier.padding(top = Dimens.Gutter),
-                            openRecentItems = openRecentItems
-                        )
+                        if (homepage.continueReadingItems.size > 0) {
+                            ContinueReading(
+                                readingList = homepage.continueReadingItems,
+                                openItemDetail = openRecentItemDetail,
+                                removeRecentItem = removeRecentItem,
+                                modifier = Modifier.padding(top = Dimens.Gutter),
+                                openRecentItems = openRecentItems
+                            )
+                        } else {
+                            Spacer(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(Dimens.Spacing12))
+                        }
                     }
                 }
 
@@ -255,7 +262,7 @@ private fun RowItems(
         modifier = modifier,
         contentPadding = PaddingValues(
             horizontal = Dimens.Gutter,
-            vertical = Dimens.Spacing12
+            vertical = Dimens.Spacing08
         ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {

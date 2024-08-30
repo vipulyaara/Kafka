@@ -22,10 +22,10 @@ class ObserveHomepage @Inject constructor(
             observeRecentItems.execute(Unit),
             homepageRepository.observeHomepageCollection(),
         ) { recentItems, collection ->
-            val collectionWithRecentItems = collection.mapNotNull {
+            val collectionWithRecentItems = collection.map {
                 when (it) {
                     is HomepageCollection.RecentItems -> {
-                        if (recentItems.isEmpty()) null else it.copy(items = recentItems)
+                        it.copy(items = recentItems)
                     }
 
                     else -> it

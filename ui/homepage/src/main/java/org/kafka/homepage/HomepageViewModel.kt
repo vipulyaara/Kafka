@@ -50,8 +50,8 @@ class HomepageViewModel @Inject constructor(
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     var recommendedContent by mutableStateOf(emptyList<Item>())
-    val recommendationRowIndex = remoteConfig.recommendationRowIndex()
-    val showCarouselLabels = remoteConfig.showFeaturedItemLabels()
+    val recommendationRowIndex by lazy { remoteConfig.recommendationRowIndex() }
+    val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
