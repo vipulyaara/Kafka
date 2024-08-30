@@ -68,8 +68,8 @@ class AppModule {
         @ApplicationContext context: Context,
     ): PreferencesStore = PreferencesStore(
         PreferenceDataStoreFactory.create(
-        produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
-    ))
+            produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
+        ))
 
     @Singleton
     @Provides

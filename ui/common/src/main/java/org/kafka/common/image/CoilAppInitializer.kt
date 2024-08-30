@@ -23,7 +23,6 @@ class CoilAppInitializer @Inject constructor(
                 .okHttpClient(okHttpClient)
                 .dispatcher(dispatchers.io)
                 .fetcherDispatcher(dispatchers.io)
-                .respectCacheHeaders(false)
                 .diskCache(
                     DiskCache.Builder().directory(File(context.cacheDir, "images_cache")).build()
                 )
