@@ -37,7 +37,7 @@ class UpdateHomepage @Inject constructor(
                 if (ids.isNotEmpty()) {
                     val query = ArchiveQuery().booksByIdentifiers(ids)
                     val items = itemRepository.updateQuery(buildRemoteQuery(query))
-                    itemRepository.saveItems(items)
+                    itemRepository.saveItems(items.filterNot { it.isInappropriate })
                 }
             }
         }
