@@ -36,8 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
@@ -138,7 +136,7 @@ private fun HomepageFeedItems(
                         modifier = subjectModifier
                     )
                     RowItems(
-                        items = recommendedContent.toImmutableList(),
+                        items = recommendedContent.toList(),
                         openItemDetail = openRecommendationDetail
                     )
                 }
@@ -159,7 +157,7 @@ private fun HomepageFeedItems(
             when (collection) {
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
-                        if (homepage.continueReadingItems.size > 0) {
+                        if (homepage.continueReadingItems.isNotEmpty()) {
                             ContinueReading(
                                 readingList = homepage.continueReadingItems,
                                 openItemDetail = openRecentItemDetail,
@@ -254,7 +252,7 @@ private fun HomepageFeedItems(
 
 @Composable
 private fun RowItems(
-    items: ImmutableList<Item>,
+    items: List<Item>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
 ) {
@@ -289,8 +287,8 @@ private fun RowItems(
 
 @Composable
 private fun Authors(
-    titles: ImmutableList<String>,
-    images: ImmutableList<String>,
+    titles: List<String>,
+    images: List<String>,
     modifier: Modifier = Modifier,
     goToCreator: (String) -> Unit,
 ) {
@@ -397,7 +395,7 @@ private fun GridItems(
 }
 
 @Composable
-private fun SubjectItems(labels: ImmutableList<String>, goToSubject: (String) -> Unit) {
+private fun SubjectItems(labels: List<String>, goToSubject: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         modifier = subjectModifier

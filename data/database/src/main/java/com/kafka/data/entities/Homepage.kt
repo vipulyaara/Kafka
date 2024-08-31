@@ -1,13 +1,11 @@
 package com.kafka.data.entities
 
 import androidx.compose.runtime.Immutable
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
-data class Homepage(val collection: ImmutableList<HomepageCollection>) {
-    val continueReadingItems: ImmutableList<RecentItemWithProgress>
+data class Homepage(val collection: List<HomepageCollection>) {
+    val continueReadingItems: List<RecentItemWithProgress>
         get() = collection.recentItems.subList(
             fromIndex = 0,
             toIndex = ContinueReadingItemsThreshold.coerceAtMost(collection.recentItems.size),
@@ -21,9 +19,9 @@ data class Homepage(val collection: ImmutableList<HomepageCollection>) {
     }
 }
 
-val ImmutableList<HomepageCollection>.recentItems
+val List<HomepageCollection>.recentItems
     get() = filterIsInstance<HomepageCollection.RecentItems>()
-        .firstOrNull()?.items.orEmpty().toPersistentList()
+        .firstOrNull()?.items.orEmpty()
 
 @Immutable
 sealed class HomepageCollection {
@@ -32,22 +30,22 @@ sealed class HomepageCollection {
     @Immutable
     data class FeaturedItem(
         val label: String?,
-        val items: ImmutableList<Item>,
-        val image: ImmutableList<String> = persistentListOf(),
+        val items: List<Item>,
+        val image: List<String> = persistentListOf(),
         val shuffle: Boolean,
         override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
     data class RecentItems(
-        val items: ImmutableList<RecentItemWithProgress>,
+        val items: List<RecentItemWithProgress>,
         override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
     data class PersonRow(
-        val items: ImmutableList<String>,
-        val images: ImmutableList<String>,
+        val items: List<String>,
+        val images: List<String>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
         override val enabled: Boolean = true,
@@ -55,8 +53,8 @@ sealed class HomepageCollection {
 
     @Immutable
     data class Row(
-        val labels: ImmutableList<String>,
-        val items: ImmutableList<Item>,
+        val labels: List<String>,
+        val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
         override val enabled: Boolean = true,
@@ -66,8 +64,8 @@ sealed class HomepageCollection {
 
     @Immutable
     data class Column(
-        val labels: ImmutableList<String>,
-        val items: ImmutableList<Item>,
+        val labels: List<String>,
+        val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
         override val enabled: Boolean = true,
@@ -77,8 +75,8 @@ sealed class HomepageCollection {
 
     @Immutable
     data class Grid(
-        val labels: ImmutableList<String>,
-        val items: ImmutableList<Item>,
+        val labels: List<String>,
+        val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
         override val enabled: Boolean = true,
@@ -88,7 +86,7 @@ sealed class HomepageCollection {
 
     @Immutable
     data class Subjects(
-        val items: ImmutableList<String>,
+        val items: List<String>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
         override val enabled: Boolean = true,

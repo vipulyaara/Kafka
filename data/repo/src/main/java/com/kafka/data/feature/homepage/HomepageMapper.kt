@@ -4,9 +4,7 @@ import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
 import com.kafka.data.model.homepage.HomepageCollectionResponse
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
@@ -43,8 +41,8 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Row(
-                labels = label.splitLabel().toPersistentList(),
-                items = sortedItems.toPersistentList(),
+                labels = label.splitLabel(),
+                items = sortedItems,
                 clickable = clickable,
                 shuffle = shuffle
             )
@@ -58,8 +56,8 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         val images = indices.map { index -> image.getOrNull(index) }
 
         val personRow = HomepageCollection.PersonRow(
-            items = itemIdList.toPersistentList(),
-            images = images.mapNotNull { it?.downloadURL }.toPersistentList(),
+            items = itemIdList,
+            images = images.mapNotNull { it?.downloadURL },
             enabled = enabled,
             clickable = clickable,
             shuffle = shuffle
@@ -73,7 +71,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
             .let { if (shuffle) it.shuffleInSync() else it }
 
         val subjects = HomepageCollection.Subjects(
-            items = itemIdList.toPersistentList(),
+            items = itemIdList,
             clickable = clickable,
             enabled = enabled,
             shuffle = shuffle
@@ -89,8 +87,8 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Column(
-                labels = label.splitLabel().toPersistentList(),
-                items = sortedItems.toPersistentList(),
+                labels = label.splitLabel(),
+                items = sortedItems,
                 clickable = clickable,
                 shuffle = shuffle
             )
@@ -104,8 +102,8 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         return itemDao.observe(itemIdList).map { items ->
             val sortedItems = items.sortedBy { item -> itemIdList.indexOf(item.itemId) }
             HomepageCollection.Grid(
-                labels = label.splitLabel().toPersistentList(),
-                items = sortedItems.toPersistentList(),
+                labels = label.splitLabel(),
+                items = sortedItems,
                 clickable = clickable,
                 shuffle = shuffle
             )
@@ -114,7 +112,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     // todo: items are filled later on domain layer, find a way to fill them here
     private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
-        flowOf(HomepageCollection.RecentItems(persistentListOf(), enabled))
+        flowOf(HomepageCollection.RecentItems(listOf(), enabled))
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {
         val indices = itemIds.split(", ").indices
@@ -131,7 +129,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
             HomepageCollection.FeaturedItem(
                 label = label,
-                items = sortedItems.toPersistentList(),
+                items = sortedItems,
                 image = images.mapNotNull { it?.downloadURL }.toImmutableList(),
                 enabled = enabled,
                 shuffle = shuffle

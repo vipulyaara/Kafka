@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentItem
-import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.elevation
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.image.Icons
@@ -71,7 +70,7 @@ fun RecentItemsScreen(viewModel: RecentViewModel = hiltViewModel()) {
 
 @Composable
 private fun RecentItems(
-    items: ImmutableList<RecentItem>,
+    items: List<RecentItem>,
     openItemDetail: (String) -> Unit,
     lazyListState: LazyListState,
     modifier: Modifier = Modifier,

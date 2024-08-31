@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collect
@@ -23,7 +22,7 @@ class RecentViewModel @Inject constructor(
     observeRecentItems: ObserveRecentItems,
     private val removeAllRecentItems: RemoveAllRecentItems,
     private val navigator: Navigator,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : ViewModel() {
     val state = observeRecentItems.flow.map { recentItems ->
         RecentViewState(recentItems = recentItems.map { it.recentItem }.toPersistentList())
@@ -50,5 +49,5 @@ class RecentViewModel @Inject constructor(
 }
 
 data class RecentViewState(
-    val recentItems: ImmutableList<RecentItem> = persistentListOf()
+    val recentItems: List<RecentItem> = persistentListOf(),
 )
