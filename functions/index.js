@@ -1,19 +1,18 @@
-const { logger } = require("firebase-functions");
 const { onRequest } = require("firebase-functions/v2/https");
+const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
 
 initializeApp();
 
-
-const functions = require('firebase-functions');
 const {
   calculateTopReadWeekly,
   calculateTopPlayedWeekly,
   calculateTopReadMonthly,
   calculateTopPlayedMonthly,
-  calculateTopFavoritedWeekly
+  calculateTopFavoritedWeekly,
+  calculateTopFavoritedMonthly
 } = require('./recommendation/trending');
 
 // Weekly scheduled function
@@ -35,7 +34,8 @@ exports.monthlyUpdateTopItems = functions.pubsub.schedule('1 of month 00:00').ti
   try {
     await Promise.all([
       calculateTopReadMonthly(),
-      calculateTopPlayedMonthly()
+      calculateTopPlayedMonthly(),
+      calculateTopFavoritedMonthly()
     ]);
     console.log('Monthly top items update completed successfully');
   } catch (error) {
@@ -51,15 +51,16 @@ exports.manualUpdateTopItems = onRequest(async (req, res) => {
     switch(type) {
       case 'weekly':
         await Promise.all([
-          calculateTopReadWeekly(),
-          calculateTopPlayedWeekly(),
-          calculateTopFavoritedWeekly()
+          calculateTopReadWeekly()
+          // calculateTopPlayedWeekly(),
+          // calculateTopFavoritedWeekly()
         ]);
         break;
       case 'monthly':
         await Promise.all([
           calculateTopReadMonthly(),
-          calculateTopPlayedMonthly()
+          calculateTopPlayedMonthly(),
+          calculateTopFavoritedMonthly()
         ]);
         break;
       default:
