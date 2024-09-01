@@ -166,9 +166,11 @@ private fun HomepageFeedItems(
                                 openRecentItems = openRecentItems
                             )
                         } else {
-                            Spacer(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(Dimens.Spacing12))
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(Dimens.Spacing12)
+                            )
                         }
                     }
                 }
@@ -212,14 +214,14 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
-                        SubjectItems(collection.labels, goToSubject)
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
                         RowItems(items = collection.items, openItemDetail = openItemDetail)
                     }
                 }
 
                 is HomepageCollection.Grid -> {
                     item(key = collection.key, contentType = "grid") {
-                        SubjectItems(collection.labels, goToSubject)
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
                         GridItems(
                             collection = collection,
                             openItemDetail = openItemDetail,
@@ -229,7 +231,9 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Column -> {
-                    item(key = collection.key) { SubjectItems(collection.labels, goToSubject) }
+                    item(key = collection.key) {
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
+                    }
                     columnItems(collection, openItemDetail)
                 }
             }
@@ -395,13 +399,13 @@ private fun GridItems(
 }
 
 @Composable
-private fun SubjectItems(labels: List<String>, goToSubject: (String) -> Unit) {
+private fun SubjectItems(labels: List<String>, clickable: Boolean, goToSubject: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         modifier = subjectModifier
     ) {
         labels.forEach { label ->
-            SubjectItem(text = label, onClicked = { goToSubject(label) })
+            SubjectItem(text = label, onClicked = { goToSubject(label) }.takeIf { clickable })
         }
     }
 }
