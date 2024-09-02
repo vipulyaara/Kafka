@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
+import org.kafka.base.debug
 import org.kafka.base.errorLog
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
@@ -51,6 +52,7 @@ class DownloadInitializer @Inject constructor(
 
     private suspend fun addDownload(download: Download) {
         downloadRequestsDao.getByRequestIdOrNull(download.id)?.let { downloadRequest ->
+            debug { "Adding download: $downloadRequest" }
             val file = fileDao.getOrNull(downloadRequest.id)
             val item = itemDao.getOrNull(file?.itemId.orEmpty())
 
