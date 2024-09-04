@@ -19,6 +19,7 @@ const val BORROWABLE_BOOK_MESSAGE = "borrowable_book_message"
 const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
 const val SUMMARY_ENABLED = "summary_enabled"
 const val SHOW_FEATURED_ITEM_LABELS = "show_featured_item_labels"
+const val OPEN_AI_API_KEY = "open_ai_api_key"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -57,3 +58,5 @@ fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
 fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)
 
 fun RemoteConfig.showFeaturedItemLabels() = getBoolean(SHOW_FEATURED_ITEM_LABELS)
+
+fun RemoteConfig.getOpenAiApiKey() = get(OPEN_AI_API_KEY)

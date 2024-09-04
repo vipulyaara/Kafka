@@ -35,11 +35,6 @@ android {
             "PIPELESS_AUTH_TOKEN",
             properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
         )
-        buildConfigField(
-            "String",
-            "OPEN_AI_API_KEY",
-            properties["OPEN_AI_API_KEY"]?.toString() ?: System.getenv("OPEN_AI_API_KEY")
-        )
     }
 
     compileOptions {

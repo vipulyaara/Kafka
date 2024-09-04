@@ -15,9 +15,6 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
-/**
- * Interactor for updating the homepage.
- * */
 class ObserveRecentItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,

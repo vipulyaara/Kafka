@@ -3,6 +3,7 @@ package com.kafka.data.feature.homepage
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
+import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,10 @@ object HomepageMapperConfig {
     val shuffleIndices = (0 until 50).shuffled()
 }
 
-class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
+class HomepageMapper @Inject constructor(
+    private val itemDao: ItemDao,
+    private val recommendationRepository: RecommendationRepository,
+) {
 
     fun map(collection: List<HomepageCollectionResponse>): Flow<List<HomepageCollection>> {
         return combine(
@@ -28,6 +32,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
                     is HomepageCollectionResponse.Grid -> homepageItem.mapGrid()
                     is HomepageCollectionResponse.PersonRow -> homepageItem.mapPersonRow()
                     is HomepageCollectionResponse.Subjects -> homepageItem.mapSubjects()
+                    is HomepageCollectionResponse.Recommendation -> homepageItem.mapRecommendations()
                     is HomepageCollectionResponse.Unknown -> flowOf(null)
                 }
             },
@@ -49,6 +54,10 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         }
     }
 
+    private fun HomepageCollectionResponse.Recommendation.mapRecommendations() =
+        recommendationRepository.observeRecommendations(itemIds)
+            .map { items -> HomepageCollection.Recommendations(listOf(label), itemIds, items) }
+
     private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
         val indices = itemIds.split(", ").indices
             .let { if (shuffle) it.shuffleInSync() else it }
@@ -58,7 +67,6 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         val personRow = HomepageCollection.PersonRow(
             items = itemIdList,
             images = images.mapNotNull { it?.downloadURL },
-            enabled = enabled,
             clickable = clickable,
             shuffle = shuffle
         )
@@ -73,7 +81,6 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
         val subjects = HomepageCollection.Subjects(
             items = itemIdList,
             clickable = clickable,
-            enabled = enabled,
             shuffle = shuffle
         )
 
@@ -112,7 +119,7 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
 
     // todo: items are filled later on domain layer, find a way to fill them here
     private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
-        flowOf(HomepageCollection.RecentItems(listOf(), enabled))
+        flowOf(HomepageCollection.RecentItems(listOf()))
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {
         val indices = itemIds.split(", ").indices
@@ -131,7 +138,6 @@ class HomepageMapper @Inject constructor(private val itemDao: ItemDao) {
                 label = label,
                 items = sortedItems,
                 image = images.mapNotNull { it?.downloadURL }.toImmutableList(),
-                enabled = enabled,
                 shuffle = shuffle
             )
         }

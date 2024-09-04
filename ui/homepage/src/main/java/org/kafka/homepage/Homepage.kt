@@ -42,7 +42,6 @@ import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
-import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.GenreItem
@@ -75,12 +74,10 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                 AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
-                        recommendedContent = viewModel.recommendedContent,
                         recommendationRowIndex = viewModel.recommendationRowIndex,
                         showCarouselLabels = viewModel.showCarouselLabels,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
-                        openRecommendationDetail = viewModel::openRecommendationDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
@@ -110,13 +107,11 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 @Composable
 private fun HomepageFeedItems(
     homepage: Homepage,
-    recommendedContent: List<Item>,
     appShareIndex: Int,
     recommendationRowIndex: Int,
     showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
-    openRecommendationDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -129,19 +124,6 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
-            if (index == recommendationRowIndex && recommendedContent.isNotEmpty()) {
-                item(key = "recommendations") {
-                    LabelMedium(
-                        text = stringResource(id = R.string.recommended_for_you),
-                        modifier = subjectModifier
-                    )
-                    RowItems(
-                        items = recommendedContent.toList(),
-                        openItemDetail = openRecommendationDetail
-                    )
-                }
-            }
-
             if (index == appShareIndex) {
                 item {
                     MessageBox(
@@ -215,6 +197,13 @@ private fun HomepageFeedItems(
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
+                        RowItems(items = collection.items, openItemDetail = openItemDetail)
+                    }
+                }
+
+                is HomepageCollection.Recommendations -> {
+                    item(contentType = "row") {
+                        SubjectItems(collection.labels, false, goToSubject)
                         RowItems(items = collection.items, openItemDetail = openItemDetail)
                     }
                 }

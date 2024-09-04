@@ -1,15 +1,10 @@
 package org.kafka.homepage
 
 import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.Item
 import com.kafka.data.model.SearchFilter
 import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.isRecommendationRowEnabled
 import com.kafka.remote.config.recommendationRowIndex
 import com.kafka.remote.config.showFeaturedItemLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,8 +19,8 @@ import org.kafka.common.UiMessageManager
 import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.domain.interactors.UpdateHomepage
+import org.kafka.domain.interactors.UpdateRecommendations
 import org.kafka.domain.interactors.recent.RemoveRecentItem
-import org.kafka.domain.interactors.recommendation.GetRecommendedContent
 import org.kafka.domain.observers.ObserveHomepage
 import org.kafka.domain.observers.ObserveShareAppIndex
 import org.kafka.domain.observers.ObserveUser
@@ -42,14 +37,13 @@ class HomepageViewModel @Inject constructor(
     observeShareAppIndex: ObserveShareAppIndex,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
-    private val getRecommendedContent: GetRecommendedContent,
+    private val updateRecommendations: UpdateRecommendations,
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val loadingCounter: ObservableLoadingCounter,
     private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
-    var recommendedContent by mutableStateOf(emptyList<Item>())
     val recommendationRowIndex by lazy { remoteConfig.recommendationRowIndex() }
     val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
 
@@ -68,9 +62,7 @@ class HomepageViewModel @Inject constructor(
         observeShareAppIndex(Unit)
 
         viewModelScope.launch {
-            if (remoteConfig.isRecommendationRowEnabled()) {
-                recommendedContent = getRecommendedContent(Unit).getOrNull().orEmpty()
-            }
+            updateRecommendations(Unit).collect()
         }
 
         updateItems()
@@ -96,10 +88,6 @@ class HomepageViewModel @Inject constructor(
 
     fun openProfile() {
         navigator.navigate(Screen.Profile)
-    }
-
-    fun openRecommendationDetail(itemId: String) {
-        openItemDetail(itemId, "recommendation")
     }
 
     fun openItemDetail(itemId: String, source: String = "homepage") {

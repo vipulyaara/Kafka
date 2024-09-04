@@ -25,7 +25,6 @@ val List<HomepageCollection>.recentItems
 
 @Immutable
 sealed class HomepageCollection {
-    abstract val enabled: Boolean
 
     @Immutable
     data class FeaturedItem(
@@ -33,13 +32,18 @@ sealed class HomepageCollection {
         val items: List<Item>,
         val image: List<String> = persistentListOf(),
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
     data class RecentItems(
         val items: List<RecentItemWithProgress>,
-        override val enabled: Boolean = true,
+    ) : HomepageCollection()
+
+    @Immutable
+    data class Recommendations(
+        val labels: List<String>,
+        val type: String,
+        val items: List<Item>,
     ) : HomepageCollection()
 
     @Immutable
@@ -48,7 +52,6 @@ sealed class HomepageCollection {
         val images: List<String>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection()
 
     @Immutable
@@ -57,7 +60,6 @@ sealed class HomepageCollection {
         val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
@@ -68,7 +70,6 @@ sealed class HomepageCollection {
         val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
@@ -79,7 +80,6 @@ sealed class HomepageCollection {
         val items: List<Item>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = labels.joinToString(separator = ",")
     }
@@ -89,7 +89,6 @@ sealed class HomepageCollection {
         val items: List<String>,
         val clickable: Boolean = true,
         val shuffle: Boolean,
-        override val enabled: Boolean = true,
     ) : HomepageCollection() {
         val key = items.joinToString(separator = ",")
     }
