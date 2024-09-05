@@ -24,7 +24,7 @@ const db = getFirestore();
 
 const EVENTS_OF_INTEREST = ['read_item', 'play_item', 'add_favorite'];
 const ACTIVE_USER_THRESHOLD_DAYS = 60;
-const SIMILARITY_THRESHOLD = 0.3;
+const SIMILARITY_THRESHOLD = 0.45;
 
 async function calculateCollaborativeRecommendations() {
     try {
@@ -220,7 +220,7 @@ async function saveRecommendations(userId, recommendations) {
       return;
     }
   
-    const userRecommendationsRef = db.collection('recommendations').doc(userId).collection('collaborative');
+    const userRecommendationsRef = db.collection('user_recommendations').doc(userId).collection('collaborative');
   
     try {
       const batch = db.batch();

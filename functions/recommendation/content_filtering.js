@@ -50,14 +50,37 @@ async function generateContentBasedRecommendations() {
   const activeUsers = await getActiveUsers();
   console.log(`Found ${activeUsers.length} active users for content-based recommendations`);
   
+  let allUserItemIds = {};
+
   for (const userId of activeUsers) {
+    const userInteractions = await getUserInteractions(userId);
+    allUserItemIds[userId] = userInteractions.map(interaction => interaction.item_id);
+    
     const userProfile = await buildUserProfile(userId);
     console.log(`Built user profile for user ${userId}:`, JSON.stringify(userProfile, null, 2));
     const recommendations = await generateUserRecommendations(userId, userProfile);
     console.log(`Generated ${recommendations.length} recommendations for user ${userId}`);
-    await saveRecommendations(userId, recommendations);
-    console.log(`Completed content-based recommendations for user ${userId}`);
+    if (recommendations.length > 0) {
+      await saveRecommendations(userId, recommendations);
+      console.log(`Saved ${recommendations.length} recommendations for user ${userId}`);
+    } else {
+      console.log(`No recommendations generated for user ${userId}. Skipping save.`);
+    }
   }
+
+  // Consolidate all item IDs across all users
+  const allItemIds = new Set();
+  for (const itemIds of Object.values(allUserItemIds)) {
+    itemIds.forEach(id => allItemIds.add(id));
+  }
+
+  // Log all item IDs in a single, comma-separated line
+  console.log('All item IDs:');
+  console.log([...allItemIds].join(','));
+
+  // Log all user IDs in a single, comma-separated line
+  console.log('All user IDs:');
+  console.log(Object.keys(allUserItemIds).join(','));
 }
 
 async function getActiveUsers() {
@@ -90,32 +113,46 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 5
+      LIMIT 500
     `;
 
   const [rows] = await bigquery.query({ query });
   return rows.map(row => row.user_id);
+  // For testing purposes, return a fixed set of user IDs
+  // return [
+  //   '2fc6c7a7e7e101d923f017cc4df1f786',
+  //   '29643dbf9a3146472e0d9ef74de5b1aa',
+  //   'a9896783fb0aa798f6f80b389bfd83d8',
+  //   '81bf680912fce21ecaf97ae0681fbd41',
+  //   '9b01d4fa48d1af95a158e1bf58537fb0'
+  // ];
 }
 
 async function buildUserProfile(userId) {
   const userInteractions = await getUserInteractions(userId);
+  console.log(`Retrieved ${userInteractions.length} interactions for user ${userId}`);
   const profile = {
-    subjects: {},
-    creators: {},
-    languages: {},
-    collections: {},
-    formats: {},
-    keywords: {}
+    subject: {},
+    creator: {},
+    language: {},
+    collection: {},
+    mediatype: {},
   };
-
+  
   for (const interaction of userInteractions) {
     const itemMetadata = await getItemMetadata(interaction.item_id);
+    console.log(`Processing item ${interaction.item_id}`);
+    if (!itemMetadata) {
+      console.log(`No metadata found for item ${interaction.item_id}`);
+    } else {
+      console.log(`Retrieved metadata for item ${interaction.item_id}:`, JSON.stringify(itemMetadata, null, 2));
+    }
     if (itemMetadata) {
-      updateProfileCounts(profile.subjects, itemMetadata.subjects);
-      updateProfileCounts(profile.creators, itemMetadata.creators);
-      updateProfileCounts(profile.languages, itemMetadata.languages);
-      updateProfileCounts(profile.collections, itemMetadata.collections);
-      updateProfileCounts(profile.formats, itemMetadata.formats);
+      updateProfileCounts(profile.subject, itemMetadata.subject);
+      updateProfileCounts(profile.creator, itemMetadata.creator);
+      updateProfileCounts(profile.language, itemMetadata.language);
+      updateProfileCounts(profile.collection, itemMetadata.collection);
+      updateProfileCounts(profile.mediatype, itemMetadata.mediatype);
       
       const keywords = itemMetadata.description.flatMap(extractKeywords);
       updateProfileCounts(profile.keywords, keywords);
@@ -227,12 +264,11 @@ async function hasUserInteracted(userId, itemId) {
 function calculateSimilarity(userProfile, item) {
   let similarity = 0;
   const weights = {
-    subjects: 0.3,
-    creators: 0.2,
-    languages: 0.1,
-    collections: 0.1,
-    formats: 0.1,
-    keywords: 0.2
+    subject: 0.3,
+    creator: 0.2,
+    mediatype: 0.2,
+    language: 0.1,
+    collection: 0.1,
   };
 
   for (const feature in weights) {
@@ -254,8 +290,7 @@ function calculateFeatureSimilarity(userFeatures, itemFeature) {
 async function saveRecommendations(userId, recommendations) {
   const userRecommendationsRef = db.collection('user_recommendations').doc(userId);
   await userRecommendationsRef.set({
-    contentBased: recommendations,
-    updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    contentBased: recommendations
   }, { merge: true });
 }
 

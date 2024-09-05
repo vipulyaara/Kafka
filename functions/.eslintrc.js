@@ -29,6 +29,7 @@ module.exports = {
     "guard-for-in": "off",
     "no-unused-vars": "off",
     "no-dupe-keys": "off",
+    "prefer-const": "off",
   },
   overrides: [
     {
