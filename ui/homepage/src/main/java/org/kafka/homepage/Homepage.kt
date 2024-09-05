@@ -74,7 +74,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                 AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
-                        recommendationRowIndex = viewModel.recommendationRowIndex,
                         showCarouselLabels = viewModel.showCarouselLabels,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
@@ -108,7 +107,6 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     appShareIndex: Int,
-    recommendationRowIndex: Int,
     showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,

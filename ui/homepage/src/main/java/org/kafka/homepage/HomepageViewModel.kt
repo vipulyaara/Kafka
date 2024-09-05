@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.model.SearchFilter
 import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.recommendationRowIndex
 import com.kafka.remote.config.showFeaturedItemLabels
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -44,7 +43,6 @@ class HomepageViewModel @Inject constructor(
     private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
-    val recommendationRowIndex by lazy { remoteConfig.recommendationRowIndex() }
     val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
 
     val state: StateFlow<HomepageViewState> = combine(

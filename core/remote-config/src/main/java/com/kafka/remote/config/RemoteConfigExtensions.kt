@@ -8,7 +8,6 @@ const val RECOMMENDATION_ENABLED = "recommendation_data_enabled"
 const val VIEW_RECOMMENDATION_ENABLED = "view_recommendation_data_enabled"
 const val USE_RECOMMENDATION_ENABLED = "use_recommendation_data_enabled"
 const val RECOMMENDATION_ROW_ENABLED = "recommendation_row_enabled"
-const val RECOMMENDATION_ROW_INDEX = "recommendation_row_index"
 const val RELATED_CONTENT_ROW_ENABLED = "related_content_row_enabled"
 const val ONLINE_READER_ENABLED = "online_reader_enabled"
 const val MIN_SUPPORTED_VERSION = "min_supported_version"
@@ -36,8 +35,6 @@ fun RemoteConfig.isViewRecommendationEnabled() = getBoolean(VIEW_RECOMMENDATION_
 fun RemoteConfig.isUseRecommendationEnabled() = getBoolean(USE_RECOMMENDATION_ENABLED)
 
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
-
-fun RemoteConfig.recommendationRowIndex() = getLong(RECOMMENDATION_ROW_INDEX).toInt()
 
 fun RemoteConfig.isRelatedContentRowEnabled() = getBoolean(RELATED_CONTENT_ROW_ENABLED)
 
