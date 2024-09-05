@@ -1,10 +1,12 @@
 package com.kafka.search
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkOut
+import android.app.Activity
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,8 +21,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -32,13 +34,14 @@ import org.kafka.common.test.testTagUi
 import org.kafka.common.widgets.IconResource
 import org.kafka.search.R
 import ui.common.theme.theme.Dimens
+import java.util.Locale
 
 @Composable
 fun SearchWidget(
     searchText: String,
     modifier: Modifier = Modifier,
     setSearchText: (String) -> Unit,
-    onImeAction: (String) -> Unit
+    onImeAction: (String) -> Unit,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -62,10 +65,21 @@ fun SearchWidget(
                 }
             },
             trailingIcon = {
-                ClearIcon(searchText) {
-                    setSearchText("")
-                    keyboard?.show()
+                AnimatedContent(targetState = searchText, label = "trailing_icon") { text ->
+                    if (text.isEmpty()) {
+                        SpeechIcon {
+                            setSearchText(it)
+                            onImeAction(it)
+                            keyboard?.hide()
+                        }
+                    } else {
+                        ClearIcon {
+                            setSearchText("")
+                            keyboard?.show()
+                        }
+                    }
                 }
+
             },
             keyboardOptions = SearchKeyboardOptions,
             onValueChange = { setSearchText(it) },
@@ -88,46 +102,68 @@ fun SearchWidget(
 }
 
 @Composable
-private fun ClearIcon(text: String, onTextCleared: () -> Unit) {
-    AnimatedVisibility(
-        visible = text.isNotEmpty(),
-        enter = fadeIn() + expandIn(expandFrom = Alignment.TopCenter),
-        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.TopCenter)
-    ) {
-        IconResource(
-            modifier = Modifier
-                .testTagUi("search_clear")
-                .clickable(onClick = { onTextCleared() })
-                .padding(Dimens.Spacing12)
-                .size(24.dp),
-            imageVector = Icons.X,
-            tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = stringResource(R.string.cd_clear_text)
-        )
-    }
+private fun ClearIcon(onTextCleared: () -> Unit) {
+    IconResource(
+        modifier = Modifier
+            .testTagUi("search_clear")
+            .clickable(onClick = { onTextCleared() })
+            .padding(Dimens.Spacing12)
+            .size(24.dp),
+        imageVector = Icons.X,
+        tint = MaterialTheme.colorScheme.onSurface,
+        contentDescription = stringResource(R.string.cd_clear_text)
+    )
 }
 
 @Composable
-private fun SpeechIcon(text: String, onTextCleared: () -> Unit) {
-    AnimatedVisibility(
-        visible = text.isEmpty(),
-        enter = fadeIn() + expandIn(expandFrom = Alignment.BottomCenter),
-        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.BottomCenter)
-    ) {
-        IconResource(
-            modifier = Modifier
-                .clickable(onClick = { onTextCleared() })
-                .padding(Dimens.Spacing12)
-                .size(Dimens.Spacing24),
-            imageVector = Icons.Mic,
-            tint = MaterialTheme.colorScheme.onSurface
-        )
+private fun SpeechIcon(onText: (String) -> Unit) {
+    val context = LocalContext.current
+
+    val speechRecognizerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val results = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            if (!results.isNullOrEmpty()) {
+                onText(results[0])
+            }
+        }
     }
+
+    fun promptSpeechInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt))
+        }
+        try {
+            speechRecognizerLauncher.launch(intent)
+        } catch (e: Exception) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.speech_not_supported),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    IconResource(
+        modifier = Modifier
+            .padding(Dimens.Spacing12)
+            .size(Dimens.Spacing24),
+        imageVector = Icons.Mic,
+        tint = MaterialTheme.colorScheme.onSurface,
+        onClick = { promptSpeechInput() },
+    )
 }
 
 private val SearchKeyboardOptions = KeyboardOptions(
     capitalization = KeyboardCapitalization.Sentences,
-    autoCorrect = false,
+    autoCorrectEnabled = false,
     keyboardType = KeyboardType.Text,
     imeAction = ImeAction.Search
 )

@@ -21,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
@@ -79,7 +81,7 @@ internal fun DescriptionText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
 ) {
     SelectionContainer {
         Text(
@@ -94,16 +96,32 @@ internal fun DescriptionText(
 }
 
 @Composable
-private fun ratingText(rating: Int): AnnotatedString {
+private fun ratingText(uiRating: Int): AnnotatedString {
     return AnnotatedString.Builder().apply {
-        repeat(rating) {
+        repeat(uiRating) {
             append("✪")
         }
-        repeat(MaxRating - rating) {
+        repeat(MaxRating - uiRating) {
             append("✪")
         }
 
-        addStyle(SpanStyle(color = MaterialTheme.colorScheme.primary), 0, rating)
+        addStyle(
+            style = SpanStyle(color = MaterialTheme.colorScheme.primary),
+            start = 0,
+            end = uiRating
+        )
+        addStyle(
+            style = SpanStyle(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)),
+            start = uiRating,
+            end = MaxRating
+        )
+
+        if (uiRating != 0) {
+            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                append(" $uiRating/$MaxRating ")
+            }
+        }
+
         append("   ")
     }.toAnnotatedString()
 }

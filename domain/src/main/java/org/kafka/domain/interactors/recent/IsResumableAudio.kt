@@ -24,6 +24,7 @@ class IsResumableAudio @Inject constructor(
             val files = audioDataSource.findAudiosByItemId(params.itemId)
 
             files.map { it.id }.indexOf(recentAudio?.fileId) > 0
+                    || (recentAudio?.currentTimestamp ?: 0) > 0
         }.flowOn(dispatchers.io)
     }
 

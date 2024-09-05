@@ -3,7 +3,7 @@ package org.kafka.library
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -35,7 +35,7 @@ fun Tabs(
         selectedTabIndex = pagerState.currentPage,
         containerColor = backgroundColor,
         contentColor = contentColor,
-        divider = { Divider(color = MaterialTheme.colorScheme.surfaceVariant) },
+        divider = { HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant) },
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)

@@ -31,10 +31,17 @@ class FirestoreGraph @Inject constructor(
     val summaryCollection: CollectionReference
         get() = firestoreKt.collection("summary")
 
-    fun getFavoritesCollection(id: String) = firestore
+    fun getListCollection(uid: String, listId: String) = firestore
         .collection("favorites")
-        .document(id)
-        .collection("items")
+        .document(uid)
+        .collection(listId)
+
+    fun getRecommendationCollection() = firestore.collection("recommendations")
+
+    fun getRecommendationCollection(uid: String, recommendationId: String) =
+        getRecommendationCollection()
+            .document(uid)
+            .collection(recommendationId)
 
     fun getDownloadsCollection(id: String) = firestore
         .collection("downloads")

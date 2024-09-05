@@ -35,7 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.user.home.bottombar.HomeNavigationItemIcon
 import com.kafka.user.home.bottombar.HomeNavigationItems
 import com.kafka.user.home.bottombar.rail.HomeNavigationRailDefaults.ExpandedPlaybackControlsMinWidth
@@ -49,8 +48,8 @@ import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
@@ -90,12 +89,7 @@ internal fun HomeNavigationRail(
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     navigator: Navigator = LocalNavigator.current,
 ) {
-    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-    Surface(
-        tonalElevation = 0.dp,
-        shadowElevation = 8.dp,
-        modifier = modifier,
-    ) {
+    Surface(modifier = modifier, tonalElevation = 0.dp, shadowElevation = 8.dp) {
         BoxWithConstraints {
             extraContent()
             val maxWidth = maxWidth
@@ -170,10 +164,9 @@ internal fun HomeNavigationRail(
                         PlaybackArtworkPagerWithNowPlayingAndControls(
                             nowPlaying = nowPlaying,
                             playbackState = playbackState,
-                            onArtworkClick = {
-                                navigator.navigate(Screen.Player.createRoute(currentRoot))
-                            },
-                            titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle.copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize),
+                            onArtworkClick = { navigator.navigate(Screen.Player) },
+                            titleTextStyle = PlaybackNowPlayingDefaults.titleTextStyle
+                                .copy(fontSize = MaterialTheme.typography.bodyLarge.fontSize),
                             artistTextStyle = PlaybackNowPlayingDefaults.artistTextStyle.copy(
                                 fontSize = MaterialTheme.typography.titleSmall.fontSize
                             ),
@@ -186,9 +179,7 @@ internal fun HomeNavigationRail(
                             .padding(Dimens.Spacing08)
                             .zIndex(2f),
                         useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
-                        openPlaybackSheet = {
-                            navigator.navigate(Screen.Player.createRoute(currentRoot))
-                        }
+                        openPlaybackSheet = { navigator.navigate(Screen.Player) }
                     )
                 }
             }

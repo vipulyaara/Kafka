@@ -4,12 +4,10 @@ import com.kafka.data.feature.homepage.HomepageRepository
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.Interactor
+import org.kafka.base.extensions.mapAsync
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 
@@ -22,19 +20,24 @@ class UpdateHomepage @Inject constructor(
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
-            homepageRepository.getHomepageIds().mapAsync { ids ->
-                val unFetchedIds = ids.filter { !itemRepository.exists(it) }
+            val unFetchedIds = homepageRepository.getHomepageIds().map { ids ->
+                ids.filter { !itemRepository.exists(it) }
+            }
 
-                if (unFetchedIds.isNotEmpty()) {
-                    val query = ArchiveQuery().booksByIdentifiers(unFetchedIds)
+            // If there are less than 50 un-fetched IDs, we make a single request
+            val formattedIds = if (unFetchedIds.sumOf { it.size } <= 50) {
+                listOf(unFetchedIds.flatten())
+            } else {
+                unFetchedIds
+            }
+
+            formattedIds.mapAsync { ids ->
+                if (ids.isNotEmpty()) {
+                    val query = ArchiveQuery().booksByIdentifiers(ids)
                     val items = itemRepository.updateQuery(buildRemoteQuery(query))
-                    itemRepository.saveItems(items)
+                    itemRepository.saveItems(items.filterNot { it.isInappropriate })
                 }
             }
         }
     }
 }
-
-private suspend fun <T, R> List<T>.mapAsync(
-    mapper: suspend (T) -> R,
-): List<R> = coroutineScope { map { async { mapper(it) } }.awaitAll() }

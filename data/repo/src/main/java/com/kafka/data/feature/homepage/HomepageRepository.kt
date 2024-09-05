@@ -6,7 +6,6 @@ import com.kafka.data.model.homepage.HomepageCollectionResponse
 import dagger.Reusable
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.QuerySnapshot
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
@@ -33,7 +32,7 @@ class HomepageRepository @Inject constructor(
             .sortedBy { it.index }
             .also { debug { "homepage is : $it" } }
             .run { homepageMapper.map(this) }
-            .map { it.toList().toPersistentList() }
+            .map { it.toList() }
 
     /**
      * Get the list of ids of the homepage items to fetch the items from archive api

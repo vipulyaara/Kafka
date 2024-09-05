@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,12 +29,14 @@ import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.materialYouPlayerTheme
+import org.kafka.analytics.logger.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen
+import org.kafka.navigation.currentScreenAsState
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
+import org.kafka.navigation.graph.navigationRoute
 import org.kafka.navigation.selectRootScreen
-import org.kafka.analytics.logger.Analytics
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.snackbar.DismissableSnackbarHost
 import ui.common.theme.theme.Dimens
@@ -50,14 +53,9 @@ internal fun Home(
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
 ) {
     val selectedTab by navController.currentScreenAsState()
-    val navigator = LocalNavigator.current
     val playbackState by playbackConnection.playbackState.collectAsStateWithLifecycle()
     val nowPlaying by playbackConnection.nowPlaying.collectAsStateWithLifecycle()
     val isPlayerActive = (playbackState to nowPlaying).isActive
-
-    LaunchedEffect(selectedTab) {
-        navigator.updateRoot(selectedTab)
-    }
 
     BoxWithConstraints(modifier.fillMaxWidth()) {
         val isWideLayout = isWideLayout()
@@ -71,9 +69,7 @@ internal fun Home(
                     navController = navController,
                     analytics = analytics,
                     onPlayingArtistClick = {
-                        navController.navigate(
-                            Screen.Search.createRoute(RootScreen.Search, nowPlaying.artist)
-                        )
+                        navController.navigate(Screen.Search(nowPlaying.artist.orEmpty()))
                     },
                 )
             }
@@ -108,11 +104,9 @@ private fun BottomBar(
     selectedTab: RootScreen,
     isPlayerActive: Boolean,
     analytics: Analytics,
-    playerTheme: String
+    playerTheme: String,
 ) {
     val navigator = LocalNavigator.current
-    val currentRoot by navigator.currentRoot.collectAsStateWithLifecycle()
-
     if (!isWideLayout)
         Column {
             MiniPlayer(
@@ -120,16 +114,14 @@ private fun BottomBar(
                 modifier = Modifier
                     .padding(Dimens.Spacing08)
                     .zIndex(2f),
-                openPlaybackSheet = {
-                    navigator.navigate(Screen.Player.createRoute(currentRoot))
-                },
+                openPlaybackSheet = { navigator.navigate(Screen.Player) },
                 playerTheme = playerTheme,
             )
 
             HomeNavigationBar(
                 selectedTab = selectedTab,
                 onNavigationSelected = { selected ->
-                    analytics.log { this.homeTabSwitched(selectedTab.route, "navigation_bar") }
+                    analytics.log { homeTabSwitched(selectedTab.analyticsKey, "navigation_bar") }
                     navController.selectRootScreen(selected)
                 },
                 isPlayerActive = isPlayerActive,
@@ -139,11 +131,13 @@ private fun BottomBar(
     else Spacer(Modifier.navigationBarsPadding())
 }
 
-
 @Composable
 private fun shouldShowBottomBar(navController: NavController): Boolean {
     val currentRoute by navController.currentBackStackEntryAsState()
-    val destination = currentRoute?.destination?.route?.split("/")?.getOrNull(1)
+    val destination by remember(currentRoute) {
+        derivedStateOf { currentRoute?.destination?.route?.substringBefore("/") }
+    }
 
-    return destination != "reader" && destination != "reader_online"
+    return destination != Screen.Reader.navigationRoute
+            && destination != Screen.OnlineReader.navigationRoute
 }

@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
-import kotlinx.collections.immutable.ImmutableList
 import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.shadowMaterial
@@ -64,7 +63,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun ContinueReading(
-    readingList: ImmutableList<RecentItemWithProgress>,
+    readingList: List<RecentItemWithProgress>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
@@ -111,7 +110,7 @@ internal fun ContinueReading(
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )

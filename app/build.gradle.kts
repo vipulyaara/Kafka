@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 76
-        versionName = "0.36.0"
+        versionCode = 78
+        versionName = "0.38.0"
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
@@ -34,11 +34,6 @@ android {
             "String",
             "PIPELESS_AUTH_TOKEN",
             properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
-        )
-        buildConfigField(
-            "String",
-            "OPEN_AI_API_KEY",
-            properties["OPEN_AI_API_KEY"]?.toString() ?: System.getenv("OPEN_AI_API_KEY")
         )
     }
 
@@ -152,7 +147,6 @@ dependencies {
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
-    implementation(libs.accompanist.navigation.material)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.hilt.compose)
@@ -165,6 +159,7 @@ dependencies {
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material.navigation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.util)

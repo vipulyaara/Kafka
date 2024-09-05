@@ -1,6 +1,7 @@
 package org.kafka.domain.observers.library
 
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.listIdFavorites
 import com.kafka.data.entities.toItem
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
@@ -23,7 +24,7 @@ class ObserveFavorites @Inject constructor(
         return accountRepository.observeCurrentFirebaseUser()
             .flatMapLatest { user ->
                 user?.let {
-                    favoritesRepository.observeFavorites(user.uid)
+                    favoritesRepository.observeList(user.uid, listIdFavorites)
                 } ?: flowOf(emptyList())
             }
             .map { favorites -> favorites.map { it.toItem() } }

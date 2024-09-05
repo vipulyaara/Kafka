@@ -8,7 +8,6 @@ const val RECOMMENDATION_ENABLED = "recommendation_data_enabled"
 const val VIEW_RECOMMENDATION_ENABLED = "view_recommendation_data_enabled"
 const val USE_RECOMMENDATION_ENABLED = "use_recommendation_data_enabled"
 const val RECOMMENDATION_ROW_ENABLED = "recommendation_row_enabled"
-const val RECOMMENDATION_ROW_INDEX = "recommendation_row_index"
 const val RELATED_CONTENT_ROW_ENABLED = "related_content_row_enabled"
 const val ONLINE_READER_ENABLED = "online_reader_enabled"
 const val MIN_SUPPORTED_VERSION = "min_supported_version"
@@ -18,6 +17,8 @@ const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled
 const val BORROWABLE_BOOK_MESSAGE = "borrowable_book_message"
 const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
 const val SUMMARY_ENABLED = "summary_enabled"
+const val SHOW_FEATURED_ITEM_LABELS = "show_featured_item_labels"
+const val OPEN_AI_API_KEY = "open_ai_api_key"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -34,8 +35,6 @@ fun RemoteConfig.isViewRecommendationEnabled() = getBoolean(VIEW_RECOMMENDATION_
 fun RemoteConfig.isUseRecommendationEnabled() = getBoolean(USE_RECOMMENDATION_ENABLED)
 
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
-
-fun RemoteConfig.recommendationRowIndex() = getLong(RECOMMENDATION_ROW_INDEX)
 
 fun RemoteConfig.isRelatedContentRowEnabled() = getBoolean(RELATED_CONTENT_ROW_ENABLED)
 
@@ -54,3 +53,7 @@ fun RemoteConfig.borrowableBookMessage() = get(BORROWABLE_BOOK_MESSAGE).replace(
 fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
 
 fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)
+
+fun RemoteConfig.showFeaturedItemLabels() = getBoolean(SHOW_FEATURED_ITEM_LABELS)
+
+fun RemoteConfig.getOpenAiApiKey() = get(OPEN_AI_API_KEY)

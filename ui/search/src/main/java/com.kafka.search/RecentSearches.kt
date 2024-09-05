@@ -46,7 +46,7 @@ fun RecentSearches(
                     recentSearch = recentSearch,
                     onSearchClicked = onSearchClicked,
                     onRemoveSearch = onRemoveSearch,
-                    modifier = Modifier.animateItemPlacement()
+                    modifier = Modifier.animateItem()
                 )
             }
         }

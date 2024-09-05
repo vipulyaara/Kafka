@@ -14,8 +14,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
-import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen
+import org.kafka.navigation.graph.Screen.Search
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,20 +24,15 @@ class PlaybackViewModel @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val fileDao: FileDao,
     private val navigator: Navigator,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     val playerTheme by lazy { remoteConfig.getPlayerTheme() }
 
     fun goToAlbum() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentRoot = navigator.currentRoot.value
-            val nowPlaying = playbackConnection.nowPlaying.value
-
-            nowPlaying.id.toMediaId().value.let { id ->
+            playbackConnection.nowPlaying.value.id.toMediaId().value.let { id ->
                 fileDao.getOrNull(id)!!.let { file ->
-                    navigator.navigate(
-                        Screen.ItemDetail.createRoute(currentRoot, file.itemId)
-                    )
+                    navigator.navigate(Screen.ItemDetail(file.itemId))
                 }
             }
         }
@@ -44,14 +40,11 @@ class PlaybackViewModel @Inject constructor(
 
     fun goToCreator() {
         viewModelScope.launch {
-            val currentRoot = navigator.currentRoot.value
-            val creator = playbackConnection.nowPlaying.value.artist
-
-            navigator.navigate(Search.createRoute(
-                root = currentRoot,
-                keyword = creator,
-                filter = SearchFilter.Creator.name
-            ))
+            val artist = playbackConnection.nowPlaying.value.artist.orEmpty()
+            navigator.navigate(
+                route = Search(keyword = artist, filters = SearchFilter.Creator.name),
+                root = RootScreen.Search
+            )
         }
     }
 }

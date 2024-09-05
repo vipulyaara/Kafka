@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,20 +36,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
 import org.kafka.common.widgets.FullScreenMessage
 import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
-import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.item.FeaturedItem
-import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.GenreItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
@@ -79,11 +74,9 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
                 AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
-                        recommendedContent = viewModel.recommendedContent,
-                        recommendationRowIndex = viewModel.recommendationRowIndex,
+                        showCarouselLabels = viewModel.showCarouselLabels,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
-                        openRecommendationDetail = viewModel::openRecommendationDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
@@ -113,12 +106,10 @@ fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
 @Composable
 private fun HomepageFeedItems(
     homepage: Homepage,
-    recommendedContent: List<Item>,
     appShareIndex: Int,
-    recommendationRowIndex: Int,
+    showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String) -> Unit,
-    openRecommendationDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -131,19 +122,6 @@ private fun HomepageFeedItems(
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
-            if (index == recommendationRowIndex && recommendedContent.isNotEmpty()) {
-                item(key = "recommendations") {
-                    LabelMedium(
-                        text = stringResource(id = R.string.recommended_for_you),
-                        modifier = subjectModifier
-                    )
-                    RowItems(
-                        items = recommendedContent.toImmutableList(),
-                        openItemDetail = openRecommendationDetail
-                    )
-                }
-            }
-
             if (index == appShareIndex) {
                 item {
                     MessageBox(
@@ -159,13 +137,21 @@ private fun HomepageFeedItems(
             when (collection) {
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
-                        ContinueReading(
-                            readingList = homepage.continueReadingItems,
-                            openItemDetail = openRecentItemDetail,
-                            removeRecentItem = removeRecentItem,
-                            modifier = Modifier.padding(top = Dimens.Gutter),
-                            openRecentItems = openRecentItems
-                        )
+                        if (homepage.continueReadingItems.isNotEmpty()) {
+                            ContinueReading(
+                                readingList = homepage.continueReadingItems,
+                                openItemDetail = openRecentItemDetail,
+                                removeRecentItem = removeRecentItem,
+                                modifier = Modifier.padding(top = Dimens.Gutter),
+                                openRecentItems = openRecentItems
+                            )
+                        } else {
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(Dimens.Spacing12)
+                            )
+                        }
                     }
                 }
 
@@ -196,29 +182,33 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.FeaturedItem -> {
-                    if (collection.items.size > 1) {
-                        item {
-                            Carousels(
-                                carouselItems = collection.items,
-                                images = collection.image,
-                                onBannerClick = openItemDetail
-                            )
-                        }
-                    } else {
-                        featuredItems(collection = collection, openItemDetail = openItemDetail)
+                    item {
+                        Carousels(
+                            carouselItems = collection.items,
+                            images = collection.image,
+                            showLabel = showCarouselLabels,
+                            onBannerClick = openItemDetail
+                        )
                     }
                 }
 
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
-                        SubjectItems(collection.labels, goToSubject)
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
+                        RowItems(items = collection.items, openItemDetail = openItemDetail)
+                    }
+                }
+
+                is HomepageCollection.Recommendations -> {
+                    item(contentType = "row") {
+                        SubjectItems(collection.labels, false, goToSubject)
                         RowItems(items = collection.items, openItemDetail = openItemDetail)
                     }
                 }
 
                 is HomepageCollection.Grid -> {
                     item(key = collection.key, contentType = "grid") {
-                        SubjectItems(collection.labels, goToSubject)
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
                         GridItems(
                             collection = collection,
                             openItemDetail = openItemDetail,
@@ -228,7 +218,9 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Column -> {
-                    item(key = collection.key) { SubjectItems(collection.labels, goToSubject) }
+                    item(key = collection.key) {
+                        SubjectItems(collection.labels, collection.clickable, goToSubject)
+                    }
                     columnItems(collection, openItemDetail)
                 }
             }
@@ -249,39 +241,9 @@ private fun HomepageFeedItems(
     }
 }
 
-private fun LazyListScope.featuredItems(
-    collection: HomepageCollection.FeaturedItem,
-    openItemDetail: (String) -> Unit,
-) {
-    if (collection.items.isNotEmpty()) {
-        items(
-            items = collection.items,
-            key = { "featured_${it.itemId}" },
-            contentType = { "featured" }
-        ) { item ->
-            val image by rememberSavableMutableState(collection.image) {
-                collection.image.randomOrNull().orEmpty()
-            }
-            FeaturedItem(
-                item = item,
-                label = collection.label,
-                imageUrl = image,
-                onClick = { openItemDetail(item.itemId) },
-                modifier = Modifier
-                    .padding(horizontal = Dimens.Gutter)
-                    .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
-            )
-        }
-    } else {
-        item(key = "featured_placeholder_${collection.image}") {
-            FeaturedItemPlaceholder()
-        }
-    }
-}
-
 @Composable
 private fun RowItems(
-    items: ImmutableList<Item>,
+    items: List<Item>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
 ) {
@@ -316,8 +278,8 @@ private fun RowItems(
 
 @Composable
 private fun Authors(
-    titles: ImmutableList<String>,
-    images: ImmutableList<String>,
+    titles: List<String>,
+    images: List<String>,
     modifier: Modifier = Modifier,
     goToCreator: (String) -> Unit,
 ) {
@@ -424,13 +386,13 @@ private fun GridItems(
 }
 
 @Composable
-private fun SubjectItems(labels: ImmutableList<String>, goToSubject: (String) -> Unit) {
+private fun SubjectItems(labels: List<String>, clickable: Boolean, goToSubject: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
         modifier = subjectModifier
     ) {
         labels.forEach { label ->
-            SubjectItem(text = label, onClicked = { goToSubject(label) })
+            SubjectItem(text = label, onClicked = { goToSubject(label) }.takeIf { clickable })
         }
     }
 }

@@ -14,7 +14,7 @@ import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.Screen
+import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
@@ -49,7 +49,7 @@ class DownloadsViewModel @Inject constructor(
 
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId = itemId, source = "downloads") }
-        navigator.navigate(Screen.ItemDetail.createRoute(navigator.currentRoot.value, itemId))
+        navigator.navigate(Screen.ItemDetail(itemId))
     }
 
     private fun requestNewDownloadLocation() {

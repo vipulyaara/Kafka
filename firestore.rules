@@ -1,0 +1,110 @@
+rules_version = '2';
+
+service cloud.firestore {
+	match /databases/{database}/documents {
+		// ---------------------------------------------------------
+		// Rowy rules start
+		// ---------------------------------------------------------
+		// Automatically generated and managed by Rowy
+		// ⚠️ Do not edit this block directly, as it will be overwritten
+		// To edit the security rules, please do it on different block or manage from rowy settings
+		// initialized on 5/25/2023
+		match /{collectionId}/{docId} {
+			allow read: if colRule(["homepage-collection"], ["ADMIN","EDITOR","VIEWER","OWNER"]);
+			allow create, update, delete: if colRule(["homepage-collection"], ["ADMIN","OWNER"]);
+			
+			match /{subTableCollectionID}/{document=**}{
+				allow read: if colRule(["homepage-collection"], ["ADMIN","EDITOR","VIEWER","OWNER"]);
+				allow create, update, delete: if colRule(["homepage-collection"], ["ADMIN","OWNER"]);
+				
+			}
+			function colRule(collections, roles){
+				return collectionId in collections && hasAnyRole(roles);
+			}
+			
+		}
+		match /{somePath=**}/{collectionGroupId}/{docId}{
+			allow read, create, update, delete: if colRule(["recent_items","homepage/collection/items"], ["ADMIN","OWNER"]);
+			
+			function colRule(collections, roles){
+				return collectionGroupId in collections && hasAnyRole(roles);
+			}
+			
+		}
+		
+		// ---------------------------------------------------------
+		// Rowy rules end
+		// ---------------------------------------------------------
+		// Allow admins to read and write all documents
+		match /{document=**} {
+			allow read, write: if hasAnyRole(["ADMIN", "OWNER"]);
+		}
+		
+		// Rowy: Allow signed in users to read Rowy configuration and admins to write
+		match /_rowy_/{docId} {
+			allow read: if request.auth.token.roles.size() > 0;
+			allow write: if hasAnyRole(["ADMIN", "OWNER"]);
+			match /{document=**} {
+				allow read: if request.auth.token.roles.size() > 0;
+				allow write: if hasAnyRole(["ADMIN", "OWNER"]);
+			}
+			match /schema/{tableId} {
+				allow update: if canModify(tableId,'pc')
+			match /{document=**} {allow read,write: if canModify(tableId,'pc')}
+		}
+		match /groupSchema/{tableId} {
+			allow update: if canModify(tableId,'cg')
+		match /{document=**} {allow read,write: if canModify(tableId,'cg')}
+	}
+	function canModify(tableId,tableType) {
+		return hasAnyRole(get(/databases/$(database)/documents/_rowy_/settings)
+		.data.tablesSettings[tableType][tableId].modifiableBy)
+	}
+}
+// Rowy: Allow users to edit their settings
+match /_rowy_/userManagement/users/{userId} {
+	allow get, update, delete: if isDocOwner(userId);
+	allow create: if request.auth.token.roles.size() > 0;
+}
+// Rowy: Allow public to read public Rowy configuration
+match /_rowy_/publicSettings {
+	allow get: if true;
+}
+
+// Rowy: Utility functions
+function isDocOwner(docId) {
+	return request.auth != null && (request.auth.uid == resource.id || request.auth.uid == docId);
+}
+function hasAnyRole(roles) {
+	return request.auth != null && request.auth.token.roles.hasAny(roles);
+}
+
+match /homepage/ids {
+	allow read: if true;
+}
+
+match /homepage-collection/{document=**} {
+	allow read, write: if true;
+}
+
+match /homepage-collection-debug/{document=**} {
+	allow read, write: if true;
+}
+
+match /downloads/{document=**} {
+	allow read, write: if true;
+}
+
+match /homepage/{document=**} {
+	allow read, write: if true;
+}
+
+match /feedback/{document=**} {
+	allow read, write: if true;
+}
+
+match /{document=**} {
+	allow read, write: if request.auth != null;
+}
+}
+}

@@ -97,7 +97,7 @@ private fun Files(
                 onFileClicked = onFileClicked,
                 onDownloadClicked = onDownloadClicked,
                 downloadInfo = download?.downloadInfo,
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 downloader = downloader,
                 scope = scope
             )

@@ -14,12 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.web.WebContent
 import com.google.accompanist.web.WebViewState
 import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.data.feature.item.DownloadStatus
@@ -32,8 +34,6 @@ import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.material.CloseButton
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.topScaffoldPadding
-import tm.alashow.datmusic.downloader.Downloader
-import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import com.google.accompanist.web.WebView as AccompanistWebView
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -44,8 +44,11 @@ fun OnlineReader(
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val webViewState by viewModel.webViewState.collectAsStateWithLifecycle()
     val fileId = state.readerState?.fileId.orEmpty()
+    val readerState by viewModel.readerState.collectAsStateWithLifecycle()
+    val webViewState by remember(readerState?.url) {
+        mutableStateOf(readerState?.url?.let { WebViewState(WebContent.Url(url = it)) })
+    }
 
     Scaffold(
         topBar = {
@@ -116,7 +119,6 @@ private fun TopBar(
 
                 if (fileId != null) {
                     DownloadIcon(
-                        fileId = fileId,
                         downloadInfo = download?.downloadInfo,
                         onDownloadClicked = downloadItem,
                         openOfflineReader = openOfflineReader
@@ -133,9 +135,7 @@ private fun TopBar(
 
 @Composable
 fun DownloadIcon(
-    fileId: String,
     downloadInfo: DownloadInfo?,
-    downloader: Downloader = LocalDownloader.current,
     onDownloadClicked: () -> Unit,
     openOfflineReader: () -> Unit,
 ) {

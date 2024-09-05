@@ -13,8 +13,8 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.summary.ObserveSummary
 import org.kafka.navigation.Navigator
-import org.kafka.navigation.RootScreen
-import org.kafka.navigation.Screen.Search
+import org.kafka.navigation.graph.RootScreen
+import org.kafka.navigation.graph.Screen.Search
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +45,7 @@ class SummaryViewModel @Inject constructor(
 
     fun goToCreator(keyword: String?) {
         analytics.log { this.openCreator("summary") }
-        navigator.navigate(Search.createRoute(RootScreen.Search, keyword, Creator.name))
+        navigator.navigate(Search(keyword.orEmpty(), Creator.name), RootScreen.Search)
     }
 }
 

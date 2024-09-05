@@ -24,6 +24,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import org.kafka.common.widgets.shadowMaterial
 import org.kafka.ui.components.R
+import org.kafka.ui.components.animation.colorFilterDynamicProperty
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -78,6 +79,8 @@ private fun SummaryAnimation(
             iterations = LottieConstants.IterateForever,
             modifier = modifier.align(Alignment.Center),
             isPlaying = true,
+            speed = 0.5f,
+            dynamicProperties = colorFilterDynamicProperty(color)
         )
     }
 }

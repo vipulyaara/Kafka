@@ -6,7 +6,12 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.albumId
 import com.sarahang.playback.core.fileId
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
@@ -29,22 +34,42 @@ class AudioProgressInitializer @Inject constructor(
 
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
-            playbackConnection.nowPlaying
+            playbackConnection.playbackProgress
+                .filter { it.isPlaying }
+                .buffer(1)
+                .map { it.position + it.elapsed }
+                .filter { it % 5000 < 1000 }
+                .onEach { debug { "Updating recent audio position: $it" } }
+                .distinctUntilChanged()
                 .collectLatest { timestamp ->
-                    debug { "Updating progress for $timestamp" }
-
-                    playbackConnection.nowPlaying.value.albumId?.let { albumId ->
-                        playbackConnection.nowPlaying.value.fileId.let { fileId ->
-                            val audioItem = recentAudioDao.getByAlbumId(albumId)
-                            if (audioItem == null) {
-                                val audio = RecentAudioItem(fileId = fileId, albumId = albumId)
-                                recentAudioDao.insert(audio)
-                            } else {
-                                recentAudioDao.updateNowPlaying(albumId = albumId, fileId = fileId)
-                            }
-                        }
+                    val nowPlaying = playbackConnection.nowPlaying.value
+                    nowPlaying.albumId?.let { albumId ->
+                        updateRecentAudio(
+                            albumId = albumId,
+                            fileId = nowPlaying.fileId,
+                            timestamp = timestamp
+                        )
                     }
                 }
+        }
+    }
+
+    private suspend fun updateRecentAudio(albumId: String, fileId: String, timestamp: Long) {
+        val audioItem = recentAudioDao.getByAlbumId(albumId)
+        if (audioItem == null) {
+            val audio = RecentAudioItem(
+                fileId = fileId,
+                albumId = albumId,
+                currentTimestamp = timestamp,
+                duration = 0 // duration is not available
+            )
+            recentAudioDao.insert(audio)
+        } else {
+            recentAudioDao.updateNowPlaying(
+                albumId = albumId,
+                fileId = fileId,
+                currentTimestamp = timestamp
+            )
         }
     }
 }

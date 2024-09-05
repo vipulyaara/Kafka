@@ -1,13 +1,13 @@
 [versions]
 accompanist = "0.34.0"
 appupdate = "2.1.0"
-agp = "8.5.2"
+agp = "8.6.0"
 androidxhilt = "1.2.0"
-androidxlifecycle = "2.8.4"
-navigation = "2.7.7"
+androidxlifecycle = "2.8.5"
 coil = "2.6.0"
-compose-alpha = "2024.01.00-alpha01"
-compose-bom = "2024.06.00"
+compose-alpha = "2024.08.00-alpha02"
+compose-bom = "2024.09.00"
+compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
 dagger = "2.51.1"
@@ -16,9 +16,10 @@ haze="0.7.3"
 kotlin = "2.0.10"
 kotlin-immutable = "0.3.7"
 kotlininject = "0.7.1"
-material3 = "1.2.1"
+material3 = "1.3.0"
 media3 = "1.3.1"
 mixpanel = "7.0.0"
+navigation = "2.8.0"
 okhttp = "4.12.0"
 pdfviewer = "3.2.0-beta.1"
 retrofit = "2.9.0"
@@ -33,13 +34,10 @@ core-ktx = "1.13.1"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
-benchmark-macro-junit4 = "1.2.4"
-androidx-baselineprofile = "1.2.4"
+benchmark-macro-junit4 = "1.3.0"
+androidx-baselineprofile = "1.3.0"
 profileinstaller = "1.3.1"
 review = "2.0.1"
-junit = "4.13.2"
-appcompat = "1.7.0"
-material = "1.12.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -64,14 +62,13 @@ accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayo
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
-accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-web = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
 rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.9.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
 androidx-collection = "androidx.collection:collection-ktx:1.4.3"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
@@ -91,8 +88,8 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
-lottie-core = "com.airbnb.android:lottie:6.1.0"
-lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
+lottie-core = "com.airbnb.android:lottie:6.4.0"
+lottie-compose = "com.airbnb.android:lottie-compose:6.4.0"
 
 androidx-palette = "androidx.palette:palette:1.0.0"
 
@@ -112,7 +109,7 @@ compose-foundation-layout = { module = "androidx.compose.foundation:foundation-l
 compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended" }
 compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-compose-material-navigation = { module = "androidx.compose.material:material-navigation" }
+compose-material-navigation = { module = "androidx.compose.material:material-navigation", version.ref = "compose-material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
@@ -122,7 +119,7 @@ compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
 fetch = "com.github.abbas7777:fetch2-android14:3.2.0-beta07"
 
-google-bom = "com.google.firebase:firebase-bom:33.1.2"
+google-bom = "com.google.firebase:firebase-bom:33.2.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
@@ -203,6 +200,3 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }

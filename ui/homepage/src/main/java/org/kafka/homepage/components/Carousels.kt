@@ -2,28 +2,27 @@ package org.kafka.homepage.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
+import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
-import kotlinx.collections.immutable.ImmutableList
 import org.kafka.ui.components.item.FeaturedItem
-import org.kafka.ui.components.material.CircleIndicator
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun Carousels(
-    carouselItems: ImmutableList<Item>,
+    carouselItems: List<Item>,
     images: List<String>,
     onBannerClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    lazyListState: LazyListState = rememberLazyListState(),
+    showLabel: Boolean = true,
 ) {
     val state = rememberPagerState { carouselItems.size }
 
@@ -40,14 +39,41 @@ internal fun Carousels(
             carouselItems.getOrNull(index)?.let { item ->
                 FeaturedItem(
                     item = item,
-                    label = item.title,
+                    label = item.title.takeIf { showLabel },
                     imageUrl = images.getOrNull(index),
                     onClick = { onBannerClick(item.itemId) }
                 )
             }
         }
-
-        Spacer(modifier = Modifier.padding(top = Dimens.Gutter))
-        CircleIndicator(state = state, modifier = Modifier.padding(horizontal = Dimens.Gutter))
     }
 }
+
+@Composable
+internal fun CarouselsMaterial3(
+    carouselItems: List<Item>,
+    images: List<String>,
+    onBannerClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    showLabel: Boolean = true,
+) {
+    val state = rememberCarouselState { carouselItems.size }
+    HorizontalMultiBrowseCarousel(
+        state = state,
+        modifier = modifier.padding(horizontal = Dimens.Spacing08, vertical = Dimens.Spacing08),
+        preferredItemWidth = CarouselItemPreferredWidth.dp,
+        itemSpacing = Dimens.Spacing04,
+        contentPadding = PaddingValues(horizontal = Dimens.Spacing16)
+    ) { index ->
+        carouselItems.getOrNull(index)?.let { item ->
+            FeaturedItem(
+                item = item,
+                label = item.title.takeIf { showLabel },
+                imageUrl = images.getOrNull(index),
+                onClick = { onBannerClick(item.itemId) },
+                modifier = Modifier.maskClip(shape = RoundedCornerShape(Dimens.Radius16))
+            )
+        }
+    }
+}
+
+const val CarouselItemPreferredWidth = 500

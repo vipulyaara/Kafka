@@ -16,6 +16,7 @@ class CoilAppInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
+
     override fun init() {
         Coil.setImageLoader {
             ImageLoader.Builder(context)

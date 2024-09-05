@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.getOpenAiApiKey
 import com.kafka.user.BuildConfig
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
@@ -51,9 +53,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideFirebaseAnalytics(app: Application): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(app).apply {
-            setUserId("")
-        }
+        return FirebaseAnalytics.getInstance(app)
     }
 
     @Singleton
@@ -70,8 +70,8 @@ class AppModule {
         @ApplicationContext context: Context,
     ): PreferencesStore = PreferencesStore(
         PreferenceDataStoreFactory.create(
-        produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
-    ))
+            produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
+        ))
 
     @Singleton
     @Provides
@@ -96,10 +96,10 @@ class AppModule {
 
 
     @Provides
-    fun provideSecretsProvider() = object : SecretsProvider {
+    fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
         override val pipelessAuthToken: String = BuildConfig.PIPELESS_AUTH_TOKEN
-        override val openAiApiKey: String = BuildConfig.OPEN_AI_API_KEY
+        override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
     }
 }
 

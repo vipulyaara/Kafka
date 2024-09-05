@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit = {}) {
+fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: (() -> Unit)? = null) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(50),
@@ -23,7 +23,7 @@ fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Un
             text = text,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
-                .clickable { onClicked() }
+                .then(onClicked?.let { Modifier.clickable(onClick = it) } ?: Modifier)
                 .padding(
                     horizontal = Dimens.Spacing12,
                     vertical = Dimens.Spacing08

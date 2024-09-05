@@ -2,6 +2,7 @@ package com.kafka.user.initializer
 
 import android.content.Context
 import co.touchlab.kermit.ExperimentalKermitApi
+import co.touchlab.kermit.LogcatWriter
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
@@ -21,7 +22,11 @@ import javax.inject.Inject
 @OptIn(ExperimentalKermitApi::class)
 class LoggerInitializer @Inject constructor() : AppInitializer {
     override fun init() {
-        Logger.setLogWriters(CrashlyticsLogWriter(minCrashSeverity = Severity.Error))
+        val logWriters = listOf(
+            LogcatWriter(),
+            CrashlyticsLogWriter(minCrashSeverity = Severity.Error)
+        )
+        Logger.setLogWriters(logWriters)
     }
 }
 

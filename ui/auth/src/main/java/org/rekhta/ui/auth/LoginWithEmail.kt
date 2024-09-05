@@ -165,7 +165,7 @@ internal fun LoginTextField(
         },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = loginTextField.keyboardType,
             imeAction = loginTextField.imeAction
         ),

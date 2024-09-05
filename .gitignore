@@ -72,3 +72,5 @@ fastlane/readme.md
 /.idea/misc.xml
 
 /Sarahang/
+
+/node_modules/
