@@ -26,6 +26,6 @@ abstract class RecentAudioDao : EntityDao<RecentAudioItem> {
     @Query("select * from recent_audio where albumId = :albumId")
     abstract fun observeByAlbumId(albumId: String): Flow<RecentAudioItem?>
 
-    @Query("update recent_audio set fileId = :fileId where albumId = :albumId")
-    abstract suspend fun updateNowPlaying(albumId: String, fileId: String)
+    @Query("update recent_audio set fileId = :fileId, currentTimestamp = :currentTimestamp where albumId = :albumId")
+    abstract suspend fun updateNowPlaying(albumId: String, fileId: String, currentTimestamp: Long)
 }

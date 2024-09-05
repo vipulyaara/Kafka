@@ -29,6 +29,6 @@ class ResumeAlbum @Inject constructor(
 
         analytics.log { playItem(itemId = params, index = index) }
 
-        playbackConnection.playAlbum(params, index)
+        playbackConnection.playAlbum(params, index, audio?.currentTimestamp)
     }
 }
