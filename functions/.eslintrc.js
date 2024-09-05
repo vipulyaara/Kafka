@@ -18,10 +18,21 @@ module.exports = {
     "eol-last": "off",
     "indent": "off",
     "max-len": "off",
+    "quotes": "off",
+    "comma-dangle": "off",
+    "object-curly-spacing": "off",
+    "semi": "off",
+    "padded-blocks": "off",
+    "no-multiple-empty-lines": "off",
+    "require-jsdoc": "off",
+    "arrow-parens": "off",
+    "guard-for-in": "off",
+    "no-unused-vars": "off",
+    "no-dupe-keys": "off",
   },
   overrides: [
     {
-      files: ["**/*.spec.*"],
+      files: ["**.spec.*"],
       env: {
         mocha: true,
       },
@@ -30,3 +41,6 @@ module.exports = {
   ],
   globals: {},
 };
+
+
+

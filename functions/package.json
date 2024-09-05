@@ -16,8 +16,10 @@
   "dependencies": {
     "@google-cloud/bigquery": "^7.9.0",
     "@google-cloud/storage": "^7.12.1",
+    "axios": "^1.7.7",
     "firebase-admin": "^12.1.0",
-    "firebase-functions": "^5.1.1"
+    "firebase-functions": "^5.1.1",
+    "natural": "^8.0.1"
   },
   "devDependencies": {
     "eslint": "^8.15.0",
