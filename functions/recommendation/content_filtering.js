@@ -46,6 +46,8 @@ const ACTIVE_USER_THRESHOLD_DAYS = 30;
 const SIMILARITY_THRESHOLD = 0.3;
 const MAX_RECOMMENDATIONS = 50;
 
+let userInteractionsCache = {};
+
 async function generateContentBasedRecommendations() {
   const activeUsers = await getActiveUsers();
   console.log(`Found ${activeUsers.length} active users for content-based recommendations`);
@@ -113,19 +115,11 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 50
+      LIMIT 100
     `;
 
   const [rows] = await bigquery.query({ query });
   return rows.map(row => row.user_id);
-  // For testing purposes, return a fixed set of user IDs
-  // return [
-  //   '2fc6c7a7e7e101d923f017cc4df1f786',
-  //   '29643dbf9a3146472e0d9ef74de5b1aa',
-  //   'a9896783fb0aa798f6f80b389bfd83d8',
-  //   '81bf680912fce21ecaf97ae0681fbd41',
-  //   '9b01d4fa48d1af95a158e1bf58537fb0'
-  // ];
 }
 
 async function buildUserProfile(userId) {
@@ -188,6 +182,10 @@ async function getUserInteractions(userId) {
   };
 
   const [rows] = await bigquery.query(options);
+  const interactions =  rows.map(row => ({ item_id: row.item_id }));
+
+  userInteractionsCache[userId] = new Set(interactions);
+
   return rows.map(row => ({ item_id: row.item_id }));
 }
 
@@ -221,11 +219,15 @@ function normalizeProfile(profile) {
 }
 
 async function generateUserRecommendations(userId, userProfile) {
+  if (!userInteractionsCache[userId]) {
+    await getUserInteractions(userId);
+  }
+
   const allItems = await getAllItems();
   const scoredItems = [];
 
   for (const item of allItems) {
-    if (!(await hasUserInteracted(userId, item.id))) {
+    if (!hasUserInteracted(userId, item.id)) {
       const similarity = calculateSimilarity(userProfile, item);
       if (similarity >= SIMILARITY_THRESHOLD) {
         scoredItems.push({ itemId: item.id, score: similarity });
@@ -238,27 +240,18 @@ async function generateUserRecommendations(userId, userProfile) {
 }
 
 async function getAllItems() {
-  const snapshot = await db.collection('metadata').get();
+  const snapshot = await db.collection('content_metadata').get();
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
 
-async function hasUserInteracted(userId, itemId) {
-  const query = `
-    SELECT COUNT(*) as count
-    FROM \`kafka-books.analytics_195726967.events_*\`
-    WHERE user_id = @userId
-    AND item_id = @itemId
-    AND event_name IN ('read_item', 'play_item', 'add_favorite')
-    LIMIT 1
-  `;
-
-  const options = {
-    query: query,
-    params: { userId: userId, itemId: itemId }
-  };
-
-  const [rows] = await bigquery.query(options);
-  return rows[0].count > 0;
+function hasUserInteracted(userId, itemId) {
+  // Check if user interactions are in cache
+  if (userInteractionsCache[userId]) {
+    return userInteractionsCache[userId].has(itemId);
+  }
+  
+  // If not in cache, return false (interactions will be loaded later)
+  return false;
 }
 
 function calculateSimilarity(userProfile, item) {

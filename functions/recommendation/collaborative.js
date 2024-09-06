@@ -102,7 +102,7 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 50
+      LIMIT 500
     `;
 
     // Log the query before execution
