@@ -75,10 +75,10 @@ async function calculateCollaborativeRecommendations() {
 async function getActiveUsers() {
     const query = `
       SELECT
-        user_pseudo_id AS user_id
+        user_id
       FROM (
         SELECT
-          user_pseudo_id,
+          user_id,
           COUNT(*) AS open_item_detail_count
         FROM
           \`kafka-books.analytics_195726967.events_*\`
@@ -87,14 +87,14 @@ async function getActiveUsers() {
             AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
           AND event_name = 'open_item_detail'
         GROUP BY
-          user_pseudo_id
+          user_id
         HAVING
           open_item_detail_count > 5
       ) AS active_users
       WHERE
-        user_pseudo_id IN (
+        user_id IN (
           SELECT DISTINCT
-            user_pseudo_id
+            user_id
           FROM
             \`kafka-books.analytics_195726967.events_*\`
           WHERE
@@ -115,7 +115,7 @@ async function getActiveUsers() {
   async function getUserInteractions(activeUsers) {
     const query = `
     SELECT
-      user_pseudo_id AS user_id,
+      user_id,
       event_name,
       (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_id') AS item_id,
       COUNT(*) AS interaction_count
@@ -124,8 +124,8 @@ async function getActiveUsers() {
     WHERE
       PARSE_DATE('%Y%m%d', _TABLE_SUFFIX) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL ${ACTIVE_USER_THRESHOLD_DAYS} DAY) AND CURRENT_DATE()
       AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
-      AND user_pseudo_id IN (${activeUsers.map(user => `'${user}'`).join(',')})
-      AND user_pseudo_id IS NOT NULL
+      AND user_id IN (${activeUsers.map(user => `'${user}'`).join(',')})
+      AND user_id IS NOT NULL
     GROUP BY
       user_id, event_name, item_id
     HAVING

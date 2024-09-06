@@ -25,6 +25,7 @@ class ItemDetailMapper @Inject constructor(
             title = from.metadata.title?.firstOrNull()?.dismissUpperCase(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
             creator = from.metadata.creator?.take(5)?.joinToString()?.sanitizeForRoom(),
+            creators = from.metadata.creator?.map { it.sanitizeForRoom() }?.take(5),
             collection = from.metadata.collection?.joinToString(),
             mediaType = from.metadata.mediatype,
             files = from.files.filter { it.fileId.isNotEmpty() }.map { it.fileId },

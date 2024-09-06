@@ -86,10 +86,10 @@ async function generateContentBasedRecommendations() {
 async function getActiveUsers() {
   const query = `
       SELECT
-        user_pseudo_id AS user_id
+        user_id
       FROM (
         SELECT
-          user_pseudo_id,
+          user_id,
           COUNT(*) AS open_item_detail_count
         FROM
           \`kafka-books.analytics_195726967.events_*\`
@@ -98,14 +98,14 @@ async function getActiveUsers() {
             AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
           AND event_name = 'open_item_detail'
         GROUP BY
-          user_pseudo_id
+          user_id
         HAVING
           open_item_detail_count > 5
       ) AS active_users
       WHERE
-        user_pseudo_id IN (
+        user_id IN (
           SELECT DISTINCT
-            user_pseudo_id
+            user_id
           FROM
             \`kafka-books.analytics_195726967.events_*\`
           WHERE
@@ -113,7 +113,7 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 500
+      LIMIT 50
     `;
 
   const [rows] = await bigquery.query({ query });
@@ -166,7 +166,7 @@ async function buildUserProfile(userId) {
 async function getUserInteractions(userId) {
   const query = `
     SELECT
-      user_pseudo_id AS user_id,
+      user_id,
       (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_id') AS item_id,
       COUNT(*) AS interaction_count
     FROM
@@ -175,7 +175,7 @@ async function getUserInteractions(userId) {
       _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL ${ACTIVE_USER_THRESHOLD_DAYS} DAY))
         AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
       AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
-      AND user_pseudo_id = @userId
+      AND user_id = @userId
     GROUP BY
       user_id, item_id
     HAVING
