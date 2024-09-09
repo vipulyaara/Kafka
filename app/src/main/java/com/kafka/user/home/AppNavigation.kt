@@ -77,9 +77,11 @@ internal fun AppNavigation(
                         navController.navigate(Screen.ItemDescription.route(screen.itemId))
                     }
 
-                    Screen.Feedback,
-                    Screen.Player,
-                    -> {
+                    Screen.Feedback -> {
+                        navController.navigate(Screen.Player.route)
+                    }
+
+                    Screen.Player -> {
                         navController.navigate(Screen.Player.route)
                     }
 
