@@ -49,6 +49,9 @@ interface KafkaDatabase {
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
         AutoMigration(from = 4, to = 5, spec = KafkaRoomDatabase.RecentAudioMigration::class),
+        AutoMigration(from = 5, to = 8),
+        AutoMigration(from = 6, to = 8),
+        AutoMigration(from = 7, to = 8),
     ],
 )
 @TypeConverters(AppTypeConverters::class)

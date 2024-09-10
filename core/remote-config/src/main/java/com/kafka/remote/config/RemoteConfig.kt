@@ -22,6 +22,7 @@ class RemoteConfig @Inject constructor(private val json: Json) {
                 minimumFetchIntervalInSeconds = REMOTE_CONFIG_FETCH_INTERVAL_SECONDS
             }
             setConfigSettingsAsync(config)
+            setDefaultsAsync(R.xml.remote_config_defaults)
         }
     }
 
