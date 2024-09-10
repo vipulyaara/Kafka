@@ -51,6 +51,7 @@ class AnalyticsImpl @Inject constructor(
     }
 
     override fun updateUserProperty(userData: UserData) {
+        debug { "Updating user properties: $userData" }
         firebaseAnalytics.setUserId(userData.userId)
         firebaseAnalytics.setUserProperty("userId", userData.userId)
         firebaseAnalytics.setUserProperty("country", userData.country)

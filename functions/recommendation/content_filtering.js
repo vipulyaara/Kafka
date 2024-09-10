@@ -115,7 +115,7 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 100
+      LIMIT 10
     `;
 
   const [rows] = await bigquery.query({ query });
@@ -143,13 +143,13 @@ async function buildUserProfile(userId) {
     }
     if (itemMetadata) {
       updateProfileCounts(profile.subject, itemMetadata.subject);
-      updateProfileCounts(profile.creator, itemMetadata.creator);
-      updateProfileCounts(profile.language, itemMetadata.language);
+      updateProfileCounts(profile.creator, Array.isArray(itemMetadata.creator) ? itemMetadata.creator : [itemMetadata.creator]);
+      updateProfileCounts(profile.language, Array.isArray(itemMetadata.language) ? itemMetadata.language : [itemMetadata.language]);
       updateProfileCounts(profile.collection, itemMetadata.collection);
-      updateProfileCounts(profile.mediatype, itemMetadata.mediatype);
+      updateProfileCounts(profile.mediatype, [itemMetadata.mediaType]);
       
-      const keywords = itemMetadata.description.flatMap(extractKeywords);
-      updateProfileCounts(profile.keywords, keywords);
+      // const keywords = extractKeywords(itemMetadata.description);
+      // updateProfileCounts(profile.keywords, keywords);
     }
   }
 
@@ -158,6 +158,22 @@ async function buildUserProfile(userId) {
 }
 
 async function getUserInteractions(userId) {
+  // Check if interactions are already in cache
+  if (userInteractionsCache[userId]) {
+    return Array.from(userInteractionsCache[userId]).map(item_id => ({ item_id }));
+  }
+
+  // If not in cache, fetch from Firestore first
+  const userInteractionsRef = db.collection('user_interactions').doc(userId);
+  const doc = await userInteractionsRef.get();
+
+  if (doc.exists) {
+    const interactions = doc.data().interactions || [];
+    userInteractionsCache[userId] = new Set(interactions.map(i => i.item_id));
+    return interactions;
+  }
+
+  // If not in Firestore, fall back to BigQuery
   const query = `
     SELECT
       user_id,
@@ -182,11 +198,15 @@ async function getUserInteractions(userId) {
   };
 
   const [rows] = await bigquery.query(options);
-  const interactions =  rows.map(row => ({ item_id: row.item_id }));
+  const interactions = rows.map(row => ({ item_id: row.item_id }));
 
-  userInteractionsCache[userId] = new Set(interactions);
+  // Cache the results
+  userInteractionsCache[userId] = new Set(interactions.map(i => i.item_id));
 
-  return rows.map(row => ({ item_id: row.item_id }));
+  // Store in Firestore for future use
+  await userInteractionsRef.set({ interactions });
+
+  return interactions;
 }
 
 async function getItemMetadata(itemId) {
@@ -196,14 +216,20 @@ async function getItemMetadata(itemId) {
 }
 
 function updateProfileCounts(profileSection, values) {
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
   for (const value of values) {
-    if (value) {
+    if (value && typeof value === 'string') {
       profileSection[value] = (profileSection[value] || 0) + 1;
     }
   }
 }
 
 function extractKeywords(text) {
+  if (typeof text !== 'string') {
+    return [];
+  }
   const tokenizer = new natural.WordTokenizer();
   const tokens = tokenizer.tokenize(text);
   return tokens.filter(token => token.length > 3);
@@ -265,7 +291,8 @@ function calculateSimilarity(userProfile, item) {
   };
 
   for (const feature in weights) {
-    similarity += weights[feature] * calculateFeatureSimilarity(userProfile[feature], item[feature]);
+    let itemFeature = item[feature === 'mediatype' ? 'mediaType' : feature];
+    similarity += weights[feature] * calculateFeatureSimilarity(userProfile[feature], itemFeature);
   }
 
   return similarity;
@@ -288,36 +315,5 @@ async function saveRecommendations(userId, recommendations) {
 }
 
 module.exports = {
-  generateContentBasedRecommendations: functions
-    .runWith({
-      timeoutSeconds: 540,  // Maximum timeout (9 minutes)
-      memory: '2GB'         // Maximum memory
-    })
-    .https.onRequest(async (req, res) => {
-      try {
-        await generateContentBasedRecommendations();
-        if (res) {
-          res.status(200).send('Content-based recommendations generated successfully');
-        } else {
-          console.log('Content-based recommendations generated successfully');
-        }
-      } catch (error) {
-        console.error('Error generating content-based recommendations:', error);
-        if (res) {
-          res.status(500).send('Error generating content-based recommendations');
-        } else {
-          throw error;
-        }
-      }
-    }),
-
-  manualContentBasedRecommendations: async () => {
-    try {
-      await generateContentBasedRecommendations();
-      console.log('Content-based recommendations generated successfully');
-    } catch (error) {
-      console.error('Error generating content-based recommendations:', error);
-      throw error;
-    }
-  }
+  generateContentBasedRecommendations,
 };
