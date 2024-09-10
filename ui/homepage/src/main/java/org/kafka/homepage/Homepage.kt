@@ -200,13 +200,11 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Recommendations -> {
-                    item(contentType = "row") {
-                        SubjectItems(collection.labels, false, goToSubject)
-                        RowItems(
-                            items = collection.items,
-                            showPlaceholder = false,
-                            openItemDetail = openItemDetail
-                        )
+                    if (collection.items.isNotEmpty()) {
+                        item(contentType = "row") {
+                            SubjectItems(collection.labels, false, goToSubject)
+                            RowItems(items = collection.items, openItemDetail = openItemDetail)
+                        }
                     }
                 }
 
@@ -249,7 +247,6 @@ private fun HomepageFeedItems(
 private fun RowItems(
     items: List<Item>,
     modifier: Modifier = Modifier,
-    showPlaceholder: Boolean = true,
     openItemDetail: (String) -> Unit,
 ) {
     LazyRow(
@@ -273,7 +270,7 @@ private fun RowItems(
                         .clickable { openItemDetail(item.itemId) }
                 )
             }
-        } else if (showPlaceholder) {
+        } else {
             items(count = PlaceholderItemCount, key = { index -> "row_placeholder_$index" }) {
                 RowItemPlaceholder()
             }
