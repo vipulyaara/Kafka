@@ -18,6 +18,7 @@ data class ItemDetail(
     val title: String? = null,
     val description: String? = null,
     val creator: String? = null,
+    val creators: List<String>? = null,
     val collection: String? = null,
     val mediaType: String? = null,
     val coverImage: String? = null,
@@ -26,7 +27,7 @@ data class ItemDetail(
     val primaryFile: String? = null,
     val subject: List<String>? = null,
     val rating: Double? = null,
-    val isAccessRestricted: Boolean = false
+    val isAccessRestricted: Boolean = false,
 ) : BaseEntity {
     val uiRating: Int
         get() = (rating ?: 0.0).toInt()

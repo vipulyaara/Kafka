@@ -7,6 +7,7 @@ import com.aallam.openai.api.http.Timeout
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import org.kafka.base.SecretsProvider
@@ -40,6 +41,7 @@ class OpenAiRepository @Inject constructor(secretsProvider: SecretsProvider) {
         return openai.chatCompletions(completionRequest)
             .onEach { result += it.choices.firstOrNull()?.delta?.content.orEmpty() }
             .map { SummaryResponse(result, it.choices.firstOrNull()?.finishReason != null) }
+            .catch { it.printStackTrace() }
     }
 
     private val model = ModelId("gpt-4o")

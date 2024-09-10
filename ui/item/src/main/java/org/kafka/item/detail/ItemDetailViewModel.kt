@@ -20,7 +20,6 @@ import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
-import com.kafka.remote.config.isOnlineReaderEnabled
 import com.kafka.remote.config.isRelatedContentRowEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
@@ -48,19 +47,20 @@ import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
 import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
+import org.kafka.domain.observers.ShouldUseOnlineReader
 import org.kafka.domain.observers.library.ObserveDownloadByItemId
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.Navigator
+import org.kafka.navigation.deeplink.Config
+import org.kafka.navigation.deeplink.DeepLinksNavigation
+import org.kafka.navigation.deeplink.Navigation
 import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen
 import org.kafka.navigation.graph.Screen.ItemDescription
 import org.kafka.navigation.graph.Screen.OnlineReader
 import org.kafka.navigation.graph.Screen.Reader
 import org.kafka.navigation.graph.Screen.Search
-import org.kafka.navigation.deeplink.Config
-import org.kafka.navigation.deeplink.DeepLinksNavigation
-import org.kafka.navigation.deeplink.Navigation
 import org.kafka.navigation.graph.encodeUrl
 import org.kafka.play.AppReviewManager
 import javax.inject.Inject
@@ -71,6 +71,7 @@ class ItemDetailViewModel @Inject constructor(
     observeDownloadByItemId: ObserveDownloadByItemId,
     isResumableAudio: IsResumableAudio,
     savedStateHandle: SavedStateHandle,
+    shouldUseOnlineReader: ShouldUseOnlineReader,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateItems: UpdateItems,
@@ -100,8 +101,9 @@ class ItemDetailViewModel @Inject constructor(
         observeFavoriteStatus.flow,
         loadingState.observable,
         observeDownloadByItemId.flow,
-        isResumableAudio.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio ->
+        isResumableAudio.flow,
+        shouldUseOnlineReader.flow
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio, useOnlineReader ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
@@ -111,7 +113,8 @@ class ItemDetailViewModel @Inject constructor(
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             borrowableBookMessage = remoteConfig.borrowableBookMessage(),
-            isSummaryEnabled = remoteConfig.isSummaryEnabled() && (itemDetail?.isText ?: false)
+            isSummaryEnabled = remoteConfig.isSummaryEnabled() && (itemDetail?.isText ?: false),
+            useOnlineReader = useOnlineReader
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -122,6 +125,8 @@ class ItemDetailViewModel @Inject constructor(
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
+        shouldUseOnlineReader(ShouldUseOnlineReader.Param(itemId))
+
         observeDownloadByItemId(
             ObserveDownloadByItemId.Params(
                 itemId = itemId,
@@ -166,12 +171,9 @@ class ItemDetailViewModel @Inject constructor(
         if (itemDetail?.primaryFile != null) {
             addRecentItem(itemId)
 
-            val isOnlineReaderEnabled =
-                state.value.downloadItem == null && remoteConfig.isOnlineReaderEnabled()
-
-            if (isOnlineReaderEnabled || itemDetail.isAccessRestricted) {
+            if (state.value.useOnlineReader) {
                 logOnlineReader(itemDetail = itemDetail)
-                navigator.navigate(OnlineReader(itemDetail.itemId))
+                navigator.navigate(OnlineReader(itemDetail.itemId, itemDetail.primaryFile!!))
             } else {
                 analytics.log { readItem(itemId = itemId, type = "offline") }
                 navigator.navigate(Reader(itemDetail.primaryFile!!))

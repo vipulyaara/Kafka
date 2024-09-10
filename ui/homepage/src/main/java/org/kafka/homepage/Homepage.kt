@@ -200,9 +200,11 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Recommendations -> {
-                    item(contentType = "row") {
-                        SubjectItems(collection.labels, false, goToSubject)
-                        RowItems(items = collection.items, openItemDetail = openItemDetail)
+                    if (collection.items.isNotEmpty()) {
+                        item(contentType = "row") {
+                            SubjectItems(collection.labels, false, goToSubject)
+                            RowItems(items = collection.items, openItemDetail = openItemDetail)
+                        }
                     }
                 }
 

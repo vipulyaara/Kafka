@@ -85,7 +85,10 @@ sealed class Screen {
     data class Web(@SerialName("url") val url: String) : Screen()
 
     @Serializable
-    data class OnlineReader(@SerialName("itemId") val itemId: String) : Screen()
+    data class OnlineReader(
+        @SerialName("itemId") val itemId: String,
+        @SerialName("fileId") val fileId: String,
+    ) : Screen()
 
     @Serializable
     data object Back : Screen()

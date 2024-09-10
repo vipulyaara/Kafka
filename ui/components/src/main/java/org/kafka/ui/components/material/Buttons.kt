@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.widgets.shadowMaterial
@@ -67,4 +68,10 @@ fun PrimaryButton(
             style = MaterialTheme.typography.titleSmall.alignCenter()
         )
     }
+}
+
+@Preview
+@Composable
+fun FloatingButtonPreview() {
+    FloatingButton(text = "Floating Button", onClicked = {})
 }

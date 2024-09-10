@@ -35,7 +35,7 @@ object FakeItemData {
     val fakeItemDetail = ItemDetail(
         itemId = "123",
         title = "Metamorphosis",
-        creator = "Franz Kafka",
+        creators = listOf("Franz Kafka"),
         coverImage = coverUrl,
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc.",
         subject = listOf("Insect", "Existential", "Classics", "Fiction"),

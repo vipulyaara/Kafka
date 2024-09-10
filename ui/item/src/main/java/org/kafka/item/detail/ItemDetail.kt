@@ -37,10 +37,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
@@ -311,14 +314,7 @@ private fun ItemDescription(
 
             Spacer(Modifier.height(Dimens.Spacing04))
 
-            Text(
-                text = itemDetail.creator.orEmpty(),
-                style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .simpleClickable { goToCreator(itemDetail.creator) }
-                    .padding(horizontal = Dimens.Spacing24)
-            )
+            Creator(itemDetail.creators, goToCreator)
 
             DescriptionText(
                 itemDetail = itemDetail,
@@ -333,6 +329,39 @@ private fun ItemDescription(
             )
         }
     }
+}
+
+@Composable
+private fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
+    val annotatedString = buildAnnotatedString {
+        creators?.forEachIndexed { index, creator ->
+            val color = if (index % 2 == 0) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.tertiary
+            }
+            val link = LinkAnnotation.Url(creator, TextLinkStyles(SpanStyle(color = color))) {
+                val url = (it as LinkAnnotation.Url).url
+                goToCreator(url)
+            }
+
+            withLink(link) { append(creator) }
+
+            if (index < creators.size - 1) {
+                append(", ")
+            }
+        }
+    }
+
+    Text(
+        text = annotatedString,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimens.Spacing24),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center)
+    )
+
 }
 
 @Composable
