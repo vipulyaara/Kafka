@@ -1,35 +1,31 @@
-@file:Suppress("DEPRECATION")
-
 package com.kafka.reader.online
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.accompanist.web.WebContent
-import com.google.accompanist.web.WebViewState
 import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
+import org.kafka.base.debug
 import org.kafka.base.domain.onException
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.asUiMessage
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.toast
 import org.kafka.domain.interactors.GetReaderState
 import org.kafka.domain.interactors.ReaderState
 import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.interactors.getCurrentPageFromReaderUrl
-import org.kafka.domain.observers.library.ObserveDownloadByItemId
+import org.kafka.domain.observers.ShouldAutoDownload
+import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
@@ -39,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnlineReaderViewModel @Inject constructor(
-    observeDownloadByItemId: ObserveDownloadByItemId,
+    shouldAutoDownload: ShouldAutoDownload,
+    observeDownloadByFileId: ObserveDownloadByFileId,
     private val getReaderState: GetReaderState,
     private val updateCurrentPage: UpdateCurrentPage,
     private val downloader: Downloader,
@@ -48,43 +45,36 @@ class OnlineReaderViewModel @Inject constructor(
     private val analytics: Analytics,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val itemId: String = savedStateHandle["itemId"] ?: error("Url not provided")
+    private val itemId: String = savedStateHandle["itemId"] ?: error("ItemId not provided")
+    private val fileId: String = savedStateHandle["fileId"] ?: error("FileId not provided")
+
     val readerState = MutableStateFlow<ReaderState?>(null)
-    private val urlState = MutableStateFlow("")
+    var showDownloadComplete = mutableStateOf(false)
 
     val state: StateFlow<OnlineReaderState> = combine(
-        urlState,
         readerState,
-        observeDownloadByItemId.flow
-    ) { url, readerState, download ->
+        observeDownloadByFileId.flow,
+        shouldAutoDownload.flow
+    ) { readerState, download, autoDownload ->
         OnlineReaderState(
-            url = url,
             readerState = readerState,
-            download = download
+            download = download,
+            autoDownload = autoDownload
         )
     }.stateInDefault(viewModelScope, OnlineReaderState())
 
     init {
-        observeDownloadByItemId(ObserveDownloadByItemId.Params(itemId))
+        observeDownloadByFileId(fileId)
+        shouldAutoDownload(ShouldAutoDownload.Param(itemId))
 
         viewModelScope.launch {
             readerState.value = getReaderState.invoke(itemId).also {
                 it.onException { snackbarManager.addMessage("Error loading reader".asUiMessage()) }
             }.getOrNull()
         }
-
-        viewModelScope.launch {
-            urlState.collectLatest { url ->
-                updateCurrentPage(url)
-            }
-        }
     }
 
-    fun updateUrl(url: String) {
-        urlState.value = url
-    }
-
-    private fun updateCurrentPage(url: String) {
+    fun updateCurrentPage(url: String) {
         viewModelScope.launch {
             if (readerState.value != null) {
                 val currentPage = url.getCurrentPageFromReaderUrl()
@@ -94,8 +84,8 @@ class OnlineReaderViewModel @Inject constructor(
         }
     }
 
-    fun downloadItem(fileId:String, context: Context) {
-        context.toast("Downloading in background...")
+    fun downloadItem(fileId: String) {
+        debug { "Downloading item $fileId" }
         analytics.log { this.downloadFile(fileId = fileId, itemId = itemId, source = "reader") }
         viewModelScope.launch(Dispatchers.IO) {
             if (readerState.value != null) {
@@ -124,7 +114,7 @@ class OnlineReaderViewModel @Inject constructor(
 }
 
 data class OnlineReaderState(
-    val url: String = "",
     val readerState: ReaderState? = null,
-    val download: ItemWithDownload? = null
+    val download: ItemWithDownload? = null,
+    val autoDownload: Boolean = false,
 )

@@ -190,7 +190,7 @@ async function getUserInteractions(userId) {
 }
 
 async function getItemMetadata(itemId) {
-  const docRef = db.collection('metadata').doc(itemId);
+  const docRef = db.collection('content_metadata').doc(itemId);
   const doc = await docRef.get();
   return doc.exists ? doc.data() : null;
 }
@@ -288,5 +288,36 @@ async function saveRecommendations(userId, recommendations) {
 }
 
 module.exports = {
-  generateContentBasedRecommendations,
+  generateContentBasedRecommendations: functions
+    .runWith({
+      timeoutSeconds: 540,  // Maximum timeout (9 minutes)
+      memory: '2GB'         // Maximum memory
+    })
+    .https.onRequest(async (req, res) => {
+      try {
+        await generateContentBasedRecommendations();
+        if (res) {
+          res.status(200).send('Content-based recommendations generated successfully');
+        } else {
+          console.log('Content-based recommendations generated successfully');
+        }
+      } catch (error) {
+        console.error('Error generating content-based recommendations:', error);
+        if (res) {
+          res.status(500).send('Error generating content-based recommendations');
+        } else {
+          throw error;
+        }
+      }
+    }),
+
+  manualContentBasedRecommendations: async () => {
+    try {
+      await generateContentBasedRecommendations();
+      console.log('Content-based recommendations generated successfully');
+    } catch (error) {
+      console.error('Error generating content-based recommendations:', error);
+      throw error;
+    }
+  }
 };

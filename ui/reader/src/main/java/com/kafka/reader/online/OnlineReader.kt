@@ -13,12 +13,14 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.web.WebContent
@@ -28,9 +30,12 @@ import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
+import org.kafka.reader.R.string
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.R
 import org.kafka.ui.components.file.DownloadStatusIcons
+import org.kafka.ui.components.material.AlertDialog
+import org.kafka.ui.components.material.AlertDialogAction
 import org.kafka.ui.components.material.CloseButton
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.topScaffoldPadding
@@ -50,6 +55,28 @@ fun OnlineReader(
         mutableStateOf(readerState?.url?.let { WebViewState(WebContent.Url(url = it)) })
     }
 
+    LaunchedEffect(fileId, state.autoDownload) {
+        if (state.autoDownload) {
+            viewModel.downloadItem(fileId)
+        }
+    }
+    LaunchedEffect(state.download) {
+        if (state.download?.downloadInfo?.status == DownloadStatus.COMPLETED) {
+            viewModel.showDownloadComplete.value = true
+        }
+    }
+
+    val downloadComplete by viewModel.showDownloadComplete
+    if (downloadComplete) {
+        DownloadCompleteDialog(
+            openOfflineReader = {
+                viewModel.showDownloadComplete.value = false
+                openOfflineReader(fileId)
+            },
+            onDismiss = { viewModel.showDownloadComplete.value = false }
+        )
+    }
+
     Scaffold(
         topBar = {
             if (webViewState != null) {
@@ -61,7 +88,7 @@ fun OnlineReader(
                         viewModel.logOpenOfflineReader()
                         openOfflineReader(fileId)
                     },
-                    downloadItem = { viewModel.downloadItem(fileId, context) },
+                    downloadItem = { viewModel.downloadItem(fileId) },
                     shareItem = { viewModel.shareItem(context) },
                     goBack = { viewModel.goBack() }
                 )
@@ -70,7 +97,7 @@ fun OnlineReader(
     ) { paddingValues ->
         ProvideScaffoldPadding(padding = paddingValues) {
             if (webViewState != null) {
-                WebView(webViewState = webViewState!!, updateUrl = viewModel::updateUrl)
+                WebView(webViewState = webViewState!!, updateUrl = viewModel::updateCurrentPage)
             }
         }
     }
@@ -157,4 +184,23 @@ fun DownloadIcon(
             onClick = onDownloadClicked
         )
     }
+}
+
+@Composable
+fun DownloadCompleteDialog(openOfflineReader: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        title = stringResource(string.download_complete),
+        text = stringResource(string.continue_reading_offline),
+        confirmButton = {
+            AlertDialogAction(
+                text = stringResource(string.open_offline),
+                onClick = openOfflineReader
+            )
+        },
+        cancelButton = {
+            AlertDialogAction(text = stringResource(string.close), onClick = onDismiss)
+        },
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+    )
 }
