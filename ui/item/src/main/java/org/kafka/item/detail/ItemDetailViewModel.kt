@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
@@ -88,7 +89,7 @@ class ItemDetailViewModel @Inject constructor(
     private val appReviewManager: AppReviewManager,
     private val application: Application,
 ) : ViewModel() {
-    private val itemId: String = checkNotNull(savedStateHandle["itemId"])
+    private val itemId: String = savedStateHandle.toRoute<Screen.ItemDetail>().itemId
     private val loadingState = ObservableLoadingCounter()
     var recommendedContent by mutableStateOf(emptyList<Item>())
 
@@ -103,7 +104,8 @@ class ItemDetailViewModel @Inject constructor(
         observeDownloadByItemId.flow,
         isResumableAudio.flow,
         shouldUseOnlineReader.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading, downloadItem, isResumableAudio, useOnlineReader ->
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading,
+        downloadItem, isResumableAudio, useOnlineReader ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
