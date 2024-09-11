@@ -303,7 +303,7 @@ inline fun <reified T : ViewModel> activityHiltViewModel() =
 @Composable
 private fun SwitchStatusBarsOnPlayer(navController: NavHostController) {
     val currentRoute by navController.currentBackStackEntryAsState()
-    val destination = currentRoute?.destination?.route?.split("/")?.getOrNull(1)
+    val destination = currentRoute?.destination?.route?.substringBefore("/")
     val isPlayerUp = destination == "player"
 
     val view = LocalView.current
