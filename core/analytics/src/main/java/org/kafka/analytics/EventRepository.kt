@@ -144,4 +144,9 @@ class EventRepository @Inject constructor() {
     fun openSummary(itemId: String) = "open_summary" to mapOf(
         "item_id" to itemId
     )
+
+    fun remoteConfigValue(key: String, value: Any?) = "remote_config_value" to mapOf(
+        "key" to key,
+        "value" to value.toString()
+    )
 }

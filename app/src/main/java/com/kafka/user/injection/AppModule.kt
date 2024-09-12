@@ -20,6 +20,7 @@ import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
+import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
 import dagger.Binds
 import dagger.Module
@@ -141,6 +142,10 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideRemoteConfigLogger(bind: RemoteConfigLogger): AppInitializer
 
     @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
