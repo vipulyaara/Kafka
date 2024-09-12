@@ -385,11 +385,11 @@ function hasUserInteracted(userId, itemId) {
 function calculateSimilarity(userProfile, item) {
   let similarity = 0;
   const weights = {
-    subject: 0.3,
-    creator: 0.2,
+    subject: 0.2,
+    creator: 0.1,
     mediatype: 0.2,
-    language: 0.1,
-    collection: 0.1,
+    language: 0.3,
+    collection: 0.03,
   };
 
   for (const feature in weights) {
@@ -424,6 +424,12 @@ const EXCLUDED_ITEM_IDS = [
 ];
 
 async function saveRecommendations(userId, recommendations) {
+  // Only save recommendations if there are more than 3
+  if (recommendations.length <= 3) {
+    console.log(`Not saving recommendations for user ${userId} as there are only ${recommendations.length} items.`);
+    return;
+  }
+
   const userRecommendationsRef = db.collection('user_recommendations').doc(userId).collection('contentBased');
   
   const batch = db.batch();

@@ -56,7 +56,7 @@ async function calculateCollaborativeRecommendations() {
         if (userId && typeof userId === 'string' && userId.trim() !== '') {
         //   logger.info(`Generating recommendations for user: ${userId}`);
           const recommendations = await generateRecommendations(userId, userSimilarities, userInteractions);
-          if (recommendations.length > 5) {
+          if (recommendations.length > 3) {
             logger.info(`Generated ${recommendations.length} recommendations for user: ${userId}`);
             await saveRecommendations(userId, recommendations);
           }
