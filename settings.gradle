@@ -15,7 +15,7 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 rootProject.name = "kafka"
 
 include ':app'
-include ':base:domain'
+include ':base:domain' // kmp
 include ':baselineprofile'
 include ':core:analytics'
 include ':core:downloader'
@@ -23,15 +23,16 @@ include ':core:play'
 include ':core:remote-config'
 include ':data:repo'
 include ':data:database'
-include ':data:models'
-include ':data:prefs'
+include ':data:models' // kmp
+include ':data:platform' // kmp
+include ':data:prefs' // kmp
 include ':domain'
 include ':navigation'
 include ':ui:auth'
 include ':ui:common'
 include ':ui:components'
 include ':ui:downloader'
-include ':ui:theme'
+include ':ui:theme' // kmp
 include ':ui:library'
 include ':ui:homepage'
 include ':ui:item'

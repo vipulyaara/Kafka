@@ -1,16 +1,14 @@
-package com.kafka.data.feature
+package com.kafka.data.platform
 
 import android.content.Context
 import android.telephony.TelephonyManager
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
-class UserDataRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+actual class UserDataRepository(
+    private val context: Context,
     private val firebaseAuth: FirebaseAuth,
 ) {
-    fun getUserData(): UserData =
+    actual fun getUserData(): UserData =
         UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())
 
     fun getUserCountry(): String? {
@@ -19,5 +17,3 @@ class UserDataRepository @Inject constructor(
         return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
     }
 }
-
-data class UserData(val userId: String? = null, val country: String? = null)

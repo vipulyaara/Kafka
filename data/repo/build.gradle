@@ -19,8 +19,9 @@ android {
 dependencies {
     api projects.base.domain
     api projects.core.remoteConfig
-    api projects.data.models
     api projects.data.database
+    api projects.data.models
+    api projects.data.platform
 
     ksp libs.androidx.room.compiler
 

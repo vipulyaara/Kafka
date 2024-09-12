@@ -1,6 +1,6 @@
 package org.kafka.analytics.logger
 
-import com.kafka.data.feature.UserData
+import com.kafka.data.platform.UserData
 import org.kafka.analytics.EventRepository
 
 interface Analytics {
