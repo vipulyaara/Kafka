@@ -4,14 +4,10 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.model.ArchiveQuery
@@ -21,7 +17,6 @@ import com.kafka.data.model.booksByAuthor
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
-import com.kafka.remote.config.isRelatedContentRowEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,9 +38,6 @@ import org.kafka.domain.interactors.UpdateItemDetail
 import org.kafka.domain.interactors.UpdateItems
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.interactors.recent.IsResumableAudio
-import org.kafka.domain.interactors.recommendation.GetRelatedContent
-import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
-import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent
 import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ShouldUseOnlineReader
@@ -79,8 +71,6 @@ class ItemDetailViewModel @Inject constructor(
     private val addRecentItem: AddRecentItem,
     private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
-    private val postRecommendationEvent: PostRecommendationEvent,
-    private val getRelatedContent: GetRelatedContent,
     private val resumeAlbum: ResumeAlbum,
     private val navigator: Navigator,
     private val remoteConfig: RemoteConfig,
@@ -91,12 +81,10 @@ class ItemDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.toRoute<Screen.ItemDetail>().itemId
     private val loadingState = ObservableLoadingCounter()
-    var recommendedContent by mutableStateOf(emptyList<Item>())
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { item ->
             updateItemsByCreator(item?.creator)
-            updateRelatedItems(item?.itemId)
         },
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
@@ -104,8 +92,10 @@ class ItemDetailViewModel @Inject constructor(
         observeDownloadByItemId.flow,
         isResumableAudio.flow,
         shouldUseOnlineReader.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading,
-        downloadItem, isResumableAudio, useOnlineReader ->
+    ) {
+            itemDetail, itemsByCreator, isFavorite, isLoading,
+            downloadItem, isResumableAudio, useOnlineReader,
+        ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
@@ -156,10 +146,6 @@ class ItemDetailViewModel @Inject constructor(
         } else {
             openReader(itemId)
         }
-
-        viewModelScope.launch {
-            postRecommendationEvent.invoke(RecommendationEvent.UseContent(itemId)).collect()
-        }
     }
 
     fun openFiles(itemId: String) {
@@ -199,14 +185,6 @@ class ItemDetailViewModel @Inject constructor(
             viewModelScope.launch {
                 updateItems(UpdateItems.Params(query))
                     .collectStatus(loadingState, snackbarManager)
-            }
-        }
-    }
-
-    private fun updateRelatedItems(itemId: String?) {
-        if (itemId != null && remoteConfig.isRelatedContentRowEnabled()) {
-            viewModelScope.launch {
-                recommendedContent = getRelatedContent(itemId).getOrNull().orEmpty()
             }
         }
     }

@@ -99,7 +99,6 @@ class AppModule {
     @Provides
     fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
-        override val pipelessAuthToken: String = BuildConfig.PIPELESS_AUTH_TOKEN
         override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
     }
 }
