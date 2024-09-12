@@ -6,6 +6,11 @@ const {initializeApp} = require("firebase-admin/app");
 
 initializeApp();
 
+const runtimeOpts = {
+  memory: '2GiB',
+  timeoutSeconds: 540 // 9 minutes (max allowed)
+};
+
 const {
   calculateTopReadWeekly,
   calculateTopPlayedWeekly,
@@ -85,7 +90,7 @@ exports.manualUpdateTopItems = onRequest(async (req, res) => {
 const { calculateCollaborativeRecommendations } = require('./recommendation/collaborative');
 
 // http://127.0.0.1:5001/kafka-books/us-central1/manualCollaborativeRecommendations
-exports.manualCollaborativeRecommendations = onRequest(async (req, res) => {
+exports.manualCollaborativeRecommendations = onRequest(runtimeOpts, async (req, res) => {
   try {
     await calculateCollaborativeRecommendations();
     res.json({ result: 'Collaborative recommendations calculation completed successfully' });
@@ -101,7 +106,7 @@ exports.manualCollaborativeRecommendations = onRequest(async (req, res) => {
 const { generateContentBasedRecommendations } = require('./recommendation/content_filtering');
 
 // http://127.0.0.1:5001/kafka-books/us-central1/manualContentBasedRecommendations
-exports.manualContentBasedRecommendations = onRequest(async (req, res) => {
+exports.manualContentBasedRecommendations = onRequest(runtimeOpts, async (req, res) => {
   try {
     await generateContentBasedRecommendations();
     res.json({ result: 'Content-based recommendations calculation completed successfully' });

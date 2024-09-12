@@ -24,7 +24,7 @@ const db = getFirestore();
 
 const EVENTS_OF_INTEREST = ['read_item', 'play_item', 'add_favorite'];
 const ACTIVE_USER_THRESHOLD_DAYS = 60;
-const SIMILARITY_THRESHOLD = 0.45;
+const SIMILARITY_THRESHOLD = 0.4;
 
 async function calculateCollaborativeRecommendations() {
     try {
@@ -102,14 +102,22 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 500
+      LIMIT 1000
     `;
 
     // Log the query before execution
     logger.info('Executing BigQuery query for getActiveUsers:', query);
-  
+
     const [rows] = await bigquery.query({ query });
-    return rows.map(row => row.user_id);
+    const activeUsers = rows.map(row => row.user_id);
+  
+    // Add the specific user ID if it's not already in the list
+    const specificUserId = 'P34Oi9eyXNPQxWYM98e7VCoUSeF2';
+    if (!activeUsers.includes(specificUserId)) {
+     activeUsers.push(specificUserId);
+    }
+
+    return activeUsers;
   }
 
   async function getUserInteractions(activeUsers) {
@@ -214,31 +222,41 @@ async function generateRecommendations(userId, userSimilarities, userInteraction
   return sortedRecommendations;
 }
 
+const EXCLUDED_ITEM_IDS = [
+  'behan-ne-chhote-bhai-se-choot-chudwa-kar-maja',
+  // Add more item IDs to exclude as needed
+];
+
 async function saveRecommendations(userId, recommendations) {
-    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
-      logger.error(`Invalid userId: ${userId}`);
-      return;
-    }
-  
-    const userRecommendationsRef = db.collection('user_recommendations').doc(userId).collection('collaborative');
-  
-    try {
-      const batch = db.batch();
-  
-      for (const rec of recommendations) {
+  if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+    logger.error(`Invalid userId: ${userId}`);
+    return;
+  }
+
+  const userRecommendationsRef = db.collection('user_recommendations').doc(userId).collection('collaborative');
+
+  try {
+    const batch = db.batch();
+    let savedCount = 0;
+
+    for (const rec of recommendations) {
+      // Skip excluded item IDs
+      if (!EXCLUDED_ITEM_IDS.includes(rec.itemId)) {
         const docRef = userRecommendationsRef.doc(rec.itemId);
         batch.set(docRef, {
           score: rec.score
         });
+        savedCount++;
       }
-  
-      await batch.commit();
-  
-      logger.info(`Saved ${recommendations.length} recommendations for user ${userId}`);
-    } catch (error) {
-      logger.error(`Error saving recommendations for user ${userId}:`, error);
     }
+
+    await batch.commit();
+
+    logger.info(`Saved ${savedCount} recommendations for user ${userId} (${recommendations.length - savedCount} excluded)`);
+  } catch (error) {
+    logger.error(`Error saving recommendations for user ${userId}:`, error);
   }
+}
 
 module.exports = {
   calculateCollaborativeRecommendations,
