@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.isAudioMediaType
 import com.theapache64.rebugger.Rebugger
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
@@ -207,7 +208,7 @@ fun ItemCreatorSmall(creator: String?, modifier: Modifier = Modifier) {
     )
 }
 
-fun placeholder(mediaType: String?) = if (mediaType == "audio") Icons.Audio else Icons.Texts
+fun placeholder(mediaType: String?) = if (mediaType.isAudioMediaType) Icons.Audio else Icons.Texts
 
 @Composable
 fun ItemPlaceholder(modifier: Modifier = Modifier) {

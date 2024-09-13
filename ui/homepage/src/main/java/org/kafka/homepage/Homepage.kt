@@ -265,9 +265,7 @@ private fun RowItems(
             ) { item ->
                 RowItem(
                     item = item,
-                    modifier = Modifier
-                        .widthIn(max = Dimens.CoverSizeLarge.width)
-                        .clickable { openItemDetail(item.itemId) }
+                    modifier = Modifier.clickable { openItemDetail(item.itemId) }
                 )
             }
         } else {

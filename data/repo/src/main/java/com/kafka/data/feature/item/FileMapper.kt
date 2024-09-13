@@ -1,8 +1,8 @@
 package com.kafka.data.feature.item
 
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.isAudio
-import com.kafka.data.entities.isText
+import com.kafka.data.entities.isAudioExtension
+import com.kafka.data.entities.isTextExtension
 import com.kafka.data.model.item.File
 import java.net.URL
 import javax.inject.Inject
@@ -21,8 +21,8 @@ class FileMapper @Inject constructor() {
             creator = (creator?.joinToString(", ") ?: artist) ?: item.creator,
             time = length,
             format = format.orEmpty(),
-            playbackUrl = if (extension.isAudio()) URL("$prefix/$name").toString() else null,
-            readerUrl = if (extension.isText()) URL("$prefix/$name").toString() else null,
+            playbackUrl = if (extension.isAudioExtension()) URL("$prefix/$name").toString() else null,
+            readerUrl = if (extension.isTextExtension()) URL("$prefix/$name").toString() else null,
             downloadUrl = URL("$prefix/$name").toString(),
             coverImage = item.coverImage,
             localUri = localUri,

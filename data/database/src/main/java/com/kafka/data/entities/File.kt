@@ -59,12 +59,12 @@ data class File(
     }
 }
 
-fun String?.isText() = File.textExtensions.contains(this?.lowercase())
-fun String?.isAudio() = File.audioExtensions.contains(this?.lowercase())
+fun String?.isTextExtension() = File.textExtensions.contains(this?.lowercase())
+fun String?.isAudioExtension() = File.audioExtensions.contains(this?.lowercase())
 
 fun File.isPlayable() = File.playableExtensions.contains(extension?.lowercase())
-fun File.isAudio() = this.extension.isAudio()
-fun File.isText() = this.extension.isText()
+fun File.isAudio() = this.extension.isAudioExtension()
+fun File.isText() = this.extension.isTextExtension()
 fun File.isTxt() = this.extension.equals("txt", true)
 
 fun File.nameWithoutExtension() = name.substringBeforeLast(".")

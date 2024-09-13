@@ -270,7 +270,7 @@ private fun ItemDescription(
             LoadImage(
                 data = itemDetail.coverImage,
                 modifier = Modifier
-                    .size(Dimens.CoverSizeDetail)
+                    .size(if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail)
                     .clip(RoundedCornerShape(Dimens.Spacing08))
             )
 
