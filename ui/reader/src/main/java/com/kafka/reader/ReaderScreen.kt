@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentTextItem.Type
-import com.kafka.reader.text.TextReader
 import com.kafka.reader.pdf.PdfReader
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.Navigator
@@ -30,10 +28,7 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
             if (recentItem?.localUri == null) {
                 viewState.download?.downloadInfo?.let { DownloadProgress(it) }
             } else {
-                when (recentItem.type) {
-                    Type.PDF -> PdfReader(fileId = recentItem.fileId)
-                    Type.TXT -> TextReader(fileId = recentItem.fileId)
-                }
+                PdfReader(fileId = recentItem.fileId)
             }
         }
     }

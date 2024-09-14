@@ -64,7 +64,6 @@ class RecentTextItemMapper @Inject constructor() {
         return RecentTextItem(
             fileId = file.fileId,
             currentPage = 1,
-            type = RecentTextItem.Type.fromString(file.extension),
             localUri = download.fileUri.toString()
         )
     }

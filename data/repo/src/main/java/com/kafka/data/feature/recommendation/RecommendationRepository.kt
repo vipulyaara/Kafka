@@ -16,19 +16,16 @@ import javax.inject.Singleton
 
 @Singleton
 class RecommendationRepository @Inject constructor(
-    private val accountRepository: AccountRepository,
     private val itemDao: ItemDao,
     private val firestoreGraph: FirestoreGraph,
+    private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,
 ) {
     fun observeRecommendations(recommendationId: String) =
         accountRepository.observeCurrentFirebaseUser()
             .filterNotNull()
             .flatMapLatest { user ->
-                getRecommendations(
-                    userId = user.uid,
-                    recommendationId = recommendationId
-                )
+                getRecommendations(userId = user.uid, recommendationId = recommendationId)
             }
             .flatMapLatest { itemDao.observe(it) }
             .onStart { emit(emptyList()) }
