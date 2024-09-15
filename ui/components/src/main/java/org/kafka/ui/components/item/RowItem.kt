@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.isAudioMediaType
 import org.kafka.ui.components.placeholder.placeholderDefault
@@ -52,9 +53,10 @@ fun RowItem(
 
     Column(modifier = modifier.widthIn(max = size.width)) {
         CoverImage(
+            size = size,
             data = coverImage,
             placeholder = placeholder,
-            size = size,
+            contentScale = ContentScale.Crop,
             shape = RoundedCornerShape(Dimens.RadiusMedium)
         )
 
