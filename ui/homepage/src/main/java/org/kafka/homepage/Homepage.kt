@@ -44,6 +44,7 @@ import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.GenreItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
@@ -183,12 +184,16 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.FeaturedItem -> {
                     item {
-                        Carousels(
-                            carouselItems = collection.items,
-                            images = collection.image,
-                            showLabel = showCarouselLabels,
-                            onBannerClick = openItemDetail
-                        )
+                        if (collection.items.isNotEmpty()) {
+                            Carousels(
+                                carouselItems = collection.items,
+                                images = collection.image,
+                                showLabel = showCarouselLabels,
+                                onBannerClick = openItemDetail
+                            )
+                        } else {
+                            FeaturedItemPlaceholder()
+                        }
                     }
                 }
 
