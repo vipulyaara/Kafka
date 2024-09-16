@@ -37,15 +37,14 @@ class RecommendationRepository @Inject constructor(
         .map { snapshots -> snapshots.map { it.id } }
 
     suspend fun getRecommendationItemIds(userId: String): List<String> {
-        val collection = firestoreGraph.getRecommendationCollection().get().await()
+        val collaborative = firestoreGraph.getRecommendationCollection()
+            .document(userId).collection("collaborative").get().await()
+            .documents.map { it.id }
+        val contentBased = firestoreGraph.getRecommendationCollection()
+            .document(userId).collection("contentBased").get().await()
+            .documents.map { it.id }
 
-        return collection.map { recommendationSnapshot ->
-            val recommendationId = recommendationSnapshot.id
-            firestoreGraph.getRecommendationCollection(userId, recommendationId)
-                .get()
-                .await()
-                .documents
-                .map { it.id }
-        }.flatten()
+
+        return collaborative + contentBased
     }
 }
