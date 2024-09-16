@@ -87,7 +87,8 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
     val lazyGridState = rememberLazyGridState()
 
     ItemDetailTheme(
-        isDynamicThemeEnabled = state.isDynamicThemeEnabled, model = state.itemDetail?.coverImage
+        isDynamicThemeEnabled = state.isDynamicThemeEnabled,
+        model = state.itemDetail?.coverImage
     ) {
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
             TopBar(
@@ -148,7 +149,8 @@ private fun ItemDetail(
 ) {
     Box(modifier.fillMaxSize()) {
         InfiniteProgressBar(
-            show = state.isFullScreenLoading, modifier = Modifier.align(Alignment.Center)
+            show = state.isFullScreenLoading,
+            modifier = Modifier.align(Alignment.Center)
         )
 
         AnimatedVisibilityFade(state.itemDetail != null) {
@@ -233,14 +235,8 @@ private fun ItemDetail(
                     items(state.itemsByCreator!!, key = { it.itemId }) { item ->
                         Item(item = item,
                             modifier = Modifier
-                                .clickable {
-                                    openItemDetail(
-                                        item.itemId, itemDetailSourceCreator
-                                    )
-                                }
-                                .padding(
-                                    vertical = Dimens.Spacing06, horizontal = Dimens.Gutter
-                                ))
+                                .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
+                                .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter))
                     }
                 }
 
@@ -387,4 +383,3 @@ private fun ItemDetailPreview() {
             openSummary = {})
     }
 }
-
