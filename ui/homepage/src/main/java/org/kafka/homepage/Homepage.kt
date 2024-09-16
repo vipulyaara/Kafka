@@ -110,7 +110,7 @@ private fun HomepageFeedItems(
     appShareIndex: Int,
     showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
-    openItemDetail: (String) -> Unit,
+    openItemDetail: (String, String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -189,7 +189,7 @@ private fun HomepageFeedItems(
                                 carouselItems = collection.items,
                                 images = collection.image,
                                 showLabel = showCarouselLabels,
-                                onBannerClick = openItemDetail
+                                onBannerClick = { openItemDetail(it, "featuredItem") }
                             )
                         } else {
                             FeaturedItemPlaceholder()
@@ -200,7 +200,9 @@ private fun HomepageFeedItems(
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
-                        RowItems(items = collection.items, openItemDetail = openItemDetail)
+                        RowItems(items = collection.items) {
+                            openItemDetail(it, "row")
+                        }
                     }
                 }
 
@@ -208,7 +210,9 @@ private fun HomepageFeedItems(
                     if (collection.items.isNotEmpty()) {
                         item(contentType = "row") {
                             SubjectItems(collection.labels, false, goToSubject)
-                            RowItems(items = collection.items, openItemDetail = openItemDetail)
+                            RowItems(items = collection.items) {
+                                openItemDetail(it, "recommendation")
+                            }
                         }
                     }
                 }
@@ -218,7 +222,7 @@ private fun HomepageFeedItems(
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                         GridItems(
                             collection = collection,
-                            openItemDetail = openItemDetail,
+                            openItemDetail = { openItemDetail(it, "grid") },
                             modifier = Modifier.testTag("grid_$index")
                         )
                     }
@@ -228,7 +232,7 @@ private fun HomepageFeedItems(
                     item(key = collection.key) {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                     }
-                    columnItems(collection, openItemDetail)
+                    columnItems(collection) { openItemDetail(it, "column") }
                 }
             }
         }

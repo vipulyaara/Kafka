@@ -19,11 +19,11 @@ class EventRepository @Inject constructor() {
     fun openItemDetail(
         itemId: String,
         source: String? = null,
-        name: String? = null,
+        collection: String? = null
     ) = "open_item_detail" to mapOf(
         "item_id" to itemId,
         "source" to source,
-        "name" to name,
+        "collection" to collection,
     )
 
     fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(

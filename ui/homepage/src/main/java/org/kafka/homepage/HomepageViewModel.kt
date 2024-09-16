@@ -88,8 +88,8 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Profile)
     }
 
-    fun openItemDetail(itemId: String, source: String = "homepage") {
-        analytics.log { openItemDetail(itemId, source) }
+    fun openItemDetail(itemId: String, collection: String, source: String = "homepage") {
+        analytics.log { openItemDetail(itemId = itemId, source = source, collection = collection) }
         navigator.navigate(Screen.ItemDetail(itemId))
     }
 
