@@ -77,10 +77,10 @@ class HomepageViewModel @Inject constructor(
         updateItems()
     }
 
-    fun removeRecentItem(itemId: String) {
+    fun removeRecentItem(fileId: String) {
         viewModelScope.launch {
-            analytics.log { removeRecentItem(itemId) }
-            removeRecentItem.invoke(itemId).collect()
+            analytics.log { removeRecentItem(fileId) }
+            removeRecentItem.invoke(fileId).collect()
         }
     }
 

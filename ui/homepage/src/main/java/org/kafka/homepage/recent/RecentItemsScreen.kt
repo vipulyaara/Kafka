@@ -1,5 +1,6 @@
 package org.kafka.homepage.recent
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.material.AlertDialog
 import org.kafka.ui.components.material.AlertDialogAction
 import org.kafka.ui.components.material.BackButton
+import org.kafka.ui.components.material.SwipeToDelete
 import org.kafka.ui.components.material.TopBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -62,6 +64,7 @@ fun RecentItemsScreen(viewModel: RecentViewModel = hiltViewModel()) {
             RecentItems(
                 items = viewState.recentItems,
                 openItemDetail = viewModel::openItemDetail,
+                removeRecentItem = viewModel::removeItem,
                 lazyListState = lazyListState
             )
         }
@@ -72,6 +75,7 @@ fun RecentItemsScreen(viewModel: RecentViewModel = hiltViewModel()) {
 private fun RecentItems(
     items: List<RecentItem>,
     openItemDetail: (String) -> Unit,
+    removeRecentItem: (String) -> Unit,
     lazyListState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
@@ -80,19 +84,19 @@ private fun RecentItems(
         contentPadding = scaffoldPadding(),
         modifier = modifier.fillMaxSize()
     ) {
-        items(
-            items = items,
-            key = { item -> item.itemId }
-        ) { item ->
-            Item(
-                title = item.title,
-                creator = item.creator,
-                mediaType = item.mediaType,
-                coverImage = item.coverUrl,
-                modifier = Modifier
-                    .clickable { openItemDetail(item.itemId) }
-                    .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter),
-            )
+        items(items = items, key = { item -> item.itemId }) { item ->
+            SwipeToDelete(onDismiss = { removeRecentItem(item.fileId) }) {
+                Item(
+                    title = item.title,
+                    creator = item.creator,
+                    mediaType = item.mediaType,
+                    coverImage = item.coverUrl,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .clickable { openItemDetail(item.itemId) }
+                        .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter),
+                )
+            }
         }
     }
 }

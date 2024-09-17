@@ -133,6 +133,8 @@ class EventRepository @Inject constructor() {
 
     fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 
+    fun removeRecentItem() = "remove_recent_item" to mapOf<String, String>()
+
     fun clearRecentItems() = "clear_recent_items" to mapOf<String, String>()
 
     fun showAppReviewDialog() = "show_review_dialog" to mapOf<String, String>()
