@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.kafka.data.feature.item.ItemWithDownload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
+import org.kafka.navigation.graph.Screen
 import org.kafka.reader.R
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
@@ -45,8 +47,9 @@ class OnlineReaderViewModel @Inject constructor(
     private val analytics: Analytics,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val itemId: String = savedStateHandle["itemId"] ?: error("ItemId not provided")
-    private val fileId: String = savedStateHandle["fileId"] ?: error("FileId not provided")
+    private val route = savedStateHandle.toRoute<Screen.OnlineReader>()
+    private val itemId: String = route.itemId
+    private val fileId: String = route.fileId
 
     val readerState = MutableStateFlow<ReaderState?>(null)
     var showDownloadComplete = mutableStateOf(false)

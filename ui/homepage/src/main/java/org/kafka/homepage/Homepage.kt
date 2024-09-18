@@ -44,6 +44,7 @@ import org.kafka.homepage.components.Carousels
 import org.kafka.homepage.components.ContinueReading
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
+import org.kafka.ui.components.item.FeaturedItemPlaceholder
 import org.kafka.ui.components.item.GenreItem
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.ItemPlaceholder
@@ -109,7 +110,7 @@ private fun HomepageFeedItems(
     appShareIndex: Int,
     showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
-    openItemDetail: (String) -> Unit,
+    openItemDetail: (String, String) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -183,19 +184,25 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.FeaturedItem -> {
                     item {
-                        Carousels(
-                            carouselItems = collection.items,
-                            images = collection.image,
-                            showLabel = showCarouselLabels,
-                            onBannerClick = openItemDetail
-                        )
+                        if (collection.items.isNotEmpty()) {
+                            Carousels(
+                                carouselItems = collection.items,
+                                images = collection.image,
+                                showLabel = showCarouselLabels,
+                                onBannerClick = { openItemDetail(it, "featuredItem") }
+                            )
+                        } else {
+                            FeaturedItemPlaceholder()
+                        }
                     }
                 }
 
                 is HomepageCollection.Row -> {
                     item(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
-                        RowItems(items = collection.items, openItemDetail = openItemDetail)
+                        RowItems(items = collection.items) {
+                            openItemDetail(it, "row")
+                        }
                     }
                 }
 
@@ -203,7 +210,9 @@ private fun HomepageFeedItems(
                     if (collection.items.isNotEmpty()) {
                         item(contentType = "row") {
                             SubjectItems(collection.labels, false, goToSubject)
-                            RowItems(items = collection.items, openItemDetail = openItemDetail)
+                            RowItems(items = collection.items) {
+                                openItemDetail(it, "recommendation")
+                            }
                         }
                     }
                 }
@@ -213,7 +222,7 @@ private fun HomepageFeedItems(
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                         GridItems(
                             collection = collection,
-                            openItemDetail = openItemDetail,
+                            openItemDetail = { openItemDetail(it, "grid") },
                             modifier = Modifier.testTag("grid_$index")
                         )
                     }
@@ -223,7 +232,7 @@ private fun HomepageFeedItems(
                     item(key = collection.key) {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                     }
-                    columnItems(collection, openItemDetail)
+                    columnItems(collection) { openItemDetail(it, "column") }
                 }
             }
         }
@@ -265,9 +274,7 @@ private fun RowItems(
             ) { item ->
                 RowItem(
                     item = item,
-                    modifier = Modifier
-                        .widthIn(max = Dimens.CoverSizeLarge.width)
-                        .clickable { openItemDetail(item.itemId) }
+                    modifier = Modifier.clickable { openItemDetail(item.itemId) }
                 )
             }
         } else {

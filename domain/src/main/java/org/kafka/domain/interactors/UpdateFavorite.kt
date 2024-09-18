@@ -12,15 +12,12 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.account.SignInAnonymously
-import org.kafka.domain.interactors.recommendation.PostRecommendationEvent
-import org.kafka.domain.interactors.recommendation.PostRecommendationEvent.RecommendationEvent.FavoriteContent
 import javax.inject.Inject
 
 class UpdateFavorite @Inject constructor(
     private val signInAnonymously: SignInAnonymously,
     private val accountRepository: AccountRepository,
     private val favoritesRepository: FavoritesRepository,
-    private val postRecommendationEvent: PostRecommendationEvent,
     private val itemDetailDao: ItemDetailDao,
     private val analytics: Analytics,
     private val dispatchers: CoroutineDispatchers,
@@ -44,12 +41,6 @@ class UpdateFavorite @Inject constructor(
                 isAdded = params.markFavorite
             )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }
-
-            withContext(dispatchers.io) {
-                if (params.markFavorite) {
-                    postRecommendationEvent.execute(FavoriteContent(params.itemId))
-                }
-            }
         }
     }
 

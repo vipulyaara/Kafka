@@ -5,6 +5,8 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
 import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.homepage.HomepageCollectionResponse
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isRecommendationRowEnabled
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -18,6 +20,7 @@ object HomepageMapperConfig {
 
 class HomepageMapper @Inject constructor(
     private val itemDao: ItemDao,
+    private val remoteConfig: RemoteConfig,
     private val recommendationRepository: RecommendationRepository,
 ) {
 
@@ -32,7 +35,12 @@ class HomepageMapper @Inject constructor(
                     is HomepageCollectionResponse.Grid -> homepageItem.mapGrid()
                     is HomepageCollectionResponse.PersonRow -> homepageItem.mapPersonRow()
                     is HomepageCollectionResponse.Subjects -> homepageItem.mapSubjects()
-                    is HomepageCollectionResponse.Recommendation -> homepageItem.mapRecommendations()
+                    is HomepageCollectionResponse.Recommendation -> if (remoteConfig.isRecommendationRowEnabled()) {
+                        homepageItem.mapRecommendations()
+                    } else {
+                        flowOf(null)
+                    }
+
                     is HomepageCollectionResponse.Unknown -> flowOf(null)
                 }
             },
@@ -56,7 +64,13 @@ class HomepageMapper @Inject constructor(
 
     private fun HomepageCollectionResponse.Recommendation.mapRecommendations() =
         recommendationRepository.observeRecommendations(itemIds)
-            .map { items -> HomepageCollection.Recommendations(listOf(label), itemIds, items) }
+            .map { items ->
+                HomepageCollection.Recommendations(
+                    labels = listOf(label),
+                    type = itemIds,
+                    items = if (shuffle) items.shuffleInSync() else items
+                )
+            }
 
     private fun HomepageCollectionResponse.PersonRow.mapPersonRow(): Flow<HomepageCollection.PersonRow> {
         val indices = itemIds.split(", ").indices

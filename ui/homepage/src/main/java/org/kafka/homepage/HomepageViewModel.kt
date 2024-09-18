@@ -77,10 +77,10 @@ class HomepageViewModel @Inject constructor(
         updateItems()
     }
 
-    fun removeRecentItem(itemId: String) {
+    fun removeRecentItem(fileId: String) {
         viewModelScope.launch {
-            analytics.log { removeRecentItem(itemId) }
-            removeRecentItem.invoke(itemId).collect()
+            analytics.log { removeRecentItem(fileId) }
+            removeRecentItem.invoke(fileId).collect()
         }
     }
 
@@ -88,8 +88,8 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Profile)
     }
 
-    fun openItemDetail(itemId: String, source: String = "homepage") {
-        analytics.log { openItemDetail(itemId, source) }
+    fun openItemDetail(itemId: String, collection: String?, source: String = "homepage") {
+        analytics.log { openItemDetail(itemId = itemId, source = source, collection = collection) }
         navigator.navigate(Screen.ItemDetail(itemId))
     }
 

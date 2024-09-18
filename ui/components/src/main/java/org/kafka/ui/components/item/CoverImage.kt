@@ -35,7 +35,7 @@ fun CoverImage(
     data: Any?,
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
-    size: DpSize =  DpSize.Unspecified,
+    size: DpSize = DpSize.Unspecified,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     contentScale: ContentScale = ContentScale.FillHeight,
@@ -46,7 +46,7 @@ fun CoverImage(
     contentDescription: String? = null,
     elevation: Dp = Dimens.Elevation08,
     tonalElevation: Dp = Dimens.Elevation02,
-    isNoPreview: Boolean = false
+    isNoPreview: Boolean = false,
 ) {
     val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier
     Surface(
@@ -81,7 +81,7 @@ private fun Image(
     contentColor: Color,
     iconPadding: Dp,
     bitmapPlaceholder: Bitmap?,
-    shape: Shape
+    shape: Shape,
 ) {
     SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)

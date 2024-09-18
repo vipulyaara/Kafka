@@ -36,7 +36,7 @@ class FirestoreGraph @Inject constructor(
         .document(uid)
         .collection(listId)
 
-    fun getRecommendationCollection() = firestore.collection("recommendations")
+    fun getRecommendationCollection() = firestore.collection("user_recommendations")
 
     fun getRecommendationCollection(uid: String, recommendationId: String) =
         getRecommendationCollection()

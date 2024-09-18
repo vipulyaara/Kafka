@@ -46,6 +46,7 @@ sealed class HomepageCollectionResponse {
     data class Recommendation(
         val label: String,
         val itemIds: String,
+        val shuffle: Boolean = false,
         override val index: Float,
         override val enabled: Boolean = true,
         override val topics: String = "",

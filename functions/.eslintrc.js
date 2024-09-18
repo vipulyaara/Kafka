@@ -30,6 +30,7 @@ module.exports = {
     "no-unused-vars": "off",
     "no-dupe-keys": "off",
     "prefer-const": "off",
+    "camelcase": "off",
   },
   overrides: [
     {

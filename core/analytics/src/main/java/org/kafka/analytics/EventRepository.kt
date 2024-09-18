@@ -19,11 +19,11 @@ class EventRepository @Inject constructor() {
     fun openItemDetail(
         itemId: String,
         source: String? = null,
-        name: String? = null,
+        collection: String? = null
     ) = "open_item_detail" to mapOf(
         "item_id" to itemId,
         "source" to source,
-        "name" to name,
+        "collection" to collection,
     )
 
     fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(
@@ -133,6 +133,8 @@ class EventRepository @Inject constructor() {
 
     fun openRecentItems() = "open_recent_items" to mapOf<String, String>()
 
+    fun removeRecentItem() = "remove_recent_item" to mapOf<String, String>()
+
     fun clearRecentItems() = "clear_recent_items" to mapOf<String, String>()
 
     fun showAppReviewDialog() = "show_review_dialog" to mapOf<String, String>()
@@ -143,5 +145,10 @@ class EventRepository @Inject constructor() {
 
     fun openSummary(itemId: String) = "open_summary" to mapOf(
         "item_id" to itemId
+    )
+
+    fun remoteConfigValue(key: String, value: Any?) = "remote_config_value" to mapOf(
+        "key" to key,
+        "value" to value.toString()
     )
 }

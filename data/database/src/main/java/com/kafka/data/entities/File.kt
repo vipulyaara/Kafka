@@ -23,7 +23,7 @@ data class File(
 ) : BaseEntity {
     companion object {
         val audioExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")
-        val textExtensions = listOf("pdf", "txt")
+        val textExtensions = listOf("pdf", "epub")
         val supportedExtensions = audioExtensions + textExtensions
 
         // extensions that show up in player, in order of preference
@@ -59,12 +59,11 @@ data class File(
     }
 }
 
-fun String?.isText() = File.textExtensions.contains(this?.lowercase())
-fun String?.isAudio() = File.audioExtensions.contains(this?.lowercase())
+fun String?.isTextExtension() = File.textExtensions.contains(this?.lowercase())
+fun String?.isAudioExtension() = File.audioExtensions.contains(this?.lowercase())
 
 fun File.isPlayable() = File.playableExtensions.contains(extension?.lowercase())
-fun File.isAudio() = this.extension.isAudio()
-fun File.isText() = this.extension.isText()
-fun File.isTxt() = this.extension.equals("txt", true)
+fun File.isAudio() = this.extension.isAudioExtension()
+fun File.isText() = this.extension.isTextExtension()
 
 fun File.nameWithoutExtension() = name.substringBeforeLast(".")

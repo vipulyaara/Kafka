@@ -1,6 +1,7 @@
 package org.kafka.library.downloads
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,28 +17,50 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
+import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
 import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
 import org.kafka.ui.components.item.ItemMediaType
 import org.kafka.ui.components.item.ItemTitleMedium
+import org.kafka.ui.components.material.SwipeToDelete
+import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun DownloadItem(
     item: ItemWithDownload,
     modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
+) {
+    val downloader = LocalDownloader.current
+    val coroutineScope = rememberCoroutineScope()
+    fun deleteDownload() {
+        coroutineScope.launch { downloader.delete(item.downloadInfo.id) }
+    }
+
+    SwipeToDelete(onDismiss = ::deleteDownload) {
+        DownloadItemInternal(item = item, openItemDetail = openItemDetail)
+    }
+}
+
+@Composable
+internal fun DownloadItemInternal(
+    item: ItemWithDownload,
+    modifier: Modifier = Modifier,
+    openItemDetail: (String) -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .clickable { openItemDetail(item.item.itemId) }
             .padding(Dimens.Spacing16),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)

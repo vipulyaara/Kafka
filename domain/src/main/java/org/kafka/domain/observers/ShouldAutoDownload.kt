@@ -19,9 +19,11 @@ class ShouldAutoDownload @Inject constructor(
         return itemDetailDao.observeItemDetail(params.itemId)
             .map { itemDetail ->
                 val file = fileDao.getOrNull(itemDetail?.primaryFile.orEmpty())
-                (file?.size ?: 0) < 10000000L
+                shouldAutoDownload && (file?.size ?: 0) < 10000000L
             }.flowOn(dispatchers.io)
     }
 
     data class Param(val itemId: String)
 }
+
+const val shouldAutoDownload = false

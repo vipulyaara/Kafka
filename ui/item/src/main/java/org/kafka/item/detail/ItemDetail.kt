@@ -3,26 +3,21 @@ package org.kafka.item.detail
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -49,11 +44,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.color.DynamicTheme
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -71,7 +63,6 @@ import org.kafka.ui.components.LabelMedium
 import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
-import org.kafka.ui.components.item.RowItem
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.item.SummaryMessage
 import org.kafka.ui.components.progress.InfiniteProgressBar
@@ -99,18 +90,15 @@ fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
         isDynamicThemeEnabled = state.isDynamicThemeEnabled,
         model = state.itemDetail?.coverImage
     ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopBar(
-                    lazyGridState = lazyGridState,
-                    onShareClicked = { viewModel.shareItemText(context) },
-                    onShareLongClicked = { viewModel.openArchiveItem() },
-                    onBackPressed = { navigator.goBack() },
-                    isShareVisible = viewModel.isShareEnabled()
-                )
-            }
-        ) { padding ->
+        Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+            TopBar(
+                lazyGridState = lazyGridState,
+                onShareClicked = { viewModel.shareItemText(context) },
+                onShareLongClicked = { viewModel.openArchiveItem() },
+                onBackPressed = { navigator.goBack() },
+                isShareVisible = viewModel.isShareEnabled()
+            )
+        }) { padding ->
             ProvideScaffoldPadding(padding = padding) {
                 ItemDetail(state = state, viewModel = viewModel, lazyGridState = lazyGridState)
             }
@@ -129,7 +117,6 @@ private fun ItemDetail(
 
     ItemDetail(
         state = state,
-        relatedContent = viewModel.recommendedContent,
         openDescription = viewModel::openItemDescription,
         goToCreator = viewModel::goToCreator,
         onPrimaryAction = {
@@ -149,7 +136,6 @@ private fun ItemDetail(
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
-    relatedContent: List<Item>,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
@@ -199,8 +185,7 @@ private fun ItemDetail(
                         SummaryMessage(
                             text = stringResource(R.string.or_read_a_summary),
                             modifier = modifier.padding(
-                                vertical = Dimens.Spacing08,
-                                horizontal = Dimens.Spacing24
+                                vertical = Dimens.Spacing08, horizontal = Dimens.Spacing24
                             ),
                             onClick = { openSummary(state.itemDetail!!.itemId) },
                         )
@@ -220,23 +205,11 @@ private fun ItemDetail(
                     item(span = { GridItemSpan(GridItemSpan) }) {
                         FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
                             state.itemDetail.immutableSubjects.forEach {
-                                SubjectItem(
-                                    text = it,
+                                SubjectItem(text = it,
                                     modifier = Modifier.padding(Dimens.Spacing04),
                                     onClicked = { openSubject(it) })
                             }
                         }
-                    }
-                }
-
-                if (relatedContent.isNotEmpty()) {
-                    item {
-                        RelatedItems(
-                            items = relatedContent.toImmutableList(),
-                            openItemDetail = { itemId ->
-                                openItemDetail(itemId, itemDetailSourceRelated)
-                            }
-                        )
                     }
                 }
 
@@ -251,26 +224,19 @@ private fun ItemDetail(
                             }
                         }
 
-                        LabelMedium(
-                            text = text,
+                        LabelMedium(text = text,
                             modifier = Modifier
                                 .simpleClickable { goToCreator(state.itemDetail.creator) }
                                 .padding(Dimens.Gutter),
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                            overflow = TextOverflow.Ellipsis)
                     }
 
                     items(state.itemsByCreator!!, key = { it.itemId }) { item ->
-                        Item(
-                            item = item,
+                        Item(item = item,
                             modifier = Modifier
                                 .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
-                                .padding(
-                                    vertical = Dimens.Spacing06,
-                                    horizontal = Dimens.Gutter
-                                )
-                        )
+                                .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter))
                     }
                 }
 
@@ -300,7 +266,7 @@ private fun ItemDescription(
             LoadImage(
                 data = itemDetail.coverImage,
                 modifier = Modifier
-                    .size(Dimens.CoverSizeDetail)
+                    .size(if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail)
                     .clip(RoundedCornerShape(Dimens.Spacing08))
             )
 
@@ -365,41 +331,6 @@ private fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
 }
 
 @Composable
-private fun RelatedItems(
-    items: ImmutableList<Item>,
-    modifier: Modifier = Modifier,
-    openItemDetail: (String) -> Unit,
-) {
-    Column(modifier = modifier) {
-        LabelMedium(
-            text = stringResource(R.string.you_might_also_like),
-            modifier = Modifier.padding(Dimens.Gutter)
-        )
-
-        LazyRow(
-            contentPadding = PaddingValues(
-                horizontal = Dimens.Gutter,
-                vertical = Dimens.Spacing06
-            ),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-        ) {
-            items(
-                items = items,
-                key = { it.itemId },
-                contentType = { it.javaClass }
-            ) { item ->
-                RowItem(
-                    item = item,
-                    modifier = Modifier
-                        .widthIn(max = Dimens.CoverSizeLarge.width)
-                        .clickable { openItemDetail(item.itemId) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun AccessRestricted(isAudio: Boolean, borrowableBookMessage: String, onClick: () -> Unit) {
     val message = if (isAudio) {
         stringResource(R.string.audio_access_restricted_message)
@@ -436,13 +367,11 @@ private const val GridItemSpan = 1
 @Composable
 private fun ItemDetailPreview() {
     AppTheme {
-        ItemDetail(
-            state = ItemDetailViewState(
-                itemDetail = FakeItemData.fakeItemDetail,
-                isFavorite = true,
-                itemsByCreator = FakeItemData.fakeItems
-            ),
-            relatedContent = listOf(),
+        ItemDetail(state = ItemDetailViewState(
+            itemDetail = FakeItemData.fakeItemDetail,
+            isFavorite = true,
+            itemsByCreator = FakeItemData.fakeItems
+        ),
             modifier = Modifier.background(Color.White),
             openDescription = {},
             goToCreator = {},
@@ -451,8 +380,6 @@ private fun ItemDetailPreview() {
             toggleFavorite = {},
             openSubject = {},
             openItemDetail = { _, _ -> },
-            openSummary = {}
-        )
+            openSummary = {})
     }
 }
-

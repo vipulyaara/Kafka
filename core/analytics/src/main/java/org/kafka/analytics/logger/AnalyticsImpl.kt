@@ -7,8 +7,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
-import com.kafka.data.feature.UserData
-import com.kafka.data.feature.UserDataRepository
+import com.kafka.data.platform.UserData
+import com.kafka.data.platform.UserDataRepository
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

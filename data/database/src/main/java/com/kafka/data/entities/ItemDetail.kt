@@ -33,7 +33,7 @@ data class ItemDetail(
         get() = (rating ?: 0.0).toInt()
 
     val isAudio
-        get() = this.mediaType == _mediaTypeAudio
+        get() = this.mediaType.isAudioMediaType
 
     val isText
         get() = this.mediaType == _mediaTypeText
@@ -41,3 +41,6 @@ data class ItemDetail(
     val immutableSubjects: ImmutableList<String>
         get() = subject.orEmpty().toPersistentList()
 }
+
+val String?.isAudioMediaType
+    get() = this == _mediaTypeAudio

@@ -60,6 +60,7 @@ fun OnlineReader(
             viewModel.downloadItem(fileId)
         }
     }
+
     LaunchedEffect(state.download) {
         if (state.download?.downloadInfo?.status == DownloadStatus.COMPLETED) {
             viewModel.showDownloadComplete.value = true

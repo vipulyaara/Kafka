@@ -48,15 +48,12 @@ private fun DownloadsList(
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
     footer: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val padding = PaddingValues(Dimens.Spacing08) +
             PaddingValues(bottom = bottomScaffoldPadding())
 
-    LazyColumn(
-        contentPadding = padding,
-        modifier = modifier.fillMaxSize()
-    ) {
+    LazyColumn(contentPadding = padding, modifier = modifier.fillMaxSize()) {
         item { header() }
 
         itemsIndexed(
@@ -65,8 +62,6 @@ private fun DownloadsList(
         ) { _, item ->
             DownloadItem(item = item, openItemDetail = openItemDetail)
         }
-
-//        item { footer() }
     }
 }
 

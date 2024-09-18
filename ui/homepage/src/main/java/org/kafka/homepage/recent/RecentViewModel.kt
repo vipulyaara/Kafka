@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.recent.RemoveAllRecentItems
+import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveRecentItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class RecentViewModel @Inject constructor(
     observeRecentItems: ObserveRecentItems,
     private val removeAllRecentItems: RemoveAllRecentItems,
+    private val removeRecentItem: RemoveRecentItem,
     private val navigator: Navigator,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -38,6 +40,13 @@ class RecentViewModel @Inject constructor(
     fun openItemDetail(itemId: String) {
         analytics.log { this.openItemDetail(itemId = itemId, source = "reading_list") }
         navigator.navigate(Screen.ItemDetail(itemId))
+    }
+
+    fun removeItem(fileId: String) {
+        analytics.log { this.removeRecentItem() }
+        viewModelScope.launch {
+            removeRecentItem(fileId).collect()
+        }
     }
 
     fun clearAllRecentItems() {

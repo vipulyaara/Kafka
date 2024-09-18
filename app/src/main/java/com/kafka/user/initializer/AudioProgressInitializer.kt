@@ -22,7 +22,7 @@ import javax.inject.Inject
 /**
  * An [AppInitializer] that updates the the currently playing audio.
  *
- * It listens to the [PlaybackConnection.nowPlaying] and updates the recent audio item
+ * It listens to the [PlaybackConnection.playbackProgress] and updates the recent audio item
  * so that it can be played from last item when the user plays the album again.
  */
 class AudioProgressInitializer @Inject constructor(

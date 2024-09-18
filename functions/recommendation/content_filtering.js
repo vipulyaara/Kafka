@@ -52,19 +52,28 @@ async function generateContentBasedRecommendations() {
   const activeUsers = await getActiveUsers();
   console.log(`Found ${activeUsers.length} active users for content-based recommendations`);
   
-  let allUserItemIds = {};
+  const allUserItemIds = {};
 
+  // Batch query for user interactions
+  const userInteractions = await batchGetUserInteractions(activeUsers);
+  
   for (const userId of activeUsers) {
-    const userInteractions = await getUserInteractions(userId);
-    allUserItemIds[userId] = userInteractions.map(interaction => interaction.item_id);
-    
-    const userProfile = await buildUserProfile(userId);
+    const existingRecommendations = await getUserRecommendations(userId);
+    if (existingRecommendations && existingRecommendations.length > 0) {
+      console.log(`User ${userId} already has recommendations. Skipping.`);
+      continue;
+    }
+
+    const userProfile = await buildUserProfile(userId, userInteractions[userId]);
     console.log(`Built user profile for user ${userId}:`, JSON.stringify(userProfile, null, 2));
     const recommendations = await generateUserRecommendations(userId, userProfile);
     console.log(`Generated ${recommendations.length} recommendations for user ${userId}`);
     if (recommendations.length > 0) {
       await saveRecommendations(userId, recommendations);
       console.log(`Saved ${recommendations.length} recommendations for user ${userId}`);
+      
+      // Add user's item IDs to allUserItemIds
+      allUserItemIds[userId] = recommendations.map(rec => rec.itemId);
     } else {
       console.log(`No recommendations generated for user ${userId}. Skipping save.`);
     }
@@ -115,16 +124,23 @@ async function getActiveUsers() {
               AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
             AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
         )
-      LIMIT 10
+      LIMIT 1000
     `;
 
-  const [rows] = await bigquery.query({ query });
-  return rows.map(row => row.user_id);
+    const [rows] = await bigquery.query({ query });
+    const activeUsers = rows.map(row => row.user_id);
+    
+    // Add the specific user ID if it's not already in the list
+    const specificUserId = 'P34Oi9eyXNPQxWYM98e7VCoUSeF2';
+    if (!activeUsers.includes(specificUserId)) {
+      activeUsers.push(specificUserId);
+    }
+  
+    return activeUsers;
 }
 
-async function buildUserProfile(userId) {
-  const userInteractions = await getUserInteractions(userId);
-  console.log(`Retrieved ${userInteractions.length} interactions for user ${userId}`);
+async function buildUserProfile(userId, interactions) {
+  console.log(`Retrieved ${interactions.length} interactions for user ${userId}`);
   const profile = {
     subject: {},
     creator: {},
@@ -133,7 +149,7 @@ async function buildUserProfile(userId) {
     mediatype: {},
   };
   
-  for (const interaction of userInteractions) {
+  for (const interaction of interactions) {
     const itemMetadata = await getItemMetadata(interaction.item_id);
     console.log(`Processing item ${interaction.item_id}`);
     if (!itemMetadata) {
@@ -155,6 +171,92 @@ async function buildUserProfile(userId) {
 
   normalizeProfile(profile);
   return profile;
+}
+
+async function batchGetUserInteractions(userIds) {
+  // First, try to get interactions from Firestore
+  const firestoreInteractions = await batchGetFirestoreInteractions(userIds);
+  
+  // Identify users who need BigQuery lookup
+  const usersNeedingBigQuery = userIds.filter(userId => !firestoreInteractions[userId]);
+  
+  // If all users have Firestore data, return it
+  if (usersNeedingBigQuery.length === 0) {
+    return firestoreInteractions;
+  }
+  
+  // Perform BigQuery batch query for remaining users
+  const bigQueryInteractions = await batchGetBigQueryInteractions(usersNeedingBigQuery);
+  
+  // Merge Firestore and BigQuery results
+  const allInteractions = { ...firestoreInteractions, ...bigQueryInteractions };
+  
+  // Store BigQuery results in Firestore for future use
+  await batchSaveInteractionsToFirestore(bigQueryInteractions);
+  
+  return allInteractions;
+}
+
+async function batchGetFirestoreInteractions(userIds) {
+  const batch = db.batch();
+  const refs = userIds.map(userId => db.collection('user_interactions').doc(userId));
+  const docs = await db.getAll(...refs);
+  
+  return docs.reduce((acc, doc, index) => {
+    if (doc.exists) {
+      acc[userIds[index]] = doc.data().interactions || [];
+    }
+    return acc;
+  }, {});
+}
+
+async function batchGetBigQueryInteractions(userIds) {
+  const query = `
+    SELECT
+      user_id,
+      ARRAY_AGG(STRUCT(item_id, interaction_count)) AS interactions
+    FROM (
+      SELECT
+        user_id,
+        (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'item_id') AS item_id,
+        COUNT(*) AS interaction_count
+      FROM
+        \`kafka-books.analytics_195726967.events_*\`
+      WHERE
+        _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL ${ACTIVE_USER_THRESHOLD_DAYS} DAY))
+          AND FORMAT_DATE('%Y%m%d', CURRENT_DATE())
+        AND event_name IN (${EVENTS_OF_INTEREST.map(event => `'${event}'`).join(',')})
+        AND user_id IN UNNEST(@userIds)
+      GROUP BY
+        user_id, item_id
+      HAVING
+        item_id IS NOT NULL
+    )
+    GROUP BY user_id
+  `;
+
+  const options = {
+    query: query,
+    params: { userIds: userIds }
+  };
+
+  const [rows] = await bigquery.query(options);
+  
+  return rows.reduce((acc, row) => {
+    acc[row.user_id] = row.interactions.map(i => ({ item_id: i.item_id }));
+    return acc;
+  }, {});
+}
+
+async function batchSaveInteractionsToFirestore(interactions) {
+  const batch = db.batch();
+  
+  for (const [userId, userInteractions] of Object.entries(interactions)) {
+    const docRef = db.collection('user_interactions').doc(userId);
+    batch.set(docRef, { interactions: userInteractions });
+  }
+  
+  await batch.commit();
 }
 
 async function getUserInteractions(userId) {
@@ -283,11 +385,11 @@ function hasUserInteracted(userId, itemId) {
 function calculateSimilarity(userProfile, item) {
   let similarity = 0;
   const weights = {
-    subject: 0.3,
-    creator: 0.2,
+    subject: 0.2,
+    creator: 0.1,
     mediatype: 0.2,
-    language: 0.1,
-    collection: 0.1,
+    language: 0.3,
+    collection: 0.03,
   };
 
   for (const feature in weights) {
@@ -307,11 +409,44 @@ function calculateFeatureSimilarity(userFeatures, itemFeature) {
   return 0;
 }
 
-async function saveRecommendations(userId, recommendations) {
+async function getUserRecommendations(userId) {
   const userRecommendationsRef = db.collection('user_recommendations').doc(userId);
-  await userRecommendationsRef.set({
-    contentBased: recommendations
-  }, { merge: true });
+  const doc = await userRecommendationsRef.get();
+  if (doc.exists) {
+    return doc.data().contentBased || [];
+  }
+  return [];
+}
+
+const EXCLUDED_ITEM_IDS = [
+  'behan-ne-chhote-bhai-se-choot-chudwa-kar-maja',
+  // Add more item IDs to exclude as needed
+];
+
+async function saveRecommendations(userId, recommendations) {
+  // Only save recommendations if there are more than 3
+  if (recommendations.length <= 3) {
+    console.log(`Not saving recommendations for user ${userId} as there are only ${recommendations.length} items.`);
+    return;
+  }
+
+  const userRecommendationsRef = db.collection('user_recommendations').doc(userId).collection('contentBased');
+  
+  const batch = db.batch();
+  let savedCount = 0;
+
+  for (const rec of recommendations) {
+    if (!EXCLUDED_ITEM_IDS.includes(rec.itemId)) {
+      const docRef = userRecommendationsRef.doc(rec.itemId);
+      batch.set(docRef, {
+        score: rec.score
+      });
+      savedCount++;
+    }
+  }
+
+  await batch.commit();
+  console.log(`Saved ${savedCount} content-based recommendations for user ${userId} (${recommendations.length - savedCount} excluded)`);
 }
 
 module.exports = {

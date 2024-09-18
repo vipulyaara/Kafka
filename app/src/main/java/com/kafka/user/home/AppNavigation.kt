@@ -169,7 +169,12 @@ private fun NavGraphBuilder.addHome() {
 }
 
 private fun NavGraphBuilder.addSearch() {
-    composable<Screen.Search> {
+    composable<Screen.Search>(
+        deepLinks = listOf(
+            navDeepLink<Screen.Search>("${Config.BASE_URL}search"),
+            navDeepLink<Screen.Search>("${Config.BASE_URL_ALT}search")
+        )
+    ) {
         SearchScreen()
     }
 }
@@ -199,8 +204,8 @@ private fun NavGraphBuilder.addItemDetail() {
     composable(
         route = Screen.ItemDetail.route,
         deepLinks = listOf(
-            navDeepLink { uriPattern = "${Config.BASE_URL}item/{itemId}" },
-            navDeepLink { uriPattern = "${Config.BASE_URL_ALT}item/{itemId}" },
+            navDeepLink<Screen.ItemDetail>("${Config.BASE_URL}item"),
+            navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
         )
     ) {
         ItemDetail()

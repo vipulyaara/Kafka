@@ -10,6 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.kafka.data.platform.UserDataRepository
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getOpenAiApiKey
@@ -19,6 +20,7 @@ import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
+import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
 import dagger.Binds
 import dagger.Module
@@ -94,11 +96,9 @@ class AppModule {
     fun provideFirestoreKt(firebaseFirestore: FirebaseFirestore) =
         dev.gitlive.firebase.firestore.FirebaseFirestore(firebaseFirestore)
 
-
     @Provides
     fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
-        override val pipelessAuthToken: String = BuildConfig.PIPELESS_AUTH_TOKEN
         override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
     }
 }
@@ -143,5 +143,21 @@ abstract class AppModuleBinds {
     abstract fun provideAudioProgressInitializer(bind: AudioProgressInitializer): AppInitializer
 
     @Binds
+    @IntoSet
+    abstract fun provideRemoteConfigLogger(bind: RemoteConfigLogger): AppInitializer
+
+    @Binds
     abstract fun provideAppReviewManager(appReviewManagerImpl: AppReviewManagerImpl): AppReviewManager
+}
+
+// todo: eventually move these dependencies to respective modules
+@InstallIn(SingletonComponent::class)
+@Module
+class KmpModule {
+
+    @Provides
+    fun provideUserDataRepository(
+        @ApplicationContext context: Context,
+        firebaseAuth: FirebaseAuth,
+    ) = UserDataRepository(context, firebaseAuth)
 }

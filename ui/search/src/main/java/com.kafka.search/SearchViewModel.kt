@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
@@ -40,11 +41,9 @@ class SearchViewModel @Inject constructor(
     private val loadingState: ObservableLoadingCounter,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val keywordInitialValue = savedStateHandle.get<String>(extraKeyword).orEmpty()
+    private val route = savedStateHandle.toRoute<Screen.Search>()
     internal val selectedMediaTypes = mutableStateListOf<MediaType>()
         .apply { addAll(MediaType.entries) }
-    private val selectedFilters
-        get() = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
     private val searchResults = MutableStateFlow<List<Item>>(listOf())
 
     val state: StateFlow<SearchViewState> = combine(
@@ -66,8 +65,8 @@ class SearchViewModel @Inject constructor(
 
     init {
         search(
-            keyword = keywordInitialValue,
-            filters = SearchFilter.from(selectedFilters),
+            keyword = route.keyword,
+            filters = SearchFilter.from(route.filters),
             mediaTypes = selectedMediaTypes
         )
 
@@ -76,8 +75,8 @@ class SearchViewModel @Inject constructor(
 
     fun search(
         keyword: String = state.value.keyword,
-        filters: List<SearchFilter> = SearchFilter.from(selectedFilters),
-        mediaTypes: List<MediaType> = selectedMediaTypes
+        filters: List<SearchFilter> = SearchFilter.from(route.filters),
+        mediaTypes: List<MediaType> = selectedMediaTypes,
     ) {
         viewModelScope.launch {
             loadingState.addLoader()

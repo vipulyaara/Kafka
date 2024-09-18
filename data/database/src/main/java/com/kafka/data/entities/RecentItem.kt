@@ -52,20 +52,10 @@ data class RecentTextItem(
     @PrimaryKey val fileId: String,
     val currentPage: Int, // starts at 1
     val localUri: String,
-    val type: Type,
+    val type: Type = Type.PDF,
     val pages: List<Page> = emptyList(),
 ) : BaseEntity {
-    enum class Type {
-        PDF, TXT;
-
-        companion object {
-            fun fromString(type: String?): Type = when (type) {
-                "pdf" -> PDF
-                "txt" -> TXT
-                else -> throw IllegalArgumentException("Unknown type $type")
-            }
-        }
-    }
+    enum class Type { PDF }
 
     @Serializable
     data class Page(val index: Int, val text: String)
