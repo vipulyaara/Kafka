@@ -1,12 +1,12 @@
 [versions]
 accompanist = "0.34.0"
 appupdate = "2.1.0"
-agp = "8.6.0"
+agp = "8.6.1"
 androidxhilt = "1.2.0"
-androidxlifecycle = "2.8.5"
+androidxlifecycle = "2.8.6"
 coil = "2.6.0"
 compose-alpha = "2024.08.00-alpha02"
-compose-bom = "2024.09.00"
+compose-bom = "2024.09.02"
 compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
@@ -19,7 +19,7 @@ kotlininject = "0.7.1"
 material3 = "1.3.0"
 media3 = "1.3.1"
 mixpanel = "7.0.0"
-navigation = "2.8.0"
+navigation = "2.8.1"
 okhttp = "4.12.0"
 pdfviewer = "3.2.0-beta.1"
 retrofit = "2.9.0"
@@ -34,9 +34,9 @@ core-ktx = "1.13.1"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
-benchmark-macro-junit4 = "1.3.0"
-androidx-baselineprofile = "1.3.0"
-profileinstaller = "1.3.1"
+benchmark-macro-junit4 = "1.3.1"
+androidx-baselineprofile = "1.3.1"
+profileinstaller = "1.4.0"
 review = "2.0.1"
 
 [plugins]
@@ -69,7 +69,7 @@ media = "androidx.media:media:1.7.0"
 palette = "androidx.palette:palette-ktx:1.0.0"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
-androidx-collection = "androidx.collection:collection-ktx:1.4.3"
+androidx-collection = "androidx.collection:collection-ktx:1.4.4"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
 
@@ -119,7 +119,7 @@ compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
 fetch = "com.github.abbas7777:fetch2-android14:3.2.0-beta07"
 
-google-bom = "com.google.firebase:firebase-bom:33.2.0"
+google-bom = "com.google.firebase:firebase-bom:33.3.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
