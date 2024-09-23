@@ -166,7 +166,7 @@ dependencies {
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
     implementation(libs.fetch)
-    implementation(libs.firestore.ktx)
+    implementation(libs.firebase.firestore)
     implementation(libs.google.analytics)
     implementation(libs.google.auth)
     implementation(libs.google.crashlytics)

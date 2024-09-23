@@ -10,20 +10,15 @@ import com.google.firebase.crashlytics.setCustomKeys
 import com.kafka.data.platform.UserData
 import com.kafka.data.platform.UserDataRepository
 import com.mixpanel.android.mpmetrics.MixpanelAPI
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.kafka.analytics.EventRepository
-import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AnalyticsImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @ProcessLifetime private val scope: CoroutineScope,
+class AnalyticsImpl(
+    private val context: Context,
+    scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,
 ) : Analytics {

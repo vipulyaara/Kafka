@@ -11,6 +11,7 @@ compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
 dagger = "2.51.1"
+firebase = "2.1.0"
 icons = "1.0.0"
 haze="0.7.3"
 kotlin = "2.0.10"
@@ -134,9 +135,16 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
-firestore-ktx = "dev.gitlive:firebase-firestore:1.13.0"
-firestore-common-ktx = "dev.gitlive:firebase-common:1.13.0"
-firebase-remote-config = "dev.gitlive:firebase-config:1.13.0"
+
+firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
+firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
+firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase" }
+
+#firestore-ktx = "dev.gitlive:firebase-firestore:2.1.0"
+#firestore-common-ktx = "dev.gitlive:firebase-common:2.1.0"
+#firebase-remote-config = "dev.gitlive:firebase-config:2.1.0"
+#firebase-analytics = "dev.gitlive:firebase-analytics:2.1.0"
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 

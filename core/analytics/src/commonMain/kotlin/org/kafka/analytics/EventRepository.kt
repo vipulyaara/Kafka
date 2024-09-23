@@ -1,14 +1,13 @@
 package org.kafka.analytics
 
-import org.kafka.analytics.logger.AnalyticsImpl
-import javax.inject.Inject
+import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
 
-class EventRepository @Inject constructor() {
+class EventRepository {
     fun searchQuery(
         keyword: String,
         filters: List<String>? = null,
         mediaTypes: List<String>? = null,
-    ) = AnalyticsImpl.SEARCH to mapOf(
+    ) = FirebaseAnalyticsEvents.SEARCH to mapOf(
         "keyword" to keyword,
         "filters" to filters?.joinToString(),
         "media_types" to mediaTypes?.joinToString(),
@@ -19,7 +18,7 @@ class EventRepository @Inject constructor() {
     fun openItemDetail(
         itemId: String,
         source: String? = null,
-        collection: String? = null
+        collection: String? = null,
     ) = "open_item_detail" to mapOf(
         "item_id" to itemId,
         "source" to source,
@@ -94,12 +93,12 @@ class EventRepository @Inject constructor() {
 
     fun openLogin() = "open_login" to mapOf<String, String>()
 
-    fun signUp(name: String?) = AnalyticsImpl.SIGN_UP to mapOf(
+    fun signUp(name: String?) = FirebaseAnalyticsEvents.SIGN_UP to mapOf(
         "name" to name,
     )
 
-    fun login(method: String = "email") = AnalyticsImpl.LOGIN to mapOf(
-        AnalyticsImpl.PARAM_METHOD to method,
+    fun login(method: String = "email") = FirebaseAnalyticsEvents.LOGIN to mapOf(
+        "method" to method,
     )
 
     fun logoutClicked() = "logout_clicked" to mapOf<String, String>()

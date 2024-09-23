@@ -29,8 +29,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import dev.gitlive.firebase.firestore.invoke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.kafka.analytics.EventRepository
 import org.kafka.analytics.logger.Analytics
 import org.kafka.analytics.logger.AnalyticsImpl
 import org.kafka.base.AppInitializer
@@ -101,6 +103,10 @@ class AppModule {
         override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
         override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
     }
+
+    @Singleton
+    @Provides
+    fun provideEventRepository() = EventRepository()
 }
 
 @InstallIn(SingletonComponent::class)
@@ -159,5 +165,19 @@ class KmpModule {
     fun provideUserDataRepository(
         @ApplicationContext context: Context,
         firebaseAuth: FirebaseAuth,
-    ) = UserDataRepository(context, firebaseAuth)
+    ) = UserDataRepository(context = context, firebaseAuth = firebaseAuth)
+
+    @Singleton
+    @Provides
+    fun provideAnalytics(
+        @ApplicationContext context: Context,
+        @ProcessLifetime scope: CoroutineScope,
+        userDataRepository: UserDataRepository,
+        eventRepository: EventRepository,
+    ) = AnalyticsImpl(
+        context = context,
+        scope = scope,
+        userDataRepository = userDataRepository,
+        eventRepository = eventRepository
+    )
 }

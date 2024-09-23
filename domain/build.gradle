@@ -25,7 +25,7 @@ dependencies {
 
     implementation platform(libs.google.bom)
 
-    implementation libs.firestore.ktx
+    implementation libs.firebase.firestore
     implementation libs.fetch
     implementation libs.google.auth
     implementation libs.google.coroutines

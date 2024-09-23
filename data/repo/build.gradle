@@ -30,8 +30,8 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.runtime
     implementation libs.compose.runtime.runtime
-    implementation libs.firestore.common.ktx
-    implementation libs.firestore.ktx
+    implementation libs.firebase.common
+    implementation libs.firebase.firestore
     implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.serialization

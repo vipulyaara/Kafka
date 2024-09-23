@@ -9,7 +9,7 @@ kotlin {
             dependencies {
                 api(projects.base.domain)
                 api(libs.kotlin.serialization)
-                implementation(libs.firestore.ktx)
+                implementation(libs.firebase.firestore)
             }
         }
     }
