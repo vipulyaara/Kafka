@@ -11,9 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
-import kotlin.coroutines.EmptyCoroutineContext
 
 const val databaseName = "kafka.db"
 
@@ -43,10 +41,6 @@ class RoomDatabaseModule {
         }
         return builder.build()
     }
-
-    @Singleton
-    @Provides
-    fun providesStoreDispatcher(): CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 }
 
 @InstallIn(SingletonComponent::class)
