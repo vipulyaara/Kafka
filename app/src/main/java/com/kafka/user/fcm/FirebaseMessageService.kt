@@ -4,27 +4,16 @@ import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kafka.data.prefs.PreferencesStore
+import com.kafka.user.AndroidApplicationComponent
+import com.kafka.user.from
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FirebaseMessageService : FirebaseMessagingService() {
 
-    @Inject
-    lateinit var preferencesStore: PreferencesStore
-
-    @ProcessLifetime
-    @Inject
-    lateinit var processScope: CoroutineScope
-
-    @Inject
-    lateinit var dispatchers: CoroutineDispatchers
+    private val applicationComponent = AndroidApplicationComponent.from(this.applicationContext)
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
@@ -45,8 +34,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
         debug { "New FCM registration token: $token" }
 
-        processScope.launch(dispatchers.io) {
-            preferencesStore.save(fcmTokenPreferenceKey, token)
+        applicationComponent.processScope.launch(applicationComponent.dispatchers.io) {
+            applicationComponent.preferencesStore.save(fcmTokenPreferenceKey, token)
         }
     }
 }

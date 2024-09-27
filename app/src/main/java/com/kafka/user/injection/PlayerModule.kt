@@ -6,21 +6,21 @@ import com.kafka.user.playback.PlayerLogger
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.apis.Logger
 import com.sarahang.playback.core.apis.PlayerEventLogger
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.sarahang.playback.core.injection.PlaybackCoreModule
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Provides
+import org.kafka.base.ApplicationScope
 
-@InstallIn(SingletonComponent::class)
-@Module
-abstract class PlayerModule {
+@Component
+@ApplicationScope
+interface PlayerModule : PlaybackCoreModule {
 
-    @Binds
-    abstract fun audioDataSource(playerAudioDataSource: PlayerAudioDataSource): AudioDataSource
+    @Provides
+    fun audioDataSource(bind: PlayerAudioDataSource): AudioDataSource = bind
 
-    @Binds
-    abstract fun playerEventLogger(kafkaPlayerEventLogger: KafkaPlayerEventLogger): PlayerEventLogger
+    @Provides
+    fun playerEventLogger(bind: KafkaPlayerEventLogger): PlayerEventLogger = bind
 
-    @Binds
-    abstract fun playerLogger(playerLogger: PlayerLogger): Logger
+    @Provides
+    fun playerLogger(bind: PlayerLogger): Logger = bind
 }

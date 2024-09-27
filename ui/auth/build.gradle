@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -23,4 +24,7 @@ dependencies {
     implementation libs.hilt.android
 
     kapt libs.hilt.compiler
+
+    ksp libs.kotlininject.compiler
+    implementation libs.kotlininject.runtime
 }

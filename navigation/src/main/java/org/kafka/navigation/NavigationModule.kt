@@ -1,16 +1,14 @@
 package org.kafka.navigation
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Provides
+import org.kafka.base.ApplicationScope
 
-@Module
-@InstallIn(SingletonComponent::class)
-class NavigationModule {
+@Component
+@ApplicationScope
+interface NavigationModule {
 
-    @Singleton
     @Provides
-    fun navigator(): Navigator = NavigatorImpl()
+    @ApplicationScope
+    fun navigator(bind: NavigatorImpl): Navigator = bind
 }

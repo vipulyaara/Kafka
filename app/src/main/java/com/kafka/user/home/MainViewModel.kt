@@ -8,7 +8,6 @@ import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getPlayerTheme
 import com.kafka.remote.config.minSupportedVersion
 import com.kafka.user.BuildConfig
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
@@ -16,11 +15,10 @@ import org.kafka.common.goToPlayStore
 import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 
-@HiltViewModel
 class MainViewModel @Inject constructor(
-    val analytics: Analytics,
+    private val analytics: Analytics,
     private val signInAnonymously: SignInAnonymously,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     val playerTheme by lazy { remoteConfig.getPlayerTheme() }
     val isUpdateRequired by lazy {

@@ -1,5 +1,6 @@
 plugins {
     id("com.kafka.kotlin.multiplatform")
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -12,6 +13,7 @@ kotlin {
                 api(libs.kermit)
                 api(libs.kotlin.immutable)
                 api(libs.kotlinx.atomicfu)
+                api(libs.kotlininject.runtime)
             }
         }
 

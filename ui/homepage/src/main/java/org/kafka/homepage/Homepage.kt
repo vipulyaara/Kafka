@@ -31,11 +31,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
+import me.tatarka.inject.annotations.Inject
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.image.Icons
 import org.kafka.common.logging.LogCompositions
@@ -59,10 +60,14 @@ import org.kafka.ui.components.progress.InfiniteProgressBar
 import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
+typealias Homepage = @Composable () -> Unit
+
 @Composable
-fun Homepage(viewModel: HomepageViewModel = hiltViewModel()) {
+@Inject
+fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     LogCompositions(tag = "Homepage Feed items")
 
+    val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 

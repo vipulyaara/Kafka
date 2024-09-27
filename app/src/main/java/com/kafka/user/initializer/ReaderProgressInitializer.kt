@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.kafka.base.AppInitializer
+import org.kafka.base.ApplicationScope
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
@@ -22,6 +23,7 @@ import javax.inject.Inject
 /**
  * Listen to the downloads and save the text files to the database when download is completed
  * */
+@ApplicationScope
 class ReaderProgressInitializer @Inject constructor(
     private val fetch: Fetch,
     @ProcessLifetime private val coroutineScope: CoroutineScope,

@@ -9,10 +9,11 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
+import org.kafka.base.ApplicationScope
 import org.kafka.base.debug
 import javax.inject.Inject
 
-@Reusable
+@ApplicationScope
 class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,

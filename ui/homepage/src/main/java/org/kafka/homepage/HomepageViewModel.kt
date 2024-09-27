@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.model.SearchFilter
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.showFeaturedItemLabels
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -29,7 +28,6 @@ import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
-@HiltViewModel
 class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     observeUser: ObserveUser,

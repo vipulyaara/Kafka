@@ -1,36 +1,22 @@
 package com.kafka.data.injection
 
-import android.content.Context
+import android.app.Application
 import android.os.Debug
 import androidx.room.Room
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
-import dagger.Binds
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Provides
+import org.kafka.base.ApplicationScope
 
 const val databaseName = "kafka.db"
 
-@InstallIn(SingletonComponent::class)
-@Module(
-    includes = [
-        RoomDatabaseModule::class,
-        DatabaseDaoModule::class,
-        DatabaseModuleBinds::class,
-    ],
-)
-class DatabaseModule
-
-@InstallIn(SingletonComponent::class)
-@Module
-class RoomDatabaseModule {
-    @Singleton
+@Component
+@ApplicationScope
+interface DatabaseModule {
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): KafkaRoomDatabase {
+    @ApplicationScope
+    fun provideDatabase(context: Application): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
             context,
             KafkaRoomDatabase::class.java,
@@ -41,20 +27,11 @@ class RoomDatabaseModule {
         }
         return builder.build()
     }
-}
 
-@InstallIn(SingletonComponent::class)
-@Module
-abstract class DatabaseModuleBinds {
+    @Provides
+    @ApplicationScope
+    fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase = bind
 
-    @Singleton
-    @Binds
-    abstract fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase
-}
-
-@InstallIn(SingletonComponent::class)
-@Module
-class DatabaseDaoModule {
     @Provides
     fun provideItemDao(db: KafkaRoomDatabase) = db.itemDao()
 

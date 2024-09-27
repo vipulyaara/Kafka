@@ -3,11 +3,11 @@ package com.kafka.data.feature
 import com.kafka.data.entities.DownloadItem
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
-import dagger.Reusable
 import kotlinx.coroutines.tasks.await
+import org.kafka.base.ApplicationScope
 import javax.inject.Inject
 
-@Reusable
+@ApplicationScope
 class DownloadsRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val accountRepository: AccountRepository,

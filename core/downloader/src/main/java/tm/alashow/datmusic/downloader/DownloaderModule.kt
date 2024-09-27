@@ -4,40 +4,37 @@
  */
 package tm.alashow.datmusic.downloader
 
-import android.content.Context
+import android.app.Application
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.downloaderType
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchNotificationManager
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Provides
 import okhttp3.OkHttpClient
-import javax.inject.Named
-import javax.inject.Singleton
+import org.kafka.base.ApplicationScope
+import org.kafka.base.Named
 import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
-@InstallIn(SingletonComponent::class)
-@Module
-class DownloaderModule {
+@Component
+@ApplicationScope
+interface DownloaderModule {
 
     @Provides
-    internal fun provideDownloader(downloader: DownloaderImpl): Downloader = downloader
+    fun provideDownloader(downloader: DownloaderImpl): Downloader = downloader
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun fetchNotificationManager(
-        @ApplicationContext context: Context,
+        context: Application,
     ): FetchNotificationManager = DownloaderNotificationManager(context)
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideFetch(
-        @ApplicationContext context: Context,
+        context: Application,
         @Named("downloader") okHttpClient: OkHttpClient,
         notificationManager: FetchNotificationManager,
         remoteConfig: RemoteConfig,

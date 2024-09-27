@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.cacheFixPlugin)
 }
 
@@ -32,4 +33,7 @@ dependencies {
     implementation libs.google.firestore
     implementation libs.google.playservices.auth
     implementation libs.kotlin.coroutines.android
+
+    ksp libs.kotlininject.compiler
+    implementation libs.kotlininject.runtime
 }

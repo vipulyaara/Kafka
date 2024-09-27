@@ -20,7 +20,6 @@ dependencies {
     implementation projects.ui.common
     implementation projects.ui.components
     implementation projects.ui.item
-    implementation projects.ui.library
 
     implementation libs.hilt.android
     implementation libs.rebugger

@@ -4,34 +4,32 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.api.interceptor.AcceptDialogInterceptor
 import com.kafka.data.model.SerializationPolymorphicDefaultPair
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Provides
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.kafka.base.ApplicationScope
+import org.kafka.base.Named
 import org.threeten.bp.Duration
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 const val baseUrl = "https://archive.org/"
 
-@InstallIn(SingletonComponent::class)
-@Module
-class NetworkModule {
+@Component
+@ApplicationScope
+interface NetworkModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun jsonConfigured(serializersModule: SerializersModule) = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -39,7 +37,7 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun httpLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -47,7 +45,7 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun okHttp(
         cache: Cache,
         acceptDialogInterceptor: AcceptDialogInterceptor,
@@ -56,7 +54,7 @@ class NetworkModule {
         .build()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     @ExperimentalSerializationApi
     fun retrofit(
         client: OkHttpClient,
@@ -93,9 +91,9 @@ class NetworkModule {
     @Suppress("UNCHECKED_CAST")
     @OptIn(InternalSerializationApi::class)
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideSerializersModule(
-        polymorphicDefaultPairs: Set<@JvmSuppressWildcards SerializationPolymorphicDefaultPair<*>>,
+        polymorphicDefaultPairs: Set<SerializationPolymorphicDefaultPair<*>>,
     ): SerializersModule = SerializersModule {
         polymorphicDefaultPairs.forEach { (base, default) ->
             polymorphicDefaultDeserializer(base as KClass<Any>) { default.serializer() }

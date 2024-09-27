@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import org.kafka.base.ApplicationScope
 import org.kafka.base.SecretsProvider
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
-@Singleton
+@ApplicationScope
 class OpenAiRepository @Inject constructor(secretsProvider: SecretsProvider) {
     private val openai = OpenAI(
         token = secretsProvider.openAiApiKey.orEmpty(),
