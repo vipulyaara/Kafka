@@ -28,8 +28,4 @@ dependencies {
     implementation libs.compose.ui.viewbinding
 
     implementation libs.google.admob
-
-    implementation libs.hilt.android
-
-    kapt libs.hilt.compiler
 }

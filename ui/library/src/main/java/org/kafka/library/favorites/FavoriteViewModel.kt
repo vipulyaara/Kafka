@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -19,7 +18,6 @@ import org.kafka.navigation.graph.Screen
 import org.kafka.ui.components.item.LayoutType
 import javax.inject.Inject
 
-@HiltViewModel
 class FavoriteViewModel @Inject constructor(
     observeFavorites: ObserveFavorites,
     preferencesStore: PreferencesStore,
@@ -71,5 +69,5 @@ class FavoriteViewModel @Inject constructor(
 data class FavoriteViewState(
     val favoriteItems: List<Item>? = null,
     val layoutType: LayoutType = LayoutType.List,
-    val isUserLoggedIn: Boolean = false
+    val isUserLoggedIn: Boolean = false,
 )

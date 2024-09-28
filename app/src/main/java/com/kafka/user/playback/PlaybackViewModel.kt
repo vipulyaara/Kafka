@@ -10,7 +10,6 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.id
 import com.sarahang.playback.core.models.toMediaId
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kafka.navigation.Navigator
@@ -19,7 +18,6 @@ import org.kafka.navigation.graph.Screen
 import org.kafka.navigation.graph.Screen.Search
 import javax.inject.Inject
 
-@HiltViewModel
 class PlaybackViewModel @Inject constructor(
     private val playbackConnection: PlaybackConnection,
     private val fileDao: FileDao,

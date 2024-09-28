@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -33,20 +33,32 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.kafka.reader.ReaderScreen
+import com.kafka.reader.ReaderViewModel
 import com.kafka.reader.online.OnlineReader
+import com.kafka.reader.online.OnlineReaderViewModel
+import com.kafka.reader.pdf.PdfReaderViewModel
 import com.kafka.search.SearchScreen
+import com.kafka.search.SearchViewModel
 import com.kafka.user.playback.PlaybackViewModel
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
+import com.sarahang.playback.ui.sheet.ResizablePlaybackSheetLayoutViewModel
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.kafka.base.debug
 import org.kafka.common.extensions.CollectEvent
 import org.kafka.homepage.Homepage
 import org.kafka.homepage.recent.RecentItemsScreen
+import org.kafka.homepage.recent.RecentViewModel
 import org.kafka.item.detail.ItemDetail
+import org.kafka.item.detail.ItemDetailViewModel
 import org.kafka.item.detail.description.DescriptionDialog
 import org.kafka.item.files.Files
+import org.kafka.item.files.FilesViewModel
 import org.kafka.library.LibraryScreen
+import org.kafka.library.downloads.DownloadsViewModel
+import org.kafka.library.favorites.FavoriteViewModel
 import org.kafka.navigation.LocalNavigator
 import org.kafka.navigation.NavigationEvent
 import org.kafka.navigation.Navigator
@@ -54,10 +66,14 @@ import org.kafka.navigation.deeplink.Config
 import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen
 import org.kafka.summary.SummaryScreen
+import org.kafka.summary.SummaryViewModel
 import org.kafka.webview.WebView
+import org.rekhta.ui.auth.AuthViewModel
 import org.rekhta.ui.auth.LoginScreen
 import org.rekhta.ui.profile.ProfileScreen
+import org.rekhta.ui.profile.ProfileViewModel
 import org.rekhta.ui.profile.feedback.FeedbackScreen
+import org.rekhta.ui.profile.feedback.FeedbackViewModel
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -93,7 +109,7 @@ internal fun AppNavigation(
                     }
 
                     Screen.Feedback -> {
-                        navController.navigate(Screen.Player.route)
+                        navController.navigate(Screen.Feedback.route)
                     }
 
                     Screen.Player -> {
@@ -115,7 +131,7 @@ internal fun AppNavigation(
         }
     }
 
-    SwitchStatusBarsOnPlayer(navController)
+    SwitchStatusBarsOnPlayer(navController = navController)
 
     NavHost(
         modifier = modifier.fillMaxSize(),
@@ -190,31 +206,40 @@ internal fun NavGraphBuilder.addHome(homepage: Homepage) {
 typealias addSearch = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addSearch() {
+internal fun NavGraphBuilder.addSearch(viewModelFactory: (SavedStateHandle) -> SearchViewModel) {
     composable<Screen.Search>(
         deepLinks = listOf(
-            navDeepLink<Screen.Search>("${Config.BASE_URL}search"),
-            navDeepLink<Screen.Search>("${Config.BASE_URL_ALT}search")
+            navDeepLink<Screen.Search>(basePath = "${Config.BASE_URL}search"),
+            navDeepLink<Screen.Search>(basePath = "${Config.BASE_URL_ALT}search")
         )
     ) {
-        SearchScreen()
+        val searchViewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        SearchScreen(searchViewModel)
     }
 }
 
 typealias addPlayer = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addPlayer() {
+internal fun NavGraphBuilder.addPlayer(
+    viewModelFactory: () -> PlaybackViewModel,
+    resizableViewModelFactory: () -> ResizablePlaybackSheetLayoutViewModel,
+    sleepTimerViewModelFactory: () -> SleepTimerViewModel,
+    playbackSpeedViewModelFactory: () -> PlaybackSpeedViewModel
+) {
     bottomSheet(Screen.Player.route) {
         val navigator = LocalNavigator.current
-        val playbackViewModel = activityHiltViewModel<PlaybackViewModel>()
+        val viewModel = viewModel { viewModelFactory() }
 
         PlaybackSheet(
             onClose = { navigator.goBack() },
-            goToItem = { playbackViewModel.goToAlbum() },
-            goToCreator = { playbackViewModel.goToCreator() },
-            playerTheme = playbackViewModel.playerTheme,
-            useDarkTheme = LocalTheme.current.shouldUseDarkColors()
+            goToItem = { viewModel.goToAlbum() },
+            goToCreator = { viewModel.goToCreator() },
+            playerTheme = viewModel.playerTheme,
+            useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
+            resizableViewModelFactory = resizableViewModelFactory,
+            sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+            playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
         )
     }
 }
@@ -222,16 +247,26 @@ internal fun NavGraphBuilder.addPlayer() {
 typealias addLibrary = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addLibrary() {
+internal fun NavGraphBuilder.addLibrary(
+    favoriteViewmodelFactory: () -> FavoriteViewModel,
+    downloadsViewmodelFactory: () -> DownloadsViewModel,
+) {
     composable<Screen.Library> {
-        LibraryScreen()
+        val favoriteViewModel = viewModel { favoriteViewmodelFactory() }
+        val downloadsViewModel = viewModel { downloadsViewmodelFactory() }
+        LibraryScreen(
+            favoriteViewModel = favoriteViewModel,
+            downloadsViewModel = downloadsViewModel
+        )
     }
 }
 
 typealias addItemDetail = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addItemDetail(itemDetail: ItemDetail) {
+internal fun NavGraphBuilder.addItemDetail(
+    viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel,
+) {
     composable(
         route = Screen.ItemDetail.route,
         deepLinks = listOf(
@@ -239,79 +274,94 @@ internal fun NavGraphBuilder.addItemDetail(itemDetail: ItemDetail) {
             navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
         )
     ) {
-        itemDetail()
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        ItemDetail(viewModel)
     }
 }
 
 typealias addItemDescription = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addItemDescription() {
+internal fun NavGraphBuilder.addItemDescription(
+    viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel,
+) {
     bottomSheet(Screen.ItemDescription.route) {
-        DescriptionDialog()
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        DescriptionDialog(viewModel)
     }
 }
 
 typealias addFiles = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addFiles() {
+internal fun NavGraphBuilder.addFiles(viewModelFactory: (SavedStateHandle) -> FilesViewModel) {
     composable<Screen.Files> {
-        Files()
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        Files(viewModel)
     }
 }
 
 typealias addReader = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addReader() {
+internal fun NavGraphBuilder.addReader(
+    readerViewModelFactory: (SavedStateHandle) -> ReaderViewModel,
+    pdfReaderViewModelFactory: () -> PdfReaderViewModel,
+) {
     composable<Screen.Reader> {
-        ReaderScreen()
+        val viewModel = viewModel { readerViewModelFactory(createSavedStateHandle()) }
+        val pdfReaderViewModel = viewModel { pdfReaderViewModelFactory() }
+        ReaderScreen(viewModel, pdfReaderViewModel)
     }
 }
 
 typealias addLogin = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addLogin() {
+internal fun NavGraphBuilder.addLogin(viewModelFactory: () -> AuthViewModel) {
     composable<Screen.Login> {
-        LoginScreen()
+        val viewModel = viewModel { viewModelFactory() }
+        LoginScreen(viewModel)
     }
 }
 
 typealias addProfile = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addProfile() {
+internal fun NavGraphBuilder.addProfile(viewModelFactory: () -> ProfileViewModel) {
     dialog<Screen.Profile>(dialogProperties = DialogProperties(usePlatformDefaultWidth = false)) {
-        ProfileScreen()
+        val viewModel = viewModel { viewModelFactory() }
+        ProfileScreen(viewModel)
     }
 }
 
 typealias addFeedback = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addFeedback() {
+internal fun NavGraphBuilder.addFeedback(viewModelFactory: () -> FeedbackViewModel) {
     bottomSheet(route = Screen.Feedback.route) {
-        FeedbackScreen()
+        val viewModel = viewModel { viewModelFactory() }
+        FeedbackScreen(viewModel)
     }
 }
 
 typealias addRecentItems = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addRecentItems() {
+internal fun NavGraphBuilder.addRecentItems(viewModelFactory: () -> RecentViewModel) {
     composable<Screen.RecentItems> {
-        RecentItemsScreen()
+        val viewModel = viewModel { viewModelFactory() }
+        RecentItemsScreen(viewModel)
     }
 }
 
 typealias addSummary = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addSummary() {
+internal fun NavGraphBuilder.addSummary(viewModelFactory: (SavedStateHandle) -> SummaryViewModel) {
     composable<Screen.Summary> {
-        SummaryScreen()
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        SummaryScreen(viewModel)
     }
 }
 
@@ -328,11 +378,15 @@ internal fun NavGraphBuilder.addWebView() {
 typealias addOnlineReader = NavGraphBuilder.(NavController) -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addOnlineReader(@Assisted navController: NavController) {
+internal fun NavGraphBuilder.addOnlineReader(
+    @Assisted navController: NavController,
+    viewModelFactory: (SavedStateHandle) -> OnlineReaderViewModel,
+) {
     composable<Screen.OnlineReader> {
         val currentDestination = navController.currentDestination?.route
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
 
-        OnlineReader { fileId ->
+        OnlineReader(viewModel) { fileId ->
             navController.navigate(Screen.Reader(fileId)) {
                 popUpTo(currentDestination.orEmpty()) { inclusive = true }
             }
@@ -361,10 +415,6 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(): ExitTransition {
 
     return slideOutOfContainer(End) { (it / 1.5).toInt() } + fadeOut()
 }
-
-@Composable
-inline fun <reified T : ViewModel> activityHiltViewModel() =
-    hiltViewModel<T>(LocalView.current.findViewTreeViewModelStoreOwner()!!)
 
 @Composable
 internal fun SwitchStatusBarsOnPlayer(navController: NavHostController) {

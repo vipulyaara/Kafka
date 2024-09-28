@@ -6,11 +6,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.kafka.user.AndroidApplicationComponent
 import com.kafka.user.from
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 
-@AndroidEntryPoint
 class FirebaseMessageService : FirebaseMessagingService() {
 
     private val applicationComponent = AndroidApplicationComponent.from(this.applicationContext)

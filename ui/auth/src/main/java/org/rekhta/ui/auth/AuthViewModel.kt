@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.User
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isGoogleLoginEnabled
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -32,7 +31,6 @@ import org.kafka.domain.interactors.account.SignUpUser
 import org.kafka.domain.observers.ObserveUser
 import javax.inject.Inject
 
-@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val signInUser: SignInUser,
     private val signUpUser: SignUpUser,
@@ -42,7 +40,7 @@ class AuthViewModel @Inject constructor(
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
     private val remoteConfig: RemoteConfig,
-    observeUser: ObserveUser
+    observeUser: ObserveUser,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
 
@@ -145,5 +143,5 @@ class AuthViewModel @Inject constructor(
 data class AuthViewState(
     val currentUser: User? = null,
     val isLoading: Boolean = false,
-    val isGoogleLoginEnabled: Boolean = false
+    val isGoogleLoginEnabled: Boolean = false,
 )

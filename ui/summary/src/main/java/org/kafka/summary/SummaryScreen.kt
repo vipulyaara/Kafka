@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import org.kafka.common.simpleClickable
@@ -28,7 +27,7 @@ import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun SummaryScreen(viewModel: SummaryViewModel = hiltViewModel()) {
+fun SummaryScreen(viewModel: SummaryViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 

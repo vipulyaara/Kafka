@@ -27,6 +27,4 @@ dependencies {
     implementation libs.fetch
     implementation libs.material.kolor
     implementation libs.rebugger
-
-    kapt libs.hilt.compiler
 }

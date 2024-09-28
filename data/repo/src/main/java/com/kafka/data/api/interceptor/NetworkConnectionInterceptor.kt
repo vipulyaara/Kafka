@@ -1,9 +1,9 @@
 package com.kafka.data.api.interceptor
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class NetworkConnectionInterceptor @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val context: Application,
 ) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

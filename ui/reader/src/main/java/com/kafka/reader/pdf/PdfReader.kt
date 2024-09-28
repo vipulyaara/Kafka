@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentTextItem
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -20,8 +19,8 @@ import org.kafka.ui.components.scaffoldPadding
 @Composable
 internal fun PdfReader(
     fileId: String,
+    viewModel: PdfReaderViewModel,
     modifier: Modifier = Modifier,
-    viewModel: PdfReaderViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.readerState.collectAsStateWithLifecycle()
 

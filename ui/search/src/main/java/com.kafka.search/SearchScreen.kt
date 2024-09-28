@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
@@ -35,10 +34,9 @@ import org.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun SearchScreen() {
+fun SearchScreen(searchViewModel: SearchViewModel) {
     LogCompositions(tag = "Search")
 
-    val searchViewModel: SearchViewModel = hiltViewModel()
     val searchViewState by searchViewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
@@ -73,7 +71,7 @@ private fun Search(
     onMediaTypeClicked: (MediaType) -> Unit,
     onSearchClicked: (String, List<SearchFilter>, List<MediaType>) -> Unit,
     removeRecentSearch: (String) -> Unit,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
     val density = LocalDensity.current
     var listTopPadding by rememberMutableState { 0.dp }

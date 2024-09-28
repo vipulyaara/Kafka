@@ -8,13 +8,13 @@ import androidx.navigation.toRoute
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.domain.onException
 import org.kafka.base.extensions.stateInDefault
@@ -29,7 +29,6 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
-@HiltViewModel
 class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
     private val addRecentSearch: AddRecentSearch,
@@ -39,7 +38,7 @@ class SearchViewModel @Inject constructor(
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
     private val loadingState: ObservableLoadingCounter,
-    private val savedStateHandle: SavedStateHandle,
+    @Assisted private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<Screen.Search>()
     internal val selectedMediaTypes = mutableStateListOf<MediaType>()

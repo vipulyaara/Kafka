@@ -17,20 +17,15 @@ dependencies {
     implementation(projects.ui.common)
 
     implementation libs.androidx.core
-    implementation libs.androidx.hilt.compose
-    implementation libs.androidx.hilt.navigation
     implementation libs.androidx.lifecycle.livedata.ktx
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.lifecycle.viewmodel.compose
     implementation libs.androidx.lifecycle.viewmodel.ktx
 
-    implementation libs.androidx.navigation.compose
+    api libs.androidx.navigation.compose
     implementation libs.compose.material.material
     implementation libs.compose.material.navigation
     implementation libs.compose.runtime.runtime
-    implementation libs.hilt.android
 
     implementation libs.kotlin.serialization
-
-    kapt libs.hilt.compiler
 }

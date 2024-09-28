@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentItem
 import org.kafka.common.elevation
@@ -38,7 +37,7 @@ import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun RecentItemsScreen(viewModel: RecentViewModel = hiltViewModel()) {
+fun RecentItemsScreen(viewModel: RecentViewModel) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current

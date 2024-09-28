@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import org.kafka.common.image.Icons
@@ -31,7 +30,7 @@ import org.kafka.ui.components.item.LibraryItem
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun Favorites(favoriteViewModel: FavoriteViewModel = hiltViewModel()) {
+internal fun Favorites(favoriteViewModel: FavoriteViewModel) {
     val favoriteViewState by favoriteViewModel.state.collectAsStateWithLifecycle()
 
     Column {
@@ -81,7 +80,7 @@ private fun FavoriteItemList(
     favoriteItems: List<Item>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
@@ -111,7 +110,7 @@ private fun FavoriteItemGrid(
     favoriteItems: List<Item>,
     openItemDetail: (String) -> Unit,
     header: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())

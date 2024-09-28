@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentTextItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -20,11 +19,10 @@ import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.observers.ObserveRecentTextItem
 import javax.inject.Inject
 
-@HiltViewModel
 class PdfReaderViewModel @Inject constructor(
     private val observeRecentItem: ObserveRecentTextItem,
     private val updateCurrentPage: UpdateCurrentPage,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     private var showControls by mutableStateOf(false)

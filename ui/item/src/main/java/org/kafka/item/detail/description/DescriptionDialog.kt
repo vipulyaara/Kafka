@@ -25,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
 import org.kafka.common.test.testTagUi
@@ -34,7 +33,7 @@ import org.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun DescriptionDialog(viewModel: ItemDetailViewModel = hiltViewModel()) {
+fun DescriptionDialog(viewModel: ItemDetailViewModel) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     BoxWithConstraints {

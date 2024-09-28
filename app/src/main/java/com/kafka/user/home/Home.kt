@@ -29,6 +29,8 @@ import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -58,6 +60,8 @@ internal fun Home(
     modifier: Modifier = Modifier,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
+    sleepTimerViewModelFactory: () -> SleepTimerViewModel,
+    playbackSpeedViewModelFactory: () -> PlaybackSpeedViewModel,
     appNavigation: AppNavigation,
 ) {
     val selectedTab by navController.currentScreenAsState()
@@ -78,6 +82,8 @@ internal fun Home(
                     navController = navController,
                     analytics = analytics,
                     viewModel = resizableViewModel,
+                    sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+                    playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
                     onPlayingArtistClick = {
                         navController.navigate(Screen.Search(nowPlaying.artist.orEmpty()))
                     },

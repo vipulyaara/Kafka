@@ -42,6 +42,8 @@ import com.kafka.user.home.bottombar.rail.HomeNavigationRailDefaults.ExpandedPla
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.PlaybackArtworkPagerWithNowPlayingAndControls
 import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
@@ -88,6 +90,8 @@ internal fun HomeNavigationRail(
     extraContent: @Composable BoxScope.() -> Unit = {},
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     navigator: Navigator = LocalNavigator.current,
+    sleepTimerViewModelFactory: () -> SleepTimerViewModel,
+    playbackSpeedViewModelFactory: () -> PlaybackSpeedViewModel,
 ) {
     Surface(modifier = modifier, tonalElevation = 0.dp, shadowElevation = 8.dp) {
         BoxWithConstraints {
@@ -171,6 +175,8 @@ internal fun HomeNavigationRail(
                                 fontSize = MaterialTheme.typography.titleSmall.fontSize
                             ),
                             onArtistClick = onPlayingArtistClick,
+                            sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+                            playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
                         )
                     }
                 } else {

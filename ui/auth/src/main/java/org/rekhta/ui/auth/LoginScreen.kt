@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.auth.R
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -54,8 +53,7 @@ internal enum class LoginState {
 }
 
 @Composable
-fun LoginScreen() {
-    val authViewModel: AuthViewModel = hiltViewModel()
+fun LoginScreen(authViewModel: AuthViewModel) {
     val authViewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
 

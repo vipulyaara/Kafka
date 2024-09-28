@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -21,8 +20,5 @@ dependencies {
     implementation projects.ui.components
     implementation projects.ui.item
 
-    implementation libs.hilt.android
     implementation libs.rebugger
-
-    kapt libs.hilt.compiler
 }

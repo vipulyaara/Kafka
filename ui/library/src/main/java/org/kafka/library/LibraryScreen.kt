@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.toPersistentList
 import org.kafka.library.downloads.Downloads
+import org.kafka.library.downloads.DownloadsViewModel
+import org.kafka.library.favorites.FavoriteViewModel
 import org.kafka.library.favorites.Favorites
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.scaffoldPadding
 
 @Composable
-fun LibraryScreen() {
+fun LibraryScreen(favoriteViewModel: FavoriteViewModel, downloadsViewModel: DownloadsViewModel) {
     Scaffold { padding ->
         ProvideScaffoldPadding(padding = padding) {
             val pagerState = rememberPagerState(pageCount = { LibraryTab.entries.size })
@@ -34,8 +36,8 @@ fun LibraryScreen() {
 
                 HorizontalPager(modifier = Modifier.fillMaxSize(), state = pagerState) { page ->
                     when (LibraryTab.entries[page]) {
-                        LibraryTab.Favorites -> Favorites()
-                        LibraryTab.Downloads -> Downloads()
+                        LibraryTab.Favorites -> Favorites(favoriteViewModel)
+                        LibraryTab.Downloads -> Downloads(downloadsViewModel)
                     }
                 }
             }

@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.Summary
 import com.kafka.data.model.SearchFilter.Creator
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.ObserveItemDetail
@@ -17,13 +17,12 @@ import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen.Search
 import javax.inject.Inject
 
-@HiltViewModel
 class SummaryViewModel @Inject constructor(
     observeSummary: ObserveSummary,
     observeItemDetail: ObserveItemDetail,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
     private val navigator: Navigator,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
 

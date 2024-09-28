@@ -13,9 +13,10 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sarahang.playback.ui.components.ResizableLayout
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
 import org.kafka.analytics.logger.Analytics
 import org.kafka.navigation.graph.RootScreen
@@ -34,6 +35,8 @@ internal fun RowScope.ResizableHomeNavigationRail(
     dragOffset: State<Float> = rememberFlowWithLifecycle(viewModel.dragOffset),
     setDragOffset: (Float) -> Unit = viewModel::setDragOffset,
     onPlayingArtistClick: () -> Unit,
+    sleepTimerViewModelFactory: () -> SleepTimerViewModel,
+    playbackSpeedViewModelFactory: () -> PlaybackSpeedViewModel,
 ) {
     ResizableLayout(
         availableWidth = availableWidth,
@@ -53,6 +56,8 @@ internal fun RowScope.ResizableHomeNavigationRail(
             modifier = Modifier
                 .fillMaxHeight()
                 .then(resizableModifier),
+            sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+            playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
         )
         Box(
             modifier = Modifier

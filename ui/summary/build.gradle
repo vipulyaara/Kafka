@@ -19,8 +19,5 @@ dependencies {
     implementation projects.ui.common
     implementation projects.ui.components
 
-    implementation libs.hilt.android
     implementation libs.markdown.compose
-
-    kapt libs.hilt.compiler
 }

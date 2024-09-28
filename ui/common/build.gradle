@@ -16,8 +16,6 @@ dependencies {
     implementation projects.data.repo
 
     api libs.androidx.core
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
     api libs.androidx.lifecycle.process
     api libs.androidx.lifecycle.runtime
     api libs.androidx.lifecycle.viewmodel.compose

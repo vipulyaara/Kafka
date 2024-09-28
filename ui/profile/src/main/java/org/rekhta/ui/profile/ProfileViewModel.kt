@@ -21,7 +21,6 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
 import com.kafka.data.prefs.observeTrueContrast
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -41,7 +40,6 @@ import org.kafka.navigation.graph.Screen
 import org.kafka.profile.R
 import javax.inject.Inject
 
-@HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val application: Application,
     private val snackbarManager: SnackbarManager,

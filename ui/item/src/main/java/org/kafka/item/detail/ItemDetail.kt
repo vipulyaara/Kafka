@@ -42,10 +42,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.color.DynamicTheme
 import me.tatarka.inject.annotations.Inject
@@ -75,14 +72,11 @@ import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
-typealias ItemDetail = @Composable () -> Unit
-
 @Composable
 @Inject
-fun ItemDetail(viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel) {
+fun ItemDetail(viewModel: ItemDetailViewModel) {
     debug { "Item Detail launch" }
 
-    val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val context = LocalContext.current

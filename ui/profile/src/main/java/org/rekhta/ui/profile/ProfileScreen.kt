@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.User
 import org.kafka.common.simpleClickable
@@ -29,8 +28,8 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun ProfileScreen(
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier,
-    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val navigator = LocalNavigator.current
     val viewState by profileViewModel.state.collectAsStateWithLifecycle()
