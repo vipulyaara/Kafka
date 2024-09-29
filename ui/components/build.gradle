@@ -29,8 +29,6 @@ dependencies {
     implementation libs.kotlin.serialization
     implementation libs.lottie.compose
     implementation libs.lottie.core
-    implementation libs.palette
-    implementation libs.rebugger
 
     implementation libs.kotlin.stdlib
 }

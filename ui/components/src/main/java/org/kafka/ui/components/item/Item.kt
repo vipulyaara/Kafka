@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.isAudioMediaType
-import com.theapache64.rebugger.Rebugger
 import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
 import org.kafka.common.test.testTagUi
@@ -148,8 +147,6 @@ fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 
 
 @Composable
 fun ItemSmall(item: Item, modifier: Modifier = Modifier) {
-    Rebugger(trackMap = mapOf("item" to item))
-
     ItemSmall(
         title = item.title,
         creator = item.creator?.name,
