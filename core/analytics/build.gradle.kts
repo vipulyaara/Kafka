@@ -7,7 +7,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(projects.data.platform)
+
                 implementation(libs.firebase.analytics)
+                implementation(libs.kotlininject.runtime)
             }
         }
 

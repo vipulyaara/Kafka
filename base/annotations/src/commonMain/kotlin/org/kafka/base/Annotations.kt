@@ -2,8 +2,8 @@
 
 package org.kafka.base
 
+import me.tatarka.inject.annotations.Qualifier
 import me.tatarka.inject.annotations.Scope
-import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier

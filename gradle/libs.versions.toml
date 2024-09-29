@@ -127,7 +127,6 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
-
 firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
@@ -139,6 +138,8 @@ firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref =
 #firebase-analytics = "dev.gitlive:firebase-analytics:2.1.0"
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+
+javax-inject = "javax.inject:javax.inject:1"
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"

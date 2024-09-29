@@ -12,6 +12,7 @@ import com.kafka.data.entities.isAudio
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.downloadsWarningMessage
 import com.sarahang.playback.core.PlaybackConnection
+import com.sarahang.playback.core.apis.impl.asAudio
 import com.sarahang.playback.core.models.Audio
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.StateFlow

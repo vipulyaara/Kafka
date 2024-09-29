@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,6 +16,7 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.remote.config.isTrueContrastEnabled
 import org.kafka.base.errorLog
+import org.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 

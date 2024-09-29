@@ -12,7 +12,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.injection.NetworkModule
 import com.kafka.data.injection.SerializersModule
-import com.kafka.data.platform.UserDataRepository
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getOpenAiApiKey
@@ -24,16 +23,14 @@ import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
-import com.sarahang.playback.core.injection.PlaybackCoreModule
+import com.sarahang.playback.core.injection.PlayerModule
 import dev.gitlive.firebase.firestore.invoke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
-import org.kafka.analytics.EventRepository
-import org.kafka.analytics.logger.Analytics
-import org.kafka.analytics.logger.AnalyticsImpl
+import org.kafka.analytics.AnalyticsPlatformComponent
 import org.kafka.base.AppInitializer
 import org.kafka.base.ApplicationScope
 import org.kafka.base.CoroutineDispatchers
@@ -54,10 +51,10 @@ interface AppModule :
     NetworkModule,
     SerializersModule,
     DatabaseModule,
-    KmpModule,
     DownloaderModule,
     PlayerModule,
-    NavigationModule {
+    NavigationModule,
+    AnalyticsPlatformComponent {
 
     @Provides
     @ProcessLifetime
@@ -115,14 +112,6 @@ interface AppModule :
 
     @Provides
     @ApplicationScope
-    fun provideEventRepository() = EventRepository()
-
-    @Provides
-    @ApplicationScope
-    fun bindLogger(bind: AnalyticsImpl): Analytics = bind
-
-    @Provides
-    @ApplicationScope
     @IntoSet
     fun provideThreeTenAbpInitializer(bind: ThreeTenBpInitializer): AppInitializer = bind
 
@@ -169,31 +158,4 @@ interface AppModule :
     @Provides
     @ApplicationScope
     fun provideAppReviewManager(bind: AppReviewManagerImpl): AppReviewManager = bind
-}
-
-// todo: eventually move these dependencies to respective modules
-@Component
-@ApplicationScope
-interface KmpModule {
-
-    @Provides
-    @ApplicationScope
-    fun provideUserDataRepository(
-        context: Application,
-        firebaseAuth: FirebaseAuth,
-    ) = UserDataRepository(context = context, firebaseAuth = firebaseAuth)
-
-    @Provides
-    @ApplicationScope
-    fun provideAnalytics(
-        context: Application,
-        @ProcessLifetime scope: CoroutineScope,
-        userDataRepository: UserDataRepository,
-        eventRepository: EventRepository,
-    ) = AnalyticsImpl(
-        context = context,
-        scope = scope,
-        userDataRepository = userDataRepository,
-        eventRepository = eventRepository
-    )
 }

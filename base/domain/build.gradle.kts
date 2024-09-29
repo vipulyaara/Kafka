@@ -7,6 +7,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(projects.base.annotations)
+
                 api(libs.kinject)
                 api(libs.kotlin.coroutines.core)
                 api(libs.kotlin.stdlib)

@@ -1,6 +1,6 @@
 package org.kafka.analytics.logger
 
-import android.content.Context
+import android.app.Application
 import android.os.Bundle
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -14,11 +14,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.kafka.analytics.EventRepository
+import org.kafka.base.ProcessLifetime
 import org.kafka.base.debug
+import javax.inject.Inject
 
-class AnalyticsImpl(
-    private val context: Context,
-    scope: CoroutineScope,
+class AnalyticsImpl @Inject constructor(
+    private val context: Application,
+    @ProcessLifetime scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,
 ) : Analytics {
