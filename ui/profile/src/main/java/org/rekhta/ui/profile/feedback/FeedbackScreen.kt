@@ -37,11 +37,6 @@ fun FeedbackScreen(viewModel: FeedbackViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val keyboard = LocalSoftwareKeyboardController.current
 
-    // todo back press should work out-of-the-box because this is an accompanist.navigation destination
-//    BackHandler(true) {
-//        viewModel.onBackPressed()
-//    }
-
     Surface(modifier = Modifier.animateContentSize()) {
         Feedback(state) { feedback, email ->
             keyboard?.hide()

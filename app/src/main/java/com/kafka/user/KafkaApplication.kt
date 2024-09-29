@@ -12,7 +12,7 @@ class KafkaApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //todo: kmp use lazy initialization
+
         component.appInitializers.forEach { it.init() }
     }
 }
