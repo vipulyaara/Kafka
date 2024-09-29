@@ -1,13 +1,16 @@
 package com.kafka.data.platform
 
+import android.app.Application
 import android.content.Context
 import android.telephony.TelephonyManager
 import com.google.firebase.auth.FirebaseAuth
+import org.kafka.base.ApplicationScope
+import javax.inject.Inject
 
-actual class UserDataRepository(
-    private val context: Context,
-    private val firebaseAuth: FirebaseAuth,
-) {
+@ApplicationScope
+actual class UserDataRepository @Inject constructor(private val context: Application) {
+    private val firebaseAuth = FirebaseAuth.getInstance()
+
     actual fun getUserData(): UserData =
         UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())
 

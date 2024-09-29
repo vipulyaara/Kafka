@@ -2,7 +2,6 @@
 accompanist = "0.34.0"
 appupdate = "2.1.0"
 agp = "8.6.1"
-androidxhilt = "1.2.0"
 androidxlifecycle = "2.8.6"
 coil = "2.6.0"
 compose-alpha = "2024.08.00-alpha02"
@@ -10,13 +9,13 @@ compose-bom = "2024.09.02"
 compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
 coroutines = "1.8.1"
-dagger = "2.51.1"
 firebase = "2.1.0"
 icons = "1.0.0"
-haze="0.7.3"
+haze = "0.7.3"
 kotlin = "2.0.10"
 kotlin-immutable = "0.3.7"
 kotlininject = "0.7.1"
+kotlininjectanvil = "0.0.4"
 material3 = "1.3.0"
 media3 = "1.3.1"
 mixpanel = "7.0.0"
@@ -46,6 +45,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -54,7 +54,6 @@ gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 spotless = "com.diffplug.spotless:6.25.0"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 
@@ -73,13 +72,6 @@ androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
 androidx-collection = "androidx.collection:collection-ktx:1.4.4"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
-
-androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxhilt" }
-androidx-hilt-compose = "androidx.hilt:hilt-navigation-compose:1.2.0"
-androidx-hilt-navigation = { module = "androidx.hilt:hilt-navigation", version.ref = "androidxhilt" }
-
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidxlifecycle" }
@@ -135,7 +127,6 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
-
 firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
@@ -148,6 +139,8 @@ firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref =
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 
+javax-inject = "javax.inject:javax.inject:1"
+
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
 
@@ -155,6 +148,10 @@ kinject = "com.chrynan.inject:inject:1.2.0"
 
 kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlininject" }
 kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlininject" }
+
+#kotlininject-anvil-compiler = { module = "software.amazon.lastmile.kotlin.inject.anvil:compiler", version.ref = "kotlininjectanvil" }
+#kotlininject-anvil-runtime = { module = "software.amazon.lastmile.kotlin.inject.anvil:runtime", version.ref = "kotlininjectanvil" }
+#kotlininject-anvil-runtime-optional = { module = "software.amazon.lastmile.kotlin.inject.anvil:runtime-optional", version.ref = "kotlininjectanvil" }
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }

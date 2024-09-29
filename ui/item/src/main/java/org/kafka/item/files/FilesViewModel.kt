@@ -12,13 +12,14 @@ import com.kafka.data.entities.isAudio
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.downloadsWarningMessage
 import com.sarahang.playback.core.PlaybackConnection
+import com.sarahang.playback.core.apis.impl.asAudio
 import com.sarahang.playback.core.models.Audio
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -30,17 +31,16 @@ import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
-@HiltViewModel
 class FilesViewModel @Inject constructor(
     observeFiles: ObserveFiles,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
     observeDownloadedItems: ObserveDownloadedItems,
     private val addRecentItem: AddRecentItem,
     private val playbackConnection: PlaybackConnection,
     private val downloader: Downloader,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])

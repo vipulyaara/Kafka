@@ -2,7 +2,6 @@ package org.rekhta.ui.profile.feedback
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -18,7 +17,6 @@ import org.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import javax.inject.Inject
 
-@HiltViewModel
 class FeedbackViewModel @Inject constructor(
     private val updateFeedback: UpdateFeedback,
     private val snackbarManager: SnackbarManager,

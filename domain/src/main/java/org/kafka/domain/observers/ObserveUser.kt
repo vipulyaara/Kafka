@@ -11,9 +11,7 @@ import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.debug
 import org.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class ObserveUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,

@@ -18,7 +18,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.kafka.ui.downloader.R
 import kotlinx.coroutines.launch
 import org.kafka.common.extensions.CollectEvent
@@ -26,15 +25,7 @@ import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 
 @Composable
-fun DownloaderHost(content: @Composable () -> Unit) {
-    DownloaderHost(
-        downloader = hiltViewModel<DownloaderViewModel>().downloader,
-        content = content,
-    )
-}
-
-@Composable
-private fun DownloaderHost(
+fun DownloaderHost(
     downloader: Downloader,
     content: @Composable () -> Unit,
 ) {

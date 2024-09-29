@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.kafka.data.feature.item.ItemWithDownload
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.debug
 import org.kafka.base.domain.onException
@@ -35,7 +35,6 @@ import org.kafka.reader.R
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
-@HiltViewModel
 class OnlineReaderViewModel @Inject constructor(
     shouldAutoDownload: ShouldAutoDownload,
     observeDownloadByFileId: ObserveDownloadByFileId,
@@ -45,7 +44,7 @@ class OnlineReaderViewModel @Inject constructor(
     private val navigator: Navigator,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<Screen.OnlineReader>()
     private val itemId: String = route.itemId

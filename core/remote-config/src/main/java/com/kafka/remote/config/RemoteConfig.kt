@@ -6,14 +6,14 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import org.kafka.base.ApplicationScope
 import org.kafka.base.debug
 import org.kafka.base.errorLog
 import javax.inject.Inject
-import javax.inject.Singleton
 
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
-@Singleton
+@ApplicationScope
 class RemoteConfig @Inject constructor(private val json: Json) {
 
     private val remoteConfig by lazy {

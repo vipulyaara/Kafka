@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.Flow
  * @author Vipul Kumar; dated 29/11/18.
  */
 
-typealias ItemLocalDataSource = ItemDao
-
 @Dao
 abstract class ItemDao : EntityDao<Item> {
 

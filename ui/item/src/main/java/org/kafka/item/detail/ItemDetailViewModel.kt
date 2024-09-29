@@ -19,11 +19,11 @@ import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
 import org.kafka.base.combine
 import org.kafka.base.extensions.stateInDefault
@@ -58,12 +58,11 @@ import org.kafka.navigation.graph.encodeUrl
 import org.kafka.play.AppReviewManager
 import javax.inject.Inject
 
-@HiltViewModel
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     observeDownloadByItemId: ObserveDownloadByItemId,
     isResumableAudio: IsResumableAudio,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
     shouldUseOnlineReader: ShouldUseOnlineReader,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,

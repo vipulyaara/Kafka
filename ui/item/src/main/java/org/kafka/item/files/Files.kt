@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.File
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +31,7 @@ import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun Files(viewModel: FilesViewModel = hiltViewModel()) {
+fun Files(viewModel: FilesViewModel) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
 
@@ -109,7 +108,7 @@ private fun Files(
 private fun TopBar(
     title: String,
     lazyListState: LazyListState = rememberLazyListState(),
-    navigator: Navigator = LocalNavigator.current
+    navigator: Navigator = LocalNavigator.current,
 ) {
     TopBar(
         title = title,

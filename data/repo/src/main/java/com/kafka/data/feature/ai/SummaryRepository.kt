@@ -3,10 +3,10 @@ package com.kafka.data.feature.ai
 import com.kafka.data.entities.Summary
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.map
+import org.kafka.base.ApplicationScope
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ApplicationScope
 class SummaryRepository @Inject constructor(private val firestoreGraph: FirestoreGraph) {
 
     fun observeSummary(itemId: String) = firestoreGraph.summaryCollection

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -15,8 +16,6 @@ dependencies {
     implementation projects.data.repo
 
     api libs.androidx.core
-    api libs.androidx.hilt.compose
-    api libs.androidx.hilt.navigation
     api libs.androidx.lifecycle.process
     api libs.androidx.lifecycle.runtime
     api libs.androidx.lifecycle.viewmodel.compose
@@ -38,4 +37,7 @@ dependencies {
 
     implementation libs.coil.coil
     implementation libs.kotlin.stdlib
+
+    ksp libs.kotlininject.compiler
+    implementation libs.kotlininject.runtime
 }

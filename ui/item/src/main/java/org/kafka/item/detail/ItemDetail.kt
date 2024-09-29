@@ -42,10 +42,10 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.ItemDetail
 import com.sarahang.playback.ui.color.DynamicTheme
+import me.tatarka.inject.annotations.Inject
 import org.kafka.base.debug
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -73,7 +73,8 @@ import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
 @Composable
-fun ItemDetail(viewModel: ItemDetailViewModel = hiltViewModel()) {
+@Inject
+fun ItemDetail(viewModel: ItemDetailViewModel) {
     debug { "Item Detail launch" }
 
     val state by viewModel.state.collectAsStateWithLifecycle()

@@ -32,7 +32,6 @@ dependencies {
     implementation libs.compose.runtime.runtime
     implementation libs.firebase.common
     implementation libs.firebase.firestore
-    implementation libs.hilt.android
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.serialization
     implementation libs.kotlin.stdlib
@@ -52,6 +51,4 @@ dependencies {
     implementation platform(libs.google.bom)
     implementation libs.google.auth
     implementation libs.google.firestore
-
-    kapt libs.hilt.compiler
 }

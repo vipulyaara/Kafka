@@ -15,6 +15,7 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 rootProject.name = "kafka"
 
 include ':app'
+include ':base:annotations' // kmp
 include ':base:domain' // kmp
 include ':baselineprofile'
 include ':core:analytics' // kmp

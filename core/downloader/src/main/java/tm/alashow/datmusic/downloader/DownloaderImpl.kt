@@ -4,7 +4,7 @@
  */
 package tm.alashow.datmusic.downloader
 
-import android.content.Context
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
@@ -15,18 +15,18 @@ import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.prefs.PreferencesStore
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
+import org.kafka.analytics.logger.Analytics
+import org.kafka.base.ApplicationScope
 import org.kafka.base.debug
 import org.kafka.base.errorLog
 import org.kafka.base.i
 import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.analytics.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
@@ -36,12 +36,11 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.Optional
 import javax.inject.Inject
-import javax.inject.Singleton
 import com.kafka.data.entities.File as FileEntity
 
-@Singleton
-internal class DownloaderImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+@ApplicationScope
+class DownloaderImpl @Inject constructor(
+    private val appContext: Application,
     private val fetcher: FetchDownloadManager,
     private val preferences: PreferencesStore,
     private val repo: DownloadRequestsDao,

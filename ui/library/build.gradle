@@ -22,7 +22,4 @@ dependencies {
     implementation projects.ui.downloader
 
     implementation libs.fetch
-    implementation libs.hilt.android
-
-    kapt libs.hilt.compiler
 }

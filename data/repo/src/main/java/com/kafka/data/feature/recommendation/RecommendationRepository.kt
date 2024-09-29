@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.tasks.await
+import org.kafka.base.ApplicationScope
 import org.kafka.base.CoroutineDispatchers
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ApplicationScope
 class RecommendationRepository @Inject constructor(
     private val itemDao: ItemDao,
     private val firestoreGraph: FirestoreGraph,

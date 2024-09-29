@@ -1,8 +1,11 @@
 package org.kafka.analytics
 
 import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
+import me.tatarka.inject.annotations.Inject
+import org.kafka.base.ApplicationScope
 
-class EventRepository {
+@ApplicationScope
+class EventRepository @Inject constructor() {
     fun searchQuery(
         keyword: String,
         filters: List<String>? = null,

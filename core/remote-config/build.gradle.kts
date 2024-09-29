@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.cacheFixPlugin)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -16,8 +15,6 @@ dependencies {
     implementation(projects.base.domain)
 
     implementation(libs.androidx.core)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     implementation(libs.kotlin.serialization)
 

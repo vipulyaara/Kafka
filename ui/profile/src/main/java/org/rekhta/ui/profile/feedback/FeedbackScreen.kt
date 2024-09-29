@@ -1,6 +1,5 @@
 package org.rekhta.ui.profile.feedback
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.kafka.common.extensions.rememberSavableMutableState
 import org.kafka.ui.components.material.OutlinedTextFieldDefaults
@@ -35,14 +33,9 @@ import org.kafka.ui.components.placeholder.shimmer
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun FeedbackScreen(viewModel: FeedbackViewModel = hiltViewModel()) {
+fun FeedbackScreen(viewModel: FeedbackViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val keyboard = LocalSoftwareKeyboardController.current
-
-    // todo back press should work out-of-the-box because this is an accompanist.navigation destination
-    BackHandler(true) {
-        viewModel.onBackPressed()
-    }
 
     Surface(modifier = Modifier.animateContentSize()) {
         Feedback(state) { feedback, email ->
@@ -101,7 +94,7 @@ private fun Feedback(state: FeedbackViewState, sendFeedback: (String, String) ->
 internal fun EmailTextField(
     text: String,
     modifier: Modifier = Modifier,
-    setText: (String) -> Unit
+    setText: (String) -> Unit,
 ) {
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),

@@ -1,17 +1,16 @@
 package org.kafka.play
 
 import android.app.Activity
-import android.content.Context
+import android.app.Application
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.kafka.data.prefs.PreferencesStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import org.kafka.analytics.logger.Analytics
+import org.kafka.base.ApplicationScope
 import org.kafka.base.ProcessLifetime
 import org.kafka.base.errorLog
-import org.kafka.analytics.logger.Analytics
 import javax.inject.Inject
-import javax.inject.Singleton
 
 interface AppReviewManager {
     fun showReviewDialog(activity: Activity)
@@ -19,9 +18,9 @@ interface AppReviewManager {
     val totalItemOpens: Int
 }
 
-@Singleton
+@ApplicationScope
 class AppReviewManagerImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+    context: Application,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
     private val analytics: Analytics,
     preferencesStore: PreferencesStore,

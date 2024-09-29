@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
+import org.kafka.base.ApplicationScope
 import org.kafka.common.R
 import javax.inject.Inject
-import javax.inject.Singleton
 
 data class SnackbarAction<T>(val label: UiMessage, val argument: T)
 open class SnackbarMessage<T>(val message: UiMessage, val action: SnackbarAction<T>? = null)
 
-@Singleton
+@ApplicationScope
 class SnackbarManager @Inject constructor() {
 
     private val messagesChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)

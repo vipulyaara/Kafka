@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.feature.item.ItemWithDownload
 import org.kafka.common.plus
@@ -25,7 +24,7 @@ import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun Downloads(downloadsViewModel: DownloadsViewModel = hiltViewModel()) {
+internal fun Downloads(downloadsViewModel: DownloadsViewModel) {
     val viewState by downloadsViewModel.state.collectAsStateWithLifecycle()
 
     viewState.downloadedItems?.let { items ->

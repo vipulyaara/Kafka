@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.feature.item.ItemWithDownload
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import org.kafka.analytics.logger.Analytics
@@ -18,7 +17,6 @@ import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
-@HiltViewModel
 class DownloadsViewModel @Inject constructor(
     observeDownloadedItems: ObserveDownloadedItems,
     private val downloader: Downloader,

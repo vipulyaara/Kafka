@@ -12,40 +12,28 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
-import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isTrueContrastEnabled
-import com.kafka.user.home.MainScreen
-import com.sarahang.playback.ui.color.ColorExtractor
-import dagger.hilt.android.AndroidEntryPoint
 import org.kafka.base.errorLog
 import org.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    internal lateinit var preferencesStore: PreferencesStore
-
-    @Inject
-    internal lateinit var colorExtractor: ColorExtractor
-
-    @Inject
-    internal lateinit var remoteConfig: RemoteConfig
-
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        val applicationComponent = AndroidApplicationComponent.from(this)
+        val component = AndroidActivityComponent::class.create(this, applicationComponent)
+
         setContent {
-            val theme by preferencesStore.observeTheme().collectAsStateWithLifecycle(Theme.SYSTEM)
-            val isDarkTheme = preferencesStore.shouldUseDarkColors()
+            val theme by applicationComponent.preferencesStore.observeTheme()
+                .collectAsStateWithLifecycle(Theme.SYSTEM)
+            val isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors()
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController = rememberNavController(bottomSheetNavigator)
 
@@ -55,15 +43,10 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(
-                isDarkTheme = preferencesStore.shouldUseDarkColors(),
-                isTrueContrast = remoteConfig.isTrueContrastEnabled()
+                isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors(),
+                isTrueContrast = applicationComponent.remoteConfig.isTrueContrastEnabled()
             ) {
-                MainScreen(
-                    navController = navController,
-                    colorExtractor = colorExtractor,
-                    bottomSheetNavigator = bottomSheetNavigator,
-                    theme = theme
-                )
+                component.mainScreen(navController, bottomSheetNavigator, theme)
             }
         }
     }

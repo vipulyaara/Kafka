@@ -8,15 +8,15 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.tasks.await
+import org.kafka.base.ApplicationScope
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Account management has complex rules specifically due to anonymous authentication.
  * The app lets users sign in anonymously and then link their account to an email/password.
  * Anonymous users can keep their data when they link their account.
  * */
-@Singleton
+@ApplicationScope
 class AccountRepository @Inject constructor(
     private val auth: FirebaseAuth,
 ) {

@@ -22,8 +22,4 @@ dependencies {
     implementation libs.dataStore
 
     implementation libs.google.review
-
-    implementation libs.hilt.android
-
-    kapt libs.hilt.compiler
 }

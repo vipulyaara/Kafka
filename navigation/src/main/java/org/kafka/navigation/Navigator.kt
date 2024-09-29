@@ -8,7 +8,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen
 import org.kafka.navigation.graph.navigationRoute
+import javax.inject.Inject
 
 interface Navigator {
     fun navigate(route: Screen, root: RootScreen? = null)
@@ -32,15 +32,7 @@ val LocalNavigator = staticCompositionLocalOf<Navigator> {
 }
 
 @Composable
-fun NavigatorHost(content: @Composable () -> Unit) {
-    NavigatorHost(
-        navigator = hiltViewModel<NavigatorViewModel>().navigator,
-        content = content,
-    )
-}
-
-@Composable
-private fun NavigatorHost(
+fun NavigatorHost(
     navigator: Navigator,
     content: @Composable () -> Unit,
 ) {
@@ -55,7 +47,7 @@ sealed class NavigationEvent(open val route: Screen) {
     ) : NavigationEvent(route)
 }
 
-class NavigatorImpl : Navigator {
+class NavigatorImpl @Inject constructor() : Navigator {
     private val navigationQueue = Channel<NavigationEvent>(Channel.CONFLATED)
     override val queue = navigationQueue.receiveAsFlow()
 

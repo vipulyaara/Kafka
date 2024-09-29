@@ -4,11 +4,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.snapshots
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
-import dagger.Reusable
 import kotlinx.coroutines.flow.map
+import org.kafka.base.ApplicationScope
 import javax.inject.Inject
 
-@Reusable
+@ApplicationScope
 class RecentItemRepository @Inject constructor(private val firestoreGraph: FirestoreGraph) {
     fun observeRecentItems(uid: String) = firestoreGraph.getRecentItemsCollection(uid)
         .snapshots()

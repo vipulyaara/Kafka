@@ -6,10 +6,9 @@ plugins {
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.gms.googleServices)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -150,9 +149,8 @@ dependencies {
 
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.hilt.compose)
-    implementation(libs.androidx.hilt.navigation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -175,7 +173,6 @@ dependencies {
     implementation(libs.google.performance)
     implementation(libs.google.review)
     implementation(libs.google.appupdate)
-    implementation(libs.hilt.android)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
     implementation(libs.kermit.crashlytics)
@@ -191,8 +188,13 @@ dependencies {
 
     debugImplementation(libs.leakCanary)
 
-    kapt(libs.androidx.hilt.compiler)
-    kapt(libs.hilt.compiler)
+    ksp(libs.kotlininject.compiler)
+    implementation(libs.kotlininject.runtime)
 
     baselineProfile(projects.baselineprofile)
+}
+
+ksp {
+//    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
 }

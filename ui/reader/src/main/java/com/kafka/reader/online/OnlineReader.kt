@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.web.WebContent
 import com.google.accompanist.web.WebViewState
@@ -44,7 +43,7 @@ import com.google.accompanist.web.WebView as AccompanistWebView
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun OnlineReader(
-    viewModel: OnlineReaderViewModel = hiltViewModel(),
+    viewModel: OnlineReaderViewModel,
     openOfflineReader: (String) -> Unit,
 ) {
     val context = LocalContext.current

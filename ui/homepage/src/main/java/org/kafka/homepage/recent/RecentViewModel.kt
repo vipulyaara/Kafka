@@ -3,7 +3,6 @@ package org.kafka.homepage.recent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collect
@@ -18,7 +17,6 @@ import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
-@HiltViewModel
 class RecentViewModel @Inject constructor(
     observeRecentItems: ObserveRecentItems,
     private val removeAllRecentItems: RemoveAllRecentItems,

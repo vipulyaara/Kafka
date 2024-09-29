@@ -7,6 +7,9 @@ plugins {
 kotlin {
     sourceSets {
         val commonMain by getting {
+            dependencies {
+                api(projects.base.annotations)
+            }
         }
 
         val jvmCommon by creating {

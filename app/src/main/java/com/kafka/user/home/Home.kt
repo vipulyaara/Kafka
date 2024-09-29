@@ -17,18 +17,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kafka.user.home.bottombar.HomeNavigationBar
 import com.kafka.user.home.bottombar.rail.ResizableHomeNavigationRail
+import com.kafka.user.home.bottombar.rail.ResizableHomeNavigationRailViewModel
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.components.isWideLayout
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.player.mini.MiniPlayer
-import com.sarahang.playback.ui.sheet.materialYouPlayerTheme
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 import org.kafka.analytics.logger.Analytics
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.LocalNavigator
@@ -43,14 +48,21 @@ import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
+typealias Home = @Composable (NavHostController, String) -> Unit
+
 @Composable
+@Inject
 internal fun Home(
-    navController: NavHostController,
+    @Assisted navController: NavHostController,
+    @Assisted playerTheme: String,
     analytics: Analytics,
+    resizableViewModelFactory: () -> ResizableHomeNavigationRailViewModel,
     modifier: Modifier = Modifier,
-    playerTheme: String = materialYouPlayerTheme,
     playbackConnection: PlaybackConnection = LocalPlaybackConnection.current,
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
+    sleepTimerViewModelFactory: () -> SleepTimerViewModel,
+    playbackSpeedViewModelFactory: () -> PlaybackSpeedViewModel,
+    appNavigation: AppNavigation,
 ) {
     val selectedTab by navController.currentScreenAsState()
     val playbackState by playbackConnection.playbackState.collectAsStateWithLifecycle()
@@ -63,11 +75,15 @@ internal fun Home(
 
         Row(Modifier.fillMaxSize()) {
             if (isWideLayout && shouldShowBottomBar(navController)) {
+                val resizableViewModel = viewModel { resizableViewModelFactory() }
                 ResizableHomeNavigationRail(
                     availableWidth = maxWidth,
                     selectedTab = selectedTab,
                     navController = navController,
                     analytics = analytics,
+                    viewModel = resizableViewModel,
+                    sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+                    playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
                     onPlayingArtistClick = {
                         navController.navigate(Screen.Search(nowPlaying.artist.orEmpty()))
                     },
@@ -90,7 +106,7 @@ internal fun Home(
                 }
             ) { paddings ->
                 ProvideScaffoldPadding(paddings) {
-                    AppNavigation(navController = navController)
+                    appNavigation(navController)
                 }
             }
         }

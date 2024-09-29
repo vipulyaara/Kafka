@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.feature.item.ItemWithDownload
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import org.kafka.base.debug
 import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
@@ -18,12 +18,11 @@ import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import tm.alashow.datmusic.downloader.Downloader
 import javax.inject.Inject
 
-@HiltViewModel
 class ReaderViewModel @Inject constructor(
     private val observeDownloadByFileId: ObserveDownloadByFileId,
     private val observeRecentItem: ObserveRecentTextItem,
     private val downloader: Downloader,
-    savedStateHandle: SavedStateHandle
+    @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     private var fileId = savedStateHandle.getStateFlow("fileId", "")
