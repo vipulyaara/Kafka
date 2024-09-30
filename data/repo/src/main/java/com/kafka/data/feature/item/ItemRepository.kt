@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ItemRepository @Inject constructor(
     private val itemDao: ItemDao,
     private val remoteDataSource: ItemDataSource,
-    private val preferencesStore: PreferencesStore
+    private val preferencesStore: PreferencesStore,
 ) {
     fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) = combine(
         itemDao.observeQueryItems(simpleSQLiteQuery),
@@ -24,8 +24,7 @@ class ItemRepository @Inject constructor(
         items.filter { !safeMode || !it.isInappropriate }
     }
 
-    suspend fun updateQuery(query: String) =
-        remoteDataSource.fetchItemsByQuery(query).getOrThrow()
+    suspend fun updateQuery(query: String) = remoteDataSource.fetchItemsByQuery(query)
 
     suspend fun saveItems(items: List<Item>) = itemDao.insertAll(items)
 

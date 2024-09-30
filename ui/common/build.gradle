@@ -12,8 +12,9 @@ android {
 }
 
 dependencies {
+    implementation projects.base.domain
+    implementation projects.core.networking
     api projects.ui.theme
-    implementation projects.data.repo
 
     api libs.androidx.core
     api libs.androidx.lifecycle.process

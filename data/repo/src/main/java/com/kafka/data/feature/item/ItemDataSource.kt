@@ -2,7 +2,7 @@ package com.kafka.data.feature.item
 
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
-import com.kafka.data.resultApiCall
+import kotlinx.coroutines.withContext
 import org.kafka.base.CoroutineDispatchers
 import javax.inject.Inject
 
@@ -15,8 +15,8 @@ class ItemDataSource @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
 ) {
 
-    suspend fun fetchItemsByQuery(query: String): Result<List<Item>> {
-        return resultApiCall(dispatchers.io) {
+    suspend fun fetchItemsByQuery(query: String): List<Item> {
+        return withContext(dispatchers.io) {
             val response = archiveService.search(query)
             itemMapper.map(response)
         }

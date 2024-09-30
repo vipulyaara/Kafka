@@ -13,7 +13,7 @@ class UpdateItemDetail @Inject constructor(
 
     override suspend fun doWork(params: Param) {
         withContext(dispatchers.io) {
-            repository.updateItemDetail(params.contentId).getOrThrow()
+            repository.updateItemDetail(params.contentId)
         }
     }
 

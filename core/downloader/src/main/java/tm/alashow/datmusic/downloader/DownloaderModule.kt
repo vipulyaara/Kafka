@@ -13,9 +13,12 @@ import com.tonyodev.fetch2.FetchNotificationManager
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import org.kafka.base.ApplicationScope
 import org.kafka.base.Named
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
 import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
 @Component
@@ -30,6 +33,17 @@ interface DownloaderModule {
     fun fetchNotificationManager(
         context: Application,
     ): FetchNotificationManager = DownloaderNotificationManager(context)
+
+    @Provides
+    @Named("downloader")
+    fun downloaderOkHttp(
+        cache: Cache,
+    ) = OkHttpClient.Builder()
+        .cache(cache)
+        .retryOnConnectionFailure(true)
+        .readTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .writeTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .build()
 
     @Provides
     @ApplicationScope
@@ -56,5 +70,9 @@ interface DownloaderModule {
             .build()
         Fetch.Impl.setDefaultInstanceConfiguration(fetcherConfig)
         return Fetch.Impl.getInstance(fetcherConfig)
+    }
+
+    object Config {
+        val DOWNLOADER_TIMEOUT = 7.minutes.inWholeMilliseconds
     }
 }

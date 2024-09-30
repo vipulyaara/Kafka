@@ -2,25 +2,37 @@ package com.kafka.data.api
 
 import com.kafka.data.model.item.ItemDetailResponse
 import com.kafka.data.model.item.SearchResponse
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
+import me.tatarka.inject.annotations.Inject
+import org.kafka.base.ApplicationScope
 
 /**
  * @author Vipul Kumar; dated 29/11/18.
  *
  * Configures the API module and provides services to interact with the APIs.
  */
-interface ArchiveService {
-    @GET("advancedsearch.php")
+@ApplicationScope
+class ArchiveService @Inject constructor(private val httpClient: HttpClient) {
     suspend fun search(
-        @Query("q", encoded = true) query: String?,
-        @Query("output") output: String = "json",
-        @Query("rows") rows: String = "200",
-        @Query("page") page: String = "1",
-        @Query("sort") sort: String = "-downloads",
-    ): SearchResponse
+        query: String?,
+        output: String = "json",
+        rows: String = "200",
+        page: String = "1",
+        sort: String = "-downloads",
+    ): SearchResponse = httpClient.get {
+        url("https://archive.org/advancedsearch.php")
+        parameter("q", query)
+        parameter("output", output)
+        parameter("rows", rows)
+        parameter("page", page)
+        parameter("sort", sort)
+    }.body()
 
-    @GET("/metadata/{id}")
-    suspend fun getItemDetail(@Path("id") id: String?): ItemDetailResponse
+    suspend fun getItemDetail(id: String?): ItemDetailResponse = httpClient.get {
+        url("https://archive.org/metadata/$id")
+    }.body()
 }

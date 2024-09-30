@@ -124,6 +124,7 @@ dependencies {
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
+    implementation(projects.core.networking)
     implementation(projects.core.play)
     implementation(projects.corePlayback)
     implementation(projects.core.remoteConfig)
@@ -180,9 +181,15 @@ dependencies {
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.stdlib)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.contentnegotiation)
+    implementation(libs.ktor.client.java)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization)
+
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.okhttp.okhttp)
-    implementation(libs.retrofit.serialization)
     implementation(libs.threeTenAbp)
     implementation(libs.profileinstaller)
 

@@ -1,6 +1,4 @@
-@file:Suppress("ktlint:standard:filename")
-
-package com.kafka.data.model
+package com.kafka.networking
 
 import kotlin.reflect.KClass
 

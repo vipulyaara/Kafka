@@ -1,7 +1,7 @@
 package com.kafka.data.injection
 
-import com.kafka.data.model.SerializationPolymorphicDefaultPair
 import com.kafka.data.model.homepage.HomepageCollectionResponse
+import com.kafka.networking.SerializationPolymorphicDefaultPair
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides

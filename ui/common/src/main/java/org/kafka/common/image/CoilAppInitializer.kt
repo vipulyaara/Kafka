@@ -13,13 +13,11 @@ import javax.inject.Inject
 class CoilAppInitializer @Inject constructor(
     private val context: Application,
     private val dispatchers: CoroutineDispatchers,
-    private val okHttpClient: OkHttpClient,
 ) : AppInitializer {
 
     override fun init() {
         Coil.setImageLoader {
             ImageLoader.Builder(context)
-                .okHttpClient(okHttpClient)
                 .dispatcher(dispatchers.io)
                 .fetcherDispatcher(dispatchers.io)
                 .diskCache(

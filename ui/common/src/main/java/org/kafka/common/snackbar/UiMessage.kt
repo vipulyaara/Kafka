@@ -1,8 +1,7 @@
 package org.kafka.common.snackbar
 
 import android.content.Context
-import com.kafka.data.api.localizedMessage
-import org.kafka.common.R
+import com.kafka.networking.localizedMessage
 
 sealed class UiMessage {
     data class Plain(val value: String) : UiMessage()
@@ -17,17 +16,17 @@ sealed class UiMessage {
 
 fun Throwable?.toUiMessage() = when {
     else -> when (val message = this.localizedMessage()) {
-        R.string.error_unknown -> UiMessage.Plain(
+        "Unknown error" -> UiMessage.Plain(
             this?.message ?: this?.javaClass?.simpleName ?: ""
         )
 
-        else -> UiMessage.Resource(message)
+        else -> UiMessage.Plain(message)
     }
 }
 
 fun UiMessage.asString(context: Context): String = when (this) {
     is UiMessage.Plain -> value
     is UiMessage.Resource -> context.getString(value, *formatArgs.toTypedArray())
-    is UiMessage.Error -> context.getString(value.localizedMessage())
+    is UiMessage.Error -> value.localizedMessage()
 }
 

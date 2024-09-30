@@ -18,6 +18,7 @@ android {
 
 dependencies {
     api projects.base.domain
+    api projects.core.networking
     api projects.core.remoteConfig
     api projects.data.database
     api projects.data.models
@@ -36,17 +37,13 @@ dependencies {
     implementation libs.kotlin.serialization
     implementation libs.kotlin.stdlib
 
-    implementation libs.okhttp.loggingInterceptor
-    implementation libs.okhttp.okhttp
-    implementation libs.retrofit.retrofit
-    implementation libs.retrofit.serialization
+    implementation libs.ktor.client.core
 
     api libs.dataStore
     api libs.threeTenAbp
 
     implementation platform(libs.openai.kotlin.bom)
     implementation libs.openai.client
-    runtimeOnly libs.ktor.okhttp
 
     implementation platform(libs.google.bom)
     implementation libs.google.auth

@@ -11,8 +11,6 @@ import org.kafka.base.debug
 
 class FirebaseMessageService : FirebaseMessagingService() {
 
-    private val applicationComponent = AndroidApplicationComponent.from(this.applicationContext)
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
@@ -29,8 +27,9 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
         debug { "New FCM registration token: $token" }
+
+        val applicationComponent = AndroidApplicationComponent.from(this.applicationContext)
 
         applicationComponent.processScope.launch(applicationComponent.dispatchers.io) {
             applicationComponent.preferencesStore.save(fcmTokenPreferenceKey, token)

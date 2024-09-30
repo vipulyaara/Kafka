@@ -10,9 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kafka.data.injection.DatabaseModule
-import com.kafka.data.injection.NetworkModule
 import com.kafka.data.injection.SerializersModule
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.networking.NetworkingComponent
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getOpenAiApiKey
 import com.kafka.user.BuildConfig
@@ -48,7 +48,7 @@ private const val dataStoreFileName = "app_preferences.preferences_pb"
 @Component
 @ApplicationScope
 interface AppModule :
-    NetworkModule,
+    NetworkingComponent,
     SerializersModule,
     DatabaseModule,
     DownloaderModule,

@@ -21,6 +21,7 @@ include ':baselineprofile'
 include ':core:analytics' // kmp
 include ':core:downloader'
 include ':core:play'
+include ':core:networking' // kmp
 include ':core:remote-config'
 include ':data:repo'
 include ':data:database'
