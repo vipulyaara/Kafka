@@ -25,6 +25,7 @@ import org.kafka.domain.interactors.GetReaderState
 import org.kafka.domain.interactors.ReaderState
 import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.interactors.getCurrentPageFromReaderUrl
+import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ShouldAutoDownload
 import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import org.kafka.navigation.Navigator
@@ -38,6 +39,7 @@ import javax.inject.Inject
 class OnlineReaderViewModel @Inject constructor(
     shouldAutoDownload: ShouldAutoDownload,
     observeDownloadByFileId: ObserveDownloadByFileId,
+    observeItemDetail: ObserveItemDetail,
     private val getReaderState: GetReaderState,
     private val updateCurrentPage: UpdateCurrentPage,
     private val downloader: Downloader,
@@ -55,17 +57,20 @@ class OnlineReaderViewModel @Inject constructor(
 
     val state: StateFlow<OnlineReaderState> = combine(
         readerState,
+        observeItemDetail.flow,
         observeDownloadByFileId.flow,
         shouldAutoDownload.flow
-    ) { readerState, download, autoDownload ->
+    ) { readerState, itemDetail, download, autoDownload ->
         OnlineReaderState(
             readerState = readerState,
             download = download,
-            autoDownload = autoDownload
+            autoDownload = autoDownload,
+            showDownloadIcon = !(itemDetail?.isAccessRestricted ?: true)
         )
     }.stateInDefault(viewModelScope, OnlineReaderState())
 
     init {
+        observeItemDetail(ObserveItemDetail.Param(itemId))
         observeDownloadByFileId(fileId)
         shouldAutoDownload(ShouldAutoDownload.Param(itemId))
 
@@ -119,4 +124,5 @@ data class OnlineReaderState(
     val readerState: ReaderState? = null,
     val download: ItemWithDownload? = null,
     val autoDownload: Boolean = false,
+    val showDownloadIcon: Boolean = false,
 )

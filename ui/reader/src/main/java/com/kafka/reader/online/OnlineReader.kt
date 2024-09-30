@@ -82,6 +82,7 @@ fun OnlineReader(
             if (webViewState != null) {
                 TopBar(
                     webViewState = webViewState!!,
+                    showDownloadIcon = state.showDownloadIcon,
                     fileId = fileId,
                     download = state.download,
                     openOfflineReader = {
@@ -125,6 +126,7 @@ private fun WebView(
 private fun TopBar(
     webViewState: WebViewState,
     fileId: String?,
+    showDownloadIcon: Boolean,
     download: ItemWithDownload?,
     shareItem: () -> Unit,
     openOfflineReader: () -> Unit,
@@ -144,7 +146,7 @@ private fun TopBar(
                     )
                 }
 
-                if (fileId != null) {
+                if (fileId != null && showDownloadIcon) {
                     DownloadIcon(
                         downloadInfo = download?.downloadInfo,
                         onDownloadClicked = downloadItem,
