@@ -1,4 +1,4 @@
-package com.kafka.user
+package com.kafka.user.injection
 
 import android.app.Activity
 import com.kafka.remote.config.RemoteConfig

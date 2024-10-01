@@ -8,13 +8,13 @@ compose-alpha = "2024.08.00-alpha02"
 compose-bom = "2024.09.02"
 compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
-coroutines = "1.8.1"
+coroutines = "1.9.0"
 firebase = "2.1.0"
 icons = "1.0.0"
 haze = "0.7.3"
-kotlin = "2.0.10"
-kotlin-immutable = "0.3.7"
-kotlininject = "0.7.1"
+kotlin = "2.0.20"
+kotlin-immutable = "0.3.8"
+kotlininject = "0.7.2"
 ktor = "2.3.12"
 material3 = "1.3.0"
 media3 = "1.3.1"
@@ -23,7 +23,7 @@ navigation = "2.8.1"
 okhttp = "4.12.0"
 pdfviewer = "3.2.0-beta.1"
 room = "2.6.1"
-serialization = "1.7.1"
+serialization = "1.7.3"
 spotless = "6.25.0"
 
 compileSdk = "34"
@@ -48,7 +48,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.0.10-1.0.24"
+ksp = "com.google.devtools.ksp:2.0.20-1.0.25"
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 spotless = "com.diffplug.spotless:6.25.0"
@@ -115,8 +115,8 @@ google-bom = "com.google.firebase:firebase-bom:33.3.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-auth = { module = "com.google.firebase:firebase-auth" }
-google-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1"
-google-admob = "com.google.android.gms:play-services-ads:23.3.0"
+google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
+google-admob = "com.google.android.gms:play-services-ads:23.4.0"
 google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
@@ -131,11 +131,6 @@ firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = 
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
 firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase" }
 
-#firestore-ktx = "dev.gitlive:firebase-firestore:2.1.0"
-#firestore-common-ktx = "dev.gitlive:firebase-common:2.1.0"
-#firebase-remote-config = "dev.gitlive:firebase-config:2.1.0"
-#firebase-analytics = "dev.gitlive:firebase-analytics:2.1.0"
-
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 
 javax-inject = "javax.inject:javax.inject:1"
@@ -148,10 +143,6 @@ kinject = "com.chrynan.inject:inject:1.2.0"
 kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlininject" }
 kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlininject" }
 
-#kotlininject-anvil-compiler = { module = "software.amazon.lastmile.kotlin.inject.anvil:compiler", version.ref = "kotlininjectanvil" }
-#kotlininject-anvil-runtime = { module = "software.amazon.lastmile.kotlin.inject.anvil:runtime", version.ref = "kotlininjectanvil" }
-#kotlininject-anvil-runtime-optional = { module = "software.amazon.lastmile.kotlin.inject.anvil:runtime-optional", version.ref = "kotlininjectanvil" }
-
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -159,7 +150,7 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
 
 kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
@@ -189,7 +180,7 @@ okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"
 openai-kotlin-bom = "com.aallam.openai:openai-client-bom:3.8.2"
 openai-client = { module = "com.aallam.openai:openai-client" }
 
-material-kolor = "com.materialkolor:material-kolor:1.7.0"
+material-kolor = "com.materialkolor:material-kolor:1.7.1"
 
 mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanel" }
 

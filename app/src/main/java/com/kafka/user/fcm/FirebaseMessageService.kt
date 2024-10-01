@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kafka.user.AndroidApplicationComponent
-import com.kafka.user.from
+import com.kafka.user.injection.AndroidApplicationComponent
+import com.kafka.user.injection.from
 import kotlinx.coroutines.launch
 import org.kafka.base.debug
 

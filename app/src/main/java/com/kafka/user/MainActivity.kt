@@ -15,6 +15,10 @@ import androidx.navigation.compose.rememberNavController
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.remote.config.isTrueContrastEnabled
+import com.kafka.user.injection.AndroidActivityComponent
+import com.kafka.user.injection.AndroidApplicationComponent
+import com.kafka.user.injection.create
+import com.kafka.user.injection.from
 import org.kafka.base.errorLog
 import org.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme

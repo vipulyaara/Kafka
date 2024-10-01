@@ -1,10 +1,10 @@
-package com.kafka.user
+package com.kafka.user.injection
 
 import android.app.Application
 import android.content.Context
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.remote.config.RemoteConfig
-import com.kafka.user.injection.AppModule
+import com.kafka.user.KafkaApplication
 import com.sarahang.playback.core.MediaNotifications
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.apis.AudioDataSource
