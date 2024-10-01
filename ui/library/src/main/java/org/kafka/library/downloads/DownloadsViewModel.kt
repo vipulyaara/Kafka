@@ -11,15 +11,13 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
-import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedItems
 import javax.inject.Inject
 
 class DownloadsViewModel @Inject constructor(
     observeDownloadedItems: ObserveDownloadedItems,
-    private val downloader: Downloader,
     private val analytics: Analytics,
     private val navigator: Navigator,
 ) : ViewModel() {
@@ -50,8 +48,8 @@ class DownloadsViewModel @Inject constructor(
         navigator.navigate(Screen.ItemDetail(itemId))
     }
 
-    private fun requestNewDownloadLocation() {
-        downloader.requestNewDownloadsLocation()
+    fun logDownloadPageOpen() {
+        analytics.log { this.openLibraryPage("downloads") }
     }
 }
 

@@ -27,13 +27,13 @@ import org.kafka.domain.interactors.UpdateCurrentPage
 import org.kafka.domain.interactors.getCurrentPageFromReaderUrl
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ShouldAutoDownload
-import org.kafka.domain.observers.library.ObserveDownloadByFileId
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.deeplink.DeepLinksNavigation
 import org.kafka.navigation.deeplink.Navigation
 import org.kafka.navigation.graph.Screen
 import org.kafka.reader.R
 import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject
 
 class OnlineReaderViewModel @Inject constructor(

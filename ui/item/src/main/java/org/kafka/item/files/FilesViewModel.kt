@@ -24,10 +24,10 @@ import org.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveFiles
-import org.kafka.domain.observers.library.ObserveDownloadedItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedItems
 import javax.inject.Inject
 
 class FilesViewModel @Inject constructor(

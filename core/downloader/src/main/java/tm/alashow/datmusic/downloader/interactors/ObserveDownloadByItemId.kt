@@ -1,4 +1,4 @@
-package org.kafka.domain.observers.library
+package tm.alashow.datmusic.downloader.interactors
 
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.kafka.base.CoroutineDispatchers
 import org.kafka.base.domain.SubjectInteractor
-import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedItems
 import javax.inject.Inject
 
 class ObserveDownloadByItemId @Inject constructor(
@@ -26,6 +25,6 @@ class ObserveDownloadByItemId @Inject constructor(
 
     data class Params(
         val itemId: String,
-        val statuses: List<DownloadStatus> = DownloadStatus.entries,
+        val statuses: List<DownloadStatus> = DownloadStatus.entries
     )
 }

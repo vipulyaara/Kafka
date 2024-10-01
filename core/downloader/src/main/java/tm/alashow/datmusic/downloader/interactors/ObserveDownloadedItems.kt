@@ -1,4 +1,4 @@
-package org.kafka.domain.observers.library
+package tm.alashow.datmusic.downloader.interactors
 
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
@@ -33,7 +33,6 @@ class ObserveDownloadedItems @Inject constructor(
                 }
 
                 ItemWithDownload(
-                    downloadRequest = fileDownloadItem.downloadRequest,
                     downloadInfo = downloadInfoMapper.map(fileDownloadItem.downloadInfo),
                     file = file,
                     item = item,

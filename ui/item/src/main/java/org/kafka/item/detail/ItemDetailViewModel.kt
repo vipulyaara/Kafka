@@ -14,6 +14,7 @@ import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.model.booksByAuthor
+import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
@@ -41,7 +42,6 @@ import org.kafka.domain.interactors.recent.IsResumableAudio
 import org.kafka.domain.observers.ObserveCreatorItems
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.ShouldUseOnlineReader
-import org.kafka.domain.observers.library.ObserveDownloadByItemId
 import org.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.Navigator
@@ -56,6 +56,7 @@ import org.kafka.navigation.graph.Screen.Reader
 import org.kafka.navigation.graph.Screen.Search
 import org.kafka.navigation.graph.encodeUrl
 import org.kafka.play.AppReviewManager
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByItemId
 import javax.inject.Inject
 
 class ItemDetailViewModel @Inject constructor(
@@ -77,6 +78,7 @@ class ItemDetailViewModel @Inject constructor(
     private val analytics: Analytics,
     private val appReviewManager: AppReviewManager,
     private val application: Application,
+    private val itemReadCounter: ItemReadCounter,
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.toRoute<Screen.ItemDetail>().itemId
     private val loadingState = ObservableLoadingCounter()
@@ -139,6 +141,8 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun onPrimaryAction(itemId: String) {
+        itemReadCounter.incrementItemOpenCount()
+
         if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
             viewModelScope.launch { resumeAlbum(itemId).collect() }
@@ -237,9 +241,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun showAppRatingIfNeeded(context: Context) {
-        viewModelScope.launch { appReviewManager.incrementItemOpenCount() }
-
-        if (appReviewManager.totalItemOpens % itemOpenThresholdForAppReview == 0) {
+        if (itemReadCounter.totalItemOpens % itemOpenThresholdForAppReview == 0) {
             context.getActivity()?.let { appReviewManager.showReviewDialog(it) }
         }
     }
@@ -277,5 +279,4 @@ class ItemDetailViewModel @Inject constructor(
 }
 
 private const val itemOpenThresholdForAppReview = 20
-const val itemDetailSourceRelated = "item_detail/related"
 const val itemDetailSourceCreator = "item_detail/creator"

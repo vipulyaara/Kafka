@@ -153,4 +153,8 @@ class EventRepository @Inject constructor() {
         "key" to key,
         "value" to value.toString()
     )
+
+    fun openLibraryPage(page: String) = "open_library_page" to mapOf(
+        "page" to page
+    )
 }

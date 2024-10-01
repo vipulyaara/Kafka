@@ -1,4 +1,4 @@
-package org.kafka.domain.observers.library
+package tm.alashow.datmusic.downloader.interactors
 
 import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.coroutines.flow.Flow
