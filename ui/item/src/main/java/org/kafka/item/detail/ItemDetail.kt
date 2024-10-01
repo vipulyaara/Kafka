@@ -4,58 +4,45 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.Item
 import com.sarahang.playback.ui.color.DynamicTheme
 import me.tatarka.inject.annotations.Inject
 import org.kafka.base.debug
+import org.kafka.common.adaptive.fullSpanItem
+import org.kafka.common.adaptive.fullSpanItems
+import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.alignCenter
 import org.kafka.common.image.Icons
-import org.kafka.common.image.LoadImage
 import org.kafka.common.simpleClickable
-import org.kafka.common.test.testTagUi
 import org.kafka.item.R
-import org.kafka.item.detail.description.DescriptionText
+import org.kafka.item.detail.description.itemDescriptionLayout
 import org.kafka.item.fake.FakeItemData
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
@@ -148,6 +135,8 @@ private fun ItemDetail(
     modifier: Modifier = Modifier,
     lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
+    val isCompact = windowWidthSizeClass().isCompact()
+
     Box(modifier.fillMaxSize()) {
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
@@ -159,30 +148,22 @@ private fun ItemDetail(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyGridState,
                 contentPadding = scaffoldPadding(),
-                columns = GridCells.Fixed(GridItemSpan)
+                columns = GridCells.Fixed(2)
             ) {
-                item(span = { GridItemSpan(GridItemSpan) }) {
-                    ItemDescription(
-                        itemDetail = state.itemDetail!!,
+                if (state.itemDetail != null) {
+                    itemDescriptionLayout(
+                        isCompact = isCompact,
+                        state = state,
                         showDescription = openDescription,
-                        goToCreator = goToCreator
-                    )
-                }
-
-                item(span = { GridItemSpan(GridItemSpan) }) {
-                    ItemDetailActions(
-                        itemId = state.itemDetail!!.itemId,
-                        ctaText = state.ctaText.orEmpty(),
-                        onPrimaryAction = onPrimaryAction,
-                        openFiles = openFiles,
-                        isFavorite = state.isFavorite,
-                        showDownloads = state.showDownloads,
-                        toggleFavorite = toggleFavorite
+                        goToCreator = goToCreator,
+                        onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
+                        toggleFavorite = toggleFavorite,
+                        openFiles = { openFiles(state.itemDetail.itemId) }
                     )
                 }
 
                 if (state.isSummaryEnabled) {
-                    item {
+                    fullSpanItem {
                         SummaryMessage(
                             text = stringResource(R.string.or_read_a_summary),
                             modifier = modifier.padding(
@@ -194,7 +175,7 @@ private fun ItemDetail(
                 }
 
                 if (state.itemDetail!!.isAccessRestricted) {
-                    item(span = { GridItemSpan(GridItemSpan) }) {
+                    fullSpanItem {
                         AccessRestricted(
                             isAudio = state.itemDetail.isAudio,
                             borrowableBookMessage = state.borrowableBookMessage
@@ -203,7 +184,7 @@ private fun ItemDetail(
                 }
 
                 if (state.hasSubjects) {
-                    item(span = { GridItemSpan(GridItemSpan) }) {
+                    fullSpanItem {
                         FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
                             state.itemDetail.immutableSubjects.forEach {
                                 SubjectItem(text = it,
@@ -215,7 +196,7 @@ private fun ItemDetail(
                 }
 
                 if (state.hasItemsByCreator) {
-                    item(span = { GridItemSpan(GridItemSpan) }) {
+                    fullSpanItem {
                         val text = buildAnnotatedString {
                             append(stringResource(R.string.more_by))
                             append(" ")
@@ -233,16 +214,21 @@ private fun ItemDetail(
                             overflow = TextOverflow.Ellipsis)
                     }
 
-                    items(state.itemsByCreator!!, key = { it.itemId }) { item ->
-                        Item(item = item,
-                            modifier = Modifier
-                                .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
-                                .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter))
+                    if (isCompact) {
+                        fullSpanItems(state.itemsByCreator!!, key = { it.itemId }) { item ->
+                            ItemByCreator(item = item, openItemDetail = openItemDetail)
+                        }
+                    } else {
+                        items(
+                            state.itemsByCreator!!,
+                            key = { it.itemId }) { item ->
+                            ItemByCreator(item = item, openItemDetail = openItemDetail)
+                        }
                     }
                 }
 
                 if (state.isLoading) {
-                    item(span = { GridItemSpan(GridItemSpan) }) {
+                    fullSpanItem {
                         Delayed(modifier = Modifier.animateItem()) {
                             InfiniteProgressBar()
                         }
@@ -254,81 +240,15 @@ private fun ItemDetail(
 }
 
 @Composable
-private fun ItemDescription(
-    itemDetail: ItemDetail,
-    showDescription: (String) -> Unit,
-    goToCreator: (String?) -> Unit,
+private fun ItemByCreator(
+    item: Item,
+    openItemDetail: (String, String) -> Unit
 ) {
-    SelectionContainer(Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(top = Dimens.Spacing24),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            LoadImage(
-                data = itemDetail.coverImage,
-                modifier = Modifier
-                    .size(if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail)
-                    .clip(RoundedCornerShape(Dimens.Spacing08))
-            )
-
-            Spacer(Modifier.height(Dimens.Spacing24))
-
-            Text(
-                text = itemDetail.title.orEmpty(),
-                style = MaterialTheme.typography.titleLarge.alignCenter(),
-                modifier = Modifier.padding(horizontal = Dimens.Spacing24)
-            )
-
-            Spacer(Modifier.height(Dimens.Spacing04))
-
-            Creator(itemDetail.creators, goToCreator)
-
-            DescriptionText(
-                itemDetail = itemDetail,
-                modifier = Modifier
-                    .testTagUi("item_detail_description")
-                    .fillMaxWidth()
-                    .simpleClickable { showDescription(itemDetail.itemId) }
-                    .padding(Dimens.Spacing24),
-                style = MaterialTheme.typography.bodySmall.alignCenter(),
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
-
-@Composable
-private fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
-    val annotatedString = buildAnnotatedString {
-        creators?.forEachIndexed { index, creator ->
-            val color = if (index % 2 == 0) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.tertiary
-            }
-            val link = LinkAnnotation.Url(creator, TextLinkStyles(SpanStyle(color = color))) {
-                val url = (it as LinkAnnotation.Url).url
-                goToCreator(url)
-            }
-
-            withLink(link) { append(creator) }
-
-            if (index < creators.size - 1) {
-                append(", ")
-            }
-        }
-    }
-
-    Text(
-        text = annotatedString,
+    Item(item = item,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = Dimens.Spacing24),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center)
+            .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
+            .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
     )
-
 }
 
 @Composable
@@ -361,8 +281,6 @@ private fun ItemDetailTheme(
         content()
     }
 }
-
-private const val GridItemSpan = 1
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE)
 @Composable

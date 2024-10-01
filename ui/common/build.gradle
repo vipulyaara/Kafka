@@ -16,6 +16,7 @@ dependencies {
     implementation projects.core.networking
     api projects.ui.theme
 
+    api libs.androidx.adaptive.android
     api libs.androidx.core
     api libs.androidx.lifecycle.process
     api libs.androidx.lifecycle.runtime

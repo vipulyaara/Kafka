@@ -5,8 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -32,16 +35,16 @@ import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ItemDetailActions(
-    itemId: String,
+fun ItemDetailActionsRow(
     ctaText: String,
-    onPrimaryAction: (String) -> Unit,
-    openFiles: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    onPrimaryAction: () -> Unit,
     isFavorite: Boolean,
-    showDownloads: Boolean = true,
     toggleFavorite: () -> Unit,
+    showDownloads: Boolean = true,
+    openFiles: () -> Unit,
 ) {
-    Box(Modifier.fillMaxWidth()) {
+    Box(modifier) {
         Row(
             Modifier
                 .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
@@ -53,28 +56,68 @@ fun ItemDetailActions(
             Box(modifier = Modifier.weight(0.2f)) {
                 FavoriteIcon(
                     isFavorite = isFavorite,
-                    modifier = Modifier.align(Alignment.Center)
-                ) { toggleFavorite() }
+                    modifier = Modifier.align(Alignment.Center),
+                    onClicked = toggleFavorite
+                )
             }
 
-            if (showDownloads) {
-                Box(modifier = Modifier.weight(0.2f)) {
-                    Icon(
-                        icon = Icons.Download,
-                        contentDescription = stringResource(R.string.cd_files),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .testTagUi("download_files"),
-                        onClicked = { openFiles(itemId) }
-                    )
-                }
-            }
+            DownloadIcon(
+                showDownloads = showDownloads,
+                modifier = Modifier.weight(0.2f),
+                openFiles = openFiles
+            )
 
             FloatingButton(
                 text = ctaText,
-                modifier = Modifier.weight(0.8f),
+                modifier = Modifier
+                    .weight(0.8f)
+                    .fillMaxWidth(),
                 onClickLabel = ctaText,
-                onClicked = { onPrimaryAction(itemId) }
+                onClicked = onPrimaryAction
+            )
+        }
+    }
+}
+
+@Composable
+fun ItemDetailActionsColumn(
+    ctaText: String,
+    modifier: Modifier = Modifier,
+    onPrimaryAction: () -> Unit,
+    isFavorite: Boolean,
+    toggleFavorite: () -> Unit,
+    showDownloads: Boolean = true,
+    openFiles: () -> Unit,
+) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        FloatingButton(
+            text = ctaText,
+            onClickLabel = ctaText,
+            modifier = Modifier.fillMaxWidth(0.8f),
+            onClicked = { onPrimaryAction() }
+        )
+
+        Spacer(Modifier.height(Dimens.Gutter))
+
+        Row(
+            Modifier
+                .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
+                .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.weight(0.2f)) {
+                FavoriteIcon(
+                    isFavorite = isFavorite,
+                    modifier = Modifier.align(Alignment.Center),
+                    onClicked = toggleFavorite
+                )
+            }
+
+            DownloadIcon(
+                showDownloads = showDownloads,
+                modifier = Modifier.weight(0.2f),
+                openFiles = openFiles
             )
         }
     }
@@ -116,6 +159,22 @@ private fun FavoriteIcon(
 }
 
 @Composable
+fun DownloadIcon(showDownloads: Boolean, modifier: Modifier = Modifier, openFiles: () -> Unit) {
+    if (showDownloads) {
+        Box(modifier = modifier) {
+            Icon(
+                icon = Icons.Download,
+                contentDescription = stringResource(R.string.cd_files),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .testTagUi("download_files"),
+                onClicked = { openFiles() }
+            )
+        }
+    }
+}
+
+@Composable
 private fun Icon(
     icon: ImageVector,
     modifier: Modifier = Modifier,
@@ -141,10 +200,23 @@ private fun Icon(
 
 @Preview
 @Composable
-private fun ActionsPreview() {
+private fun ActionsRowPreview() {
     AppTheme {
-        ItemDetailActions(
-            itemId = "123",
+        ItemDetailActionsRow(
+            ctaText = "Read",
+            onPrimaryAction = {},
+            openFiles = {},
+            isFavorite = false,
+            toggleFavorite = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ActionsWidePreview() {
+    AppTheme {
+        ItemDetailActionsColumn(
             ctaText = "Read",
             onPrimaryAction = {},
             openFiles = {},
