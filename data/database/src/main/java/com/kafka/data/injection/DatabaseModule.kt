@@ -5,14 +5,11 @@ import android.os.Debug
 import androidx.room.Room
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
-import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import org.kafka.base.ApplicationScope
 
 const val databaseName = "kafka.db"
 
-@Component
-@ApplicationScope
 interface DatabaseModule {
     @Provides
     @ApplicationScope
@@ -33,23 +30,30 @@ interface DatabaseModule {
     fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase = bind
 
     @Provides
+    @ApplicationScope
     fun provideItemDao(db: KafkaRoomDatabase) = db.itemDao()
 
     @Provides
+    @ApplicationScope
     fun provideItemDetailDao(db: KafkaRoomDatabase) = db.itemDetailDao()
 
     @Provides
+    @ApplicationScope
     fun provideFileDao(db: KafkaRoomDatabase) = db.fileDao()
 
     @Provides
+    @ApplicationScope
     fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.recentSearchDao()
 
     @Provides
+    @ApplicationScope
     fun provideRecentTextDao(db: KafkaRoomDatabase) = db.recentTextDao()
 
     @Provides
+    @ApplicationScope
     fun provideRecentAudioDao(db: KafkaRoomDatabase) = db.recentAudioDao()
 
     @Provides
+    @ApplicationScope
     fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
 }

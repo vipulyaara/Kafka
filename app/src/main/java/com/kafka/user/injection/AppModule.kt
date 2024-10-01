@@ -5,10 +5,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.messaging.FirebaseMessaging
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.injection.SerializersModule
 import com.kafka.data.prefs.PreferencesStore
@@ -60,18 +58,6 @@ interface AppModule :
     @ProcessLifetime
     fun provideLongLifetimeScope(): CoroutineScope {
         return ProcessLifecycleOwner.get().lifecycleScope
-    }
-
-    @Provides
-    @ApplicationScope
-    fun provideFirebaseAnalytics(app: Application): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(app)
-    }
-
-    @Provides
-    @ApplicationScope
-    fun provideFirebaseMessaging(): FirebaseMessaging {
-        return FirebaseMessaging.getInstance()
     }
 
     @Provides

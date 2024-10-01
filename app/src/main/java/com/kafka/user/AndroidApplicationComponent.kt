@@ -5,6 +5,12 @@ import android.content.Context
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.user.injection.AppModule
+import com.sarahang.playback.core.MediaNotifications
+import com.sarahang.playback.core.PlaybackConnection
+import com.sarahang.playback.core.apis.AudioDataSource
+import com.sarahang.playback.core.apis.Logger
+import com.sarahang.playback.core.players.SarahangPlayer
+import com.sarahang.playback.core.timer.SleepTimer
 import kotlinx.coroutines.CoroutineScope
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -24,6 +30,13 @@ abstract class AndroidApplicationComponent(
     abstract val dispatchers: CoroutineDispatchers
     @ProcessLifetime
     abstract val processScope: CoroutineScope
+
+    abstract val player: SarahangPlayer
+    abstract val timer: SleepTimer
+    abstract val logger: Logger
+    abstract val mediaNotifications: MediaNotifications
+    abstract val audioDataSource: AudioDataSource
+    abstract val playbackConnection: PlaybackConnection
 
     companion object
 }

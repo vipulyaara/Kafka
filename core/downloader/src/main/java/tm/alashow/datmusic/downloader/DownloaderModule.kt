@@ -11,7 +11,6 @@ import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchNotificationManager
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
-import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -21,8 +20,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.minutes
 import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
-@Component
-@ApplicationScope
 interface DownloaderModule {
 
     @Provides

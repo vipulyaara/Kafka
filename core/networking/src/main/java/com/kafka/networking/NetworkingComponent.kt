@@ -15,15 +15,12 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import org.kafka.base.ApplicationScope
 import org.kafka.base.debug
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.seconds
 
-@Component
-@ApplicationScope
 interface NetworkingComponent {
 
     @Suppress("UNCHECKED_CAST")

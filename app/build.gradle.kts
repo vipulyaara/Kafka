@@ -204,4 +204,5 @@ dependencies {
 ksp {
 //    arg("me.tatarka.inject.generateCompanionExtensions", "true")
     arg("me.tatarka.inject.enableJavaxAnnotations", "true")
+//    arg("me.tatarka.inject.dumpGraph", "true")
 }
