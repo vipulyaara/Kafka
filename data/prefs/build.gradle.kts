@@ -1,5 +1,4 @@
 plugins {
-    id("com.android.library") // todo: use build-logic
     id("com.kafka.kotlin.multiplatform")
 }
 
@@ -13,15 +12,5 @@ kotlin {
                 api(libs.kinject)
             }
         }
-
-        val androidMain by getting {
-            dependencies {
-                api(libs.dataStore)
-            }
-        }
     }
-}
-
-android {
-    namespace = "com.kafka.data.prefs"
 }
