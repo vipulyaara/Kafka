@@ -14,7 +14,7 @@ import javax.inject.Inject
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
 @ApplicationScope
-class RemoteConfig @Inject constructor(private val json: Json) {
+actual class RemoteConfig @Inject constructor(private val json: Json) {
 
     private val remoteConfig by lazy {
         Firebase.remoteConfig.apply {
@@ -36,11 +36,11 @@ class RemoteConfig @Inject constructor(private val json: Json) {
         }
     }
 
-    fun get(key: String): String = remoteConfig.getString(key)
+    actual fun get(key: String): String = remoteConfig.getString(key)
 
-    fun getBoolean(key: String): Boolean = remoteConfig.getBoolean(key)
+    actual fun getBoolean(key: String): Boolean = remoteConfig.getBoolean(key)
 
-    fun getLong(key: String): Long = remoteConfig.getLong(key)
+    actual fun getLong(key: String): Long = remoteConfig.getLong(key)
 
     private fun optional(key: String): String? = get(key).let { it.ifBlank { null } }
 

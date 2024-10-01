@@ -1,23 +1,37 @@
-@Suppress("DSL_SCOPE_VIOLATION") // Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("com.android.library")
+    id("com.kafka.kotlin.multiplatform")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.cacheFixPlugin)
+}
+
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.base.domain)
+                implementation(libs.kotlin.serialization)
+            }
+        }
+
+        val jvmCommon by creating {
+            dependsOn(commonMain)
+        }
+
+        val jvmMain by getting {
+            dependsOn(jvmCommon)
+        }
+
+        val androidMain by getting {
+            dependsOn(jvmCommon)
+
+            dependencies {
+                implementation(project.dependencies.platform(libs.google.bom))
+                implementation(libs.google.remoteConfig)
+            }
+        }
+    }
 }
 
 android {
     namespace = "com.kafka.remote.config"
-}
-
-dependencies {
-    implementation(projects.base.domain)
-
-    implementation(libs.androidx.core)
-
-    implementation(libs.kotlin.serialization)
-
-    implementation(platform(libs.google.bom))
-    implementation(libs.google.remoteConfig)
 }
