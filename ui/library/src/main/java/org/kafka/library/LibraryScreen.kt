@@ -27,7 +27,6 @@ fun LibraryScreen(favoriteViewModel: FavoriteViewModel, downloadsViewModel: Down
             val pagerState = rememberPagerState(pageCount = { LibraryTab.entries.size })
 
             LaunchedEffect(pagerState) {
-                // Collect from the a snapshotFlow reading the currentPage
                 snapshotFlow { pagerState.currentPage }.collect { page ->
                     if (page == 1) {
                         downloadsViewModel.logDownloadPageOpen()
