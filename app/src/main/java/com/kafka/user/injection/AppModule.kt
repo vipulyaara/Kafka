@@ -21,7 +21,6 @@ import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
-import com.sarahang.playback.core.injection.PlayerModule
 import dev.gitlive.firebase.firestore.invoke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
