@@ -10,11 +10,6 @@ fun windowSizeClass() = currentWindowAdaptiveInfo().windowSizeClass
 @Composable
 fun windowWidthSizeClass() = windowSizeClass().windowWidthSizeClass
 
-fun WindowWidthSizeClass.isCompact() = this == WindowWidthSizeClass.COMPACT
-fun WindowWidthSizeClass.isNotCompact() = this != WindowWidthSizeClass.COMPACT
-fun WindowWidthSizeClass.isMedium() = this == WindowWidthSizeClass.MEDIUM
-fun WindowWidthSizeClass.isExpanded() = this == WindowWidthSizeClass.EXPANDED
-
 @Composable
 fun isCompactWidth() = windowWidthSizeClass().isCompact()
 
@@ -23,3 +18,8 @@ fun isMediumWidth() = windowWidthSizeClass().isMedium()
 
 @Composable
 fun isExpandedWidth() = windowWidthSizeClass().isExpanded()
+
+fun WindowWidthSizeClass.isCompact() = this == WindowWidthSizeClass.COMPACT
+fun WindowWidthSizeClass.isNotCompact() = this != WindowWidthSizeClass.COMPACT
+fun WindowWidthSizeClass.isMedium() = this == WindowWidthSizeClass.MEDIUM
+fun WindowWidthSizeClass.isExpanded() = this == WindowWidthSizeClass.EXPANDED

@@ -5,18 +5,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
+import org.kafka.common.adaptive.fullSpanItem
+import org.kafka.common.adaptive.fullSpanItems
+import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.image.Icons
 import org.kafka.common.plus
 import org.kafka.common.snackbar.UiMessage
@@ -82,25 +84,25 @@ private fun FavoriteItemList(
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isCompact = windowWidthSizeClass().isCompact()
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
 
-    LazyColumn(
+    LazyVerticalGrid(
+        modifier = modifier.fillMaxSize(),
+        columns = GridCells.Fixed(2),
         contentPadding = padding,
-        modifier = modifier.fillMaxSize()
     ) {
-        item { header() }
+        fullSpanItem { header() }
 
-        itemsIndexed(
-            items = favoriteItems,
-            key = { _, item -> item.itemId }
-        ) { _, item ->
-            Item(
-                item = item,
-                modifier = Modifier
-                    .clickable { openItemDetail(item.itemId) }
-                    .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
-            )
+        if (isCompact) {
+            fullSpanItems(items = favoriteItems, key = { item -> item.itemId }) { item ->
+                FavoriteItem(item = item, openItemDetail = openItemDetail)
+            }
+        } else {
+            items(items = favoriteItems, key = { item -> item.itemId }) { item ->
+                FavoriteItem(item = item, openItemDetail = openItemDetail)
+            }
         }
     }
 }
@@ -112,11 +114,14 @@ private fun FavoriteItemGrid(
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isCompact = windowWidthSizeClass().isCompact()
+    val columns = if (isCompact) 2 else 4
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
+
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
-        columns = GridCells.Fixed(LayoutType.entries.size),
+        columns = GridCells.Fixed(columns),
         contentPadding = padding
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -127,4 +132,14 @@ private fun FavoriteItemGrid(
             LibraryItem(item = it, openItemDetail = openItemDetail)
         }
     }
+}
+
+@Composable
+private fun FavoriteItem(item: Item, openItemDetail: (String) -> Unit) {
+    Item(
+        item = item,
+        modifier = Modifier
+            .clickable { openItemDetail(item.itemId) }
+            .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
+    )
 }
