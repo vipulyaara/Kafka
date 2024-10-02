@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,8 +22,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
+import org.kafka.common.adaptive.fullSpanItems
+import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
 import org.kafka.common.logging.LogCompositions
@@ -73,19 +78,21 @@ private fun Search(
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit,
 ) {
+    val isCompact = windowWidthSizeClass().isCompact()
     val density = LocalDensity.current
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
 
     if (!searchViewState.items.isNullOrEmpty()) {
-        LazyColumn(contentPadding = paddingValues) {
-            items(searchViewState.items) { item ->
-                Item(
-                    item = item,
-                    modifier = Modifier
-                        .clickable { openItemDetail(item.itemId) }
-                        .padding(Dimens.Gutter, Dimens.Spacing06)
-                )
+        LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = paddingValues) {
+            if (isCompact) {
+                fullSpanItems(searchViewState.items) { item ->
+                    SearchResultItem(item, openItemDetail)
+                }
+            } else {
+                items(searchViewState.items) { item ->
+                    SearchResultItem(item, openItemDetail)
+                }
             }
         }
     }
@@ -134,4 +141,14 @@ private fun Search(
             )
         }
     }
+}
+
+@Composable
+private fun SearchResultItem(item: Item, openItemDetail: (String) -> Unit) {
+    Item(
+        item = item,
+        modifier = Modifier
+            .clickable { openItemDetail(item.itemId) }
+            .padding(Dimens.Gutter, Dimens.Spacing06)
+    )
 }

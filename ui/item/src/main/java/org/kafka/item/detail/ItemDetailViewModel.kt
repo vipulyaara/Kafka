@@ -93,10 +93,8 @@ class ItemDetailViewModel @Inject constructor(
         observeDownloadByItemId.flow,
         isResumableAudio.flow,
         shouldUseOnlineReader.flow
-    ) {
-            itemDetail, itemsByCreator, isFavorite, isLoading,
-            downloadItem, isResumableAudio, useOnlineReader,
-        ->
+    ) { itemDetail, itemsByCreator, isFavorite, isLoading,
+        downloadItem, isResumableAudio, useOnlineReader ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,

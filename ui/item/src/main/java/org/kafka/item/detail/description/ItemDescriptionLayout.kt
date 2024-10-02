@@ -2,11 +2,9 @@ package org.kafka.item.detail.description
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -23,87 +22,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import com.kafka.data.entities.ItemDetail
-import org.kafka.common.adaptive.fullSpanItem
 import org.kafka.common.extensions.alignCenter
+import org.kafka.common.image.Icons
 import org.kafka.common.image.LoadImage
 import org.kafka.common.simpleClickable
 import org.kafka.common.test.testTagUi
-import org.kafka.item.detail.ItemDetailActionsColumn
-import org.kafka.item.detail.ItemDetailActionsRow
-import org.kafka.item.detail.ItemDetailViewState
+import org.kafka.item.R
+import org.kafka.ui.components.MessageBox
 import ui.common.theme.theme.Dimens
 
-fun LazyGridScope.itemDescriptionLayout(
-    isCompact: Boolean,
-    state: ItemDetailViewState,
-    goToCreator: (String?) -> Unit,
-    showDescription: (String) -> Unit,
-    onPrimaryAction: (String) -> Unit,
-    toggleFavorite: () -> Unit,
-    openFiles: (String) -> Unit,
-) {
-    if (isCompact) {
-        fullSpanItem {
-            Column {
-                ItemDescription(
-                    itemDetail = state.itemDetail!!,
-                    modifier = Modifier.fillMaxWidth(),
-                    goToCreator = goToCreator
-                )
-
-                @Suppress("KotlinConstantConditions")
-                DescriptionText(
-                    itemDetail = state.itemDetail,
-                    isCompact = isCompact,
-                    showDescription = showDescription
-                )
-
-                ItemDetailActionsRow(
-                    ctaText = state.ctaText.orEmpty(),
-                    onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
-                    isFavorite = state.isFavorite,
-                    toggleFavorite = toggleFavorite,
-                    showDownloads = state.showDownloads,
-                    openFiles = { openFiles(state.itemDetail.itemId) },
-                )
-            }
-        }
-    } else {
-        item {
-            ItemDescription(itemDetail = state.itemDetail!!, goToCreator = goToCreator)
-        }
-
-        item {
-            Column {
-                @Suppress("KotlinConstantConditions")
-                DescriptionText(
-                    itemDetail = state.itemDetail!!,
-                    isCompact = isCompact,
-                    showDescription = showDescription
-                )
-
-                ItemDetailActionsColumn(
-                    ctaText = state.ctaText.orEmpty(),
-                    onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
-                    isFavorite = state.isFavorite,
-                    toggleFavorite = toggleFavorite,
-                    showDownloads = state.showDownloads,
-                    openFiles = { openFiles(state.itemDetail.itemId) },
-                )
-            }
-        }
-    }
-}
-
 @Composable
-private fun DescriptionText(
+internal fun DescriptionText(
     itemDetail: ItemDetail,
     isCompact: Boolean,
+    modifier: Modifier = Modifier,
     showDescription: (String) -> Unit
 ) {
     DescriptionText(
         itemDetail = itemDetail,
-        modifier = Modifier
+        modifier = modifier
             .testTagUi("item_detail_description")
             .simpleClickable { showDescription(itemDetail.itemId) }
             .padding(Dimens.Spacing24),
@@ -114,7 +51,7 @@ private fun DescriptionText(
 }
 
 @Composable
-private fun ItemDescription(
+internal fun ItemDescription(
     itemDetail: ItemDetail,
     modifier: Modifier = Modifier,
     goToCreator: (String?) -> Unit,
@@ -147,7 +84,7 @@ private fun ItemDescription(
 }
 
 @Composable
-private fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
+internal fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
     val annotatedString = buildAnnotatedString {
         creators?.forEachIndexed { index, creator ->
             val color = if (index % 2 == 0) {
@@ -174,5 +111,27 @@ private fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
             .padding(horizontal = Dimens.Spacing24),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center)
+    )
+}
+
+
+@Composable
+internal fun AccessRestricted(
+    isAudio: Boolean,
+    borrowableBookMessage: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val message = if (isAudio) {
+        stringResource(R.string.audio_access_restricted_message)
+    } else {
+        borrowableBookMessage
+    }
+
+    MessageBox(
+        text = message,
+        trailingIcon = if (isAudio) null else Icons.ArrowForward,
+        modifier = modifier.padding(Dimens.Spacing24),
+        onClick = if (isAudio) null else onClick
     )
 }

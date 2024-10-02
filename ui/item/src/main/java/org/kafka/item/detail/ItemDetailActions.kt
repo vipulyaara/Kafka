@@ -44,13 +44,13 @@ fun ItemDetailActionsRow(
     showDownloads: Boolean = true,
     openFiles: () -> Unit,
 ) {
-    Box(modifier) {
+    Box(modifier = modifier) {
         Row(
             Modifier
                 .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
                 .align(Alignment.Center)
-                .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+                .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing12),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.weight(0.2f)) {
@@ -127,7 +127,7 @@ fun ItemDetailActionsColumn(
 private fun FavoriteIcon(
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
-    onClicked: () -> Unit,
+    onClicked: () -> Unit
 ) {
     val background by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
     val iconTint by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)

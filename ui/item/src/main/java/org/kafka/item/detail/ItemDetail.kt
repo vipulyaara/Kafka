@@ -4,13 +4,12 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,21 +38,20 @@ import org.kafka.common.adaptive.isCompact
 import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.image.Icons
 import org.kafka.common.simpleClickable
 import org.kafka.item.R
-import org.kafka.item.detail.description.itemDescriptionLayout
+import org.kafka.item.detail.description.AccessRestricted
+import org.kafka.item.detail.description.DescriptionText
+import org.kafka.item.detail.description.ItemDescription
 import org.kafka.item.fake.FakeItemData
 import org.kafka.item.preloadImages
 import org.kafka.navigation.LocalNavigator
 import org.kafka.ui.components.LabelMedium
-import org.kafka.ui.components.MessageBox
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.item.Item
 import org.kafka.ui.components.item.SubjectItem
 import org.kafka.ui.components.item.SummaryMessage
 import org.kafka.ui.components.progress.InfiniteProgressBar
-import org.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
@@ -88,7 +86,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
             )
         }) { padding ->
             ProvideScaffoldPadding(padding = padding) {
-                ItemDetail(state = state, viewModel = viewModel, lazyGridState = lazyGridState)
+                ItemDetail(state = state, viewModel = viewModel)
             }
         }
     }
@@ -99,7 +97,6 @@ private fun ItemDetail(
     state: ItemDetailViewState,
     viewModel: ItemDetailViewModel,
     modifier: Modifier = Modifier,
-    lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
     val context = LocalContext.current
 
@@ -117,7 +114,6 @@ private fun ItemDetail(
         openItemDetail = viewModel::openItemDetail,
         openSummary = viewModel::openSummary,
         modifier = modifier,
-        lazyGridState = lazyGridState
     )
 }
 
@@ -133,7 +129,6 @@ private fun ItemDetail(
     openItemDetail: (String, String) -> Unit,
     openSummary: (String) -> Unit,
     modifier: Modifier = Modifier,
-    lazyGridState: LazyGridState = rememberLazyGridState(),
 ) {
     val isCompact = windowWidthSizeClass().isCompact()
 
@@ -144,94 +139,138 @@ private fun ItemDetail(
         )
 
         AnimatedVisibilityFade(state.itemDetail != null) {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                state = lazyGridState,
-                contentPadding = scaffoldPadding(),
-                columns = GridCells.Fixed(2)
-            ) {
-                if (state.itemDetail != null) {
-                    itemDescriptionLayout(
-                        isCompact = isCompact,
-                        state = state,
-                        showDescription = openDescription,
-                        goToCreator = goToCreator,
-                        onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
-                        toggleFavorite = toggleFavorite,
-                        openFiles = { openFiles(state.itemDetail.itemId) }
-                    )
-                }
-
-                if (state.isSummaryEnabled) {
+            ItemDetailScaffold(
+                supportingPaneEnabled = state.isLoading || state.hasItemsByCreator,
+                mainPane = {
                     fullSpanItem {
-                        SummaryMessage(
-                            text = stringResource(R.string.or_read_a_summary),
-                            modifier = modifier.padding(
-                                vertical = Dimens.Spacing08, horizontal = Dimens.Spacing24
-                            ),
-                            onClick = { openSummary(state.itemDetail!!.itemId) },
+                        VerticalLayout(
+                            state = state,
+                            isCompact = isCompact,
+                            openDescription = openDescription,
+                            goToCreator = goToCreator,
+                            onPrimaryAction = onPrimaryAction,
+                            openFiles = openFiles,
+                            toggleFavorite = toggleFavorite,
+                            openSubject = openSubject,
+                            openSummary = openSummary
                         )
                     }
-                }
-
-                if (state.itemDetail!!.isAccessRestricted) {
-                    fullSpanItem {
-                        AccessRestricted(
-                            isAudio = state.itemDetail.isAudio,
-                            borrowableBookMessage = state.borrowableBookMessage
-                        ) { onPrimaryAction(state.itemDetail.itemId) }
+                },
+                supportingPane = {
+                    if (state.hasItemsByCreator) {
+                        itemsByCreator(
+                            state = state,
+                            goToCreator = goToCreator,
+                            openItemDetail = openItemDetail
+                        )
                     }
-                }
 
-                if (state.hasSubjects) {
                     fullSpanItem {
-                        FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
-                            state.itemDetail.immutableSubjects.forEach {
-                                SubjectItem(text = it,
-                                    modifier = Modifier.padding(Dimens.Spacing04),
-                                    onClicked = { openSubject(it) })
-                            }
+                        if (state.isLoading) {
+                            Delayed { InfiniteProgressBar() }
                         }
                     }
                 }
+            )
+        }
+    }
+}
 
-                if (state.hasItemsByCreator) {
-                    fullSpanItem {
-                        val text = buildAnnotatedString {
-                            append(stringResource(R.string.more_by))
-                            append(" ")
+private fun LazyGridScope.itemsByCreator(
+    state: ItemDetailViewState,
+    goToCreator: (String?) -> Unit,
+    openItemDetail: (String, String) -> Unit
+) {
+    fullSpanItem {
+        val text = buildAnnotatedString {
+            append(stringResource(R.string.more_by))
+            append(" ")
 
-                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                                append(state.itemDetail.creator)
-                            }
-                        }
+            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                append(state.itemDetail!!.creator)
+            }
+        }
 
-                        LabelMedium(text = text,
-                            modifier = Modifier
-                                .simpleClickable { goToCreator(state.itemDetail.creator) }
-                                .padding(Dimens.Gutter),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis)
-                    }
+        LabelMedium(text = text,
+            modifier = Modifier
+                .simpleClickable { goToCreator(state.itemDetail!!.creator) }
+                .padding(Dimens.Gutter),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
+    }
 
-                    if (isCompact) {
-                        fullSpanItems(state.itemsByCreator!!, key = { it.itemId }) { item ->
-                            ItemByCreator(item = item, openItemDetail = openItemDetail)
-                        }
-                    } else {
-                        items(
-                            state.itemsByCreator!!,
-                            key = { it.itemId }) { item ->
-                            ItemByCreator(item = item, openItemDetail = openItemDetail)
-                        }
-                    }
-                }
+    fullSpanItems(state.itemsByCreator!!, key = { it.itemId }) { item ->
+        ItemByCreator(item = item, openItemDetail = openItemDetail)
+    }
+}
 
-                if (state.isLoading) {
-                    fullSpanItem {
-                        Delayed(modifier = Modifier.animateItem()) {
-                            InfiniteProgressBar()
-                        }
+@Composable
+private fun VerticalLayout(
+    state: ItemDetailViewState,
+    isCompact: Boolean,
+    openDescription: (String) -> Unit,
+    goToCreator: (String?) -> Unit,
+    onPrimaryAction: (String) -> Unit,
+    openFiles: (String) -> Unit,
+    toggleFavorite: () -> Unit,
+    openSubject: (String) -> Unit,
+    openSummary: (String) -> Unit
+) {
+    if (state.itemDetail != null) {
+        Column {
+            ItemDescription(
+                itemDetail = state.itemDetail,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                goToCreator = goToCreator
+            )
+
+            DescriptionText(
+                itemDetail = state.itemDetail,
+                isCompact = isCompact,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                showDescription = { openDescription(state.itemDetail.itemId) }
+            )
+
+            ItemDetailActionsRow(
+                ctaText = state.ctaText.orEmpty(),
+                onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
+                isFavorite = state.isFavorite,
+                toggleFavorite = toggleFavorite,
+                showDownloads = state.showDownloads,
+                openFiles = { openFiles(state.itemDetail.itemId) },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
+
+            if (state.isSummaryEnabled) {
+                SummaryMessage(
+                    text = stringResource(R.string.or_read_a_summary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Dimens.Spacing08, horizontal = Dimens.Spacing24),
+                    onClick = { openSummary(state.itemDetail.itemId) },
+                )
+            }
+
+            if (state.itemDetail.isAccessRestricted) {
+                AccessRestricted(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    isAudio = state.itemDetail.isAudio,
+                    borrowableBookMessage = state.borrowableBookMessage,
+                    onClick = { onPrimaryAction(state.itemDetail.itemId) }
+                )
+            }
+
+            if (state.hasSubjects) {
+                FlowRow(modifier = Modifier.padding(Dimens.Gutter)) {
+                    state.itemDetail.immutableSubjects.forEach {
+                        SubjectItem(text = it,
+                            modifier = Modifier.padding(Dimens.Spacing04),
+                            onClicked = { openSubject(it) })
                     }
                 }
             }
@@ -248,22 +287,6 @@ private fun ItemByCreator(
         modifier = Modifier
             .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
             .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
-    )
-}
-
-@Composable
-private fun AccessRestricted(isAudio: Boolean, borrowableBookMessage: String, onClick: () -> Unit) {
-    val message = if (isAudio) {
-        stringResource(R.string.audio_access_restricted_message)
-    } else {
-        borrowableBookMessage
-    }
-
-    MessageBox(
-        text = message,
-        trailingIcon = if (isAudio) null else Icons.ArrowForward,
-        modifier = Modifier.padding(Dimens.Spacing24),
-        onClick = if (isAudio) null else onClick
     )
 }
 
