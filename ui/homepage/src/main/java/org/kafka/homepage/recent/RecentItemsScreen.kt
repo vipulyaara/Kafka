@@ -84,7 +84,9 @@ private fun RecentItems(
         modifier = modifier.fillMaxSize()
     ) {
         items(items = items, key = { item -> item.itemId }) { item ->
-            SwipeToDelete(onDismiss = { removeRecentItem(item.fileId) }) {
+            SwipeToDelete(
+                modifier = Modifier.animateItem(),
+                onDismiss = { removeRecentItem(item.fileId) }) {
                 Item(
                     title = item.title,
                     creator = item.creator,
