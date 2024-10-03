@@ -72,9 +72,9 @@ class HomepageRepository @Inject constructor(
             .map { it.substring(1) }.toSet()
 
         for (userTopic in userTopics) {
-            if (excludedTopics.any { userTopic.contains(it) }) {
+            if (excludedTopics.any { userTopic.contains(it, true) }) {
                 return false
-            } else if (includedTopics.any { userTopic.contains(it) }) {
+            } else if (includedTopics.any { userTopic.contains(it, true) }) {
                 return true
             }
         }

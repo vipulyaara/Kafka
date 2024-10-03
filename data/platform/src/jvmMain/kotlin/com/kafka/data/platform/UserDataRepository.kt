@@ -1,7 +1,7 @@
 package com.kafka.data.platform
 
 actual class UserDataRepository {
-    actual fun getUserData(): UserData {
+    actual suspend fun getUserData(): UserData {
         error("Not implemented yet - KMP")
     }
 }
