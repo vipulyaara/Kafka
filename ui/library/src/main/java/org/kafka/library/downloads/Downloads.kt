@@ -59,7 +59,11 @@ private fun DownloadsList(
             items = items,
             key = { _, item -> item.downloadInfo.id }
         ) { _, item ->
-            DownloadItem(item = item, openItemDetail = openItemDetail)
+            DownloadItem(
+                item = item,
+                modifier = Modifier.animateItem(),
+                openItemDetail = openItemDetail
+            )
         }
     }
 }
