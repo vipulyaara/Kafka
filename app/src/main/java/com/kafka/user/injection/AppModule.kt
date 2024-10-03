@@ -17,7 +17,6 @@ import com.kafka.user.BuildConfig
 import com.kafka.user.initializer.AudioProgressInitializer
 import com.kafka.user.initializer.FirebaseInitializer
 import com.kafka.user.initializer.LoggerInitializer
-import com.kafka.user.initializer.ReaderProgressInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
@@ -104,11 +103,6 @@ interface AppModule :
     @ApplicationScope
     @IntoSet
     fun provideLoggerInitializer(bind: LoggerInitializer): AppInitializer = bind
-
-    @Provides
-    @ApplicationScope
-    @IntoSet
-    fun provideReaderProgressInitializer(bind: ReaderProgressInitializer): AppInitializer = bind
 
     @Provides
     @ApplicationScope

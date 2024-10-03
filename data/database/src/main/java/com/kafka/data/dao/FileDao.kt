@@ -41,4 +41,7 @@ abstract class FileDao : EntityDao<File> {
     @Transaction
     @Query("SELECT * FROM file WHERE name LIKE :title ORDER BY name")
     abstract fun entriesByTitle(title: String): Flow<List<File>>
+
+    @Query("update file set localUri = :localUri where fileId = :fileId")
+    abstract suspend fun updateLocalUri(fileId: String, localUri: String)
 }

@@ -27,13 +27,13 @@ import org.kafka.domain.observers.ObserveFiles
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader
-import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedItems
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedFiles
 import javax.inject.Inject
 
 class FilesViewModel @Inject constructor(
     observeFiles: ObserveFiles,
     @Assisted savedStateHandle: SavedStateHandle,
-    observeDownloadedItems: ObserveDownloadedItems,
+    observeDownloadedFiles: ObserveDownloadedFiles,
     private val addRecentItem: AddRecentItem,
     private val playbackConnection: PlaybackConnection,
     private val downloader: Downloader,
@@ -47,7 +47,7 @@ class FilesViewModel @Inject constructor(
 
     val state: StateFlow<FilesViewState> = combine(
         observeFiles.flow,
-        observeDownloadedItems.flow,
+        observeDownloadedFiles.flow,
         snapshotFlow { selectedExtension },
         loadingState.observable
     ) { files, downloads, selectedExtension, isLoading ->
@@ -64,7 +64,7 @@ class FilesViewModel @Inject constructor(
 
     init {
         observeFiles(ObserveFiles.Param(itemId))
-        observeDownloadedItems(Unit)
+        observeDownloadedFiles(Unit)
     }
 
     fun onFileClicked(file: File) {
@@ -99,5 +99,6 @@ fun File.asAudio() = Audio(
     albumId = itemId,
     duration = duration,
     playbackUrl = playbackUrl.orEmpty(),
+    localUri = localUri,
     coverImage = coverImage
 )

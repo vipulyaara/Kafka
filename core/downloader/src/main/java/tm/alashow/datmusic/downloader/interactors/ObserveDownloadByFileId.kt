@@ -10,12 +10,12 @@ import javax.inject.Inject
 
 class ObserveDownloadByFileId @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val observeDownloadedItems: ObserveDownloadedItems,
+    private val observeDownloadedFiles: ObserveDownloadedFiles,
 ) : SubjectInteractor<String, ItemWithDownload?>() {
 
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override fun createObservable(fileId: String): Flow<ItemWithDownload?> {
-        return observeDownloadedItems.createObservable(Unit).map { downloadItems ->
+        return observeDownloadedFiles.createObservable(Unit).map { downloadItems ->
             downloadItems.firstOrNull { it.file.fileId == fileId }
         }.flowOn(dispatchers.io)
     }

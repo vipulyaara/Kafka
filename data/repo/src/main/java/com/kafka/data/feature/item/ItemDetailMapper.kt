@@ -71,7 +71,7 @@ class ItemDetailMapper @Inject constructor(
                 file = file,
                 item = item,
                 prefix = from.dirPrefix(),
-                localUri = fileDao.getOrNull(file.name)?.localUri,
+                localUri = fileDao.getOrNull(file.fileId)?.localUri,
             )
         }.filter { supportedExtensions.contains(it.extension) }
 
