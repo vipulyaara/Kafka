@@ -34,6 +34,7 @@ class DownloadInitializer @Inject constructor(
     private val downloadRequestsDao: DownloadRequestsDao,
     private val recentTextItemMapper: RecentTextItemMapper,
     private val recentTextDao: RecentTextDao,
+    private val downloadRetryManager: DownloadRetryManager
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
@@ -50,6 +51,10 @@ class DownloadInitializer @Inject constructor(
                     Status.COMPLETED -> {
                         addRecentItem(it.download)
                         saveLocalUri(it.download)
+                    }
+
+                    Status.FAILED -> {
+                        downloadRetryManager.retryFailedDownload(it.download)
                     }
 
                     else -> {

@@ -19,66 +19,63 @@ import org.kafka.base.ProcessLifetime
 import javax.inject.Inject
 
 /**
-* Repository to reliably provide user's country.
-* The logic is as follows
-*
-* - Get country from [TelephonyManager] if it's available (e.g. the device has a sim installed)
-* - If it's empty, get the country from local storage. Also update the local storage asynchronously via IP lookup API
-* - If it's empty, return the country by IP lookup using API and save it in local storage
-*
-* Additionally, the country is saved in local storage using IP lookup the first time app is launched as we might need it later when it's no longer available through other means
-* */
+ * Repository to reliably provide user's country.
+ * The logic is as follows
+ *
+ * - Get country from [TelephonyManager] if it's available (e.g. the device has a sim installed)
+ * - If null, get the country from local storage. Also update the local storage asynchronously via IP lookup API
+ * - If null, return the country by IP lookup using API and save it in local storage
+ *
+ * Additionally, the country is saved in local storage using IP lookup the first time app is launched as we might need it later when it's no longer available through other means
+ * */
 @ApplicationScope
 class UserCountryRepository @Inject constructor(
     private val preferencesStore: PreferencesStore,
     private val httpClient: HttpClient,
     @ProcessLifetime private val processScope: CoroutineScope,
-    dispatchers: CoroutineDispatchers,
+    private val dispatchers: CoroutineDispatchers,
     private val context: Application
 ) {
     private val countryPreferenceKey = stringPreferencesKey("user_country")
 
     init {
         processScope.launch(dispatchers.io) {
-            // Update user country for the first time
-            if (getStoredUserCountry().isBlank()) {
+            if (getStoredUserCountry() == null) {
                 fetchAndSaveUserCountry()
             }
         }
     }
 
     suspend fun getUserCountry(): String? {
+        return getTelephonyCountry()
+            ?: getStoredUserCountry()?.also { updateCountryAsync() }
+            ?: fetchAndSaveUserCountry()
+                ?.takeIf { it.isNotBlank() }?.uppercase()
+    }
+
+    private fun getTelephonyCountry(): String? {
         val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE)
                 as TelephonyManager
 
-        return telephonyManager.networkCountryIso
-            .ifEmpty {
-                // Return saved country if available
-                getStoredUserCountry()
-            }.run {
-                if (isNotBlank()) {
-                    // Return country and update asynchronously in local storage
-                    processScope.launch { fetchAndSaveUserCountry() }
-                    this
-                } else {
-                    // Fetch user country synchronously
-                    fetchAndSaveUserCountry()
-                }
-            }
-            .uppercase()
-            .takeIf { it.isNotBlank() }
+        return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
     }
 
-    private suspend fun fetchAndSaveUserCountry(): String {
+    private fun updateCountryAsync() {
+        processScope.launch(dispatchers.io) { fetchAndSaveUserCountry() }
+    }
+
+    private suspend fun fetchAndSaveUserCountry(): String? {
         val country = getUserCountryResponse().getOrNull()?.country
         if (country != null) {
             preferencesStore.save(countryPreferenceKey, country)
         }
-        return country.orEmpty()
+        return country?.takeIf { it.isNotBlank() }
     }
 
-    private suspend fun getStoredUserCountry(): String {
-        return preferencesStore.get(countryPreferenceKey, "").first()
+    private suspend fun getStoredUserCountry(): String? {
+        return preferencesStore.get(countryPreferenceKey, "")
+            .first()
+            .takeIf { it.isNotBlank() }
     }
 
     private suspend fun getUserCountryResponse(): Result<UserCountryResponse> {
