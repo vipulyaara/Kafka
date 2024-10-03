@@ -22,7 +22,7 @@ import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.common.widgets.IconResource
 import org.kafka.item.R
-import org.kafka.ui.components.file.DownloadStatusIcons
+import org.kafka.ui.components.item.DownloadStatusIcons
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens

@@ -26,8 +26,8 @@ import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.coroutines.launch
 import org.kafka.common.image.Icons
-import org.kafka.ui.components.file.DownloadStatusIcons
 import org.kafka.ui.components.item.CoverImage
+import org.kafka.ui.components.item.DownloadStatusIcons
 import org.kafka.ui.components.item.ItemMediaType
 import org.kafka.ui.components.item.ItemTitleMedium
 import org.kafka.ui.components.material.SwipeToDelete
@@ -46,7 +46,7 @@ internal fun DownloadItem(
         coroutineScope.launch { downloader.delete(item.downloadInfo.id) }
     }
 
-    SwipeToDelete(onDismiss = ::deleteDownload) {
+    SwipeToDelete(modifier = modifier, onDismiss = ::deleteDownload) {
         DownloadItemInternal(item = item, openItemDetail = openItemDetail)
     }
 }

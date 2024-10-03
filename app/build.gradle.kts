@@ -174,6 +174,8 @@ dependencies {
     implementation(libs.google.performance)
     implementation(libs.google.review)
     implementation(libs.google.appupdate)
+    implementation(libs.haze)
+    implementation(libs.haze.materials)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
     implementation(libs.kermit.crashlytics)

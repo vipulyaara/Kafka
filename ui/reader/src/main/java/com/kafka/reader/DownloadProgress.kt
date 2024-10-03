@@ -30,7 +30,7 @@ import org.kafka.common.simpleClickable
 import org.kafka.common.widgets.IconResource
 import org.kafka.reader.R
 import org.kafka.ui.components.MessageBox
-import org.kafka.ui.components.file.DownloadStatusIcons
+import org.kafka.ui.components.item.DownloadStatusIcons
 import org.kafka.ui.components.progress.DownloadAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens

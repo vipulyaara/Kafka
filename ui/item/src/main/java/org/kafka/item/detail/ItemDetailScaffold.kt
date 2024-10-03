@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.kafka.common.adaptive.isCompact
-import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.ui.components.scaffoldPadding
 
 @Composable
@@ -17,8 +15,6 @@ fun ItemDetailScaffold(
     mainPane: LazyGridScope.() -> Unit,
     supportingPane: LazyGridScope.() -> Unit
 ) {
-    val isCompact = windowWidthSizeClass().isCompact()
-
     Row {
         LazyVerticalGrid(
             modifier = Modifier
@@ -29,12 +25,12 @@ fun ItemDetailScaffold(
         ) {
             mainPane()
 
-            if (isCompact) {
+            if (!supportingPaneEnabled) {
                 supportingPane()
             }
         }
 
-        if (!isCompact && supportingPaneEnabled) {
+        if (supportingPaneEnabled) {
             LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxHeight()

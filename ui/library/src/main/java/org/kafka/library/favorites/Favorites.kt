@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import org.kafka.common.adaptive.fullSpanItem
 import org.kafka.common.adaptive.fullSpanItems
-import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.useWideLayout
 import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.image.Icons
 import org.kafka.common.plus
@@ -84,7 +84,7 @@ private fun FavoriteItemList(
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isCompact = windowWidthSizeClass().isCompact()
+    val useWideLayout = windowWidthSizeClass().useWideLayout()
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
 
@@ -95,12 +95,12 @@ private fun FavoriteItemList(
     ) {
         fullSpanItem { header() }
 
-        if (isCompact) {
-            fullSpanItems(items = favoriteItems, key = { item -> item.itemId }) { item ->
+        if (useWideLayout) {
+            items(items = favoriteItems, key = { item -> item.itemId }) { item ->
                 FavoriteItem(item = item, openItemDetail = openItemDetail)
             }
         } else {
-            items(items = favoriteItems, key = { item -> item.itemId }) { item ->
+            fullSpanItems(items = favoriteItems, key = { item -> item.itemId }) { item ->
                 FavoriteItem(item = item, openItemDetail = openItemDetail)
             }
         }
@@ -114,8 +114,7 @@ private fun FavoriteItemGrid(
     header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isCompact = windowWidthSizeClass().isCompact()
-    val columns = if (isCompact) 2 else 4
+    val columns = if (windowWidthSizeClass().useWideLayout()) 4 else 2
     val padding =
         PaddingValues(Dimens.Spacing08) + PaddingValues(bottom = bottomScaffoldPadding())
 

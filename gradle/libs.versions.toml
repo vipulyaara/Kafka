@@ -135,6 +135,7 @@ firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = 
 firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
 javax-inject = "javax.inject:javax.inject:1"
 

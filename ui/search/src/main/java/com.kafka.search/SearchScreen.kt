@@ -26,7 +26,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import org.kafka.common.adaptive.fullSpanItems
-import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.useWideLayout
 import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.extensions.AnimatedVisibilityFade
 import org.kafka.common.extensions.rememberMutableState
@@ -78,19 +78,19 @@ private fun Search(
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit,
 ) {
-    val isCompact = windowWidthSizeClass().isCompact()
+    val useWideLayout = windowWidthSizeClass().useWideLayout()
     val density = LocalDensity.current
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
 
     if (!searchViewState.items.isNullOrEmpty()) {
         LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = paddingValues) {
-            if (isCompact) {
-                fullSpanItems(searchViewState.items) { item ->
+            if (useWideLayout) {
+                items(searchViewState.items) { item ->
                     SearchResultItem(item, openItemDetail)
                 }
             } else {
-                items(searchViewState.items) { item ->
+                fullSpanItems(searchViewState.items) { item ->
                     SearchResultItem(item, openItemDetail)
                 }
             }

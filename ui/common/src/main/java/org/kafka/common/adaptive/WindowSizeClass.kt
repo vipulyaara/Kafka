@@ -23,3 +23,4 @@ fun WindowWidthSizeClass.isCompact() = this == WindowWidthSizeClass.COMPACT
 fun WindowWidthSizeClass.isNotCompact() = this != WindowWidthSizeClass.COMPACT
 fun WindowWidthSizeClass.isMedium() = this == WindowWidthSizeClass.MEDIUM
 fun WindowWidthSizeClass.isExpanded() = this == WindowWidthSizeClass.EXPANDED
+fun WindowWidthSizeClass.useWideLayout() = isExpanded()

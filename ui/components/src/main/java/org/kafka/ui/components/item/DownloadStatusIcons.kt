@@ -1,4 +1,4 @@
-package org.kafka.ui.components.file
+package org.kafka.ui.components.item
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box

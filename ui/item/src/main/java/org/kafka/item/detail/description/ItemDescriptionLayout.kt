@@ -34,7 +34,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun DescriptionText(
     itemDetail: ItemDetail,
-    isCompact: Boolean,
+    useWideLayout: Boolean,
     modifier: Modifier = Modifier,
     showDescription: (String) -> Unit
 ) {
@@ -45,7 +45,7 @@ internal fun DescriptionText(
             .simpleClickable { showDescription(itemDetail.itemId) }
             .padding(Dimens.Spacing24),
         style = MaterialTheme.typography.bodySmall.alignCenter(),
-        maxLines = if (isCompact) 3 else 6,
+        maxLines = if (useWideLayout) 6 else 3,
         overflow = TextOverflow.Ellipsis,
     )
 }

@@ -18,6 +18,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.kafka.data.prefs.Theme
+import com.kafka.user.home.bottombar.HomeNavigation
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
@@ -50,7 +51,7 @@ fun MainScreen(
     downloader: Downloader,
     snackbarManager: SnackbarManager,
     viewModelFactory: () -> MainViewModel,
-    home: Home,
+    home: HomeNavigation,
 ) {
     val mainViewModel = viewModel { viewModelFactory() }
     val context = LocalContext.current

@@ -32,7 +32,7 @@ import org.kafka.common.widgets.IconButton
 import org.kafka.reader.R.string
 import org.kafka.ui.components.ProvideScaffoldPadding
 import org.kafka.ui.components.R
-import org.kafka.ui.components.file.DownloadStatusIcons
+import org.kafka.ui.components.item.DownloadStatusIcons
 import org.kafka.ui.components.material.AlertDialog
 import org.kafka.ui.components.material.AlertDialogAction
 import org.kafka.ui.components.material.CloseButton

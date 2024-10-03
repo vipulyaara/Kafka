@@ -26,6 +26,8 @@ dependencies {
     implementation libs.compose.ui.tooling
     implementation libs.compose.ui.ui
     implementation libs.compose.ui.util
+    implementation libs.haze
+    implementation libs.haze.materials
     implementation libs.kotlin.serialization
     implementation libs.lottie.compose
     implementation libs.lottie.core

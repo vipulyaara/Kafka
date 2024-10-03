@@ -34,7 +34,7 @@ import me.tatarka.inject.annotations.Inject
 import org.kafka.base.debug
 import org.kafka.common.adaptive.fullSpanItem
 import org.kafka.common.adaptive.fullSpanItems
-import org.kafka.common.adaptive.isCompact
+import org.kafka.common.adaptive.useWideLayout
 import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.animation.Delayed
 import org.kafka.common.extensions.AnimatedVisibilityFade
@@ -130,7 +130,7 @@ private fun ItemDetail(
     openSummary: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isCompact = windowWidthSizeClass().isCompact()
+    val useWideLayout = windowWidthSizeClass().useWideLayout()
 
     Box(modifier.fillMaxSize()) {
         InfiniteProgressBar(
@@ -140,12 +140,12 @@ private fun ItemDetail(
 
         AnimatedVisibilityFade(state.itemDetail != null) {
             ItemDetailScaffold(
-                supportingPaneEnabled = state.isLoading || state.hasItemsByCreator,
+                supportingPaneEnabled = useWideLayout && (state.isLoading || state.hasItemsByCreator),
                 mainPane = {
                     fullSpanItem {
                         VerticalLayout(
                             state = state,
-                            isCompact = isCompact,
+                            useWideLayout = useWideLayout,
                             openDescription = openDescription,
                             goToCreator = goToCreator,
                             onPrimaryAction = onPrimaryAction,
@@ -207,7 +207,7 @@ private fun LazyGridScope.itemsByCreator(
 @Composable
 private fun VerticalLayout(
     state: ItemDetailViewState,
-    isCompact: Boolean,
+    useWideLayout: Boolean,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
@@ -228,7 +228,7 @@ private fun VerticalLayout(
 
             DescriptionText(
                 itemDetail = state.itemDetail,
-                isCompact = isCompact,
+                useWideLayout = useWideLayout,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
