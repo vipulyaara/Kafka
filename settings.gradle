@@ -8,6 +8,10 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 // https://docs.gradle.org/7.6/userguide/configuration_cache.html#config_cache:stable
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
