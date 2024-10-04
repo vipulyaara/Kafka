@@ -8,8 +8,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class HandleGoogleCredentials @Inject constructor(

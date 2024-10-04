@@ -5,8 +5,8 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.ItemDetailDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.SubjectInteractor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 /**

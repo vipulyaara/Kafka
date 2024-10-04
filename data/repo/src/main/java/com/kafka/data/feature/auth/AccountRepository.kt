@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.tasks.await
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 /**

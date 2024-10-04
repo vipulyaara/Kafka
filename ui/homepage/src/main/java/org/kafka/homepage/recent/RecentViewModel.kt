@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.domain.interactors.recent.RemoveAllRecentItems
 import org.kafka.domain.interactors.recent.RemoveRecentItem
 import org.kafka.domain.observers.ObserveRecentItems

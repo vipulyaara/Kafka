@@ -6,9 +6,9 @@ import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.SubjectInteractor
-import org.kafka.base.errorLog
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
+import com.kafka.base.errorLog
 import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import tm.alashow.datmusic.downloader.observers.ObserveDownloads
 import javax.inject.Inject

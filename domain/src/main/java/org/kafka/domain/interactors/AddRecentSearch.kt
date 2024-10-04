@@ -5,8 +5,8 @@ import com.kafka.data.entities.RecentSearch
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class AddRecentSearch @Inject constructor(

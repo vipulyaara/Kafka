@@ -5,9 +5,9 @@ import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.Interactor
-import org.kafka.base.extensions.mapAsync
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
+import com.kafka.base.extensions.mapAsync
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 

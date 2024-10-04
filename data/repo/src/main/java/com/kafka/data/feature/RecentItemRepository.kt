@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ktx.snapshots
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.map
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope

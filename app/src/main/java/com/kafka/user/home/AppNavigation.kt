@@ -46,7 +46,7 @@ import com.sarahang.playback.ui.sheet.PlaybackSheet
 import com.sarahang.playback.ui.sheet.ResizablePlaybackSheetLayoutViewModel
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.kafka.base.debug
+import com.kafka.base.debug
 import org.kafka.common.extensions.CollectEvent
 import org.kafka.homepage.Homepage
 import org.kafka.homepage.recent.RecentItemsScreen

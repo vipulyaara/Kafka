@@ -2,7 +2,7 @@ package org.kafka.analytics
 
 import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
 import me.tatarka.inject.annotations.Inject
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 
 @ApplicationScope
 class EventRepository @Inject constructor() {

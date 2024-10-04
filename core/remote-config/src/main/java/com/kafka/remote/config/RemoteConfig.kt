@@ -6,9 +6,9 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import org.kafka.base.ApplicationScope
-import org.kafka.base.debug
-import org.kafka.base.errorLog
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
+import com.kafka.base.errorLog
 import javax.inject.Inject
 
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L

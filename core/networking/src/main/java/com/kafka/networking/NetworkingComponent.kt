@@ -16,8 +16,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import me.tatarka.inject.annotations.Provides
-import org.kafka.base.ApplicationScope
-import org.kafka.base.debug
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.seconds
 

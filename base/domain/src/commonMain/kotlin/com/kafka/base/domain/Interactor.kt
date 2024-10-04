@@ -1,4 +1,4 @@
-package org.kafka.base.domain
+package com.kafka.base.domain
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.ExperimentalCoroutinesApi

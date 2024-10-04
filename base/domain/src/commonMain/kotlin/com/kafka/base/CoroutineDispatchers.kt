@@ -1,4 +1,4 @@
-package org.kafka.base
+package com.kafka.base
 
 import kotlinx.coroutines.CoroutineDispatcher
 

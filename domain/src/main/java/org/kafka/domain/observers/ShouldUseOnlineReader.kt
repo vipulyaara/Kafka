@@ -7,9 +7,9 @@ import com.kafka.remote.config.isOnlineReaderEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.SubjectInteractor
-import org.kafka.domain.observers.library.ObserveDownloadByItemId
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByItemId
 import javax.inject.Inject
 
 class ShouldUseOnlineReader @Inject constructor(

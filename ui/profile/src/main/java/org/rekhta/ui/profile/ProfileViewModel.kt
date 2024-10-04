@@ -25,10 +25,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.combine
-import org.kafka.base.domain.InvokeSuccess
-import org.kafka.base.errorLog
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.combine
+import com.kafka.base.domain.InvokeSuccess
+import com.kafka.base.errorLog
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager

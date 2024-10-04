@@ -27,7 +27,7 @@ import com.sarahang.playback.ui.color.LocalColorExtractor
 import kotlinx.coroutines.flow.collectLatest
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.kafka.base.debug
+import com.kafka.base.debug
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.Navigator

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import org.kafka.common.R
 import javax.inject.Inject
 

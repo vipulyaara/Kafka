@@ -3,8 +3,8 @@ package com.kafka.data.feature.item
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.dao.ItemDetailDao
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.debug
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
 import javax.inject.Inject
 
 class ItemDetailDataSource @Inject constructor(

@@ -14,8 +14,8 @@ import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import me.tatarka.inject.annotations.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import org.kafka.base.ApplicationScope
-import org.kafka.base.Named
+import com.kafka.base.ApplicationScope
+import com.kafka.base.Named
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.minutes
 import com.tonyodev.fetch2core.Downloader as FetchDownloader

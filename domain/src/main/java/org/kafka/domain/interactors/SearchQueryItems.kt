@@ -5,8 +5,8 @@ import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.ResultInteractor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.ResultInteractor
 import org.kafka.domain.interactors.query.BuildSearchQuery
 import javax.inject.Inject
 

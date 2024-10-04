@@ -2,7 +2,7 @@ package com.kafka.reader.online
 
 import android.webkit.WebView
 import com.google.accompanist.web.AccompanistWebViewClient
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 class ReaderWebViewClient(
     private val updateUrl: (String) -> Unit

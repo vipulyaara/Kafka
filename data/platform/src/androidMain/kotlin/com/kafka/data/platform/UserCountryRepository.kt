@@ -13,9 +13,9 @@ import io.ktor.client.request.url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.kafka.base.ApplicationScope
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
 import javax.inject.Inject
 
 /**

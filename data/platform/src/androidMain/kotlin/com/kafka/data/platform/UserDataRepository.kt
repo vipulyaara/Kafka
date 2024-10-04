@@ -1,7 +1,7 @@
 package com.kafka.data.platform
 
 import com.google.firebase.auth.FirebaseAuth
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope

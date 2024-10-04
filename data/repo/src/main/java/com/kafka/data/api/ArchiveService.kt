@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import me.tatarka.inject.annotations.Inject
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 
 /**
  * @author Vipul Kumar; dated 29/11/18.

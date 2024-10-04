@@ -5,7 +5,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.collections.immutable.ImmutableList
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 @Immutable
 data class ItemDetailViewState(

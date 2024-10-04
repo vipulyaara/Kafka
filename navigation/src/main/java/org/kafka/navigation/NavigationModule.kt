@@ -1,7 +1,7 @@
 package org.kafka.navigation
 
 import me.tatarka.inject.annotations.Provides
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 
 interface NavigationModule {
 

@@ -22,10 +22,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.ApplicationScope
-import org.kafka.base.debug
-import org.kafka.base.errorLog
-import org.kafka.base.i
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
+import com.kafka.base.errorLog
+import com.kafka.base.i
 import org.kafka.common.snackbar.SnackbarManager
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed

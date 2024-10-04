@@ -8,7 +8,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model._mediaTypeText
 import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
-import org.kafka.base.debug
+import com.kafka.base.debug
 import javax.inject.Inject
 
 class ItemDetailMapper @Inject constructor(

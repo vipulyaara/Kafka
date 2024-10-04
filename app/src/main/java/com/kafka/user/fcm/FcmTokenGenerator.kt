@@ -2,7 +2,7 @@ package com.kafka.user.fcm
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 object FcmTokenGenerator {
     fun logToken() {

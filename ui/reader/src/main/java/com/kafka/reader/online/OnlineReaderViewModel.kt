@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.debug
-import org.kafka.base.domain.onException
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.debug
+import com.kafka.base.domain.onException
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.asUiMessage
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager

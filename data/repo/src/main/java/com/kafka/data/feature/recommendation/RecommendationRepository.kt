@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.tasks.await
-import org.kafka.base.ApplicationScope
-import org.kafka.base.CoroutineDispatchers
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
 import javax.inject.Inject
 
 @ApplicationScope

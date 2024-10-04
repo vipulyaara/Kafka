@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import org.kafka.base.debug
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.debug
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.domain.observers.ObserveRecentTextItem

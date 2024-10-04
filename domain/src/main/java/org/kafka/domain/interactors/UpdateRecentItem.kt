@@ -3,7 +3,7 @@ package org.kafka.domain.interactors
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.tasks.await
-import org.kafka.base.domain.Interactor
+import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateRecentItem @Inject constructor(

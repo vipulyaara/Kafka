@@ -7,9 +7,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdToken
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.SecretsProvider
-import org.kafka.base.domain.ResultInteractor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.SecretsProvider
+import com.kafka.base.domain.ResultInteractor
 import javax.inject.Inject
 
 class SignInWithGoogle @Inject constructor(

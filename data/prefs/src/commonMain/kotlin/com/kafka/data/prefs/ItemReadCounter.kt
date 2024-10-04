@@ -2,8 +2,8 @@ package com.kafka.data.prefs
 
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.CoroutineScope
-import org.kafka.base.ApplicationScope
-import org.kafka.base.ProcessLifetime
+import com.kafka.base.ApplicationScope
+import com.kafka.base.ProcessLifetime
 import javax.inject.Inject
 
 @ApplicationScope

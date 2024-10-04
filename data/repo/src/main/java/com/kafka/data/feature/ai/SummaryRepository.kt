@@ -3,7 +3,7 @@ package com.kafka.data.feature.ai
 import com.kafka.data.entities.Summary
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.map
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope

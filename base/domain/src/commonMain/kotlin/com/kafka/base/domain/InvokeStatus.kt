@@ -1,4 +1,4 @@
-package org.kafka.base.domain
+package com.kafka.base.domain
 
 sealed class InvokeStatus
 data object InvokeStarted : InvokeStatus()

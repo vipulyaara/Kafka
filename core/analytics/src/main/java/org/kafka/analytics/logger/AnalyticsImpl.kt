@@ -14,8 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.kafka.analytics.EventRepository
-import org.kafka.base.ProcessLifetime
-import org.kafka.base.debug
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.debug
 import javax.inject.Inject
 
 class AnalyticsImpl @Inject constructor(

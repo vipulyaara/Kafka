@@ -26,8 +26,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.combine
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.combine
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.shareText

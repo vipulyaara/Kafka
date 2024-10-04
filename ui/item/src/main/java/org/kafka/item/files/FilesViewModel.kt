@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.domain.interactors.recent.AddRecentItem
 import org.kafka.domain.observers.ObserveFiles

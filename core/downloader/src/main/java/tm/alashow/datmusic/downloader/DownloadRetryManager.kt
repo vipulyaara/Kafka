@@ -2,8 +2,8 @@ package tm.alashow.datmusic.downloader
 
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Fetch
-import org.kafka.base.debug
-import org.kafka.base.errorLog
+import com.kafka.base.debug
+import com.kafka.base.errorLog
 import javax.inject.Inject
 
 class DownloadRetryManager @Inject constructor(private val fetch: Fetch) {

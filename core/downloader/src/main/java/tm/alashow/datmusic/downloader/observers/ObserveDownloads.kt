@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import org.kafka.base.domain.SubjectInteractor
+import com.kafka.base.domain.SubjectInteractor
 import tm.alashow.datmusic.downloader.DownloadItems
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.FileDownloadItem

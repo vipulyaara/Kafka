@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.kafka.analytics.logger.Analytics
 import org.kafka.auth.R
-import org.kafka.base.domain.InvokeSuccess
-import org.kafka.base.domain.onException
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.domain.InvokeSuccess
+import com.kafka.base.domain.onException
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager

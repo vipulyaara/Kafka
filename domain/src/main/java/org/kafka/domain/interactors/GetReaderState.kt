@@ -6,8 +6,8 @@ import com.kafka.data.dao.RecentTextDao
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.nameWithoutExtension
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.ResultInteractor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.ResultInteractor
 import javax.inject.Inject
 
 class GetReaderState @Inject constructor(

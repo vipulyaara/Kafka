@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import org.kafka.base.debug
+import com.kafka.base.debug
 import org.kafka.common.image.Icons
 import org.kafka.common.widgets.IconButton
 import org.kafka.ui.components.ProvideScaffoldPadding

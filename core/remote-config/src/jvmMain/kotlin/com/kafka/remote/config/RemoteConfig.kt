@@ -1,6 +1,6 @@
 package com.kafka.remote.config
 
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope

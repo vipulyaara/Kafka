@@ -8,8 +8,8 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
-import org.kafka.base.ApplicationScope
-import org.kafka.base.debug
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
 import javax.inject.Inject
 
 @ApplicationScope

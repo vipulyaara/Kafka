@@ -8,9 +8,9 @@ import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.debug
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
+import com.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 

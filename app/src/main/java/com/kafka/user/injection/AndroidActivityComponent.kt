@@ -5,7 +5,7 @@ import com.kafka.remote.config.RemoteConfig
 import com.kafka.user.home.MainScreen
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
-import org.kafka.base.ActivityScope
+import com.kafka.base.ActivityScope
 
 @ActivityScope
 @Component

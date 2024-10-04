@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Application
 import com.google.android.play.core.review.ReviewManagerFactory
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.ApplicationScope
-import org.kafka.base.errorLog
+import com.kafka.base.ApplicationScope
+import com.kafka.base.errorLog
 import javax.inject.Inject
 
 @ApplicationScope

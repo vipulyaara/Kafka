@@ -12,9 +12,9 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kafka.remote.config.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.base.AppInitializer
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
 import org.threeten.bp.zone.ZoneRulesProvider
 import javax.inject.Inject
 

@@ -4,8 +4,8 @@ import android.app.Application
 import coil.Coil
 import coil.ImageLoader
 import coil.disk.DiskCache
-import org.kafka.base.AppInitializer
-import org.kafka.base.CoroutineDispatchers
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
 import java.io.File
 import javax.inject.Inject
 

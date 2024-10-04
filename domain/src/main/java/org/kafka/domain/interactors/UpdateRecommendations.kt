@@ -8,8 +8,8 @@ import com.kafka.data.model.booksByIdentifiers
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 

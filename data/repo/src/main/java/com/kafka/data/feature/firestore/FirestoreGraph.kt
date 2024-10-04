@@ -3,7 +3,7 @@ package com.kafka.data.feature.firestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.CollectionReference
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 

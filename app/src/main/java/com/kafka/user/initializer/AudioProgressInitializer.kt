@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kafka.base.AppInitializer
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
-import org.kafka.base.debug
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.debug
 import javax.inject.Inject
 
 /**

@@ -16,11 +16,11 @@ import com.tonyodev.fetch2.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.kafka.base.AppInitializer
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
-import org.kafka.base.debug
-import org.kafka.base.errorLog
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.debug
+import com.kafka.base.errorLog
 import tm.alashow.datmusic.downloader.manager.createFetchListener
 import javax.inject.Inject
 

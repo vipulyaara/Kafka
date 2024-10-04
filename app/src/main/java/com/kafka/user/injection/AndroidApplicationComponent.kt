@@ -14,10 +14,10 @@ import com.sarahang.playback.core.timer.SleepTimer
 import kotlinx.coroutines.CoroutineScope
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
-import org.kafka.base.AppInitializer
-import org.kafka.base.ApplicationScope
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
+import com.kafka.base.AppInitializer
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
 
 @Component
 @ApplicationScope

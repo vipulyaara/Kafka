@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 @OptIn(FlowPreview::class)
 class PreferencesStore(private val dataStore: DataStore<Preferences>) {

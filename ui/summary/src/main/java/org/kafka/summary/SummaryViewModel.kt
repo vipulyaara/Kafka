@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import me.tatarka.inject.annotations.Assisted
 import org.kafka.analytics.logger.Analytics
-import org.kafka.base.extensions.stateInDefault
+import com.kafka.base.extensions.stateInDefault
 import org.kafka.domain.observers.ObserveItemDetail
 import org.kafka.domain.observers.summary.ObserveSummary
 import org.kafka.navigation.Navigator

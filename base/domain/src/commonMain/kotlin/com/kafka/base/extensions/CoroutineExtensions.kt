@@ -1,4 +1,4 @@
-package org.kafka.base.extensions
+package com.kafka.base.extensions
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

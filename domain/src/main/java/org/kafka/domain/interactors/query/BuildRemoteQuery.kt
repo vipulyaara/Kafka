@@ -5,7 +5,7 @@ import com.kafka.data.model.QueryItem
 import com.kafka.data.model._creator
 import com.kafka.data.model._creator_remote
 import com.kafka.data.model._mediaType
-import org.kafka.base.debug
+import com.kafka.base.debug
 import javax.inject.Inject
 
 class BuildRemoteQuery @Inject constructor() {

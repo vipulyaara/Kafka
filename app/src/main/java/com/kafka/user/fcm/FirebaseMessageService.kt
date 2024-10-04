@@ -7,7 +7,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.kafka.user.injection.AndroidApplicationComponent
 import com.kafka.user.injection.from
 import kotlinx.coroutines.launch
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 class FirebaseMessageService : FirebaseMessagingService() {
 

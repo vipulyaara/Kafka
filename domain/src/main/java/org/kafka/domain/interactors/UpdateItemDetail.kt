@@ -2,8 +2,8 @@ package org.kafka.domain.interactors
 
 import com.kafka.data.feature.item.ItemDetailDataSource
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class UpdateItemDetail @Inject constructor(

@@ -1,6 +1,6 @@
 @file:Suppress("ktlint:standard:filename")
 
-package org.kafka.base
+package com.kafka.base
 
 import me.tatarka.inject.annotations.Qualifier
 import me.tatarka.inject.annotations.Scope

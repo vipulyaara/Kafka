@@ -2,6 +2,8 @@
 
 package com.kafka.user.playback
 
+import com.kafka.base.debug
+import com.kafka.base.errorLog
 import com.sarahang.playback.core.apis.Logger
 import com.sarahang.playback.core.apis.PlayerEventLogger
 import org.kafka.analytics.logger.Analytics
@@ -17,15 +19,15 @@ class KafkaPlayerEventLogger @Inject constructor(
 }
 
 class PlayerLogger @Inject constructor() : Logger {
-    override fun i(message: String) = org.kafka.base.i { message }
+    override fun i(message: String) = com.kafka.base.i { message }
 
-    override fun d(message: String) = org.kafka.base.debug { message }
+    override fun d(message: String) = debug { message }
 
-    override fun w(message: String) = org.kafka.base.w { message }
+    override fun w(message: String) = com.kafka.base.w { message }
 
-    override fun e(message: String) = org.kafka.base.errorLog { message }
+    override fun e(message: String) = errorLog { message }
 
     override fun e(throwable: Throwable, message: String) =
-        org.kafka.base.errorLog(throwable) { message }
+        errorLog(throwable) { message }
 
 }

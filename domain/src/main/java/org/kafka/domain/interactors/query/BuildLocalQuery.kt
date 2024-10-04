@@ -6,7 +6,7 @@ import com.kafka.data.model.MediaType
 import com.kafka.data.model.QueryItem
 import com.kafka.data.model._identifier
 import com.kafka.data.model._mediaType
-import org.kafka.base.debug
+import com.kafka.base.debug
 import javax.inject.Inject
 
 class BuildLocalQuery @Inject constructor() {

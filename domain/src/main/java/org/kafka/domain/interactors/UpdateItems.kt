@@ -3,9 +3,9 @@ package org.kafka.domain.interactors
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.debug
-import org.kafka.base.domain.Interactor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
+import com.kafka.base.domain.Interactor
 import org.kafka.domain.interactors.query.BuildRemoteQuery
 import javax.inject.Inject
 

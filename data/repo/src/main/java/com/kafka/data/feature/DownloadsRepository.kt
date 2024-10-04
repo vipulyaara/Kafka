@@ -4,7 +4,7 @@ import com.kafka.data.entities.DownloadItem
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.tasks.await
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope

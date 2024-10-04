@@ -7,8 +7,8 @@ import com.kafka.remote.config.shareAppIndex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.domain.SubjectInteractor
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveShareAppIndex @Inject constructor(

@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
 import me.tatarka.inject.annotations.Provides
-import org.kafka.base.ApplicationScope
+import com.kafka.base.ApplicationScope
 
 const val databaseName = "kafka.db"
 

@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.kafka.base
+package com.kafka.base
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

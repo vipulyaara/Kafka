@@ -31,7 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.sarahang.playback.ui.color.DynamicTheme
 import me.tatarka.inject.annotations.Inject
-import org.kafka.base.debug
+import com.kafka.base.debug
 import org.kafka.common.adaptive.fullSpanItem
 import org.kafka.common.adaptive.fullSpanItems
 import org.kafka.common.adaptive.useWideLayout

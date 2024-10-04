@@ -3,7 +3,7 @@ package com.kafka.data.feature.item
 import com.kafka.data.api.ArchiveService
 import com.kafka.data.entities.Item
 import kotlinx.coroutines.withContext
-import org.kafka.base.CoroutineDispatchers
+import com.kafka.base.CoroutineDispatchers
 import javax.inject.Inject
 
 /**
