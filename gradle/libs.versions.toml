@@ -66,7 +66,6 @@ accompanist-web = { module = "com.google.accompanist:accompanist-webview", versi
 
 rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
-palette = "androidx.palette:palette-ktx:1.0.0"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
 androidx-collection = "androidx.collection:collection-ktx:1.4.4"
@@ -103,7 +102,6 @@ compose-material-iconsext = { module = "androidx.compose.material:material-icons
 compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptive" }
-androidx-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "adaptive" }
 compose-material-navigation = { module = "androidx.compose.material:material-navigation", version.ref = "compose-material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
