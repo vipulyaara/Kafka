@@ -4,7 +4,6 @@ import android.app.Application
 import coil.Coil
 import coil.ImageLoader
 import coil.disk.DiskCache
-import okhttp3.OkHttpClient
 import org.kafka.base.AppInitializer
 import org.kafka.base.CoroutineDispatchers
 import java.io.File

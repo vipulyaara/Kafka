@@ -9,19 +9,19 @@ actual interface AnalyticsPlatformComponent {
   @Provides
   fun provideFirebaseAnalytics(): Analytics = object : Analytics {
     override fun log(eventInfo: EventInfo) {
-      TODO("Not yet implemented")
+      // todo: kmp implement
     }
 
     override fun log(eventInfo: EventRepository.() -> EventInfo) {
-      TODO("Not yet implemented")
+      // todo: kmp implement
     }
 
     override fun updateUserProperty(userData: UserData) {
-      TODO("Not yet implemented")
+      // todo: kmp implement
     }
 
     override fun logScreenView(label: String, route: String?, arguments: Any?) {
-      TODO("Not yet implemented")
+      // todo: kmp implement
     }
 
   }

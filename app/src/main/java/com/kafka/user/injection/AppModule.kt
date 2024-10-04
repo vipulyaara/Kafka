@@ -34,8 +34,7 @@ import org.kafka.base.ProcessLifetime
 import org.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.NavigationModule
-import org.kafka.play.AppReviewManager
-import org.kafka.play.AppReviewManagerImpl
+import org.kafka.play.PlayStoreComponent
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import tm.alashow.datmusic.downloader.DownloaderModule
 
@@ -50,7 +49,8 @@ interface AppModule :
     DownloaderModule,
     PlayerModule,
     NavigationModule,
-    AnalyticsPlatformComponent {
+    AnalyticsPlatformComponent,
+    PlayStoreComponent {
 
     @Provides
     @ProcessLifetime
@@ -133,8 +133,4 @@ interface AppModule :
     @ApplicationScope
     @IntoSet
     fun provideRemoteConfigLogger(bind: RemoteConfigLogger): AppInitializer = bind
-
-    @Provides
-    @ApplicationScope
-    fun provideAppReviewManager(bind: AppReviewManagerImpl): AppReviewManager = bind
 }

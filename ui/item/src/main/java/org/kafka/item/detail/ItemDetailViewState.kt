@@ -31,7 +31,6 @@ data class ItemDetailViewState(
 
     val isFullScreenLoading: Boolean
         get() {
-            debug { "isFullScreenLoading $isLoading $itemDetail" }
             return isLoading && itemDetail == null
         }
 }
