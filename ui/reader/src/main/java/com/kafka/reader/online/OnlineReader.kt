@@ -27,17 +27,17 @@ import com.google.accompanist.web.WebViewState
 import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
-import org.kafka.common.image.Icons
-import org.kafka.common.widgets.IconButton
+import com.kafka.common.image.Icons
+import com.kafka.common.widgets.IconButton
 import org.kafka.reader.R.string
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.R
-import org.kafka.ui.components.item.DownloadStatusIcons
-import org.kafka.ui.components.material.AlertDialog
-import org.kafka.ui.components.material.AlertDialogAction
-import org.kafka.ui.components.material.CloseButton
-import org.kafka.ui.components.material.TopBar
-import org.kafka.ui.components.topScaffoldPadding
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.R
+import com.kafka.ui.components.item.DownloadStatusIcons
+import com.kafka.ui.components.material.AlertDialog
+import com.kafka.ui.components.material.AlertDialogAction
+import com.kafka.ui.components.material.CloseButton
+import com.kafka.ui.components.material.TopBar
+import com.kafka.ui.components.topScaffoldPadding
 import com.google.accompanist.web.WebView as AccompanistWebView
 
 @SuppressLint("SetJavaScriptEnabled")

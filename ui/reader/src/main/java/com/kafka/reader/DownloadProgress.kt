@@ -24,14 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.kafka.data.feature.item.DownloadInfo
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.image.Icons
-import org.kafka.common.simpleClickable
-import org.kafka.common.widgets.IconResource
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.image.Icons
+import com.kafka.common.simpleClickable
+import com.kafka.common.widgets.IconResource
 import org.kafka.reader.R
-import org.kafka.ui.components.MessageBox
-import org.kafka.ui.components.item.DownloadStatusIcons
-import org.kafka.ui.components.progress.DownloadAnimation
+import com.kafka.ui.components.MessageBox
+import com.kafka.ui.components.item.DownloadStatusIcons
+import com.kafka.ui.components.progress.DownloadAnimation
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 

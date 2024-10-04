@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import org.kafka.common.image.Icons
-import org.kafka.common.simpleClickable
+import com.kafka.common.image.Icons
+import com.kafka.common.simpleClickable
 import ui.common.theme.theme.Dimens
 
 @Composable

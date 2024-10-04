@@ -9,11 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.reader.pdf.PdfReader
 import com.kafka.reader.pdf.PdfReaderViewModel
-import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.Navigator
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.material.BackButton
-import org.kafka.ui.components.material.TopBar
+import com.kafka.navigation.LocalNavigator
+import com.kafka.navigation.Navigator
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.material.BackButton
+import com.kafka.ui.components.material.TopBar
 
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel, pdfReaderViewModel: PdfReaderViewModel) {

@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.RecentSearch
-import org.kafka.common.animation.Delayed
-import org.kafka.common.image.Icons
-import org.kafka.common.simpleClickable
-import org.kafka.common.widgets.IconResource
+import com.kafka.common.animation.Delayed
+import com.kafka.common.image.Icons
+import com.kafka.common.simpleClickable
+import com.kafka.common.widgets.IconResource
 import org.kafka.search.R
-import org.kafka.ui.components.LabelMedium
+import com.kafka.ui.components.LabelMedium
 import ui.common.theme.theme.Dimens
 
 @Composable

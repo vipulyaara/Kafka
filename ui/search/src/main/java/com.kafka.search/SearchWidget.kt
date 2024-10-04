@@ -29,9 +29,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import org.kafka.common.image.Icons
-import org.kafka.common.test.testTagUi
-import org.kafka.common.widgets.IconResource
+import com.kafka.common.image.Icons
+import com.kafka.common.test.testTagUi
+import com.kafka.common.widgets.IconResource
 import org.kafka.search.R
 import ui.common.theme.theme.Dimens
 import java.util.Locale

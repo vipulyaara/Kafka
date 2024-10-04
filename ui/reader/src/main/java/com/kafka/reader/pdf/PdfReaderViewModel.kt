@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import com.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessageManager
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.snackbar.UiMessage
-import org.kafka.common.snackbar.toUiMessage
+import com.kafka.common.UiMessageManager
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.UiMessage
+import com.kafka.common.snackbar.toUiMessage
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveRecentTextItem
 import javax.inject.Inject

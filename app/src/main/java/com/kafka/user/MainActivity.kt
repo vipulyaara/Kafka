@@ -20,7 +20,7 @@ import com.kafka.user.injection.AndroidApplicationComponent
 import com.kafka.user.injection.create
 import com.kafka.user.injection.from
 import com.kafka.base.errorLog
-import org.kafka.navigation.rememberBottomSheetNavigator
+import com.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 

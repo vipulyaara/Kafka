@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.kafka.ui.downloader.R
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.CollectEvent
+import com.kafka.common.extensions.CollectEvent
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 

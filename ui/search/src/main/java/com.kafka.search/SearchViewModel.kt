@@ -18,15 +18,15 @@ import me.tatarka.inject.annotations.Assisted
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
-import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.snackbar.toUiMessage
+import com.kafka.common.ObservableLoadingCounter
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.toUiMessage
 import com.kafka.domain.interactors.AddRecentSearch
 import com.kafka.domain.interactors.RemoveRecentSearch
 import com.kafka.domain.interactors.SearchQueryItems
 import com.kafka.domain.observers.ObserveRecentSearch
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.graph.Screen
+import com.kafka.navigation.Navigator
+import com.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(

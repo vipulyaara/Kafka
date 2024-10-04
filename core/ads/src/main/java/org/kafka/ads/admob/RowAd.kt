@@ -21,10 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
-import org.kafka.common.widgets.shadowMaterial
-import org.kafka.ui.components.item.CoverDefaults
-import org.kafka.ui.components.item.CoverImage
-import org.kafka.ui.components.item.ItemTitleSmall
+import com.kafka.common.widgets.shadowMaterial
+import com.kafka.ui.components.item.CoverDefaults
+import com.kafka.ui.components.item.CoverImage
+import com.kafka.ui.components.item.ItemTitleSmall
 import ui.common.theme.theme.Dimens
 
 @Composable

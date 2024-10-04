@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.ui.components'
+    namespace 'com.kafka.ui.components'
 }
 
 dependencies {
