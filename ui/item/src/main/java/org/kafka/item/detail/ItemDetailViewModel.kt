@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.combine
 import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
@@ -33,16 +33,16 @@ import org.kafka.common.collectStatus
 import org.kafka.common.shareText
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.ResumeAlbum
-import org.kafka.domain.interactors.UpdateFavorite
-import org.kafka.domain.interactors.UpdateItemDetail
-import org.kafka.domain.interactors.UpdateItems
-import org.kafka.domain.interactors.recent.AddRecentItem
-import org.kafka.domain.interactors.recent.IsResumableAudio
-import org.kafka.domain.observers.ObserveCreatorItems
-import org.kafka.domain.observers.ObserveItemDetail
-import org.kafka.domain.observers.ShouldUseOnlineReader
-import org.kafka.domain.observers.library.ObserveFavoriteStatus
+import com.kafka.domain.interactors.ResumeAlbum
+import com.kafka.domain.interactors.UpdateFavorite
+import com.kafka.domain.interactors.UpdateItemDetail
+import com.kafka.domain.interactors.UpdateItems
+import com.kafka.domain.interactors.recent.AddRecentItem
+import com.kafka.domain.interactors.recent.IsResumableAudio
+import com.kafka.domain.observers.ObserveCreatorItems
+import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.ShouldUseOnlineReader
+import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import org.kafka.item.R
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.deeplink.Config
@@ -55,7 +55,7 @@ import org.kafka.navigation.graph.Screen.OnlineReader
 import org.kafka.navigation.graph.Screen.Reader
 import org.kafka.navigation.graph.Screen.Search
 import org.kafka.navigation.graph.encodeUrl
-import org.kafka.play.AppReviewManager
+import com.kafka.play.AppReviewManager
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByItemId
 import javax.inject.Inject
 

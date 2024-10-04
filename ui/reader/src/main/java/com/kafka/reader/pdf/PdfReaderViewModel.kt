@@ -15,8 +15,8 @@ import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.snackbar.toUiMessage
-import org.kafka.domain.interactors.UpdateCurrentPage
-import org.kafka.domain.observers.ObserveRecentTextItem
+import com.kafka.domain.interactors.UpdateCurrentPage
+import com.kafka.domain.observers.ObserveRecentTextItem
 import javax.inject.Inject
 
 class PdfReaderViewModel @Inject constructor(

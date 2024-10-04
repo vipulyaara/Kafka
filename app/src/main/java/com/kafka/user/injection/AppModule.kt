@@ -26,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
-import org.kafka.analytics.AnalyticsPlatformComponent
+import com.kafka.analytics.AnalyticsPlatformComponent
 import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
@@ -34,7 +34,7 @@ import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
 import org.kafka.common.image.CoilAppInitializer
 import org.kafka.navigation.NavigationModule
-import org.kafka.play.PlayStoreComponent
+import com.kafka.play.PlayStoreComponent
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import tm.alashow.datmusic.downloader.DownloaderModule
 

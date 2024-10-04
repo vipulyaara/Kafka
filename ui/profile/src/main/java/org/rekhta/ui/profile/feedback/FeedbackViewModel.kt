@@ -12,8 +12,8 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.asUiMessage
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.domain.interactors.UpdateFeedback
-import org.kafka.domain.observers.ObserveUser
+import com.kafka.domain.interactors.UpdateFeedback
+import com.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import javax.inject.Inject
 

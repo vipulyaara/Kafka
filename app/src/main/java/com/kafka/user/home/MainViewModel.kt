@@ -10,9 +10,9 @@ import com.kafka.remote.config.minSupportedVersion
 import com.kafka.user.BuildConfig
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import org.kafka.common.goToPlayStore
-import org.kafka.domain.interactors.account.SignInAnonymously
+import com.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(

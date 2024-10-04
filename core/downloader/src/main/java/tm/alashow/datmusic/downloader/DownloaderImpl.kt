@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.ApplicationScope
 import com.kafka.base.debug
 import com.kafka.base.errorLog

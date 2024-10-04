@@ -13,7 +13,7 @@ import com.kafka.base.debug
 import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.UiMessageManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.observers.ObserveRecentTextItem
+import com.kafka.domain.observers.ObserveRecentTextItem
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject

@@ -13,7 +13,7 @@ import com.kafka.remote.config.isGoogleLoginEnabled
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import org.kafka.auth.R
 import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.domain.onException
@@ -23,12 +23,12 @@ import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
 import org.kafka.common.snackbar.toUiMessage
-import org.kafka.domain.interactors.account.HandleGoogleCredentials
-import org.kafka.domain.interactors.account.ResetPassword
-import org.kafka.domain.interactors.account.SignInUser
-import org.kafka.domain.interactors.account.SignInWithGoogle
-import org.kafka.domain.interactors.account.SignUpUser
-import org.kafka.domain.observers.ObserveUser
+import com.kafka.domain.interactors.account.HandleGoogleCredentials
+import com.kafka.domain.interactors.account.ResetPassword
+import com.kafka.domain.interactors.account.SignInUser
+import com.kafka.domain.interactors.account.SignInWithGoogle
+import com.kafka.domain.interactors.account.SignUpUser
+import com.kafka.domain.observers.ObserveUser
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(

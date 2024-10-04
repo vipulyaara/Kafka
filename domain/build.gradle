@@ -12,7 +12,7 @@ kapt {
 }
 
 android {
-    namespace 'org.kafka.domain'
+    namespace 'com.kafka.domain'
 }
 
 dependencies {

@@ -8,11 +8,11 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
-import org.kafka.domain.interactors.recent.RemoveAllRecentItems
-import org.kafka.domain.interactors.recent.RemoveRecentItem
-import org.kafka.domain.observers.ObserveRecentItems
+import com.kafka.domain.interactors.recent.RemoveAllRecentItems
+import com.kafka.domain.interactors.recent.RemoveRecentItem
+import com.kafka.domain.observers.ObserveRecentItems
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import javax.inject.Inject

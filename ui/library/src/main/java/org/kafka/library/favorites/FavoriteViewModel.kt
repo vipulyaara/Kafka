@@ -9,10 +9,10 @@ import com.kafka.data.prefs.PreferencesStore
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
-import org.kafka.domain.observers.ObserveUser
-import org.kafka.domain.observers.library.ObserveFavorites
+import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.library.ObserveFavorites
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import org.kafka.ui.components.item.LayoutType

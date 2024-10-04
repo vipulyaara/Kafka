@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.data.feature.item.ItemWithDownload
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.UiMessageManager

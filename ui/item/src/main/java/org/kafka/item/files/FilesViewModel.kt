@@ -19,11 +19,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
-import org.kafka.domain.interactors.recent.AddRecentItem
-import org.kafka.domain.observers.ObserveFiles
+import com.kafka.domain.interactors.recent.AddRecentItem
+import com.kafka.domain.observers.ObserveFiles
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import tm.alashow.datmusic.downloader.Downloader

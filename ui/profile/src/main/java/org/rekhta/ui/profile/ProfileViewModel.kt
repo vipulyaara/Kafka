@@ -24,7 +24,7 @@ import com.kafka.data.prefs.observeTrueContrast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.combine
 import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.errorLog
@@ -33,8 +33,8 @@ import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.collectStatus
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.interactors.account.LogoutUser
-import org.kafka.domain.observers.ObserveUser
+import com.kafka.domain.interactors.account.LogoutUser
+import com.kafka.domain.observers.ObserveUser
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import org.kafka.profile.R

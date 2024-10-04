@@ -8,10 +8,10 @@ import com.kafka.data.model.SearchFilter.Creator
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import me.tatarka.inject.annotations.Assisted
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
-import org.kafka.domain.observers.ObserveItemDetail
-import org.kafka.domain.observers.summary.ObserveSummary
+import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.summary.ObserveSummary
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.RootScreen
 import org.kafka.navigation.graph.Screen.Search

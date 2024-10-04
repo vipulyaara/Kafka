@@ -15,24 +15,24 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import org.kafka.common.ObservableLoadingCounter
 import org.kafka.common.snackbar.SnackbarManager
 import org.kafka.common.snackbar.toUiMessage
-import org.kafka.domain.interactors.AddRecentSearch
-import org.kafka.domain.interactors.RemoveRecentSearch
-import org.kafka.domain.interactors.SearchQueryItems
-import org.kafka.domain.observers.ObserveRecentSearch
+import com.kafka.domain.interactors.AddRecentSearch
+import com.kafka.domain.interactors.RemoveRecentSearch
+import com.kafka.domain.interactors.SearchQueryItems
+import com.kafka.domain.observers.ObserveRecentSearch
 import org.kafka.navigation.Navigator
 import org.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
-    private val addRecentSearch: AddRecentSearch,
-    private val removeRecentSearch: RemoveRecentSearch,
+    private val addRecentSearch: _root_ide_package_.com.kafka.domain.interactors.AddRecentSearch,
+    private val removeRecentSearch: _root_ide_package_.com.kafka.domain.interactors.RemoveRecentSearch,
     private val searchQueryItems: SearchQueryItems,
     private val navigator: Navigator,
     private val analytics: Analytics,
@@ -112,7 +112,7 @@ class SearchViewModel @Inject constructor(
     private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
             val selectedFilters = state.value.selectedFilters
-            val params = AddRecentSearch.Params(
+            val params = _root_ide_package_.com.kafka.domain.interactors.AddRecentSearch.Params(
                 searchTerm = keyword,
                 filters = selectedFilters,
                 mediaTypes = selectedMediaTypes.toList()

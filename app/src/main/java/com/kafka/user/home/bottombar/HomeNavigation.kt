@@ -62,7 +62,7 @@ import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.Analytics
 import org.kafka.common.adaptive.windowWidthSizeClass
 import org.kafka.common.widgets.LocalSnackbarHostState
 import org.kafka.navigation.currentScreenAsState
