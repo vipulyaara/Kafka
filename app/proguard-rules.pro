@@ -51,7 +51,7 @@
 -dontwarn com.google.errorprone.annotations.*
 
 -keepclassmembers class com.kafka.data.entities.** { *; }
--keepclassmembers class org.kafka.navigation.graph.** { *; }
+-keepclassmembers class com.kafka.navigation.graph.** { *; }
 
 -keep class com.kafka.data.entities.** {
     <fields>;
@@ -69,7 +69,7 @@
     <fields>;
     <init>(...);
 }
--keep class org.kafka.navigation.graph.** {
+-keep class com.kafka.navigation.graph.** {
     <fields>;
     <init>(...);
 }

@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.RecentTextItem
-import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.rememberMutableState
-import org.kafka.common.simpleClickable
-import org.kafka.ui.components.scaffoldPadding
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.extensions.rememberMutableState
+import com.kafka.common.simpleClickable
+import com.kafka.ui.components.scaffoldPadding
 
 @Composable
 internal fun PdfReader(

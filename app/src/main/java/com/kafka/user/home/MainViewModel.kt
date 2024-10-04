@@ -11,7 +11,7 @@ import com.kafka.user.BuildConfig
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import com.kafka.analytics.logger.Analytics
-import org.kafka.common.goToPlayStore
+import com.kafka.common.goToPlayStore
 import com.kafka.domain.interactors.account.SignInAnonymously
 import javax.inject.Inject
 

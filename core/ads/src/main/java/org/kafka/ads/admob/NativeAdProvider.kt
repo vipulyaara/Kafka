@@ -1,4 +1,4 @@
-package org.kafka.ads.admob
+package com.kafka.ads.admob
 
 import android.content.Context
 import com.google.android.gms.ads.AdListener
@@ -8,7 +8,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 object NativeAdProvider {
     val nativeAdFlow = MutableStateFlow<NativeAd?>(null)

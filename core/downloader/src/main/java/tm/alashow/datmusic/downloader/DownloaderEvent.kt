@@ -4,7 +4,7 @@
  */
 package tm.alashow.datmusic.downloader
 
-import org.kafka.downloader.R
+import com.kafka.downloader.R
 import tm.alashow.datmusic.downloader.DownloaderEvent.ChooseDownloadsLocation.message
 
 sealed class DownloaderEvent : UiMessageConvertable {

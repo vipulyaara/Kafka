@@ -26,7 +26,7 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.debug
 import com.kafka.base.errorLog
 import com.kafka.base.i
-import org.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.SnackbarManager
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult

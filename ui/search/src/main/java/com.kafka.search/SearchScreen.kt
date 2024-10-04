@@ -25,17 +25,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import org.kafka.common.adaptive.fullSpanItems
-import org.kafka.common.adaptive.useWideLayout
-import org.kafka.common.adaptive.windowWidthSizeClass
-import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.rememberMutableState
-import org.kafka.common.logging.LogCompositions
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.bottomScaffoldPadding
-import org.kafka.ui.components.item.Item
-import org.kafka.ui.components.progress.InfiniteProgressBarSmall
-import org.kafka.ui.components.topScaffoldPadding
+import com.kafka.common.adaptive.fullSpanItems
+import com.kafka.common.adaptive.useWideLayout
+import com.kafka.common.adaptive.windowWidthSizeClass
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.extensions.rememberMutableState
+import com.kafka.common.logging.LogCompositions
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.bottomScaffoldPadding
+import com.kafka.ui.components.item.Item
+import com.kafka.ui.components.progress.InfiniteProgressBarSmall
+import com.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable

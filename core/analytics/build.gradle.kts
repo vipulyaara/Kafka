@@ -41,5 +41,5 @@ kotlin {
 }
 
 android {
-    namespace = "org.kafka.analytics"
+    namespace = "com.kafka.analytics"
 }

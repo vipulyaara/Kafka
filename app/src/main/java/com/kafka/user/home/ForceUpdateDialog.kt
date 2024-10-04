@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.kafka.user.R
-import org.kafka.common.extensions.alignCenter
-import org.kafka.common.extensions.semiBold
-import org.kafka.ui.components.material.PrimaryButton
+import com.kafka.common.extensions.alignCenter
+import com.kafka.common.extensions.semiBold
+import com.kafka.ui.components.material.PrimaryButton
 import ui.common.theme.theme.Dimens
 
 @Composable

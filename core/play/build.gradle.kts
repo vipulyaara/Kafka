@@ -31,5 +31,5 @@ kotlin {
 }
 
 android {
-    namespace = "org.kafka.core.play"
+    namespace = "com.kafka.core.play"
 }

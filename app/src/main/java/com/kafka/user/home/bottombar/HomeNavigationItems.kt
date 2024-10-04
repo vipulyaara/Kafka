@@ -3,8 +3,8 @@ package com.kafka.user.home.bottombar
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.kafka.user.R
-import org.kafka.common.image.Icons
-import org.kafka.navigation.graph.RootScreen
+import com.kafka.common.image.Icons
+import com.kafka.navigation.graph.RootScreen
 
 internal val HomeNavigationItems = listOf(
     HomeNavigationItem(

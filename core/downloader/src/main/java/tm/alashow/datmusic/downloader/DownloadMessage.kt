@@ -4,7 +4,7 @@
  */
 package tm.alashow.datmusic.downloader
 
-import org.kafka.common.snackbar.UiMessage
+import com.kafka.common.snackbar.UiMessage
 import java.util.Collections.emptyList
 
 sealed class DownloadMessage<T : Any>(open val value: T) {

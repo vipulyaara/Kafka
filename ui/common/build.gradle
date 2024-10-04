@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.common'
+    namespace 'com.kafka.common'
 }
 
 dependencies {

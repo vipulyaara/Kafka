@@ -28,11 +28,11 @@ import kotlinx.coroutines.flow.collectLatest
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import com.kafka.base.debug
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.widgets.LocalSnackbarHostState
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.NavigatorHost
-import org.kafka.ui.components.snackbar.SnackbarMessagesHost
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.widgets.LocalSnackbarHostState
+import com.kafka.navigation.Navigator
+import com.kafka.navigation.NavigatorHost
+import com.kafka.ui.components.snackbar.SnackbarMessagesHost
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.DownloaderHost
 import ui.common.theme.theme.LocalTheme

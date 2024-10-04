@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.webview'
+    namespace 'com.kafka.webview'
 }
 
 dependencies {

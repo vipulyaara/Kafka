@@ -32,8 +32,8 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
-import org.kafka.common.image.CoilAppInitializer
-import org.kafka.navigation.NavigationModule
+import com.kafka.common.image.CoilAppInitializer
+import com.kafka.navigation.NavigationModule
 import com.kafka.play.PlayStoreComponent
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import tm.alashow.datmusic.downloader.DownloaderModule
