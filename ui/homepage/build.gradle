@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.homepage'
+    namespace 'com.kafka.homepage'
 }
 
 dependencies {

@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.kafka.auth.R
+import com.kafka.auth.R
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.rememberSavableMutableState
 import com.kafka.common.image.Icons

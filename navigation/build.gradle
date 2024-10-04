@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.navigation'
+    namespace 'com.kafka.navigation'
 }
 
 dependencies {

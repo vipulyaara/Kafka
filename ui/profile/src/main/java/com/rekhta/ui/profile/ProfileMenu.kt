@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.ProvideInteractiveEnforcement
 import com.kafka.common.image.Icons
-import org.kafka.profile.R
+import com.kafka.profile.R
 import ui.common.theme.theme.Dimens
 
 @Composable

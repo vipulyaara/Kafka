@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.reader'
+    namespace 'com.kafka.reader'
 }
 
 dependencies {

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.summary'
+    namespace 'com.kafka.summary'
 }
 
 dependencies {

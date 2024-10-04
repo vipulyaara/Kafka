@@ -18,7 +18,7 @@ import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
-import org.kafka.item.R
+import com.kafka.item.R
 import com.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
 

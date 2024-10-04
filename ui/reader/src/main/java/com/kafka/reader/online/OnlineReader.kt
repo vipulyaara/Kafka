@@ -29,7 +29,7 @@ import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
-import org.kafka.reader.R.string
+import com.kafka.reader.R.string
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.R
 import com.kafka.ui.components.item.DownloadStatusIcons

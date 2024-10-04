@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.downloader'
+    namespace 'com.kafka.downloader'
 }
 
 repositories {

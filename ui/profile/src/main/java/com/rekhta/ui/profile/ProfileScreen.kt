@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.data.entities.User
 import com.kafka.common.simpleClickable
 import com.kafka.navigation.LocalNavigator
-import org.kafka.profile.R
+import com.kafka.profile.R
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 

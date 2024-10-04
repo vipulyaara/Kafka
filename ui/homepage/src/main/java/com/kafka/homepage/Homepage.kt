@@ -58,7 +58,7 @@ import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.material.StaggeredFlowRow
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
-import org.kafka.homepage.R
+import com.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 
 typealias Homepage = @Composable () -> Unit

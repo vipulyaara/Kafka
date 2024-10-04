@@ -11,7 +11,7 @@ import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.ui.components.material.TopBar
-import org.kafka.homepage.R
+import com.kafka.homepage.R
 import ui.common.theme.theme.Dimens
 
 @Composable

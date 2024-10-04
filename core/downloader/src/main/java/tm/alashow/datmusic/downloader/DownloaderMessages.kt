@@ -7,7 +7,7 @@
 package tm.alashow.datmusic.downloader
 
 import com.tonyodev.fetch2.Status
-import org.kafka.downloader.R
+import com.kafka.downloader.R
 
 val DownloadsUnknownError = DownloadMessage.Resource(R.string.error_unknown)
 val DownloadsFolderNotFound =

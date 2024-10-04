@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.favorites'
+    namespace 'com.kafka.favorites'
 }
 
 dependencies {

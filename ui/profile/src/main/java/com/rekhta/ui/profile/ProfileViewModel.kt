@@ -37,7 +37,7 @@ import com.kafka.domain.interactors.account.LogoutUser
 import com.kafka.domain.observers.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
-import org.kafka.profile.R
+import com.kafka.profile.R
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(

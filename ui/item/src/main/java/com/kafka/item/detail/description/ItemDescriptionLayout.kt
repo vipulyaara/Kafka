@@ -27,7 +27,7 @@ import com.kafka.common.image.Icons
 import com.kafka.common.image.LoadImage
 import com.kafka.common.simpleClickable
 import com.kafka.common.test.testTagUi
-import org.kafka.item.R
+import com.kafka.item.R
 import com.kafka.ui.components.MessageBox
 import ui.common.theme.theme.Dimens
 

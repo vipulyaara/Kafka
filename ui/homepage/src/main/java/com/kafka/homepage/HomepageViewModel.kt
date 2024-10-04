@@ -26,7 +26,7 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
-import org.kafka.homepage.R
+import com.kafka.homepage.R
 import javax.inject.Inject
 
 class HomepageViewModel @Inject constructor(

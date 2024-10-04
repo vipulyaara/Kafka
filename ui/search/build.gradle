@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.search'
+    namespace 'com.kafka.search'
 }
 
 dependencies {

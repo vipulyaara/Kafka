@@ -20,7 +20,7 @@ import com.kafka.common.animation.Delayed
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
-import org.kafka.search.R
+import com.kafka.search.R
 import com.kafka.ui.components.LabelMedium
 import ui.common.theme.theme.Dimens
 

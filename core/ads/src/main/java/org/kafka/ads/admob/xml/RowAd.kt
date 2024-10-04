@@ -1,4 +1,4 @@
-package org.kafka.ads.admob.xml
+package com.kafka.ads.admob.xml
 
 import android.view.View
 import androidx.compose.foundation.layout.padding
@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import com.google.android.gms.ads.nativead.NativeAd
-import org.kafka.core.ads.databinding.RowAdContainerBinding
+import com.kafka.core.ads.databinding.RowAdContainerBinding
 
 @Composable
 fun RowXmlAd(loadedAd: NativeAd?) {

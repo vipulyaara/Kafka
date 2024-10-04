@@ -1,4 +1,4 @@
-package org.kafka.ads.admob
+package com.kafka.ads.admob
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

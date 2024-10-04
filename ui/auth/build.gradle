@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.auth'
+    namespace 'com.kafka.auth'
 }
 
 dependencies {

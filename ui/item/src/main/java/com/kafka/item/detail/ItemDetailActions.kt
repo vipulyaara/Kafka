@@ -29,7 +29,7 @@ import com.kafka.common.test.testTagUi
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
-import org.kafka.item.R
+import com.kafka.item.R
 import com.kafka.ui.components.material.FloatingButton
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens

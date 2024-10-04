@@ -17,7 +17,7 @@ import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.common.plus
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.widgets.FullScreenMessage
-import org.kafka.favorites.R
+import com.kafka.favorites.R
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.bottomScaffoldPadding
 import tm.alashow.datmusic.ui.downloader.LocalDownloader

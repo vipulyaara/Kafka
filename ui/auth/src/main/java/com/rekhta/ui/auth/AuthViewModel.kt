@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import com.kafka.analytics.logger.Analytics
-import org.kafka.auth.R
+import com.kafka.auth.R
 import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault

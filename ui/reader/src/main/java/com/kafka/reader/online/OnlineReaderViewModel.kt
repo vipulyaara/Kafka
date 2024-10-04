@@ -31,7 +31,7 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinksNavigation
 import com.kafka.navigation.deeplink.Navigation
 import com.kafka.navigation.graph.Screen
-import org.kafka.reader.R
+import com.kafka.reader.R
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject

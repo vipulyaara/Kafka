@@ -23,7 +23,7 @@ import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
-import org.kafka.homepage.R
+import com.kafka.homepage.R
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
 import com.kafka.ui.components.ProvideScaffoldPadding

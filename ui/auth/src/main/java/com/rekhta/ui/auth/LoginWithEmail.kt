@@ -39,7 +39,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import org.kafka.auth.R
+import com.kafka.auth.R
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable

@@ -43,7 +43,7 @@ import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.ShouldUseOnlineReader
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
-import org.kafka.item.R
+import com.kafka.item.R
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.deeplink.DeepLinksNavigation
