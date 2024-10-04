@@ -7,25 +7,19 @@
 package tm.alashow.datmusic.downloader
 
 import com.tonyodev.fetch2.Status
-import com.kafka.downloader.R
 
-val DownloadsUnknownError = DownloadMessage.Resource(R.string.error_unknown)
+val DownloadsUnknownError = DownloadMessage.Plain("Unknown error")
 val DownloadsFolderNotFound =
-    DownloadMessage.Resource(R.string.downloader_enqueue_downloadsNotFound)
+    DownloadMessage.Plain("Selected downloads folder not found")
 val AudioDownloadErrorFileCreate =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_error_fileCreate)
+    DownloadMessage.Plain("Couldn\\'t create file in downloads location")
 val AudioDownloadErrorInvalidUrl =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_error_invalidUrl)
+    DownloadMessage.Plain("Download has invalid url")
 
-val AudioDownloadQueued = DownloadMessage.Resource(R.string.downloader_enqueue_audio_queued)
 val AudioDownloadResumedExisting =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_resuming)
+    DownloadMessage.Plain("Resuming existing download")
 val AudioDownloadAlreadyQueued =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_alreadyQueued)
-val AudioDownloadAlreadyCompleted =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_completed)
-val AudioDownloadDeleted =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_deleted)
+    DownloadMessage.Plain("Item already queued for download")
 
 fun AudioDownloadExistingUnknownStatus(status: Status) =
-    DownloadMessage.Resource(R.string.downloader_enqueue_audio_existing_unknown, listOf(status))
+    DownloadMessage.Plain("Download request exists but has unhandled status: $status")

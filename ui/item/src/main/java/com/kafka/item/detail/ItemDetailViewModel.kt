@@ -8,23 +8,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.kafka.data.entities.ItemDetail
-import com.kafka.data.feature.item.DownloadStatus
-import com.kafka.data.model.ArchiveQuery
-import com.kafka.data.model.SearchFilter.Creator
-import com.kafka.data.model.SearchFilter.Subject
-import com.kafka.data.model.booksByAuthor
-import com.kafka.data.prefs.ItemReadCounter
-import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.borrowableBookMessage
-import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
-import com.kafka.remote.config.isShareEnabled
-import com.kafka.remote.config.isSummaryEnabled
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Assisted
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.combine
 import com.kafka.base.extensions.stateInDefault
@@ -33,6 +16,13 @@ import com.kafka.common.collectStatus
 import com.kafka.common.shareText
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
+import com.kafka.data.entities.ItemDetail
+import com.kafka.data.feature.item.DownloadStatus
+import com.kafka.data.model.ArchiveQuery
+import com.kafka.data.model.SearchFilter.Creator
+import com.kafka.data.model.SearchFilter.Subject
+import com.kafka.data.model.booksByAuthor
+import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.ResumeAlbum
 import com.kafka.domain.interactors.UpdateFavorite
 import com.kafka.domain.interactors.UpdateItemDetail
@@ -56,6 +46,16 @@ import com.kafka.navigation.graph.Screen.Reader
 import com.kafka.navigation.graph.Screen.Search
 import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.borrowableBookMessage
+import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
+import com.kafka.remote.config.isShareEnabled
+import com.kafka.remote.config.isSummaryEnabled
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByItemId
 import javax.inject.Inject
 
@@ -170,7 +170,9 @@ class ItemDetailViewModel @Inject constructor(
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }
             viewModelScope.launch {
-                snackbarManager.addMessage(UiMessage(R.string.file_type_is_not_supported))
+                snackbarManager.addMessage(
+                    UiMessage.Plain(application.getString(R.string.file_type_is_not_supported))
+                )
             }
         }
     }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.common.extensions
 
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -5,11 +7,11 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisallowComposableCalls
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
@@ -19,12 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.flow.Flow
 
 fun TextStyle.alignCenter() = merge(TextStyle(textAlign = TextAlign.Center))
 
@@ -63,26 +60,12 @@ fun AnimatedVisibilityFade(
 }
 
 @Composable
-fun <T> CollectEvent(
-    flow: Flow<T>,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    collector: (T) -> Unit,
-): Unit = LaunchedEffect(lifecycle, flow) {
-    lifecycle.repeatOnLifecycle(minActiveState) {
-        flow.collect {
-            collector(it)
-        }
-    }
-}
-
-@Composable
 fun ProvideInteractiveEnforcement(
-    size: Dp = MinimumInteractiveComponentSize,
+    enabled: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        value = LocalMinimumInteractiveComponentSize provides size,
+        value = LocalMinimumInteractiveComponentEnforcement provides enabled,
         content = content
     )
 }

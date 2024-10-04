@@ -4,12 +4,11 @@
  */
 package tm.alashow.datmusic.downloader
 
-import com.kafka.downloader.R
 import tm.alashow.datmusic.downloader.DownloaderEvent.ChooseDownloadsLocation.message
 
 sealed class DownloaderEvent : UiMessageConvertable {
     data object ChooseDownloadsLocation : DownloaderEvent() {
-        val message = DownloadMessage.Resource(R.string.downloader_enqueue_downloadsLocationNotSelected)
+        val message = DownloadMessage.Plain("Downloads location not selected yet")
     }
 
     data class DownloaderFetchError(val error: Throwable) : DownloaderEvent()

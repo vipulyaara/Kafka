@@ -8,9 +8,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.kafka.common.extensions.AnimatedVisibilityFade
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.kafka.common.extensions.AnimatedVisibilityFade
 
 /**
  * Delays visibility of given [content] for [delayMillis].

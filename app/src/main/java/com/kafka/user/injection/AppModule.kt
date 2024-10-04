@@ -7,10 +7,19 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kafka.analytics.AnalyticsPlatformComponent
+import com.kafka.base.AppInitializer
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.SecretsProvider
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.injection.SerializersModule
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.image.CoilAppInitializer
+import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
+import com.kafka.play.PlayStoreComponent
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getOpenAiApiKey
 import com.kafka.user.BuildConfig
@@ -26,15 +35,6 @@ import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
-import com.kafka.analytics.AnalyticsPlatformComponent
-import com.kafka.base.AppInitializer
-import com.kafka.base.ApplicationScope
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.ProcessLifetime
-import com.kafka.base.SecretsProvider
-import com.kafka.common.image.CoilAppInitializer
-import com.kafka.navigation.NavigationModule
-import com.kafka.play.PlayStoreComponent
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import tm.alashow.datmusic.downloader.DownloaderModule
 

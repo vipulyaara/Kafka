@@ -12,9 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import com.kafka.data.entities.Item
-import com.kafka.common.image.LoadImage
 import com.kafka.common.widgets.shadowMaterial
+import com.kafka.data.entities.Item
+import com.kafka.image.LoadImage
 import ui.common.theme.theme.Dimens
 
 @Composable

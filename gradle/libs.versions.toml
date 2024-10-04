@@ -5,13 +5,14 @@ appupdate = "2.1.0"
 agp = "8.6.1"
 androidxlifecycle = "2.8.6"
 coil = "2.6.0"
+coil3 = "3.0.0-alpha10"
 compose-alpha = "2024.08.00-alpha02"
 compose-bom = "2024.09.03"
 compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.6.11"
 coroutines = "1.9.0"
 firebase = "2.1.0"
-icons = "1.0.0"
+icons = "1.1.1"
 haze = "0.7.3"
 kotlin = "2.0.20"
 kotlin-immutable = "0.3.8"
@@ -38,6 +39,9 @@ benchmark-macro-junit4 = "1.3.2"
 androidx-baselineprofile = "1.3.2"
 profileinstaller = "1.4.1"
 review = "2.0.1"
+junit = "4.13.2"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -91,6 +95,10 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 
 coil-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+coil3-coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil3-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil3" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 #compose-bom = { module = "dev.chrisbanes.compose:compose-bom", version.ref = "compose-alpha" }
@@ -147,6 +155,7 @@ kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
@@ -164,9 +173,9 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-defaultheaders = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
 
-icons-feather = { module = "br.com.devsrsouza.compose.icons.android:feather", version.ref = "icons" }
-icons-font-awesome = { module = "br.com.devsrsouza.compose.icons.android:font-awesome", version.ref = "icons" }
-icons-tabler = { module = "br.com.devsrsouza.compose.icons.android:tabler-icons", version.ref = "icons" }
+icons-feather = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "icons" }
+icons-font-awesome = { module = "br.com.devsrsouza.compose.icons:font-awesome", version.ref = "icons" }
+icons-tabler = { module = "br.com.devsrsouza.compose.icons:tabler-icons", version.ref = "icons" }
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 
@@ -203,3 +212,6 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
