@@ -12,7 +12,7 @@ abstract class RecentTextDao : EntityDao<RecentTextItem> {
     abstract fun observe(fileId: String): Flow<RecentTextItem>
 
     @Query("select * from recent_text where fileId = :fileId")
-    abstract fun getOrNull(fileId: String): RecentTextItem?
+    abstract suspend fun getOrNull(fileId: String): RecentTextItem?
 
     @Query("update recent_text set currentPage = :currentPage where fileId = :fileId")
     abstract suspend fun updateCurrentPage(fileId: String, currentPage: Int)
