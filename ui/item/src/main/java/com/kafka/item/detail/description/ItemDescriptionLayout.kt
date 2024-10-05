@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -21,14 +20,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.test.testTagUi
 import com.kafka.data.entities.ItemDetail
-import com.kafka.image.LoadImage
 import com.kafka.item.R
 import com.kafka.ui.components.MessageBox
+import com.kafka.ui.components.item.CoverImage
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -61,11 +61,14 @@ internal fun ItemDescription(
             modifier = Modifier.padding(top = Dimens.Spacing24),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoadImage(
+            CoverImage(
                 data = itemDetail.coverImage,
-                modifier = Modifier
-                    .size(if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail)
-                    .clip(RoundedCornerShape(Dimens.Spacing08))
+                size = if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail,
+                shape = RoundedCornerShape(Dimens.Spacing08),
+                elevation = 0.dp,
+                tonalElevation = 0.dp,
+                contentScale = ContentScale.Crop,
+                placeholder = null
             )
 
             Spacer(Modifier.height(Dimens.Spacing24))

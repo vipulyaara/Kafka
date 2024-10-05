@@ -40,7 +40,7 @@ fun CoverImage(
     contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     contentScale: ContentScale = ContentScale.FillHeight,
     shape: Shape = CoverDefaults.shape,
-    placeholder: ImageVector = CoverDefaults.placeholder,
+    placeholder: ImageVector? = CoverDefaults.placeholder,
     iconPadding: Dp = 16.dp,
     bitmapPlaceholder: Bitmap? = null,
     contentDescription: String? = null,
@@ -77,7 +77,7 @@ private fun Image(
     modifier: Modifier,
     contentDescription: String?,
     contentScale: ContentScale,
-    placeholder: ImageVector,
+    placeholder: ImageVector?,
     contentColor: Color,
     iconPadding: Dp,
     bitmapPlaceholder: Bitmap?,
@@ -94,14 +94,16 @@ private fun Image(
         val state = painter.state
         when (state) {
             is State.Error, State.Empty, is State.Loading -> {
-                Icon(
-                    imageVector = placeholder,
-                    tint = contentColor,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(iconPadding)
-                )
+                if (placeholder != null) {
+                    Icon(
+                        imageVector = placeholder,
+                        tint = contentColor,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(iconPadding)
+                    )
+                }
             }
 
             else -> SubcomposeAsyncImageContent(modifier.fillMaxSize())
