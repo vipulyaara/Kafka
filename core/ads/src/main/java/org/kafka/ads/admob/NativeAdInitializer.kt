@@ -1,9 +1,9 @@
-package org.kafka.ads.admob
+package com.kafka.ads.admob
 
 import android.app.Application
 import android.util.Log
 import com.google.android.gms.ads.MobileAds
-import org.kafka.base.AppInitializer
+import com.kafka.base.AppInitializer
 import javax.inject.Inject
 import javax.inject.Singleton
 

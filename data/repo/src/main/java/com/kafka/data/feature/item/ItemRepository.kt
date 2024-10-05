@@ -1,7 +1,7 @@
 package com.kafka.data.feature.item
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.kafka.data.dao.ItemLocalDataSource
+import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.observeSafeMode
@@ -13,21 +13,20 @@ import javax.inject.Inject
  *
  */
 class ItemRepository @Inject constructor(
-    private val itemLocalDataSource: ItemLocalDataSource,
+    private val itemDao: ItemDao,
     private val remoteDataSource: ItemDataSource,
-    private val preferencesStore: PreferencesStore
+    private val preferencesStore: PreferencesStore,
 ) {
     fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) = combine(
-        itemLocalDataSource.observeQueryItems(simpleSQLiteQuery),
+        itemDao.observeQueryItems(simpleSQLiteQuery),
         preferencesStore.observeSafeMode()
     ) { items, safeMode ->
         items.filter { !safeMode || !it.isInappropriate }
     }
 
-    suspend fun updateQuery(query: String) =
-        remoteDataSource.fetchItemsByQuery(query).getOrThrow()
+    suspend fun updateQuery(query: String) = remoteDataSource.fetchItemsByQuery(query)
 
-    suspend fun saveItems(items: List<Item>) = itemLocalDataSource.insertAll(items)
+    suspend fun saveItems(items: List<Item>) = itemDao.insertAll(items)
 
-    suspend fun exists(id: String) = itemLocalDataSource.exists(id)
+    suspend fun exists(id: String) = itemDao.exists(id)
 }

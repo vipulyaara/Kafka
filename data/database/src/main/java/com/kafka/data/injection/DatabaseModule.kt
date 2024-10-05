@@ -1,38 +1,19 @@
 package com.kafka.data.injection
 
-import android.content.Context
+import android.app.Application
 import android.os.Debug
 import androidx.room.Room
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
-import dagger.Binds
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import javax.inject.Singleton
-import kotlin.coroutines.EmptyCoroutineContext
+import me.tatarka.inject.annotations.Provides
+import com.kafka.base.ApplicationScope
 
 const val databaseName = "kafka.db"
 
-@InstallIn(SingletonComponent::class)
-@Module(
-    includes = [
-        RoomDatabaseModule::class,
-        DatabaseDaoModule::class,
-        DatabaseModuleBinds::class,
-    ],
-)
-class DatabaseModule
-
-@InstallIn(SingletonComponent::class)
-@Module
-class RoomDatabaseModule {
-    @Singleton
+interface DatabaseModule {
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): KafkaRoomDatabase {
+    @ApplicationScope
+    fun provideDatabase(context: Application): KafkaRoomDatabase {
         val builder = Room.databaseBuilder(
             context,
             KafkaRoomDatabase::class.java,
@@ -44,41 +25,35 @@ class RoomDatabaseModule {
         return builder.build()
     }
 
-    @Singleton
     @Provides
-    fun providesStoreDispatcher(): CoroutineScope = CoroutineScope(EmptyCoroutineContext)
-}
+    @ApplicationScope
+    fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase = bind
 
-@InstallIn(SingletonComponent::class)
-@Module
-abstract class DatabaseModuleBinds {
-
-    @Singleton
-    @Binds
-    abstract fun provideRoomDatabase(bind: KafkaRoomDatabase): KafkaDatabase
-}
-
-@InstallIn(SingletonComponent::class)
-@Module
-class DatabaseDaoModule {
     @Provides
+    @ApplicationScope
     fun provideItemDao(db: KafkaRoomDatabase) = db.itemDao()
 
     @Provides
+    @ApplicationScope
     fun provideItemDetailDao(db: KafkaRoomDatabase) = db.itemDetailDao()
 
     @Provides
+    @ApplicationScope
     fun provideFileDao(db: KafkaRoomDatabase) = db.fileDao()
 
     @Provides
+    @ApplicationScope
     fun provideSearchConfigurationDao(db: KafkaRoomDatabase) = db.recentSearchDao()
 
     @Provides
+    @ApplicationScope
     fun provideRecentTextDao(db: KafkaRoomDatabase) = db.recentTextDao()
 
     @Provides
+    @ApplicationScope
     fun provideRecentAudioDao(db: KafkaRoomDatabase) = db.recentAudioDao()
 
     @Provides
+    @ApplicationScope
     fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
 }

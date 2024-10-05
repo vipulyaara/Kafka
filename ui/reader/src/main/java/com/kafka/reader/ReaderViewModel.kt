@@ -5,25 +5,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.feature.item.ItemWithDownload
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.base.debug
-import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessageManager
-import org.kafka.common.snackbar.UiMessage
-import org.kafka.domain.observers.ObserveRecentTextItem
-import org.kafka.domain.observers.library.ObserveDownloadByFileId
+import me.tatarka.inject.annotations.Assisted
+import com.kafka.base.debug
+import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.UiMessageManager
+import com.kafka.common.snackbar.UiMessage
+import com.kafka.domain.observers.ObserveRecentTextItem
 import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject
 
-@HiltViewModel
 class ReaderViewModel @Inject constructor(
     private val observeDownloadByFileId: ObserveDownloadByFileId,
     private val observeRecentItem: ObserveRecentTextItem,
     private val downloader: Downloader,
-    savedStateHandle: SavedStateHandle
+    @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     private var fileId = savedStateHandle.getStateFlow("fileId", "")

@@ -4,11 +4,10 @@ plugins {
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace 'org.kafka.reader'
+    namespace 'com.kafka.reader'
 }
 
 dependencies {
@@ -24,8 +23,5 @@ dependencies {
 
     implementation libs.accompanist.web
 
-    implementation libs.hilt.android
     implementation libs.pdfviewer
-
-    kapt libs.hilt.compiler
 }

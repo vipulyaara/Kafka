@@ -2,12 +2,13 @@ package com.kafka.data.feature.firestore
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import dagger.Reusable
+import com.kafka.base.ApplicationScope
 import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.DocumentReference
 import javax.inject.Inject
 import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 
-@Reusable
+@ApplicationScope
 class FirestoreGraph @Inject constructor(
     private val firestoreKt: FirebaseFirestoreKt,
     private val firestore: FirebaseFirestore,
@@ -24,6 +25,11 @@ class FirestoreGraph @Inject constructor(
     val homepageCollection: CollectionReference
         get() = firestoreKt
             .collection("homepage-collection")
+
+    val appUpdateConfig: DocumentReference
+        get() = firestoreKt
+            .collection("app_config")
+            .document("app_update")
 
     val feedbackCollection: CollectionReference
         get() = firestoreKt.collection("feedback")

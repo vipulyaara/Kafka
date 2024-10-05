@@ -8,38 +8,37 @@ import androidx.navigation.toRoute
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
-import org.kafka.base.domain.onException
-import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.ObservableLoadingCounter
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.snackbar.toUiMessage
-import org.kafka.domain.interactors.AddRecentSearch
-import org.kafka.domain.interactors.RemoveRecentSearch
-import org.kafka.domain.interactors.SearchQueryItems
-import org.kafka.domain.observers.ObserveRecentSearch
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.graph.Screen
+import me.tatarka.inject.annotations.Assisted
+import com.kafka.analytics.logger.Analytics
+import com.kafka.base.domain.onException
+import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.ObservableLoadingCounter
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.toUiMessage
+import com.kafka.domain.interactors.AddRecentSearch
+import com.kafka.domain.interactors.RemoveRecentSearch
+import com.kafka.domain.interactors.SearchQueryItems
+import com.kafka.domain.observers.ObserveRecentSearch
+import com.kafka.navigation.Navigator
+import com.kafka.navigation.graph.Screen
 import javax.inject.Inject
 
-@HiltViewModel
 class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
-    private val addRecentSearch: AddRecentSearch,
-    private val removeRecentSearch: RemoveRecentSearch,
+    private val addRecentSearch: _root_ide_package_.com.kafka.domain.interactors.AddRecentSearch,
+    private val removeRecentSearch: _root_ide_package_.com.kafka.domain.interactors.RemoveRecentSearch,
     private val searchQueryItems: SearchQueryItems,
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
     private val loadingState: ObservableLoadingCounter,
-    private val savedStateHandle: SavedStateHandle,
+    @Assisted private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<Screen.Search>()
     internal val selectedMediaTypes = mutableStateListOf<MediaType>()
@@ -113,7 +112,7 @@ class SearchViewModel @Inject constructor(
     private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
             val selectedFilters = state.value.selectedFilters
-            val params = AddRecentSearch.Params(
+            val params = _root_ide_package_.com.kafka.domain.interactors.AddRecentSearch.Params(
                 searchTerm = keyword,
                 filters = selectedFilters,
                 mediaTypes = selectedMediaTypes.toList()

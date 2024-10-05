@@ -6,17 +6,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.reader.pdf.PdfReader
-import org.kafka.navigation.LocalNavigator
-import org.kafka.navigation.Navigator
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.material.BackButton
-import org.kafka.ui.components.material.TopBar
+import com.kafka.reader.pdf.PdfReaderViewModel
+import com.kafka.navigation.LocalNavigator
+import com.kafka.navigation.Navigator
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.material.BackButton
+import com.kafka.ui.components.material.TopBar
 
 @Composable
-fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
+fun ReaderScreen(viewModel: ReaderViewModel, pdfReaderViewModel: PdfReaderViewModel) {
     val viewState by viewModel.readerState.collectAsStateWithLifecycle()
     val recentItem = viewState.recentItem
 
@@ -28,7 +28,7 @@ fun ReaderScreen(viewModel: ReaderViewModel = hiltViewModel()) {
             if (recentItem?.localUri == null) {
                 viewState.download?.downloadInfo?.let { DownloadProgress(it) }
             } else {
-                PdfReader(fileId = recentItem.fileId)
+                PdfReader(fileId = recentItem.fileId, viewModel = pdfReaderViewModel)
             }
         }
     }

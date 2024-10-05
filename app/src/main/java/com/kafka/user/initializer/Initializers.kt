@@ -1,6 +1,6 @@
 package com.kafka.user.initializer
 
-import android.content.Context
+import android.app.Application
 import co.touchlab.kermit.ExperimentalKermitApi
 import co.touchlab.kermit.LogcatWriter
 import co.touchlab.kermit.Logger
@@ -10,12 +10,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.initialize
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kafka.remote.config.RemoteConfig
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.kafka.base.AppInitializer
-import org.kafka.base.CoroutineDispatchers
-import org.kafka.base.ProcessLifetime
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
 import org.threeten.bp.zone.ZoneRulesProvider
 import javax.inject.Inject
 
@@ -33,7 +32,7 @@ class LoggerInitializer @Inject constructor() : AppInitializer {
 class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
-    @ApplicationContext private val context: Context,
+    private val context: Application,
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
@@ -45,7 +44,7 @@ class FirebaseInitializer @Inject constructor(
 class ThreeTenBpInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
-    @ApplicationContext private val context: Context,
+    private val context: Application,
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {

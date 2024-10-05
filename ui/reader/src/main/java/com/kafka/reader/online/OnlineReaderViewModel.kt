@@ -7,45 +7,46 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.kafka.data.feature.item.ItemWithDownload
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.analytics.logger.Analytics
-import org.kafka.base.debug
-import org.kafka.base.domain.onException
-import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.asUiMessage
-import org.kafka.common.shareText
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.domain.interactors.GetReaderState
-import org.kafka.domain.interactors.ReaderState
-import org.kafka.domain.interactors.UpdateCurrentPage
-import org.kafka.domain.interactors.getCurrentPageFromReaderUrl
-import org.kafka.domain.observers.ShouldAutoDownload
-import org.kafka.domain.observers.library.ObserveDownloadByFileId
-import org.kafka.navigation.Navigator
-import org.kafka.navigation.deeplink.DeepLinksNavigation
-import org.kafka.navigation.deeplink.Navigation
-import org.kafka.navigation.graph.Screen
-import org.kafka.reader.R
+import me.tatarka.inject.annotations.Assisted
+import com.kafka.analytics.logger.Analytics
+import com.kafka.base.debug
+import com.kafka.base.domain.onException
+import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.asUiMessage
+import com.kafka.common.shareText
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.domain.interactors.GetReaderState
+import com.kafka.domain.interactors.ReaderState
+import com.kafka.domain.interactors.UpdateCurrentPage
+import com.kafka.domain.interactors.getCurrentPageFromReaderUrl
+import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.ShouldAutoDownload
+import com.kafka.navigation.Navigator
+import com.kafka.navigation.deeplink.DeepLinksNavigation
+import com.kafka.navigation.deeplink.Navigation
+import com.kafka.navigation.graph.Screen
+import com.kafka.reader.R
 import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject
 
-@HiltViewModel
 class OnlineReaderViewModel @Inject constructor(
     shouldAutoDownload: ShouldAutoDownload,
     observeDownloadByFileId: ObserveDownloadByFileId,
+    observeItemDetail: ObserveItemDetail,
     private val getReaderState: GetReaderState,
     private val updateCurrentPage: UpdateCurrentPage,
     private val downloader: Downloader,
     private val navigator: Navigator,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
-    savedStateHandle: SavedStateHandle,
+    @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<Screen.OnlineReader>()
     private val itemId: String = route.itemId
@@ -56,17 +57,20 @@ class OnlineReaderViewModel @Inject constructor(
 
     val state: StateFlow<OnlineReaderState> = combine(
         readerState,
+        observeItemDetail.flow,
         observeDownloadByFileId.flow,
         shouldAutoDownload.flow
-    ) { readerState, download, autoDownload ->
+    ) { readerState, itemDetail, download, autoDownload ->
         OnlineReaderState(
             readerState = readerState,
             download = download,
-            autoDownload = autoDownload
+            autoDownload = autoDownload,
+            showDownloadIcon = !(itemDetail?.isAccessRestricted ?: true)
         )
     }.stateInDefault(viewModelScope, OnlineReaderState())
 
     init {
+        observeItemDetail(ObserveItemDetail.Param(itemId))
         observeDownloadByFileId(fileId)
         shouldAutoDownload(ShouldAutoDownload.Param(itemId))
 
@@ -120,4 +124,5 @@ data class OnlineReaderState(
     val readerState: ReaderState? = null,
     val download: ItemWithDownload? = null,
     val autoDownload: Boolean = false,
+    val showDownloadIcon: Boolean = false,
 )

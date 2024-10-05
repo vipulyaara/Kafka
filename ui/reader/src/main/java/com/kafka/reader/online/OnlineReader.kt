@@ -21,30 +21,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.web.WebContent
 import com.google.accompanist.web.WebViewState
 import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
-import org.kafka.common.image.Icons
-import org.kafka.common.widgets.IconButton
-import org.kafka.reader.R.string
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.R
-import org.kafka.ui.components.file.DownloadStatusIcons
-import org.kafka.ui.components.material.AlertDialog
-import org.kafka.ui.components.material.AlertDialogAction
-import org.kafka.ui.components.material.CloseButton
-import org.kafka.ui.components.material.TopBar
-import org.kafka.ui.components.topScaffoldPadding
+import com.kafka.common.image.Icons
+import com.kafka.common.widgets.IconButton
+import com.kafka.reader.R.string
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.R
+import com.kafka.ui.components.item.DownloadStatusIcons
+import com.kafka.ui.components.material.AlertDialog
+import com.kafka.ui.components.material.AlertDialogAction
+import com.kafka.ui.components.material.CloseButton
+import com.kafka.ui.components.material.TopBar
+import com.kafka.ui.components.topScaffoldPadding
 import com.google.accompanist.web.WebView as AccompanistWebView
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun OnlineReader(
-    viewModel: OnlineReaderViewModel = hiltViewModel(),
+    viewModel: OnlineReaderViewModel,
     openOfflineReader: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -83,6 +82,7 @@ fun OnlineReader(
             if (webViewState != null) {
                 TopBar(
                     webViewState = webViewState!!,
+                    showDownloadIcon = state.showDownloadIcon,
                     fileId = fileId,
                     download = state.download,
                     openOfflineReader = {
@@ -126,6 +126,7 @@ private fun WebView(
 private fun TopBar(
     webViewState: WebViewState,
     fileId: String?,
+    showDownloadIcon: Boolean,
     download: ItemWithDownload?,
     shareItem: () -> Unit,
     openOfflineReader: () -> Unit,
@@ -145,7 +146,7 @@ private fun TopBar(
                     )
                 }
 
-                if (fileId != null) {
+                if (fileId != null && showDownloadIcon) {
                     DownloadIcon(
                         downloadInfo = download?.downloadInfo,
                         onDownloadClicked = downloadItem,

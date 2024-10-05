@@ -7,6 +7,14 @@ plugins {
 kotlin {
     sourceSets {
         val commonMain by getting {
+            dependencies {
+                api(projects.base.annotations)
+                api(projects.core.networking)
+                implementation(projects.data.models)
+                implementation(projects.data.prefs)
+
+                implementation(libs.ktor.client.core)
+            }
         }
 
         val jvmCommon by creating {

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'org.kafka.ui.components'
+    namespace 'com.kafka.ui.components'
 }
 
 dependencies {
@@ -18,8 +18,6 @@ dependencies {
     implementation projects.ui.downloader
 
     implementation libs.androidx.core
-    implementation libs.androidx.hilt.compose
-    implementation libs.androidx.hilt.navigation
     implementation libs.compose.animation.animation
     implementation libs.compose.foundation.foundation
     implementation libs.compose.foundation.layout
@@ -28,14 +26,11 @@ dependencies {
     implementation libs.compose.ui.tooling
     implementation libs.compose.ui.ui
     implementation libs.compose.ui.util
+    implementation libs.haze
+    implementation libs.haze.materials
     implementation libs.kotlin.serialization
     implementation libs.lottie.compose
     implementation libs.lottie.core
-    implementation libs.palette
-    implementation libs.rebugger
 
-    implementation libs.hilt.android
     implementation libs.kotlin.stdlib
-
-    kapt libs.hilt.compiler
 }

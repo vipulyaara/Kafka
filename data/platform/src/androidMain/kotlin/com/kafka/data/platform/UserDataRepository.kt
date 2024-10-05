@@ -1,19 +1,19 @@
 package com.kafka.data.platform
 
-import android.content.Context
-import android.telephony.TelephonyManager
 import com.google.firebase.auth.FirebaseAuth
+import com.kafka.base.ApplicationScope
+import javax.inject.Inject
 
-actual class UserDataRepository(
-    private val context: Context,
-    private val firebaseAuth: FirebaseAuth,
+@ApplicationScope
+actual class UserDataRepository @Inject constructor(
+    private val userCountryRepository: UserCountryRepository
 ) {
-    actual fun getUserData(): UserData =
-        UserData(userId = firebaseAuth.currentUser?.uid, country = getUserCountry())
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
-    fun getUserCountry(): String? {
-        val telephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
-    }
+    actual suspend fun getUserData(): UserData = UserData(
+        userId = firebaseAuth.currentUser?.uid,
+        country = getUserCountry()
+    )
+
+    suspend fun getUserCountry() = userCountryRepository.getUserCountry()
 }

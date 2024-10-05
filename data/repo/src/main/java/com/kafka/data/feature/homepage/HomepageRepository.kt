@@ -3,16 +3,16 @@ package com.kafka.data.feature.homepage
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.data.platform.UserDataRepository
-import dagger.Reusable
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
-import org.kafka.base.debug
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
 import javax.inject.Inject
 
-@Reusable
+@ApplicationScope
 class HomepageRepository @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
@@ -72,9 +72,9 @@ class HomepageRepository @Inject constructor(
             .map { it.substring(1) }.toSet()
 
         for (userTopic in userTopics) {
-            if (excludedTopics.any { userTopic.contains(it) }) {
+            if (excludedTopics.any { userTopic.contains(it, true) }) {
                 return false
-            } else if (includedTopics.any { userTopic.contains(it) }) {
+            } else if (includedTopics.any { userTopic.contains(it, true) }) {
                 return true
             }
         }

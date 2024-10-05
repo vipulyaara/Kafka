@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,25 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.common.adaptive.fullSpanItems
+import com.kafka.common.adaptive.useWideLayout
+import com.kafka.common.adaptive.windowWidthSizeClass
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.extensions.rememberMutableState
+import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import org.kafka.common.extensions.AnimatedVisibilityFade
-import org.kafka.common.extensions.rememberMutableState
-import org.kafka.common.logging.LogCompositions
-import org.kafka.ui.components.ProvideScaffoldPadding
-import org.kafka.ui.components.bottomScaffoldPadding
-import org.kafka.ui.components.item.Item
-import org.kafka.ui.components.progress.InfiniteProgressBarSmall
-import org.kafka.ui.components.topScaffoldPadding
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.bottomScaffoldPadding
+import com.kafka.ui.components.item.Item
+import com.kafka.ui.components.progress.InfiniteProgressBarSmall
+import com.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun SearchScreen() {
-    LogCompositions(tag = "Search")
-
-    val searchViewModel: SearchViewModel = hiltViewModel()
+fun SearchScreen(searchViewModel: SearchViewModel) {
     val searchViewState by searchViewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
@@ -73,21 +73,23 @@ private fun Search(
     onMediaTypeClicked: (MediaType) -> Unit,
     onSearchClicked: (String, List<SearchFilter>, List<MediaType>) -> Unit,
     removeRecentSearch: (String) -> Unit,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
 ) {
+    val useWideLayout = windowWidthSizeClass().useWideLayout()
     val density = LocalDensity.current
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
 
     if (!searchViewState.items.isNullOrEmpty()) {
-        LazyColumn(contentPadding = paddingValues) {
-            items(searchViewState.items) { item ->
-                Item(
-                    item = item,
-                    modifier = Modifier
-                        .clickable { openItemDetail(item.itemId) }
-                        .padding(Dimens.Gutter, Dimens.Spacing06)
-                )
+        LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = paddingValues) {
+            if (useWideLayout) {
+                items(searchViewState.items) { item ->
+                    SearchResultItem(item, openItemDetail)
+                }
+            } else {
+                fullSpanItems(searchViewState.items) { item ->
+                    SearchResultItem(item, openItemDetail)
+                }
             }
         }
     }
@@ -136,4 +138,14 @@ private fun Search(
             )
         }
     }
+}
+
+@Composable
+private fun SearchResultItem(item: Item, openItemDetail: (String) -> Unit) {
+    Item(
+        item = item,
+        modifier = Modifier
+            .clickable { openItemDetail(item.itemId) }
+            .padding(Dimens.Gutter, Dimens.Spacing06)
+    )
 }

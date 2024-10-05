@@ -6,25 +6,23 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.entities.RecentTextItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.kafka.base.extensions.stateInDefault
-import org.kafka.common.UiMessageManager
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.common.snackbar.UiMessage
-import org.kafka.common.snackbar.toUiMessage
-import org.kafka.domain.interactors.UpdateCurrentPage
-import org.kafka.domain.observers.ObserveRecentTextItem
+import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.UiMessageManager
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.UiMessage
+import com.kafka.common.snackbar.toUiMessage
+import com.kafka.domain.interactors.UpdateCurrentPage
+import com.kafka.domain.observers.ObserveRecentTextItem
 import javax.inject.Inject
 
-@HiltViewModel
 class PdfReaderViewModel @Inject constructor(
     private val observeRecentItem: ObserveRecentTextItem,
     private val updateCurrentPage: UpdateCurrentPage,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     private var showControls by mutableStateOf(false)
