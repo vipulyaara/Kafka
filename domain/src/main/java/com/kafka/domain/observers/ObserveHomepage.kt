@@ -19,7 +19,7 @@ class ObserveHomepage @Inject constructor(
 
     override fun createObservable(params: Unit): Flow<Homepage> {
         return combine(
-            observeRecentItems.execute(Unit),
+            observeRecentItems.execute(ObserveRecentItems.Params(RECENT_ITEMS_LIMIT)),
             homepageRepository.observeHomepageCollection(),
         ) { recentItems, collection ->
             val collectionWithRecentItems = collection.map {
@@ -36,3 +36,5 @@ class ObserveHomepage @Inject constructor(
         }.flowOn(coroutineDispatchers.io)
     }
 }
+
+private const val RECENT_ITEMS_LIMIT = 10

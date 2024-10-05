@@ -2,19 +2,19 @@ package com.kafka.homepage.recent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.RecentItem
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
+import com.kafka.data.entities.RecentItem
 import com.kafka.domain.interactors.recent.RemoveAllRecentItems
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveRecentItems
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RecentViewModel @Inject constructor(
@@ -32,7 +32,7 @@ class RecentViewModel @Inject constructor(
     )
 
     init {
-        observeRecentItems(Unit)
+        observeRecentItems(ObserveRecentItems.Params(RECENT_ITEMS_LIMIT))
     }
 
     fun openItemDetail(itemId: String) {
@@ -54,6 +54,8 @@ class RecentViewModel @Inject constructor(
         }
     }
 }
+
+private const val RECENT_ITEMS_LIMIT = 50
 
 data class RecentViewState(
     val recentItems: List<RecentItem> = persistentListOf(),

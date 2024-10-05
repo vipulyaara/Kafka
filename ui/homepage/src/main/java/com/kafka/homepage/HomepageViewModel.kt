@@ -3,19 +3,13 @@ package com.kafka.homepage
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.model.SearchFilter
-import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.showFeaturedItemLabels
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.UiMessageManager
 import com.kafka.common.collectStatus
 import com.kafka.common.shareText
+import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.UpdateRecommendations
 import com.kafka.domain.interactors.recent.RemoveRecentItem
@@ -26,7 +20,12 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
-import com.kafka.homepage.R
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.showFeaturedItemLabels
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomepageViewModel @Inject constructor(
