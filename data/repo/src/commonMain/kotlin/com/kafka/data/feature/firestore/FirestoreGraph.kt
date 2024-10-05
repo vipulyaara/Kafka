@@ -1,8 +1,8 @@
 package com.kafka.data.feature.firestore
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.base.ApplicationScope
+import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.DocumentReference
 import javax.inject.Inject

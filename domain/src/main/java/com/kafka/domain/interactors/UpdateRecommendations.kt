@@ -1,6 +1,5 @@
 package com.kafka.domain.interactors
 
-import com.google.firebase.auth.FirebaseAuth
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.ArchiveQuery
@@ -11,6 +10,7 @@ import kotlinx.coroutines.withContext
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import com.kafka.domain.interactors.query.BuildRemoteQuery
+import dev.gitlive.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 class UpdateRecommendations @Inject constructor(

@@ -16,7 +16,6 @@ class SignInUser @Inject constructor(
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             accountRepository.signInUser(params.email, params.password)
-                ?: error("Failed to sign in")
             analytics.log { login("email") }
         }
     }

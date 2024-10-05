@@ -138,6 +138,7 @@ google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
 firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }

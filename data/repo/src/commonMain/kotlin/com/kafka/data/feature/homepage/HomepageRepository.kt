@@ -21,7 +21,7 @@ class HomepageRepository @Inject constructor(
 ) {
     fun observeHomepageCollection() =
         firestoreGraph.homepageCollection.snapshots.flatMapLatest {
-            it.toHomepage(userDataRepository.getUserCountry())
+            it.toHomepage(userDataRepository.getUserData().country)
         }
 
     private fun QuerySnapshot.toHomepage(country: String?) =

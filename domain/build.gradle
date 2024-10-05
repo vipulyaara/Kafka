@@ -28,7 +28,7 @@ dependencies {
 
     implementation libs.firebase.firestore
     implementation libs.fetch
-    implementation libs.google.auth
+    implementation libs.firebase.auth
     implementation libs.google.coroutines
     implementation libs.google.firestore
     implementation libs.google.playservices.auth

@@ -11,7 +11,6 @@ class SignInAnonymously @Inject constructor(
     override suspend fun doWork(params: Unit) {
         if (!accountRepository.isUserLoggedIn) {
             accountRepository.signInAnonymously()
-                ?: throw Exception("Failed to sign in anonymously")
         }
     }
 }

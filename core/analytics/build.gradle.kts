@@ -31,7 +31,6 @@ kotlin {
 
                 implementation(project.dependencies.platform(libs.google.bom))
                 implementation(libs.google.analytics)
-                implementation(libs.google.auth)
                 implementation(libs.google.crashlytics)
 
                 implementation(libs.mixpanel)

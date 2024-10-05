@@ -1,6 +1,7 @@
 package com.kafka.data.feature.item
 
-import android.text.Html
+import androidx.core.text.HtmlCompat
+import com.kafka.base.debug
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.File.Companion.supportedExtensions
@@ -8,7 +9,6 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model._mediaTypeText
 import com.kafka.data.model.item.File
 import com.kafka.data.model.item.ItemDetailResponse
-import com.kafka.base.debug
 import javax.inject.Inject
 
 class ItemDetailMapper @Inject constructor(
@@ -79,6 +79,6 @@ class ItemDetailMapper @Inject constructor(
     }
 }
 
-fun String?.format() = Html.fromHtml(this, 0)?.toString()
+fun String?.format() = HtmlCompat.fromHtml(this.orEmpty(), 0).toString()
 
 fun ItemDetailResponse.dirPrefix() = "https://$server$dir"

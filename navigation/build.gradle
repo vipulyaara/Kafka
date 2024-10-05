@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.base.annotations)
     implementation(projects.data.repo)
     implementation(projects.ui.common)
 
@@ -28,4 +28,7 @@ dependencies {
     implementation libs.compose.runtime.runtime
 
     implementation libs.kotlin.serialization
+
+    implementation libs.javax.inject
+    implementation libs.kotlininject.runtime
 }

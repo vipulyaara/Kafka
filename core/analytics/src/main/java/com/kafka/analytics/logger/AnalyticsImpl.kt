@@ -7,17 +7,15 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
+import com.kafka.analytics.EventRepository
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.debug
 import com.kafka.data.platform.UserData
 import com.kafka.data.platform.UserDataRepository
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import com.kafka.analytics.EventRepository
-import com.kafka.analytics.logger.Analytics
-import com.kafka.analytics.logger.EventInfo
-import com.kafka.base.ProcessLifetime
-import com.kafka.base.debug
 import javax.inject.Inject
 
 class AnalyticsImpl @Inject constructor(

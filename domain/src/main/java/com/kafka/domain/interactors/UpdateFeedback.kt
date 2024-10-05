@@ -1,10 +1,10 @@
 package com.kafka.domain.interactors
 
-import com.google.firebase.auth.FirebaseAuth
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.withContext
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
+import dev.gitlive.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 class UpdateFeedback @Inject constructor(

@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.analytics.AnalyticsPlatformComponent
 import com.kafka.base.AppInitializer
@@ -30,6 +29,8 @@ import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.invoke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,7 @@ interface AppModule :
 
     @Provides
     @ApplicationScope
-    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+    fun provideFirebaseAuth() = Firebase.auth
 
     @Provides
     @ApplicationScope

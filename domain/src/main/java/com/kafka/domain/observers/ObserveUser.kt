@@ -1,15 +1,15 @@
 package com.kafka.domain.observers
 
-import com.google.firebase.auth.FirebaseUser
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
+import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.entities.User
 import com.kafka.data.feature.auth.AccountRepository
+import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.debug
-import com.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveUser @Inject constructor(
@@ -30,7 +30,7 @@ class ObserveUser @Inject constructor(
             id = it.uid,
             displayName = it.displayName.orEmpty(),
             email = it.email,
-            imageUrl = it.photoUrl.toString(),
+            imageUrl = it.photoURL.toString(),
             anonymous = it.isAnonymous,
         )
     }

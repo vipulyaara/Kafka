@@ -21,6 +21,7 @@ dependencies {
     implementation projects.ui.common
 
     implementation libs.androidx.documentfile
+    implementation libs.threeTenAbp
 
     ksp libs.kotlininject.compiler
     implementation libs.kotlininject.runtime
