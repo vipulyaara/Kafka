@@ -15,14 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kafka.common.R
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.snackbar.asString
+import kafka.ui.common.generated.resources.Res
+import kafka.ui.common.generated.resources.absurd_meditation
+import org.jetbrains.compose.resources.painterResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -32,7 +32,6 @@ fun FullScreenMessage(
     show: Boolean = uiMessage != null,
     onRetry: (() -> Unit)? = null
 ) {
-    val context = LocalContext.current
     AnimatedVisibilityFade(visible = show, modifier = modifier) {
         Column(
             modifier = Modifier
@@ -43,7 +42,7 @@ fun FullScreenMessage(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.absurd_meditation),
+                painter = painterResource(Res.drawable.absurd_meditation),
                 contentDescription = null,
                 modifier = Modifier
                     .aspectRatio(1f)
@@ -57,7 +56,7 @@ fun FullScreenMessage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = uiMessage?.asString(context).orEmpty(),
+                    text = uiMessage?.asString().orEmpty(),
                     style = MaterialTheme.typography.titleMedium.alignCenter(),
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
                 )

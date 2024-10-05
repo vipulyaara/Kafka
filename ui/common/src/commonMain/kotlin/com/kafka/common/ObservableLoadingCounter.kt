@@ -1,9 +1,5 @@
 package com.kafka.common
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import com.kafka.base.debug
 import com.kafka.base.domain.InvokeError
 import com.kafka.base.domain.InvokeStarted
@@ -12,6 +8,10 @@ import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.i
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.toUiMessage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 

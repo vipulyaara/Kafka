@@ -4,14 +4,13 @@
  */
 package com.kafka.common.snackbar
 
+import com.kafka.base.ApplicationScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
-import com.kafka.base.ApplicationScope
-import com.kafka.common.R
 import javax.inject.Inject
 
 data class SnackbarAction<T>(val label: UiMessage, val argument: T)
@@ -29,7 +28,7 @@ class SnackbarManager @Inject constructor() {
 
     suspend fun addError(
         error: Throwable,
-        retryLabel: UiMessage = UiMessage.Resource(R.string.error_retry),
+        retryLabel: UiMessage = UiMessage.Plain("Retry"),
         onRetry: () -> Unit,
     ) {
         val action = SnackbarAction(retryLabel, onRetry)

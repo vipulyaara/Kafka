@@ -21,12 +21,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
-import com.kafka.data.entities.ItemDetail
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
-import com.kafka.common.image.LoadImage
 import com.kafka.common.simpleClickable
 import com.kafka.common.test.testTagUi
+import com.kafka.data.entities.ItemDetail
+import com.kafka.image.LoadImage
 import com.kafka.item.R
 import com.kafka.ui.components.MessageBox
 import ui.common.theme.theme.Dimens

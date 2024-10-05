@@ -33,14 +33,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.image.Icons
+import com.kafka.common.widgets.FullScreenMessage
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
-import me.tatarka.inject.annotations.Inject
-import com.kafka.common.extensions.AnimatedVisibilityFade
-import com.kafka.common.image.Icons
-import com.kafka.common.logging.LogCompositions
-import com.kafka.common.widgets.FullScreenMessage
 import com.kafka.homepage.components.Carousels
 import com.kafka.homepage.components.ContinueReading
 import com.kafka.ui.components.MessageBox
@@ -58,7 +56,7 @@ import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.material.StaggeredFlowRow
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
-import com.kafka.homepage.R
+import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.Dimens
 
 typealias Homepage = @Composable () -> Unit
@@ -66,8 +64,6 @@ typealias Homepage = @Composable () -> Unit
 @Composable
 @Inject
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
-    LogCompositions(tag = "Homepage Feed items")
-
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current

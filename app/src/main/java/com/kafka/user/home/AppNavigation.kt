@@ -13,13 +13,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -32,22 +36,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
-import com.kafka.reader.ReaderScreen
-import com.kafka.reader.ReaderViewModel
-import com.kafka.reader.online.OnlineReader
-import com.kafka.reader.online.OnlineReaderViewModel
-import com.kafka.reader.pdf.PdfReaderViewModel
-import com.kafka.search.SearchScreen
-import com.kafka.search.SearchViewModel
-import com.kafka.user.playback.PlaybackViewModel
-import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
-import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
-import com.sarahang.playback.ui.sheet.PlaybackSheet
-import com.sarahang.playback.ui.sheet.ResizablePlaybackSheetLayoutViewModel
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.Inject
 import com.kafka.base.debug
-import com.kafka.common.extensions.CollectEvent
 import com.kafka.homepage.Homepage
 import com.kafka.homepage.recent.RecentItemsScreen
 import com.kafka.homepage.recent.RecentViewModel
@@ -65,8 +54,16 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
+import com.kafka.reader.ReaderScreen
+import com.kafka.reader.ReaderViewModel
+import com.kafka.reader.online.OnlineReader
+import com.kafka.reader.online.OnlineReaderViewModel
+import com.kafka.reader.pdf.PdfReaderViewModel
+import com.kafka.search.SearchScreen
+import com.kafka.search.SearchViewModel
 import com.kafka.summary.SummaryScreen
 import com.kafka.summary.SummaryViewModel
+import com.kafka.user.playback.PlaybackViewModel
 import com.kafka.webview.WebView
 import com.rekhta.ui.auth.AuthViewModel
 import com.rekhta.ui.auth.LoginScreen
@@ -74,6 +71,13 @@ import com.rekhta.ui.profile.ProfileScreen
 import com.rekhta.ui.profile.ProfileViewModel
 import com.rekhta.ui.profile.feedback.FeedbackScreen
 import com.rekhta.ui.profile.feedback.FeedbackViewModel
+import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
+import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
+import com.sarahang.playback.ui.sheet.PlaybackSheet
+import com.sarahang.playback.ui.sheet.ResizablePlaybackSheetLayoutViewModel
+import kotlinx.coroutines.flow.Flow
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -433,6 +437,20 @@ internal fun SwitchStatusBarsOnPlayer(navController: NavHostController) {
 
         onDispose {
 
+        }
+    }
+}
+
+@Composable
+fun <T> CollectEvent(
+    flow: Flow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    collector: (T) -> Unit,
+): Unit = LaunchedEffect(lifecycle, flow) {
+    lifecycle.repeatOnLifecycle(minActiveState) {
+        flow.collect {
+            collector(it)
         }
     }
 }

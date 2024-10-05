@@ -22,15 +22,14 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.Item
-import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.rememberMutableState
-import com.kafka.common.logging.LogCompositions
+import com.kafka.data.entities.Item
+import com.kafka.data.model.MediaType
+import com.kafka.data.model.SearchFilter
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.bottomScaffoldPadding
 import com.kafka.ui.components.item.Item
@@ -40,8 +39,6 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun SearchScreen(searchViewModel: SearchViewModel) {
-    LogCompositions(tag = "Search")
-
     val searchViewState by searchViewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->

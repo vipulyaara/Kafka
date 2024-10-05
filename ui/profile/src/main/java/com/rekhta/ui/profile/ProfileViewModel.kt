@@ -10,6 +10,15 @@ import android.provider.Settings
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kafka.analytics.logger.Analytics
+import com.kafka.base.combine
+import com.kafka.base.domain.InvokeSuccess
+import com.kafka.base.errorLog
+import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.ObservableLoadingCounter
+import com.kafka.common.collectStatus
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.UiMessage.Plain
 import com.kafka.data.entities.User
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.SAFE_MODE
@@ -21,23 +30,14 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
 import com.kafka.data.prefs.observeTrueContrast
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import com.kafka.analytics.logger.Analytics
-import com.kafka.base.combine
-import com.kafka.base.domain.InvokeSuccess
-import com.kafka.base.errorLog
-import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.ObservableLoadingCounter
-import com.kafka.common.collectStatus
-import com.kafka.common.snackbar.SnackbarManager
-import com.kafka.common.snackbar.UiMessage
 import com.kafka.domain.interactors.account.LogoutUser
 import com.kafka.domain.observers.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import com.kafka.profile.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
@@ -110,7 +110,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
                 if (status == InvokeSuccess) {
-                    snackbarManager.addMessage(UiMessage(R.string.logged_out))
+                    snackbarManager.addMessage(Plain(application.getString(R.string.logged_out)))
                     onLogout()
                 }
             }

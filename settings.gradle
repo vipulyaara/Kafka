@@ -21,10 +21,11 @@ rootProject.name = "kafka"
 include ':app'
 include ':base:annotations' // kmp
 include ':base:domain' // kmp
-include ':baselineprofile'
+include ':baselineprofile' // kmp
 include ':core:analytics' // kmp
 include ':core:downloader'
-include ':core:play'
+include ':core:image-loading' // kmp
+include ':core:play' // kmp
 include ':core:networking' // kmp
 include ':core:remote-config' // kmp
 include ':data:repo'
@@ -35,7 +36,7 @@ include ':data:prefs' // kmp
 include ':domain'
 include ':navigation'
 include ':ui:auth'
-include ':ui:common'
+include ':ui:common' // kmp
 include ':ui:components'
 include ':ui:downloader'
 include ':ui:theme' // kmp
@@ -52,3 +53,4 @@ include ':core-playback'
 include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
+
