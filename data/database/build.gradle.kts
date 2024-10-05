@@ -1,0 +1,40 @@
+plugins {
+    id("com.android.library")
+    id("com.kafka.kotlin.multiplatform")
+    alias(libs.plugins.androidx.room)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    ksp(libs.androidx.room.compiler)
+}
+
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(projects.base.domain)
+                api(projects.data.models)
+                api(projects.data.prefs)
+
+                implementation(libs.kotlin.serialization)
+                implementation(libs.firebase.firestore)
+
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqlite.bundled)
+                implementation(libs.threeTenAbp)
+
+                implementation(libs.kotlininject.runtime)
+            }
+        }
+    }
+}
+
+android {
+    namespace = "com.kafka.database"
+}

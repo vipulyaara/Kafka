@@ -1,6 +1,5 @@
 package com.kafka.data.entities
 
-import androidx.compose.runtime.Immutable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,7 +7,6 @@ import androidx.room.PrimaryKey
 /**
  * @author Vipul Kumar; dated 13/02/19.
  */
-@Immutable
 @Entity
 data class Item(
     @PrimaryKey val itemId: String = "",
@@ -32,5 +30,4 @@ data class Item(
         get() = collection?.contains("no-preview") == true
 }
 
-@Immutable
 data class Creator(val id: String, val name: String)

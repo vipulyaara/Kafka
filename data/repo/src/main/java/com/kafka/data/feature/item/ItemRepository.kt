@@ -1,6 +1,6 @@
 package com.kafka.data.feature.item
 
-import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.room.RoomRawQuery
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore
@@ -17,7 +17,7 @@ class ItemRepository @Inject constructor(
     private val remoteDataSource: ItemDataSource,
     private val preferencesStore: PreferencesStore,
 ) {
-    fun observeQueryItems(simpleSQLiteQuery: SimpleSQLiteQuery) = combine(
+    fun observeQueryItems(simpleSQLiteQuery: RoomRawQuery) = combine(
         itemDao.observeQueryItems(simpleSQLiteQuery),
         preferencesStore.observeSafeMode()
     ) { items, safeMode ->

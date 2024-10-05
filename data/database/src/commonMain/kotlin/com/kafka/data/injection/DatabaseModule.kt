@@ -1,28 +1,24 @@
 package com.kafka.data.injection
 
-import android.app.Application
-import android.os.Debug
-import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.kafka.base.ApplicationScope
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
+import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Provides
-import com.kafka.base.ApplicationScope
 
 const val databaseName = "kafka.db"
 
 interface DatabaseModule {
     @Provides
     @ApplicationScope
-    fun provideDatabase(context: Application): KafkaRoomDatabase {
-        val builder = Room.databaseBuilder(
-            context,
-            KafkaRoomDatabase::class.java,
-            databaseName,
-        ).fallbackToDestructiveMigration()
-        if (Debug.isDebuggerConnected()) {
-            builder.allowMainThreadQueries()
-        }
-        return builder.build()
+    fun provideDatabase(builder: RoomDatabase.Builder<KafkaRoomDatabase>): KafkaRoomDatabase {
+        return builder
+            .fallbackToDestructiveMigrationOnDowngrade(true)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
     }
 
     @Provides

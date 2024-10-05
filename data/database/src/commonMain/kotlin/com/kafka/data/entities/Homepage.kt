@@ -1,9 +1,7 @@
 package com.kafka.data.entities
 
-import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.persistentListOf
 
-@Immutable
 data class Homepage(val collection: List<HomepageCollection>) {
     val continueReadingItems: List<RecentItemWithProgress>
         get() = collection.recentItems.subList(
@@ -23,10 +21,7 @@ val List<HomepageCollection>.recentItems
     get() = filterIsInstance<HomepageCollection.RecentItems>()
         .firstOrNull()?.items.orEmpty()
 
-@Immutable
 sealed class HomepageCollection {
-
-    @Immutable
     data class FeaturedItem(
         val label: String?,
         val items: List<Item>,
@@ -34,19 +29,16 @@ sealed class HomepageCollection {
         val shuffle: Boolean,
     ) : HomepageCollection()
 
-    @Immutable
     data class RecentItems(
         val items: List<RecentItemWithProgress>,
     ) : HomepageCollection()
 
-    @Immutable
     data class Recommendations(
         val labels: List<String>,
         val type: String,
         val items: List<Item>,
     ) : HomepageCollection()
 
-    @Immutable
     data class PersonRow(
         val items: List<String>,
         val images: List<String>,
@@ -54,7 +46,6 @@ sealed class HomepageCollection {
         val shuffle: Boolean,
     ) : HomepageCollection()
 
-    @Immutable
     data class Row(
         val labels: List<String>,
         val items: List<Item>,
@@ -64,7 +55,6 @@ sealed class HomepageCollection {
         val key = labels.joinToString(separator = ",")
     }
 
-    @Immutable
     data class Column(
         val labels: List<String>,
         val items: List<Item>,
@@ -74,7 +64,6 @@ sealed class HomepageCollection {
         val key = labels.joinToString(separator = ",")
     }
 
-    @Immutable
     data class Grid(
         val labels: List<String>,
         val items: List<Item>,
@@ -84,7 +73,6 @@ sealed class HomepageCollection {
         val key = labels.joinToString(separator = ",")
     }
 
-    @Immutable
     data class Subjects(
         val items: List<String>,
         val clickable: Boolean = true,

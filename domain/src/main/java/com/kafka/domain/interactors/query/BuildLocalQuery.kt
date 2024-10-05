@@ -1,22 +1,22 @@
 package com.kafka.domain.interactors.query
 
-import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.room.RoomRawQuery
+import com.kafka.base.debug
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.QueryItem
 import com.kafka.data.model._identifier
 import com.kafka.data.model._mediaType
-import com.kafka.base.debug
 import javax.inject.Inject
 
 class BuildLocalQuery @Inject constructor() {
-    operator fun invoke(params: ArchiveQuery): SimpleSQLiteQuery {
+    operator fun invoke(params: ArchiveQuery): RoomRawQuery {
         return params.asLocalQuery()
     }
 
     private fun String.toLocalJoiner() = if (this.isEmpty()) "" else " $this "
 
-    private fun ArchiveQuery.asLocalQuery(): SimpleSQLiteQuery {
+    private fun ArchiveQuery.asLocalQuery(): RoomRawQuery {
         val selectFrom = "SELECT * FROM item WHERE"
         var where = " "
 
@@ -48,7 +48,7 @@ class BuildLocalQuery @Inject constructor() {
 
         debug { "Local query is $query" }
 
-        return SimpleSQLiteQuery(query)
+        return RoomRawQuery(query)
     }
 
     private fun String.sanitizeForRoom() = if (this == _identifier) "itemId" else this

@@ -1,10 +1,12 @@
 package com.kafka.data.db
 
 import androidx.room.AutoMigration
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.DeleteTable
 import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import com.kafka.data.dao.DownloadRequestsDao
@@ -33,6 +35,11 @@ interface KafkaDatabase {
     fun downloadRequestsDao(): DownloadRequestsDao
 }
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDatabase> {
+    override fun initialize(): KafkaRoomDatabase
+}
+
 @Database(
     entities = [
         ItemDetail::class,
@@ -52,6 +59,7 @@ interface KafkaDatabase {
         AutoMigration(from = 7, to = 8),
     ],
 )
+@ConstructedBy(KafkaDatabaseConstructor::class)
 @TypeConverters(AppTypeConverters::class)
 abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
     @DeleteTable(tableName = "user")

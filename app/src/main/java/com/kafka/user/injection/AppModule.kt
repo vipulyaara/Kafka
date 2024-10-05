@@ -13,6 +13,7 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
+import com.kafka.data.db.DatabaseBuilderComponent
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.injection.SerializersModule
 import com.kafka.data.prefs.PreferencesStore
@@ -45,6 +46,7 @@ private const val dataStoreFileName = "app_preferences.preferences_pb"
 interface AppModule :
     NetworkingComponent,
     SerializersModule,
+    DatabaseBuilderComponent,
     DatabaseModule,
     DownloaderModule,
     PlayerModule,

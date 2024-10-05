@@ -3,7 +3,7 @@ package com.kafka.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
-import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.room.RoomRawQuery
 import com.kafka.data.entities.Item
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 abstract class ItemDao : EntityDao<Item> {
 
     @RawQuery(observedEntities = [Item::class])
-    abstract fun observeQueryItems(buildLocalQuery: SimpleSQLiteQuery): Flow<List<Item>>
+    abstract fun observeQueryItems(buildLocalQuery: RoomRawQuery): Flow<List<Item>>
 
     @Query("select * from item where itemId = :itemId")
     abstract suspend fun get(itemId: String): Item

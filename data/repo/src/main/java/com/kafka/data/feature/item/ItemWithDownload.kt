@@ -1,18 +1,15 @@
 package com.kafka.data.feature.item
 
 import android.net.Uri
-import androidx.compose.runtime.Immutable
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 
-@Immutable
 data class ItemWithDownload(
     val downloadInfo: DownloadInfo,
     val file: File,
     val item: Item,
 )
 
-@Immutable
 data class DownloadInfo(
     val id: Int,
     val progress: Float,
