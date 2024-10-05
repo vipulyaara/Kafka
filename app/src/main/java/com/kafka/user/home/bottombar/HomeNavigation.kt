@@ -49,6 +49,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.kafka.analytics.logger.Analytics
+import com.kafka.common.adaptive.windowWidthSizeClass
+import com.kafka.common.widgets.LocalSnackbarHostState
+import com.kafka.navigation.currentScreenAsState
+import com.kafka.navigation.graph.RootScreen
+import com.kafka.navigation.graph.Screen
+import com.kafka.navigation.graph.navigationRoute
+import com.kafka.navigation.selectRootScreen
+import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.material.HazeScaffold
+import com.kafka.ui.components.snackbar.DismissableSnackbarHost
 import com.kafka.user.home.AppNavigation
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.artist
@@ -62,17 +73,6 @@ import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import com.kafka.analytics.logger.Analytics
-import com.kafka.common.adaptive.windowWidthSizeClass
-import com.kafka.common.widgets.LocalSnackbarHostState
-import com.kafka.navigation.currentScreenAsState
-import com.kafka.navigation.graph.RootScreen
-import com.kafka.navigation.graph.Screen
-import com.kafka.navigation.graph.navigationRoute
-import com.kafka.navigation.selectRootScreen
-import com.kafka.ui.components.ProvideScaffoldPadding
-import com.kafka.ui.components.material.HazeScaffold
-import com.kafka.ui.components.snackbar.DismissableSnackbarHost
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
@@ -221,7 +221,7 @@ private fun HomeNavigationBar(
     openPlaybackSheet: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier = modifier) {
         if (navigationType.shouldShowMiniPlayer()) {
             MiniPlayer(
                 useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
@@ -235,7 +235,6 @@ private fun HomeNavigationBar(
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
             NavigationBar(
-                modifier = modifier,
                 containerColor = Color.Transparent,
                 windowInsets = WindowInsets.navigationBars,
             ) {
