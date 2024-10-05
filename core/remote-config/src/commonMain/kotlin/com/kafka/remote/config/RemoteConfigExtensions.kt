@@ -6,7 +6,6 @@ const val DOWNLOADER_TYPE = "downloader_type"
 const val GOOGLE_LOGIN_ENABLED = "google_login_enabled"
 const val RECOMMENDATION_ROW_ENABLED = "recommendation_row_enabled"
 const val ONLINE_READER_ENABLED = "online_reader_enabled"
-const val MIN_SUPPORTED_VERSION = "min_supported_version"
 const val SHARE_APP_INDEX = "share_app_index"
 const val DOWNLOADS_WARNING_MESSAGE = "downloads_warning_message"
 const val ITEM_DETAIL_DYNAMIC_THEME_ENABLED = "item_detail_dynamic_theme_enabled"
@@ -27,8 +26,6 @@ fun RemoteConfig.isGoogleLoginEnabled() = getBoolean(GOOGLE_LOGIN_ENABLED)
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
 
 fun RemoteConfig.isOnlineReaderEnabled() = getBoolean(ONLINE_READER_ENABLED)
-
-fun RemoteConfig.minSupportedVersion() = getLong(MIN_SUPPORTED_VERSION)
 
 fun RemoteConfig.shareAppIndex() = getLong(SHARE_APP_INDEX)
 

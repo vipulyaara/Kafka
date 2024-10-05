@@ -24,6 +24,7 @@ class SnackbarManager @Inject constructor() {
     private val actionPerformedMessageChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)
 
     val messages = messagesChannel.receiveAsFlow()
+    val actionPerformed = actionPerformedMessageChannel.receiveAsFlow()
     private val shownMessages = mutableSetOf<UiMessage>()
 
     suspend fun addError(
@@ -36,6 +37,18 @@ class SnackbarManager @Inject constructor() {
         addMessage(SnackbarMessage(UiMessage.Error(error), action))
 
         observeMessageAction(message, onRetry)
+    }
+
+    suspend fun addMessage(
+        message: String,
+        label: String,
+        onClick: () -> Unit,
+    ) {
+        val action = SnackbarAction(UiMessage.Plain(label), onClick)
+        val snackbarMessage = SnackbarMessage(UiMessage.Plain(message), action)
+        addMessage(SnackbarMessage(UiMessage.Plain(message), action))
+
+        observeMessageAction(snackbarMessage, onClick)
     }
 
     fun addMessage(message: UiMessage) = addMessage(SnackbarMessage<Unit>(message))
@@ -65,7 +78,7 @@ class SnackbarManager @Inject constructor() {
         val result = merge(
             actionDismissedMessageChannel.receiveAsFlow().filter { it == message }
                 .map { null }, // map to null because it's dismissed
-            actionPerformedMessageChannel.receiveAsFlow().filter { it == message },
+            actionPerformed.filter { it == message },
         ).firstOrNull()
         return if (result == message) message else null
     }

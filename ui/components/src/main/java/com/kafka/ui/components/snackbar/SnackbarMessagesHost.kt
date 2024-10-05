@@ -33,7 +33,6 @@ fun SnackbarMessagesHost(
     }
 }
 
-
 @Composable
 private fun <T> CollectEvent(
     flow: Flow<T>,
