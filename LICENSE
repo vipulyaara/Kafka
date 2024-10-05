@@ -1,48 +1,56 @@
 Kafka App License v1.0
 
-Copyright © 2024 Vipul Kumar. All rights reserved.
+Copyright © 2024 Vipul Kumar. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person or entity (the “User”) obtaining a copy of this software and associated documentation files (the “Software”), to use, reproduce, modify, and access the Software solely for personal, non-commercial purposes, subject to the following terms and conditions:
+Recitals:
+This License is granted by Vipul Kumar (“Licensor”) to any individual or entity (the “Licensee”) that obtains a copy of the Kafka App Software and associated documentation files (the “Software”). The Licensee is granted certain rights to use, modify, and interact with the Software subject to the following terms and conditions, which constitute a legally binding agreement between the Licensor and the Licensee. By using the Software, the Licensee agrees to be bound by the terms and conditions contained herein.
 
-1. Open Source Requirement and Obligations of Forking
+1. Grant of License
 
-•	Any modification or derivative work (hereinafter referred to as “Fork”) based upon the Software shall be subject to the terms of this License. The User shall not modify or Fork the Software in any manner that does not result in the source code of such Fork being publicly available under the same licensing terms as this License.
-•	The User shall ensure that the source code for any Fork is made accessible and distributed under this same license, preserving the original license terms in full, including attribution requirements as set forth in Section 5.
+Subject to the terms and conditions of this License, the Licensor hereby grants to the Licensee a non-exclusive, non-transferable, and non-sublicensable right to use, reproduce, modify, and view the Software solely for personal, non-commercial purposes. The Licensee may access, modify, and interact with the source code of the Software for personal, educational, or experimental purposes. However, this License does not grant the Licensee any rights to distribute, sublicense, or otherwise make the Software available to third parties in any public or commercial forum.
 
-2. Restrictions on Distribution and Publication
+2. Open Source Obligations
 
-•	The User is expressly prohibited from distributing, sublicensing, or publishing the Software, or any Fork or derivative work thereof, in any digital, physical, or online marketplace, platform, app store (including but not limited to Google Play Store or Apple App Store), or software distribution service, whether for commercial or non-commercial purposes, without the prior written consent of Vipul Kumar.
-•	Any attempt by the User to distribute the Software, a Fork, or a derivative work thereof without such consent shall constitute a material breach of this License and may result in the revocation of all rights granted under this License.
+The Licensee is expressly permitted to create derivative works or modifications to the Software (hereinafter referred to as “Forks”). However, any such Forks must remain subject to the terms of this License. In the event that the Licensee modifies the Software or creates a Fork, the Licensee is required to make the source code for any such modifications or Forks publicly available under the same terms and conditions as this License. The Licensee shall not create or maintain any Fork without ensuring that the source code for such Fork is made publicly accessible and available for use under this License.
 
-3. Monetization Restrictions
+3. Prohibition on Distribution and Commercial Exploitation
 
-•	The User is prohibited from utilizing the Software, any Fork, or derivative work thereof for the purpose of generating financial gain, whether directly or indirectly. This prohibition includes, but is not limited to, the use of the Software in any context involving:
-•	Advertisements, sponsored content, or commercial endorsements;
-•	Paid content, in-app purchases, or subscription-based services;
-•	Offering the Software as a service or product for sale or in exchange for compensation of any kind.
-•	The exclusive right to monetize the Software, including but not limited to the use of advertisements, paid content, or any other commercial exploit, is hereby retained solely by Vipul Kumar. Any unauthorized attempt by the User to monetize the Software, a Fork, or any derivative work thereof, shall constitute a violation of this License.
+The Licensee is strictly prohibited from distributing, sublicensing, or making available the Software, or any derivative work or Fork thereof, in any form or medium for the purpose of public release, whether through digital platforms, mobile app stores, software distribution platforms, or any other means of dissemination. This prohibition includes, but is not limited to, distribution through the Google Play Store, Apple App Store, or any comparable software distribution platforms.
 
-4. Third-Party License Compliance
+Furthermore, the Licensee may not, under any circumstances, commercialize the Software, whether in its original form or as modified, including through direct or indirect monetization, advertising, in-app purchases, paid subscriptions, or any other means of generating revenue. The right to monetize the Software through any commercial means, including but not limited to advertisements, paid content, and subscription-based services, is reserved exclusively for the Licensor. Any attempt by the Licensee to engage in commercial exploitation of the Software or any Fork shall constitute a material breach of this License.
 
-•	The Software includes certain code and resources licensed under third-party open-source licenses, including but not limited to:
-•	GNU General Public License v3.0 (GPLv3), which mandates that any derivative work incorporating such code must also be licensed under GPLv3;
-•	Apache License 2.0, which allows modifications but requires appropriate attribution and inclusion of the Apache 2.0 license in redistributed works.
-•	The User agrees to comply with the terms of any applicable third-party licenses for such code. In the event of a conflict between this License and any third-party license, the terms of the third-party license shall prevail solely with respect to that code.
+4. Intellectual Property Rights
 
-5. Attribution and Notice of Modification
+Except as expressly provided herein, the Licensor retains all right, title, and interest in and to the Software, including but not limited to all intellectual property rights, copyrights, trademarks, trade secrets, and any other proprietary rights therein. The Licensee acknowledges and agrees that the Licensor’s rights to the Software, whether in its original form or as modified, are protected by applicable copyright laws, international copyright treaties, and other intellectual property laws. This License does not transfer any ownership rights from the Licensor to the Licensee, and all rights not expressly granted in this License are reserved by the Licensor.
 
-•	The User must retain all copyright, trademark, and attribution notices contained in the original Software and any Forks. Any Fork, derivative work, or modification of the Software must include a clear and prominent attribution to the original author, Vipul Kumar, and a link to the original repository where the Software was obtained.
-•	The User must also include a statement detailing any substantive modifications made to the Software in any public repository or platform where the Fork is made available, so as to ensure clear differentiation from the original Software.
+5. Third-Party License Compliance
 
-6. Intellectual Property and Ownership
+The Licensee acknowledges that the Software incorporates certain third-party open-source components that are licensed under their respective terms. The Software includes, but is not limited to, the GNU General Public License v3.0 (GPLv3), and the Apache License 2.0. The Licensee agrees to comply with the terms of any applicable third-party licenses when using, modifying, or creating Forks of the Software.
 
-•	Except as explicitly set forth in this License, Vipul Kumar retains all right, title, and interest in and to the Software, including all intellectual property rights therein. The User’s rights to use the Software are limited to those expressly granted in this License. All rights not expressly granted are reserved by Vipul Kumar.
+In the event of any conflict between the terms of this License and any third-party license, the terms of the third-party license shall govern solely with respect to the applicable third-party code. The Licensee is solely responsible for ensuring compliance with any applicable third-party licenses when modifying or distributing code governed by such licenses.
 
-7. Termination and Revocation of License
+6. Attribution and Modification Notice
 
-•	This License shall remain in effect until terminated. Vipul Kumar reserves the right to terminate this License and revoke the User’s rights to the Software in the event of any material breach of this License by the User. Upon termination, the User must cease all use of the Software and destroy all copies of the Software in their possession or control.
-•	Additionally, this License may be revoked at any time, at the discretion of Vipul Kumar, if the User is found to be in violation of the terms, including but not limited to the distribution, commercialization, or failure to make Forks open source as required by this License.
+The Licensee is required to maintain all copyright notices, trademark acknowledgments, and any other notices of attribution that are present in the original Software when using, modifying, or creating Forks. Furthermore, any modifications to the Software must be accompanied by a clear and prominent statement indicating that the Licensee has made such modifications. Such statements must include a description of the modifications made and a reference to the original version of the Software as made available by the Licensor.
 
-8. No Warranty and Limitation of Liability
+In any repository, platform, or location where the Fork or modified version of the Software is made publicly available, the Licensee must provide clear attribution to the original author, Vipul Kumar, and provide a hyperlink or reference to the original repository where the Software was first made available.
 
-•	THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+7. Termination of License
+
+This License is effective until terminated. The Licensor reserves the right to terminate this License and revoke the Licensee’s rights to use, modify, or interact with the Software if the Licensee is found to be in material breach of any of the terms of this License. Upon termination of this License, the Licensee must immediately cease all use of the Software, destroy all copies of the Software in the Licensee’s possession, and take all reasonable steps to ensure that any Forks or derivative works that may have been created are removed from public availability.
+
+Termination of this License shall not relieve the Licensee of its obligation to comply with the terms of this License as they pertain to any Forks or modifications of the Software that were made prior to termination.
+
+8. No Warranty
+
+The Software is provided “as is” without warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The Licensor makes no representations or warranties of any kind with respect to the Software, including but not limited to the accuracy, reliability, completeness, or usefulness of the Software. The Licensee assumes all risks associated with the use, modification, or Forking of the Software, including but not limited to the risk that the Software may contain errors, defects, or other issues.
+
+The Licensor shall not be liable for any damages, whether direct, indirect, incidental, consequential, or otherwise, arising out of or in connection with the use or inability to use the Software, including but not limited to loss of profits, business interruption, loss of data, or any other economic losses, even if the Licensor has been advised of the possibility of such damages.
+
+9. Miscellaneous Provisions
+
+This License constitutes the entire agreement between the Licensor and the Licensee with respect to the Software and supersedes all prior agreements, representations, and understandings, whether written or oral, concerning the subject matter hereof. No amendment, modification, or waiver of any provision of this License shall be effective unless agreed upon in writing by the Licensor.
+
+If any provision of this License is found to be invalid, illegal, or unenforceable, the remaining provisions of this License shall remain in full force and effect. The failure of the Licensor to enforce any right or provision of this License shall not constitute a waiver of that right or provision.
+
+This License shall be governed by and construed in accordance with the laws of the jurisdiction in which the Licensor resides, without regard to its conflict of law principles. Any dispute arising under or in connection with this License shall be subject to the exclusive jurisdiction of the courts located within the jurisdiction of the Licensor’s residence.
