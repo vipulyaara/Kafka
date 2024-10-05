@@ -77,7 +77,6 @@ import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
-
 typealias HomeNavigation = @Composable (NavHostController, String) -> Unit
 
 @Inject

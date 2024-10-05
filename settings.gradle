@@ -21,7 +21,7 @@ rootProject.name = "kafka"
 include ':app'
 include ':base:annotations' // kmp
 include ':base:domain' // kmp
-include ':baselineprofile'
+include ':baselineprofile' // kmp
 include ':core:analytics' // kmp
 include ':core:downloader'
 include ':core:image-loading' // kmp
