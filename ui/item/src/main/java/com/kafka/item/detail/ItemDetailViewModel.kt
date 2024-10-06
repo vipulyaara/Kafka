@@ -36,8 +36,7 @@ import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.item.R
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
-import com.kafka.navigation.deeplink.DeepLinksNavigation
-import com.kafka.navigation.deeplink.Navigation
+import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.Screen.ItemDescription
@@ -224,7 +223,7 @@ class ItemDetailViewModel @Inject constructor(
         analytics.log { this.shareItem(itemId, "item_detail") }
         val itemTitle = state.value.itemDetail!!.title
 
-        val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
+        val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
 
         context.shareText(text)
