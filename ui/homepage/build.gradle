@@ -13,6 +13,7 @@ android {
 dependencies {
     implementation projects.base.domain
     implementation projects.core.analytics
+    implementation projects.core.remoteConfig
     implementation projects.data.repo
     implementation projects.domain
     implementation projects.navigation

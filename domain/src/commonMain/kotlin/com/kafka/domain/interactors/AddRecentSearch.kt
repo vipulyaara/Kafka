@@ -12,9 +12,9 @@ import javax.inject.Inject
 class AddRecentSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val recentSearchDao: RecentSearchDao,
-) : Interactor<com.kafka.domain.interactors.AddRecentSearch.Params>() {
+) : Interactor<AddRecentSearch.Params>() {
 
-    override suspend fun doWork(params: _root_ide_package_.com.kafka.domain.interactors.AddRecentSearch.Params) {
+    override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             val recentSearch = RecentSearch(
                 searchTerm = params.searchTerm,

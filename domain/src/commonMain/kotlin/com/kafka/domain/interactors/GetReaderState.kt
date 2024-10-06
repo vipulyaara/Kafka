@@ -1,13 +1,14 @@
 package com.kafka.domain.interactors
 
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.ResultInteractor
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.RecentTextDao
+import com.kafka.data.encodeUrl
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.nameWithoutExtension
 import kotlinx.coroutines.withContext
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.ResultInteractor
 import javax.inject.Inject
 
 class GetReaderState @Inject constructor(
@@ -32,7 +33,7 @@ class GetReaderState @Inject constructor(
 
             val baseUrl = "https://archive.org/details"
             val fileName = file?.nameWithoutExtension().orEmpty()
-            val idSegment = if (file != null) "/$itemId/${fileName.encodeUri()}" else "/$itemId"
+            val idSegment = if (file != null) "/$itemId/${fileName.encodeUrl()}" else "/$itemId"
             val pageSegment =
                 if (currentPage == 1) "" else "/page/n${currentPage - 1}" // archive reader index starts at 0
 
@@ -69,5 +70,3 @@ fun String.getCurrentPageFromReaderUrl(): Int {
     val index = segments.indexOf("page")
     return segments[index + 1].removePrefix("n").toIntOrNull() ?: 1
 }
-
-private fun String.encodeUri(): String = android.net.Uri.encode(this)
