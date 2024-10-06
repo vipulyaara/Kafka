@@ -18,21 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kafka.data.entities.Item
-import com.kafka.data.entities.isAudioMediaType
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
-import com.kafka.common.test.testTagUi
 import com.kafka.common.widgets.IconResource
-import com.kafka.ui.components.R
+import com.kafka.data.entities.Item
+import com.kafka.data.entities.isAudioMediaType
 import com.kafka.ui.components.placeholder.placeholderDefault
-import ui.common.theme.theme.AppTheme
+import kafka.ui.components.generated.resources.Res
+import kafka.ui.components.generated.resources.explicit
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -42,7 +39,8 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         creator = item.creator?.name,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        modifier = modifier.testTagUi("content_item"),
+        modifier = modifier,
+//            .testTagUi("content_item"),
         isInAppropriate = item.isInappropriate
     )
 }
@@ -73,7 +71,7 @@ fun Item(
 
             if (isInAppropriate) {
                 Text(
-                    text = stringResource(R.string.explicit),
+                    text = stringResource(Res.string.explicit),
                     style = MaterialTheme.typography.labelSmall.alignCenter(),
                     color = MaterialTheme.colorScheme.primary,
                     maxLines = 1,
@@ -139,8 +137,8 @@ fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 
         imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
         modifier = modifier
-            .size(size)
-            .testTagUi("item_${mediaType}_icon"),
+            .size(size),
+//            .testTagUi("item_${mediaType}_icon"),
         contentDescription = mediaType
     )
 }
@@ -239,20 +237,5 @@ fun ItemPlaceholder(modifier: Modifier = Modifier) {
                     .placeholderDefault()
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun ItemPreview() {
-    AppTheme {
-        Item(
-            title = "The making of the Atomic bomb in the age of Oppenheimer",
-            creator = "Christopher Nolan",
-            mediaType = "audio",
-            coverImage = "",
-            isInAppropriate = true,
-            modifier = Modifier.background(Color.White)
-        )
     }
 }

@@ -16,8 +16,9 @@ fun Modifier.shadowMaterial(
     elevation: Dp,
     shape: Shape = RectangleShape,
     clip: Boolean = elevation > 0.dp,
+    containerColor: Color? = null,
     ambientColor: Color? = null,
-    spotColor: Color? = null
+    spotColor: Color? = null,
 ) = composed {
     shadow(
         elevation = elevation,
@@ -25,5 +26,5 @@ fun Modifier.shadowMaterial(
         clip = clip,
         ambientColor = ambientColor ?: MaterialTheme.colorScheme.shadowMaterial,
         spotColor = spotColor ?: MaterialTheme.colorScheme.shadowMaterial
-    ).background(MaterialTheme.colorScheme.surface)
+    ).background(containerColor ?: MaterialTheme.colorScheme.surface)
 }

@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalTransitionApi::class)
+
 package com.kafka.ui.components.placeholder
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.ExperimentalTransitionApi
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.MutableTransitionState

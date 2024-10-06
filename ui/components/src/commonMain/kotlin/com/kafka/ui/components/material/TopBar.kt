@@ -1,7 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.ui.components.material
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -10,17 +12,18 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
-import com.kafka.ui.components.R
+import kafka.ui.components.generated.resources.Res
+import kafka.ui.components.generated.resources.cd_back
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TopBar(
     title: String = "",
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.background,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
@@ -52,7 +55,7 @@ fun BackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         IconResource(
             imageVector = Icons.Back,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = stringResource(R.string.cd_back)
+            contentDescription = stringResource(Res.string.cd_back)
         )
     }
 }
@@ -66,7 +69,7 @@ fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         IconResource(
             imageVector = Icons.X,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = stringResource(R.string.cd_back)
+            contentDescription = stringResource(Res.string.cd_back)
         )
     }
 }

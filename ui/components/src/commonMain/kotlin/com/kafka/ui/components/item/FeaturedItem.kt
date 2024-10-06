@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.kafka.data.entities.Item
 import com.kafka.common.image.Icons
+import com.kafka.data.entities.Item
 import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalThemeColor

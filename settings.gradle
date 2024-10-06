@@ -33,8 +33,8 @@ include ':data:database' // kmp
 include ':data:models' // kmp
 include ':data:platform' // kmp
 include ':data:prefs' // kmp
-include ':domain'
-include ':navigation'
+include ':domain' // kmp
+include ':navigation' // kmp
 include ':ui:auth'
 include ':ui:common' // kmp
 include ':ui:components'

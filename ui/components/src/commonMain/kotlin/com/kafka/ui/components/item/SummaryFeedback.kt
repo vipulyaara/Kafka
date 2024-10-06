@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ui.common.theme.theme.Dimens
 
@@ -71,10 +70,4 @@ private fun FeedbackButton(feedback: FeedbackItem, onSelected: (FeedbackItem) ->
 enum class FeedbackItem(val icon: String, val label: String) {
     Positive("\uD83D\uDE0D", "Liked it"),
     Negative("\uD83D\uDE14", "Not helpful"),
-}
-
-@Composable
-@Preview
-private fun SummaryFeedbackPreview() {
-    SummaryFeedback()
 }

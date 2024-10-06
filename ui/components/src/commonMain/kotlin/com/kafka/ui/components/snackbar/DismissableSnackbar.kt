@@ -2,8 +2,11 @@
  * Copyright (C) 2021, Alashov Berkeli
  * All rights reserved.
  */
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.ui.components.snackbar
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData

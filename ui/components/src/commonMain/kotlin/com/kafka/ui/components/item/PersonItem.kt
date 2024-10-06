@@ -13,24 +13,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.kafka.common.extensions.medium
 import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),
@@ -44,19 +39,17 @@ fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
-                model = remember(context, imageUrl) {
-                    ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .crossfade(300)
-                        .build()
-                },
+            CoverImage(
+                data = imageUrl,
+                shape = CircleShape,
+                size = DpSize(PersonItemWidth, PersonItemWidth),
                 contentDescription = title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(PersonItemWidth)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
+                modifier = Modifier.aspectRatio(1f),
+                placeholder = null,
+                elevation = 0.dp,
+                tonalElevation = 0.dp,
+                containerColor = MaterialTheme.colorScheme.surface
             )
 
             Text(

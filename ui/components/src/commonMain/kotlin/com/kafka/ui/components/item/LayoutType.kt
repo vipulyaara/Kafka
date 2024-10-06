@@ -7,10 +7,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
-import com.kafka.ui.components.R
+import kafka.ui.components.generated.resources.Res
+import kafka.ui.components.generated.resources.cd_change_layout
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LayoutType(layoutType: LayoutType, changeViewType: (LayoutType) -> Unit) {
@@ -24,7 +25,7 @@ fun LayoutType(layoutType: LayoutType, changeViewType: (LayoutType) -> Unit) {
             IconResource(
                 imageVector = icon,
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = stringResource(R.string.cd_change_layout)
+                contentDescription = stringResource(Res.string.cd_change_layout)
             )
         }
     }
@@ -36,4 +37,3 @@ enum class LayoutType {
 
     fun toggle() = if (this == List) Grid else List
 }
-
