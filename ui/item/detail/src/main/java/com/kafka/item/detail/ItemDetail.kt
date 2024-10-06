@@ -39,7 +39,6 @@ import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.animation.Delayed
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.simpleClickable
-import com.kafka.item.R
 import com.kafka.item.detail.description.AccessRestricted
 import com.kafka.item.detail.description.DescriptionText
 import com.kafka.item.detail.description.ItemDescription

@@ -42,7 +42,7 @@ include ':ui:downloader'
 include ':ui:theme' // kmp
 include ':ui:library'
 include ':ui:homepage'
-include ':ui:item'
+include ':ui:item:detail'
 include ':ui:profile'
 include ':ui:reader'
 include ':ui:search'
@@ -53,4 +53,3 @@ include ':core-playback'
 include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
-

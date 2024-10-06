@@ -18,6 +18,6 @@ dependencies {
     implementation projects.navigation
     implementation projects.ui.common
     implementation projects.ui.components
-    implementation projects.ui.item
+    implementation projects.ui.item.detail
     implementation projects.ui.library
 }
