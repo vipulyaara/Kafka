@@ -23,13 +23,13 @@ include ':base:annotations' // kmp
 include ':base:domain' // kmp
 include ':baselineprofile' // kmp
 include ':core:analytics' // kmp
-include ':core:downloader'
+include ':core:downloader' // kmp
 include ':core:image-loading' // kmp
 include ':core:play' // kmp
 include ':core:networking' // kmp
 include ':core:remote-config' // kmp
-include ':data:repo'
-include ':data:database'
+include ':data:repo' // kmp
+include ':data:database' // kmp
 include ':data:models' // kmp
 include ':data:platform' // kmp
 include ':data:prefs' // kmp
