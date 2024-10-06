@@ -1,6 +1,5 @@
 package com.kafka.homepage
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.logger.Analytics
@@ -8,7 +7,6 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.UiMessageManager
 import com.kafka.common.collectStatus
-import com.kafka.common.shareText
 import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.UpdateRecommendations
@@ -17,7 +15,6 @@ import com.kafka.domain.observers.ObserveHomepage
 import com.kafka.domain.observers.ObserveShareAppIndex
 import com.kafka.domain.observers.ObserveUser
 import com.kafka.navigation.Navigator
-import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.remote.config.RemoteConfig
@@ -115,8 +112,9 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Search(name, SearchFilter.Creator.name), RootScreen.Search)
     }
 
-    fun shareApp(context: Context) {
-        analytics.log { this.shareApp() }
-        context.shareText(context.getString(R.string.share_app_message, Config.PLAY_STORE_URL))
+    // todo: kmp implement this
+    fun shareApp() {
+//        analytics.log { this.shareApp() }
+//        context.shareText(context.getString(R.string.share_app_message, Config.PLAY_STORE_URL))
     }
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.homepage.recent
 
 import androidx.compose.foundation.background
@@ -8,22 +10,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentItem
 import com.kafka.common.elevation
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
-import com.kafka.homepage.R
+import com.kafka.data.entities.RecentItem
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -34,6 +35,13 @@ import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.SwipeToDelete
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.scaffoldPadding
+import kafka.ui.homepage.generated.resources.Res
+import kafka.ui.homepage.generated.resources.cancel
+import kafka.ui.homepage.generated.resources.clear_all_recent_items
+import kafka.ui.homepage.generated.resources.clear_recent_dialog_title
+import kafka.ui.homepage.generated.resources.continue_reading
+import kafka.ui.homepage.generated.resources.remove_all
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -85,7 +93,7 @@ private fun RecentItems(
     ) {
         items(items = items, key = { item -> item.itemId }) { item ->
             SwipeToDelete(
-                modifier = Modifier.animateItem(),
+//                modifier = Modifier.animateItem(),
                 onDismiss = { removeRecentItem(item.fileId) }) {
                 Item(
                     title = item.title,
@@ -109,14 +117,14 @@ private fun RecentTopBar(
     clearRecentItems: () -> Unit,
 ) {
     TopBar(
-        title = stringResource(id = R.string.continue_reading),
+        title = stringResource(Res.string.continue_reading),
         navigationIcon = { BackButton { navigator.goBack() } },
         actions = {
             IconButton(onClick = clearRecentItems) {
                 IconResource(
                     imageVector = Icons.Delete,
                     tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = stringResource(R.string.clear_all_recent_items),
+                    contentDescription = stringResource(Res.string.clear_all_recent_items),
                 )
             }
         },
@@ -132,16 +140,16 @@ private fun ClearConfirmationDialog(
 ) {
     if (clearRecentItemsConfirmation) {
         AlertDialog(
-            title = stringResource(R.string.clear_recent_dialog_title),
+            title = stringResource(Res.string.clear_recent_dialog_title),
             onDismissRequest = { toggleConfirmation(false) },
             confirmButton = {
-                AlertDialogAction(text = stringResource(R.string.remove_all)) {
+                AlertDialogAction(text = stringResource(Res.string.remove_all)) {
                     clearRecentItems()
                     toggleConfirmation(false)
                 }
             },
             cancelButton = {
-                AlertDialogAction(text = stringResource(R.string.cancel)) {
+                AlertDialogAction(text = stringResource(Res.string.cancel)) {
                     toggleConfirmation(false)
                 }
             })

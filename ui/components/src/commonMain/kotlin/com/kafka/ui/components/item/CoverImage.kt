@@ -26,6 +26,7 @@ import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kafka.common.image.Icons
+import com.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -53,6 +54,7 @@ fun CoverImage(
         shape = shape,
         modifier = modifier
             .then(sizeMod)
+            .shadowMaterial(elevation = elevation, shape = shape)
     ) {
         Image(
             data = if (isNoPreview) null else data,

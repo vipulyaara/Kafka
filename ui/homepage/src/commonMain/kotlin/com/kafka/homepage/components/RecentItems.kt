@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.kafka.homepage.components
 
 import androidx.compose.animation.core.LinearEasing
@@ -6,6 +8,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,24 +48,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.kafka.data.entities.RecentItem
-import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.shadowMaterial
-import com.kafka.homepage.R
+import com.kafka.data.entities.RecentItem
+import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.ui.components.LabelMedium
+import com.kafka.ui.components.item.CoverImage
 import com.kafka.ui.components.item.ItemCreatorSmall
 import com.kafka.ui.components.item.ItemDescription
 import com.kafka.ui.components.item.ItemMediaType
 import com.kafka.ui.components.item.ItemTitleSmall
+import kafka.ui.homepage.generated.resources.Res
+import kafka.ui.homepage.generated.resources.cd_remove_from_reading_list
+import kafka.ui.homepage.generated.resources.continue_reading
+import kafka.ui.homepage.generated.resources.see_all
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
+//todo: kmp crashes when the screen is opened
 @Composable
-internal fun ContinueReading(
+internal fun RecentItems(
     readingList: List<RecentItemWithProgress>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
@@ -80,7 +88,7 @@ internal fun ContinueReading(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             LabelMedium(
-                text = stringResource(id = R.string.continue_reading),
+                text = stringResource(Res.string.continue_reading),
                 modifier = Modifier.padding(horizontal = Dimens.Gutter)
             )
 
@@ -90,7 +98,7 @@ internal fun ContinueReading(
                     modifier = Modifier.padding(end = Dimens.Spacing04)
                 ) {
                     Text(
-                        text = stringResource(R.string.see_all),
+                        text = stringResource(Res.string.see_all),
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
@@ -110,7 +118,8 @@ internal fun ContinueReading(
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
-                    modifier = Modifier.animateItem(),
+                    modifier = Modifier,
+//                        .animateItem(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )
@@ -145,7 +154,7 @@ private fun ContinueReadingItem(
                 modifier = Modifier.padding(Dimens.Spacing08),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
-                CoverImage(recentItem)
+                RecentItemCoverImage(recentItem)
 
                 ItemDescription(
                     title = { ItemTitleSmall(recentItem.title, 1) },
@@ -225,14 +234,14 @@ private fun BoxScope.RemoveRecentItemButton(
             Icon(
                 imageVector = Icons.XCircle,
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = stringResource(R.string.cd_remove_from_reading_list)
+                contentDescription = stringResource(Res.string.cd_remove_from_reading_list)
             )
         }
     }
 }
 
 @Composable
-private fun CoverImage(item: RecentItem) {
+private fun RecentItemCoverImage(item: RecentItem) {
     Box(
         modifier = Modifier
             .shadowMaterial(
@@ -240,13 +249,13 @@ private fun CoverImage(item: RecentItem) {
                 shape = RoundedCornerShape(Dimens.Spacing04)
             )
     ) {
-        AsyncImage(
-            model = item.coverUrl,
+        CoverImage(
+            data = item.coverUrl,
             contentDescription = null,
-            modifier = Modifier
-                .size(64.dp, 76.dp)
-                .background(MaterialTheme.colorScheme.surface),
-            contentScale = ContentScale.Crop
+            size = DpSize(64.dp, 76.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            contentScale = ContentScale.Crop,
+            placeholder = null
         )
     }
 }
@@ -272,4 +281,3 @@ private fun Progress(progress: Float) {
         )
     }
 }
-

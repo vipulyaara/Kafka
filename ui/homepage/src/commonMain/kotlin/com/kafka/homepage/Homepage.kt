@@ -1,7 +1,6 @@
 package com.kafka.homepage
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,15 +20,12 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,11 +36,10 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.homepage.components.Carousels
-import com.kafka.homepage.components.ContinueReading
+import com.kafka.homepage.components.RecentItems
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
-import com.kafka.ui.components.item.GenreItem
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.item.ItemPlaceholder
 import com.kafka.ui.components.item.ItemSmall
@@ -53,10 +48,13 @@ import com.kafka.ui.components.item.PersonItemPlaceholder
 import com.kafka.ui.components.item.RowItem
 import com.kafka.ui.components.item.RowItemPlaceholder
 import com.kafka.ui.components.item.SubjectItem
-import com.kafka.ui.components.material.StaggeredFlowRow
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
+import kafka.ui.homepage.generated.resources.Res
+import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
+import kafka.ui.homepage.generated.resources.share_app_prompt
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 typealias Homepage = @Composable () -> Unit
@@ -66,7 +64,6 @@ typealias Homepage = @Composable () -> Unit
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -86,7 +83,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
                         goToSubject = viewModel::openSubject,
                         openRecentItems = viewModel::openRecentItems,
                         goToCreator = viewModel::openCreator,
-                        shareApp = { viewModel.shareApp(context) }
+                        shareApp = { viewModel.shareApp() }
                     )
                 }
 
@@ -128,7 +125,7 @@ private fun HomepageFeedItems(
             if (index == appShareIndex) {
                 item {
                     MessageBox(
-                        text = stringResource(R.string.share_app_prompt),
+                        text = stringResource(Res.string.share_app_prompt),
                         trailingIcon = Icons.Share,
                         leadingIcon = Icons.Gift,
                         modifier = Modifier.padding(Dimens.Gutter),
@@ -141,7 +138,7 @@ private fun HomepageFeedItems(
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
                         if (homepage.continueReadingItems.isNotEmpty()) {
-                            ContinueReading(
+                            RecentItems(
                                 readingList = homepage.continueReadingItems,
                                 openItemDetail = openRecentItemDetail,
                                 removeRecentItem = removeRecentItem,
@@ -170,17 +167,18 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Subjects -> {
                     item {
-                        StaggeredFlowRow(
-                            modifier = Modifier
-                                .horizontalScroll(rememberScrollState())
-                                .padding(Dimens.Gutter),
-                            horizontalSpacing = Dimens.Spacing08,
-                            verticalSpacing = Dimens.Spacing08
-                        ) {
-                            collection.items.forEach { subject ->
-                                GenreItem(text = subject, onClicked = { goToSubject(subject) })
-                            }
-                        }
+                        //todo: kmp
+//                        StaggeredFlowRow(
+//                            modifier = Modifier
+//                                .horizontalScroll(rememberScrollState())
+//                                .padding(Dimens.Gutter),
+//                            horizontalSpacing = Dimens.Spacing08,
+//                            verticalSpacing = Dimens.Spacing08
+//                        ) {
+//                            collection.items.forEach { subject ->
+//                                GenreItem(text = subject, onClicked = { goToSubject(subject) })
+//                            }
+//                        }
                     }
                 }
 
@@ -242,7 +240,7 @@ private fun HomepageFeedItems(
         if (homepage.hasSearchPrompt) {
             item(key = "search_prompt") {
                 MessageBox(
-                    text = stringResource(R.string.find_many_more_on_the_search_page),
+                    text = stringResource(Res.string.find_many_more_on_the_search_page),
                     trailingIcon = Icons.ArrowForward,
                     onClick = { goToSearch() },
                     modifier = Modifier
