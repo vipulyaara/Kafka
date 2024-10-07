@@ -1,5 +1,7 @@
 package com.kafka.data.feature.homepage
 
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
 import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.data.platform.UserDataRepository
@@ -8,8 +10,6 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
-import com.kafka.base.ApplicationScope
-import com.kafka.base.debug
 import javax.inject.Inject
 
 @ApplicationScope
@@ -21,7 +21,7 @@ class HomepageRepository @Inject constructor(
 ) {
     fun observeHomepageCollection() =
         firestoreGraph.homepageCollection.snapshots.flatMapLatest {
-            it.toHomepage(userDataRepository.getUserData().country)
+            it.toHomepage(userDataRepository.getUserCountry())
         }
 
     private fun QuerySnapshot.toHomepage(country: String?) =

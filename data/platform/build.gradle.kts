@@ -15,6 +15,8 @@ kotlin {
 
                 implementation(libs.firebase.auth)
                 implementation(libs.ktor.client.core)
+
+                implementation(libs.kotlininject.runtime)
             }
         }
 

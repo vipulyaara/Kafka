@@ -16,7 +16,9 @@ class FavoritesRepository @Inject constructor(
     fun observeList(uid: String, listId: String) = firestoreGraph.getListCollection(uid, listId)
         .orderBy("createdAt", Query.Direction.DESCENDING)
         .snapshots()
-        .map { snapshots -> snapshots.documents.map { it.data<FavoriteItem>() } }
+        .map { snapshots -> snapshots.documents
+            .map { it.data<FavoriteItem>().copy(itemId = it.id) }
+        }
 
     suspend fun updateList(favoriteItem: FavoriteItem, listId: String, addFavorite: Boolean) {
         accountRepository.currentFirebaseUser?.uid

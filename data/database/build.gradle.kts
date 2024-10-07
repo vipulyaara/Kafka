@@ -21,6 +21,7 @@ kotlin {
             dependencies {
                 api(projects.base.domain)
                 api(projects.data.models)
+                api(projects.data.platform)
                 api(projects.data.prefs)
 
                 implementation(libs.kotlin.serialization)

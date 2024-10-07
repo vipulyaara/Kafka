@@ -1,9 +1,6 @@
 package com.kafka.data.entities
 
-import com.google.firebase.firestore.DocumentId
-
 data class DownloadItem(
-    @DocumentId
     val id: String = "",
     val fileId: String = "",
     val downloadUrl: String = "",

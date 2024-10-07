@@ -10,9 +10,9 @@ import com.google.firebase.crashlytics.setCustomKeys
 import com.kafka.analytics.EventRepository
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.debug
-import com.kafka.data.platform.UserData
 import com.kafka.data.platform.UserDataRepository
 import com.mixpanel.android.mpmetrics.MixpanelAPI
+import dev.gitlive.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -23,6 +23,7 @@ class AnalyticsImpl @Inject constructor(
     @ProcessLifetime scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,
+    private val auth: FirebaseAuth
 ) : Analytics {
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
     private val crashlytics by lazy { Firebase.crashlytics }
@@ -30,7 +31,7 @@ class AnalyticsImpl @Inject constructor(
 
     init {
         scope.launch {
-            updateUserProperty(userDataRepository.getUserData())
+            updateUserProperty()
         }
     }
 
@@ -47,20 +48,22 @@ class AnalyticsImpl @Inject constructor(
         mixPanel.track(eventName, JSONObject(map))
     }
 
-    override fun updateUserProperty(userData: UserData) {
-        debug { "Updating user properties: $userData" }
-        firebaseAnalytics.setUserId(userData.userId)
-        firebaseAnalytics.setUserProperty("userId", userData.userId)
-        firebaseAnalytics.setUserProperty("country", userData.country)
+    private suspend fun updateUserProperty() {
+        val userId = auth.currentUser?.uid
+        val country = userDataRepository.getUserCountry()
 
-        if (userData.userId != null) {
-            crashlytics.setUserId(userData.userId!!)
-            mixPanel.identify(userData.userId)
+        firebaseAnalytics.setUserId(userId)
+        firebaseAnalytics.setUserProperty("userId", userId)
+        firebaseAnalytics.setUserProperty("country", country)
+
+        if (userId != null) {
+            crashlytics.setUserId(userId)
+            mixPanel.identify(userId)
         }
 
         crashlytics.setCustomKeys {
-            if (userData.country != null) {
-                key("country", userData.country!!)
+            if (country != null) {
+                key("country", country)
             }
         }
     }

@@ -6,6 +6,7 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.data.db.DatabaseBuilderComponent
 import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
+import com.kafka.data.platform.device.PlatformCountryComponent
 import com.kafka.data.prefs.PreferenceStoreComponent
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
@@ -21,6 +22,7 @@ interface SharedApplicationComponent :
     DatabaseModule,
     NavigationModule,
     AnalyticsPlatformComponent,
+    PlatformCountryComponent,
     SharedPlatformApplicationComponent,
     PreferenceStoreComponent {
 

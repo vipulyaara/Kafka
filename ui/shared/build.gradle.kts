@@ -1,7 +1,7 @@
 import com.kafka.gradle.addKspDependencyForAllTargets
 
 plugins {
-    id("com.android.library") // todo: use build-logic
+    id("com.android.library")
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
     alias(libs.plugins.ksp)

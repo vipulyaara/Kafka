@@ -1,9 +1,9 @@
-package com.kafka.data.platform
+package com.kafka.data.platform.device
 
-import android.app.Application
-import android.content.Context
-import android.telephony.TelephonyManager
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
 import com.kafka.data.model.UserCountryResponse
 import com.kafka.data.prefs.PreferencesStore
 import io.ktor.client.HttpClient
@@ -13,16 +13,13 @@ import io.ktor.client.request.url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import com.kafka.base.ApplicationScope
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.ProcessLifetime
 import javax.inject.Inject
 
 /**
  * Repository to reliably provide user's country.
  * The logic is as follows
  *
- * - Get country from [TelephonyManager] if it's available (e.g. the device has a sim installed)
+ * - Get country from [PlatformCountry] if it's available (e.g. the device has a sim installed)
  * - If null, get the country from local storage. Also update the local storage asynchronously via IP lookup API
  * - If null, return the country by IP lookup using API and save it in local storage
  *
@@ -34,7 +31,7 @@ class UserCountryRepository @Inject constructor(
     private val httpClient: HttpClient,
     @ProcessLifetime private val processScope: CoroutineScope,
     private val dispatchers: CoroutineDispatchers,
-    private val context: Application
+    private val platformCountry: PlatformCountry
 ) {
     private val countryPreferenceKey = stringPreferencesKey("user_country")
 
@@ -47,17 +44,14 @@ class UserCountryRepository @Inject constructor(
     }
 
     suspend fun getUserCountry(): String? {
-        return getTelephonyCountry()
+        return getPlatformCountry()
             ?: getStoredUserCountry()?.also { updateCountryAsync() }
             ?: fetchAndSaveUserCountry()
                 ?.takeIf { it.isNotBlank() }?.uppercase()
     }
 
-    private fun getTelephonyCountry(): String? {
-        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE)
-                as TelephonyManager
-
-        return telephonyManager.networkCountryIso.takeIf { it.isNotBlank() }
+    private fun getPlatformCountry(): String? {
+        return platformCountry.country
     }
 
     private fun updateCountryAsync() {

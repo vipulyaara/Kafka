@@ -16,7 +16,7 @@ class RecentItemRepository @Inject constructor(private val firestoreGraph: Fires
             .snapshots
             .map { snapshot ->
                 snapshot.documents
-                    .map { it.data<RecentItem>() }
+                    .map { it.data<RecentItem>().copy(fileId = it.id) }
                     .distinctBy { it.itemId }
             }
 }

@@ -8,6 +8,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.google.firebase.FirebasePlatform
 import com.kafka.base.debug
+import com.kafka.data.platform.appDirectory
 import com.kafka.shared.DesktopApplicationComponent
 import com.kafka.shared.create
 import dev.gitlive.firebase.Firebase
@@ -59,7 +60,7 @@ fun initFirebase() {
         }
 
         override fun getDatabasePath(name: String): File {
-            val filePath = "${System.getProperty("user.home")}${File.separatorChar}$name"
+            val filePath = "${appDirectory}${File.separatorChar}$name"
             println("Database file path: $filePath")
             return File(filePath)
         }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library") // todo: use build-logic
+    id("com.android.library")
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
 }

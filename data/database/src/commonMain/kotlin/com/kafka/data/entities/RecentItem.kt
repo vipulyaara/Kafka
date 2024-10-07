@@ -5,19 +5,21 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 import com.google.firebase.firestore.DocumentId
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Keep
 @Serializable
 data class RecentItem(
     @DocumentId
-    val fileId: String,
-    val itemId: String,
-    val title: String,
-    val coverUrl: String,
-    val creator: String,
-    val mediaType: String,
-    val createdAt: Long,
+    @Transient val fileId: String = "",
+    @SerialName("itemId") val itemId: String,
+    @SerialName("title") val title: String,
+    @SerialName("coverUrl") val coverUrl: String,
+    @SerialName("creator") val creator: String,
+    @SerialName("mediaType") val mediaType: String,
+    @SerialName("createdAt") val createdAt: Long,
 ) {
     constructor() : this(
         fileId = "",
