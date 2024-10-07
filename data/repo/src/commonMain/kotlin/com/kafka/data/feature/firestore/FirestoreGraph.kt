@@ -1,6 +1,5 @@
 package com.kafka.data.feature.firestore
 
-import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.base.ApplicationScope
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.CollectionReference
@@ -11,13 +10,12 @@ import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 @ApplicationScope
 class FirestoreGraph @Inject constructor(
     private val firestoreKt: FirebaseFirestoreKt,
-    private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
 ) {
     val recentItemsCollection
         get() = getRecentItemsCollection(auth.currentUser!!.uid)
 
-    fun getRecentItemsCollection(id: String) = firestore
+    fun getRecentItemsCollection(id: String) = firestoreKt
         .collection("recent_items")
         .document(id)
         .collection("items")
@@ -37,19 +35,20 @@ class FirestoreGraph @Inject constructor(
     val summaryCollection: CollectionReference
         get() = firestoreKt.collection("summary")
 
-    fun getListCollection(uid: String, listId: String) = firestore
+    fun getListCollection(uid: String, listId: String) = firestoreKt
         .collection("favorites")
         .document(uid)
         .collection(listId)
 
-    fun getRecommendationCollection() = firestore.collection("user_recommendations")
+    fun getRecommendationCollection() = firestoreKt
+        .collection("user_recommendations")
 
     fun getRecommendationCollection(uid: String, recommendationId: String) =
         getRecommendationCollection()
             .document(uid)
             .collection(recommendationId)
 
-    fun getDownloadsCollection(id: String) = firestore
+    fun getDownloadsCollection(id: String) = firestoreKt
         .collection("downloads")
         .document(id)
         .collection("items")

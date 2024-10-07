@@ -33,19 +33,21 @@ include ':data:database' // kmp
 include ':data:models' // kmp
 include ':data:platform' // kmp
 include ':data:prefs' // kmp
+include ':desktop-app' // kmp
 include ':domain' // kmp
 include ':navigation' // kmp
 include ':ui:auth'
 include ':ui:common' // kmp
-include ':ui:components'
+include ':ui:components' // kmp
 include ':ui:downloader'
 include ':ui:theme' // kmp
 include ':ui:library'
-include ':ui:homepage'
+include ':ui:homepage' // kmp
 include ':ui:item:detail'
 include ':ui:profile'
 include ':ui:reader'
 include ':ui:search'
+include ':ui:shared' // kmp
 include ':ui:summary'
 include ':ui:webview'
 

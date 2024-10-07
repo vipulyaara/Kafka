@@ -1,10 +1,9 @@
 package com.kafka.analytics
 
-import com.kafka.analytics.EventRepository
-import com.kafka.data.platform.UserData
-import me.tatarka.inject.annotations.Provides
 import com.kafka.analytics.logger.Analytics
 import com.kafka.analytics.logger.EventInfo
+import com.kafka.data.platform.UserData
+import me.tatarka.inject.annotations.Provides
 
 actual interface AnalyticsPlatformComponent {
   @Provides

@@ -1,10 +1,9 @@
 package com.kafka.data.feature
 
+import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.DownloadItem
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
-import kotlinx.coroutines.tasks.await
-import com.kafka.base.ApplicationScope
 import javax.inject.Inject
 
 @ApplicationScope
@@ -16,12 +15,12 @@ class DownloadsRepository @Inject constructor(
         accountRepository.currentFirebaseUser?.uid?.let {
             firestoreGraph.getDownloadsCollection(it).document(downloadItem.id)
                 .set(downloadItem)
-        }?.await()
+        }
     }
 
     suspend fun removeDownload(id: String) {
         accountRepository.currentFirebaseUser?.uid?.let {
             firestoreGraph.getDownloadsCollection(it).document(id).delete()
-        }?.await()
+        }
     }
 }

@@ -1,9 +1,9 @@
 package com.kafka.item
 
 import android.content.Context
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.size.Size
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.size.Size
 import com.kafka.data.entities.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

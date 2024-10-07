@@ -38,7 +38,7 @@ class UpdateFavorite @Inject constructor(
             favoritesRepository.updateList(
                 favoriteItem = mapFavoriteItem(itemDetail),
                 listId = listIdFavorites,
-                isAdded = params.markFavorite
+                addFavorite = params.markFavorite
             )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }
         }

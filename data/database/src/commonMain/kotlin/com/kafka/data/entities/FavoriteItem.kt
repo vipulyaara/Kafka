@@ -1,9 +1,10 @@
 package com.kafka.data.entities
 
 import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.ServerTimestamp
-import java.util.Date
+import dev.gitlive.firebase.firestore.Timestamp
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class FavoriteItem(
     @DocumentId
     val itemId: String = "",
@@ -11,8 +12,7 @@ data class FavoriteItem(
     val creator: String = "",
     val mediaType: String = "",
     val coverImage: String = "",
-    @ServerTimestamp
-    val createdAt: Date = Date(),
+    val createdAt: Timestamp = Timestamp.now(),
 )
 
 fun FavoriteItem.toItem() = Item(

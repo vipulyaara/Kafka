@@ -34,6 +34,7 @@ fun SwipeToDelete(
         else -> {}
     }
 
+    //todo: kmp crashes on this and DismissableSnackbar
     SwipeToDismissBox(
         modifier = modifier.animateContentSize(),
         state = dismissState,

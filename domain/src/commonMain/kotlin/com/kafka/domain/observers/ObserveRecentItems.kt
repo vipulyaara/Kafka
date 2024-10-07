@@ -19,9 +19,9 @@ class ObserveRecentItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,
     private val recentItemRepository: RecentItemRepository,
-) : SubjectInteractor<ObserveRecentItems.Params, ImmutableList<RecentItemWithProgress>>() {
+) : SubjectInteractor<ObserveRecentItems.Params, List<RecentItemWithProgress>>() {
 
-    override fun createObservable(params: Params): Flow<ImmutableList<RecentItemWithProgress>> {
+    override fun createObservable(params: Params): Flow<List<RecentItemWithProgress>> {
         return accountRepository.observeCurrentFirebaseUser()
             .filterNotNull()
             .flatMapLatest { user ->

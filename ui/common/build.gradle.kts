@@ -13,7 +13,6 @@ kotlin {
                 implementation(projects.core.networking)
                 api(projects.ui.theme)
 
-                api(libs.coil.compose)
                 api(compose.animation)
                 api(compose.foundation)
                 api(compose.material3)
@@ -22,7 +21,6 @@ kotlin {
                 api(compose.uiTooling)
                 api(compose.ui)
 
-                implementation(libs.accompanist.flowlayout)
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)

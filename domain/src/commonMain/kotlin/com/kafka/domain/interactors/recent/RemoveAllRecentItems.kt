@@ -1,10 +1,9 @@
 package com.kafka.domain.interactors.recent
 
-import com.google.firebase.firestore.snapshots
+import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class RemoveAllRecentItems @Inject constructor(

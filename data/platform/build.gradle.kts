@@ -24,6 +24,11 @@ kotlin {
 
         val jvmMain by getting {
             dependsOn(jvmCommon)
+
+            dependencies {
+                implementation(projects.base.annotations)
+                implementation(libs.javax.inject)
+            }
         }
 
         val androidMain by getting {

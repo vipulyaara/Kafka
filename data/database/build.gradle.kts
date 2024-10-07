@@ -30,6 +30,8 @@ kotlin {
                 implementation(libs.androidx.sqlite.bundled)
                 implementation(libs.threeTenAbp)
 
+                api(libs.kotlinx.datetime)
+
                 implementation(libs.kotlininject.runtime)
             }
         }

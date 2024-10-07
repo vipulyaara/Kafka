@@ -25,12 +25,13 @@ import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier) {
+fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = Dimens.Elevation08
+        tonalElevation = Dimens.Elevation08,
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier

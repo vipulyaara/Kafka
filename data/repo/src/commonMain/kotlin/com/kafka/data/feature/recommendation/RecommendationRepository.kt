@@ -1,6 +1,7 @@
 package com.kafka.data.feature.recommendation
 
-import com.google.firebase.firestore.snapshots
+import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
@@ -9,9 +10,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.tasks.await
-import com.kafka.base.ApplicationScope
-import com.kafka.base.CoroutineDispatchers
 import javax.inject.Inject
 
 @ApplicationScope
@@ -34,16 +32,15 @@ class RecommendationRepository @Inject constructor(
     private fun getRecommendations(userId: String, recommendationId: String) = firestoreGraph
         .getRecommendationCollection(userId, recommendationId)
         .snapshots()
-        .map { snapshots -> snapshots.map { it.id } }
+        .map { snapshots -> snapshots.documents.map { it.id } }
 
     suspend fun getRecommendationItemIds(userId: String): List<String> {
         val collaborative = firestoreGraph.getRecommendationCollection()
-            .document(userId).collection("collaborative").get().await()
+            .document(userId).collection("collaborative").get()
             .documents.map { it.id }
         val contentBased = firestoreGraph.getRecommendationCollection()
-            .document(userId).collection("contentBased").get().await()
+            .document(userId).collection("contentBased").get()
             .documents.map { it.id }
-
 
         return collaborative + contentBased
     }

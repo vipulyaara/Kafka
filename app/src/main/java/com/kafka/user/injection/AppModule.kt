@@ -1,11 +1,7 @@
 package com.kafka.user.injection
 
-import android.app.Application
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.firestore.FirebaseFirestore
 import com.kafka.analytics.AnalyticsPlatformComponent
 import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
@@ -13,9 +9,9 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
 import com.kafka.data.db.DatabaseBuilderComponent
+import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
-import com.kafka.data.injection.SerializersModule
-import com.kafka.data.prefs.PreferencesStore
+import com.kafka.data.prefs.PreferenceStoreComponent
 import com.kafka.image.CoilAppInitializer
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
@@ -29,9 +25,6 @@ import com.kafka.user.initializer.LoggerInitializer
 import com.kafka.user.initializer.RemoteConfigInitializer
 import com.kafka.user.initializer.RemoteConfigLogger
 import com.kafka.user.initializer.ThreeTenBpInitializer
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.auth
-import dev.gitlive.firebase.firestore.invoke
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Component
@@ -40,15 +33,14 @@ import me.tatarka.inject.annotations.Provides
 import tm.alashow.datmusic.downloader.DownloadInitializer
 import tm.alashow.datmusic.downloader.DownloaderModule
 
-private const val dataStoreFileName = "app_preferences.preferences_pb"
-
 @Component
 @ApplicationScope
 interface AppModule :
     NetworkingComponent,
-    SerializersModule,
+    PreferenceStoreComponent,
     DatabaseBuilderComponent,
     DatabaseModule,
+    DataModule,
     DownloaderModule,
     PlayerModule,
     NavigationModule,
@@ -63,33 +55,11 @@ interface AppModule :
 
     @Provides
     @ApplicationScope
-    fun providePreferenceStore(
-        context: Application,
-    ): PreferencesStore = PreferencesStore(
-        PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile(dataStoreFileName) }
-        ))
-
-    @Provides
-    @ApplicationScope
     fun provideCoroutineDispatchers() = CoroutineDispatchers(
         io = Dispatchers.IO,
         computation = Dispatchers.Default,
         main = Dispatchers.Main
     )
-
-    @Provides
-    @ApplicationScope
-    fun provideFirebaseAuth() = Firebase.auth
-
-    @Provides
-    @ApplicationScope
-    fun provideFirestore() = FirebaseFirestore.getInstance()
-
-    @Provides
-    @ApplicationScope
-    fun provideFirestoreKt(firebaseFirestore: FirebaseFirestore) =
-        dev.gitlive.firebase.firestore.FirebaseFirestore(firebaseFirestore)
 
     @Provides
     fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {

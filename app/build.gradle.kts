@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
+    id("com.kafka.compose")
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.cacheFixPlugin)
@@ -148,6 +149,8 @@ dependencies {
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
+    implementation(compose.material3)
+
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.livedata.ktx)
@@ -159,6 +162,7 @@ dependencies {
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material.material3)
     implementation(libs.compose.material.navigation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
@@ -169,7 +173,6 @@ dependencies {
     implementation(libs.google.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.google.crashlytics)
-    implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)
     implementation(libs.google.review)

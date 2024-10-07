@@ -167,7 +167,7 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Subjects -> {
                     item {
-                        //todo: kmp
+                        // todo: kmp
 //                        StaggeredFlowRow(
 //                            modifier = Modifier
 //                                .horizontalScroll(rememberScrollState())
@@ -305,7 +305,7 @@ private fun Authors(
                 PersonItem(
                     title = titles[index],
                     imageUrl = images.getOrElse(index) { "" },
-                    modifier = Modifier.clickable { goToCreator(titles[index]) }
+                    onClick = { goToCreator(titles[index]) }
                 )
             }
         } else {

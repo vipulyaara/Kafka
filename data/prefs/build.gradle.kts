@@ -1,4 +1,5 @@
 plugins {
+    id("com.android.library")
     id("com.kafka.kotlin.multiplatform")
 }
 
@@ -13,4 +14,8 @@ kotlin {
             }
         }
     }
+}
+
+android {
+    namespace = "com.kafka.data.prefs"
 }
