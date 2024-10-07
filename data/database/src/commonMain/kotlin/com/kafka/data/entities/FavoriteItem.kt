@@ -3,10 +3,12 @@ package com.kafka.data.entities
 import com.google.firebase.firestore.DocumentId
 import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class FavoriteItem(
     @DocumentId
+    @Transient
     val itemId: String = "",
     val title: String = "",
     val creator: String = "",
