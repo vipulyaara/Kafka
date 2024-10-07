@@ -208,7 +208,7 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun goToCreator(keyword: String?) {
-        analytics.log { this.openCreator("item_detail") }
+        analytics.log { this.openCreator(name = keyword, source = "item_detail") }
         navigator.navigate(Search(keyword.orEmpty(), Creator.name), RootScreen.Search)
     }
 

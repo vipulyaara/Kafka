@@ -21,9 +21,6 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -42,6 +39,7 @@ import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.homepage.components.Carousels
 import com.kafka.homepage.components.RecentItems
+import com.kafka.navigation.deeplink.Config
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
@@ -59,6 +57,7 @@ import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.homepage.generated.resources.Res
 import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
+import kafka.ui.homepage.generated.resources.share_app_message
 import kafka.ui.homepage.generated.resources.share_app_prompt
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
@@ -71,6 +70,7 @@ typealias Homepage = @Composable () -> Unit
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val shareAppText = stringResource(Res.string.share_app_message, Config.PLAY_STORE_URL)
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -90,7 +90,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
                         goToSubject = viewModel::openSubject,
                         openRecentItems = viewModel::openRecentItems,
                         goToCreator = viewModel::openCreator,
-                        shareApp = { viewModel.shareApp() }
+                        shareApp = { viewModel.shareApp(shareAppText) }
                     )
                 }
 

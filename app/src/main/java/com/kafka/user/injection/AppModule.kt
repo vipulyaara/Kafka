@@ -8,6 +8,7 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
+import com.kafka.common.platform.CommonUiPlatformComponent
 import com.kafka.data.db.DatabaseBuilderComponent
 import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
@@ -47,7 +48,8 @@ interface AppModule :
     NavigationModule,
     PlatformCountryComponent,
     AnalyticsPlatformComponent,
-    PlayStoreComponent {
+    PlayStoreComponent,
+    CommonUiPlatformComponent {
 
     @Provides
     @ProcessLifetime

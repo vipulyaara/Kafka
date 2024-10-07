@@ -7,6 +7,7 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.UiMessageManager
 import com.kafka.common.collectStatus
+import com.kafka.common.platform.ShareUtils
 import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.UpdateRecommendations
@@ -36,6 +37,7 @@ class HomepageViewModel @Inject constructor(
     private val analytics: Analytics,
     private val loadingCounter: ObservableLoadingCounter,
     private val remoteConfig: RemoteConfig,
+    private val shareUtils: ShareUtils
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
@@ -108,13 +110,12 @@ class HomepageViewModel @Inject constructor(
     }
 
     fun openCreator(name: String) {
-        analytics.log { this.openCreator("homepage") }
+        analytics.log { this.openCreator(name = name, source = "homepage") }
         navigator.navigate(Screen.Search(name, SearchFilter.Creator.name), RootScreen.Search)
     }
 
-    // todo: kmp implement this
-    fun shareApp() {
-//        analytics.log { this.shareApp() }
-//        context.shareText(context.getString(R.string.share_app_message, Config.PLAY_STORE_URL))
+    fun shareApp(text: String) {
+        analytics.log { this.shareApp() }
+        shareUtils.shareText(text)
     }
 }

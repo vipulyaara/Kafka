@@ -4,6 +4,7 @@ import com.kafka.analytics.AnalyticsPlatformComponent
 import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
+import com.kafka.common.platform.CommonUiPlatformComponent
 import com.kafka.data.db.DatabaseBuilderComponent
 import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
@@ -27,7 +28,8 @@ interface SharedApplicationComponent :
     AnalyticsPlatformComponent,
     PlatformCountryComponent,
     SharedPlatformApplicationComponent,
-    PreferenceStoreComponent {
+    PreferenceStoreComponent,
+    CommonUiPlatformComponent {
 
     @Provides
     @ApplicationScope
