@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package com.kafka.ui.components.material
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -19,14 +21,12 @@ fun StaggeredFlowRow(
     verticalSpacing: Dp = 0.dp,
     content: @Composable () -> Unit,
 ) {
-    val configuration = LocalConfiguration.current
-
     Layout(
         modifier = modifier,
         content = content
     ) { measurables, constraints ->
         val widths = measurables.map { it.maxIntrinsicWidth(height = constraints.maxHeight) }
-        val totalWidth = maxOf(configuration.screenWidthDp.dp.roundToPx(), 2400)
+        val totalWidth = 2400
         val horizontalSpacingPx = horizontalSpacing.roundToPx()
         val verticalSpacingPx = verticalSpacing.roundToPx()
 

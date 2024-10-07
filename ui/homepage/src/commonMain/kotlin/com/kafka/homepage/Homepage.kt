@@ -1,6 +1,7 @@
 package com.kafka.homepage
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,10 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +45,7 @@ import com.kafka.homepage.components.RecentItems
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
+import com.kafka.ui.components.item.GenreItem
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.item.ItemPlaceholder
 import com.kafka.ui.components.item.ItemSmall
@@ -48,6 +54,7 @@ import com.kafka.ui.components.item.PersonItemPlaceholder
 import com.kafka.ui.components.item.RowItem
 import com.kafka.ui.components.item.RowItemPlaceholder
 import com.kafka.ui.components.item.SubjectItem
+import com.kafka.ui.components.material.StaggeredFlowRow
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.homepage.generated.resources.Res
@@ -167,18 +174,17 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Subjects -> {
                     item {
-                        // todo: kmp
-//                        StaggeredFlowRow(
-//                            modifier = Modifier
-//                                .horizontalScroll(rememberScrollState())
-//                                .padding(Dimens.Gutter),
-//                            horizontalSpacing = Dimens.Spacing08,
-//                            verticalSpacing = Dimens.Spacing08
-//                        ) {
-//                            collection.items.forEach { subject ->
-//                                GenreItem(text = subject, onClicked = { goToSubject(subject) })
-//                            }
-//                        }
+                        StaggeredFlowRow(
+                            modifier = Modifier
+                                .horizontalScroll(rememberScrollState())
+                                .padding(Dimens.Gutter),
+                            horizontalSpacing = Dimens.Spacing08,
+                            verticalSpacing = Dimens.Spacing08
+                        ) {
+                            collection.items.forEach { subject ->
+                                GenreItem(text = subject, onClicked = { goToSubject(subject) })
+                            }
+                        }
                     }
                 }
 

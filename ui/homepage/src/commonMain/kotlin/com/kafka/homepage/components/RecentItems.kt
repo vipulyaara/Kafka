@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -32,7 +31,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -256,28 +254,6 @@ private fun RecentItemCoverImage(item: RecentItem) {
             containerColor = MaterialTheme.colorScheme.background,
             contentScale = ContentScale.Crop,
             placeholder = null
-        )
-    }
-}
-
-// todo add progress
-@Composable
-private fun Progress(progress: Float) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        LinearProgressIndicator(
-            progress = { progress },
-            modifier = Modifier
-                .height(Dimens.Spacing04)
-                .width(116.dp)
-                .clip(RoundedCornerShape(50))
-        )
-        Text(
-            text = "20%",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary
         )
     }
 }
