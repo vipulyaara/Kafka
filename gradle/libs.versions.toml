@@ -10,11 +10,12 @@ coil3 = "3.0.0-alpha10"
 compose-alpha = "2024.08.00-alpha02"
 compose-bom = "2024.09.03"
 compose-material-navigation = "1.7.0-beta01"
-compose-multiplatform = "1.6.11"
+compose-multiplatform = "1.7.0-rc01"
 coroutines = "1.9.0"
 firebase = "2.1.0"
 icons = "1.1.1"
 haze = "0.7.3"
+jbadaptive = "1.0.0-rc01"
 kotlin = "2.0.20"
 kotlin-immutable = "0.3.8"
 kotlininject = "0.7.2"
@@ -75,7 +76,6 @@ rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
-androidx-collection = "androidx.collection:collection-ktx:1.4.4"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
 
@@ -96,7 +96,6 @@ lottie-compose = "com.airbnb.android:lottie-compose:6.4.0"
 androidx-palette = "androidx.palette:palette:1.0.0"
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
@@ -117,6 +116,8 @@ compose-material-iconsext = { module = "androidx.compose.material:material-icons
 compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptive" }
+jetbrains-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jbadaptive" }
+
 compose-material-navigation = { module = "androidx.compose.material:material-navigation", version.ref = "compose-material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -130,10 +131,8 @@ fetch = "com.github.abbas7777:fetch2-android14:3.2.0-beta07"
 google-bom = "com.google.firebase:firebase-bom:33.4.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-google-auth = { module = "com.google.firebase:firebase-auth" }
 google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
 google-admob = "com.google.android.gms:play-services-ads:23.4.0"
-google-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
 google-playservices-auth = "com.google.android.gms:play-services-auth:21.2.0"
@@ -220,6 +219,3 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }

@@ -7,6 +7,7 @@ import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
+import dev.gitlive.firebase.auth.FirebaseAuth
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -21,6 +22,7 @@ object HomepageMapperConfig {
 class HomepageMapper @Inject constructor(
     private val itemDao: ItemDao,
     private val remoteConfig: RemoteConfig,
+    private val auth: FirebaseAuth,
     private val recommendationRepository: RecommendationRepository,
 ) {
 
@@ -35,7 +37,8 @@ class HomepageMapper @Inject constructor(
                     is HomepageCollectionResponse.Grid -> homepageItem.mapGrid()
                     is HomepageCollectionResponse.PersonRow -> homepageItem.mapPersonRow()
                     is HomepageCollectionResponse.Subjects -> homepageItem.mapSubjects()
-                    is HomepageCollectionResponse.Recommendation -> if (remoteConfig.isRecommendationRowEnabled()) {
+                    is HomepageCollectionResponse.Recommendation ->
+                        if (remoteConfig.isRecommendationRowEnabled() && auth.currentUser != null) {
                         homepageItem.mapRecommendations()
                     } else {
                         flowOf(null)

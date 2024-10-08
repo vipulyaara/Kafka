@@ -1,18 +1,15 @@
 package com.kafka.domain.observers
 
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.auth.AccountRepository
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveRecentItems @Inject constructor(
@@ -23,13 +20,14 @@ class ObserveRecentItems @Inject constructor(
 
     override fun createObservable(params: Params): Flow<List<RecentItemWithProgress>> {
         return accountRepository.observeCurrentFirebaseUser()
-            .filterNotNull()
             .flatMapLatest { user ->
-                recentItemRepository.observeRecentItems(user.uid, params.limit)
+                if (user == null) {
+                    flowOf(emptyList())
+                } else {
+                    recentItemRepository.observeRecentItems(user.uid, params.limit)
+                }
             }
-            .map { it.map { RecentItemWithProgress(it, 0) } } // todo: add actual progress
-            .onStart { emit(emptyList()) }
-            .map { it.toPersistentList() }
+            .map { it.map { RecentItemWithProgress(it, 0) } }
             .flowOn(dispatchers.io)
     }
 
