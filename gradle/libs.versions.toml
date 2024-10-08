@@ -4,7 +4,6 @@ adaptive = "1.0.0"
 appupdate = "2.1.0"
 agp = "8.6.1"
 androidxlifecycle = "2.9.0-alpha04"
-jblifecycle = "2.8.2"
 coil = "2.6.0"
 coil3 = "3.0.0-alpha10"
 compose-alpha = "2024.08.00-alpha02"
@@ -16,6 +15,7 @@ firebase = "2.1.0"
 icons = "1.1.1"
 haze = "0.7.3"
 jbadaptive = "1.0.0-rc01"
+jblifecycle = "2.8.2"
 kotlin = "2.0.20"
 kotlin-immutable = "0.3.8"
 kotlininject = "0.7.2"
@@ -117,6 +117,8 @@ compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptive" }
 jetbrains-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jbadaptive" }
+jetbrains-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "jbadaptive" }
+jetbrains-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "jbadaptive" }
 
 compose-material-navigation = { module = "androidx.compose.material:material-navigation", version.ref = "compose-material-navigation" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }

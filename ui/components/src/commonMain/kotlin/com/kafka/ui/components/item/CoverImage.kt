@@ -42,8 +42,8 @@ fun CoverImage(
     placeholder: ImageVector? = CoverDefaults.placeholder,
     iconPadding: Dp = 16.dp,
     contentDescription: String? = null,
-    elevation: Dp = Dimens.Elevation08,
-    tonalElevation: Dp = Dimens.Elevation02,
+    elevation: Dp = 0.dp,
+    tonalElevation: Dp = 0.dp,
     isNoPreview: Boolean = false,
 ) {
     val sizeMod = if (size.isSpecified) Modifier.size(size) else Modifier

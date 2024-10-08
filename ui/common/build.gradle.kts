@@ -21,6 +21,8 @@ kotlin {
                 api(compose.uiTooling)
                 api(compose.ui)
 
+                api(libs.jetbrains.adaptive)
+
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)
@@ -41,7 +43,6 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                api(libs.androidx.adaptive.android)
             }
         }
     }
