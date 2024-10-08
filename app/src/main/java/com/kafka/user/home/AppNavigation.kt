@@ -38,6 +38,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.kafka.base.debug
 import com.kafka.homepage.Homepage
+import com.kafka.homepage.HomepageViewModel
 import com.kafka.homepage.recent.RecentItemsScreen
 import com.kafka.homepage.recent.RecentViewModel
 import com.kafka.item.detail.ItemDetail
@@ -201,9 +202,9 @@ internal fun NavGraphBuilder.addItemDetailGroup(
 typealias addHome = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addHome(homepage: Homepage) {
+internal fun NavGraphBuilder.addHome(viewModelFactory: () -> HomepageViewModel) {
     composable<Screen.Home> {
-        homepage()
+        Homepage(viewModelFactory)
     }
 }
 
@@ -217,8 +218,7 @@ internal fun NavGraphBuilder.addSearch(viewModelFactory: (SavedStateHandle) -> S
             navDeepLink<Screen.Search>(basePath = "${Config.BASE_URL_ALT}search")
         )
     ) {
-        val searchViewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        SearchScreen(searchViewModel)
+        SearchScreen(viewModelFactory)
     }
 }
 

@@ -21,7 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
@@ -30,15 +33,21 @@ import com.kafka.common.extensions.rememberMutableState
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
+import com.kafka.search.widget.MediaTypeChips
+import com.kafka.search.widget.SearchFilterChips
+import com.kafka.search.widget.SearchWidget
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.bottomScaffoldPadding
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.progress.InfiniteProgressBarSmall
 import com.kafka.ui.components.topScaffoldPadding
 import ui.common.theme.theme.Dimens
+import javax.inject.Inject
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel) {
+@Inject
+fun SearchScreen(viewModelFactory: (SavedStateHandle) -> SearchViewModel) {
+    val searchViewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
     val searchViewState by searchViewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding ->

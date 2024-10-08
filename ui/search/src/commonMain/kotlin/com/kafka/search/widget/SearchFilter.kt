@@ -1,4 +1,4 @@
-package com.kafka.search
+package com.kafka.search.widget
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize

@@ -63,8 +63,6 @@ import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
-typealias Homepage = @Composable () -> Unit
-
 @Composable
 @Inject
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {

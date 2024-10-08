@@ -13,15 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kafka.data.entities.RecentSearch
 import com.kafka.common.animation.Delayed
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
-import com.kafka.search.R
+import com.kafka.data.entities.RecentSearch
 import com.kafka.ui.components.LabelMedium
+import kafka.ui.search.generated.resources.Res
+import kafka.ui.search.generated.resources.recent_searches
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -36,7 +37,7 @@ fun RecentSearches(
         LazyColumn(contentPadding = contentPadding) {
             item {
                 LabelMedium(
-                    text = stringResource(R.string.recent_searches),
+                    text = stringResource(Res.string.recent_searches),
                     modifier = Modifier.padding(Dimens.Spacing16)
                 )
             }
