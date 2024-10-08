@@ -2,6 +2,8 @@ package com.kafka.data.feature.homepage
 
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
+import com.kafka.data.entities.RecentItemWithProgress
+import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
 import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.homepage.HomepageCollectionResponse
@@ -24,6 +26,7 @@ class HomepageMapper @Inject constructor(
     private val remoteConfig: RemoteConfig,
     private val auth: FirebaseAuth,
     private val recommendationRepository: RecommendationRepository,
+    private val recentItemRepository: RecentItemRepository
 ) {
 
     fun map(collection: List<HomepageCollectionResponse>): Flow<List<HomepageCollection>> {
@@ -33,16 +36,16 @@ class HomepageMapper @Inject constructor(
                     is HomepageCollectionResponse.Row -> homepageItem.mapRows()
                     is HomepageCollectionResponse.Column -> homepageItem.mapColumn()
                     is HomepageCollectionResponse.FeaturedItem -> homepageItem.mapFeatured()
-                    is HomepageCollectionResponse.RecentItems -> homepageItem.mapRecentItems()
+                    is HomepageCollectionResponse.RecentItems -> mapRecentItems()
                     is HomepageCollectionResponse.Grid -> homepageItem.mapGrid()
                     is HomepageCollectionResponse.PersonRow -> homepageItem.mapPersonRow()
                     is HomepageCollectionResponse.Subjects -> homepageItem.mapSubjects()
                     is HomepageCollectionResponse.Recommendation ->
                         if (remoteConfig.isRecommendationRowEnabled() && auth.currentUser != null) {
-                        homepageItem.mapRecommendations()
-                    } else {
-                        flowOf(null)
-                    }
+                            homepageItem.mapRecommendations()
+                        } else {
+                            flowOf(null)
+                        }
 
                     is HomepageCollectionResponse.Unknown -> flowOf(null)
                 }
@@ -134,9 +137,9 @@ class HomepageMapper @Inject constructor(
         }
     }
 
-    // todo: items are filled later on domain layer, find a way to fill them here
-    private fun HomepageCollectionResponse.RecentItems.mapRecentItems() =
-        flowOf(HomepageCollection.RecentItems(listOf()))
+    private fun mapRecentItems() = recentItemRepository.observeRecentItems(RECENT_ITEMS_LIMIT)
+        .map { it.map { RecentItemWithProgress(it, 0) } }
+        .map { items -> HomepageCollection.RecentItems(items) }
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {
         val indices = itemIds.split(", ").indices
@@ -169,3 +172,5 @@ class HomepageMapper @Inject constructor(
             .map { it.value }
     }
 }
+
+private const val RECENT_ITEMS_LIMIT = 10
