@@ -80,4 +80,4 @@ internal fun CarouselsMaterial3(
     }
 }
 
-const val CarouselItemPreferredWidth = 500
+const val CarouselItemPreferredWidth = 400

@@ -1,6 +1,7 @@
 package com.kafka.desktop
 
 import com.kafka.base.ActivityScope
+import com.kafka.desktop.main.HomeNavigation
 import com.kafka.shared.DesktopApplicationComponent
 import me.tatarka.inject.annotations.Component
 
@@ -9,7 +10,7 @@ import me.tatarka.inject.annotations.Component
 abstract class WindowComponent(
     @Component val applicationComponent: DesktopApplicationComponent,
 ) {
-    abstract val mainScreen: MainScreen
+    abstract val mainScreen: HomeNavigation
 
     companion object
 }
