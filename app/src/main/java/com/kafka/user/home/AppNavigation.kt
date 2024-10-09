@@ -68,10 +68,10 @@ import com.kafka.user.playback.PlaybackViewModel
 import com.kafka.webview.WebView
 import com.rekhta.ui.auth.AuthViewModel
 import com.rekhta.ui.auth.LoginScreen
-import com.rekhta.ui.profile.ProfileScreen
-import com.rekhta.ui.profile.ProfileViewModel
-import com.rekhta.ui.profile.feedback.FeedbackScreen
-import com.rekhta.ui.profile.feedback.FeedbackViewModel
+import com.kafka.profile.ProfileScreen
+import com.kafka.profile.ProfileViewModel
+import com.kafka.profile.feedback.FeedbackScreen
+import com.kafka.profile.feedback.FeedbackViewModel
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
 import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet

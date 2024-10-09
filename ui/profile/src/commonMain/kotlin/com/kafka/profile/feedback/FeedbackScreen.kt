@@ -1,4 +1,4 @@
-package com.rekhta.ui.profile.feedback
+package com.kafka.profile.feedback
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement

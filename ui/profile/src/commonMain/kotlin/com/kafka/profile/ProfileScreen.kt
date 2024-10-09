@@ -1,4 +1,4 @@
-package com.rekhta.ui.profile
+package com.kafka.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,13 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.User
 import com.kafka.common.simpleClickable
+import com.kafka.data.entities.User
 import com.kafka.navigation.LocalNavigator
-import com.kafka.profile.R
 import com.kafka.ui.components.progress.InfiniteProgressBar
+import kafka.ui.profile.generated.resources.Res
+import kafka.ui.profile.generated.resources.app_version
+import kafka.ui.profile.generated.resources.go_to_favorites
+import kafka.ui.profile.generated.resources.login
+import kafka.ui.profile.generated.resources.login_rationale
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -59,7 +63,7 @@ fun ProfileScreen(
 
             viewState.appVersion?.let { version ->
                 Text(
-                    text = stringResource(R.string.app_version, version),
+                    text = stringResource(Res.string.app_version, version),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
@@ -124,7 +128,7 @@ private fun UserProfileHeader(
             Spacer(modifier = Modifier.height(Dimens.Spacing04))
         }
         Text(
-            text = stringResource(R.string.go_to_favorites),
+            text = stringResource(Res.string.go_to_favorites),
             modifier = Modifier.simpleClickable { goToFavorites() },
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
@@ -146,7 +150,7 @@ private fun LoginPrompt(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.login_rationale),
+            text = stringResource(Res.string.login_rationale),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
         )
@@ -157,7 +161,7 @@ private fun LoginPrompt(
             modifier = Modifier.align(Alignment.End),
             onClick = openLogin
         ) {
-            Text(text = stringResource(R.string.login))
+            Text(text = stringResource(Res.string.login))
         }
     }
 }

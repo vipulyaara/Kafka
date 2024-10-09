@@ -1,4 +1,4 @@
-package com.rekhta.ui.profile.feedback
+package com.kafka.profile.feedback
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

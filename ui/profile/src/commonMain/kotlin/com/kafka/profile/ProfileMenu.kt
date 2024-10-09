@@ -1,4 +1,4 @@
-package com.rekhta.ui.profile
+package com.kafka.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,30 +14,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.ProvideInteractiveEnforcement
 import com.kafka.common.image.Icons
-import com.kafka.profile.R
+import kafka.ui.profile.generated.resources.Res
+import kafka.ui.profile.generated.resources.adult_content_is_hidden
+import kafka.ui.profile.generated.resources.adult_content_is_shown
+import kafka.ui.profile.generated.resources.change_theme
+import kafka.ui.profile.generated.resources.logout
+import kafka.ui.profile.generated.resources.safe_mode
+import kafka.ui.profile.generated.resources.send_feedback
+import kafka.ui.profile.generated.resources.true_contrast
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit) {
     val state by profileViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        profileViewModel.determineNotificationsEnabled()
-    }
-
     Column {
         MenuItem(
-            text = stringResource(id = R.string.change_theme),
+            text = stringResource(Res.string.change_theme),
             icon = Icons.Moon,
             onClick = { profileViewModel.toggleTheme() },
             endContent = { SubtitleEndContent(subtitle = state.theme.name.lowercase()) }
@@ -45,7 +46,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
 
         if (trueContrastPrefEnabled) {
             MenuItem(
-                text = stringResource(R.string.true_contrast),
+                text = stringResource(Res.string.true_contrast),
                 icon = Icons.Sun,
                 onClick = { profileViewModel.toggleTrueContrast() },
                 endContent = {
@@ -58,38 +59,16 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
             )
         }
 
-        val context = LocalContext.current
-        if (!state.notificationsEnabled) {
-            MenuItem(
-                text = stringResource(R.string.notifications),
-                description = stringResource(R.string.notifications_toggle_description),
-                icon = Icons.Bell,
-                onClick = {
-                    dismiss()
-                    profileViewModel.openNotificationSettings(context)
-                },
-                endContent = {
-                    ProvideInteractiveEnforcement {
-                        Switch(
-                            checked = false,
-                            onCheckedChange = {
-                                dismiss()
-                                profileViewModel.openNotificationSettings(context)
-                            }
-                        )
-                    }
-                }
-            )
-        }
+        NotificationMenuItem(dismiss, profileViewModel::logOpenNotificationSettings)
 
         val adultContentDescription = if (state.safeMode) {
-            stringResource(R.string.adult_content_is_hidden)
+            stringResource(Res.string.adult_content_is_hidden)
         } else {
-            stringResource(R.string.adult_content_is_shown)
+            stringResource(Res.string.adult_content_is_shown)
         }
 
         MenuItem(
-            text = stringResource(R.string.safe_mode),
+            text = stringResource(Res.string.safe_mode),
             description = adultContentDescription,
             icon = Icons.SafeMode,
             onClick = { profileViewModel.toggleSafeMode() },
@@ -103,14 +82,14 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
         )
 
         MenuItem(
-            text = stringResource(id = R.string.send_feedback),
+            text = stringResource(Res.string.send_feedback),
             icon = Icons.Feedback,
             onClick = { profileViewModel.openFeedback() }
         )
 
         if (state.currentUser != null) {
             MenuItem(
-                text = stringResource(id = R.string.logout),
+                text = stringResource(Res.string.logout),
                 icon = Icons.Logout,
                 onClick = { profileViewModel.logout() }
             )
@@ -119,7 +98,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
 }
 
 @Composable
-private fun MenuItem(
+fun MenuItem(
     text: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
