@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,6 +65,54 @@ fun PrimaryButton(
                 .padding(vertical = Dimens.Spacing08),
             text = text,
             style = MaterialTheme.typography.titleSmall.alignCenter()
+        )
+    }
+}
+
+@Composable
+fun SecondaryButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    OutlinedButton(
+        modifier = modifier,
+        enabled = enabled,
+        shape = RoundedCornerShape(Dimens.Spacing08),
+        onClick = onClick
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterVertically)
+                .padding(vertical = Dimens.Spacing08),
+            text = text,
+            style = MaterialTheme.typography.titleSmall.alignCenter(),
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
+fun TextButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    color: Color = MaterialTheme.colorScheme.primary,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        modifier = modifier,
+        enabled = enabled,
+        shape = RoundedCornerShape(Dimens.Spacing08),
+        onClick = onClick
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.align(Alignment.CenterVertically),
+            style = MaterialTheme.typography.titleSmall.alignCenter(),
+            color = color
         )
     }
 }

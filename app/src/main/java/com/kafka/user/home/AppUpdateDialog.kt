@@ -9,21 +9,48 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
-import com.kafka.user.R
+import androidx.compose.ui.window.DialogProperties
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.extensions.semiBold
+import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.ui.components.material.PrimaryButton
+import com.kafka.user.R
+import com.kafka.user.home.MainViewModel.AppUpdateState
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ForceUpdateDialog(show: Boolean, onDismissRequest: () -> Unit = {}, update: () -> Unit) {
-    if (show) {
-        Dialog(onDismissRequest = onDismissRequest) {
-            DialogContent(update = update)
+fun AppUpdate(
+    appUpdateConfig: AppUpdateState,
+    snackbarManager: SnackbarManager,
+    updateApp: () -> Unit,
+) {
+    val context = LocalContext.current
+
+    if (appUpdateConfig == AppUpdateState.Required) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        ) {
+            DialogContent(update = updateApp)
+        }
+    }
+
+    LaunchedEffect(appUpdateConfig) {
+        if (appUpdateConfig == AppUpdateState.Optional) {
+            snackbarManager.addMessage(
+                message = context.getString(R.string.app_update_is_available),
+                label = context.getString(R.string.update),
+                onClick = updateApp
+            )
         }
     }
 }

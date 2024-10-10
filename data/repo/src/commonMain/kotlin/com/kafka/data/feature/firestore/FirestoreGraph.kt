@@ -29,6 +29,11 @@ class FirestoreGraph @Inject constructor(
             .collection("app_config")
             .document("app_update")
 
+    val appMessageConfig: DocumentReference
+        get() = firestoreKt
+            .collection("app_config")
+            .document("app_message")
+
     val feedbackCollection: CollectionReference
         get() = firestoreKt.collection("feedback")
 
