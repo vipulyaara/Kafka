@@ -1,5 +1,6 @@
 package com.kafka.user.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -67,6 +68,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("RestrictedApi")
     fun logScreenView(entry: NavBackStackEntry) {
         analytics.logScreenView(
             label = entry.destination.displayName,
