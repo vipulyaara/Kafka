@@ -9,11 +9,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -21,17 +18,13 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.kafka.base.debug
 import com.kafka.common.snackbar.SnackbarManager
-import com.kafka.common.snackbar.asString
 import com.kafka.common.widgets.LocalSnackbarHostState
-import com.kafka.data.model.AppMessage
 import com.kafka.data.prefs.Theme
-import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.NavigatorHost
-import com.kafka.navigation.graph.Screen
 import com.kafka.ui.components.snackbar.SnackbarMessagesHost
-import com.kafka.user.R
 import com.kafka.user.home.bottombar.HomeNavigation
+import com.kafka.user.home.overlays.Overlays
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
@@ -85,48 +78,6 @@ fun MainScreen(
                 ) {
                     Overlays(mainViewModel = mainViewModel, snackbarManager = snackbarManager)
                     home(navController, mainViewModel.playerTheme)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Overlays(mainViewModel: MainViewModel, snackbarManager: SnackbarManager) {
-    val context = LocalContext.current
-
-    val appUpdateConfig by mainViewModel.appUpdateConfig.collectAsStateWithLifecycle()
-    AppUpdate(
-        appUpdateConfig = appUpdateConfig,
-        snackbarManager = snackbarManager,
-        updateApp = { mainViewModel.updateApp(context) })
-
-    val appMessage by mainViewModel.appMessage.collectAsStateWithLifecycle()
-    val navigator = LocalNavigator.current
-
-    fun onPrimaryClick(appMessage: AppMessage) {
-        if (appMessage.primaryUrl.isNotEmpty()) {
-            navigator.navigate(Screen.Web(appMessage.primaryUrl))
-        }
-        mainViewModel.onAppMessageShown(appMessage.id)
-    }
-
-    AppMessage(
-        appMessage = appMessage,
-        snackbarManager = snackbarManager,
-        onPrimaryClick = { onPrimaryClick(appMessage!!) },
-        dismiss = { mainViewModel.onAppMessageShown(appMessage!!.id) }
-    )
-
-    LaunchedEffect(snackbarManager.actionPerformed) {
-        snackbarManager.actionPerformed.collectLatest { message ->
-            when (message.message.asString()) {
-                context.getString(R.string.app_update_is_available) -> {
-                    mainViewModel.updateApp(context)
-                }
-
-                appMessage?.snackbarMessage -> {
-                    onPrimaryClick(appMessage!!)
                 }
             }
         }
