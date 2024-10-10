@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.summary
 
 import androidx.compose.foundation.layout.Column
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.jeziellago.compose.markdowntext.MarkdownText
 import com.kafka.common.simpleClickable
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.scaffoldPadding
+import com.mikepenz.markdown.m3.Markdown
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -59,12 +62,10 @@ private fun Summary(
         }
 
         if (state.summary != null) {
-            MarkdownText(
-                modifier = Modifier.padding(bottom = Dimens.Spacing24),
-                markdown = state.summary.content,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+            Markdown(
+                content = state.summary.content,
+                typography = summaryMarkdownTypography(),
+                        modifier = Modifier.padding(bottom = Dimens.Spacing24),
             )
         }
     }

@@ -188,7 +188,9 @@ icons-tabler = { module = "br.com.devsrsouza.compose.icons:tabler-icons", versio
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 
-markdown-compose = "com.github.jeziellago:compose-markdown:0.5.3"
+markdown-commonmark = { module = "org.commonmark:commonmark", version = "0.23.0" }
+markdown-compose = "com.mikepenz:multiplatform-markdown-renderer-m3:0.26.0"
+markdown-core = "org.jetbrains:markdown:0.7.3"
 
 media3-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media3" }
 media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
