@@ -63,6 +63,7 @@ class MainViewModel @Inject constructor(
     fun onAppMessageShown(id: String) {
         viewModelScope.launch {
             preferencesStore.save(appMessageShownKey(id), true)
+            analytics.log { appMessageDismissed(id) }
         }
     }
 

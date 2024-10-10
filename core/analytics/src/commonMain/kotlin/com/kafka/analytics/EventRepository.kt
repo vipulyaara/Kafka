@@ -160,4 +160,8 @@ class EventRepository @Inject constructor() {
     fun openLibraryPage(page: String) = "open_library_page" to mapOf(
         "page" to page
     )
+
+    fun appMessageDismissed(id: String) = "app_message_dismissed" to mapOf(
+        "id" to id
+    )
 }
