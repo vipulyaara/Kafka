@@ -38,6 +38,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.kafka.base.debug
 import com.kafka.homepage.Homepage
+import com.kafka.homepage.HomepageViewModel
 import com.kafka.homepage.recent.RecentItemsScreen
 import com.kafka.homepage.recent.RecentViewModel
 import com.kafka.item.detail.ItemDetail
@@ -67,10 +68,10 @@ import com.kafka.user.playback.PlaybackViewModel
 import com.kafka.webview.WebView
 import com.rekhta.ui.auth.AuthViewModel
 import com.rekhta.ui.auth.LoginScreen
-import com.rekhta.ui.profile.ProfileScreen
-import com.rekhta.ui.profile.ProfileViewModel
-import com.rekhta.ui.profile.feedback.FeedbackScreen
-import com.rekhta.ui.profile.feedback.FeedbackViewModel
+import com.kafka.profile.ProfileScreen
+import com.kafka.profile.ProfileViewModel
+import com.kafka.profile.feedback.FeedbackScreen
+import com.kafka.profile.feedback.FeedbackViewModel
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
 import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
@@ -201,9 +202,9 @@ internal fun NavGraphBuilder.addItemDetailGroup(
 typealias addHome = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addHome(homepage: Homepage) {
+internal fun NavGraphBuilder.addHome(viewModelFactory: () -> HomepageViewModel) {
     composable<Screen.Home> {
-        homepage()
+        Homepage(viewModelFactory)
     }
 }
 
@@ -217,8 +218,7 @@ internal fun NavGraphBuilder.addSearch(viewModelFactory: (SavedStateHandle) -> S
             navDeepLink<Screen.Search>(basePath = "${Config.BASE_URL_ALT}search")
         )
     ) {
-        val searchViewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        SearchScreen(searchViewModel)
+        SearchScreen(viewModelFactory)
     }
 }
 

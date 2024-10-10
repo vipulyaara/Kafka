@@ -6,14 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.kafka.data.feature.item.ItemWithDownload
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Assisted
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.debug
 import com.kafka.base.domain.onException
@@ -21,6 +13,7 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.asUiMessage
 import com.kafka.common.shareText
 import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.domain.interactors.GetReaderState
 import com.kafka.domain.interactors.ReaderState
 import com.kafka.domain.interactors.UpdateCurrentPage
@@ -28,10 +21,16 @@ import com.kafka.domain.interactors.getCurrentPageFromReaderUrl
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.ShouldAutoDownload
 import com.kafka.navigation.Navigator
-import com.kafka.navigation.deeplink.DeepLinksNavigation
-import com.kafka.navigation.deeplink.Navigation
+import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
 import com.kafka.reader.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject
@@ -109,7 +108,7 @@ class OnlineReaderViewModel @Inject constructor(
         analytics.log { this.shareItem(itemId = itemId, source = "reader") }
         val itemTitle = readerState.value?.itemTitle
 
-        val link = DeepLinksNavigation.findUri(Navigation.ItemDetail(itemId)).toString()
+        val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
 
         context.shareText(text)

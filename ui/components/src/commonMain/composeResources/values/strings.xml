@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_back">Back</string>
+    <string name="cd_download">Download</string>
+    <string name="cd_change_layout">Change layout</string>
+    <string name="cd_delete_download">Delete download</string>
+    <string name="cd_download_queued">Download Queued</string>
+    <string name="cd_pause_download">Pause download</string>
+    <string name="cd_resume_download">Resume download</string>
+    <string name="cd_retry_download">Retry download</string>
+    <string name="explicit">Explicit</string>
+    <string name="cd_download_file">Download</string>
+    <string name="beta">Beta</string>
+</resources>

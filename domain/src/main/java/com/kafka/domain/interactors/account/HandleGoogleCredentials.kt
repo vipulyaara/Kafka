@@ -3,13 +3,13 @@ package com.kafka.domain.interactors.account
 import android.app.Application
 import android.content.Intent
 import com.google.android.gms.auth.api.identity.Identity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
+import dev.gitlive.firebase.auth.AuthCredential
+import dev.gitlive.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class HandleGoogleCredentials @Inject constructor(
@@ -27,8 +27,7 @@ class HandleGoogleCredentials @Inject constructor(
             val account = sigInClient.getSignInCredentialFromIntent(intent)
             val credentials = GoogleAuthProvider.getCredential(account.googleIdToken, null)
 
-            firebaseAuth.signInWithCredential(credentials).await()
-                ?: error("Failed to sign in with google")
+            firebaseAuth.signInWithCredential(AuthCredential(credentials))
 
             analytics.log { login("google") }
         }

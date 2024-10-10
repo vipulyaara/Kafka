@@ -21,4 +21,5 @@ dependencies {
 	api projects.ui.theme
 
 	implementation libs.androidx.activity.compose
+	implementation libs.androidx.lifecycle.runtime
 }

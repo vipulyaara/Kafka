@@ -13,7 +13,10 @@ kotlin {
                 implementation(projects.data.models)
                 implementation(projects.data.prefs)
 
+                implementation(libs.firebase.auth)
                 implementation(libs.ktor.client.core)
+
+                implementation(libs.kotlininject.runtime)
             }
         }
 
@@ -23,14 +26,17 @@ kotlin {
 
         val jvmMain by getting {
             dependsOn(jvmCommon)
+
+            dependencies {
+                implementation(projects.base.annotations)
+                implementation(libs.javax.inject)
+            }
         }
 
         val androidMain by getting {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(project.dependencies.platform(libs.google.bom))
-                implementation(libs.google.auth)
             }
         }
     }

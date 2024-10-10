@@ -74,3 +74,5 @@ fastlane/readme.md
 /Sarahang/
 
 /node_modules/
+
+desktop-app/src/jvmMain/kotlin/com/kafka/desktop/Secrets.kt
