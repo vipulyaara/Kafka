@@ -18,6 +18,7 @@ import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
+import com.sarahang.playback.core.players.MediaSessionPlayer
 
 @Component
 @ApplicationScope
@@ -32,6 +33,7 @@ abstract class AndroidApplicationComponent(
     abstract val processScope: CoroutineScope
 
     abstract val player: SarahangPlayer
+    abstract val sessionPlayer: MediaSessionPlayer
     abstract val timer: SleepTimer
     abstract val logger: Logger
     abstract val mediaNotifications: MediaNotifications

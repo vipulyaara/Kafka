@@ -6,7 +6,7 @@
 
 package tm.alashow.datmusic.downloader
 
-import com.tonyodev.fetch2.Status
+import com.kafka.data.feature.item.DownloadStatus
 
 val DownloadsUnknownError = DownloadMessage.Plain("Unknown error")
 val DownloadsFolderNotFound =
@@ -21,5 +21,5 @@ val AudioDownloadResumedExisting =
 val AudioDownloadAlreadyQueued =
     DownloadMessage.Plain("Item already queued for download")
 
-fun AudioDownloadExistingUnknownStatus(status: Status) =
+fun AudioDownloadExistingUnknownStatus(status: DownloadStatus) =
     DownloadMessage.Plain("Download request exists but has unhandled status: $status")

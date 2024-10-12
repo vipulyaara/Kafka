@@ -93,6 +93,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 lottie-core = "com.airbnb.android:lottie:6.4.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.4.0"
 
+androidx-collection = "androidx.collection:collection:1.4.4"
 androidx-palette = "androidx.palette:palette:1.0.0"
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -202,7 +203,7 @@ okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"
 openai-kotlin-bom = "com.aallam.openai:openai-client-bom:3.8.2"
 openai-client = { module = "com.aallam.openai:openai-client" }
 
-material-kolor = "com.materialkolor:material-kolor:1.7.1"
+material-kolor = "com.materialkolor:material-kolor:2.0.0"
 
 mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanel" }
 

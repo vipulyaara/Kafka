@@ -15,6 +15,7 @@ import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.platform.DataPlatformComponent
 import com.kafka.data.prefs.PreferenceStoreComponent
 import com.kafka.image.CoilAppInitializer
+import com.kafka.image.ImageLoadingPlatformComponent
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
 import com.kafka.play.PlayStoreComponent
@@ -49,7 +50,8 @@ interface AppModule :
     DataPlatformComponent,
     AnalyticsPlatformComponent,
     PlayStoreComponent,
-    CommonUiPlatformComponent {
+    CommonUiPlatformComponent,
+    ImageLoadingPlatformComponent {
 
     @Provides
     @ProcessLifetime

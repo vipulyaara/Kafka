@@ -64,7 +64,7 @@ private fun DownloadsLocationDialog(
         rememberLauncherForActivityResult(contract = WriteableOpenDocumentTree()) {
             coroutine.launch {
                 try {
-                    downloader.setDownloadsLocation(it)
+                    downloader.setDownloadsLocation(it.toString())
                 } catch (e: Exception) {
                     Log.e("DownloaderHost", "${e.localizedMessage} download location failed")
                 }

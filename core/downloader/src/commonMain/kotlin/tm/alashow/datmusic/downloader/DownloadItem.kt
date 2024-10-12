@@ -5,20 +5,19 @@
 package tm.alashow.datmusic.downloader
 
 import com.kafka.data.entities.DownloadRequest
-import com.tonyodev.fetch2.Download
-import com.tonyodev.fetch2.database.DownloadInfo
+import com.kafka.data.feature.item.DownloadInfo
 
 sealed class DownloadItem(
     open val downloadRequest: DownloadRequest,
-    open val downloadInfo: Download,
+    open val downloadInfo: DownloadInfo?,
 )
 
 data class FileDownloadItem(
     override val downloadRequest: DownloadRequest,
-    override val downloadInfo: Download,
+    override val downloadInfo: DownloadInfo,
 ) : DownloadItem(downloadRequest, downloadInfo) {
     companion object {
-        fun from(downloadRequest: DownloadRequest, downloadInfo: Download? = null) =
-            FileDownloadItem(downloadRequest, downloadInfo ?: DownloadInfo())
+        fun from(downloadRequest: DownloadRequest, downloadInfo: DownloadInfo) =
+            FileDownloadItem(downloadRequest, downloadInfo)
     }
 }
