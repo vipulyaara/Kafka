@@ -13,23 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kafka.data.feature.item.DownloadInfo
-import com.kafka.data.feature.item.DownloadStatus
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
+import com.kafka.data.feature.item.DownloadInfo
+import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.ui.components.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun DownloadStatusIcons(
-    downloadInfo: DownloadInfo,
-    downloader: Downloader = LocalDownloader.current,
-    scope: CoroutineScope = rememberCoroutineScope()
-) {
+actual fun DownloadStatusIcons(downloadInfo: DownloadInfo) {
+    val downloader: Downloader = LocalDownloader.current
+    val scope: CoroutineScope = rememberCoroutineScope()
     val downloadId = downloadInfo.id
 
     Box(modifier = Modifier.size(Dimens.Spacing44)) {

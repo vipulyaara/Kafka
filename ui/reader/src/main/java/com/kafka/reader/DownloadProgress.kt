@@ -22,16 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import com.kafka.data.feature.item.DownloadInfo
-import kotlinx.coroutines.launch
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
-import com.kafka.reader.R
+import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.DownloadStatusIcons
 import com.kafka.ui.components.progress.DownloadAnimation
+import kotlinx.coroutines.launch
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 

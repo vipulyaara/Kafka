@@ -24,11 +24,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.web.WebContent
 import com.google.accompanist.web.WebViewState
+import com.kafka.common.image.Icons
+import com.kafka.common.widgets.IconButton
 import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
-import com.kafka.common.image.Icons
-import com.kafka.common.widgets.IconButton
 import com.kafka.reader.R.string
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.R
@@ -175,9 +175,7 @@ fun DownloadIcon(
             onClick = openOfflineReader,
         )
     } else if (downloadInfo != null) {
-        DownloadStatusIcons(
-            downloadInfo = downloadInfo
-        )
+        DownloadStatusIcons(downloadInfo = downloadInfo)
     } else {
         IconButton(
             imageVector = Icons.Download,

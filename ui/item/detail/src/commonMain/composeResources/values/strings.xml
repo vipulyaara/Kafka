@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="file_type_is_not_supported" translatable="false">File type is not supported</string>
+    <string name="play" translatable="false">Play</string>
+    <string name="resume" translatable="false">Resume</string>
+    <string name="read" translatable="false">Read</string>
+    <string name="check_out_on_kafka" translatable="false">"\n            Check out %1$s on Kafka\n            \n            %2$s\n        "</string>
+    <string name="cd_back_button" translatable="false">Back</string>
+    <string name="cd_files" translatable="false">Files</string>
+    <string name="cd_remove_from_favorites" translatable="false">Remove from favorites</string>
+    <string name="cd_add_to_favorites" translatable="false">Add to favorites</string>
+    <string name="cd_download" translatable="false">Download</string>
+    <string name="cd_download_file" translatable="false">Download file</string>
+    <string name="cd_favorite" translatable="false">Favorite</string>
+    <string name="you_might_also_like" translatable="false">You might also like</string>
+    <string name="more_by" translatable="false">More by</string>
+    <string name="audio_access_restricted_message">This item is available with audio samples only</string>
+    <string name="borrow">Borrow/Read</string>
+    <string name="or_read_a_summary">Or Read a Summary</string>
+</resources>
