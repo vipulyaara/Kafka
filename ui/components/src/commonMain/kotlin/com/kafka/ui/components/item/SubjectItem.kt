@@ -1,6 +1,5 @@
 package com.kafka.ui.components.item
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,21 +35,20 @@ fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: (() -> U
 fun GenreItem(text: String, modifier: Modifier = Modifier, onClicked: () -> Unit = {}) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.background,
-        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.secondary),
-        tonalElevation = 0.dp,
+        shape = RoundedCornerShape(Dimens.Radius04),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 8.dp,
         shadowElevation = 0.dp
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .clickable { onClicked() }
                 .padding(
-                    horizontal = Dimens.Spacing12,
-                    vertical = Dimens.Spacing08
+                    horizontal = Dimens.Spacing24,
+                    vertical = Dimens.Spacing12
                 )
         )
     }

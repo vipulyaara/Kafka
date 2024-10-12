@@ -24,7 +24,7 @@ import com.sarahang.playback.core.players.MediaSessionPlayer
 @ApplicationScope
 abstract class AndroidApplicationComponent(
     @get:Provides val application: Application,
-) : AppModule {
+) : AppComponent {
     abstract val appInitializers: Set<AppInitializer>
     abstract val preferencesStore: PreferencesStore
     abstract val remoteConfig: RemoteConfig

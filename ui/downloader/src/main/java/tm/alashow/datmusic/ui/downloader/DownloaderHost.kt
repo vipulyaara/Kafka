@@ -29,7 +29,7 @@ import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 
 @Composable
-fun DownloaderHost(
+actual fun DownloaderHost(
     downloader: Downloader,
     content: @Composable () -> Unit,
 ) {

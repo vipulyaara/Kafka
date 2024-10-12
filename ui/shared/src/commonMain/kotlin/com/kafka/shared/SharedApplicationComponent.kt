@@ -10,6 +10,7 @@ import com.kafka.data.injection.DataModule
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.platform.device.PlatformCountryComponent
 import com.kafka.data.prefs.PreferenceStoreComponent
+import com.kafka.image.ImageLoadingPlatformComponent
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,8 @@ interface SharedApplicationComponent :
     PlatformCountryComponent,
     SharedPlatformApplicationComponent,
     PreferenceStoreComponent,
-    CommonUiPlatformComponent {
+    CommonUiPlatformComponent,
+    ImageLoadingPlatformComponent {
 
     @Provides
     @ApplicationScope

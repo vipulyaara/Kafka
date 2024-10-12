@@ -38,14 +38,14 @@ import tm.alashow.datmusic.downloader.DownloaderModule
 
 @Component
 @ApplicationScope
-interface AppModule :
+interface AppComponent :
     NetworkingComponent,
     PreferenceStoreComponent,
     DatabaseBuilderComponent,
     DatabaseModule,
     DataModule,
     DownloaderModule,
-    PlayerModule,
+    PlayerComponent,
     NavigationModule,
     DataPlatformComponent,
     AnalyticsPlatformComponent,
