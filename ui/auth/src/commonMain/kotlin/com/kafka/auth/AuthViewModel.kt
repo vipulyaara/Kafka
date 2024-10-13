@@ -1,15 +1,8 @@
-package com.rekhta.ui.auth
+package com.kafka.auth
 
-import android.app.Application
-import android.content.Intent
-import android.util.Patterns
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.logger.Analytics
-import com.kafka.auth.R
 import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
@@ -19,7 +12,6 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.snackbar.toUiMessage
 import com.kafka.data.entities.User
-import com.kafka.domain.interactors.account.HandleGoogleCredentials
 import com.kafka.domain.interactors.account.ResetPassword
 import com.kafka.domain.interactors.account.SignInUser
 import com.kafka.domain.interactors.account.SignInWithGoogle
@@ -36,24 +28,21 @@ class AuthViewModel @Inject constructor(
     private val signInUser: SignInUser,
     private val signUpUser: SignUpUser,
     private val signInWithGoogle: SignInWithGoogle,
-    private val handleGoogleCredentials: HandleGoogleCredentials,
     private val resetPassword: ResetPassword,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
     private val remoteConfig: RemoteConfig,
-    private val application: Application,
     observeUser: ObserveUser,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
 
     val state: StateFlow<AuthViewState> = combine(
         observeUser.flow,
-        signInWithGoogle.inProgress,
         loadingCounter.observable,
-    ) { user, signInWithGoogleLoading, isLoading ->
+    ) { user, isLoading ->
         AuthViewState(
             currentUser = user,
-            isLoading = isLoading || signInWithGoogleLoading,
+            isLoading = isLoading,
             isGoogleLoginEnabled = remoteConfig.isGoogleLoginEnabled()
         )
     }.stateInDefault(
@@ -65,32 +54,25 @@ class AuthViewModel @Inject constructor(
         observeUser(ObserveUser.Params())
     }
 
-    fun signInWithGoogle(launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>) {
+    fun signInWithGoogle(context: Any?) {
         viewModelScope.launch {
-            val result = signInWithGoogle(Unit)
+            loadingCounter.addLoader()
+            val result = signInWithGoogle.invoke(context)
+            loadingCounter.removeLoader()
+
             result.onException { exception ->
                 snackbarManager.addMessage(exception.toUiMessage())
             }
-            result.getOrNull()?.let { intentSender ->
-                launcher.launch(IntentSenderRequest.Builder(intentSender).build())
-            }
-        }
-    }
-
-    fun handleGoogleCredentials(data: Intent?) {
-        viewModelScope.launch {
-            handleGoogleCredentials.invoke(data)
-                .collectStatus(loadingCounter, snackbarManager)
         }
     }
 
     fun login(email: String, password: String) {
         when {
             !email.isValidEmail() ->
-                snackbarManager.addMessage(message(R.string.invalid_email_message))
+                snackbarManager.addMessage(message("Please enter a valid email"))
 
             !password.isValidPassword() ->
-                snackbarManager.addMessage(message(R.string.invalid_password_message))
+                snackbarManager.addMessage(message("Please enter a valid password"))
 
             else -> {
                 viewModelScope.launch {
@@ -105,10 +87,10 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
-                    snackbarManager.addMessage(message(R.string.invalid_email_message))
+                    snackbarManager.addMessage(message("Please enter a valid email"))
 
                 !password.isValidPassword() ->
-                    snackbarManager.addMessage(message(R.string.invalid_password_message))
+                    snackbarManager.addMessage(message("Please enter a valid password"))
 
                 else -> {
                     signUpUser(SignUpUser.Params(email, password))
@@ -125,21 +107,21 @@ class AuthViewModel @Inject constructor(
                     .collectStatus(loadingCounter, snackbarManager) { status ->
                         if (status == InvokeSuccess) {
                             analytics.log { forgotPasswordSuccess() }
-                            snackbarManager.addMessage(message(R.string.password_reset_link_sent))
+                            snackbarManager.addMessage(message("Password reset link has been sent to your email"))
                         }
                     }
             }
         } else {
             viewModelScope.launch {
-                snackbarManager.addMessage(message(R.string.invalid_email_message))
+                snackbarManager.addMessage(message("Please enter a valid email"))
             }
         }
     }
 
-    private fun message(resource: Int) = UiMessage.Plain(application.getString(resource))
+    private fun message(resource: String) = UiMessage.Plain(resource)
 
-    private fun CharSequence.isValidEmail() =
-        isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    private fun String.isValidEmail() =
+        isNotEmpty() && isValidEmail(this)
 
     private fun CharSequence.isValidPassword() = length > 4
 }
@@ -149,3 +131,8 @@ data class AuthViewState(
     val isLoading: Boolean = false,
     val isGoogleLoginEnabled: Boolean = false,
 )
+
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+    return emailRegex.matches(email)
+}

@@ -1,4 +1,6 @@
-package com.rekhta.ui.auth
+@file:OptIn(ExperimentalComposeUiApi::class)
+
+package com.kafka.auth
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.Autofill
 import androidx.compose.ui.autofill.AutofillNode
@@ -30,7 +33,6 @@ import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -39,12 +41,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import com.kafka.auth.R
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
 import com.kafka.ui.components.material.PrimaryButton
+import kafka.ui.auth.generated.resources.Res
+import kafka.ui.auth.generated.resources.forgot_password
+import kafka.ui.auth.generated.resources.login
+import kafka.ui.auth.generated.resources.sign_up
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -108,7 +114,7 @@ internal fun LoginWithEmail(
                     forgotPassword(username.text)
                 }
                 .padding(top = Dimens.Spacing20),
-            text = stringResource(R.string.forgot_password),
+            text = stringResource(Res.string.forgot_password),
             textDecoration = TextDecoration.Underline,
             style = MaterialTheme.typography.labelSmall
         )
@@ -123,7 +129,11 @@ private fun LoginButton(
     enabled: Boolean = true,
 ) {
     PrimaryButton(
-        text = if (loginState.isLogin) stringResource(R.string.login) else stringResource(R.string.sign_up),
+        text = if (loginState.isLogin) {
+            stringResource(Res.string.login)
+        } else {
+            stringResource(Res.string.sign_up)
+        },
         enabled = enabled,
     ) {
         keyboard?.hide()

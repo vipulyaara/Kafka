@@ -97,10 +97,10 @@ class ProfileViewModel @Inject constructor(
         analytics.log { openNotificationsSettings() }
     }
 
-    fun logout(onLogout: () -> Unit = { navigator.goBack() }) {
+    fun logout(context: Any?, onLogout: () -> Unit = { navigator.goBack() }) {
         analytics.log { logoutClicked() }
         viewModelScope.launch {
-            logoutUser(Unit).collectStatus(loadingCounter, snackbarManager) { status ->
+            logoutUser(context).collectStatus(loadingCounter, snackbarManager) { status ->
                 if (status == InvokeSuccess) {
                     snackbarManager.addMessage(Plain("Logged out successfully"))
                     onLogout()

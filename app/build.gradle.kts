@@ -30,11 +30,6 @@ android {
             properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
                 ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
         )
-        buildConfigField(
-            "String",
-            "PIPELESS_AUTH_TOKEN",
-            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
-        )
     }
 
     compileOptions {

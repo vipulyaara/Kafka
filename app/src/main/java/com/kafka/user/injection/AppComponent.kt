@@ -20,6 +20,7 @@ import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
 import com.kafka.play.PlayStoreComponent
 import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.getGoogleServerClientId
 import com.kafka.remote.config.getOpenAiApiKey
 import com.kafka.user.BuildConfig
 import com.kafka.user.initializer.AudioProgressInitializer
@@ -69,7 +70,8 @@ interface AppComponent :
 
     @Provides
     fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {
-        override val googleServerClientId: String = BuildConfig.GOOGLE_SERVER_CLIENT_ID
+        override val googleServerClientId: String = remoteConfig.getGoogleServerClientId()
+            .ifEmpty { BuildConfig.GOOGLE_SERVER_CLIENT_ID }
         override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
     }
 

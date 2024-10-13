@@ -1,27 +1,29 @@
 plugins {
     id("com.android.library")
+    id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
-    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.corePlayback)
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
-
                 implementation(projects.core.remoteConfig)
                 implementation(projects.data.repo)
+                implementation(projects.domain)
+                implementation(projects.navigation)
+                implementation(projects.ui.common)
+                implementation(projects.ui.components)
 
-                implementation(libs.androidx.room.runtime)
+                implementation(compose.components.resources)
+                implementation(compose.material3)
 
                 implementation(libs.firebase.auth)
-                implementation(libs.firebase.firestore)
 
-                implementation(libs.kotlininject.runtime)
+                implementation(libs.jetbrains.lifecycle.runtime.compose)
+                implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }
         }
 
@@ -37,16 +39,11 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(libs.google.coroutines)
-
-                implementation(libs.google.credentials)
-                implementation(libs.google.identity)
-                implementation(libs.google.playservices.auth)
             }
         }
     }
 }
 
 android {
-    namespace = "com.kafka.domain"
+    namespace = "com.kafka.auth"
 }

@@ -1,9 +1,7 @@
-package com.rekhta.ui.auth
+@file:OptIn(ExperimentalMaterial3Api::class)
 
-import android.app.Activity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+package com.kafka.auth
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,13 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.auth.R
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.rememberSavableMutableState
+import com.kafka.common.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
@@ -44,6 +41,11 @@ import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.progress.FullScreenProgressBar
 import com.kafka.ui.components.scaffoldPadding
+import kafka.ui.auth.generated.resources.Res
+import kafka.ui.auth.generated.resources.continue_with_google
+import kafka.ui.auth.generated.resources.ic_kafka_logo
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 internal enum class LoginState {
@@ -56,14 +58,7 @@ internal enum class LoginState {
 fun LoginScreen(authViewModel: AuthViewModel) {
     val authViewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
-    ) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            authViewModel.handleGoogleCredentials(result.data)
-        }
-    }
+    val context = getContext()
 
     if (authViewState.currentUser != null) {
         navigator.goBack()
@@ -85,7 +80,7 @@ fun LoginScreen(authViewModel: AuthViewModel) {
                     login = authViewModel::login,
                     signup = authViewModel::signup,
                     forgotPassword = authViewModel::forgotPassword,
-                    signInWithGoogle = { authViewModel.signInWithGoogle(launcher) }
+                    signInWithGoogle = { authViewModel.signInWithGoogle(context) }
                 )
             }
 
@@ -162,7 +157,7 @@ private fun SignInWithGoogle(onClick: () -> Unit) {
         )
         Spacer(modifier = Modifier.width(Dimens.Spacing16))
         Text(
-            text = stringResource(R.string.continue_with_google),
+            text = stringResource(Res.string.continue_with_google),
             style = MaterialTheme.typography.titleSmall
         )
     }
@@ -177,7 +172,7 @@ private fun LoginLogo(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_kafka_logo),
+                painter = painterResource(Res.drawable.ic_kafka_logo),
                 modifier = Modifier.size(Dimens.Spacing96),
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 contentDescription = null

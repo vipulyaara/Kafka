@@ -141,6 +141,10 @@ google-performance = { module = "com.google.firebase:firebase-perf" }
 google-playservices-auth = "com.google.android.gms:play-services-auth:21.2.0"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 
+google-credentials = "androidx.credentials:credentials:1.3.0"
+google-credentials-auth = "androidx.credentials:credentials-play-services-auth:1.3.0"
+google-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
+
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 

@@ -1,40 +1,61 @@
 package com.kafka.domain.interactors.account
 
-import android.app.Application
-import android.content.IntentSender
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
-import com.google.android.gms.auth.api.identity.Identity
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import android.content.Context
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.SecretsProvider
-import com.kafka.base.domain.ResultInteractor
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.GoogleAuthProvider
+import dev.gitlive.firebase.auth.auth
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SignInWithGoogle @Inject constructor(
+actual class SignInWithGoogle @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val application: Application,
     private val secretsProvider: SecretsProvider
-) : ResultInteractor<Unit, IntentSender>() {
-
-    override suspend fun doWork(params: Unit): IntentSender {
+) {
+     actual suspend operator fun invoke(params: Any?): Result<Unit> {
         return withContext(dispatchers.io) {
-            val sigInClient = Identity.getSignInClient(application)
+            val context = params as Context
+            try {
+                val credential = CredentialManager.create(context)
+                    .getCredential(
+                        context = context,
+                        request = getCredentialRequest()
+                    ).credential
 
-            val tokenRequest = GoogleIdTokenRequestOptions.Builder()
-                .setSupported(true)
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(secretsProvider.googleServerClientId.orEmpty())
-                .build()
-
-            val signInRequest = BeginSignInRequest.Builder()
-                .setGoogleIdTokenRequestOptions(tokenRequest)
-                .setAutoSelectEnabled(true)
-                .build()
-
-            val result = sigInClient.beginSignIn(signInRequest).await()
-            result.pendingIntent.intentSender
+                if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(credential.data)
+                    val authCredential =
+                        GoogleAuthProvider.credential(googleIdTokenCredential.idToken, null)
+                    Firebase.auth.signInWithCredential(authCredential)
+                    Result.success(Unit)
+                } else {
+                    throw RuntimeException("Received an invalid credential type")
+                }
+            } catch (e: GetCredentialCancellationException) {
+                Result.failure(Exception("Sign-in was canceled. Please try again."))
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
+    }
+
+    private fun getCredentialRequest(): GetCredentialRequest {
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setAutoSelectEnabled(true)
+            .setServerClientId(secretsProvider.googleServerClientId.orEmpty())
+            .build()
+
+        return GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
     }
 }
