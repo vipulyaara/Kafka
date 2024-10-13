@@ -3,16 +3,16 @@ package com.kafka.library.downloads
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.feature.item.ItemWithDownload
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.UiMessageManager
 import com.kafka.common.snackbar.UiMessage
+import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadedItems
 import javax.inject.Inject
 

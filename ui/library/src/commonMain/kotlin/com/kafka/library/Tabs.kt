@@ -15,10 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.launch
 import com.kafka.common.extensions.alignCenter
 import com.kafka.ui.components.pagerTabIndicatorOffset
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.launch
 import ui.common.theme.theme.Dimens
 
 @Composable

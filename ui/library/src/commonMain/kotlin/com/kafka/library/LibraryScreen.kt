@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import kotlinx.collections.immutable.toPersistentList
 import com.kafka.library.downloads.Downloads
 import com.kafka.library.downloads.DownloadsViewModel
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.library.favorites.Favorites
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.scaffoldPadding
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun LibraryScreen(favoriteViewModel: FavoriteViewModel, downloadsViewModel: DownloadsViewModel) {

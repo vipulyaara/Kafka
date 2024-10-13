@@ -4,18 +4,18 @@ import androidx.compose.runtime.Immutable
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.Item
-import com.kafka.data.prefs.PreferencesStore
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.extensions.stateInDefault
+import com.kafka.data.entities.Item
+import com.kafka.data.prefs.PreferencesStore
 import com.kafka.domain.observers.ObserveUser
 import com.kafka.domain.observers.library.ObserveFavorites
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import com.kafka.ui.components.item.LayoutType
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FavoriteViewModel @Inject constructor(

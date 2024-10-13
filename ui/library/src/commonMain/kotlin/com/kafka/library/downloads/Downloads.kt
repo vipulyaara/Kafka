@@ -11,15 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.common.plus
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.widgets.FullScreenMessage
-import com.kafka.favorites.R
+import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.bottomScaffoldPadding
+import kafka.ui.library.generated.resources.Res
+import kafka.ui.library.generated.resources.download_storage
+import kafka.ui.library.generated.resources.no_downloads_items_message
+import org.jetbrains.compose.resources.stringResource
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
@@ -29,7 +31,7 @@ internal fun Downloads(downloadsViewModel: DownloadsViewModel) {
 
     viewState.downloadedItems?.let { items ->
         if (items.isEmpty()) {
-            FullScreenMessage(UiMessage(stringResource(id = R.string.no_downloads_items_message)))
+            FullScreenMessage(UiMessage(stringResource(Res.string.no_downloads_items_message)))
         } else {
             DownloadsList(
                 items = items,
@@ -84,5 +86,5 @@ private fun ChangeDownloadLocation(modifier: Modifier = Modifier) {
 
 @Composable
 private fun DownloadStoragePrompt(modifier: Modifier = Modifier) {
-    MessageBox(text = stringResource(R.string.download_storage), modifier = modifier)
+    MessageBox(text = stringResource(Res.string.download_storage), modifier = modifier)
 }
