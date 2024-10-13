@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
 plugins {
     id("com.kafka.compose")
     alias(libs.plugins.android.application)
@@ -20,16 +18,6 @@ android {
         applicationId = "com.kafka.user"
         versionCode = 88
         versionName = "0.48.0"
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
-        buildConfigField(
-            "String",
-            "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
-                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
-        )
     }
 
     compileOptions {
@@ -140,6 +128,7 @@ dependencies {
     implementation(projects.ui.profile)
     implementation(projects.ui.reader)
     implementation(projects.ui.search)
+    implementation(projects.ui.shared)
     implementation(projects.ui.summary)
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)

@@ -76,3 +76,4 @@ fastlane/readme.md
 /node_modules/
 
 desktop-app/src/jvmMain/kotlin/com/kafka/desktop/Secrets.kt
+ui/shared/src/jvmMain/kotlin/com/kafka/shared/main/initializer/Secrets.kt

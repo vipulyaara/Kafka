@@ -68,9 +68,9 @@ import com.kafka.reader.online.OnlineReaderViewModel
 import com.kafka.reader.pdf.PdfReaderViewModel
 import com.kafka.search.SearchScreen
 import com.kafka.search.SearchViewModel
+import com.kafka.shared.playback.PlaybackViewModel
 import com.kafka.summary.SummaryScreen
 import com.kafka.summary.SummaryViewModel
-import com.kafka.user.playback.PlaybackViewModel
 import com.kafka.webview.WebView
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
 import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel

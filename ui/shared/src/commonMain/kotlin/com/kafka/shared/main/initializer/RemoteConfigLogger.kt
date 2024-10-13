@@ -1,11 +1,11 @@
-package com.kafka.user.initializer
+package com.kafka.shared.main.initializer
 
-import com.kafka.remote.config.RECOMMENDATION_ROW_ENABLED
-import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.isRecommendationRowEnabled
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
+import com.kafka.remote.config.RECOMMENDATION_ROW_ENABLED
+import com.kafka.remote.config.RemoteConfig
+import com.kafka.remote.config.isRecommendationRowEnabled
 import javax.inject.Inject
 
 @ApplicationScope

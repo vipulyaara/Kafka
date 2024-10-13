@@ -1,4 +1,4 @@
-package com.kafka.user.playback
+package com.kafka.shared.playback
 
 import com.kafka.data.dao.FileDao
 import com.kafka.data.entities.File

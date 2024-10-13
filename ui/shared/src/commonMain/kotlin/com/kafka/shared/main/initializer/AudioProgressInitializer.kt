@@ -1,10 +1,12 @@
-package com.kafka.user.initializer
+package com.kafka.shared.main.initializer
 
+import com.kafka.base.AppInitializer
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.ProcessLifetime
+import com.kafka.base.debug
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.entities.RecentAudioItem
 import com.sarahang.playback.core.PlaybackConnection
-import com.sarahang.playback.core.albumId
-import com.sarahang.playback.core.fileId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
@@ -13,10 +15,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import com.kafka.base.AppInitializer
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.ProcessLifetime
-import com.kafka.base.debug
 import javax.inject.Inject
 
 /**

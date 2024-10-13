@@ -1,13 +1,13 @@
 @file:Suppress("ktlint:standard:filename")
 
-package com.kafka.user.playback
+package com.kafka.shared.playback
 
+import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.logger.EventInfo
 import com.kafka.base.debug
 import com.kafka.base.errorLog
 import com.sarahang.playback.core.apis.Logger
 import com.sarahang.playback.core.apis.PlayerEventLogger
-import com.kafka.analytics.logger.Analytics
-import com.kafka.analytics.logger.EventInfo
 import javax.inject.Inject
 
 class KafkaPlayerEventLogger @Inject constructor(

@@ -14,19 +14,19 @@ import kotlinx.coroutines.flow.Flow
 abstract class DownloadRequestsDao : EntityDao<DownloadRequest> {
 
     @Transaction
-    @Query("SELECT * FROM download_requests WHERE id in (:ids) ORDER BY created_at DESC, id ASC")
+    @Query("SELECT * FROM download_requests WHERE id in (:ids) ORDER BY creation_time DESC, id ASC")
     abstract suspend fun getByIds(ids: List<String>): List<DownloadRequest>
 
     @Transaction
-    @Query("SELECT * FROM download_requests WHERE request_id == :id ORDER BY created_at DESC, id ASC")
+    @Query("SELECT * FROM download_requests WHERE request_id == :id ORDER BY creation_time DESC, id ASC")
     abstract suspend fun getByRequestIdOrNull(id: Int): DownloadRequest?
 
     @Transaction
-    @Query("SELECT * FROM download_requests ORDER BY created_at DESC, id ASC")
+    @Query("SELECT * FROM download_requests ORDER BY creation_time DESC, id ASC")
     abstract fun entries(): Flow<List<DownloadRequest>>
 
     @Transaction
-    @Query("SELECT * FROM download_requests ORDER BY created_at DESC, id ASC LIMIT :count OFFSET :offset")
+    @Query("SELECT * FROM download_requests ORDER BY creation_time DESC, id ASC LIMIT :count OFFSET :offset")
     abstract fun entries(count: Int, offset: Int): Flow<List<DownloadRequest>>
 
     @Transaction

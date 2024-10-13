@@ -1,14 +1,14 @@
-package com.kafka.user.injection
+package com.kafka.shared.injection
 
-import com.kafka.user.playback.KafkaPlayerEventLogger
-import com.kafka.user.playback.PlayerAudioDataSource
-import com.kafka.user.playback.PlayerLogger
+import com.kafka.base.ApplicationScope
+import com.kafka.shared.playback.KafkaPlayerEventLogger
+import com.kafka.shared.playback.PlayerAudioDataSource
+import com.kafka.shared.playback.PlayerLogger
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.apis.Logger
 import com.sarahang.playback.core.apis.PlayerEventLogger
 import com.sarahang.playback.core.injection.PlaybackCoreComponent
 import me.tatarka.inject.annotations.Provides
-import com.kafka.base.ApplicationScope
 
 @ApplicationScope
 interface PlayerComponent : PlaybackCoreComponent {
