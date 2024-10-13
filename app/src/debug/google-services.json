@@ -21,27 +21,13 @@
             "package_name": "com.kafka.user.debug",
             "certificate_hash": "95c9e896555e3fedb2fc7fd86c4966e5e732335f"
           }
-        },
-        {
-          "client_id": "577294117898-gtt9m1mm85tomi5fdpnp2hqeevf4udtl.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
           "current_key": "AIzaSyD1lV11eH3UdewwBDfNX_AmGTCN2LU-9ko"
         }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "577294117898-gtt9m1mm85tomi5fdpnp2hqeevf4udtl.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+      ]
     }
   ],
   "configuration_version": "1"
