@@ -69,5 +69,6 @@ abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
     @RenameColumn(tableName = "recent_audio", fromColumnName = "fileId", toColumnName = "albumId")
     class RecentAudioMigration : AutoMigrationSpec
     @DeleteColumn(tableName = "download_requests", columnName = "created_at")
+    @DeleteColumn(tableName = "Item", columnName = "genre")
     class DownloadRequestsMigration : AutoMigrationSpec
 }

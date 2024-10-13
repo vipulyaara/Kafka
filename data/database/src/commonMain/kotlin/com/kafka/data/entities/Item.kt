@@ -17,7 +17,6 @@ data class Item(
     val mediaType: String? = null,
     val coverImage: String? = null,
     val collection: List<String>? = null,
-    val genre: List<String>? = null,
     val subject: String? = null,
     val uploader: String? = null,
     val position: Int = 0,
