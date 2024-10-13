@@ -44,12 +44,12 @@ include ':ui:theme' // kmp
 include ':ui:library'
 include ':ui:homepage' // kmp
 include ':ui:item:detail'
-include ':ui:profile'
+include ':ui:profile' // kmp
 include ':ui:reader'
-include ':ui:search'
+include ':ui:search' // kmp
 include ':ui:shared' // kmp
-include ':ui:summary'
-include ':ui:webview'
+include ':ui:summary' // kmp
+include ':ui:webview' // kmp
 
 include ':core-playback'
 include ':ui-playback'

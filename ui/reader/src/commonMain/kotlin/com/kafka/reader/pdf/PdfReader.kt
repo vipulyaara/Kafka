@@ -8,12 +8,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.data.entities.RecentTextItem
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.simpleClickable
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.ui.components.scaffoldPadding
 
 @Composable
@@ -43,7 +42,7 @@ private fun PdfReaderWithControls(
     onPageChanged: (Int) -> Unit = {},
     setError: (Throwable) -> Unit = {},
 ) {
-    val uri by rememberMutableState(recentTextItem) { recentTextItem.localUri.toUri() }
+    val uri by rememberMutableState(recentTextItem) { recentTextItem.localUri }
 
     val pdfState = remember {
         PdfState(

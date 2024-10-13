@@ -1,14 +1,14 @@
-@file:Suppress("DEPRECATION")
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.kafka.reader.online
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,35 +18,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.web.WebContent
-import com.google.accompanist.web.WebViewState
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.feature.item.ItemWithDownload
-import com.kafka.reader.R.string
 import com.kafka.ui.components.ProvideScaffoldPadding
-import com.kafka.ui.components.R
 import com.kafka.ui.components.item.DownloadStatusIcons
 import com.kafka.ui.components.material.AlertDialog
 import com.kafka.ui.components.material.AlertDialogAction
 import com.kafka.ui.components.material.CloseButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.topScaffoldPadding
-import com.google.accompanist.web.WebView as AccompanistWebView
+import com.multiplatform.webview.web.WebContent
+import com.multiplatform.webview.web.WebView
+import com.multiplatform.webview.web.WebViewState
+import kafka.ui.reader.generated.resources.Res
+import kafka.ui.reader.generated.resources.cd_download_file
+import kafka.ui.reader.generated.resources.close
+import kafka.ui.reader.generated.resources.continue_reading_offline
+import kafka.ui.reader.generated.resources.download_complete
+import kafka.ui.reader.generated.resources.open_offline
+import org.jetbrains.compose.resources.stringResource
 
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun OnlineReader(
-    viewModel: OnlineReaderViewModel,
-    openOfflineReader: (String) -> Unit,
-) {
-    val context = LocalContext.current
+fun OnlineReader(viewModel: OnlineReaderViewModel, openOfflineReader: (String) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val fileId = state.readerState?.fileId.orEmpty()
     val readerState by viewModel.readerState.collectAsStateWithLifecycle()
@@ -90,7 +88,7 @@ fun OnlineReader(
                         openOfflineReader(fileId)
                     },
                     downloadItem = { viewModel.downloadItem(fileId) },
-                    shareItem = { viewModel.shareItem(context) },
+                    shareItem = { viewModel.shareItem() },
                     goBack = { viewModel.goBack() }
                 )
             }
@@ -104,21 +102,22 @@ fun OnlineReader(
     }
 }
 
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
 private fun WebView(
     webViewState: WebViewState,
     updateUrl: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AccompanistWebView(
+    LaunchedEffect(webViewState.lastLoadedUrl) {
+        updateUrl(webViewState.lastLoadedUrl.orEmpty())
+    }
+
+    WebView(
         state = webViewState,
         modifier = modifier
             .fillMaxSize()
             .padding(top = topScaffoldPadding())
-            .navigationBarsPadding(),
-        onCreated = { it.settings.javaScriptEnabled = true },
-        client = remember { ReaderWebViewClient(updateUrl) }
+            .navigationBarsPadding()
     )
 }
 
@@ -180,7 +179,7 @@ fun DownloadIcon(
         IconButton(
             imageVector = Icons.Download,
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = stringResource(R.string.cd_download_file),
+            contentDescription = stringResource(Res.string.cd_download_file),
             onClick = onDownloadClicked
         )
     }
@@ -189,16 +188,16 @@ fun DownloadIcon(
 @Composable
 fun DownloadCompleteDialog(openOfflineReader: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
-        title = stringResource(string.download_complete),
-        text = stringResource(string.continue_reading_offline),
+        title = stringResource(Res.string.download_complete),
+        text = stringResource(Res.string.continue_reading_offline),
         confirmButton = {
             AlertDialogAction(
-                text = stringResource(string.open_offline),
+                text = stringResource(Res.string.open_offline),
                 onClick = openOfflineReader
             )
         },
         cancelButton = {
-            AlertDialogAction(text = stringResource(string.close), onClick = onDismiss)
+            AlertDialogAction(text = stringResource(Res.string.close), onClick = onDismiss)
         },
         onDismissRequest = onDismiss,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)

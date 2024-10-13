@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.webview
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -13,8 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import com.google.accompanist.web.WebView
-import com.google.accompanist.web.rememberWebViewState
 import com.kafka.base.debug
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
@@ -22,8 +22,9 @@ import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.scaffoldPadding
+import com.multiplatform.webview.web.WebView
+import com.multiplatform.webview.web.rememberWebViewState
 
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebView(url: String, goBack: () -> Unit) {
     val webViewState = rememberWebViewState(url)
@@ -54,9 +55,13 @@ fun WebView(url: String, goBack: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(scaffoldPadding()),
-                onCreated = {
-                    it.settings.javaScriptEnabled = true
-                }
+//                factory = null,
+//                onCreated = {
+//                    it.settings.javaScriptEnabled = true
+//                }
+//                onCreated = {
+////                    it.settings.javaScriptEnabled = true
+//                }
             )
         }
     }

@@ -21,7 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
@@ -30,7 +29,10 @@ import com.kafka.data.feature.item.DownloadInfo
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.DownloadStatusIcons
 import com.kafka.ui.components.progress.DownloadAnimation
+import kafka.ui.reader.generated.resources.Res
+import kafka.ui.reader.generated.resources.downloading_hint
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
@@ -46,7 +48,7 @@ internal fun DownloadProgress(downloadInfo: DownloadInfo) {
             Spacer(modifier = Modifier.height(Dimens.Spacing24))
             Actions(downloadInfo = downloadInfo)
             Spacer(modifier = Modifier.height(Dimens.Spacing48))
-            MessageBox(text = stringResource(R.string.downloading_hint))
+            MessageBox(text = stringResource(Res.string.downloading_hint))
         }
     }
 }

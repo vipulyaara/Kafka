@@ -5,18 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.RecentTextItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.UiMessageManager
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.snackbar.toUiMessage
+import com.kafka.data.entities.RecentTextItem
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveRecentTextItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PdfReaderViewModel @Inject constructor(

@@ -42,6 +42,7 @@ import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.borrowableBookMessage
+import com.kafka.remote.config.isAppReviewPromptEnabled
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
@@ -235,8 +236,10 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     fun showAppRatingIfNeeded(context: Any?) {
-        if (itemReadCounter.totalItemOpens % itemOpenThresholdForAppReview == 0) {
-            getActivity(context)?.let { appReviewManager.showReviewDialog(it) }
+        if (remoteConfig.isAppReviewPromptEnabled()) {
+            if (itemReadCounter.totalItemOpens % itemOpenThresholdForAppReview == 0) {
+                getActivity(context)?.let { appReviewManager.showReviewDialog(it) }
+            }
         }
     }
 

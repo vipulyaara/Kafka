@@ -209,6 +209,8 @@ mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mi
 
 pdfviewer = { module = "com.github.DImuthuUpe:AndroidPdfViewer", version.ref = "pdfviewer" }
 
+webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
+
 threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
 timber = "com.jakewharton.timber:timber:5.0.1"
 dataStore = "androidx.datastore:datastore-preferences:1.1.1"

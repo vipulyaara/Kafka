@@ -1,17 +1,15 @@
 package com.kafka.reader.online
 
-import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.kafka.analytics.logger.Analytics
 import com.kafka.base.debug
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.asUiMessage
-import com.kafka.common.shareText
+import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.domain.interactors.GetReaderState
@@ -23,7 +21,6 @@ import com.kafka.domain.observers.ShouldAutoDownload
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
-import com.kafka.reader.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,11 +42,11 @@ class OnlineReaderViewModel @Inject constructor(
     private val navigator: Navigator,
     private val snackbarManager: SnackbarManager,
     private val analytics: Analytics,
+    private val shareUtils: ShareUtils,
     @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val route = savedStateHandle.toRoute<Screen.OnlineReader>()
-    private val itemId: String = route.itemId
-    private val fileId: String = route.fileId
+    private val itemId: String = savedStateHandle["itemId"]!!
+    private val fileId: String = savedStateHandle["fileId"]!!
 
     val readerState = MutableStateFlow<ReaderState?>(null)
     var showDownloadComplete = mutableStateOf(false)
@@ -104,14 +101,14 @@ class OnlineReaderViewModel @Inject constructor(
         analytics.log { readItem(itemId = itemId, type = "offline") }
     }
 
-    fun shareItem(context: Context) {
+    fun shareItem() {
         analytics.log { this.shareItem(itemId = itemId, source = "reader") }
         val itemTitle = readerState.value?.itemTitle
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
-        val text = context.getString(R.string.check_out_on_kafka, itemTitle, link).trimIndent()
+        val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
-        context.shareText(text)
+        shareUtils.shareText(text)
     }
 
     fun goBack() {

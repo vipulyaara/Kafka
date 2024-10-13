@@ -6,4 +6,5 @@
     <string name="continue_reading_offline">Continue reading offline for better experience.</string>
     <string name="open_offline">Open Offline</string>
     <string name="close">Close</string>
+    <string name="cd_download_file">Download</string>
 </resources>
