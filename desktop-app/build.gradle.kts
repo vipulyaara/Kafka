@@ -31,6 +31,8 @@ kotlin {
                 implementation(projects.ui.downloader)
                 implementation(projects.ui.components)
                 implementation(projects.ui.homepage)
+                implementation(projects.ui.reader.online)
+                implementation(projects.ui.reader.pdf)
                 implementation(projects.uiPlayback)
                 implementation(projects.ui.shared)
 

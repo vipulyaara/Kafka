@@ -45,7 +45,8 @@ include ':ui:library'
 include ':ui:homepage' // kmp
 include ':ui:item:detail'
 include ':ui:profile' // kmp
-include ':ui:reader'
+include ':ui:reader:online' // kmp
+include ':ui:reader:pdf' // kmp
 include ':ui:search' // kmp
 include ':ui:shared' // kmp
 include ':ui:summary' // kmp
