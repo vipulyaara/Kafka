@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import java.io.File
 import com.kafka.data.entities.File as FileEntity
 
-
 interface Downloader {
     companion object {
         const val DOWNLOADS_STATUS_REFRESH_INTERVAL = 1500L

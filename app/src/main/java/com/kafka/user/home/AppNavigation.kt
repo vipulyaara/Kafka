@@ -63,6 +63,8 @@ import com.kafka.profile.feedback.FeedbackScreen
 import com.kafka.profile.feedback.FeedbackViewModel
 import com.kafka.reader.ReaderScreen
 import com.kafka.reader.ReaderViewModel
+import com.kafka.reader.epub.EpubReader
+import com.kafka.reader.epub.EpubReaderViewModel
 import com.kafka.reader.online.OnlineReader
 import com.kafka.reader.online.OnlineReaderViewModel
 import com.kafka.reader.pdf.PdfReaderViewModel
@@ -99,7 +101,7 @@ internal fun AppNavigation(
     addLogin: addLogin,
     addPlayer: addPlayer,
     addWebView: addWebView,
-    addRecentItems: addRecentItems,
+    addRecentItems: addRecentItems
 ) {
     CollectEvent(navigator.queue) { event ->
         when (event) {
@@ -189,12 +191,14 @@ internal fun NavGraphBuilder.addItemDetailGroup(
     addFiles: addFiles,
     addReader: addReader,
     addOnlineReader: addOnlineReader,
+    addEpubReader: addEpubReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
     addFiles()
     addReader()
+    addEpubReader()
     addOnlineReader(navController)
     addSummary()
 }
@@ -204,7 +208,8 @@ typealias addHome = NavGraphBuilder.() -> Unit
 @Inject
 internal fun NavGraphBuilder.addHome(viewModelFactory: () -> HomepageViewModel) {
     composable<Screen.Home> {
-        Homepage(viewModelFactory)
+//        val file = File(LocalContext.current.getExternalFilesDir(null), "notes.epub")
+        Homepage(viewModelFactory = viewModelFactory)
     }
 }
 
@@ -395,6 +400,18 @@ internal fun NavGraphBuilder.addOnlineReader(
                 popUpTo(currentDestination.orEmpty()) { inclusive = true }
             }
         }
+    }
+}
+
+typealias addEpubReader = NavGraphBuilder.() -> Unit
+
+@Inject
+internal fun NavGraphBuilder.addEpubReader(
+    viewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
+) {
+    composable<Screen.EpubReader> {
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        EpubReader(viewModel)
     }
 }
 

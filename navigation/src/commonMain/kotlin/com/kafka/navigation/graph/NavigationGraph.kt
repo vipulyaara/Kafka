@@ -91,6 +91,11 @@ sealed class Screen {
     ) : Screen()
 
     @Serializable
+    data class EpubReader(
+        @SerialName("filePath") val filePath: String
+    ) : Screen()
+
+    @Serializable
     data object Back : Screen()
 }
 

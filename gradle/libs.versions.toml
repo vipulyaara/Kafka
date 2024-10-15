@@ -159,6 +159,7 @@ haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
 javax-inject = "javax.inject:javax.inject:1"
+jsoup = "org.jsoup:jsoup:1.17.2"
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"

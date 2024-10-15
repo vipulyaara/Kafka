@@ -17,12 +17,11 @@ kotlin {
                 implementation(projects.ui.common)
                 implementation(projects.ui.components)
                 implementation(projects.ui.downloader)
-                implementation(projects.ui.webview)
-                api(libs.webview)
 
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 
+                implementation(libs.jsoup)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }
@@ -46,5 +45,5 @@ kotlin {
 }
 
 android {
-    namespace = "com.kafka.reader.online"
+    namespace = "com.kafka.reader.epub"
 }
