@@ -3,6 +3,7 @@ package com.kafka.data.db
 import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
@@ -51,12 +52,13 @@ expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDataba
         RecentAudioItem::class,
         DownloadRequest::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 3, to = 4, spec = KafkaRoomDatabase.UserRemovalMigration::class),
         AutoMigration(from = 4, to = 5, spec = KafkaRoomDatabase.RecentAudioMigration::class),
         AutoMigration(from = 7, to = 8),
+        AutoMigration(from = 8, to = 9, spec = KafkaRoomDatabase.DownloadRequestsMigration::class),
     ],
 )
 @ConstructedBy(KafkaDatabaseConstructor::class)
@@ -66,4 +68,7 @@ abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
     class UserRemovalMigration : AutoMigrationSpec
     @RenameColumn(tableName = "recent_audio", fromColumnName = "fileId", toColumnName = "albumId")
     class RecentAudioMigration : AutoMigrationSpec
+    @DeleteColumn(tableName = "download_requests", columnName = "created_at")
+    @DeleteColumn(tableName = "Item", columnName = "genre")
+    class DownloadRequestsMigration : AutoMigrationSpec
 }

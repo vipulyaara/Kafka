@@ -3,7 +3,8 @@ package com.kafka.data.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 @Entity(tableName = "download_requests")
 data class DownloadRequest(
@@ -17,8 +18,8 @@ data class DownloadRequest(
     @ColumnInfo(name = "request_id")
     val requestId: Int = REQUEST_NOT_SET,
 
-    @ColumnInfo(name = "created_at")
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @ColumnInfo(name = "creation_time", defaultValue = "0")
+    val createdAt: Instant = Clock.System.now(),
 ) : BaseEntity {
 
     companion object {

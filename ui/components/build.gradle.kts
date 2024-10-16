@@ -9,15 +9,18 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.base.domain)
+                implementation(projects.core.downloader)
                 implementation(projects.data.repo)
                 implementation(projects.ui.common)
+                implementation(projects.ui.downloader)
+
+                api(compose.components.resources)
+                api(compose.components.uiToolingPreview)
 
                 api(compose.animation)
                 api(compose.foundation)
                 api(compose.material3)
-                api(compose.components.resources)
                 api(compose.runtime)
-                api(compose.uiTooling)
                 api(compose.ui)
 
                 implementation(libs.haze)
@@ -37,8 +40,6 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(projects.ui.downloader)
-
                 implementation(libs.lottie.compose)
                 implementation(libs.lottie.core)
             }

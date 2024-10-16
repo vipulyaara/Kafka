@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name" translatable="false">Kafka</string>
+    <string name="cancel" translatable="false">Cancel</string>
+
+    <string name="play" translatable="false">Play</string>
+    <string name="library" translatable="false">Library</string>
+    <string name="bottom_bar_search" translatable="false">Search</string>
+    <string name="home" translatable="false">Home</string>
+
+    <string name="update_available" translatable="false">Update Available</string>
+    <string name="force_update_message" translatable="false">This version is outdated. Please update the app to continue using it.</string>
+    <string name="update" translatable="false">Update</string>
+    <string name="app_update_is_available">App update is available</string>
+</resources>

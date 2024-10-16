@@ -22,7 +22,6 @@ class ItemMapper @Inject constructor() {
         mediaType = this.mediatype,
         coverImage = "https://archive.org/services/img/$identifier",
         collection = this.collection,
-        genre = this.subject,
         position = this.downloads.toInt(),
         subject = subject?.joinToString(","),
         rating = this.rating,

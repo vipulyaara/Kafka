@@ -8,6 +8,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(projects.corePlayback)
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
                 implementation(projects.core.downloader)
@@ -36,9 +37,10 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(projects.corePlayback)
-
                 implementation(libs.google.coroutines)
+
+                implementation(libs.google.credentials)
+                implementation(libs.google.identity)
                 implementation(libs.google.playservices.auth)
             }
         }

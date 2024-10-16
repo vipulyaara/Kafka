@@ -5,6 +5,8 @@
 package tm.alashow.datmusic.downloader
 
 import android.app.Application
+import com.kafka.base.ApplicationScope
+import com.kafka.base.Named
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.downloaderType
 import com.tonyodev.fetch2.Fetch
@@ -14,14 +16,11 @@ import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import me.tatarka.inject.annotations.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import com.kafka.base.ApplicationScope
-import com.kafka.base.Named
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.minutes
 import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
-interface DownloaderModule {
-
+actual interface DownloaderModule {
     @Provides
     fun provideDownloader(downloader: DownloaderImpl): Downloader = downloader
 

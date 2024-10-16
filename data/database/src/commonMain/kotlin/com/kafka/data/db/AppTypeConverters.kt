@@ -4,10 +4,10 @@ import androidx.room.TypeConverter
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
 
 /**
  * @author Vipul Kumar; dated 21/01/19.
@@ -20,8 +20,6 @@ class AppTypeConverters {
         }
     }
 
-    private val localDateFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-
     @TypeConverter
     fun stringToList(data: String) = json.decodeFromString<List<String>?>(data)
 
@@ -29,19 +27,19 @@ class AppTypeConverters {
     fun listToString(data: List<String>?) = json.encodeToString(data)
 
     @TypeConverter
-    fun toLocalDateTime(value: String): LocalDateTime = when (value.isBlank()) {
-        true -> LocalDateTime.now()
-        else -> LocalDateTime.parse(value, localDateFormat)
+    fun toLocalDateTime(value: Long): Instant = when (value == 0L) {
+        true -> Clock.System.now()
+        else -> Instant.fromEpochMilliseconds(value)
     }
+
+    @TypeConverter
+    fun fromLocalDateTime(value: Instant): Long = value.toEpochMilliseconds()
 
     @TypeConverter
     fun stringToPageList(data: String) = json.decodeFromString<List<RecentTextItem.Page>>(data)
 
     @TypeConverter
     fun pageListToString(data: List<RecentTextItem.Page>) = json.encodeToString(data)
-
-    @TypeConverter
-    fun fromLocalDateTime(value: LocalDateTime): String = localDateFormat.format(value)
 
     @TypeConverter
     fun stringToMediaType(data: String) = json.decodeFromString<List<MediaType>>(data)

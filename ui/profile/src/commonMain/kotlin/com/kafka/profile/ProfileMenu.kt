@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.ProvideInteractiveEnforcement
+import com.kafka.common.getContext
 import com.kafka.common.image.Icons
 import kafka.ui.profile.generated.resources.Res
 import kafka.ui.profile.generated.resources.adult_content_is_hidden
@@ -35,6 +36,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit) {
     val state by profileViewModel.state.collectAsStateWithLifecycle()
+    val context = getContext()
 
     Column {
         MenuItem(
@@ -91,7 +93,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
             MenuItem(
                 text = stringResource(Res.string.logout),
                 icon = Icons.Logout,
-                onClick = { profileViewModel.logout() }
+                onClick = { profileViewModel.logout(context) }
             )
         }
     }

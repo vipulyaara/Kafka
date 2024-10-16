@@ -23,7 +23,7 @@ class KafkaApplication : Application(), PlayerServiceDependencies {
     override fun onCreate() {
         super.onCreate()
 
-        component.appInitializers.forEach { it.init() }
+        component.appInitializers.init()
     }
 
     override val player: SarahangPlayer
