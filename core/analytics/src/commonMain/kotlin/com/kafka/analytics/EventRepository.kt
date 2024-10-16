@@ -143,7 +143,10 @@ class EventRepository @Inject constructor() {
 
     fun openNotificationsSettings() = "open_notifications_settings" to mapOf<String, String>()
 
-    fun openCreator(source: String = "") = "open_creator" to mapOf("source" to source)
+    fun openCreator(name: String?, source: String = "") = "open_creator" to mapOf(
+        "name" to name,
+        "source" to source
+    )
 
     fun openSummary(itemId: String) = "open_summary" to mapOf(
         "item_id" to itemId
@@ -156,5 +159,9 @@ class EventRepository @Inject constructor() {
 
     fun openLibraryPage(page: String) = "open_library_page" to mapOf(
         "page" to page
+    )
+
+    fun appMessageDismissed(id: String) = "app_message_dismissed" to mapOf(
+        "id" to id
     )
 }

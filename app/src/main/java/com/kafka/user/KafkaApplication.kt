@@ -7,6 +7,7 @@ import com.sarahang.playback.core.MediaNotifications
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.apis.Logger
+import com.sarahang.playback.core.players.MediaSessionPlayer
 import com.sarahang.playback.core.players.SarahangPlayer
 import com.sarahang.playback.core.services.PlayerServiceDependencies
 import com.sarahang.playback.core.timer.SleepTimer
@@ -22,7 +23,7 @@ class KafkaApplication : Application(), PlayerServiceDependencies {
     override fun onCreate() {
         super.onCreate()
 
-        component.appInitializers.forEach { it.init() }
+        component.appInitializers.init()
     }
 
     override val player: SarahangPlayer
@@ -37,4 +38,6 @@ class KafkaApplication : Application(), PlayerServiceDependencies {
         get() = component.audioDataSource
     override val playbackConnection: PlaybackConnection
         get() = component.playbackConnection
+    override val sessionPlayer: MediaSessionPlayer
+        get() = component.sessionPlayer
 }

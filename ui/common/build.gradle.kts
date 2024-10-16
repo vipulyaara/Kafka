@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library") // todo: use build-logic
+    id("com.android.library")
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
 }
@@ -13,7 +13,6 @@ kotlin {
                 implementation(projects.core.networking)
                 api(projects.ui.theme)
 
-                api(libs.coil.compose)
                 api(compose.animation)
                 api(compose.foundation)
                 api(compose.material3)
@@ -22,7 +21,8 @@ kotlin {
                 api(compose.uiTooling)
                 api(compose.ui)
 
-                implementation(libs.accompanist.flowlayout)
+                api(libs.jetbrains.adaptive)
+
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)
@@ -43,7 +43,6 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                api(libs.androidx.adaptive.android)
             }
         }
     }

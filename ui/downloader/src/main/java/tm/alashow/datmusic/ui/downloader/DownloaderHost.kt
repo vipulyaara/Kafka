@@ -29,7 +29,7 @@ import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 
 @Composable
-fun DownloaderHost(
+actual fun DownloaderHost(
     downloader: Downloader,
     content: @Composable () -> Unit,
 ) {
@@ -64,7 +64,7 @@ private fun DownloadsLocationDialog(
         rememberLauncherForActivityResult(contract = WriteableOpenDocumentTree()) {
             coroutine.launch {
                 try {
-                    downloader.setDownloadsLocation(it)
+                    downloader.setDownloadsLocation(it.toString())
                 } catch (e: Exception) {
                     Log.e("DownloaderHost", "${e.localizedMessage} download location failed")
                 }

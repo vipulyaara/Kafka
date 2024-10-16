@@ -1,6 +1,5 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
 plugins {
+    id("com.kafka.compose")
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.cacheFixPlugin)
@@ -19,21 +18,6 @@ android {
         applicationId = "com.kafka.user"
         versionCode = 88
         versionName = "0.48.0"
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
-        buildConfigField(
-            "String",
-            "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
-                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
-        )
-        buildConfigField(
-            "String",
-            "PIPELESS_AUTH_TOKEN",
-            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
-        )
     }
 
     compileOptions {
@@ -138,15 +122,20 @@ dependencies {
     implementation(projects.ui.components)
     implementation(projects.ui.downloader)
     implementation(projects.ui.homepage)
-    implementation(projects.ui.item)
+    implementation(projects.ui.item.detail)
     implementation(projects.ui.library)
     implementation(projects.uiPlayback)
     implementation(projects.ui.profile)
-    implementation(projects.ui.reader)
+    implementation(projects.ui.reader.epub)
+    implementation(projects.ui.reader.online)
+    implementation(projects.ui.reader.pdf)
     implementation(projects.ui.search)
+    implementation(projects.ui.shared)
     implementation(projects.ui.summary)
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
+
+    implementation(compose.material3)
 
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
@@ -159,6 +148,7 @@ dependencies {
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material.material3)
     implementation(libs.compose.material.navigation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
@@ -167,9 +157,8 @@ dependencies {
     implementation(libs.fetch)
     implementation(libs.firebase.firestore)
     implementation(libs.google.analytics)
-    implementation(libs.google.auth)
+    implementation(libs.firebase.auth)
     implementation(libs.google.crashlytics)
-    implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)
     implementation(libs.google.review)

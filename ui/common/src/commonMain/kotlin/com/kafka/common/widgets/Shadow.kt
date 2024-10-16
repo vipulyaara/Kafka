@@ -1,6 +1,5 @@
 package com.kafka.common.widgets
 
-import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -17,7 +16,7 @@ fun Modifier.shadowMaterial(
     shape: Shape = RectangleShape,
     clip: Boolean = elevation > 0.dp,
     ambientColor: Color? = null,
-    spotColor: Color? = null
+    spotColor: Color? = null,
 ) = composed {
     shadow(
         elevation = elevation,
@@ -25,5 +24,5 @@ fun Modifier.shadowMaterial(
         clip = clip,
         ambientColor = ambientColor ?: MaterialTheme.colorScheme.shadowMaterial,
         spotColor = spotColor ?: MaterialTheme.colorScheme.shadowMaterial
-    ).background(MaterialTheme.colorScheme.surface)
+    )
 }

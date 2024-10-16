@@ -20,7 +20,7 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.kafka.ui.components.R
 
 @Composable
-fun DownloadAnimation(modifier: Modifier = Modifier) {
+actual fun DownloadAnimation(modifier: Modifier) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.purple_elephant))
 
     Box(modifier = modifier.size(300.dp)) {

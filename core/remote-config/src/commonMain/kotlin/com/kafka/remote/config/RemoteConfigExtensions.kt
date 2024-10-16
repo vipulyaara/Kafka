@@ -14,6 +14,8 @@ const val TRUE_CONTRAST_ENABLED = "true_contrast_enabled"
 const val SUMMARY_ENABLED = "summary_enabled"
 const val SHOW_FEATURED_ITEM_LABELS = "show_featured_item_labels"
 const val OPEN_AI_API_KEY = "open_ai_api_key"
+const val GOOGLE_SERVER_CLIENT_ID = "google_server_client_id"
+const val APP_REVIEW_PROMPT_ENABLED = "app_review_prompt_enabled"
 
 fun RemoteConfig.getPlayerTheme() = get(REMOTE_CONFIG_PLAYER_THEME_KEY)
 
@@ -42,3 +44,7 @@ fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)
 fun RemoteConfig.showFeaturedItemLabels() = getBoolean(SHOW_FEATURED_ITEM_LABELS)
 
 fun RemoteConfig.getOpenAiApiKey() = get(OPEN_AI_API_KEY)
+
+fun RemoteConfig.getGoogleServerClientId() = get(GOOGLE_SERVER_CLIENT_ID)
+
+fun RemoteConfig.isAppReviewPromptEnabled() = getBoolean(APP_REVIEW_PROMPT_ENABLED)

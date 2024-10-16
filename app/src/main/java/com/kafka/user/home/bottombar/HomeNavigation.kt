@@ -62,7 +62,6 @@ import com.kafka.ui.components.material.HazeScaffold
 import com.kafka.ui.components.snackbar.DismissableSnackbarHost
 import com.kafka.user.home.AppNavigation
 import com.sarahang.playback.core.PlaybackConnection
-import com.sarahang.playback.core.artist
 import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
@@ -357,6 +356,7 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
 
     return destination != Screen.Reader.navigationRoute
             && destination != Screen.OnlineReader.navigationRoute
+            && destination != Screen.EpubReader.navigationRoute
 }
 
 internal enum class NavigationType {

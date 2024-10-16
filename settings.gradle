@@ -23,34 +23,37 @@ include ':base:annotations' // kmp
 include ':base:domain' // kmp
 include ':baselineprofile' // kmp
 include ':core:analytics' // kmp
-include ':core:downloader'
+include ':core:downloader' // kmp
 include ':core:image-loading' // kmp
 include ':core:play' // kmp
 include ':core:networking' // kmp
 include ':core:remote-config' // kmp
-include ':data:repo'
-include ':data:database'
+include ':data:repo' // kmp
+include ':data:database' // kmp
 include ':data:models' // kmp
 include ':data:platform' // kmp
 include ':data:prefs' // kmp
-include ':domain'
-include ':navigation'
+include ':desktop-app' // kmp
+include ':domain' // kmp
+include ':navigation' // kmp
 include ':ui:auth'
 include ':ui:common' // kmp
-include ':ui:components'
+include ':ui:components' // kmp
 include ':ui:downloader'
 include ':ui:theme' // kmp
 include ':ui:library'
-include ':ui:homepage'
-include ':ui:item'
-include ':ui:profile'
-include ':ui:reader'
-include ':ui:search'
-include ':ui:summary'
-include ':ui:webview'
+include ':ui:homepage' // kmp
+include ':ui:item:detail'
+include ':ui:profile' // kmp
+include ':ui:reader:epub' // kmp
+include ':ui:reader:online' // kmp
+include ':ui:reader:pdf' // kmp
+include ':ui:search' // kmp
+include ':ui:shared' // kmp
+include ':ui:summary' // kmp
+include ':ui:webview' // kmp
 
 include ':core-playback'
 include ':ui-playback'
 project(':core-playback').projectDir = new File(settingsDir, '../Sarahang/core-playback')
 project(':ui-playback').projectDir = new File(settingsDir, '../Sarahang/ui-playback')
-

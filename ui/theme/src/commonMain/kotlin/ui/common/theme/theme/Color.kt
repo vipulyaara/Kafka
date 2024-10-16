@@ -8,16 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val brandBlue = Color(0xff0067DD)
-val white = Color(0xFFFFFFFF)
-val whiteCream = Color(0xFFFAFAFA)
-val darkGrey800 = Color(0xff121212)
-val darkSurface = Color(0xFF22242C)
-val textSecondaryDark = Color(0xff888888)
-val Asphalt = Color(0xFF2c3e50)
-
-val error = Color(0xffBA0550)
-
 enum class ThemeColor {
     Light, Dark;
 
@@ -37,34 +27,71 @@ val ColorScheme.shadowMaterial
     }
 
 val DarkAppColors = darkColorScheme(
-    primary = brandBlue,
-    secondary = textSecondaryDark,
-    background = darkGrey800,
-    surface = darkSurface,
-    tertiary = Color(0xffCFA224),
-    error = error,
-    secondaryContainer = darkSurface,
-    onBackground = whiteCream,
-    onSurface = whiteCream,
-    onError = white,
-    outline = whiteCream,
-    onPrimary = white,
-    onSecondary = white,
+    primary = Color(0xFFFFD69A),
+    onPrimary = Color(0xFF341000),
+    primaryContainer = Color(0xFFBD8701),
+    onPrimaryContainer = Color(0xFF000000),
+    inversePrimary = Color(0xFF4A3200),
+
+    secondary = Color(0xFFFFD69A),
+    onSecondary = Color(0xFF341000),
+    secondaryContainer = Color(0xFFB48A3D),
+    onSecondaryContainer = Color(0xFF000000),
+
+    tertiary = Color(0xFFC9E79C),
+    onTertiary = Color(0xFF192A00),
+    tertiaryContainer = Color(0xFF7F9A57),
+    onTertiaryContainer = Color(0xFF000000),
+
+    background = Color(0xFF000000),
+    onBackground = Color(0xFFE0E5D1),
+
+    surface = Color(0xFF000000),
+    onSurface = Color(0xFFFFFFFF),
+
+    surfaceVariant = Color(0xFF414A33),
+    onSurfaceVariant = Color(0xFFD6E0C1),
+
+    error = Color(0xFFF2B8B5),
+    onError = Color(0xFF601414),
+    errorContainer = Color(0xFF8C1D18),
+    onErrorContainer = Color(0xFFF9DDDB),
+
+    outline = Color(0xFFACB699),
+    surfaceTint = Color(0xFFFFD69A)
 )
 
 val LightAppColors = lightColorScheme(
-    primary = brandBlue,
-    secondary = Asphalt,
-    background = whiteCream,
-    surface = white,
-    tertiary = Color(0xffCFA224),
-    tertiaryContainer = brandBlue.copy(alpha = 0.1f),
-    secondaryContainer = brandBlue.copy(alpha = 0.1f),
-    error = error,
-    onPrimary = white,
-    onSecondary = white,
-    onBackground = darkGrey800,
-    onSurface = darkGrey800,
-    onError = white,
-    outline = darkGrey800
+    primary = Color(0xFF4A3200),
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = Color(0xFF906500),
+    onPrimaryContainer = Color(0xFFFFFFFF),
+    inversePrimary = Color(0xFFFFD69A),
+
+    secondary = Color(0xFF4A3200),
+    onSecondary = Color(0xFFFFFFFF),
+    secondaryContainer = Color(0xFF8C661D),
+    onSecondaryContainer = Color(0xFFFFFFFF),
+
+    tertiary = Color(0xFF274006),
+    onTertiary = Color(0xFFFFFFFF),
+    tertiaryContainer = Color(0xFF5C7559),
+    onTertiaryContainer = Color(0xFFFFFFFF),
+
+    background = Color(0xFFFFFFFF),
+    onBackground = Color(0xFF191D11),
+
+    surface = Color(0xFFFFFFFF),
+    onSurface = Color(0xFF0E1308),
+
+    surfaceVariant = Color(0xFFDCF8C7),
+    onSurfaceVariant = Color(0xFF303823),
+
+    error = Color(0xFFB4261D),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFF9DDDB),
+    onErrorContainer = Color(0xFF410E0B),
+
+    outline = Color(0xFF4C5640),
+    surfaceTint = Color(0xFF4A3200)
 )

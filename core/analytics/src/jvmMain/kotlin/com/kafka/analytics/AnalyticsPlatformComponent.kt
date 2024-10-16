@@ -1,10 +1,8 @@
 package com.kafka.analytics
 
-import com.kafka.analytics.EventRepository
-import com.kafka.data.platform.UserData
-import me.tatarka.inject.annotations.Provides
 import com.kafka.analytics.logger.Analytics
 import com.kafka.analytics.logger.EventInfo
+import me.tatarka.inject.annotations.Provides
 
 actual interface AnalyticsPlatformComponent {
   @Provides
@@ -14,10 +12,6 @@ actual interface AnalyticsPlatformComponent {
     }
 
     override fun log(eventInfo: EventRepository.() -> EventInfo) {
-      // todo: kmp implement
-    }
-
-    override fun updateUserProperty(userData: UserData) {
       // todo: kmp implement
     }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 val THEME = stringPreferencesKey("theme")
 val TRUE_CONTRAST = booleanPreferencesKey("true_contrast")
 val SAFE_MODE = booleanPreferencesKey("safe_mode")
+fun appMessageShownKey(id: String) = booleanPreferencesKey("app_message_shown_$id")
 
 fun PreferencesStore.observeTheme(): Flow<Theme> {
     return get(THEME, Theme.DEFAULT.name)

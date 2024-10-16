@@ -1,10 +1,16 @@
 package com.kafka.common
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
+@Composable
+actual fun getContext(): Any? = LocalContext.current
 
 fun Context.shareText(text: String) {
     val sendIntent: Intent = Intent().apply {
@@ -17,8 +23,16 @@ fun Context.shareText(text: String) {
     startActivity(shareIntent)
 }
 
-fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, text, duration).show()
+actual fun getActivity(context: Any?): Any? = when (context) {
+    is Activity -> context
+    is ContextWrapper -> context.baseContext.getActivity()
+    else -> null
+}
+
+fun Context.getActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.getActivity()
+    else -> null
 }
 
 fun Context.goToPlayStore() {

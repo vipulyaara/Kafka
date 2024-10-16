@@ -36,8 +36,11 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
+import com.kafka.auth.AuthViewModel
+import com.kafka.auth.LoginScreen
 import com.kafka.base.debug
 import com.kafka.homepage.Homepage
+import com.kafka.homepage.HomepageViewModel
 import com.kafka.homepage.recent.RecentItemsScreen
 import com.kafka.homepage.recent.RecentViewModel
 import com.kafka.item.detail.ItemDetail
@@ -54,23 +57,23 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
+import com.kafka.profile.ProfileScreen
+import com.kafka.profile.ProfileViewModel
+import com.kafka.profile.feedback.FeedbackScreen
+import com.kafka.profile.feedback.FeedbackViewModel
 import com.kafka.reader.ReaderScreen
 import com.kafka.reader.ReaderViewModel
+import com.kafka.reader.epub.EpubReader
+import com.kafka.reader.epub.EpubReaderViewModel
 import com.kafka.reader.online.OnlineReader
 import com.kafka.reader.online.OnlineReaderViewModel
 import com.kafka.reader.pdf.PdfReaderViewModel
 import com.kafka.search.SearchScreen
 import com.kafka.search.SearchViewModel
+import com.kafka.shared.playback.PlaybackViewModel
 import com.kafka.summary.SummaryScreen
 import com.kafka.summary.SummaryViewModel
-import com.kafka.user.playback.PlaybackViewModel
 import com.kafka.webview.WebView
-import com.rekhta.ui.auth.AuthViewModel
-import com.rekhta.ui.auth.LoginScreen
-import com.rekhta.ui.profile.ProfileScreen
-import com.rekhta.ui.profile.ProfileViewModel
-import com.rekhta.ui.profile.feedback.FeedbackScreen
-import com.rekhta.ui.profile.feedback.FeedbackViewModel
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
 import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
@@ -98,7 +101,7 @@ internal fun AppNavigation(
     addLogin: addLogin,
     addPlayer: addPlayer,
     addWebView: addWebView,
-    addRecentItems: addRecentItems,
+    addRecentItems: addRecentItems
 ) {
     CollectEvent(navigator.queue) { event ->
         when (event) {
@@ -188,12 +191,14 @@ internal fun NavGraphBuilder.addItemDetailGroup(
     addFiles: addFiles,
     addReader: addReader,
     addOnlineReader: addOnlineReader,
+    addEpubReader: addEpubReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
     addFiles()
     addReader()
+    addEpubReader()
     addOnlineReader(navController)
     addSummary()
 }
@@ -201,9 +206,10 @@ internal fun NavGraphBuilder.addItemDetailGroup(
 typealias addHome = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addHome(homepage: Homepage) {
+internal fun NavGraphBuilder.addHome(viewModelFactory: () -> HomepageViewModel) {
     composable<Screen.Home> {
-        homepage()
+//        val file = File(LocalContext.current.getExternalFilesDir(null), "notes.epub")
+        Homepage(viewModelFactory = viewModelFactory)
     }
 }
 
@@ -217,8 +223,7 @@ internal fun NavGraphBuilder.addSearch(viewModelFactory: (SavedStateHandle) -> S
             navDeepLink<Screen.Search>(basePath = "${Config.BASE_URL_ALT}search")
         )
     ) {
-        val searchViewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        SearchScreen(searchViewModel)
+        SearchScreen(viewModelFactory)
     }
 }
 
@@ -395,6 +400,18 @@ internal fun NavGraphBuilder.addOnlineReader(
                 popUpTo(currentDestination.orEmpty()) { inclusive = true }
             }
         }
+    }
+}
+
+typealias addEpubReader = NavGraphBuilder.() -> Unit
+
+@Inject
+internal fun NavGraphBuilder.addEpubReader(
+    viewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
+) {
+    composable<Screen.EpubReader> {
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        EpubReader(viewModel)
     }
 }
 
