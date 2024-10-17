@@ -51,7 +51,7 @@
 -dontwarn com.google.errorprone.annotations.*
 
 -keepclassmembers class com.kafka.data.entities.** { *; }
--keepclassmembers class org.kafka.navigation.graph.** { *; }
+-keepclassmembers class com.kafka.navigation.graph.** { *; }
 
 -keep class com.kafka.data.entities.** {
     <fields>;
@@ -69,7 +69,7 @@
     <fields>;
     <init>(...);
 }
--keep class org.kafka.navigation.graph.** {
+-keep class com.kafka.navigation.graph.** {
     <fields>;
     <init>(...);
 }
@@ -129,3 +129,24 @@
     public static *** getLocalLifecycleOwner();
 }
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-dontwarn java.awt.event.ActionListener
+-dontwarn javax.swing.SwingUtilities
+-dontwarn javax.swing.Timer
+
+-dontwarn io.ktor.client.network.sockets.SocketTimeoutException
+-dontwarn io.ktor.client.plugins.HttpRequestRetry$Configuration
+-dontwarn io.ktor.client.plugins.HttpRequestRetry$Plugin
+-dontwarn io.ktor.client.plugins.HttpRequestRetry$ShouldRetryContext
+-dontwarn io.ktor.client.plugins.HttpRequestRetry
+-dontwarn io.ktor.client.plugins.HttpTimeout$HttpTimeoutCapabilityConfiguration
+-dontwarn io.ktor.client.plugins.HttpTimeout$Plugin
+-dontwarn io.ktor.client.plugins.HttpTimeout
+-dontwarn io.ktor.client.plugins.contentnegotiation.ContentNegotiation$Config
+-dontwarn io.ktor.client.plugins.contentnegotiation.ContentNegotiation$Plugin
+-dontwarn io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+-dontwarn io.ktor.client.plugins.logging.Logging$Companion
+-dontwarn io.ktor.client.plugins.logging.Logging$Config
+-dontwarn io.ktor.client.plugins.logging.Logging
+-dontwarn io.ktor.util.KtorDsl
+-dontwarn io.ktor.utils.io.jvm.nio.WritingKt
