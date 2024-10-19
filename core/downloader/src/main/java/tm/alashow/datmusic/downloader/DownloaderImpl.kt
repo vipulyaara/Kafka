@@ -4,45 +4,46 @@
  */
 package tm.alashow.datmusic.downloader
 
-import android.content.Context
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import com.kafka.analytics.logger.Analytics
+import com.kafka.base.ApplicationScope
+import com.kafka.base.debug
+import com.kafka.base.errorLog
+import com.kafka.base.i
+import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.prefs.PreferencesStore
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import okhttp3.internal.toImmutableList
-import org.kafka.base.debug
-import org.kafka.base.errorLog
-import org.kafka.base.i
-import org.kafka.common.snackbar.SnackbarManager
-import org.kafka.analytics.logger.Analytics
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueSuccessful
 import tm.alashow.datmusic.downloader.manager.FetchDownloadManager
+import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.Optional
 import javax.inject.Inject
-import javax.inject.Singleton
 import com.kafka.data.entities.File as FileEntity
 
-@Singleton
-internal class DownloaderImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+@ApplicationScope
+class DownloaderImpl @Inject constructor(
+    private val appContext: Application,
     private val fetcher: FetchDownloadManager,
+    private val downloadInfoMapper: DownloadInfoMapper,
     private val preferences: PreferencesStore,
     private val repo: DownloadRequestsDao,
     private val fileDao: FileDao,
@@ -180,7 +181,11 @@ internal class DownloaderImpl @Inject constructor(
 
                     else -> {
                         debug { "Existing download was requested with unhandled status, doing nothing: Status: ${downloadInfo.status}" }
-                        downloaderMessage(AudioDownloadExistingUnknownStatus(downloadInfo.status))
+                        downloaderMessage(
+                            AudioDownloadExistingUnknownStatus(
+                                downloadInfoMapper.toDownloadStatus(downloadInfo.status)
+                            )
+                        )
                         return false
                     }
                 }
@@ -228,13 +233,6 @@ internal class DownloaderImpl @Inject constructor(
         fetcher.retry(downloadInfoIds.toList())
     }
 
-    override suspend fun remove(vararg downloadItems: DownloadItem) {
-        fetcher.remove(downloadItems.map { it.downloadInfo.id })
-        downloadItems.forEach {
-            repo.delete(it.downloadRequest.id)
-        }
-    }
-
     override suspend fun delete(vararg downloadInfoIds: Int) {
         downloadInfoIds.forEach { repo.delete(it.toString()) }
         fetcher.delete(downloadInfoIds.toList())
@@ -246,7 +244,7 @@ internal class DownloaderImpl @Inject constructor(
     /**
      * Builds [FileDownloadItem] from given audio id if it exists and satisfies [allowedStatuses].
      */
-    override suspend fun getAudioDownload(
+    private suspend fun getAudioDownload(
         audioId: String,
         vararg allowedStatuses: Status,
     ): Optional<FileDownloadItem> {
@@ -255,7 +253,12 @@ internal class DownloaderImpl @Inject constructor(
             val downloadInfo = fetcher.getDownload(request.requestId)
             if (downloadInfo != null) {
                 if (downloadInfo.status in allowedStatuses) {
-                    return Optional.of(FileDownloadItem.from(request, downloadInfo))
+                    return Optional.of(
+                        FileDownloadItem.from(
+                            downloadRequest = request,
+                            downloadInfo = downloadInfoMapper.map(downloadInfo)
+                        )
+                    )
                 }
             }
         }
@@ -285,21 +288,21 @@ internal class DownloaderImpl @Inject constructor(
     override suspend fun setDownloadsLocation(folder: File) =
         setDownloadsLocation(DocumentFile.fromFile(folder))
 
-    override suspend fun setDownloadsLocation(documentFile: DocumentFile) {
+    private suspend fun setDownloadsLocation(documentFile: DocumentFile) {
         require(documentFile.exists()) { "Downloads location must be existing" }
         require(documentFile.isDirectory) { "Downloads location must be a directory" }
 
-        setDownloadsLocation(documentFile.uri)
+        setDownloadsLocation(documentFile.uri.toString())
     }
 
-    override suspend fun setDownloadsLocation(uri: Uri?) {
+    override suspend fun setDownloadsLocation(uri: String?) {
         if (uri == null) {
             errorLog { "Downloads URI is null" }
             downloaderMessage(DownloadsUnknownError)
             return
         }
         analytics.log { setDownloadLocation(uri.toString()) }
-        appContext.contentResolver.takePersistableUriPermission(uri, INTENT_READ_WRITE_FLAG)
+        appContext.contentResolver.takePersistableUriPermission(uri.toUri(), INTENT_READ_WRITE_FLAG)
         preferences.save(DOWNLOADS_LOCATION, uri.toString())
 
         pendingEnqueableAudio?.apply {

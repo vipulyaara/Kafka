@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,23 +19,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.kafka.ui.downloader.R
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.kafka.common.extensions.CollectEvent
 import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.DownloaderEvent
 
 @Composable
-fun DownloaderHost(content: @Composable () -> Unit) {
-    DownloaderHost(
-        downloader = hiltViewModel<DownloaderViewModel>().downloader,
-        content = content,
-    )
-}
-
-@Composable
-private fun DownloaderHost(
+actual fun DownloaderHost(
     downloader: Downloader,
     content: @Composable () -> Unit,
 ) {
@@ -69,7 +64,7 @@ private fun DownloadsLocationDialog(
         rememberLauncherForActivityResult(contract = WriteableOpenDocumentTree()) {
             coroutine.launch {
                 try {
-                    downloader.setDownloadsLocation(it)
+                    downloader.setDownloadsLocation(it.toString())
                 } catch (e: Exception) {
                     Log.e("DownloaderHost", "${e.localizedMessage} download location failed")
                 }
@@ -94,5 +89,19 @@ private fun DownloadsLocationDialog(
             },
             confirmButton = {},
         )
+    }
+}
+
+@Composable
+fun <T> CollectEvent(
+    flow: Flow<T>,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    collector: (T) -> Unit,
+): Unit = LaunchedEffect(lifecycle, flow) {
+    lifecycle.repeatOnLifecycle(minActiveState) {
+        flow.collect {
+            collector(it)
+        }
     }
 }

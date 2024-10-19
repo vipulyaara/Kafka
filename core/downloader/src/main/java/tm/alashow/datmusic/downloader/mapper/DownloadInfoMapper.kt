@@ -15,12 +15,12 @@ class DownloadInfoMapper @Inject constructor() {
             id = download.id,
             progress = download.progress.coerceAtLeast(0) / 100f,
             fileUri = download.fileUri,
-            status = download.status.toDownloadStatus(),
+            status = toDownloadStatus(download.status),
             sizeStatus = download.fileSizeStatus(),
         )
     }
 
-    private fun Status.toDownloadStatus() = when (this) {
+    fun toDownloadStatus(status: Status) = when (status) {
         Status.ADDED -> DownloadStatus.QUEUED
         Status.QUEUED -> DownloadStatus.QUEUED
         Status.COMPLETED -> DownloadStatus.COMPLETED

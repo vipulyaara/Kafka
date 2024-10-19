@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading_hint" translatable="false">Download is in progress. You can leave this screen and we will notify you when it\'s complete.</string>
+    <string name="check_out_on_kafka" translatable="false">"\n            Check out %1$s on Kafka\n            \n            %2$s\n        "</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="open_offline">Open Offline</string>
+    <string name="close">Close</string>
+    <string name="cd_download_file">Download</string>
+</resources>

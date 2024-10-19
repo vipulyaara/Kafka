@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="no_favorites_items_message" translatable="false">Your favorite items will appear here</string>
-    <string name="no_downloads_items_message" translatable="false">Your downloaded items will appear here</string>
-    <string name="download_storage" translatable="false">Downloads are saved on your device. They can be opened or shared freely using any files app.</string>
-    <string name="log_in_to_sync_favorite" translatable="false">Log in to sync your favorite items to your account.</string>
-</resources>

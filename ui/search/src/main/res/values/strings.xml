@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search" translatable="false">Search...</string>
-    <string name="recent_searches" translatable="false">Recent searches</string>
-    <string name="cd_clear_text" translatable="false">Clear text</string>
     <string name="speech_prompt">Try Saying Something</string>
     <string name="speech_not_supported">Speech not supported</string>
 </resources>

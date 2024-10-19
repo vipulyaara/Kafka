@@ -1,15 +1,13 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
 plugins {
+    id("com.kafka.compose")
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
     alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.gms.googleServices)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -18,23 +16,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 84
-        versionName = "0.44.0"
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
-        buildConfigField(
-            "String",
-            "GOOGLE_SERVER_CLIENT_ID",
-            properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
-                ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
-        )
-        buildConfigField(
-            "String",
-            "PIPELESS_AUTH_TOKEN",
-            properties["PIPELESS_AUTH_TOKEN"]?.toString() ?: System.getenv("PIPELESS_AUTH_TOKEN")
-        )
+        versionCode = 88
+        versionName = "0.48.0"
     }
 
     compileOptions {
@@ -125,6 +108,7 @@ dependencies {
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
     implementation(projects.core.downloader)
+    implementation(projects.core.networking)
     implementation(projects.core.play)
     implementation(projects.corePlayback)
     implementation(projects.core.remoteConfig)
@@ -138,21 +122,25 @@ dependencies {
     implementation(projects.ui.components)
     implementation(projects.ui.downloader)
     implementation(projects.ui.homepage)
-    implementation(projects.ui.item)
+    implementation(projects.ui.item.detail)
     implementation(projects.ui.library)
     implementation(projects.uiPlayback)
     implementation(projects.ui.profile)
-    implementation(projects.ui.reader)
+    implementation(projects.ui.reader.epub)
+    implementation(projects.ui.reader.online)
+    implementation(projects.ui.reader.pdf)
     implementation(projects.ui.search)
+    implementation(projects.ui.shared)
     implementation(projects.ui.summary)
     implementation(projects.ui.theme)
     implementation(projects.ui.webview)
 
+    implementation(compose.material3)
+
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.hilt.compose)
-    implementation(libs.androidx.hilt.navigation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -160,22 +148,23 @@ dependencies {
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.material.material3)
     implementation(libs.compose.material.navigation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
     implementation(libs.fetch)
-    implementation(libs.firestore.ktx)
+    implementation(libs.firebase.firestore)
     implementation(libs.google.analytics)
-    implementation(libs.google.auth)
+    implementation(libs.firebase.auth)
     implementation(libs.google.crashlytics)
-    implementation(libs.google.firestore)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)
     implementation(libs.google.review)
     implementation(libs.google.appupdate)
-    implementation(libs.hilt.android)
+    implementation(libs.haze)
+    implementation(libs.haze.materials)
     implementation(libs.icons.feather)
     implementation(libs.icons.tabler)
     implementation(libs.kermit.crashlytics)
@@ -183,16 +172,28 @@ dependencies {
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.stdlib)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.contentnegotiation)
+    implementation(libs.ktor.client.java)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization)
+
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.okhttp.okhttp)
-    implementation(libs.retrofit.serialization)
     implementation(libs.threeTenAbp)
     implementation(libs.profileinstaller)
 
     debugImplementation(libs.leakCanary)
 
-    kapt(libs.androidx.hilt.compiler)
-    kapt(libs.hilt.compiler)
+    ksp(libs.kotlininject.compiler)
+    implementation(libs.kotlininject.runtime)
 
     baselineProfile(projects.baselineprofile)
+}
+
+ksp {
+//    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
+//    arg("me.tatarka.inject.dumpGraph", "true")
 }
