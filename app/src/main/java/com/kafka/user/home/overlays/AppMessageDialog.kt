@@ -41,11 +41,13 @@ fun AppMessage(
                 onDismissRequest = dismiss,
                 properties = DialogProperties(
                     dismissOnBackPress = false,
-                    dismissOnClickOutside = false
+                    dismissOnClickOutside = false,
+                    usePlatformDefaultWidth = false
                 )
             ) {
                 DialogContent(
                     appMessage = appMessage,
+                    modifier = Modifier.padding(Dimens.Spacing24),
                     onPrimaryClick = { onPrimaryClick(appMessage) },
                     dismiss = dismiss
                 )
@@ -75,7 +77,7 @@ private fun DialogContent(
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
-                .padding(vertical = Dimens.Spacing24),
+                .padding(vertical = Dimens.Spacing32, horizontal = Dimens.Spacing12),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (appMessage.title.isNotEmpty()) {
@@ -92,7 +94,7 @@ private fun DialogContent(
                 Text(
                     text = appMessage.text,
                     modifier = Modifier.padding(horizontal = Dimens.Spacing24),
-                    style = MaterialTheme.typography.bodyMedium.alignCenter(),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }

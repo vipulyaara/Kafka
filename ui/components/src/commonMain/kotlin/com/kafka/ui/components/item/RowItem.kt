@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.isAudioMediaType
+import com.kafka.data.model.MediaType
 import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
@@ -28,7 +28,7 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
         coverImage = item.coverImage,
         title = item.title,
         mediaType = item.mediaType,
-        creator = item.creator?.name,
+        creator = item.creator,
         placeholder = placeholder(item.mediaType),
         modifier = modifier
     )
@@ -39,12 +39,12 @@ fun RowItem(
     coverImage: Any?,
     modifier: Modifier = Modifier,
     title: String? = null,
-    mediaType: String? = null,
+    mediaType: MediaType,
     creator: String? = null,
     placeholder: ImageVector = CoverDefaults.placeholder,
 ) {
     val size = remember(mediaType) {
-        if (mediaType.isAudioMediaType) {
+        if (mediaType.isAudio) {
             Dimens.CoverSizeLarge
         } else {
             Dimens.CoverSizePortraitLarge
@@ -72,9 +72,7 @@ fun RowItem(
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (mediaType != null) {
-                    ItemMediaType(mediaType = mediaType, size = Dimens.IconSizeSmall)
-                }
+                ItemMediaType(mediaType = mediaType, size = Dimens.IconSizeSmall)
                 ItemCreatorSmall(creator = creator)
             }
         }

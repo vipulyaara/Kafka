@@ -1,7 +1,6 @@
 package com.kafka.data.db
 
 import androidx.room.TypeConverter
-import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import kotlinx.datetime.Clock
@@ -36,16 +35,16 @@ class AppTypeConverters {
     fun fromLocalDateTime(value: Instant): Long = value.toEpochMilliseconds()
 
     @TypeConverter
-    fun stringToPageList(data: String) = json.decodeFromString<List<RecentTextItem.Page>>(data)
+    fun stringToMediaTypes(data: String) = json.decodeFromString<List<MediaType>>(data)
 
     @TypeConverter
-    fun pageListToString(data: List<RecentTextItem.Page>) = json.encodeToString(data)
+    fun mediaTypesToString(data: List<MediaType>) = json.encodeToString(data)
 
     @TypeConverter
-    fun stringToMediaType(data: String) = json.decodeFromString<List<MediaType>>(data)
+    fun stringToMediaType(data: String) = MediaType.from(data)
 
     @TypeConverter
-    fun mediaTypeToString(data: List<MediaType>) = json.encodeToString(data)
+    fun mediaTypeToString(data: MediaType) = data.value
 
     @TypeConverter
     fun stringToSearchFilter(data: String) = json.decodeFromString<List<SearchFilter>>(data)

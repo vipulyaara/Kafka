@@ -69,6 +69,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val platformContext = LocalPlatformContext.current
+    val context = getContext()
 
     LaunchedEffect(state.itemsByCreator) {
         preloadImages(platformContext, state.itemsByCreator)
@@ -83,7 +84,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
         Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
             TopBar(
                 lazyGridState = lazyGridState,
-                onShareClicked = { viewModel.shareItemText() },
+                onShareClicked = { viewModel.shareItemText(context) },
                 onShareLongClicked = { viewModel.openArchiveItem() },
                 onBackPressed = { navigator.goBack() },
                 isShareVisible = viewModel.isShareEnabled()

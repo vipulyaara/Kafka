@@ -1,8 +1,6 @@
 package com.kafka.data.feature.item
 
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.isAudioExtension
-import com.kafka.data.entities.isTextExtension
 import com.kafka.data.model.item.File
 import java.net.URL
 import javax.inject.Inject
@@ -18,14 +16,28 @@ class FileMapper @Inject constructor() {
             name = name,
             title = title ?: name.removeSuffix(".$extension"),
             extension = extension,
-            creator = (creator?.joinToString(", ") ?: artist) ?: item.creator,
-            time = length,
+            creators = creator ?: artist?.let { listOf(it) } ?: item.creators,
+            duration = length?.let { mapDuration(it) },
             format = format.orEmpty(),
-            playbackUrl = if (extension.isAudioExtension()) URL("$prefix/$name").toString() else null,
-            readerUrl = if (extension.isTextExtension()) URL("$prefix/$name").toString() else null,
-            downloadUrl = URL("$prefix/$name").toString(),
+            url = URL("$prefix/$name").toString(),
             coverImage = item.coverImage,
             localUri = localUri,
+            path = null,
+            mediaType = item.mediaType
         )
+    }
+
+    private fun mapDuration(duration: String): Long {
+        var durationInSeconds = 0L
+        duration.split(":")
+            .takeIf { it.size > 1 }
+            ?.reversed()
+            ?.forEachIndexed { index, time ->
+                durationInSeconds += time.toInt() * (index * 60).coerceAtLeast(1)
+            } ?: run {
+            durationInSeconds = duration.toDouble().toLong()
+        }
+
+        return durationInSeconds
     }
 }

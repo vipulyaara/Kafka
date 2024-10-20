@@ -14,6 +14,7 @@ kotlin {
                 api(libs.coil3.coil)
                 api(libs.coil3.compose)
                 api(libs.coil3.network)
+                api(libs.coil3.svg)
 
                 implementation(compose.foundation)
                 implementation(compose.material3)

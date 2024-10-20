@@ -17,6 +17,7 @@ kotlin {
                 implementation(projects.ui.common)
                 implementation(projects.ui.components)
                 implementation(projects.ui.downloader)
+                implementation(projects.ui.reader.epub)
 
                 implementation(compose.components.resources)
                 implementation(compose.material3)

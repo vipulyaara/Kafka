@@ -23,7 +23,7 @@ fun LibraryItem(item: Item, modifier: Modifier = Modifier, openItemDetail: (Stri
         itemId = item.itemId,
         coverImage = item.coverImage,
         title = item.title,
-        creator = item.creator?.name,
+        creator = item.creator,
         modifier = modifier,
         openItemDetail = openItemDetail
     )

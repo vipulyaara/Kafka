@@ -25,6 +25,7 @@ import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.RecentItem
+import com.kafka.data.model.MediaType
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
 import com.kafka.ui.components.ProvideScaffoldPadding

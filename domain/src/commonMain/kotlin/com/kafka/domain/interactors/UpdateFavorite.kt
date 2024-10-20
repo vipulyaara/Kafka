@@ -49,7 +49,7 @@ class UpdateFavorite @Inject constructor(
             itemId = itemDetail.itemId,
             title = itemDetail.title.orEmpty(),
             creator = itemDetail.creator.orEmpty(),
-            mediaType = itemDetail.mediaType.orEmpty(),
+            mediaType = itemDetail.mediaType.value,
             coverImage = itemDetail.coverImage.orEmpty(),
         )
     }

@@ -357,6 +357,7 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
     return destination != Screen.Reader.navigationRoute
             && destination != Screen.OnlineReader.navigationRoute
             && destination != Screen.EpubReader.navigationRoute
+            && destination != Screen.PdfReader.navigationRoute
 }
 
 internal enum class NavigationType {

@@ -17,6 +17,7 @@
 
 package com.kafka.reader.epub.parser
 
+import android.graphics.BitmapFactory
 import com.kafka.base.debug
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Node
@@ -122,17 +123,16 @@ class EpubXMLFileParser(
      */
     fun parseAsImage(absolutePathImage: String): String {
         // Use run catching so it can be run locally without crash
-//        val bitmap = zipFile[absolutePathImage]?.data?.runCatching {
-//            BitmapFactory.decodeByteArray(this, 0, this.size)
-//        }?.getOrNull()
-//
-//        val text = BookTextMapper.ImgEntry(
-//            path = absolutePathImage,
-//            yrel = bitmap?.let { it.height.toFloat() / it.width.toFloat() } ?: 1.45f
-//        ).toXMLString()
-//
-//        return "\n\n$text\n\n"
-        return absolutePathImage
+        val bitmap = zipFile[absolutePathImage]?.data?.runCatching {
+            BitmapFactory.decodeByteArray(this, 0, this.size)
+        }?.getOrNull()
+
+        val text = BookTextMapper.ImgEntry(
+            path = absolutePathImage,
+            yrel = bitmap?.let { it.height.toFloat() / it.width.toFloat() } ?: 1.45f
+        ).toXMLString()
+
+        return "\n\n$text\n\n"
     }
 
     // Traverses the XML document to find the next sibling node.

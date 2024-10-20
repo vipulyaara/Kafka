@@ -40,7 +40,7 @@ fun FeaturedItem(
 ) {
     FeaturedItem(
         coverImage = item.coverImage,
-        creator = item.creator?.name,
+        creator = item.creator,
         modifier = modifier,
         placeHolder = if (item.isAudio) Icons.Audio else Icons.Texts,
         label = label,

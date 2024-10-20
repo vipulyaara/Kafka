@@ -2,7 +2,6 @@ package com.kafka.domain.observers
 
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.SubjectInteractor
-import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isOnlineReaderEnabled
@@ -16,7 +15,6 @@ class ShouldUseOnlineReader @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val observeDownloadByItemId: ObserveDownloadByItemId,
     private val itemDetailDao: ItemDetailDao,
-    private val fileDao: FileDao,
     private val remoteConfig: RemoteConfig,
 ) : SubjectInteractor<ShouldUseOnlineReader.Param, Boolean>() {
 
@@ -25,8 +23,7 @@ class ShouldUseOnlineReader @Inject constructor(
             itemDetailDao.observeItemDetail(params.itemId),
             observeDownloadByItemId.createObservable(ObserveDownloadByItemId.Params(params.itemId))
         ) { itemDetail, download ->
-            val file = fileDao.getOrNull(itemDetail?.primaryFile.orEmpty())
-            if (itemDetail == null || file == null) {
+            if (itemDetail == null) {
                 return@combine false
             }
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.FullScreenMessage
 import com.kafka.data.entities.Homepage
@@ -68,6 +69,7 @@ import ui.common.theme.theme.Dimens
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val context = getContext()
     val shareAppText = stringResource(Res.string.share_app_message, Config.PLAY_STORE_URL)
 
     Scaffold(
@@ -88,7 +90,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
                         goToSubject = viewModel::openSubject,
                         openRecentItems = viewModel::openRecentItems,
                         goToCreator = viewModel::openCreator,
-                        shareApp = { viewModel.shareApp(shareAppText) }
+                        shareApp = { viewModel.shareApp(shareAppText, context) }
                     )
                 }
 
@@ -414,6 +416,6 @@ private val subjectModifier = Modifier
     .padding(top = Dimens.Gutter, bottom = Dimens.Spacing08)
     .padding(horizontal = Dimens.Gutter)
 
-private const val HorizontalGridHeight = 290
+private const val HorizontalGridHeight = 330
 private const val RowItemMaxWidth = 350
 private const val PlaceholderItemCount = 6

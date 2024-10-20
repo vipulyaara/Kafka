@@ -11,6 +11,7 @@ class ItemReadCounter @Inject constructor(
     preferencesStore: PreferencesStore,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
 ) {
+    //todo: change name
     private val itemOpensPrefKey = intPreferencesKey("item_opens")
 
     private val itemOpens = preferencesStore.getStateFlow(

@@ -53,6 +53,7 @@ import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
+import com.kafka.data.model.MediaType
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.item.CoverImage
 import com.kafka.ui.components.item.ItemCreatorSmall

@@ -3,6 +3,8 @@ package com.kafka.data.feature.item
 import android.net.Uri
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
+import com.kafka.data.feature.item.DownloadStatus.DOWNLOADING
+import com.kafka.data.feature.item.DownloadStatus.PAUSED
 
 data class ItemWithDownload(
     val downloadInfo: DownloadInfo,
@@ -29,6 +31,6 @@ enum class DownloadStatus {
     DELETED,
     UNKNOWN,
     ;
-
-    fun isActive() = this == DOWNLOADING || this == PAUSED
 }
+
+fun DownloadStatus?.isActive() = this == DOWNLOADING || this == PAUSED

@@ -15,10 +15,10 @@ abstract class FileDao : EntityDao<File> {
     @Query("select * from File where fileId = :fileId")
     abstract fun observe(fileId: String): Flow<File?>
 
-    @Query("select * from File where itemId = :itemId ORDER BY name")
+    @Query("select * from File where itemId = :itemId ORDER BY position")
     abstract fun observeByItemId(itemId: String): Flow<List<File>>
 
-    @Query("select * from File where itemId = :itemId ORDER BY name")
+    @Query("select * from File where itemId = :itemId ORDER BY position")
     abstract suspend fun getByItemId(itemId: String): List<File>
 
     suspend fun playerFilesByItemId(itemId: String): List<File> {
@@ -35,12 +35,8 @@ abstract class FileDao : EntityDao<File> {
     abstract suspend fun getOrNull(fileId: String): File?
 
     @Transaction
-    @Query("SELECT * FROM file WHERE fileId IN (:ids) ORDER BY name")
+    @Query("SELECT * FROM file WHERE fileId IN (:ids) ORDER BY position")
     abstract suspend fun getByIds(ids: List<String>): List<File>
-
-    @Transaction
-    @Query("SELECT * FROM file WHERE name LIKE :title ORDER BY name")
-    abstract fun entriesByTitle(title: String): Flow<List<File>>
 
     @Query("update file set localUri = :localUri where fileId = :fileId")
     abstract suspend fun updateLocalUri(fileId: String, localUri: String)

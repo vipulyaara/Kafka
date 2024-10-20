@@ -21,12 +21,12 @@ import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.prefs.PreferencesStore
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2.Status
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import okhttp3.internal.toImmutableList
 import tm.alashow.datmusic.downloader.Downloader.Companion.DOWNLOADS_LOCATION
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueFailed
 import tm.alashow.datmusic.downloader.manager.DownloadEnqueueResult
@@ -35,6 +35,7 @@ import tm.alashow.datmusic.downloader.manager.FetchDownloadManager
 import tm.alashow.datmusic.downloader.mapper.DownloadInfoMapper
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.InputStream
 import java.util.Optional
 import javax.inject.Inject
 import com.kafka.data.entities.File as FileEntity
@@ -107,12 +108,12 @@ class DownloaderImpl @Inject constructor(
             return false
         }
 
-        if (file.downloadUrl == null) {
+        if (file.url == null) {
             downloaderMessage(AudioDownloadErrorInvalidUrl)
             return false
         }
 
-        val downloadUrl = Uri.parse(file.downloadUrl).buildUpon()
+        val downloadUrl = Uri.parse(file.url).buildUpon()
             .appendQueryParameter("redirect", "")
             .build()
             .toString()
@@ -370,5 +371,26 @@ class DownloaderImpl @Inject constructor(
             return null
         }
         return file
+    }
+
+    override suspend fun getInputStreamFromUri(uri: String): InputStream? {
+        return try {
+            val contentUri = uri.toUri()
+            appContext.contentResolver.openInputStream(contentUri)?.also {
+                debug { "Successfully opened input stream for URI: $uri" }
+            } ?: run {
+                errorLog { "Failed to open input stream for URI: $uri" }
+                null
+            }
+        } catch (e: FileNotFoundException) {
+            errorLog(e) { "FileNotFoundException for URI: $uri" }
+            null
+        } catch (e: SecurityException) {
+            errorLog(e) { "SecurityException for URI: $uri" }
+            null
+        } catch (e: Exception) {
+            errorLog(e) { "Unexpected error opening input stream for URI: $uri" }
+            null
+        }
     }
 }

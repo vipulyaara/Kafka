@@ -25,7 +25,7 @@ import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.isAudioMediaType
+import com.kafka.data.model.MediaType
 import com.kafka.ui.components.placeholder.placeholderDefault
 import kafka.ui.components.generated.resources.Res
 import kafka.ui.components.generated.resources.explicit
@@ -36,7 +36,7 @@ import ui.common.theme.theme.Dimens
 fun Item(item: Item, modifier: Modifier = Modifier) {
     Item(
         title = item.title,
-        creator = item.creator?.name,
+        creator = item.creator,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
         modifier = modifier,
@@ -49,7 +49,7 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
 fun Item(
     title: String?,
     creator: String?,
-    mediaType: String?,
+    mediaType: MediaType,
     coverImage: String?,
     modifier: Modifier = Modifier,
     isInAppropriate: Boolean = false,
@@ -132,14 +132,14 @@ fun ItemCreator(creator: String?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 16.dp) {
+fun ItemMediaType(mediaType: MediaType, modifier: Modifier = Modifier, size: Dp = 16.dp) {
     IconResource(
         imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
         modifier = modifier
             .size(size),
 //            .testTagUi("item_${mediaType}_icon"),
-        contentDescription = mediaType
+        contentDescription = mediaType.value
     )
 }
 
@@ -147,7 +147,7 @@ fun ItemMediaType(mediaType: String?, modifier: Modifier = Modifier, size: Dp = 
 fun ItemSmall(item: Item, modifier: Modifier = Modifier) {
     ItemSmall(
         title = item.title,
-        creator = item.creator?.name,
+        creator = item.creator,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
         modifier = modifier
@@ -158,7 +158,7 @@ fun ItemSmall(item: Item, modifier: Modifier = Modifier) {
 fun ItemSmall(
     title: String?,
     creator: String?,
-    mediaType: String?,
+    mediaType: MediaType,
     coverImage: String?,
     modifier: Modifier = Modifier,
 ) {
@@ -203,7 +203,7 @@ fun ItemCreatorSmall(creator: String?, modifier: Modifier = Modifier) {
     )
 }
 
-fun placeholder(mediaType: String?) = if (mediaType.isAudioMediaType) Icons.Audio else Icons.Texts
+fun placeholder(mediaType: MediaType) = if (mediaType.isAudio) Icons.Audio else Icons.Texts
 
 @Composable
 fun ItemPlaceholder(modifier: Modifier = Modifier) {

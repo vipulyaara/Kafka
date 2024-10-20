@@ -19,6 +19,7 @@ import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.data.entities.File
 import com.kafka.data.feature.item.DownloadInfo
+import com.kafka.data.feature.item.isActive
 import com.kafka.ui.components.item.DownloadStatusIcons
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_download
@@ -35,9 +36,7 @@ internal fun FileItem(
     onFileClicked: (File) -> Unit,
     onDownloadClicked: (File) -> Unit,
     downloadInfo: DownloadInfo?,
-    modifier: Modifier = Modifier,
-    downloader: Downloader = LocalDownloader.current,
-    scope: CoroutineScope = rememberCoroutineScope()
+    modifier: Modifier = Modifier
 ) {
     val fileSubtitle = if (downloadInfo?.status?.isActive() == true) {
         listOf(file.extension, downloadInfo.sizeStatus).joinToString(" - ")

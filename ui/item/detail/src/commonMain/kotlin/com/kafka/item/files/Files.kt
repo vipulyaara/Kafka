@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.elevation
@@ -28,9 +27,6 @@ import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.scaffoldPadding
-import kotlinx.coroutines.CoroutineScope
-import tm.alashow.datmusic.downloader.Downloader
-import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -62,8 +58,6 @@ private fun Files(
     onDownloadClicked: (File) -> Unit,
     lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val downloader: Downloader = LocalDownloader.current
-    val scope: CoroutineScope = rememberCoroutineScope()
     val itemsCount = remember(viewState.filteredFiles) { viewState.filteredFiles.size }
 
     LazyColumn(state = lazyListState, contentPadding = scaffoldPadding()) {
@@ -98,9 +92,7 @@ private fun Files(
                 onFileClicked = onFileClicked,
                 onDownloadClicked = onDownloadClicked,
                 downloadInfo = download?.downloadInfo,
-                modifier = Modifier.animateItem(),
-                downloader = downloader,
-                scope = scope
+                modifier = Modifier.animateItem()
             )
         }
     }

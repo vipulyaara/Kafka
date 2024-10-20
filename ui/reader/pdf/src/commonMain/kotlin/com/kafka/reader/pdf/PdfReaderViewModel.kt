@@ -3,6 +3,7 @@ package com.kafka.reader.pdf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.base.extensions.stateInDefault
@@ -17,13 +18,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
 import javax.inject.Inject
 
 class PdfReaderViewModel @Inject constructor(
     private val observeRecentItem: ObserveRecentTextItem,
     private val updateCurrentPage: UpdateCurrentPage,
     private val snackbarManager: SnackbarManager,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val fileId = savedStateHandle.get<String>("fileId")!!
     private val uiMessageManager = UiMessageManager()
     private var showControls by mutableStateOf(false)
 
@@ -45,6 +49,12 @@ class PdfReaderViewModel @Inject constructor(
 
     fun toggleControls() {
         showControls = !showControls
+    }
+
+    fun onPageChanged(page: Int) {
+        viewModelScope.launch {
+            updateCurrentPage(UpdateCurrentPage.Params(fileId, page)).collect()
+        }
     }
 
     fun onPageChanged(fileId: String, page: Int) {

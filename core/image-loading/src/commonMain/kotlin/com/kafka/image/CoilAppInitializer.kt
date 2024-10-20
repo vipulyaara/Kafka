@@ -5,6 +5,7 @@ import coil3.SingletonImageLoader
 import coil3.disk.DiskCache
 import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
+import coil3.svg.SvgDecoder
 import coil3.util.DebugLogger
 import com.kafka.base.AppInitializer
 import me.tatarka.inject.annotations.Inject
@@ -14,6 +15,7 @@ class CoilAppInitializer @Inject constructor() : AppInitializer {
     override fun init() {
         SingletonImageLoader.setSafe {
             ImageLoader.Builder(it)
+                .components { add(SvgDecoder.Factory()) }
                 .memoryCachePolicy(CachePolicy.ENABLED)
                 .memoryCache {
                     MemoryCache.Builder().maxSizePercent(it, 0.3)

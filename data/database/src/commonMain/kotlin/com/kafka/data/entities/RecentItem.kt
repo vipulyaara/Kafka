@@ -3,23 +3,22 @@ package com.kafka.data.entities
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-import com.google.firebase.firestore.DocumentId
+import com.kafka.data.model.MediaType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Keep
 @Serializable
 data class RecentItem(
-    @DocumentId
-    @Transient val fileId: String = "",
-    @SerialName("itemId") val itemId: String,
+    // todo: fix @documentId for firebase
+    @SerialName("file_id") val fileId: String,
+    @SerialName("item_id") val itemId: String,
     @SerialName("title") val title: String,
-    @SerialName("coverUrl") val coverUrl: String,
+    @SerialName("cover_url") val coverUrl: String,
     @SerialName("creator") val creator: String,
-    @SerialName("mediaType") val mediaType: String,
-    @SerialName("createdAt") val createdAt: Long,
+    @SerialName("media_type") val mediaType: MediaType = MediaType.Default,
+    @SerialName("createdAt") val updatedAt: Long,
+    @SerialName("uid") val uid: String = "",
 ) {
     constructor() : this(
         fileId = "",
@@ -27,20 +26,22 @@ data class RecentItem(
         title = "",
         coverUrl = "",
         creator = "",
-        mediaType = "",
-        createdAt = 0,
+        mediaType = MediaType.Default,
+        updatedAt = 0,
+        uid = ""
     )
 
     companion object {
-        fun fromItem(item: ItemDetail, fileId: String = item.files!!.first()): RecentItem {
+        fun fromItem(file: File, uid: String): RecentItem {
             return RecentItem(
-                fileId = fileId,
-                itemId = item.itemId,
-                title = item.title.orEmpty(),
-                coverUrl = item.coverImage.orEmpty(),
-                creator = item.creator.orEmpty(),
-                mediaType = item.mediaType.orEmpty(),
-                createdAt = System.currentTimeMillis(),
+                fileId = file.fileId,
+                itemId = file.itemId,
+                title = file.itemTitle.orEmpty(),
+                coverUrl = file.coverImage.orEmpty(),
+                creator = file.creator,
+                updatedAt = System.currentTimeMillis(),
+                mediaType = file.mediaType,
+                uid = uid
             )
         }
     }
@@ -50,14 +51,11 @@ data class RecentItem(
 data class RecentTextItem(
     @PrimaryKey val fileId: String,
     val currentPage: Int, // starts at 1
+    val currentPageOffset: Int = 0,
     val localUri: String,
-    val type: Type = Type.PDF,
-    val pages: List<Page> = emptyList(),
+    val type: Type = Type.PDF
 ) : BaseEntity {
-    enum class Type { PDF }
-
-    @Serializable
-    data class Page(val index: Int, val text: String)
+    enum class Type { PDF, EPUB }
 }
 
 @Entity(tableName = "recent_audio")

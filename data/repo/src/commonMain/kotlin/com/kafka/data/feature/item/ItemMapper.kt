@@ -1,7 +1,7 @@
 package com.kafka.data.feature.item
 
-import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
+import com.kafka.data.model.MediaType
 import com.kafka.data.model.item.Doc
 import com.kafka.data.model.item.SearchResponse
 import javax.inject.Inject
@@ -15,16 +15,14 @@ class ItemMapper @Inject constructor() {
 
     private fun Doc.toItem() = Item(
         itemId = this.identifier,
-        language = this.language,
+        languages = this.language,
         title = this.title.joinToString().dismissUpperCase(),
-        description = this.description?.joinToString()?.trim(),
-        creator = this.creator?.joinToString()?.sanitizeForRoom()?.let { Creator(it, it) },
-        mediaType = this.mediatype,
+        description = this.description?.joinToString()?.trim().orEmpty(),
+        creators = this.creator.orEmpty(),
+        mediaType = MediaType.from(this.mediatype),
         coverImage = "https://archive.org/services/img/$identifier",
-        collection = this.collection,
-        position = this.downloads.toInt(),
-        subject = subject?.joinToString(","),
-        rating = this.rating,
+        collections = this.collection.orEmpty(),
+        subjects = subject.orEmpty(),
     )
 }
 

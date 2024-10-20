@@ -27,6 +27,7 @@ class ObserveAppMessage @Inject constructor(
     override fun createObservable(params: Unit): Flow<AppMessage?> {
         return firestoreGraph.appMessageConfig.snapshots
             .map<DocumentSnapshot, AppMessage> { it.data() }
+            .map { it.copy(text = it.text.replace("||", "\n")) }
             .flatMapLatest {
                 // message was not already shown
                 preferencesStore.get(appMessageShownKey(it.id), false)

@@ -16,15 +16,14 @@ class GetReaderState @Inject constructor(
     private val fileDao: FileDao,
     private val recentTextDao: RecentTextDao,
     private val dispatchers: CoroutineDispatchers,
-) : ResultInteractor<String, ReaderState>() {
+) : ResultInteractor<GetReaderState.Params, ReaderState>() {
 
-    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-    override suspend fun doWork(itemId: String): ReaderState {
+    override suspend fun doWork(params: Params): ReaderState {
         return withContext(dispatchers.io) {
-            val itemDetail = itemDetailDao.get(itemId)
-            val fileId = itemDetail.primaryFile!!
+            val itemDetail = itemDetailDao.get(params.itemId)
+            val fileId = params.fileId
             val file = fileDao.getOrNull(fileId)
-            val recentText = itemDetail.primaryFile?.let { recentTextDao.getOrNull(it) }
+            val recentText = fileId.let { recentTextDao.getOrNull(it) }
             val currentPage = recentText?.currentPage ?: 1
 
             if (recentText == null) {
@@ -33,7 +32,8 @@ class GetReaderState @Inject constructor(
 
             val baseUrl = "https://archive.org/details"
             val fileName = file?.nameWithoutExtension().orEmpty()
-            val idSegment = if (file != null) "/$itemId/${fileName.encodeUrl()}" else "/$itemId"
+            val idSegment =
+                if (file != null) "/${params.itemId}/${fileName.encodeUrl()}" else "/${params.itemId}"
             val pageSegment =
                 if (currentPage == 1) "" else "/page/n${currentPage - 1}" // archive reader index starts at 0
 
@@ -41,7 +41,7 @@ class GetReaderState @Inject constructor(
 
             ReaderState(
                 url = url,
-                itemId = itemId,
+                itemId = params.itemId,
                 fileId = fileId,
                 itemTitle = itemDetail.title,
                 currentPage = currentPage
@@ -55,6 +55,8 @@ class GetReaderState @Inject constructor(
         localUri = "",
         type = RecentTextItem.Type.PDF
     )
+
+    data class Params(val itemId: String, val fileId: String)
 }
 
 data class ReaderState(

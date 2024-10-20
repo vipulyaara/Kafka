@@ -22,7 +22,7 @@ class FirestoreGraph @Inject constructor(
 
     val homepageCollection: CollectionReference
         get() = firestoreKt
-            .collection("homepage-collection")
+            .collection("homepage-collection-debug") //todo
 
     val appUpdateConfig: DocumentReference
         get() = firestoreKt
