@@ -16,6 +16,7 @@ interface DatabaseModule {
     fun provideDatabase(builder: RoomDatabase.Builder<KafkaRoomDatabase>): KafkaRoomDatabase {
         return builder
             .fallbackToDestructiveMigrationOnDowngrade(true)
+            .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()

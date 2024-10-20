@@ -19,6 +19,7 @@ class ItemDetailMapper @Inject constructor(
         return ItemDetail(
             itemId = from.metadata.identifier,
             languages = from.metadata.languages,
+            copyright = true,
             title = from.metadata.title?.firstOrNull()?.dismissUpperCase().orEmpty(),
             description = from.metadata.description?.joinToString()?.format() ?: "",
             creators = from.metadata.creator?.map { it.sanitizeForRoom() }?.take(5),

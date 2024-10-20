@@ -173,7 +173,7 @@ fun ItemSmall(
             size = Dimens.CoverSizeSmall
         )
         ItemDescription(
-            title = { ItemTitleSmall(title) },
+            title = { ItemTitleSmall(title, maxLines = 2) },
             creator = { ItemCreatorSmall(creator) },
             mediaType = { ItemMediaType(mediaType) },
             modifier = Modifier.padding(vertical = Dimens.Spacing02)

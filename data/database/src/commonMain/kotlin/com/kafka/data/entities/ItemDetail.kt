@@ -18,6 +18,7 @@ data class ItemDetail(
     @SerialName("book_id") @PrimaryKey val itemId: String,
     @SerialName("title") val title: String,
     @SerialName("media_type") val mediaType: MediaType,
+    @SerialName("copyright") val copyright: Boolean,
     @SerialName("long_description") val description: String? = null,
     @SerialName("creators") val creators: List<String>? = null,
     @SerialName("collections") val collections: List<String>? = null,

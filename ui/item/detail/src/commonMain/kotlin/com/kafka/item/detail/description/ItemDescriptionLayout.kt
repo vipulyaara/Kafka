@@ -74,7 +74,7 @@ internal fun ItemDescription(
             Spacer(Modifier.height(Dimens.Spacing24))
 
             Text(
-                text = itemDetail.title.orEmpty(),
+                text = itemDetail.title,
                 style = MaterialTheme.typography.titleLarge.alignCenter(),
                 modifier = Modifier.padding(horizontal = Dimens.Spacing24)
             )

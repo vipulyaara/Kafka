@@ -2,13 +2,9 @@ package com.kafka.data.db
 
 import androidx.room.ConstructedBy
 import androidx.room.Database
-import androidx.room.DeleteColumn
-import androidx.room.DeleteTable
-import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
 import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
@@ -51,17 +47,9 @@ expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDataba
         RecentAudioItem::class,
         DownloadRequest::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 @ConstructedBy(KafkaDatabaseConstructor::class)
 @TypeConverters(AppTypeConverters::class)
-abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase {
-    @DeleteTable(tableName = "user")
-    class UserRemovalMigration : AutoMigrationSpec
-    @RenameColumn(tableName = "recent_audio", fromColumnName = "fileId", toColumnName = "albumId")
-    class RecentAudioMigration : AutoMigrationSpec
-    @DeleteColumn(tableName = "download_requests", columnName = "created_at")
-    @DeleteColumn(tableName = "Item", columnName = "genre")
-    class DownloadRequestsMigration : AutoMigrationSpec
-}
+abstract class KafkaRoomDatabase : RoomDatabase(), KafkaDatabase

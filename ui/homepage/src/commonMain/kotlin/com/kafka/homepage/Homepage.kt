@@ -416,6 +416,6 @@ private val subjectModifier = Modifier
     .padding(top = Dimens.Gutter, bottom = Dimens.Spacing08)
     .padding(horizontal = Dimens.Gutter)
 
-private const val HorizontalGridHeight = 330
-private const val RowItemMaxWidth = 350
+private const val HorizontalGridHeight = 356
+private const val RowItemMaxWidth = 344
 private const val PlaceholderItemCount = 6

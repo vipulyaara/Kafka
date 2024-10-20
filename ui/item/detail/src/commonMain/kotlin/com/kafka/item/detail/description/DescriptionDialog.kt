@@ -86,7 +86,7 @@ internal fun DescriptionText(
 ) {
     SelectionContainer {
         Text(
-            text = ratingText(itemDetail.uiRating) +
+            text = itemDetail.copyright.toString() + "  " + ratingText(itemDetail.uiRating) +
                     AnnotatedString(itemDetail.description.orEmpty()),
             style = style,
             maxLines = maxLines,

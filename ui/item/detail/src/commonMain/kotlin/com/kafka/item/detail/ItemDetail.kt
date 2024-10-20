@@ -2,7 +2,6 @@
 
 package com.kafka.item.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +38,6 @@ import com.kafka.data.entities.Item
 import com.kafka.item.detail.description.AccessRestricted
 import com.kafka.item.detail.description.DescriptionText
 import com.kafka.item.detail.description.ItemDescription
-import com.kafka.item.fake.FakeItemData
 import com.kafka.item.preloadImages
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.LabelMedium
@@ -55,8 +52,6 @@ import kafka.ui.item.detail.generated.resources.more_by
 import kafka.ui.item.detail.generated.resources.or_read_a_summary
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
@@ -307,26 +302,5 @@ private fun ItemDetailTheme(
         }
     } else {
         content()
-    }
-}
-
-@Preview
-@Composable
-private fun ItemDetailPreview() {
-    AppTheme {
-        ItemDetail(state = ItemDetailViewState(
-            itemDetail = FakeItemData.fakeItemDetail,
-            isFavorite = true,
-            itemsByCreator = FakeItemData.fakeItems
-        ),
-            modifier = Modifier.background(Color.White),
-            openDescription = {},
-            goToCreator = {},
-            onPrimaryAction = {},
-            openFiles = {},
-            toggleFavorite = {},
-            openSubject = {},
-            openItemDetail = { _, _ -> },
-            openSummary = {})
     }
 }

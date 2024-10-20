@@ -31,9 +31,9 @@ actual interface SharedPlatformApplicationComponent {
 }
 
 private fun getCacheDir(): File = when (currentOperatingSystem) {
-    OperatingSystem.Windows -> File(System.getenv("AppData"), "tivi/cache")
-    OperatingSystem.Linux -> File(System.getProperty("user.home"), ".cache/tivi")
-    OperatingSystem.MacOS -> File(System.getProperty("user.home"), "Library/Caches/tivi")
+    OperatingSystem.Windows -> File(System.getenv("AppData"), "kafka/cache")
+    OperatingSystem.Linux -> File(System.getProperty("user.home"), ".cache/kafka")
+    OperatingSystem.MacOS -> File(System.getProperty("user.home"), "Library/Caches/kafka")
     else -> throw IllegalStateException("Unsupported operating system")
 }
 

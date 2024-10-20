@@ -50,9 +50,9 @@ object Dimens {
     val IconSizeSmall = 12.dp
 
     val CoverSizeSmall = DpSize(76.dp, 112.dp)
-    val CoverSizeMedium = DpSize(80.dp, 104.dp)
+    val CoverSizeMedium = DpSize(80.dp, 120.dp)
     val CoverSizeLarge = DpSize(212.dp, 212.dp)
     val CoverSizeDetail = DpSize(208.dp, 248.dp)
     val CoverSizeDetailSquare = DpSize(248.dp, 248.dp)
-    val CoverSizePortraitLarge = DpSize(148.dp, 212.dp)
+    val CoverSizePortraitLarge = DpSize(148.dp, 216.dp)
 }
