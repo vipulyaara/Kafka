@@ -3,7 +3,7 @@ package com.kafka.domain.interactors
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.Service
 import com.kafka.base.appService
-import com.kafka.base.domain.ResultInteractor
+import com.kafka.base.domain.Interactor
 import com.kafka.data.entities.Item
 import com.kafka.data.feature.SupabaseDb
 import com.kafka.data.feature.item.ItemRepository
@@ -19,7 +19,7 @@ class SearchQueryItems @Inject constructor(
     private val buildSearchQuery: BuildSearchQuery,
     private val itemRepository: ItemRepository,
     private val supabaseDb: SupabaseDb
-) : ResultInteractor<SearchQueryItems.Params, List<Item>>() {
+) : Interactor<SearchQueryItems.Params, List<Item>>() {
 
     override suspend fun doWork(params: Params): List<Item> = withContext(dispatchers.io) {
         if (params.keyword.isEmpty()) return@withContext listOf()

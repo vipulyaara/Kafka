@@ -11,14 +11,14 @@ class LogoutUser @Inject constructor(
     private val signInAnonymously: SignInAnonymously,
     private val logoutCredentialManager: LogoutCredentialManager,
     private val coroutineDispatchers: CoroutineDispatchers,
-) : Interactor<Any?>() {
+) : Interactor<Any?, Unit>() {
 
     override suspend fun doWork(params: Any?) {
         withContext(coroutineDispatchers.io) {
             logoutCredentialManager(params).getOrThrow()
 
             accountRepository.signOut()
-            signInAnonymously.execute(Unit)
+            signInAnonymously(Unit)
         }
     }
 }

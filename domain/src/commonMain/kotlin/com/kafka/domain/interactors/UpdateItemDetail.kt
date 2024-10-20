@@ -13,7 +13,7 @@ class UpdateItemDetail @Inject constructor(
     private val repository: ItemDetailDataSource,
     private val itemDetailDao: ItemDetailDao,
     private val fileDao: FileDao
-) : Interactor<UpdateItemDetail.Param>() {
+) : Interactor<UpdateItemDetail.Param, Unit>() {
 
     override suspend fun doWork(params: Param) {
         withContext(dispatchers.io) {

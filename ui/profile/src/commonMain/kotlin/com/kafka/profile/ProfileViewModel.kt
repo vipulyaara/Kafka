@@ -3,12 +3,9 @@ package com.kafka.profile
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationInfo
-import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.ObservableLoadingCounter
-import com.kafka.common.collectStatus
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage.Plain
 import com.kafka.data.entities.User
@@ -40,22 +37,20 @@ class ProfileViewModel @Inject constructor(
     private val applicationInfo: ApplicationInfo,
     observeUser: ObserveUser,
 ) : ViewModel() {
-    private val loadingCounter = ObservableLoadingCounter()
-
     val state: StateFlow<ProfileViewState> = combine(
         observeUser.flow,
         preferencesStore.observeTheme(),
         preferencesStore.observeTrueContrast(),
         preferencesStore.observeSafeMode(),
-        loadingCounter.observable,
-    ) { user, theme, trueContrast, safeMode, isLoading ->
+        logoutUser.inProgress,
+    ) { user, theme, trueContrast, safeMode, loading ->
         ProfileViewState(
             currentUser = user,
             theme = theme,
             trueContrast = trueContrast,
             safeMode = safeMode,
             appVersion = applicationInfo.versionName,
-            isLoading = isLoading
+            isLoading = loading
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -100,12 +95,14 @@ class ProfileViewModel @Inject constructor(
     fun logout(context: Any?, onLogout: () -> Unit = { navigator.goBack() }) {
         analytics.log { logoutClicked() }
         viewModelScope.launch {
-            logoutUser(context).collectStatus(loadingCounter, snackbarManager) { status ->
-                if (status == InvokeSuccess) {
+            logoutUser(context)
+                .onSuccess {
                     snackbarManager.addMessage(Plain("Logged out successfully"))
                     onLogout()
                 }
-            }
+                .onFailure {
+                    snackbarManager.addMessage(Plain("Failed to log out"))
+                }
         }
     }
 

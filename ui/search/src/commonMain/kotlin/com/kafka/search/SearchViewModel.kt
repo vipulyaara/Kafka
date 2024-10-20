@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
@@ -21,7 +21,6 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -121,7 +120,7 @@ class SearchViewModel @Inject constructor(
                 filters = selectedFilters,
                 mediaTypes = selectedMediaTypes.toList()
             )
-            addRecentSearch.invoke(params).collect()
+            addRecentSearch.invoke(params)
         }
     }
 
@@ -159,7 +158,7 @@ class SearchViewModel @Inject constructor(
     fun removeRecentSearch(keyword: String) {
         viewModelScope.launch {
             analytics.log { removeRecentSearch(keyword) }
-            removeRecentSearch.invoke(keyword).collect()
+            removeRecentSearch.invoke(keyword)
         }
     }
 

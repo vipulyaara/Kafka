@@ -145,6 +145,7 @@ google-appupdate = { module = "com.google.android.play:app-update-ktx", version.
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
 firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
+firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
 firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase" }
 
@@ -219,6 +220,9 @@ webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
 
 threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
 dataStore = "androidx.datastore:datastore-preferences:1.1.1"
+#todo: remove this. required by remote config kmp
+tools-desugarjdklibs = "com.android.tools:desugar_jdk_libs:2.1.2"
+
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }

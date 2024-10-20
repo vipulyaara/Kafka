@@ -1,6 +1,6 @@
 package com.kafka.domain.interactors
 
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.RecentAudioDao
 import com.sarahang.playback.core.PlaybackConnection
@@ -16,7 +16,7 @@ class ResumeAlbum @Inject constructor(
     private val recentAudioDao: RecentAudioDao,
     private val audioDataSource: AudioDataSource,
     private val analytics: Analytics
-) : Interactor<String>() {
+) : Interactor<String, Unit>() {
 
     override suspend fun doWork(params: String) {
         val audio = recentAudioDao.getByAlbumId(params)

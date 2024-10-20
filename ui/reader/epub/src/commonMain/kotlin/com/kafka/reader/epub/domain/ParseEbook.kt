@@ -2,7 +2,7 @@ package com.kafka.reader.epub.domain
 
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.debug
-import com.kafka.base.domain.ResultInteractor
+import com.kafka.base.domain.Interactor
 import com.kafka.base.errorLog
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.parser.EpubParser
@@ -17,7 +17,7 @@ class ParseEbook @Inject constructor(
     private val epubParser: EpubParser,
     private val downloader: Downloader,
     private val dispatchers: CoroutineDispatchers
-) : ResultInteractor<String, EpubBook>() {
+) : Interactor<String, EpubBook>() {
     override suspend fun doWork(params: String): EpubBook {
         return withContext(dispatchers.io) {
             val inputStream = downloader.getInputStreamFromUri(params)

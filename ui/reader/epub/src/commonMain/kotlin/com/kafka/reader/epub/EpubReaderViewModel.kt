@@ -17,7 +17,6 @@ import com.kafka.domain.observers.ObserveRecentTextItem
 import com.kafka.reader.epub.domain.ParseEbook
 import com.kafka.reader.epub.models.EpubBook
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -62,7 +61,7 @@ class EpubReaderViewModel @Inject constructor(
 
     private fun onPageChanged(fileId: String, page: Int) {
         viewModelScope.launch {
-            updateCurrentPage(UpdateCurrentPage.Params(fileId, page)).collect()
+            updateCurrentPage(UpdateCurrentPage.Params(fileId, page))
         }
     }
 

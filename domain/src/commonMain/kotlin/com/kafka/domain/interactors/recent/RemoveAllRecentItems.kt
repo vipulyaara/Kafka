@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class RemoveAllRecentItems @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
-) : Interactor<Unit>() {
+) : Interactor<Unit, Unit>() {
     override suspend fun doWork(params: Unit) {
         val documentIds = firestoreGraph.recentItemsCollection
             .snapshots()

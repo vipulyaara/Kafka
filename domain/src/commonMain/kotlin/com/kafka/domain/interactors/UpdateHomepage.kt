@@ -23,7 +23,7 @@ class UpdateHomepage @Inject constructor(
     private val itemDao: ItemDao,
     private val supabaseDb: SupabaseDb,
     private val buildRemoteQuery: BuildRemoteQuery,
-) : Interactor<Unit>() {
+) : Interactor<Unit, Unit>() {
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {

@@ -7,10 +7,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(projects.base.domain)
                 implementation(projects.data.platform)
 
-                implementation(libs.firebase.analytics)
                 implementation(libs.kotlininject.runtime)
+
+                implementation(libs.firebase.analytics)
+                implementation(libs.firebase.auth)
             }
         }
 
@@ -26,14 +29,7 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(projects.base.domain)
-                implementation(projects.data.platform)
-
-                implementation(project.dependencies.platform(libs.google.bom))
-                implementation(libs.google.analytics)
-                implementation(libs.google.crashlytics)
-                implementation(libs.firebase.auth)
-
+                implementation(libs.firebase.crashlytics)
                 implementation(libs.mixpanel)
             }
         }

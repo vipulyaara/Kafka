@@ -1,16 +1,16 @@
 package com.kafka.domain.interactors
 
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.booksByIdentifiers
+import com.kafka.domain.interactors.query.BuildRemoteQuery
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
-import kotlinx.coroutines.withContext
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.Interactor
-import com.kafka.domain.interactors.query.BuildRemoteQuery
 import dev.gitlive.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UpdateRecommendations @Inject constructor(
@@ -20,7 +20,7 @@ class UpdateRecommendations @Inject constructor(
     private val itemRepository: ItemRepository,
     private val buildRemoteQuery: BuildRemoteQuery,
     private val remoteConfig: RemoteConfig,
-) : Interactor<Unit>() {
+) : Interactor<Unit, Unit>() {
 
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {

@@ -43,5 +43,10 @@ interface SharedApplicationComponent :
         override val googleServerClientId: String = remoteConfig.getGoogleServerClientId()
             .ifEmpty { BuildConfig.GOOGLE_SERVER_CLIENT_ID }
         override val openAiApiKey: String = remoteConfig.getOpenAiApiKey()
+
+        override val supabaseUrl: String = BuildConfig.SUPABASE_PROJECT_URL
+        override val supabaseKey: String = BuildConfig.SUPABASE_KEY
+
+        override val mixpanelToken: String = "BuildConfig."
     }
 }

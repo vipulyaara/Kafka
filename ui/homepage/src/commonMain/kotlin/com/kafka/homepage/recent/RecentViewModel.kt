@@ -2,7 +2,7 @@ package com.kafka.homepage.recent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.entities.RecentItem
 import com.kafka.domain.interactors.recent.RemoveAllRecentItems
@@ -43,14 +43,14 @@ class RecentViewModel @Inject constructor(
     fun removeItem(fileId: String) {
         analytics.log { this.removeRecentItem() }
         viewModelScope.launch {
-            removeRecentItem(fileId).collect()
+            removeRecentItem(fileId)
         }
     }
 
     fun clearAllRecentItems() {
         analytics.log { this.clearRecentItems() }
         viewModelScope.launch {
-            removeAllRecentItems(Unit).collect()
+            removeAllRecentItems(Unit)
         }
     }
 }

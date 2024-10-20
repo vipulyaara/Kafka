@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore

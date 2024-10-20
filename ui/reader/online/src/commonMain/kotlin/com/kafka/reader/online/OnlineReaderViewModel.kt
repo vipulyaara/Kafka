@@ -4,13 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.debug
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.asUiMessage
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.feature.item.ItemWithDownload
 import com.kafka.domain.interactors.GetReaderState
 import com.kafka.domain.interactors.ReaderState
@@ -24,7 +24,6 @@ import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -72,7 +71,7 @@ class OnlineReaderViewModel @Inject constructor(
 
         viewModelScope.launch {
             readerState.value = getReaderState.invoke(GetReaderState.Params(itemId, fileId)).also {
-                it.onException { snackbarManager.addMessage("Error loading reader".asUiMessage()) }
+                it.onException { snackbarManager.addMessage(UiMessage("Error loading reader")) }
             }.getOrNull()
         }
     }
@@ -82,7 +81,7 @@ class OnlineReaderViewModel @Inject constructor(
             if (readerState.value != null) {
                 val currentPage = url.getCurrentPageFromReaderUrl()
                 val fileId = readerState.value!!.fileId
-                updateCurrentPage.invoke(UpdateCurrentPage.Params(fileId, currentPage)).collect()
+                updateCurrentPage.invoke(UpdateCurrentPage.Params(fileId, currentPage))
             }
         }
     }

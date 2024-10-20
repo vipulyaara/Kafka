@@ -6,6 +6,7 @@ import co.touchlab.kermit.LogcatWriter
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
+import com.kafka.analytics.providers.CrashlyticsInitializer
 import com.kafka.base.AppInitializer
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
@@ -29,11 +30,13 @@ actual class LoggerInitializer @Inject constructor() : AppInitializer {
 actual class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
+    private val crashlyticsInitializer: CrashlyticsInitializer,
     private val context: Application,
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
             Firebase.initialize(context)
+            crashlyticsInitializer.init()
         }
     }
 }

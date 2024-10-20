@@ -48,7 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.widgets.LocalSnackbarHostState
 import com.kafka.navigation.currentScreenAsState

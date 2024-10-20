@@ -7,7 +7,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.data.entities.File
@@ -22,7 +22,6 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.Audio
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -69,7 +68,7 @@ class FilesViewModel @Inject constructor(
 
     fun onFileClicked(file: File) {
         viewModelScope.launch {
-            addRecentItem(AddRecentItem.Params(file.itemId)).collect()
+            addRecentItem(AddRecentItem.Params(file.itemId))
         }
 
         if (file.isAudio()) {

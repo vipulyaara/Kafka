@@ -3,10 +3,9 @@ package com.kafka.play
 import android.app.Activity
 import android.app.Application
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationScope
 import com.kafka.base.errorLog
-import com.kafka.play.AppReviewManager
 import javax.inject.Inject
 
 @ApplicationScope

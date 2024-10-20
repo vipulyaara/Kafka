@@ -2,12 +2,12 @@ package com.kafka.homepage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.UiMessageManager
-import com.kafka.common.collectStatus
 import com.kafka.common.platform.ShareUtils
+import com.kafka.common.snackbar.SnackbarManager
+import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.UpdateRecommendations
@@ -21,7 +21,6 @@ import com.kafka.navigation.graph.Screen
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.showFeaturedItemLabels
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,9 +34,9 @@ class HomepageViewModel @Inject constructor(
     private val updateRecommendations: UpdateRecommendations,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val loadingCounter: ObservableLoadingCounter,
     private val remoteConfig: RemoteConfig,
-    private val shareUtils: ShareUtils
+    private val shareUtils: ShareUtils,
+    private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     private val uiMessageManager = UiMessageManager()
     val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
@@ -45,7 +44,7 @@ class HomepageViewModel @Inject constructor(
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
         observeUser.flow,
-        loadingCounter.observable,
+        updateHomepage.inProgress,
         observeShareAppIndex.flow,
         uiMessageManager.message,
         ::HomepageViewState
@@ -57,7 +56,7 @@ class HomepageViewModel @Inject constructor(
         observeShareAppIndex(Unit)
 
         viewModelScope.launch {
-            updateRecommendations(Unit).collect()
+            updateRecommendations(Unit)
         }
 
         updateItems()
@@ -65,7 +64,10 @@ class HomepageViewModel @Inject constructor(
 
     private fun updateItems() {
         viewModelScope.launch {
-            updateHomepage(Unit).collectStatus(loadingCounter, uiMessageManager)
+            updateHomepage(Unit).onFailure {
+                uiMessageManager.emitMessage(UiMessage("Failed to update Homepage"))
+                snackbarManager.addMessage("Failed to update Homepage")
+            }
         }
     }
 
@@ -77,7 +79,7 @@ class HomepageViewModel @Inject constructor(
     fun removeRecentItem(fileId: String) {
         viewModelScope.launch {
             analytics.log { removeRecentItem(fileId) }
-            removeRecentItem.invoke(fileId).collect()
+            removeRecentItem.invoke(fileId)
         }
     }
 

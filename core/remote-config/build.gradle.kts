@@ -9,6 +9,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.base.domain)
+
+                implementation(libs.firebase.remote.config)
                 implementation(libs.kotlin.serialization)
             }
         }
@@ -25,8 +27,6 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
-                implementation(project.dependencies.platform(libs.google.bom))
-                implementation(libs.google.remoteConfig)
             }
         }
     }

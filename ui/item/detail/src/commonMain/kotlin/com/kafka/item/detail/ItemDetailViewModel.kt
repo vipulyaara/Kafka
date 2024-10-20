@@ -3,11 +3,9 @@ package com.kafka.item.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.combine
 import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.ObservableLoadingCounter
-import com.kafka.common.collectStatus
 import com.kafka.common.getActivity
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
@@ -45,7 +43,7 @@ import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -75,7 +73,6 @@ class ItemDetailViewModel @Inject constructor(
     private val shareUtils: ShareUtils
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.get<String>("itemId")!!
-    private val loadingState = ObservableLoadingCounter()
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { item ->
@@ -83,7 +80,12 @@ class ItemDetailViewModel @Inject constructor(
         },
         observeCreatorItems.flow,
         observeFavoriteStatus.flow,
-        loadingState.observable,
+        combine(
+            updateItemDetail.inProgress,
+            updateCreatorItems.inProgress
+        ) { loadingStates ->
+            loadingStates.any { loading -> loading }
+        },
         observeDownloadByItemId.flow,
         isResumableAudio.flow,
         shouldUseOnlineReader.flow,
@@ -128,7 +130,7 @@ class ItemDetailViewModel @Inject constructor(
     private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
-                .collectStatus(loadingState, snackbarManager)
+                .onFailure { snackbarManager.addMessage("Failed to update details") }
         }
 
         observeCreatorItems(ObserveCreatorItems.Params(itemId))
@@ -140,7 +142,7 @@ class ItemDetailViewModel @Inject constructor(
 
         if (state.value.itemDetail!!.isAudio) {
             addRecentItem(itemId)
-            viewModelScope.launch { resumeAlbum(itemId).collect() }
+            viewModelScope.launch { resumeAlbum(itemId) }
         } else {
             openReader(itemId)
         }
@@ -183,7 +185,7 @@ class ItemDetailViewModel @Inject constructor(
 
     fun updateFavorite() {
         viewModelScope.launch {
-            updateFavorite(UpdateFavorite.Params(itemId, !state.value.isFavorite)).collect()
+            updateFavorite(UpdateFavorite.Params(itemId, !state.value.isFavorite))
         }
     }
 
@@ -191,7 +193,6 @@ class ItemDetailViewModel @Inject constructor(
         creator?.let { query ->
             viewModelScope.launch {
                 updateCreatorItems(UpdateCreatorItems.Params(query))
-                    .collectStatus(loadingState, snackbarManager)
             }
         }
     }
@@ -199,7 +200,7 @@ class ItemDetailViewModel @Inject constructor(
     private fun addRecentItem(itemId: String) {
         viewModelScope.launch {
             analytics.log { this.addRecentItem(itemId) }
-            addRecentItem(AddRecentItem.Params(itemId)).collect()
+            addRecentItem(AddRecentItem.Params(itemId))
         }
     }
 

@@ -1,8 +1,7 @@
 plugins {
     id("com.kafka.compose")
-    alias(libs.plugins.android.application)
+    id("com.kafka.android.application")
     alias(libs.plugins.androidx.baselineprofile)
-    alias(libs.plugins.cacheFixPlugin)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.gms.googleServices)
     alias(libs.plugins.kotlin.android)

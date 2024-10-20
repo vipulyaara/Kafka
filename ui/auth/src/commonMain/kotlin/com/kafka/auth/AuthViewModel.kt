@@ -2,12 +2,10 @@ package com.kafka.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.analytics.logger.Analytics
-import com.kafka.base.domain.InvokeSuccess
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
-import com.kafka.common.collectStatus
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.snackbar.toUiMessage
@@ -36,9 +34,18 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
 
+    private val loadingState = combine(
+        loadingCounter.observable,
+        resetPassword.inProgress,
+        signUpUser.inProgress,
+        signInUser.inProgress
+    ) { loadingStates ->
+        loadingStates.any { loading -> loading }
+    }
+
     val state: StateFlow<AuthViewState> = combine(
         observeUser.flow,
-        loadingCounter.observable,
+        loadingState
     ) { user, isLoading ->
         AuthViewState(
             currentUser = user,
@@ -69,15 +76,15 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         when {
             !email.isValidEmail() ->
-                snackbarManager.addMessage(message("Please enter a valid email"))
+                snackbarManager.add("Please enter a valid email")
 
             !password.isValidPassword() ->
-                snackbarManager.addMessage(message("Please enter a valid password"))
+                snackbarManager.add("Please enter a valid password")
 
             else -> {
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
-                        .collectStatus(loadingCounter, snackbarManager)
+                        .onFailure { snackbarManager.add("Could not sign in. Please try again.") }
                 }
             }
         }
@@ -87,14 +94,14 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
-                    snackbarManager.addMessage(message("Please enter a valid email"))
+                    snackbarManager.add("Please enter a valid email")
 
                 !password.isValidPassword() ->
-                    snackbarManager.addMessage(message("Please enter a valid password"))
+                    snackbarManager.add("Please enter a valid password")
 
                 else -> {
                     signUpUser(SignUpUser.Params(email, password))
-                        .collectStatus(loadingCounter, snackbarManager)
+                        .onFailure { snackbarManager.add("Could not register user. Please try again.") }
                 }
             }
         }
@@ -104,20 +111,18 @@ class AuthViewModel @Inject constructor(
         if (email.isValidEmail()) {
             viewModelScope.launch {
                 resetPassword(ResetPassword.Params(email))
-                    .collectStatus(loadingCounter, snackbarManager) { status ->
-                        if (status == InvokeSuccess) {
-                            analytics.log { forgotPasswordSuccess() }
-                            snackbarManager.addMessage(message("Password reset link has been sent to your email"))
-                        }
+                    .onSuccess {
+                        analytics.log { forgotPasswordSuccess() }
+                        snackbarManager.add("Password reset link has been sent to your email")
                     }
+                    .onFailure { snackbarManager.add("There was an error resetting your password") }
             }
         } else {
-            viewModelScope.launch {
-                snackbarManager.addMessage(message("Please enter a valid email"))
-            }
+            viewModelScope.launch { snackbarManager.add("Please enter a valid email") }
         }
     }
 
+    private fun SnackbarManager.add(resource: String) = addMessage(message(resource))
     private fun message(resource: String) = UiMessage.Plain(resource)
 
     private fun String.isValidEmail() =

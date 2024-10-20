@@ -14,7 +14,7 @@ class AddRecentItem @Inject constructor(
     private val fileDao: FileDao,
     private val updateRecentItem: UpdateRecentItem,
     private val accountRepository: AccountRepository
-) : Interactor<AddRecentItem.Params>() {
+) : Interactor<AddRecentItem.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
@@ -22,7 +22,7 @@ class AddRecentItem @Inject constructor(
 
             val user = accountRepository.currentFirebaseUser
             if (file != null && user != null) {
-                updateRecentItem.execute(RecentItem.fromItem(file, user.uid))
+                updateRecentItem(RecentItem.fromItem(file, user.uid))
             }
         }
     }

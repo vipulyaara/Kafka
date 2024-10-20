@@ -14,7 +14,7 @@ class UpdateItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val buildRemoteQuery: BuildRemoteQuery,
     private val itemRepository: ItemRepository,
-) : Interactor<UpdateItems.Params>() {
+) : Interactor<UpdateItems.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {

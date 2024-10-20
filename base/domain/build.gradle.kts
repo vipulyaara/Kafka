@@ -11,10 +11,10 @@ kotlin {
 
                 api(libs.kotlin.coroutines.swing)
 
+                api(libs.kermit)
                 api(libs.kinject)
                 api(libs.kotlin.coroutines.core)
                 api(libs.kotlin.stdlib)
-                api(libs.kermit)
                 api(libs.kotlin.immutable)
                 api(libs.kotlinx.atomicfu)
                 api(libs.kotlininject.runtime)

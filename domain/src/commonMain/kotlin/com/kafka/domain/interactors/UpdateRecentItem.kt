@@ -14,7 +14,7 @@ class UpdateRecentItem @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val accountRepository: AccountRepository,
     private val supabaseDb: SupabaseDb
-) : Interactor<RecentItem>() {
+) : Interactor<RecentItem, Unit>() {
     override suspend fun doWork(params: RecentItem) {
         if (appRecentItems == Service.Archive) {
             val document = firestoreGraph.recentItemsCollection.document(params.fileId)

@@ -2,8 +2,8 @@
 
 package com.kafka.shared.playback
 
-import com.kafka.analytics.logger.Analytics
-import com.kafka.analytics.logger.EventInfo
+import com.kafka.analytics.providers.Analytics
+import com.kafka.analytics.providers.EventInfo
 import com.kafka.base.debug
 import com.kafka.base.errorLog
 import com.sarahang.playback.core.apis.Logger

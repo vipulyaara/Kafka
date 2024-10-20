@@ -3,7 +3,7 @@ package com.kafka.shared.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationInfo
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.prefs.PreferencesStore
@@ -13,7 +13,6 @@ import com.kafka.domain.observers.ObserveAppMessage
 import com.kafka.domain.observers.ObserveAppUpdateConfig
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getPlayerTheme
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,7 +50,7 @@ class MainViewModel @Inject constructor(
 
     private fun signInAnonymously() {
         viewModelScope.launch {
-            signInAnonymously(Unit).collect()
+            signInAnonymously(Unit)
         }
     }
 

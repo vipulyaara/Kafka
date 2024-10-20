@@ -1,18 +1,18 @@
 package com.kafka.domain.interactors
 
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.withContext
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.Interactor
 import javax.inject.Inject
 
 class AddRecentSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val recentSearchDao: RecentSearchDao,
-) : Interactor<AddRecentSearch.Params>() {
+) : Interactor<AddRecentSearch.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
@@ -35,7 +35,7 @@ class AddRecentSearch @Inject constructor(
 class RemoveRecentSearch @Inject constructor(
     private val recentSearchDao: RecentSearchDao,
     private val dispatchers: CoroutineDispatchers,
-) : Interactor<String>() {
+) : Interactor<String, Unit>() {
 
     override suspend fun doWork(params: String) {
         withContext(dispatchers.io) {

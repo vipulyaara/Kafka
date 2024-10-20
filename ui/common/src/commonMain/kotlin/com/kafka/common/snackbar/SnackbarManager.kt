@@ -51,6 +51,7 @@ class SnackbarManager @Inject constructor() {
         observeMessageAction(snackbarMessage, onClick)
     }
 
+    fun addMessage(message: String) = addMessage(SnackbarMessage<Unit>(UiMessage.Plain(message)))
     fun addMessage(message: UiMessage) = addMessage(SnackbarMessage<Unit>(message))
 
     private fun addMessage(message: SnackbarMessage<*>) {

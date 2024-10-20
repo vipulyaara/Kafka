@@ -1,7 +1,7 @@
 package com.kafka.domain.interactors
 
 import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.ResultInteractor
+import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.RecentTextDao
@@ -16,7 +16,7 @@ class GetReaderState @Inject constructor(
     private val fileDao: FileDao,
     private val recentTextDao: RecentTextDao,
     private val dispatchers: CoroutineDispatchers,
-) : ResultInteractor<GetReaderState.Params, ReaderState>() {
+) : Interactor<GetReaderState.Params, ReaderState>() {
 
     override suspend fun doWork(params: Params): ReaderState {
         return withContext(dispatchers.io) {

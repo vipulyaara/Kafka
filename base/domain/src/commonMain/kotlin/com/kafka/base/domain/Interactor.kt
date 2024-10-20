@@ -2,47 +2,53 @@ package com.kafka.base.domain
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
-abstract class Interactor<in P> {
-    suspend operator fun invoke(params: P, timeoutMs: Long = defaultTimeoutMs): Flow<InvokeStatus> {
-        return flow {
-            try {
-                withTimeout(timeoutMs) {
-                    emit(InvokeStarted)
-                    doWork(params)
-                    emit(InvokeSuccess)
-                }
-            } catch (t: TimeoutCancellationException) {
-                emit(InvokeError(t))
-            }
-        }.catch { t ->
-            emit(InvokeError(t))
-        }
+abstract class Interactor<in P, R> {
+    private val count = atomic(0)
+    private val loadingState = MutableStateFlow(count.value)
+
+    val inProgress: Flow<Boolean> = loadingState.map { it > 0 }.distinctUntilChanged()
+
+    private fun addLoader() {
+        loadingState.value = count.incrementAndGet()
     }
 
-    suspend fun execute(params: P) = doWork(params)
+    private fun removeLoader() {
+        loadingState.value = count.decrementAndGet()
+    }
 
-    protected abstract suspend fun doWork(params: P)
+    suspend operator fun invoke(
+        params: P,
+        timeout: Duration = DefaultTimeout,
+    ): Result<R> = try {
+        addLoader()
+        runCatching {
+            withTimeout(timeout) {
+                doWork(params)
+            }
+        }
+    } finally {
+        removeLoader()
+    }
+
+    protected abstract suspend fun doWork(params: P): R
 
     companion object {
-        private val defaultTimeoutMs = 10.minutes.inWholeMilliseconds
+        internal val DefaultTimeout = 10.minutes
     }
 }
 
@@ -86,41 +92,6 @@ abstract class SubjectInteractor<P, T> {
     }
 
     fun errors(): Flow<Throwable> = errorState.asSharedFlow()
-}
-
-abstract class ResultInteractor<in P, R> {
-    private val count = atomic(0)
-    private val loadingState = MutableStateFlow(count.value)
-
-    val inProgress: Flow<Boolean> = loadingState.map { it > 0 }.distinctUntilChanged()
-
-    private fun addLoader() {
-        loadingState.value = count.incrementAndGet()
-    }
-
-    private fun removeLoader() {
-        loadingState.value = count.decrementAndGet()
-    }
-
-    suspend operator fun invoke(
-        params: P,
-        timeout: Duration = DefaultTimeout,
-    ): Result<R> = try {
-        addLoader()
-        runCatching {
-            withTimeout(timeout) {
-                doWork(params)
-            }
-        }
-    } finally {
-        removeLoader()
-    }
-
-    protected abstract suspend fun doWork(params: P): R
-
-    companion object {
-        internal val DefaultTimeout = 5.minutes
-    }
 }
 
 inline fun Result<*>.onException(

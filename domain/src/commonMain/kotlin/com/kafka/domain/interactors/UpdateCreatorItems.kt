@@ -17,7 +17,7 @@ class UpdateCreatorItems @Inject constructor(
     private val itemRepository: ItemRepository,
     private val updateItems: UpdateItems,
     private val supabaseDb: SupabaseDb
-) : Interactor<UpdateCreatorItems.Params>() {
+) : Interactor<UpdateCreatorItems.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {

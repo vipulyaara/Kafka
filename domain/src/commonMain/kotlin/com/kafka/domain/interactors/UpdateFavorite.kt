@@ -1,17 +1,17 @@
 package com.kafka.domain.interactors
 
+import com.kafka.analytics.providers.Analytics
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
+import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.listIdFavorites
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
-import kotlinx.coroutines.withContext
-import com.kafka.analytics.logger.Analytics
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.debug
-import com.kafka.base.domain.Interactor
 import com.kafka.domain.interactors.account.SignInAnonymously
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UpdateFavorite @Inject constructor(
@@ -21,7 +21,7 @@ class UpdateFavorite @Inject constructor(
     private val itemDetailDao: ItemDetailDao,
     private val analytics: Analytics,
     private val dispatchers: CoroutineDispatchers,
-) : Interactor<UpdateFavorite.Params>() {
+) : Interactor<UpdateFavorite.Params, Unit>() {
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             if (params.markFavorite) {
@@ -31,7 +31,7 @@ class UpdateFavorite @Inject constructor(
             }
 
             if (!accountRepository.isUserLoggedIn) {
-                signInAnonymously.execute(Unit)
+                signInAnonymously(Unit)
             }
 
             val itemDetail = itemDetailDao.get(params.itemId)

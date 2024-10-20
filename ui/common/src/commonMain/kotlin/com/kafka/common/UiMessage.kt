@@ -7,16 +7,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.util.UUID
-
-data class UiMessage(
-    val message: String = "",
-    val title: String = "",
-    val id: Long = UUID.randomUUID().mostSignificantBits,
-)
-
-fun String?.asUiMessage() =
-    this?.let { UiMessage(it) } ?: UiMessage("Something went wrong")
 
 class UiMessageManager {
     private val mutex = Mutex()

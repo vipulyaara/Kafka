@@ -12,7 +12,7 @@ class RemoveRecentItem @Inject constructor(
     private val firestoreGraph: FirestoreGraph,
     private val accountRepository: AccountRepository,
     private val supabaseDb: SupabaseDb
-) : Interactor<String>() {
+) : Interactor<String, Unit>() {
     override suspend fun doWork(params: String) {
         if (appRecentItems == Service.Archive) {
             val document = firestoreGraph.recentItemsCollection.document(params)

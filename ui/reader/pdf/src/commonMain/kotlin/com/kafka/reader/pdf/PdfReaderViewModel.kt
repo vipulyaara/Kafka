@@ -15,7 +15,6 @@ import com.kafka.data.entities.RecentTextItem
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveRecentTextItem
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -53,13 +52,13 @@ class PdfReaderViewModel @Inject constructor(
 
     fun onPageChanged(page: Int) {
         viewModelScope.launch {
-            updateCurrentPage(UpdateCurrentPage.Params(fileId, page)).collect()
+            updateCurrentPage(UpdateCurrentPage.Params(fileId, page))
         }
     }
 
     fun onPageChanged(fileId: String, page: Int) {
         viewModelScope.launch {
-            updateCurrentPage(UpdateCurrentPage.Params(fileId, page)).collect()
+            updateCurrentPage(UpdateCurrentPage.Params(fileId, page))
         }
     }
 

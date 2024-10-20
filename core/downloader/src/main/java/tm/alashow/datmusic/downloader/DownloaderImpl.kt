@@ -9,7 +9,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationScope
 import com.kafka.base.debug
 import com.kafka.base.errorLog

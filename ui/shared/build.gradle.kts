@@ -19,6 +19,27 @@ buildConfig {
         properties["GOOGLE_SERVER_CLIENT_ID"]?.toString()
             ?: System.getenv("GOOGLE_SERVER_CLIENT_ID")
     )
+
+    buildConfigField(
+        "String",
+        "SUPABASE_PROJECT_URL",
+        properties["SUPABASE_PROJECT_URL"]?.toString()
+            ?: System.getenv("SUPABASE_PROJECT_URL")
+    )
+
+    buildConfigField(
+        "String",
+        "SUPABASE_KEY",
+        properties["SUPABASE_KEY"]?.toString()
+            ?: System.getenv("SUPABASE_KEY")
+    )
+
+    buildConfigField(
+        "String",
+        "MIXPANEL_TOKEN",
+        properties["MIXPANEL_TOKEN"]?.toString()
+            ?: System.getenv("MIXPANEL_TOKEN")
+    )
 }
 
 kotlin {

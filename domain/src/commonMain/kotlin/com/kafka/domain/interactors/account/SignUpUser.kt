@@ -1,10 +1,10 @@
 package com.kafka.domain.interactors.account
 
-import com.kafka.data.feature.auth.AccountRepository
-import kotlinx.coroutines.withContext
-import com.kafka.analytics.logger.Analytics
+import com.kafka.analytics.providers.Analytics
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
+import com.kafka.data.feature.auth.AccountRepository
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SignUpUser @Inject constructor(
@@ -12,7 +12,7 @@ class SignUpUser @Inject constructor(
     private val signInUser: SignInUser,
     private val dispatchers: CoroutineDispatchers,
     private val analytics: Analytics,
-) : Interactor<SignUpUser.Params>() {
+) : Interactor<SignUpUser.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
@@ -20,7 +20,7 @@ class SignUpUser @Inject constructor(
             accountRepository.updateUser(params.name.orEmpty())
             // re-login to receive an update on authListener
             accountRepository.signOut()
-            signInUser.execute(SignInUser.Params(params.email, params.password))
+            signInUser(SignInUser.Params(params.email, params.password))
 
             analytics.log { signUp(params.name) }
         }
