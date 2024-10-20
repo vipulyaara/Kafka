@@ -12,3 +12,7 @@ internal actual fun colorScheme(
 } else {
     LightAppColors
 }
+
+actual fun setStatusBarColor(context: Any?, lightStatusBar: Boolean) {
+    // todo
+}

@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kafka.user.injection.AndroidApplicationComponent
-import com.kafka.user.injection.from
-import kotlinx.coroutines.launch
 import com.kafka.base.debug
+import com.kafka.shared.injection.AndroidApplicationComponent
+import com.kafka.user.from
+import kotlinx.coroutines.launch
 
 class FirebaseMessageService : FirebaseMessagingService() {
 

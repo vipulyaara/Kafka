@@ -3,9 +3,9 @@ package com.kafka.shared.injection
 import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
 import com.kafka.image.CoilAppInitializer
-import com.kafka.shared.main.initializer.AudioProgressInitializer
-import com.kafka.shared.main.initializer.RemoteConfigInitializer
-import com.kafka.shared.main.initializer.RemoteConfigLogger
+import com.kafka.shared.initializer.AudioProgressInitializer
+import com.kafka.shared.initializer.RemoteConfigInitializer
+import com.kafka.shared.initializer.RemoteConfigLogger
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 

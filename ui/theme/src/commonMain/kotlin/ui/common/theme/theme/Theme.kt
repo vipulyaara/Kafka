@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.sp
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
-import com.kafka.data.prefs.observeTrueContrast
 
 @Composable
 fun AppTheme(
@@ -102,12 +101,8 @@ fun Theme.shouldUseDarkColors(): Boolean {
     }
 }
 
-@Composable
-fun PreferencesStore.shouldUseTrueContrast(): Boolean {
-    val themePreference by remember { observeTrueContrast() }.collectAsState(true)
-    return themePreference
-}
-
 val LocalTheme = staticCompositionLocalOf<Theme> {
     error("LocalTheme not provided")
 }
+
+expect fun setStatusBarColor(context: Any?, lightStatusBar: Boolean)

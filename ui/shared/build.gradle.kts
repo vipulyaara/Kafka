@@ -36,15 +36,26 @@ kotlin {
                 implementation(projects.data.repo)
                 implementation(projects.domain)
                 implementation(projects.navigation)
+                implementation(projects.ui.auth)
                 implementation(projects.ui.common)
                 implementation(projects.ui.components)
                 implementation(projects.ui.downloader)
                 implementation(projects.ui.homepage)
+                implementation(projects.ui.item.detail)
+                implementation(projects.ui.library)
                 implementation(projects.uiPlayback)
+                implementation(projects.ui.profile)
                 implementation(projects.ui.reader.epub)
                 implementation(projects.ui.reader.online)
                 implementation(projects.ui.reader.pdf)
+                implementation(projects.ui.search)
+                implementation(projects.ui.summary)
+                implementation(projects.ui.theme)
+                implementation(projects.ui.webview)
 
+                implementation(compose.components.resources)
+
+                implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
                 implementation(libs.kotlin.coroutines.swing)
                 implementation(libs.kotlininject.runtime)
@@ -52,6 +63,16 @@ kotlin {
 
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
+                implementation(libs.jetbrains.navigation.compose)
+                implementation(libs.jetbrains.material.navigation)
+
+                implementation(libs.androidx.room.runtime)
+
+                implementation(project.dependencies.platform(libs.supabase.bom))
+                implementation(libs.supabase.auth)
+                implementation(libs.supabase.postgrest)
+                implementation(libs.supabase.realtime)
+                implementation(libs.supabase.storage)
             }
         }
 
@@ -67,13 +88,21 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
+                implementation(libs.accompanist.permissions)
+                implementation(libs.androidx.lifecycle.process)
                 implementation(libs.firebase.common)
                 implementation(libs.kermit)
                 implementation(libs.kermit.crashlytics)
                 implementation(libs.threeTenAbp)
+                implementation(libs.fetch)
+                implementation(libs.okhttp.okhttp)
             }
         }
     }
+}
+
+ksp {
+    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
 }
 
 android {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.logger.Analytics
+import com.kafka.base.ApplicationInfo
 import com.kafka.base.domain.InvokeSuccess
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
@@ -11,7 +12,6 @@ import com.kafka.common.collectStatus
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage.Plain
 import com.kafka.data.entities.User
-import com.kafka.data.platform.app.AppVersionInfo
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.SAFE_MODE
 import com.kafka.data.prefs.SAFE_MODE_DEFAULT
@@ -37,7 +37,7 @@ class ProfileViewModel @Inject constructor(
     private val logoutUser: LogoutUser,
     private val analytics: Analytics,
     private val navigator: Navigator,
-    private val appVersionInfo: AppVersionInfo,
+    private val applicationInfo: ApplicationInfo,
     observeUser: ObserveUser,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
@@ -54,7 +54,7 @@ class ProfileViewModel @Inject constructor(
             theme = theme,
             trueContrast = trueContrast,
             safeMode = safeMode,
-            appVersion = appVersionInfo.versionName,
+            appVersion = applicationInfo.versionName,
             isLoading = isLoading
         )
     }.stateInDefault(

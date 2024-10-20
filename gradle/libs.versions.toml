@@ -3,31 +3,33 @@ accompanist = "0.36.0"
 adaptive = "1.0.0"
 appupdate = "2.1.0"
 agp = "8.6.1"
-androidxlifecycle = "2.9.0-alpha04"
+androidxlifecycle = "2.9.0-alpha05"
 coil = "2.6.0"
 coil3 = "3.0.0-rc01"
 compose-alpha = "2024.08.00-alpha02"
-compose-bom = "2024.09.03"
+compose-bom = "2024.10.00"
 compose-material-navigation = "1.7.0-beta01"
-compose-multiplatform = "1.7.0-rc01"
+compose-multiplatform = "1.7.0"
 coroutines = "1.9.0"
 firebase = "2.1.0"
 icons = "1.1.1"
 haze = "0.7.3"
 jbadaptive = "1.0.0-rc01"
-jblifecycle = "2.8.2"
-kotlin = "2.0.20"
+jblifecycle = "2.8.3"
+jbnavigation = "2.8.0-alpha10"
+jb-material-navigation = "1.7.0-beta02"
+kotlin = "2.0.21"
 kotlin-immutable = "0.3.8"
 kotlininject = "0.7.2"
 ktor = "3.0.0"
 material3 = "1.3.0"
 media3 = "1.3.1"
 mixpanel = "8.0.1"
-navigation = "2.8.2"
+navigation = "2.8.3"
 okhttp = "4.12.0"
 pdfviewer = "3.1.0-beta.1"
-room = "2.7.0-alpha09"
-sqlite = "2.5.0-alpha09"
+room = "2.7.0-alpha10"
+sqlite = "2.5.0-alpha10"
 serialization = "1.7.3"
 spotless = "6.25.0"
 supabase = "3.0.1"
@@ -35,17 +37,13 @@ supabase = "3.0.1"
 compileSdk = "35"
 minSdk = "24"
 targetSdk = "34"
-core-ktx = "1.13.1"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
-benchmark-macro-junit4 = "1.3.2"
-androidx-baselineprofile = "1.3.2"
+benchmark-macro-junit4 = "1.3.3"
+androidx-baselineprofile = "1.3.3"
 profileinstaller = "1.4.1"
-review = "2.0.1"
-junit = "4.13.2"
-appcompat = "1.7.0"
-material = "1.12.0"
+review = "2.0.2"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -59,7 +57,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.0.20-1.0.25"
+ksp = "com.google.devtools.ksp:2.0.21-1.0.25"
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 spotless = "com.diffplug.spotless:6.25.0"
@@ -68,16 +66,11 @@ androidTest = { id = "com.android.test", version.ref = "agp" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 
 [libraries]
-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
-accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
-accompanist-web = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
-rebugger = "com.github.theapache64:rebugger:1.0.0-alpha06"
 media = "androidx.media:media:1.7.0"
 
-androidx-activity-compose = "androidx.activity:activity-compose:1.9.2"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.3"
 androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
 
@@ -89,7 +82,8 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 
 jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jblifecycle" }
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jblifecycle" }
-
+jetbrains-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jbnavigation" }
+jetbrains-material-navigation = { module = "org.jetbrains.compose.material:material-navigation", version.ref = "jb-material-navigation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
 lottie-core = "com.airbnb.android:lottie:6.4.0"
@@ -117,6 +111,8 @@ compose-animation-animation = { module = "androidx.compose.animation:animation" 
 compose-foundation-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+
+
 jetbrains-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jbadaptive" }
 jetbrains-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "jbadaptive" }
 jetbrains-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "jbadaptive" }
@@ -213,18 +209,15 @@ mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mi
 
 pdfviewer = { module = "com.github.DImuthuUpe:AndroidPdfViewer", version.ref = "pdfviewer" }
 
-skiko = "org.jetbrains.skiko:skiko:0.8.15"
 supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
 supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
 supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
 supabase-realtime = { module = "io.github.jan-tennert.supabase:realtime-kt" }
 supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt" }
-supabase-gotrue = { module = "io.github.jan-tennert.supabase:gotrue-kt" }
 
 webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
 
 threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
-timber = "com.jakewharton.timber:timber:5.0.1"
 dataStore = "androidx.datastore:datastore-preferences:1.1.1"
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

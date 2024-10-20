@@ -1,5 +1,6 @@
 package com.kafka.user
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,10 +18,9 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.navigation.rememberBottomSheetNavigator
 import com.kafka.remote.config.isTrueContrastEnabled
-import com.kafka.user.injection.AndroidActivityComponent
-import com.kafka.user.injection.AndroidApplicationComponent
-import com.kafka.user.injection.create
-import com.kafka.user.injection.from
+import com.kafka.shared.injection.AndroidActivityComponent
+import com.kafka.shared.injection.AndroidApplicationComponent
+import com.kafka.shared.injection.create
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -90,3 +90,7 @@ private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
  * https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:activity/activity/src/main/java/androidx/activity/EdgeToEdge.kt;l=40-44;drc=27e7d52e8604a080133e8b842db10c89b4482598
  */
 private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+
+fun AndroidApplicationComponent.Companion.from(context: Context): AndroidApplicationComponent {
+    return (context.applicationContext as KafkaApplication).component
+}

@@ -20,7 +20,7 @@ import com.kafka.ui.components.item.FeaturedItem
 import ui.common.theme.theme.Dimens
 
 @Composable
-internal fun Carousels(
+internal fun CarouselsLegacy(
     carouselItems: List<Item>,
     images: List<String>,
     onBannerClick: (String) -> Unit,
@@ -52,7 +52,7 @@ internal fun Carousels(
 }
 
 @Composable
-internal fun CarouselsMaterial3(
+internal fun Carousels(
     carouselItems: List<Item>,
     images: List<String>,
     onBannerClick: (String) -> Unit,

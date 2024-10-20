@@ -16,6 +16,8 @@ kotlin {
                 implementation(compose.material)
 
                 implementation(libs.kotlin.serialization)
+                implementation(libs.jetbrains.navigation.compose)
+                implementation(libs.jetbrains.material.navigation)
             }
         }
 

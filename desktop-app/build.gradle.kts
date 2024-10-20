@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     kspJvm(libs.kotlininject.compiler)
+    kspJvm(libs.androidx.room.compiler)
 }
 
 kotlin {
@@ -35,6 +36,7 @@ kotlin {
                 implementation(projects.ui.reader.pdf)
                 implementation(projects.uiPlayback)
                 implementation(projects.ui.shared)
+                implementation(projects.ui.webview)
 
                 implementation(compose.desktop.currentOs)
 
@@ -47,6 +49,10 @@ kotlin {
                 implementation(libs.firebase.analytics)
 
                 implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.lifecycle.runtime)
+
+                implementation(libs.jetbrains.navigation.compose)
+                implementation(libs.jetbrains.material.navigation)
             }
         }
     }
@@ -59,8 +65,20 @@ compose.desktop {
         nativeDistributions {
             modules("java.sql")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.kafka"
+            packageName = "com.kafka.user"
             packageVersion = "1.0.0"
+        }
+
+        buildTypes.release.proguard {
+            configurationFiles.from("desktop-proguard-rules.pro")
+        }
+
+        jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+        jvmArgs("--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED") // recommended but not necessary
+
+        if (System.getProperty("os.name").contains("Mac")) {
+            jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
+            jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
         }
     }
 }

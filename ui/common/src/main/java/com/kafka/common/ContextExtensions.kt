@@ -35,8 +35,10 @@ fun Context.getActivity(): Activity? = when (this) {
     else -> null
 }
 
-fun Context.goToPlayStore() {
-    val releasePackageName = packageName
+actual fun updateApp(context: Any?) {
+    val ctx = context as Context
+    val releasePackageName = ctx
+        .packageName
         .removeSuffix(".debug")
         .removeSuffix(".rc")
 
@@ -45,8 +47,8 @@ fun Context.goToPlayStore() {
         Uri.parse("https://play.google.com/store/apps/details?id=$releasePackageName")
 
     try {
-        startActivity(Intent(Intent.ACTION_VIEW, marketUri))
+        ctx.startActivity(Intent(Intent.ACTION_VIEW, marketUri))
     } catch (e: ActivityNotFoundException) {
-        startActivity(Intent(Intent.ACTION_VIEW, playStoreUri))
+        ctx.startActivity(Intent(Intent.ACTION_VIEW, playStoreUri))
     }
 }

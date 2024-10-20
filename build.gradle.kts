@@ -33,8 +33,8 @@ allprojects {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
         maven(url = "https://androidx.dev/snapshots/latest/artifacts/repository")
         maven(url = "https://repo.repsy.io/mvn/chrynan/public")
+        maven(url = "https://jogamp.org/deployment/maven")
     }
-
 
     apply(from = rootProject.file("spotless/spotless.gradle"))
 
