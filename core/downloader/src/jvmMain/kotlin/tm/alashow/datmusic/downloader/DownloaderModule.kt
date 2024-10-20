@@ -4,6 +4,8 @@ import com.kafka.data.entities.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import me.tatarka.inject.annotations.Provides
+import java.io.FileInputStream
+import java.io.InputStream
 
 actual interface DownloaderModule {
 
@@ -76,5 +78,8 @@ actual interface DownloaderModule {
             TODO("Not yet implemented")
         }
 
+        override suspend fun getInputStreamFromUri(uri: String): InputStream? {
+            TODO("Not yet implemented")
+        }
     }
 }

@@ -144,7 +144,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.coil.coil)
+    implementation(libs.coil3.coil)
+    implementation(libs.coil3.compose)
+    implementation(libs.coil3.network)
     implementation(libs.compose.animation.animation)
     implementation(libs.compose.foundation.foundation)
     implementation(libs.compose.foundation.layout)
@@ -173,6 +175,7 @@ dependencies {
     implementation(libs.kotlin.serialization)
     implementation(libs.kotlin.stdlib)
 
+    implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.contentnegotiation)
     implementation(libs.ktor.client.java)
@@ -188,6 +191,12 @@ dependencies {
 
     ksp(libs.kotlininject.compiler)
     implementation(libs.kotlininject.runtime)
+
+    implementation(project.dependencies.platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.realtime)
+    implementation(libs.supabase.storage)
 
     baselineProfile(projects.baselineprofile)
 }

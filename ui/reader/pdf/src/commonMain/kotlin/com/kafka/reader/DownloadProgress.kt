@@ -26,6 +26,7 @@ import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
 import com.kafka.data.feature.item.DownloadInfo
+import com.kafka.data.feature.item.isActive
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.DownloadStatusIcons
 import com.kafka.ui.components.progress.DownloadAnimation

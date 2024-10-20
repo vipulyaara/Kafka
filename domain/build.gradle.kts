@@ -22,6 +22,11 @@ kotlin {
                 implementation(libs.firebase.firestore)
 
                 implementation(libs.kotlininject.runtime)
+
+                implementation(project.dependencies.platform(libs.supabase.bom))
+                implementation(libs.supabase.postgrest)
+                implementation(libs.supabase.realtime)
+                implementation(libs.supabase.storage)
             }
         }
 

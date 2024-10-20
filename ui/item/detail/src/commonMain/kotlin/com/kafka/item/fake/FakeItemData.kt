@@ -1,8 +1,8 @@
 package com.kafka.item.fake
 
-import com.kafka.data.entities.Creator
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.model.MediaType
 import kotlinx.collections.immutable.persistentListOf
 
 object FakeItemData {
@@ -12,22 +12,25 @@ object FakeItemData {
     private val item0 = Item(
         itemId = "0",
         title = "Metamorphosis",
-        creator = Creator("Franz Kafka", "Franz Kafka"),
+        creators = listOf("Kafka"),
         coverImage = coverUrl,
+        mediaType = MediaType.Text
     )
 
     private val item1 = Item(
         itemId = "1",
         title = "The Trial",
-        creator = Creator("Franz Kafka", "Franz Kafka"),
+        creators = listOf("Kafka"),
         coverImage = coverUrl,
+        mediaType = MediaType.Text
     )
 
     private val item2 = Item(
         itemId = "2",
         title = "The Castle",
-        creator = Creator("Franz Kafka", "Franz Kafka"),
+        creators = listOf("Kafka"),
         coverImage = coverUrl,
+        mediaType = MediaType.Text
     )
 
     val fakeItems = persistentListOf(item0, item1, item2)
@@ -39,6 +42,7 @@ object FakeItemData {
         coverImage = coverUrl,
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl eu nunc.",
         subject = listOf("Insect", "Existential", "Classics", "Fiction"),
-        isAccessRestricted = true
+        isAccessRestricted = true,
+        mediaType = MediaType.Audio
     )
 }

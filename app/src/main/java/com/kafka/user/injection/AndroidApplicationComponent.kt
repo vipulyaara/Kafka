@@ -19,6 +19,7 @@ import com.sarahang.playback.core.timer.SleepTimer
 import kotlinx.coroutines.CoroutineScope
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
+import tm.alashow.datmusic.downloader.DownloadInitializer
 
 @Component
 @ApplicationScope
@@ -26,6 +27,7 @@ abstract class AndroidApplicationComponent(
     @get:Provides val application: Application,
 ) : AppComponent {
     abstract val appInitializers: AppInitializers
+    abstract val downloadInitializer: DownloadInitializer
     abstract val preferencesStore: PreferencesStore
     abstract val remoteConfig: RemoteConfig
     abstract val dispatchers: CoroutineDispatchers

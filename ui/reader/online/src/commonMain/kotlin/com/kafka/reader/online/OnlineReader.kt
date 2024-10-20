@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.common.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.data.feature.item.DownloadInfo
@@ -51,6 +52,8 @@ fun OnlineReader(viewModel: OnlineReaderViewModel, openOfflineReader: (String) -
     val webViewState by remember(readerState?.url) {
         mutableStateOf(readerState?.url?.let { WebViewState(WebContent.Url(url = it)) })
     }
+
+    val context = getContext()
 
     LaunchedEffect(fileId, state.autoDownload) {
         if (state.autoDownload) {
@@ -88,7 +91,7 @@ fun OnlineReader(viewModel: OnlineReaderViewModel, openOfflineReader: (String) -
                         openOfflineReader(fileId)
                     },
                     downloadItem = { viewModel.downloadItem(fileId) },
-                    shareItem = { viewModel.shareItem() },
+                    shareItem = { viewModel.shareItem(context) },
                     goBack = { viewModel.goBack() }
                 )
             }

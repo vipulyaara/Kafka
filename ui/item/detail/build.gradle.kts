@@ -51,3 +51,6 @@ kotlin {
 android {
     namespace = "com.kafka.item.detail"
 }
+dependencies {
+    implementation(project(":core-playback"))
+}

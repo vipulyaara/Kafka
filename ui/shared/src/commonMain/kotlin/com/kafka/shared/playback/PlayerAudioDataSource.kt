@@ -38,8 +38,8 @@ fun File.asAudio() = Audio(
     artist = creator,
     album = itemTitle,
     albumId = itemId,
-    duration = duration,
-    playbackUrl = playbackUrl.orEmpty(),
+    duration = duration ?: 0L,
+    playbackUrl = url.orEmpty(),
     localUri = localUri,
     coverImage = coverImage
 )

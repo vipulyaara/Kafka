@@ -68,10 +68,10 @@ class OnlineReaderViewModel @Inject constructor(
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeDownloadByFileId(fileId)
-        shouldAutoDownload(ShouldAutoDownload.Param(itemId))
+        shouldAutoDownload(ShouldAutoDownload.Param(itemId, fileId))
 
         viewModelScope.launch {
-            readerState.value = getReaderState.invoke(itemId).also {
+            readerState.value = getReaderState.invoke(GetReaderState.Params(itemId, fileId)).also {
                 it.onException { snackbarManager.addMessage("Error loading reader".asUiMessage()) }
             }.getOrNull()
         }
@@ -101,14 +101,14 @@ class OnlineReaderViewModel @Inject constructor(
         analytics.log { readItem(itemId = itemId, type = "offline") }
     }
 
-    fun shareItem() {
+    fun shareItem(context: Any?) {
         analytics.log { this.shareItem(itemId = itemId, source = "reader") }
         val itemTitle = readerState.value?.itemTitle
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
-        shareUtils.shareText(text)
+        shareUtils.shareText(text, context)
     }
 
     fun goBack() {

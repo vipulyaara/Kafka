@@ -2,25 +2,34 @@ package com.kafka.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kafka.data.model.MediaType
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity
+@Serializable
 data class File(
-    @PrimaryKey val fileId: String,
-    val itemId: String,
-    val itemTitle: String?,
-    val size: Long?,
-    val name: String,
-    val title: String,
-    val extension: String?,
-    val creator: String?,
-    val time: String?,
-    val format: String,
-    val playbackUrl: String?,
-    val readerUrl: String?,
-    val downloadUrl: String?,
-    val coverImage: String?,
+    @SerialName("id") @PrimaryKey val fileId: String,
+    @SerialName("book_id") val itemId: String,
+    @SerialName("book_title") val itemTitle: String?,
+    @SerialName("size") val size: Long? = 0L,
+    @SerialName("title") val title: String,
+    @SerialName("media_type") val mediaType: MediaType,
+    val name: String = title,
+    @SerialName("cover_image") val coverImage: String? = null,
+    @SerialName("extension") val extension: String?,
+    @SerialName("creators") val creators: List<String>? = null,
+    @SerialName("duration") val duration: Long? = 0L,
+    @SerialName("format") val format: String,
+    @SerialName("path") val path: String?,
+    @SerialName("url") val url: String?,
     val localUri: String? = null,
+    val position: Int = 0
 ) : BaseEntity {
+
+    val creator: String
+        get() = creators?.take(5)?.firstOrNull().orEmpty()
+
     companion object {
         val audioExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")
         val textExtensions = listOf("pdf", "epub")
@@ -28,23 +37,6 @@ data class File(
 
         // extensions that show up in player, in order of preference
         val playableExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")
-    }
-
-    val duration: Long
-        get() = time?.let { mapDuration(it) } ?: 0L
-
-    private fun mapDuration(duration: String): Long {
-        var durationInSeconds = 0L
-        duration.split(":")
-            .takeIf { it.size > 1 }
-            ?.reversed()
-            ?.forEachIndexed { index, time ->
-                durationInSeconds += time.toInt() * (index * 60).coerceAtLeast(1)
-            } ?: run {
-            durationInSeconds = duration.toDouble().toLong()
-        }
-
-        return durationInSeconds
     }
 
     fun mapSize(): String {
@@ -55,7 +47,7 @@ data class File(
         val size = if (sizeGb > 1L) sizeGb else if (sizeMb > 1) sizeMb else sizeKb
         val label = if (sizeGb > 1L) "GB" else if (sizeMb > 1) "MB" else "KB"
 
-        return "$size $label"
+        return if (size > 0) "$size $label" else ""
     }
 }
 

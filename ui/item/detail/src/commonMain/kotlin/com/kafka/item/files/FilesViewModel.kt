@@ -76,6 +76,11 @@ class FilesViewModel @Inject constructor(
             playbackConnection.playAudio(file.asAudio())
         } else {
             navigator.navigate(Screen.Reader(file.fileId))
+//            if (file.isEpub) {
+//                navigator.navigate(Screen.EpubReader(file.fileId))
+//            } else {
+//                navigator.navigate(Screen.PdfReader(file.fileId))
+//            }
         }
     }
 
@@ -97,8 +102,8 @@ fun File.asAudio() = Audio(
     artist = creator,
     album = itemTitle,
     albumId = itemId,
-    duration = duration,
-    playbackUrl = playbackUrl.orEmpty(),
+    duration = duration ?: 0L,
+    playbackUrl = url.orEmpty(),
     localUri = localUri,
     coverImage = coverImage
 )

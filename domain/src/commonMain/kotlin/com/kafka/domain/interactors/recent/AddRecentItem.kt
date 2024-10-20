@@ -1,25 +1,31 @@
 package com.kafka.domain.interactors.recent
 
-import com.kafka.data.dao.ItemDetailDao
-import com.kafka.data.entities.RecentItem
-import kotlinx.coroutines.withContext
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
+import com.kafka.data.dao.FileDao
+import com.kafka.data.entities.RecentItem
+import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.domain.interactors.UpdateRecentItem
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AddRecentItem @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
-    private val itemDetailDao: ItemDetailDao,
+    private val fileDao: FileDao,
     private val updateRecentItem: UpdateRecentItem,
+    private val accountRepository: AccountRepository
 ) : Interactor<AddRecentItem.Params>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            val item = itemDetailDao.get(params.itemId)
-            updateRecentItem.execute(RecentItem.fromItem(item))
+            val file = fileDao.getOrNull(params.fileId)
+
+            val user = accountRepository.currentFirebaseUser
+            if (file != null && user != null) {
+                updateRecentItem.execute(RecentItem.fromItem(file, user.uid))
+            }
         }
     }
 
-    data class Params(val itemId: String)
+    data class Params(val fileId: String)
 }

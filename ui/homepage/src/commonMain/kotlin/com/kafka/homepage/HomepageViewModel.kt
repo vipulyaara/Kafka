@@ -114,8 +114,8 @@ class HomepageViewModel @Inject constructor(
         navigator.navigate(Screen.Search(name, SearchFilter.Creator.name), RootScreen.Search)
     }
 
-    fun shareApp(text: String) {
+    fun shareApp(text: String, context: Any?) {
         analytics.log { this.shareApp() }
-        shareUtils.shareText(text)
+        shareUtils.shareText(text = text, context = context)
     }
 }

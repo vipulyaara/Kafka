@@ -12,15 +12,15 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.kafka.base.errorLog
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
+import com.kafka.navigation.rememberBottomSheetNavigator
 import com.kafka.remote.config.isTrueContrastEnabled
 import com.kafka.user.injection.AndroidActivityComponent
 import com.kafka.user.injection.AndroidApplicationComponent
 import com.kafka.user.injection.create
 import com.kafka.user.injection.from
-import com.kafka.base.errorLog
-import com.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 

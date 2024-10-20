@@ -32,8 +32,8 @@ data class EpubBook(
     val fileName: String,
     val title: String,
     val author: String,
-    val language: String,
-    val coverImage: String?,
+    val language: String?,
+    val coverImage: String? = null,
     val chapters: List<EpubChapter>,
     val images: List<EpubImage>
 )

@@ -8,7 +8,7 @@ import com.kafka.data.db.KafkaRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Provides
 
-const val databaseName = "kafka.db"
+const val databaseName = "kafka_1.db"
 
 interface DatabaseModule {
     @Provides

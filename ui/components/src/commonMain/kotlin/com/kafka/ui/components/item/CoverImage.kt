@@ -37,7 +37,7 @@ fun CoverImage(
     size: DpSize = DpSize.Unspecified,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-    contentScale: ContentScale = ContentScale.FillHeight,
+    contentScale: ContentScale = ContentScale.Crop,
     shape: Shape = CoverDefaults.shape,
     placeholder: ImageVector? = CoverDefaults.placeholder,
     iconPadding: Dp = 16.dp,

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class RecentTextDao : EntityDao<RecentTextItem> {
     @Query("select * from recent_text where fileId = :fileId")
-    abstract fun observe(fileId: String): Flow<RecentTextItem>
+    abstract fun observe(fileId: String): Flow<RecentTextItem?>
 
     @Query("select * from recent_text where fileId = :fileId")
     abstract suspend fun getOrNull(fileId: String): RecentTextItem?

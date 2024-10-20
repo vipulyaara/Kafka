@@ -14,19 +14,18 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
-import com.kafka.data.model.ArchiveQuery
 import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.data.model.SearchFilter.Subject
-import com.kafka.data.model.booksByAuthor
 import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.ResumeAlbum
+import com.kafka.domain.interactors.UpdateCreatorItems
 import com.kafka.domain.interactors.UpdateFavorite
 import com.kafka.domain.interactors.UpdateItemDetail
-import com.kafka.domain.interactors.UpdateItems
 import com.kafka.domain.interactors.recent.AddRecentItem
 import com.kafka.domain.interactors.recent.IsResumableAudio
 import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.ObservePrimaryFile
 import com.kafka.domain.observers.ShouldUseOnlineReader
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.navigation.Navigator
@@ -36,7 +35,6 @@ import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.Screen.ItemDescription
 import com.kafka.navigation.graph.Screen.OnlineReader
-import com.kafka.navigation.graph.Screen.Reader
 import com.kafka.navigation.graph.Screen.Search
 import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
@@ -60,9 +58,10 @@ class ItemDetailViewModel @Inject constructor(
     isResumableAudio: IsResumableAudio,
     @Assisted savedStateHandle: SavedStateHandle,
     shouldUseOnlineReader: ShouldUseOnlineReader,
+    observePrimaryFile: ObservePrimaryFile,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
-    private val updateItems: UpdateItems,
+    private val updateCreatorItems: UpdateCreatorItems,
     private val addRecentItem: AddRecentItem,
     private val observeFavoriteStatus: ObserveFavoriteStatus,
     private val updateFavorite: UpdateFavorite,
@@ -87,9 +86,10 @@ class ItemDetailViewModel @Inject constructor(
         loadingState.observable,
         observeDownloadByItemId.flow,
         isResumableAudio.flow,
-        shouldUseOnlineReader.flow
+        shouldUseOnlineReader.flow,
+        observePrimaryFile.flow
     ) { itemDetail, itemsByCreator, isFavorite, isLoading,
-        downloadItem, isResumableAudio, useOnlineReader ->
+        downloadItem, isResumableAudio, useOnlineReader, primaryFile ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
@@ -99,8 +99,9 @@ class ItemDetailViewModel @Inject constructor(
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             borrowableBookMessage = remoteConfig.borrowableBookMessage(),
-            isSummaryEnabled = remoteConfig.isSummaryEnabled() && (itemDetail?.isText ?: false),
-            useOnlineReader = useOnlineReader
+            isSummaryEnabled = remoteConfig.isSummaryEnabled(),
+            useOnlineReader = useOnlineReader,
+            primaryFile = primaryFile
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -112,6 +113,7 @@ class ItemDetailViewModel @Inject constructor(
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
         shouldUseOnlineReader(ShouldUseOnlineReader.Param(itemId))
+        observePrimaryFile(ObservePrimaryFile.Param(itemId))
 
         observeDownloadByItemId(
             ObserveDownloadByItemId.Params(
@@ -151,16 +153,23 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
+        val primaryFile = state.value.primaryFile
 
-        if (itemDetail?.primaryFile != null) {
-            addRecentItem(itemId)
+        if (primaryFile != null && itemDetail != null) {
+            addRecentItem(primaryFile.fileId)
 
             if (state.value.useOnlineReader) {
                 logOnlineReader(itemDetail = itemDetail)
-                navigator.navigate(OnlineReader(itemDetail.itemId, itemDetail.primaryFile!!))
+                navigator.navigate(OnlineReader(itemDetail.itemId, primaryFile.fileId))
             } else {
-                analytics.log { readItem(itemId = itemId, type = "offline") }
-                navigator.navigate(Reader(itemDetail.primaryFile!!))
+                navigator.navigate(Screen.Reader(primaryFile.fileId))
+//                if (primaryFile.isEpub) {
+//                    analytics.log { readItem(itemId = itemId, type = "offline") }
+//                    navigator.navigate(Screen.EpubReader(primaryFile.fileId))
+//                } else {
+//                    analytics.log { readItem(itemId = itemId, type = "offline") }
+//                    navigator.navigate(Screen.PdfReader(primaryFile.fileId))
+//                }
             }
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }
@@ -179,9 +188,9 @@ class ItemDetailViewModel @Inject constructor(
     }
 
     private fun updateItemsByCreator(creator: String?) {
-        creator?.let { ArchiveQuery().booksByAuthor(it) }?.let { query ->
+        creator?.let { query ->
             viewModelScope.launch {
-                updateItems(UpdateItems.Params(query))
+                updateCreatorItems(UpdateCreatorItems.Params(query))
                     .collectStatus(loadingState, snackbarManager)
             }
         }
@@ -215,14 +224,14 @@ class ItemDetailViewModel @Inject constructor(
 
     fun isShareEnabled() = remoteConfig.isShareEnabled() && state.value.itemDetail != null
 
-    fun shareItemText() {
+    fun shareItemText(context: Any?) {
         analytics.log { this.shareItem(itemId, "item_detail") }
         val itemTitle = state.value.itemDetail!!.title
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
-        shareUtils.shareText(text)
+        shareUtils.shareText(text = text, context = context)
     }
 
     fun openArchiveItem() {

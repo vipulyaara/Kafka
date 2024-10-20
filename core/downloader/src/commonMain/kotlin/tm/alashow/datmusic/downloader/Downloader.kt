@@ -7,6 +7,7 @@ package tm.alashow.datmusic.downloader
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import java.io.File
+import java.io.InputStream
 import com.kafka.data.entities.File as FileEntity
 
 interface Downloader {
@@ -39,4 +40,6 @@ interface Downloader {
 
     suspend fun setDownloadsLocation(uri: String?)
     suspend fun resetDownloadsLocation()
+
+    suspend fun getInputStreamFromUri(uri: String): InputStream?
 }

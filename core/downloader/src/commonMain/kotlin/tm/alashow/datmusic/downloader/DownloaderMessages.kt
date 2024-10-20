@@ -12,7 +12,7 @@ val DownloadsUnknownError = DownloadMessage.Plain("Unknown error")
 val DownloadsFolderNotFound =
     DownloadMessage.Plain("Selected downloads folder not found")
 val AudioDownloadErrorFileCreate =
-    DownloadMessage.Plain("Couldn\\'t create file in downloads location")
+    DownloadMessage.Plain("Couldn't create file in downloads location")
 val AudioDownloadErrorInvalidUrl =
     DownloadMessage.Plain("Download has invalid url")
 

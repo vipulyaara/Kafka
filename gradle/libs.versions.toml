@@ -5,7 +5,7 @@ appupdate = "2.1.0"
 agp = "8.6.1"
 androidxlifecycle = "2.9.0-alpha04"
 coil = "2.6.0"
-coil3 = "3.0.0-alpha10"
+coil3 = "3.0.0-rc01"
 compose-alpha = "2024.08.00-alpha02"
 compose-bom = "2024.09.03"
 compose-material-navigation = "1.7.0-beta01"
@@ -30,6 +30,7 @@ room = "2.7.0-alpha09"
 sqlite = "2.5.0-alpha09"
 serialization = "1.7.3"
 spotless = "6.25.0"
+supabase = "3.0.1"
 
 compileSdk = "35"
 minSdk = "24"
@@ -106,7 +107,8 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 coil3-coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
-coil3-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil3" }
+coil3-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
+coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 #compose-bom = { module = "dev.chrisbanes.compose:compose-bom", version.ref = "compose-alpha" }
@@ -114,20 +116,15 @@ compose-runtime-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-animation-animation = { module = "androidx.compose.animation:animation" }
 compose-foundation-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
-compose-material-iconsext = { module = "androidx.compose.material:material-icons-extended" }
-compose-material-material = { module = "androidx.compose.material:material" }
 compose-material-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptive" }
 jetbrains-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jbadaptive" }
 jetbrains-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "jbadaptive" }
 jetbrains-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "jbadaptive" }
 
 compose-material-navigation = { module = "androidx.compose.material:material-navigation", version.ref = "compose-material-navigation" }
-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
-compose-ui-textfonts = { module = "androidx.compose.ui:ui-text-google-fonts" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
 fetch = "com.github.abbas7777:fetch2-android14:3.2.0-beta07"
@@ -179,6 +176,7 @@ kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutab
 kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -214,6 +212,14 @@ material-kolor = "com.materialkolor:material-kolor:2.0.0"
 mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanel" }
 
 pdfviewer = { module = "com.github.DImuthuUpe:AndroidPdfViewer", version.ref = "pdfviewer" }
+
+skiko = "org.jetbrains.skiko:skiko:0.8.15"
+supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
+supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
+supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
+supabase-realtime = { module = "io.github.jan-tennert.supabase:realtime-kt" }
+supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt" }
+supabase-gotrue = { module = "io.github.jan-tennert.supabase:gotrue-kt" }
 
 webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
 

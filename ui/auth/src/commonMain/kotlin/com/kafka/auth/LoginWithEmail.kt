@@ -65,10 +65,10 @@ internal fun LoginWithEmail(
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         var username by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue(""))
+            mutableStateOf(TextFieldValue("vipul@gmail.com"))
         }
         var password by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue(""))
+            mutableStateOf(TextFieldValue("9413613536"))
         }
 
         val usernameAutofill = AutofillNode(
