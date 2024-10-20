@@ -18,22 +18,13 @@ abstract class ItemDao : EntityDao<Item> {
     abstract fun observeQueryItems(buildLocalQuery: RoomRawQuery): Flow<List<Item>>
 
     @Query("select * from item where itemId = :itemId")
-    abstract suspend fun get(itemId: String): Item
-
-    @Query("select * from item where itemId = :itemId")
     abstract fun observe(itemId: String): Flow<Item?>
 
     @Query("select * from item where itemId = :itemId")
     abstract suspend fun getOrNull(itemId: String): Item?
 
     @Query("select * from item where itemId IN (:itemIds)")
-    abstract suspend fun get(itemIds: List<String>): List<Item>
-
-    @Query("select * from item where itemId IN (:itemIds)")
     abstract fun observe(itemIds: List<String>): Flow<List<Item>>
-
-    @Query("delete from item")
-    abstract suspend fun deleteAll()
 
     @Query("SELECT EXISTS(SELECT * FROM item where itemId = :itemId)")
     abstract suspend fun exists(itemId: String): Boolean

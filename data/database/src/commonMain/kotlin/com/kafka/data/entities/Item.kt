@@ -31,5 +31,3 @@ data class Item(
     val isInappropriate: Boolean
         get() = collections?.contains("no-preview") ?: false
 }
-
-data class Creator(val id: String, val name: String)

@@ -16,7 +16,6 @@ import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.entities.QueueEntity
 import com.kafka.data.entities.RecentAudioItem
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.entities.RecentTextItem
@@ -41,7 +40,6 @@ expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDataba
         ItemDetail::class,
         File::class,
         Item::class,
-        QueueEntity::class,
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,

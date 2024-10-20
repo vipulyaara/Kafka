@@ -11,22 +11,11 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 abstract class FileDao : EntityDao<File> {
-
-    @Query("select * from File where fileId = :fileId")
-    abstract fun observe(fileId: String): Flow<File?>
-
     @Query("select * from File where itemId = :itemId ORDER BY position")
     abstract fun observeByItemId(itemId: String): Flow<List<File>>
 
     @Query("select * from File where itemId = :itemId ORDER BY position")
     abstract suspend fun getByItemId(itemId: String): List<File>
-
-    suspend fun playerFilesByItemId(itemId: String): List<File> {
-        val items = getByItemId(itemId).groupBy { it.extension }
-        val selectedFormat = File.playableExtensions.firstOrNull { it in items.keys }
-
-        return selectedFormat?.let { items[it] } ?: emptyList()
-    }
 
     @Query("select * from File where fileId = :fileId")
     abstract fun entry(fileId: String): Flow<File>
@@ -40,4 +29,11 @@ abstract class FileDao : EntityDao<File> {
 
     @Query("update file set localUri = :localUri where fileId = :fileId")
     abstract suspend fun updateLocalUri(fileId: String, localUri: String)
+
+    suspend fun playerFilesByItemId(itemId: String): List<File> {
+        val items = getByItemId(itemId).groupBy { it.extension }
+        val selectedFormat = File.playableExtensions.firstOrNull { it in items.keys }
+
+        return selectedFormat?.let { items[it] } ?: emptyList()
+    }
 }
