@@ -9,14 +9,11 @@ import javax.inject.Inject
 class LogoutUser @Inject constructor(
     private val accountRepository: AccountRepository,
     private val signInAnonymously: SignInAnonymously,
-    private val logoutCredentialManager: LogoutCredentialManager,
     private val coroutineDispatchers: CoroutineDispatchers,
 ) : Interactor<Any?, Unit>() {
 
     override suspend fun doWork(params: Any?) {
         withContext(coroutineDispatchers.io) {
-            logoutCredentialManager(params).getOrThrow()
-
             accountRepository.signOut()
             signInAnonymously(Unit)
         }

@@ -14,7 +14,7 @@ import com.kafka.domain.interactors.UpdateRecommendations
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveHomepage
 import com.kafka.domain.observers.ObserveShareAppIndex
-import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen

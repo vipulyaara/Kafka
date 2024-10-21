@@ -9,8 +9,15 @@ import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
+data class CurrentlyReading(
+    @SerialName("file_id") val fileId: String,
+    @SerialName("book_id") val itemId: String,
+    @SerialName("uid") val uid: String,
+)
+
+@Keep
+@Serializable
 data class RecentItem(
-    // todo: fix @documentId for firebase
     @SerialName("file_id") val fileId: String,
     @SerialName("item_id") val itemId: String,
     @SerialName("title") val title: String,
@@ -18,7 +25,7 @@ data class RecentItem(
     @SerialName("creator") val creator: String,
     @SerialName("media_type") val mediaType: MediaType = MediaType.Default,
     @SerialName("createdAt") val updatedAt: Long,
-    @SerialName("uid") val uid: String = "",
+    @SerialName("uid") val uid: String,
 ) {
     constructor() : this(
         fileId = "",

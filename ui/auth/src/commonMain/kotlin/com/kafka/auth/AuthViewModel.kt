@@ -14,7 +14,7 @@ import com.kafka.domain.interactors.account.ResetPassword
 import com.kafka.domain.interactors.account.SignInUser
 import com.kafka.domain.interactors.account.SignInWithGoogle
 import com.kafka.domain.interactors.account.SignUpUser
-import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isGoogleLoginEnabled
 import kotlinx.coroutines.flow.StateFlow
@@ -84,7 +84,7 @@ class AuthViewModel @Inject constructor(
             else -> {
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
-                        .onFailure { snackbarManager.add("Could not sign in. Please try again.") }
+                        .onFailure { snackbarManager.add(it.message ?: "Could not sign in. Please try again.") }
                 }
             }
         }

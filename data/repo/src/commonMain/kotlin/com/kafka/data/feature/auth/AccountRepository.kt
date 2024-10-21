@@ -1,10 +1,15 @@
 package com.kafka.data.feature.auth
 
 import com.kafka.base.ApplicationScope
-import dev.gitlive.firebase.auth.AuthResult
-import dev.gitlive.firebase.auth.EmailAuthProvider
-import dev.gitlive.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.onStart
+import com.kafka.base.debug
+import com.kafka.data.entities.User
+import com.kafka.data.feature.Supabase
+import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.status.SessionSource
+import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.auth.user.UserInfo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -14,40 +19,76 @@ import javax.inject.Inject
  * */
 @ApplicationScope
 class AccountRepository @Inject constructor(
-    private val auth: FirebaseAuth,
+    private val supabase: Supabase,
 ) {
-    val currentFirebaseUser
-        get() = auth.currentUser
+    val auth = supabase.auth
+
+    val currentUser
+        get() = auth.currentUserOrNull()
 
     val isUserLoggedIn
-        get() = auth.currentUser != null
+        get() = currentUser != null
 
-    suspend fun signInAnonymously(): AuthResult = auth.signInAnonymously()
+    suspend fun signInAnonymously() = auth.signInAnonymously()
 
-    suspend fun signUpOrLinkUser(email: String, password: String): AuthResult? {
-        return if (currentFirebaseUser != null) {
-            val credential = EmailAuthProvider.credential(email, password)
-            currentFirebaseUser?.linkWithCredential(credential)
-        } else {
-            auth.createUserWithEmailAndPassword(email, password)
+    suspend fun signUp(email: String, password: String) {
+        auth.signUpWith(Email) {
+            this.email = email
+            this.password = password
         }
     }
 
-    suspend fun signInUser(email: String, password: String): AuthResult =
-        auth.signInWithEmailAndPassword(email, password)
+    suspend fun signIn(email: String, password: String) =
+        supabase.auth.signInWith(Email) {
+            this.email = email
+            this.password = password
+        }
 
     suspend fun resetPassword(email: String) {
-        auth.sendPasswordResetEmail(email)
+        auth.resetPasswordForEmail(email)
     }
 
-    fun observeCurrentFirebaseUser() = auth.authStateChanged
-        .onStart { emit(null) }
+    fun observeCurrentUserOrNull(): Flow<User?> {
+        return supabase.auth.sessionStatus.map {
+            when (it) {
+                is SessionStatus.Authenticated -> {
+                    debug { "Received new authenticated session." }
+                    when (it.source) {
+                        SessionSource.External,
+                        SessionSource.Storage,
+                        SessionSource.Unknown,
+                        is SessionSource.Refresh,
+                        is SessionSource.SignIn,
+                        is SessionSource.SignUp,
+                        is SessionSource.UserChanged,
+                        is SessionSource.UserIdentitiesChanged -> {
+                            supabase.auth.currentUserOrNull()!!.asUser(false)
+                        }
+
+                        SessionSource.AnonymousSignIn -> {
+                            supabase.auth.currentUserOrNull()!!.asUser(true)
+                        }
+                    }
+                }
+
+                SessionStatus.Initializing,
+                is SessionStatus.RefreshFailure,
+                is SessionStatus.NotAuthenticated -> {
+                    null
+                }
+            }
+        }
+    }
+
+    private fun UserInfo.asUser(anonymous: Boolean) = User(
+        id = id,
+        displayName = "",
+        email = email,
+        imageUrl = "",
+        anonymous = anonymous,
+    )
 
     suspend fun signOut() {
         auth.signOut()
-    }
-
-    suspend fun updateUser(name: String) {
-        currentFirebaseUser!!.updateProfile(displayName = name)
     }
 }

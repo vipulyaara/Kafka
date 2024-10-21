@@ -20,10 +20,10 @@ class RecommendationRepository @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
 ) {
     fun observeRecommendations(recommendationId: String) =
-        accountRepository.observeCurrentFirebaseUser()
+        accountRepository.observeCurrentUserOrNull()
             .filterNotNull()
             .flatMapLatest { user ->
-                getRecommendations(userId = user.uid, recommendationId = recommendationId)
+                getRecommendations(userId = user.id, recommendationId = recommendationId)
             }
             .flatMapLatest { itemDao.observe(it) }
             .onStart { emit(emptyList()) }

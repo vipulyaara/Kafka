@@ -1,5 +1,6 @@
 package com.kafka.base.domain
 
+import com.kafka.base.errorLog
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
@@ -43,6 +44,8 @@ abstract class Interactor<in P, R> {
         }
     } finally {
         removeLoader()
+    }.onFailure {
+        errorLog(it)
     }
 
     protected abstract suspend fun doWork(params: P): R

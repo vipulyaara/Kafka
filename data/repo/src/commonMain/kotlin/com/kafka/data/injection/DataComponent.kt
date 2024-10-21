@@ -9,6 +9,7 @@ import com.kafka.networking.SerializationPolymorphicDefaultPair
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
+import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
@@ -25,6 +26,7 @@ interface DataComponent : SerializersModule, DataPlatformComponent {
         supabaseKey = secretsProvider.supabaseKey
     ) {
         useHTTPS = true
+        install(Auth)
         install(Postgrest)
         install(Realtime)
         install(Storage)

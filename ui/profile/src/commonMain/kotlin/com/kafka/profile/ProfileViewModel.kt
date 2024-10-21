@@ -20,7 +20,7 @@ import com.kafka.data.prefs.observeSafeMode
 import com.kafka.data.prefs.observeTheme
 import com.kafka.data.prefs.observeTrueContrast
 import com.kafka.domain.interactors.account.LogoutUser
-import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.flow.StateFlow

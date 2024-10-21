@@ -6,7 +6,7 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.domain.interactors.UpdateFeedback
-import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine

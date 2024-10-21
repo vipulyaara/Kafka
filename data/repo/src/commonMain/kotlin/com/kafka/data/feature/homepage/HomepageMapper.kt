@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 object HomepageMapperConfig {
@@ -28,7 +29,6 @@ class HomepageMapper @Inject constructor(
     private val recommendationRepository: RecommendationRepository,
     private val recentItemRepository: RecentItemRepository
 ) {
-
     fun map(collection: List<HomepageCollectionResponse>): Flow<List<HomepageCollection>> {
         return combine(
             collection.map { homepageItem ->
@@ -139,6 +139,7 @@ class HomepageMapper @Inject constructor(
 
     private fun mapRecentItems() = recentItemRepository.observeRecentItems(RECENT_ITEMS_LIMIT)
         .map { it.map { RecentItemWithProgress(it, 0) } }
+        .onStart { emit(emptyList()) }
         .map { items -> HomepageCollection.RecentItems(items) }
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {

@@ -52,7 +52,7 @@ object Dimens {
     val CoverSizeSmall = DpSize(76.dp, 112.dp)
     val CoverSizeMedium = DpSize(80.dp, 120.dp)
     val CoverSizeLarge = DpSize(212.dp, 212.dp)
-    val CoverSizeDetail = DpSize(208.dp, 312.dp)
+    val CoverSizeDetail = DpSize(208.dp, 286.dp)
     val CoverSizeDetailSquare = DpSize(248.dp, 248.dp)
     val CoverSizePortraitLarge = DpSize(148.dp, 216.dp)
 }

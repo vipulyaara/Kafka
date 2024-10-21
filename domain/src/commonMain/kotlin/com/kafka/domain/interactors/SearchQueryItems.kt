@@ -5,7 +5,7 @@ import com.kafka.base.Service
 import com.kafka.base.appService
 import com.kafka.base.domain.Interactor
 import com.kafka.data.entities.Item
-import com.kafka.data.feature.SupabaseDb
+import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
@@ -18,7 +18,7 @@ class SearchQueryItems @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val buildSearchQuery: BuildSearchQuery,
     private val itemRepository: ItemRepository,
-    private val supabaseDb: SupabaseDb
+    private val supabase: Supabase
 ) : Interactor<SearchQueryItems.Params, List<Item>>() {
 
     override suspend fun doWork(params: Params): List<Item> = withContext(dispatchers.io) {
@@ -33,7 +33,7 @@ class SearchQueryItems @Inject constructor(
             val query = params.keyword.split(" ")
                 .joinToString(separator = "&", prefix = "'", postfix = "'")
 
-            supabaseDb.books.select {
+            supabase.books.select {
                 filter {
                     textSearch("fts", query, TextSearchType.NONE)
                     if (params.mediaTypes.size == 1 && params.mediaTypes[0] == MediaType.Text) {

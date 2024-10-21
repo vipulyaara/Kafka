@@ -13,11 +13,7 @@ class ResetPassword @Inject constructor(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            try {
-                accountRepository.resetPassword(params.email)
-            } catch (e: Exception) {
-                throw e
-            }
+            accountRepository.resetPassword(params.email)
         }
     }
 

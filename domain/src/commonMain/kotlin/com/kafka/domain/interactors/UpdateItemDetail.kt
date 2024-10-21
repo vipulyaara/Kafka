@@ -5,7 +5,6 @@ import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.feature.item.ItemDetailDataSource
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -20,8 +19,6 @@ class UpdateItemDetail @Inject constructor(
         withContext(dispatchers.io) {
             val itemDetail = repository.updateItemDetail(params.contentId)
             val files = repository.updateFiles(itemDetail, params.contentId)
-
-            delay(4000)
 
             itemDetailDao.insert(itemDetail)
             fileDao.insertAll(files)

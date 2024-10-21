@@ -9,19 +9,13 @@ import javax.inject.Inject
 
 class SignUpUser @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val signInUser: SignInUser,
     private val dispatchers: CoroutineDispatchers,
     private val analytics: Analytics,
 ) : Interactor<SignUpUser.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            accountRepository.signUpOrLinkUser(params.email, params.password)
-            accountRepository.updateUser(params.name.orEmpty())
-            // re-login to receive an update on authListener
-            accountRepository.signOut()
-            signInUser(SignInUser.Params(params.email, params.password))
-
+            accountRepository.signUp(params.email, params.password)
             analytics.log { signUp(params.name) }
         }
     }

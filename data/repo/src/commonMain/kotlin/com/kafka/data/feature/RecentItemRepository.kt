@@ -1,42 +1,39 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, SupabaseExperimental::class)
 
 package com.kafka.data.feature
 
-import com.google.firebase.firestore.Query
 import com.kafka.base.ApplicationScope
+import com.kafka.data.entities.CurrentlyReading
+import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
-import com.kafka.data.entities.RecentItemWithProgress
-import com.kafka.data.feature.auth.AccountRepository
-import com.kafka.data.feature.firestore.FirestoreGraph
+import io.github.jan.supabase.annotations.SupabaseExperimental
+import io.github.jan.supabase.realtime.selectAsFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @ApplicationScope
 class RecentItemRepository @Inject constructor(
-    private val accountRepository: AccountRepository,
-    private val firestoreGraph: FirestoreGraph,
+    private val supabase: Supabase
 ) {
     fun observeRecentItems(limit: Int) =
-        accountRepository.observeCurrentFirebaseUser()
-            .flatMapLatest { user ->
-                if (user == null) {
-                    flowOf(emptyList())
-                } else {
-                    observeRecentItems(user.uid, limit)
-                }
-            }
+        supabase.recentItems.selectAsFlow(
+            listOf(CurrentlyReading::fileId, CurrentlyReading::itemId, CurrentlyReading::uid)
+        ).map {
+            it.map { cr ->
+                val it = supabase.books.select {
+                    filter { eq("book_id", cr.itemId) }
+                }.decodeSingle<Item>()
 
-    private fun observeRecentItems(uid: String, limit: Int) =
-        firestoreGraph.getRecentItemsCollection(uid)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .limit(limit.toLong())
-            .snapshots
-            .map { snapshot ->
-                snapshot.documents
-                    .map { it.data<RecentItem>().copy(fileId = it.id) }
-                    .distinctBy { it.itemId }
+                RecentItem(
+                    fileId = cr.fileId,
+                    itemId = cr.itemId,
+                    title = it.title,
+                    coverUrl = it.coverImage.orEmpty(),
+                    creator = it.creator,
+                    updatedAt = System.currentTimeMillis(),
+                    uid = cr.uid
+                )
             }
+        }
 }

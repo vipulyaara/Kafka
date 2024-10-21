@@ -20,9 +20,9 @@ class AddRecentItem @Inject constructor(
         withContext(dispatchers.io) {
             val file = fileDao.getOrNull(params.fileId)
 
-            val user = accountRepository.currentFirebaseUser
+            val user = accountRepository.currentUser
             if (file != null && user != null) {
-                updateRecentItem(RecentItem.fromItem(file, user.uid))
+                updateRecentItem(RecentItem.fromItem(file, user.id))
             }
         }
     }

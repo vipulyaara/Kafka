@@ -29,24 +29,34 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
 //    InfiniteProgressBar(modifier, show, Dimens.Spacing08, PaddingValues(Dimens.Gutter), 25f)
-    InfiniteProgressBar(modifier, show, Dimens.Spacing32, PaddingValues(Dimens.Gutter))
+    InfiniteProgressBar(
+        modifier = modifier,
+        show = show,
+        size = Dimens.Spacing32,
+        padding = PaddingValues(Dimens.Gutter)
+    )
 }
 
 @Composable
 fun InfiniteProgressBarSmall(modifier: Modifier = Modifier, show: Boolean = true) {
 //    InfiniteProgressBar(modifier, show, Dimens.Spacing06, PaddingValues(Dimens.Spacing04), 15f)
-    InfiniteProgressBar(modifier, show, Dimens.Spacing20, PaddingValues(Dimens.Spacing04))
+    InfiniteProgressBar(
+        modifier = modifier,
+        show = show,
+        size = Dimens.Spacing20,
+        padding = PaddingValues(Dimens.Spacing04)
+    )
 }
 
 @Composable
 fun InfiniteProgressBar(
     modifier: Modifier = Modifier,
     show: Boolean = true,
-    size: Dp = Dimens.Spacing08,
+    size: Dp = Dimens.Spacing20,
     padding: PaddingValues = PaddingValues(Dimens.Gutter)
 ) {
-    AnimatedVisibilityFade(visible = show, modifier = modifier) {
-        CircularDualIndicator(isVisible = show, modifier = Modifier.padding(padding).size(size))
+    AnimatedVisibilityFade(visible = show, modifier = modifier.padding(padding).size(size)) {
+        CircularDualIndicator(isVisible = show, modifier = Modifier)
     }
 }
 

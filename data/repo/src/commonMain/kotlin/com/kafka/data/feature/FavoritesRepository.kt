@@ -21,7 +21,7 @@ class FavoritesRepository @Inject constructor(
         }
 
     suspend fun updateList(favoriteItem: FavoriteItem, listId: String, addFavorite: Boolean) {
-        accountRepository.currentFirebaseUser?.uid
+        accountRepository.currentUser?.id
             ?.let { firestoreGraph.getListCollection(it, listId) }
             ?.run {
                 if (addFavorite) {

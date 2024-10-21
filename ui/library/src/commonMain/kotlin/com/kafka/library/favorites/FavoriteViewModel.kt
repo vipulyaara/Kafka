@@ -8,7 +8,7 @@ import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.entities.Item
 import com.kafka.data.prefs.PreferencesStore
-import com.kafka.domain.observers.ObserveUser
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.domain.observers.library.ObserveFavorites
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen

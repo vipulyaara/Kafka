@@ -7,7 +7,7 @@ import com.kafka.base.domain.Interactor
 import com.kafka.base.extensions.mapAsync
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.Item
-import com.kafka.data.feature.SupabaseDb
+import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.homepage.HomepageRepository
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.ArchiveQuery
@@ -21,7 +21,7 @@ class UpdateHomepage @Inject constructor(
     private val homepageRepository: HomepageRepository,
     private val itemRepository: ItemRepository,
     private val itemDao: ItemDao,
-    private val supabaseDb: SupabaseDb,
+    private val supabase: Supabase,
     private val buildRemoteQuery: BuildRemoteQuery,
 ) : Interactor<Unit, Unit>() {
 
@@ -30,7 +30,7 @@ class UpdateHomepage @Inject constructor(
             if (appService == Service.Archive) {
                 fetchBooksFromArchive()
             } else {
-                val supabaseItems = supabaseDb.books.select().decodeList<Item>()
+                val supabaseItems = supabase.books.select().decodeList<Item>()
                 itemDao.insertAll(supabaseItems)
             }
         }
