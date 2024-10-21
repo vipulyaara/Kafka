@@ -23,7 +23,7 @@ class RemoteConfig @Inject constructor(
 ) {
     private val remoteConfig by lazy { Firebase.remoteConfig }
 
-    init {
+    fun init() {
         scope.launch {
             try {
                 remoteConfig.fetchAndActivate()

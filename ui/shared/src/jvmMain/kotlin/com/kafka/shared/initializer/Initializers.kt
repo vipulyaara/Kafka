@@ -9,6 +9,7 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.debug
 import com.kafka.data.platform.appDirectory
+import com.kafka.remote.config.RemoteConfig
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseOptions
 import dev.gitlive.firebase.initialize
@@ -26,6 +27,7 @@ actual class LoggerInitializer @Inject constructor() : AppInitializer {
 
 actual class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
+    private val remoteConfigInitializer: RemoteConfigInitializer,
     @ProcessLifetime private val coroutineScope: CoroutineScope
 ) : AppInitializer {
     override fun init() {
@@ -66,6 +68,7 @@ actual class FirebaseInitializer @Inject constructor(
             )
 
             Firebase.initialize(Application(), options)
+            remoteConfigInitializer.init()
         }
     }
 }

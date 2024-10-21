@@ -4,7 +4,6 @@ import com.kafka.base.AppInitializer
 import com.kafka.base.ApplicationScope
 import com.kafka.image.CoilAppInitializer
 import com.kafka.shared.initializer.AudioProgressInitializer
-import com.kafka.shared.initializer.RemoteConfigInitializer
 import com.kafka.shared.initializer.RemoteConfigLogger
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
@@ -17,11 +16,6 @@ interface InitializersComponent: InitializersPlatformComponent {
     @ApplicationScope
     @IntoSet
     fun provideCoilAppInitializer(bind: CoilAppInitializer): AppInitializer = bind
-
-    @Provides
-    @ApplicationScope
-    @IntoSet
-    fun provideRemoteConfigInitializer(bind: RemoteConfigInitializer): AppInitializer = bind
 
     @Provides
     @ApplicationScope

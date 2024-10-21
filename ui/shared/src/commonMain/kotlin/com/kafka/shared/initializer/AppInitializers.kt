@@ -10,9 +10,9 @@ expect class FirebaseInitializer : AppInitializer
 
 class RemoteConfigInitializer @Inject constructor(
     private val remoteConfig: RemoteConfig,
-) : AppInitializer {
-    override fun init() {
-        remoteConfig
+) {
+    fun init() {
+        remoteConfig.init()
     }
 }
 
