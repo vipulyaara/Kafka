@@ -134,7 +134,6 @@ class ItemDetailViewModel @Inject constructor(
                 .onException { snackbarManager.addMessage("Failed to update details") }
         }
 
-        observeCreatorItems(ObserveCreatorItems.Params(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
     }
 
@@ -191,6 +190,7 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun updateItemsByCreator(creator: String?) {
         creator?.let { query ->
+            observeCreatorItems(ObserveCreatorItems.Params(itemId, query))
             viewModelScope.launch {
                 updateCreatorItems(UpdateCreatorItems.Params(query))
             }

@@ -5,7 +5,7 @@ import com.kafka.navigation.graph.Screen
 
 object DeepLinks {
     fun find(screen: Screen) = when (screen) {
-        is Screen.ItemDetail -> "${BASE_URL}/item/${screen.itemId}"
+        is Screen.ItemDetail -> "${BASE_URL}item/${screen.itemId}"
         else -> ""
     }
 }

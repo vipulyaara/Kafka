@@ -14,11 +14,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class ItemDao : EntityDao<Item> {
 
-    @RawQuery(observedEntities = [Item::class])
-    abstract fun observeQueryItems(buildLocalQuery: RoomRawQuery): Flow<List<Item>>
-
     @Query("select * from item where itemId = :itemId")
     abstract fun observe(itemId: String): Flow<Item?>
+
+    @Query("SELECT * FROM item WHERE creators LIKE '%' || :creator || '%'")
+    abstract fun observeCreatorItems(creator: String): Flow<List<Item>>
 
     @Query("select * from item where itemId = :itemId")
     abstract suspend fun getOrNull(itemId: String): Item?
