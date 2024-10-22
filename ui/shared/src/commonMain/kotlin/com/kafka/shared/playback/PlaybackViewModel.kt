@@ -3,7 +3,6 @@ package com.kafka.shared.playback
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.data.dao.FileDao
-import com.kafka.data.model.SearchFilter
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
@@ -38,7 +37,7 @@ class PlaybackViewModel @Inject constructor(
         viewModelScope.launch {
             val artist = playbackConnection.nowPlaying.value.artist.orEmpty()
             navigator.navigate(
-                route = Search(keyword = artist, filters = SearchFilter.Creator.name),
+                route = Search(keyword = artist),
                 root = RootScreen.Search
             )
         }

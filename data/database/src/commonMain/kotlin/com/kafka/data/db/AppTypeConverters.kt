@@ -2,7 +2,6 @@ package com.kafka.data.db
 
 import androidx.room.TypeConverter
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
@@ -45,10 +44,4 @@ class AppTypeConverters {
 
     @TypeConverter
     fun mediaTypeToString(data: MediaType) = data.value
-
-    @TypeConverter
-    fun stringToSearchFilter(data: String) = json.decodeFromString<List<SearchFilter>>(data)
-
-    @TypeConverter
-    fun searchFilterToString(data: List<SearchFilter>) = json.encodeToString(data)
 }

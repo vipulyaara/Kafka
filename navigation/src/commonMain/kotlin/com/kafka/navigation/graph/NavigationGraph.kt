@@ -2,7 +2,6 @@
 
 package com.kafka.navigation.graph
 
-import com.kafka.data.model.SearchFilter
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.net.URLEncoder
@@ -68,8 +67,7 @@ sealed class Screen {
 
     @Serializable
     data class Search(
-        @SerialName("keyword") val keyword: String = "",
-        @SerialName("filters") val filters: String = SearchFilter.allString(),
+        @SerialName("keyword") val keyword: String = ""
     ) : Screen()
 
     @Serializable

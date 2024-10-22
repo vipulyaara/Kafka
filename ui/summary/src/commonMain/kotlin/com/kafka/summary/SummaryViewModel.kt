@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.entities.Summary
-import com.kafka.data.model.SearchFilter.Creator
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.summary.ObserveSummary
 import com.kafka.navigation.Navigator
@@ -44,7 +43,7 @@ class SummaryViewModel @Inject constructor(
 
     fun goToCreator(keyword: String?) {
         analytics.log { this.openCreator(name = keyword, source = "summary") }
-        navigator.navigate(Search(keyword.orEmpty(), Creator.name), RootScreen.Search)
+        navigator.navigate(Search(keyword.orEmpty()), RootScreen.Search)
     }
 }
 

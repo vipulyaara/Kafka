@@ -32,9 +32,7 @@ import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import com.kafka.search.widget.MediaTypeChips
-import com.kafka.search.widget.SearchFilterChips
 import com.kafka.search.widget.SearchWidget
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.bottomScaffoldPadding
@@ -56,13 +54,11 @@ fun SearchScreen(viewModelFactory: (SavedStateHandle) -> SearchViewModel) {
                 searchText = searchViewState.keyword,
                 setSearchText = { searchViewModel.setQuery(it) },
                 searchViewState = searchViewState,
-                selectedFilters = searchViewState.selectedFilters,
-                onFilterClicked = { searchViewModel.toggleFilter(it) },
                 selectedMediaTypes = searchViewModel.selectedMediaTypes,
                 onMediaTypeClicked = { searchViewModel.toggleMediaType(it) },
-                onSearchClicked = { query, filters, mediaTypes ->
+                onSearchClicked = { query, mediaTypes ->
                     searchViewModel.setQuery(query)
-                    searchViewModel.search(query, filters, mediaTypes)
+                    searchViewModel.search(query, mediaTypes)
                 },
                 removeRecentSearch = { searchViewModel.removeRecentSearch(it) },
                 openItemDetail = { searchViewModel.openItemDetail(it) }
@@ -76,11 +72,9 @@ private fun Search(
     searchText: String,
     setSearchText: (String) -> Unit,
     searchViewState: SearchViewState,
-    selectedFilters: List<SearchFilter>,
-    onFilterClicked: (SearchFilter) -> Unit,
     selectedMediaTypes: List<MediaType>,
     onMediaTypeClicked: (MediaType) -> Unit,
-    onSearchClicked: (String, List<SearchFilter>, List<MediaType>) -> Unit,
+    onSearchClicked: (String, List<MediaType>) -> Unit,
     removeRecentSearch: (String) -> Unit,
     openItemDetail: (String) -> Unit,
 ) {
@@ -107,7 +101,7 @@ private fun Search(
         RecentSearches(
             recentSearches = searchViewState.recentSearches!!,
             onSearchClicked = { search ->
-                onSearchClicked(search.searchTerm, selectedFilters, selectedMediaTypes)
+                onSearchClicked(search.searchTerm, selectedMediaTypes)
             },
             onRemoveSearch = removeRecentSearch,
             contentPadding = paddingValues
@@ -120,7 +114,7 @@ private fun Search(
         SearchWidget(
             searchText = searchText,
             setSearchText = setSearchText,
-            onImeAction = { query -> onSearchClicked(query, selectedFilters, selectedMediaTypes) },
+            onImeAction = { query -> onSearchClicked(query, selectedMediaTypes) },
             modifier = Modifier.padding(top = topScaffoldPadding())
         )
 
@@ -132,10 +126,6 @@ private fun Search(
                 .padding(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing08)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing08)) {
-                SearchFilterChips(
-                    selectedFilters = selectedFilters,
-                    onFilterClicked = onFilterClicked
-                )
                 MediaTypeChips(
                     selectedMediaTypes = selectedMediaTypes,
                     onFilterClicked = onMediaTypeClicked

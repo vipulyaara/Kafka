@@ -6,7 +6,6 @@ import com.kafka.data.entities.Item
 import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import io.github.jan.supabase.postgrest.query.filter.TextSearchType
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -36,7 +35,6 @@ class SearchQueryItems @Inject constructor(
 
     data class Params(
         val keyword: String,
-        val searchFilter: List<SearchFilter>,
         val mediaTypes: List<MediaType>,
     ) {
         val mediaType = if (mediaTypes.size == 1) mediaTypes.first() else null

@@ -5,7 +5,6 @@ import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,7 +17,6 @@ class AddRecentSearch @Inject constructor(
         withContext(dispatchers.io) {
             val recentSearch = RecentSearch(
                 searchTerm = params.searchTerm,
-                filters = params.filters,
                 mediaTypes = params.mediaTypes
             )
             recentSearchDao.insert(recentSearch)
@@ -27,7 +25,6 @@ class AddRecentSearch @Inject constructor(
 
     data class Params(
         val searchTerm: String,
-        val filters: List<SearchFilter>,
         val mediaTypes: List<MediaType>
     )
 }

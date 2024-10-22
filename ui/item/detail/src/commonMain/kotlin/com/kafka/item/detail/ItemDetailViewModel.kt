@@ -13,8 +13,6 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.item.DownloadStatus
-import com.kafka.data.model.SearchFilter.Creator
-import com.kafka.data.model.SearchFilter.Subject
 import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.ResumeAlbum
 import com.kafka.domain.interactors.UpdateCreatorItems
@@ -211,12 +209,12 @@ class ItemDetailViewModel @Inject constructor(
 
     fun goToSubjectSubject(keyword: String) {
         analytics.log { this.openSubject(keyword, "item_detail") }
-        navigator.navigate(Search(keyword, Subject.name), RootScreen.Search)
+        navigator.navigate(Search(keyword), RootScreen.Search)
     }
 
     fun goToCreator(keyword: String?) {
         analytics.log { this.openCreator(name = keyword, source = "item_detail") }
-        navigator.navigate(Search(keyword.orEmpty(), Creator.name), RootScreen.Search)
+        navigator.navigate(Search(keyword.orEmpty()), RootScreen.Search)
     }
 
     fun openItemDescription(itemId: String) {

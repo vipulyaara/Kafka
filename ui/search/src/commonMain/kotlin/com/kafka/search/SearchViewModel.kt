@@ -12,7 +12,6 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.toUiMessage
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
-import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.AddRecentSearch
 import com.kafka.domain.interactors.RemoveRecentSearch
 import com.kafka.domain.interactors.SearchQueryItems
@@ -22,7 +21,6 @@ import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import javax.inject.Inject
@@ -39,10 +37,7 @@ class SearchViewModel @Inject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val route = savedStateHandle.run {
-        Screen.Search(
-            keyword = savedStateHandle.get<String>(extraKeyword).orEmpty(),
-            filters = savedStateHandle.get<String>(extraFilters) ?: SearchFilter.allString()
-        )
+        Screen.Search(keyword = savedStateHandle.get<String>(extraKeyword).orEmpty())
     }
     internal val selectedMediaTypes = mutableStateListOf<MediaType>()
         .apply { addAll(MediaType.entries) }
@@ -50,15 +45,12 @@ class SearchViewModel @Inject constructor(
 
     val state: StateFlow<SearchViewState> = combine(
         savedStateHandle.getStateFlow(extraKeyword, ""),
-        savedStateHandle.getStateFlow(extraFilters, SearchFilter.Name.name)
-            .map { SearchFilter.from(it) },
         searchResults,
         observeRecentSearch.flow,
         loadingState.observable
-    ) { keyword, filters, items, recentSearches, isLoading ->
+    ) { keyword, items, recentSearches, isLoading ->
         SearchViewState(
             keyword = keyword,
-            selectedFilters = filters,
             items = items,
             recentSearches = recentSearches,
             isLoading = isLoading
@@ -68,7 +60,6 @@ class SearchViewModel @Inject constructor(
     init {
         search(
             keyword = route.keyword,
-            filters = SearchFilter.from(route.filters),
             mediaTypes = selectedMediaTypes
         )
 
@@ -77,18 +68,13 @@ class SearchViewModel @Inject constructor(
 
     fun search(
         keyword: String = state.value.keyword,
-        filters: List<SearchFilter> = SearchFilter.from(route.filters),
         mediaTypes: List<MediaType> = selectedMediaTypes,
     ) {
         viewModelScope.launch {
             loadingState.addLoader()
 
             searchResults.value = searchQueryItems(
-                SearchQueryItems.Params(
-                    keyword = keyword.trim(),
-                    searchFilter = filters,
-                    mediaTypes = mediaTypes.toList()
-                )
+                SearchQueryItems.Params(keyword = keyword.trim(), mediaTypes = mediaTypes.toList())
             ).also { result ->
                 result.onException { snackbarManager.addMessage(it.toUiMessage()) }
             }.getOrElse { emptyList() }
@@ -98,11 +84,7 @@ class SearchViewModel @Inject constructor(
 
         if (keyword.isNotEmpty()) {
             analytics.log {
-                searchQuery(
-                    keyword = keyword,
-                    filters = filters.map { it.name },
-                    mediaTypes = mediaTypes.map { it.value }
-                )
+                searchQuery(keyword = keyword, mediaTypes = mediaTypes.map { it.value })
             }
             addRecentSearch(keyword)
         }
@@ -114,30 +96,11 @@ class SearchViewModel @Inject constructor(
 
     private fun addRecentSearch(keyword: String) {
         viewModelScope.launch {
-            val selectedFilters = state.value.selectedFilters
             val params = AddRecentSearch.Params(
                 searchTerm = keyword,
-                filters = selectedFilters,
                 mediaTypes = selectedMediaTypes.toList()
             )
             addRecentSearch.invoke(params)
-        }
-    }
-
-    fun toggleFilter(filter: SearchFilter) {
-        val selectedFilters = state.value.selectedFilters.toMutableList()
-        if (selectedFilters.contains(filter)) {
-            if (selectedFilters.size > 1) {
-                selectedFilters.remove(filter)
-            }
-        } else {
-            selectedFilters.add(filter)
-        }
-
-        savedStateHandle[extraFilters] = SearchFilter.toString(selectedFilters)
-
-        if (state.value.keyword.isNotEmpty()) {
-            search(filters = selectedFilters)
         }
     }
 
@@ -169,4 +132,3 @@ class SearchViewModel @Inject constructor(
 }
 
 private const val extraKeyword = "keyword"
-private const val extraFilters = "filters"

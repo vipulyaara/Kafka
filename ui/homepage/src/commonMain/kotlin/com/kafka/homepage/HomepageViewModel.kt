@@ -8,7 +8,6 @@ import com.kafka.common.UiMessageManager
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
-import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveHomepage
@@ -89,7 +88,7 @@ class HomepageViewModel @Inject constructor(
 
     fun openSubject(name: String) {
         analytics.log { openSubject(name, "homepage") }
-        navigator.navigate(Screen.Search(name, SearchFilter.Subject.name), RootScreen.Search)
+        navigator.navigate(Screen.Search(name), RootScreen.Search)
     }
 
     fun openSearch() {
@@ -103,7 +102,7 @@ class HomepageViewModel @Inject constructor(
 
     fun openCreator(name: String) {
         analytics.log { this.openCreator(name = name, source = "homepage") }
-        navigator.navigate(Screen.Search(name, SearchFilter.Creator.name), RootScreen.Search)
+        navigator.navigate(Screen.Search(name), RootScreen.Search)
     }
 
     fun shareApp(text: String, context: Any?) {
