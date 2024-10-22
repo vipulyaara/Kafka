@@ -155,12 +155,13 @@ internal fun HomeNavigation(
                             },
                             modifier = Modifier.fillMaxHeight(),
                         ) {
-                            WideMiniPlayer(
-                                playbackConnection = playbackConnection,
-                                navController = navController,
-                                sleepTimerViewModelFactory = sleepTimerViewModelFactory,
-                                playbackSpeedViewModelFactory = playbackSpeedViewModelFactory
-                            )
+                            // todo
+//                            WideMiniPlayer(
+//                                playbackConnection = playbackConnection,
+//                                navController = navController,
+//                                sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+//                                playbackSpeedViewModelFactory = playbackSpeedViewModelFactory
+//                            )
                         }
 
                         VerticalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
@@ -185,13 +186,13 @@ private fun HomeNavigationBar(
 ) {
     Column(modifier = modifier) {
         if (navigationType.shouldShowMiniPlayer()) {
-            MiniPlayer(
-                useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
-                modifier = Modifier
-                    .padding(Dimens.Spacing08)
-                    .zIndex(2f),
-                openPlaybackSheet = openPlaybackSheet
-            )
+//            MiniPlayer(
+//                useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
+//                modifier = Modifier
+//                    .padding(Dimens.Spacing08)
+//                    .zIndex(2f),
+//                openPlaybackSheet = openPlaybackSheet
+//            )
         }
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {

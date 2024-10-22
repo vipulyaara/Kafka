@@ -37,7 +37,6 @@ class ItemDetailDataSource @Inject constructor(
                     filter { File::itemId eq contentId }
                 }.decodeFiles()
                     .map { it.copy(localUri = fileDao.getOrNull(it.fileId)?.localUri) }
-                    .filterNot { it.format == "image" }
             }
         }
 }

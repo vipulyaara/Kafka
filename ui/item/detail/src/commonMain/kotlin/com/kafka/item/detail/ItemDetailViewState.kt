@@ -30,7 +30,5 @@ data class ItemDetailViewState(
         get() = itemDetail?.isAccessRestricted == false || itemDetail?.isAudio == true
 
     val isFullScreenLoading: Boolean
-        get() {
-            return isLoading && itemDetail == null
-        }
+        get() = isLoading && itemDetail == null
 }

@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -167,8 +169,11 @@ private fun ItemDetail(
                     }
 
                     fullSpanItem {
-                        if (state.isLoading) {
-                            Delayed { InfiniteProgressBar() }
+                        Box {
+                            InfiniteProgressBar(
+                                show = state.isLoading,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
                         }
                     }
                 }
@@ -227,14 +232,7 @@ private fun VerticalLayout(
                 goToCreator = goToCreator
             )
 
-            DescriptionText(
-                itemDetail = state.itemDetail,
-                useWideLayout = useWideLayout,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                showDescription = { openDescription(state.itemDetail.itemId) }
-            )
+            Spacer(Modifier.height(Dimens.Spacing08))
 
             ItemDetailActionsRow(
                 ctaText = state.ctaText.orEmpty(),
@@ -246,6 +244,14 @@ private fun VerticalLayout(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
+            DescriptionText(
+                itemDetail = state.itemDetail,
+                useWideLayout = useWideLayout,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                showDescription = { openDescription(state.itemDetail.itemId) }
+            )
 
             if (state.isSummaryEnabled) {
                 SummaryMessage(

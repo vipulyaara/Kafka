@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
+import com.kafka.common.testTagUi
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
@@ -33,8 +34,6 @@ import kafka.ui.item.detail.generated.resources.cd_favorite
 import kafka.ui.item.detail.generated.resources.cd_files
 import kafka.ui.item.detail.generated.resources.cd_remove_from_favorites
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -169,8 +168,8 @@ fun DownloadIcon(showDownloads: Boolean, modifier: Modifier = Modifier, openFile
                 icon = Icons.Download,
                 contentDescription = stringResource(Res.string.cd_files),
                 modifier = Modifier
-                    .align(Alignment.Center),
-//                    .testTagUi("download_files"),
+                    .align(Alignment.Center)
+                    .testTagUi("download_files"),
                 onClicked = { openFiles() }
             )
         }
@@ -198,33 +197,5 @@ private fun Icon(
                 contentDescription = contentDescription
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun ActionsRowPreview() {
-    AppTheme {
-        ItemDetailActionsRow(
-            ctaText = "Read",
-            onPrimaryAction = {},
-            openFiles = {},
-            isFavorite = false,
-            toggleFavorite = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun ActionsWidePreview() {
-    AppTheme {
-        ItemDetailActionsColumn(
-            ctaText = "Read",
-            onPrimaryAction = {},
-            openFiles = {},
-            isFavorite = false,
-            toggleFavorite = {}
-        )
     }
 }

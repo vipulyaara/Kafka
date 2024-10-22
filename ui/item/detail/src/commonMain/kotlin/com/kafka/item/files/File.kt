@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.kafka.common.image.Icons
@@ -24,10 +23,7 @@ import com.kafka.ui.components.item.DownloadStatusIcons
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_download
 import kafka.ui.item.detail.generated.resources.cd_download_file
-import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.stringResource
-import tm.alashow.datmusic.downloader.Downloader
-import tm.alashow.datmusic.ui.downloader.LocalDownloader
 import ui.common.theme.theme.Dimens
 
 @Composable

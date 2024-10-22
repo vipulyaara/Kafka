@@ -9,13 +9,12 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class File(
-    @SerialName("id") @PrimaryKey val fileId: String,
+    @SerialName("file_id") @PrimaryKey val fileId: String,
     @SerialName("item_id") val itemId: String,
     @SerialName("item_title") val itemTitle: String?,
     @SerialName("size") val size: Long? = 0L,
     @SerialName("title") val title: String,
     @SerialName("media_type") val mediaType: MediaType,
-    val name: String = title,
     @SerialName("cover_image") val coverImage: String? = null,
     @SerialName("extension") val extension: String?,
     @SerialName("creators") val creators: List<String>? = null,
@@ -60,4 +59,4 @@ fun File.isPlayable() = File.playableExtensions.contains(extension?.lowercase())
 fun File.isAudio() = this.extension.isAudioExtension()
 fun File.isText() = this.extension.isTextExtension()
 
-fun File.nameWithoutExtension() = name.substringBeforeLast(".")
+fun File.nameWithoutExtension() = title.substringBeforeLast(".")

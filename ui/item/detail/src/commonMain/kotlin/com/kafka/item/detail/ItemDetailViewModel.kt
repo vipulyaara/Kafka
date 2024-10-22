@@ -91,13 +91,13 @@ class ItemDetailViewModel @Inject constructor(
         isResumableAudio.flow,
         shouldUseOnlineReader.flow,
         observePrimaryFile.flow
-    ) { itemDetail, itemsByCreator, isFavorite, isLoading,
+    ) { itemDetail, itemsByCreator, isFavorite, loading,
         downloadItem, isResumableAudio, useOnlineReader, primaryFile ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
-            isLoading = isLoading,
+            isLoading = loading,
             downloadItem = downloadItem,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
@@ -165,14 +165,13 @@ class ItemDetailViewModel @Inject constructor(
                 logOnlineReader(itemDetail = itemDetail)
                 navigator.navigate(OnlineReader(itemDetail.itemId, primaryFile.fileId))
             } else {
-                navigator.navigate(Screen.Reader(primaryFile.fileId))
-//                if (primaryFile.isEpub) {
-//                    analytics.log { readItem(itemId = itemId, type = "offline") }
-//                    navigator.navigate(Screen.EpubReader(primaryFile.fileId))
-//                } else {
-//                    analytics.log { readItem(itemId = itemId, type = "offline") }
-//                    navigator.navigate(Screen.PdfReader(primaryFile.fileId))
-//                }
+                if (primaryFile.isEpub) {
+                    analytics.log { readItem(itemId = itemId, type = "offline") }
+                    navigator.navigate(Screen.EpubReader(primaryFile.fileId))
+                } else {
+                    analytics.log { readItem(itemId = itemId, type = "offline") }
+                    navigator.navigate(Screen.PdfReader(primaryFile.fileId))
+                }
             }
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }

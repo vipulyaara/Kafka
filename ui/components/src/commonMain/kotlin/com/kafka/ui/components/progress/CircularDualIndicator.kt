@@ -34,9 +34,11 @@ data class StrokeStyle(
     val glowRadius: Dp? = 4.dp
 )
 
+val StrokeStyleSmall = StrokeStyle(2.dp, StrokeCap.Round, 2.dp)
+
 @Composable
 fun CircularDualIndicator(
-    isVisible: Boolean,
+    isVisible: Boolean = true,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     secondColor: Color? = MaterialTheme.colorScheme.secondary,

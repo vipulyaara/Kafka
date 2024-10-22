@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MediaType(val value: String) {
-    @SerialName(_mediaTypeText)
-    Text(_mediaTypeText),
+    @SerialName("texts")
+    Text("texts"),
 
-    @SerialName(_mediaTypeAudio)
-    Audio(_mediaTypeAudio);
+    @SerialName("audio")
+    Audio("audio");
 
     val isAudio
         get() = this == Audio

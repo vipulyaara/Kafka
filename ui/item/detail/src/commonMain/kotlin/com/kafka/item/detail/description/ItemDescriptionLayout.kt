@@ -44,8 +44,9 @@ internal fun DescriptionText(
         modifier = modifier
             .testTagUi("item_detail_description")
             .simpleClickable { showDescription(itemDetail.itemId) }
-            .padding(Dimens.Spacing24),
-        style = MaterialTheme.typography.bodySmall.alignCenter(),
+            .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12),
+        style = MaterialTheme.typography.bodySmall
+            .alignCenter().copy(textAlign = TextAlign.Justify),
         maxLines = if (useWideLayout) 6 else 4,
         overflow = TextOverflow.Ellipsis,
     )

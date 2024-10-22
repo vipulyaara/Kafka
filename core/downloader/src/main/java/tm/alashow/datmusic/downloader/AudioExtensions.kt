@@ -25,11 +25,11 @@ fun DocumentFile.getOrCreateDir(name: String) = findFile(name.cleanIllegalChars(
     ?: error("Couldn't create folder:$name")
 
 fun File.createDocumentFile(parent: DocumentFile): DocumentFile {
-    var newFile = parent.createFile(format, name.cleanIllegalChars())
+    var newFile = parent.createFile(format, title.cleanIllegalChars())
     // normal saf would return new file name if file already existed,
     // so we need to have similar behavior for raw files (document files opened via DocumentFile.fromFile)
     if (newFile == null && parent.uri.scheme == "file") {
-        newFile = parent.listFiles().find { it.name?.startsWith(name) == true }
+        newFile = parent.listFiles().find { it.name?.startsWith(title) == true }
     }
     return newFile ?: error("Couldn't create document file")
 }

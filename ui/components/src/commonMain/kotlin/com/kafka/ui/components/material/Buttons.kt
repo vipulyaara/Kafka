@@ -24,7 +24,7 @@ import ui.common.theme.theme.Dimens
 fun FloatingButton(
     text: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.primary,
     onClickLabel: String? = null,
     onClicked: () -> Unit,
 ) {
@@ -39,7 +39,7 @@ fun FloatingButton(
         Text(
             text = text,
             style = MaterialTheme.typography.labelMedium.alignCenter(),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp)
         )
     }

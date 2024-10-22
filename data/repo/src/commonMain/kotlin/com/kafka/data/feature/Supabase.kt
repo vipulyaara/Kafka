@@ -11,7 +11,7 @@ class Supabase @Inject constructor(supabase: SupabaseClient) {
     val books = supabase.from("items")
     val bookDetail = supabase.from("item_detail")
     val files = supabase.from("files")
-    val recentItems = supabase.from("currently_reading")
+    val recentItems = supabase.from("reading_list")
 
     val auth = supabase.auth
 }

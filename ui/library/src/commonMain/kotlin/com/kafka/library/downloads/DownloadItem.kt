@@ -80,7 +80,7 @@ fun DownloadItemDescription(item: ItemWithDownload, modifier: Modifier = Modifie
     Column(modifier) {
         ItemTitleMedium(item.item.title)
         Spacer(modifier = Modifier.height(Dimens.Spacing02))
-        FileName(item.file.name)
+        FileName(item.file.title)
         Spacer(modifier = Modifier.height(Dimens.Spacing08))
 
         Row(verticalAlignment = Alignment.CenterVertically) {

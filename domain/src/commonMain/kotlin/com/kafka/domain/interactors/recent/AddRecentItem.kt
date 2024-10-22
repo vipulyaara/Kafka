@@ -30,7 +30,7 @@ class AddRecentItem @Inject constructor(
                     currentPageOffset = 0L
                 )
 
-                supabase.recentItems.insert(item) {
+                supabase.recentItems.upsert(item) {
                     filter { CurrentlyReading::fileId eq file.fileId }
                     filter { CurrentlyReading::itemId eq file.itemId }
                     filter { CurrentlyReading::uid eq user.id }

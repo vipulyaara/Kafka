@@ -17,7 +17,6 @@ class LibrivoxFileMapper @Inject constructor(private val fileDao: FileDao) {
                 itemId = item.itemId,
                 itemTitle = item.title,
                 size = 0,
-                name = section.title,
                 title = section.title,
                 extension = extension,
                 creators = item.creators,
