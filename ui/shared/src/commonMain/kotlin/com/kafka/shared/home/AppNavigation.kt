@@ -36,13 +36,13 @@ import androidx.navigation.toRoute
 import com.kafka.auth.AuthViewModel
 import com.kafka.auth.LoginScreen
 import com.kafka.base.debug
-import com.kafka.common.getContext
+import com.kafka.common.extensions.getContext
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.homepage.Homepage
 import com.kafka.homepage.HomepageViewModel
 import com.kafka.homepage.recent.RecentItemsScreen
-import com.kafka.homepage.recent.RecentViewModel
+import com.kafka.homepage.recent.RecentItemsViewModel
 import com.kafka.item.detail.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.item.detail.description.DescriptionDialog
@@ -362,7 +362,7 @@ internal fun NavGraphBuilder.addFeedback(viewModelFactory: () -> FeedbackViewMod
 typealias addRecentItems = NavGraphBuilder.() -> Unit
 
 @Inject
-internal fun NavGraphBuilder.addRecentItems(viewModelFactory: () -> RecentViewModel) {
+internal fun NavGraphBuilder.addRecentItems(viewModelFactory: () -> RecentItemsViewModel) {
     composable<Screen.RecentItems> {
         val viewModel = viewModel { viewModelFactory() }
         RecentItemsScreen(viewModel)

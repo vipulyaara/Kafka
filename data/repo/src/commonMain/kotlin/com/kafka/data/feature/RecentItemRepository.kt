@@ -22,7 +22,7 @@ class RecentItemRepository @Inject constructor(
         ).map {
             it.map { cr ->
                 val it = supabase.books.select {
-                    filter { eq("book_id", cr.itemId) }
+                    filter { Item::itemId eq cr.itemId }
                 }.decodeSingle<Item>()
 
                 RecentItem(

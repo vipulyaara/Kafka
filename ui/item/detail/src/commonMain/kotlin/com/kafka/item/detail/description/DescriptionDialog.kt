@@ -19,16 +19,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.ui.components.progress.InfiniteProgressBar
@@ -41,7 +44,7 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel) {
     BoxWithConstraints {
         Surface(
             Modifier
-//                .testTagUi("item_detail_description_dialog")
+                .testTagUi("item_detail_description_dialog")
                 .fillMaxWidth()
                 .heightIn(max = maxHeight * 0.9f)
                 .padding(horizontal = Dimens.Spacing24)
@@ -84,10 +87,13 @@ internal fun DescriptionText(
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
 ) {
+    val formattedDescription = remember(itemDetail.description) {
+        AnnotatedString.fromHtml(itemDetail.trimmedDescription)
+    }
+
     SelectionContainer {
         Text(
-            text = itemDetail.copyright.toString() + "  " + ratingText(itemDetail.uiRating) +
-                    AnnotatedString(itemDetail.description.orEmpty()),
+            text = formattedDescription,
             style = style,
             maxLines = maxLines,
             overflow = overflow,

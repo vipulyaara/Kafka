@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.kafka.common.extensions
 
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -7,8 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisallowComposableCalls
@@ -21,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 fun TextStyle.alignCenter() = merge(TextStyle(textAlign = TextAlign.Center))
@@ -61,11 +59,11 @@ fun AnimatedVisibilityFade(
 
 @Composable
 fun ProvideInteractiveEnforcement(
-    enabled: Boolean = false,
+    size: Dp = MinimumInteractiveComponentSize,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        value = LocalMinimumInteractiveComponentEnforcement provides enabled,
+        value = LocalMinimumInteractiveComponentSize provides size,
         content = content
     )
 }

@@ -16,8 +16,6 @@ import com.kafka.domain.interactors.recent.AddRecentItem
 import com.kafka.domain.observers.ObserveFiles
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
-import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.downloadsWarningMessage
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.Audio
 import kotlinx.collections.immutable.toPersistentList
@@ -38,7 +36,6 @@ class FilesViewModel @Inject constructor(
     private val downloader: Downloader,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
@@ -56,8 +53,7 @@ class FilesViewModel @Inject constructor(
             downloads = downloads,
             isLoading = isLoading,
             actionLabels = actionLabels(files = files),
-            filteredFiles = filteredFiles(files = files, selectedExtension = selectedExtension),
-            downloadsWarningMessage = remoteConfig.downloadsWarningMessage()
+            filteredFiles = filteredFiles(files = files, selectedExtension = selectedExtension)
         )
     }.stateInDefault(scope = viewModelScope, initialValue = FilesViewState())
 
@@ -74,12 +70,11 @@ class FilesViewModel @Inject constructor(
         if (file.isAudio()) {
             playbackConnection.playAudio(file.asAudio())
         } else {
-            navigator.navigate(Screen.Reader(file.fileId))
-//            if (file.isEpub) {
-//                navigator.navigate(Screen.EpubReader(file.fileId))
-//            } else {
-//                navigator.navigate(Screen.PdfReader(file.fileId))
-//            }
+            if (file.isEpub) {
+                navigator.navigate(Screen.EpubReader(file.fileId))
+            } else {
+                navigator.navigate(Screen.PdfReader(file.fileId))
+            }
         }
     }
 

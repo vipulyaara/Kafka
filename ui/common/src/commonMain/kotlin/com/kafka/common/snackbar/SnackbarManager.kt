@@ -27,6 +27,7 @@ class SnackbarManager @Inject constructor() {
     val actionPerformed = actionPerformedMessageChannel.receiveAsFlow()
     private val shownMessages = mutableSetOf<UiMessage>()
 
+    //todo: improve click handling
     suspend fun addError(
         error: Throwable,
         retryLabel: UiMessage = UiMessage.Plain("Retry"),

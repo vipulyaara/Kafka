@@ -4,7 +4,6 @@ package com.kafka.item.files
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -22,12 +21,10 @@ import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.File
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
-import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.scaffoldPadding
-import ui.common.theme.theme.Dimens
 
 @Composable
 fun Files(viewModel: FilesViewModel) {
@@ -69,15 +66,6 @@ private fun Files(
                 onItemSelected = { selectExtension(it) },
                 modifier = Modifier.fillMaxWidth()
             )
-        }
-
-        if (viewState.downloadsWarningMessage.isNotEmpty()) {
-            item {
-                MessageBox(
-                    text = viewState.downloadsWarningMessage,
-                    modifier = Modifier.padding(Dimens.Spacing16)
-                )
-            }
         }
 
         items(items = viewState.filteredFiles, key = { it.fileId }) { file ->

@@ -12,12 +12,11 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RecentViewModel @Inject constructor(
+class RecentItemsViewModel @Inject constructor(
     observeRecentItems: ObserveRecentItems,
     private val removeAllRecentItems: RemoveAllRecentItems,
     private val removeRecentItem: RemoveRecentItem,
@@ -55,7 +54,7 @@ class RecentViewModel @Inject constructor(
     }
 }
 
-private const val RECENT_ITEMS_LIMIT = 50
+private const val RECENT_ITEMS_LIMIT = 100
 
 data class RecentViewState(
     val recentItems: List<RecentItem> = persistentListOf(),

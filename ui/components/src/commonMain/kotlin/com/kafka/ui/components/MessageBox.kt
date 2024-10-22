@@ -25,8 +25,7 @@ fun MessageBox(
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
-    onClick: (() -> Unit)? = null,
-    onIconClick: (() -> Unit)? = onClick
+    onClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = modifier,
@@ -64,8 +63,7 @@ fun MessageBox(
                 IconResource(
                     imageVector = trailingIcon,
                     modifier = Modifier.size(Dimens.Spacing20),
-                    tint = MaterialTheme.colorScheme.primary,
-                    onClick = onIconClick ?: {}
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }

@@ -5,11 +5,10 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.SystemWriter
 import com.google.firebase.FirebasePlatform
 import com.kafka.base.AppInitializer
+import com.kafka.base.ApplicationInfo
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.debug
-import com.kafka.data.platform.appDirectory
-import com.kafka.remote.config.RemoteConfig
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.FirebaseOptions
 import dev.gitlive.firebase.initialize
@@ -28,7 +27,8 @@ actual class LoggerInitializer @Inject constructor() : AppInitializer {
 actual class FirebaseInitializer @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val remoteConfigInitializer: RemoteConfigInitializer,
-    @ProcessLifetime private val coroutineScope: CoroutineScope
+    @ProcessLifetime private val coroutineScope: CoroutineScope,
+    private val applicationInfo: ApplicationInfo
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
@@ -51,7 +51,7 @@ actual class FirebaseInitializer @Inject constructor(
                 }
 
                 override fun getDatabasePath(name: String): File {
-                    val filePath = "$appDirectory${File.separatorChar}$name"
+                    val filePath = "${applicationInfo.cachePath()}${File.separatorChar}$name"
                     println("Database file path: $filePath")
                     return File(filePath)
                 }

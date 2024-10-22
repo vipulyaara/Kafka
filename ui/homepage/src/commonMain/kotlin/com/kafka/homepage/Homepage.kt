@@ -32,8 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.extensions.AnimatedVisibilityFade
-import com.kafka.common.getContext
+import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
+import com.kafka.common.testTagUi
 import com.kafka.common.widgets.FullScreenMessage
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
@@ -60,17 +61,15 @@ import kafka.ui.homepage.generated.resources.Res
 import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
 import kafka.ui.homepage.generated.resources.share_app_message
 import kafka.ui.homepage.generated.resources.share_app_prompt
-import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-@Inject
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
-    val context = getContext()
     val shareAppText = stringResource(Res.string.share_app_message, Config.PLAY_STORE_URL)
+    val context = getContext()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -78,10 +77,9 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box(modifier = Modifier.fillMaxSize()) {
-                AnimatedVisibilityFade(visible = viewState.homepage.collection.isNotEmpty()) {
+                AnimatedVisibilityFade(visible = viewState.showHomepageFeed) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
-                        showCarouselLabels = viewModel.showCarouselLabels,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
@@ -114,7 +112,6 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
 private fun HomepageFeedItems(
     homepage: Homepage,
     appShareIndex: Int,
-    showCarouselLabels: Boolean,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
     removeRecentItem: (String) -> Unit,
@@ -125,7 +122,7 @@ private fun HomepageFeedItems(
     shareApp: () -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier.testTag("homepage_feed_items"),
+        modifier = Modifier.testTagUi("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
@@ -194,7 +191,6 @@ private fun HomepageFeedItems(
                             Carousels(
                                 carouselItems = collection.items,
                                 images = collection.image,
-                                showLabel = showCarouselLabels,
                                 onBannerClick = { openItemDetail(it, "featuredItem") }
                             )
                         } else {

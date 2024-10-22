@@ -1,5 +1,6 @@
 package com.kafka.common
 
+import com.kafka.base.ApplicationScope
 import com.kafka.common.snackbar.UiMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,8 +8,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import javax.inject.Inject
 
-class UiMessageManager {
+@ApplicationScope
+class UiMessageManager @Inject constructor(){
     private val mutex = Mutex()
 
     private val _messages = MutableStateFlow(emptyList<UiMessage>())

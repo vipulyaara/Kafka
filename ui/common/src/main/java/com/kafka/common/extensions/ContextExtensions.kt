@@ -1,4 +1,4 @@
-package com.kafka.common
+package com.kafka.common.extensions
 
 import android.app.Activity
 import android.content.ActivityNotFoundException

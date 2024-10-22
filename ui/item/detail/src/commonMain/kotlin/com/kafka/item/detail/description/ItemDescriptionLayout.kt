@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
+import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.CoverImage
@@ -41,11 +42,11 @@ internal fun DescriptionText(
     DescriptionText(
         itemDetail = itemDetail,
         modifier = modifier
-//            .testTagUi("item_detail_description")
+            .testTagUi("item_detail_description")
             .simpleClickable { showDescription(itemDetail.itemId) }
             .padding(Dimens.Spacing24),
         style = MaterialTheme.typography.bodySmall.alignCenter(),
-        maxLines = if (useWideLayout) 6 else 3,
+        maxLines = if (useWideLayout) 6 else 4,
         overflow = TextOverflow.Ellipsis,
     )
 }

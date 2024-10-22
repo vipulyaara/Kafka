@@ -2,7 +2,6 @@ package com.kafka.shared.injection
 
 import com.kafka.base.ActivityScope
 import com.kafka.base.AppInitializer
-import com.kafka.shared.DesktopApplicationComponent
 import com.kafka.shared.home.MainScreen
 import me.tatarka.inject.annotations.Component
 

@@ -1,7 +1,6 @@
 package com.kafka.data.api
 
 import com.kafka.base.ApplicationScope
-import com.kafka.data.model.item.ItemDetailResponse
 import com.kafka.data.model.item.LibrivoxFileResponse
 import com.kafka.data.model.item.SearchResponse
 import io.ktor.client.HttpClient
@@ -31,10 +30,6 @@ class ArchiveService @Inject constructor(private val httpClient: HttpClient) {
         parameter("rows", rows)
         parameter("page", page)
         parameter("sort", sort)
-    }.body()
-
-    suspend fun getItemDetail(id: String?): ItemDetailResponse = httpClient.get {
-        url("https://archive.org/metadata/$id")
     }.body()
 
     suspend fun getLibrivoxAudioTracks(id: String?): LibrivoxFileResponse = httpClient.get {

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.common.getContext
+import com.kafka.common.extensions.getContext
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.asString
 import com.kafka.data.model.AppMessage

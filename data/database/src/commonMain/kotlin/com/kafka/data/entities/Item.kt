@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class Item(
-    @SerialName("book_id") @PrimaryKey val itemId: String = "",
+    @SerialName("item_id") @PrimaryKey val itemId: String = "",
     @SerialName("title") val title: String = "",
     @SerialName("media_type") val mediaType: MediaType,
     @SerialName("creators") val creators: List<String> = emptyList(),

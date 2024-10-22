@@ -35,6 +35,7 @@ internal fun ExtensionFilter(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+
     Box(
         modifier = modifier.padding(end = Dimens.Spacing24),
         contentAlignment = Alignment.CenterEnd

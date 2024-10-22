@@ -10,7 +10,6 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.model.SearchFilter
 import com.kafka.domain.interactors.UpdateHomepage
-import com.kafka.domain.interactors.UpdateRecommendations
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveHomepage
 import com.kafka.domain.observers.ObserveShareAppIndex
@@ -18,8 +17,6 @@ import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
-import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.showFeaturedItemLabels
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -31,15 +28,12 @@ class HomepageViewModel @Inject constructor(
     observeShareAppIndex: ObserveShareAppIndex,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
-    private val updateRecommendations: UpdateRecommendations,
     private val navigator: Navigator,
     private val analytics: Analytics,
-    private val remoteConfig: RemoteConfig,
     private val shareUtils: ShareUtils,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
+    private val uiMessageManager: UiMessageManager,
 ) : ViewModel() {
-    private val uiMessageManager = UiMessageManager()
-    val showCarouselLabels by lazy { remoteConfig.showFeaturedItemLabels() }
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
@@ -54,10 +48,6 @@ class HomepageViewModel @Inject constructor(
         observeHomepage(Unit)
         observeUser(ObserveUser.Params())
         observeShareAppIndex(Unit)
-
-        viewModelScope.launch {
-            updateRecommendations(Unit)
-        }
 
         updateItems()
     }

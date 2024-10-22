@@ -11,12 +11,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CurrentlyReading(
     @SerialName("file_id") val fileId: String,
-    @SerialName("book_id") val itemId: String,
+    @SerialName("item_id") val itemId: String,
     @SerialName("uid") val uid: String,
+    @SerialName("current_page") val currentPage: Long,
+    @SerialName("current_page_offset") val currentPageOffset: Long,
 )
 
 @Keep
 @Serializable
+@Entity
 data class RecentItem(
     @SerialName("file_id") val fileId: String,
     @SerialName("item_id") val itemId: String,
@@ -27,17 +30,6 @@ data class RecentItem(
     @SerialName("createdAt") val updatedAt: Long,
     @SerialName("uid") val uid: String,
 ) {
-    constructor() : this(
-        fileId = "",
-        itemId = "",
-        title = "",
-        coverUrl = "",
-        creator = "",
-        mediaType = MediaType.Default,
-        updatedAt = 0,
-        uid = ""
-    )
-
     companion object {
         fun fromItem(file: File, uid: String): RecentItem {
             return RecentItem(

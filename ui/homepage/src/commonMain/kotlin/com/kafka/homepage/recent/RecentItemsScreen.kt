@@ -25,7 +25,6 @@ import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.RecentItem
-import com.kafka.data.model.MediaType
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.Navigator
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -46,7 +45,7 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun RecentItemsScreen(viewModel: RecentViewModel) {
+fun RecentItemsScreen(viewModel: RecentItemsViewModel) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
@@ -94,7 +93,7 @@ private fun RecentItems(
     ) {
         items(items = items, key = { item -> item.itemId }) { item ->
             SwipeToDelete(
-//                modifier = Modifier.animateItem(),
+                modifier = Modifier.animateItem(),
                 onDismiss = { removeRecentItem(item.fileId) }) {
                 Item(
                     title = item.title,

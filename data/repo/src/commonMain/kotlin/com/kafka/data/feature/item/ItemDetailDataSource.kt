@@ -19,24 +19,22 @@ class ItemDetailDataSource @Inject constructor(
     private val supabase: Supabase
 ) {
     suspend fun updateItemDetail(contentId: String): ItemDetail = withContext(dispatchers.io) {
-        try {
-            supabase.bookDetail.select {
-                filter { eq("book_id", contentId) }
-            }.decodeSingle<ItemDetail>()
-        } catch (e: Exception) {
-            error("Item does not exist")
-        }
+        supabase.bookDetail.select {
+            filter { ItemDetail::itemId eq contentId }
+        }.decodeSingle<ItemDetail>()
     }
 
     suspend fun updateFiles(itemDetail: ItemDetail, contentId: String): List<File> =
         withContext(dispatchers.io) {
-            if (itemDetail.publishers.contains(Publishers.librivox) && contentId.startsWith("librivox_")) {
+            if (itemDetail.publishers.contains(Publishers.librivox)
+                && contentId.startsWith("librivox_")
+            ) {
                 val librivoxId = contentId.removePrefix("librivox_")
                 val fileResponse = archiveService.getLibrivoxAudioTracks(librivoxId)
                 librivoxFileMapper.map(fileResponse, itemDetail)
             } else {
                 supabase.files.select {
-                    filter { eq("book_id", contentId) }
+                    filter { File::itemId eq contentId }
                 }.decodeFiles()
                     .map { it.copy(localUri = fileDao.getOrNull(it.fileId)?.localUri) }
                     .filterNot { it.format == "image" }

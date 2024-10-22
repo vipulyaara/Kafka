@@ -25,7 +25,12 @@ import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun PersonItem(title: String, imageUrl: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun PersonItem(
+    title: String,
+    imageUrl: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),

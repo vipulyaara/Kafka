@@ -2,6 +2,7 @@
 
 package com.kafka.item.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,7 @@ import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.animation.Delayed
 import com.kafka.common.extensions.AnimatedVisibilityFade
-import com.kafka.common.getContext
+import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
 import com.kafka.item.detail.description.AccessRestricted
@@ -132,7 +133,7 @@ private fun ItemDetail(
 ) {
     val useWideLayout = windowWidthSizeClass().useWideLayout()
 
-    Box(modifier.fillMaxSize()) {
+    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
         InfiniteProgressBar(
             show = state.isFullScreenLoading,
             modifier = Modifier.align(Alignment.Center)

@@ -8,8 +8,8 @@ import io.github.jan.supabase.postgrest.result.PostgrestResult
 import javax.inject.Inject
 
 class Supabase @Inject constructor(supabase: SupabaseClient) {
-    val books = supabase.from("books")
-    val bookDetail = supabase.from("book_detail")
+    val books = supabase.from("items")
+    val bookDetail = supabase.from("item_detail")
     val files = supabase.from("files")
     val recentItems = supabase.from("currently_reading")
 

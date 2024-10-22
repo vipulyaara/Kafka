@@ -16,6 +16,7 @@ class SignInWithGoogle @Inject constructor(
         withContext(coroutineDispatchers.io) {
             //todo: check how this works
             supabase.auth.signInWith(Google)
+            supabase.auth.linkIdentity(Google)
         }
     }
 }

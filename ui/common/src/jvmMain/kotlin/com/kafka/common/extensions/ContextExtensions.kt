@@ -1,4 +1,4 @@
-package com.kafka.common
+package com.kafka.common.extensions
 
 import androidx.compose.runtime.Composable
 

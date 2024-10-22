@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
-import compose.icons.feathericons.File
 import compose.icons.feathericons.Search
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
@@ -60,7 +59,6 @@ object Icons {
     val Library: ImageVector = TablerIcons.Bookmark
     val LibraryActive: ImageVector = TablerIcons.Book
     val Profile: ImageVector = FontAwesomeIcons.Solid.UserCircle
-    val Files: ImageVector = FeatherIcons.File
     val List: ImageVector = TablerIcons.LayoutList
     val Grid: ImageVector = TablerIcons.LayoutGrid
     val Share: ImageVector = TablerIcons.Share

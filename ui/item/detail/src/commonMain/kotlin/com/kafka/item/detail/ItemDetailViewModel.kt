@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.combine
+import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
-import com.kafka.common.getActivity
+import com.kafka.common.extensions.getActivity
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
@@ -54,9 +55,9 @@ class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     observeDownloadByItemId: ObserveDownloadByItemId,
     isResumableAudio: IsResumableAudio,
-    @Assisted savedStateHandle: SavedStateHandle,
     shouldUseOnlineReader: ShouldUseOnlineReader,
     observePrimaryFile: ObservePrimaryFile,
+    @Assisted savedStateHandle: SavedStateHandle,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateCreatorItems: UpdateCreatorItems,
@@ -130,7 +131,7 @@ class ItemDetailViewModel @Inject constructor(
     private fun refresh() {
         viewModelScope.launch {
             updateItemDetail(UpdateItemDetail.Param(itemId))
-                .onFailure { snackbarManager.addMessage("Failed to update details") }
+                .onException { snackbarManager.addMessage("Failed to update details") }
         }
 
         observeCreatorItems(ObserveCreatorItems.Params(itemId))

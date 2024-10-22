@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
+import com.kafka.common.testTagUi
 import com.kafka.common.widgets.IconResource
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
@@ -39,8 +40,7 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         creator = item.creator,
         mediaType = item.mediaType,
         coverImage = item.coverImage,
-        modifier = modifier,
-//            .testTagUi("content_item"),
+        modifier = modifier.testTagUi("content_item"),
         isInAppropriate = item.isInappropriate
     )
 }
@@ -137,8 +137,8 @@ fun ItemMediaType(mediaType: MediaType, modifier: Modifier = Modifier, size: Dp 
         imageVector = placeholder(mediaType),
         tint = MaterialTheme.colorScheme.secondary,
         modifier = modifier
-            .size(size),
-//            .testTagUi("item_${mediaType}_icon"),
+            .size(size)
+            .testTagUi("item_${mediaType}_icon"),
         contentDescription = mediaType.value
     )
 }

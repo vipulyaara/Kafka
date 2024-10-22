@@ -1,8 +1,7 @@
-package com.kafka.shared
+package com.kafka.shared.injection
 
 import com.kafka.base.ApplicationScope
 import com.kafka.data.prefs.PreferencesStore
-import com.kafka.shared.injection.SharedApplicationComponent
 import me.tatarka.inject.annotations.Component
 
 @Component

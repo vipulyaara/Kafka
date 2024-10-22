@@ -7,7 +7,6 @@ import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.snackbar.SnackbarManager
-import com.kafka.common.snackbar.UiMessage
 import com.kafka.common.snackbar.toUiMessage
 import com.kafka.data.entities.User
 import com.kafka.domain.interactors.account.ResetPassword
@@ -23,12 +22,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
+    private val analytics: Analytics,
     private val signInUser: SignInUser,
     private val signUpUser: SignUpUser,
-    private val signInWithGoogle: SignInWithGoogle,
     private val resetPassword: ResetPassword,
+    private val signInWithGoogle: SignInWithGoogle,
     private val snackbarManager: SnackbarManager,
-    private val analytics: Analytics,
     private val remoteConfig: RemoteConfig,
     observeUser: ObserveUser,
 ) : ViewModel() {
@@ -76,15 +75,16 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         when {
             !email.isValidEmail() ->
-                snackbarManager.add("Please enter a valid email")
+                snackbarManager.add(invalidEmailMessage)
 
             !password.isValidPassword() ->
-                snackbarManager.add("Please enter a valid password")
+                snackbarManager.add(invalidPasswordMessage)
 
             else -> {
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
-                        .onFailure { snackbarManager.add(it.message ?: "Could not sign in. Please try again.") }
+                        .onSuccess { snackbarManager.add(loginSuccessMessage) }
+                        .onFailure { snackbarManager.add(it.message ?: loginErrorMessage) }
                 }
             }
         }
@@ -94,14 +94,14 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
-                    snackbarManager.add("Please enter a valid email")
+                    snackbarManager.add(invalidEmailMessage)
 
                 !password.isValidPassword() ->
-                    snackbarManager.add("Please enter a valid password")
+                    snackbarManager.add(invalidPasswordMessage)
 
                 else -> {
                     signUpUser(SignUpUser.Params(email, password))
-                        .onFailure { snackbarManager.add("Could not register user. Please try again.") }
+                        .onFailure { snackbarManager.add(it.message ?: signUpErrorMessage) }
                 }
             }
         }
@@ -113,17 +113,16 @@ class AuthViewModel @Inject constructor(
                 resetPassword(ResetPassword.Params(email))
                     .onSuccess {
                         analytics.log { forgotPasswordSuccess() }
-                        snackbarManager.add("Password reset link has been sent to your email")
+                        snackbarManager.add(resetPasswordSuccessMessage)
                     }
-                    .onFailure { snackbarManager.add("There was an error resetting your password") }
+                    .onFailure { snackbarManager.add(resetPasswordErrorMessage) }
             }
         } else {
-            viewModelScope.launch { snackbarManager.add("Please enter a valid email") }
+            viewModelScope.launch { snackbarManager.add(invalidEmailMessage) }
         }
     }
 
-    private fun SnackbarManager.add(resource: String) = addMessage(message(resource))
-    private fun message(resource: String) = UiMessage.Plain(resource)
+    private fun SnackbarManager.add(resource: String) = addMessage(resource)
 
     private fun String.isValidEmail() =
         isNotEmpty() && isValidEmail(this)
@@ -138,6 +137,15 @@ data class AuthViewState(
 )
 
 fun isValidEmail(email: String): Boolean {
-    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+    val emailRegex = EMAIL_REGEX.toRegex()
     return emailRegex.matches(email)
 }
+
+const val EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+const val invalidEmailMessage = "Please enter a valid email"
+const val invalidPasswordMessage = "Please enter a valid password"
+const val loginErrorMessage = "Could not log in. Please try again."
+const val signUpErrorMessage = "Could not register user. Please try again."
+const val resetPasswordErrorMessage = "There was an error resetting your password"
+const val resetPasswordSuccessMessage = "Password reset link has been sent to your email"
+const val loginSuccessMessage = "Logged in"

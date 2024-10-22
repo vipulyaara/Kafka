@@ -53,7 +53,6 @@ import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.entities.RecentItemWithProgress
-import com.kafka.data.model.MediaType
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.item.CoverImage
 import com.kafka.ui.components.item.ItemCreatorSmall
@@ -67,7 +66,6 @@ import kafka.ui.homepage.generated.resources.see_all
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
-//todo: kmp crashes when the screen is opened
 @Composable
 internal fun RecentItems(
     readingList: List<RecentItemWithProgress>,
@@ -117,8 +115,7 @@ internal fun RecentItems(
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
                 ContinueReadingItem(
                     item = continueReading,
-                    modifier = Modifier,
-//                        .animateItem(),
+                    modifier = Modifier.animateItem(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )
