@@ -1,4 +1,4 @@
-package com.kafka.user.home.overlays
+package com.kafka.shared.home.overlays
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

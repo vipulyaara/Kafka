@@ -63,9 +63,11 @@ import com.kafka.profile.feedback.FeedbackScreen
 import com.kafka.profile.feedback.FeedbackViewModel
 import com.kafka.reader.ReaderScreen
 import com.kafka.reader.ReaderViewModel
+import com.kafka.reader.epub.EpubReader
 import com.kafka.reader.epub.EpubReaderViewModel
 import com.kafka.reader.online.OnlineReader
 import com.kafka.reader.online.OnlineReaderViewModel
+import com.kafka.reader.pdf.PdfReader
 import com.kafka.reader.pdf.PdfReaderViewModel
 import com.kafka.search.SearchScreen
 import com.kafka.search.SearchViewModel
@@ -191,16 +193,16 @@ internal fun NavGraphBuilder.addItemDetailGroup(
     addFiles: addFiles,
     addReader: addReader,
     addOnlineReader: addOnlineReader,
-//    addEpubReader: addEpubReader,
-//    addPdfReader: addPdfReader,
+    addEpubReader: addEpubReader,
+    addPdfReader: addPdfReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
     addFiles()
     addReader()
-//    addEpubReader()
-//    addPdfReader()
+    addEpubReader()
+    addPdfReader()
     addOnlineReader(navController)
     addSummary()
 }
@@ -408,28 +410,28 @@ internal fun NavGraphBuilder.addOnlineReader(
     }
 }
 
-//typealias addEpubReader = NavGraphBuilder.() -> Unit
-//
-//@Inject
-//internal fun NavGraphBuilder.addEpubReader(
-//    viewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
-//) {
-//    composable<Screen.EpubReader> {
-//        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-//        EpubReader(viewModel = viewModel)
-//    }
-//}
+typealias addEpubReader = NavGraphBuilder.() -> Unit
 
-//typealias addPdfReader = NavGraphBuilder.() -> Unit
-//
-//@Inject
-//internal fun NavGraphBuilder.addPdfReader(
-//    viewModelFactory: (SavedStateHandle) -> PdfReaderViewModel,
-//) {
-//    composable<Screen.PdfReader> {
-//        PdfReader(viewModelFactory = viewModelFactory)
-//    }
-//}
+@Inject
+internal fun NavGraphBuilder.addEpubReader(
+    viewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
+) {
+    composable<Screen.EpubReader> {
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        EpubReader(viewModel = viewModel)
+    }
+}
+
+typealias addPdfReader = NavGraphBuilder.() -> Unit
+
+@Inject
+internal fun NavGraphBuilder.addPdfReader(
+    viewModelFactory: (SavedStateHandle) -> PdfReaderViewModel,
+) {
+    composable<Screen.PdfReader> {
+        PdfReader(viewModelFactory = viewModelFactory)
+    }
+}
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(): EnterTransition {
     val initialNavGraph = initialState.destination.parent?.route

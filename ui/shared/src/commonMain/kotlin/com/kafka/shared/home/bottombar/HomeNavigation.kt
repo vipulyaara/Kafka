@@ -43,7 +43,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -65,7 +64,6 @@ import com.sarahang.playback.core.isActive
 import com.sarahang.playback.core.models.LocalPlaybackConnection
 import com.sarahang.playback.ui.playback.speed.PlaybackSpeedViewModel
 import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
-import com.sarahang.playback.ui.player.mini.MiniPlayer
 import com.sarahang.playback.ui.sheet.PlaybackArtworkPagerWithNowPlayingAndControls
 import com.sarahang.playback.ui.sheet.PlaybackNowPlayingDefaults
 import com.sarahang.playback.ui.sheet.rememberFlowWithLifecycle
@@ -73,8 +71,6 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.LocalTheme
-import ui.common.theme.theme.shouldUseDarkColors
 
 typealias HomeNavigation = @Composable (NavHostController, String) -> Unit
 

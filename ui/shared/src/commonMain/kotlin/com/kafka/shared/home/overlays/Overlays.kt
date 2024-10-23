@@ -11,8 +11,6 @@ import com.kafka.data.model.AppMessage
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.graph.Screen
 import com.kafka.shared.home.MainViewModel
-import com.kafka.user.home.overlays.AppMessage
-import com.kafka.user.home.overlays.AppUpdate
 import kafka.ui.shared.generated.resources.Res
 import kafka.ui.shared.generated.resources.app_update_is_available
 import kotlinx.coroutines.flow.collectLatest

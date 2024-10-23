@@ -8,54 +8,58 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.base.debug
+import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
+import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveRecentTextItem
 import com.kafka.reader.epub.domain.ParseEbook
 import com.kafka.reader.epub.models.EpubBook
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import tm.alashow.datmusic.downloader.Downloader
+import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import javax.inject.Inject
 
 class EpubReaderViewModel @Inject constructor(
-    private val parseEbook: ParseEbook,
-    private val snackbarManager: SnackbarManager,
+    private val observeDownloadByFileId: ObserveDownloadByFileId,
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val observeRecentItem: ObserveRecentTextItem,
     private val updateCurrentPage: UpdateCurrentPage,
+    private val snackbarManager: SnackbarManager,
+    private val parseEbook: ParseEbook,
     private val downloader: Downloader,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
+    private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
 
     val state = combine(
-        observeRecentItem.flow.filterNotNull(),
         parseEbook.inProgress,
         snapshotFlow { ebook }
-    ) { recentItem, loading, ebook ->
-        EpubState(
-            currentPage = recentItem.currentPage,
-            localUrl = recentItem.localUri, loading = loading,
-            epubBook = ebook
-        )
+    ) { loading, ebook ->
+        EpubState(loading = loading, epubBook = ebook)
     }.stateInDefault(viewModelScope, EpubState())
 
     val lazyListState = LazyListState()
 
-    fun load(fileId: String) {
-        viewModelScope.launch {
-            observeRecentItem(fileId)
+    init {
+        observeRecentItem(fileId)
+        observeDownloadByFileId(fileId)
+
+        viewModelScope.launch(dispatchers.io) {
+            downloader.enqueueFile(fileId)
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            debug { "EpubReaderViewModel enqueue" }
-            downloader.enqueueFile(fileId)
+        viewModelScope.launch {
+            combine(observeRecentItem.flow, observeDownloadByFileId.flow) { item, download ->
+                if (item != null && download?.downloadInfo?.status == DownloadStatus.COMPLETED) {
+                    loadEbook(item.localUri)
+                }
+            }
         }
     }
 
@@ -65,7 +69,7 @@ class EpubReaderViewModel @Inject constructor(
         }
     }
 
-    fun loadEbook(uri: String) {
+    private fun loadEbook(uri: String) {
         viewModelScope.launch {
             val result = parseEbook(uri)
             result.onSuccess { ebook = it }
@@ -75,8 +79,6 @@ class EpubReaderViewModel @Inject constructor(
 }
 
 data class EpubState(
-    val currentPage: Int = 0,
-    val localUrl: String? = null,
     val loading: Boolean = false,
     val epubBook: EpubBook? = null
 )

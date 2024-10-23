@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,18 +38,8 @@ import com.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
 
 @Composable
-actual fun EpubReader(fileId: String, viewModel: EpubReaderViewModel) {
+actual fun EpubReader(viewModel: EpubReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(fileId) {
-        viewModel.load(fileId)
-    }
-
-    LaunchedEffect(state.localUrl) {
-        if (state.localUrl != null) {
-            viewModel.loadEbook(state.localUrl!!)
-        }
-    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (state.epubBook != null) {

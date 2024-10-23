@@ -45,7 +45,6 @@ fun ReaderScreen(
                     )
 
                     RecentTextItem.Type.EPUB -> EpubReader(
-                        fileId = recentItem.fileId,
                         viewModel = epubReaderViewModel
                     )
                 }
