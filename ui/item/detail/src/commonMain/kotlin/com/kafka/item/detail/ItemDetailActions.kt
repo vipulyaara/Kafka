@@ -39,9 +39,7 @@ fun ItemDetailActionsRow(
     modifier: Modifier = Modifier,
     onPrimaryAction: () -> Unit,
     isFavorite: Boolean,
-    toggleFavorite: () -> Unit,
-    shareEnabled: Boolean = true,
-    shareItem: () -> Unit
+    toggleFavorite: () -> Unit
 ) {
     Box(modifier = modifier) {
         Row(
@@ -59,12 +57,6 @@ fun ItemDetailActionsRow(
                     onClicked = toggleFavorite
                 )
             }
-
-            ShareIcon(
-                shareEnabled = shareEnabled,
-                modifier = Modifier.weight(0.2f),
-                shareItem = shareItem
-            )
 
             FloatingButton(
                 text = ctaText,

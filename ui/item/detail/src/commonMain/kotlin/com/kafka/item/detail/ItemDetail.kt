@@ -112,7 +112,6 @@ private fun ItemDetail(
             viewModel.onPrimaryAction(it)
             viewModel.showAppRatingIfNeeded(context)
         },
-        shareItem = { viewModel.shareItemText(context) },
         toggleFavorite = viewModel::updateFavorite,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
@@ -128,7 +127,6 @@ private fun ItemDetail(
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
-    shareItem: (String) -> Unit,
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
@@ -156,8 +154,7 @@ private fun ItemDetail(
                             onPrimaryAction = onPrimaryAction,
                             toggleFavorite = toggleFavorite,
                             openSubject = openSubject,
-                            openSummary = openSummary,
-                            shareItem = shareItem
+                            openSummary = openSummary
                         )
                     }
                 },
@@ -224,7 +221,6 @@ private fun VerticalLayout(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openSummary: (String) -> Unit,
-    shareItem: (String) -> Unit,
 ) {
     if (state.itemDetail != null) {
         Column {
@@ -243,8 +239,6 @@ private fun VerticalLayout(
                 onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
                 isFavorite = state.isFavorite,
                 toggleFavorite = toggleFavorite,
-                shareEnabled = state.shareEnabled,
-                shareItem = { shareItem(state.itemDetail.itemId) },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 

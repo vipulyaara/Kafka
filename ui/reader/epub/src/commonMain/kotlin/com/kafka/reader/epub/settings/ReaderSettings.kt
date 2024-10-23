@@ -22,20 +22,20 @@ data class ReaderSettings(
                 listOf(
                     Background(MaterialTheme.colorScheme.surface),
                     Background(MaterialTheme.colorScheme.surfaceVariant),
+                    Background(Color(0xFF000000)),
                     Background(Color(0xFF2C2C2E)),
                     Background(Color(0xFF1C1C1E)),
                     Background(Color(0xFF121212)),
                     Background(Color(0xFF3B3B2E)),
-                    Background(Color(0xFF0D0D0D)),
                 )
             } else {
                 listOf(
                     Background(MaterialTheme.colorScheme.surface),
                     Background(MaterialTheme.colorScheme.surfaceVariant),
+                    Background(Color(0xFFFFFFFF)),
                     Background(Color(0xFFF5F5F5)),
                     Background(Color(0xFFFAF3E0)),
                     Background(Color(0xFFE9E9E9)),
-                    Background(Color(0xFFFFFFF0)),
                     Background(Color(0xFFFDF1F1)),
                 )
             }

@@ -113,7 +113,7 @@ internal fun RecentItems(
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
         ) {
             items(readingList, key = { it.recentItem.itemId }) { continueReading ->
-                ContinueReadingItem(
+                RecentItem(
                     item = continueReading,
                     modifier = Modifier.animateItem(),
                     onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
@@ -125,7 +125,7 @@ internal fun RecentItems(
 }
 
 @Composable
-private fun ContinueReadingItem(
+private fun RecentItem(
     item: RecentItemWithProgress,
     modifier: Modifier = Modifier,
     onItemRemoved: (String) -> Unit,
