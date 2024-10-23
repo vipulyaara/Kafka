@@ -9,30 +9,32 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.debug
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
-import com.kafka.data.feature.item.DownloadStatus
+import com.kafka.data.entities.Download
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveRecentTextItem
+import com.kafka.downloader.core.KtorDownloader
+import com.kafka.downloader.core.ObserveDownload
 import com.kafka.reader.epub.domain.ParseEbook
 import com.kafka.reader.epub.models.EpubBook
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
+import java.io.File
 import javax.inject.Inject
 
 class EpubReaderViewModel @Inject constructor(
-    private val observeDownloadByFileId: ObserveDownloadByFileId,
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val observeRecentItem: ObserveRecentTextItem,
     private val updateCurrentPage: UpdateCurrentPage,
+    private val observeDownload: ObserveDownload,
     private val snackbarManager: SnackbarManager,
+    private val downloader: KtorDownloader,
     private val parseEbook: ParseEbook,
-    private val downloader: Downloader,
-    dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
@@ -47,20 +49,41 @@ class EpubReaderViewModel @Inject constructor(
     val lazyListState = LazyListState()
 
     init {
-        observeRecentItem(fileId)
-        observeDownloadByFileId(fileId)
+        observeDownload(fileId)
 
-        viewModelScope.launch(dispatchers.io) {
-            downloader.enqueueFile(fileId)
+        viewModelScope.launch {
+            downloader.download(fileId)
         }
 
         viewModelScope.launch {
-            combine(observeRecentItem.flow, observeDownloadByFileId.flow) { item, download ->
-                if (item != null && download?.downloadInfo?.status == DownloadStatus.COMPLETED) {
-                    loadEbook(item.localUri)
+            observeDownload.flow.collectLatest {
+                debug { "Download is $it" }
+                if (it != null && it.status == Download.Status.Completed) {
+                    val file = File(it.filePath)
+                    if (file.exists()) {
+                        debug { "existing" }
+                    } else {
+                        debug { "Not existing" }
+                    }
+                    loadEbook(it.filePath)
                 }
             }
         }
+
+//        observeRecentItem(fileId)
+//        observeDownloadByFileId(fileId)
+
+//        viewModelScope.launch(dispatchers.io) {
+//            downloader.enqueueFile(fileId)
+//        }
+
+//        viewModelScope.launch {
+//            combine(observeRecentItem.flow, observeDownloadByFileId.flow) { item, download ->
+//                if (item != null && download?.downloadInfo?.status == DownloadStatus.COMPLETED) {
+//                    loadEbook(item.localUri)
+//                }
+//            }
+//        }
     }
 
     private fun onPageChanged(fileId: String, page: Int) {

@@ -28,6 +28,9 @@ data class File(
     val isEpub: Boolean
         get() = extension.equals("epub", true)
 
+    val name: String
+        get() = title + extension
+
     val creator: String
         get() = creators?.take(5)?.firstOrNull().orEmpty()
 

@@ -23,6 +23,9 @@ abstract class FileDao : EntityDao<File> {
     @Query("select * from File where fileId = :fileId")
     abstract suspend fun getOrNull(fileId: String): File?
 
+    @Query("select * from File where fileId = :fileId")
+    abstract suspend fun get(fileId: String): File
+
     @Transaction
     @Query("SELECT * FROM file WHERE fileId IN (:ids) ORDER BY position")
     abstract suspend fun getByIds(ids: List<String>): List<File>

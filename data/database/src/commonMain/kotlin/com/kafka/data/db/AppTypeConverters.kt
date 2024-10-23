@@ -1,6 +1,7 @@
 package com.kafka.data.db
 
 import androidx.room.TypeConverter
+import com.kafka.data.entities.Download
 import com.kafka.data.model.MediaType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -44,4 +45,10 @@ class AppTypeConverters {
 
     @TypeConverter
     fun mediaTypeToString(data: MediaType) = data.value
+
+    @TypeConverter
+    fun stringToDownloadStatus(data: String) = Download.Status.valueOf(data)
+
+    @TypeConverter
+    fun downloadStatusString(data: Download.Status) = data.name
 }
