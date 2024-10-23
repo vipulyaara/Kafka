@@ -18,7 +18,6 @@ kotlin {
                 implementation(projects.navigation)
                 implementation(projects.ui.common)
                 implementation(projects.ui.components)
-                implementation(projects.ui.downloader)
                 implementation(projects.uiPlayback)
 
                 implementation(compose.components.resources)

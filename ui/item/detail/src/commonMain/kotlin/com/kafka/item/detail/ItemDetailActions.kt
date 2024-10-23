@@ -5,11 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -43,8 +40,8 @@ fun ItemDetailActionsRow(
     onPrimaryAction: () -> Unit,
     isFavorite: Boolean,
     toggleFavorite: () -> Unit,
-    showDownloads: Boolean = true,
-    openFiles: () -> Unit,
+    shareEnabled: Boolean = true,
+    shareItem: () -> Unit
 ) {
     Box(modifier = modifier) {
         Row(
@@ -63,10 +60,10 @@ fun ItemDetailActionsRow(
                 )
             }
 
-            DownloadIcon(
-                showDownloads = showDownloads,
+            ShareIcon(
+                shareEnabled = shareEnabled,
                 modifier = Modifier.weight(0.2f),
-                openFiles = openFiles
+                shareItem = shareItem
             )
 
             FloatingButton(
@@ -76,50 +73,6 @@ fun ItemDetailActionsRow(
                     .fillMaxWidth(),
                 onClickLabel = ctaText,
                 onClicked = onPrimaryAction
-            )
-        }
-    }
-}
-
-@Composable
-fun ItemDetailActionsColumn(
-    ctaText: String,
-    modifier: Modifier = Modifier,
-    onPrimaryAction: () -> Unit,
-    isFavorite: Boolean,
-    toggleFavorite: () -> Unit,
-    showDownloads: Boolean = true,
-    openFiles: () -> Unit,
-) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        FloatingButton(
-            text = ctaText,
-            onClickLabel = ctaText,
-            modifier = Modifier.fillMaxWidth(0.8f),
-            onClicked = { onPrimaryAction() }
-        )
-
-        Spacer(Modifier.height(Dimens.Gutter))
-
-        Row(
-            Modifier
-                .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
-                .padding(horizontal = 24.dp, vertical = Dimens.Spacing12),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(modifier = Modifier.weight(0.2f)) {
-                FavoriteIcon(
-                    isFavorite = isFavorite,
-                    modifier = Modifier.align(Alignment.Center),
-                    onClicked = toggleFavorite
-                )
-            }
-
-            DownloadIcon(
-                showDownloads = showDownloads,
-                modifier = Modifier.weight(0.2f),
-                openFiles = openFiles
             )
         }
     }
@@ -149,7 +102,7 @@ private fun FavoriteIcon(
             onClickLabel = stringResource(contentDescription),
             modifier = Modifier
                 .align(Alignment.Center)
-//                .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
+                .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
         ) {
             IconResource(
                 imageVector = icon,
@@ -161,16 +114,16 @@ private fun FavoriteIcon(
 }
 
 @Composable
-fun DownloadIcon(showDownloads: Boolean, modifier: Modifier = Modifier, openFiles: () -> Unit) {
-    if (showDownloads) {
+fun ShareIcon(shareEnabled: Boolean, modifier: Modifier = Modifier, shareItem: () -> Unit) {
+    if (shareEnabled) {
         Box(modifier = modifier) {
             Icon(
-                icon = Icons.Download,
+                icon = Icons.Share,
                 contentDescription = stringResource(Res.string.cd_files),
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .testTagUi("download_files"),
-                onClicked = { openFiles() }
+                    .testTagUi("share"),
+                onClicked = { shareItem() }
             )
         }
     }

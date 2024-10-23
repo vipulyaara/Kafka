@@ -11,7 +11,7 @@ kotlin {
                 implementation(projects.corePlayback)
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
+                implementation(projects.core.downloaderKt)
 
                 implementation(projects.core.remoteConfig)
                 implementation(projects.data.repo)

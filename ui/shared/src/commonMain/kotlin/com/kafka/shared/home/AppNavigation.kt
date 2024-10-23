@@ -45,8 +45,6 @@ import com.kafka.homepage.recent.RecentItemsViewModel
 import com.kafka.item.detail.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.item.detail.description.DescriptionDialog
-import com.kafka.item.files.Files
-import com.kafka.item.files.FilesViewModel
 import com.kafka.library.LibraryScreen
 import com.kafka.library.downloads.DownloadsViewModel
 import com.kafka.library.favorites.FavoriteViewModel
@@ -182,13 +180,11 @@ typealias addItemDetailGroup = NavGraphBuilder.() -> Unit
 internal fun NavGraphBuilder.addItemDetailGroup(
     addItemDetail: addItemDetail,
     addItemDescription: addItemDescription,
-    addFiles: addFiles,
     addEpubReader: addEpubReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
-    addFiles()
     addEpubReader()
     addSummary()
 }
@@ -288,16 +284,6 @@ internal fun NavGraphBuilder.addItemDescription(
     bottomSheet(Screen.ItemDescription.route) {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         DescriptionDialog(viewModel)
-    }
-}
-
-typealias addFiles = NavGraphBuilder.() -> Unit
-
-@Inject
-internal fun NavGraphBuilder.addFiles(viewModelFactory: (SavedStateHandle) -> FilesViewModel) {
-    composable<Screen.Files> {
-        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        Files(viewModel)
     }
 }
 

@@ -22,38 +22,36 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 rootProject.name = "kafka"
 
 include ':app'
-include ':base:annotations' // kmp
-include ':base:domain' // kmp
-include ':baselineprofile' // kmp
-include ':core:analytics' // kmp
-include ':core:downloader' // kmp
-include ':core:downloader-kt' // kmp
-include ':core:image-loading' // kmp
-include ':core:play' // kmp
-include ':core:networking' // kmp
-include ':core:remote-config' // kmp
-include ':data:repo' // kmp
-include ':data:database' // kmp
-include ':data:models' // kmp
-include ':data:platform' // kmp
-include ':data:prefs' // kmp
-include ':desktop-app' // kmp
-include ':domain' // kmp
-include ':navigation' // kmp
+include ':base:annotations'
+include ':base:domain'
+include ':baselineprofile'
+include ':core:analytics'
+include ':core:downloader-kt'
+include ':core:image-loading'
+include ':core:play'
+include ':core:networking'
+include ':core:remote-config'
+include ':data:repo'
+include ':data:database'
+include ':data:models'
+include ':data:platform'
+include ':data:prefs'
+include ':desktop-app'
+include ':domain'
+include ':navigation'
 include ':ui:auth'
-include ':ui:common' // kmp
-include ':ui:components' // kmp
-include ':ui:downloader'
-include ':ui:theme' // kmp
+include ':ui:common'
+include ':ui:components'
+include ':ui:theme'
 include ':ui:library'
-include ':ui:homepage' // kmp
+include ':ui:homepage'
 include ':ui:item:detail'
-include ':ui:profile' // kmp
-include ':ui:reader:epub' // kmp
-include ':ui:search' // kmp
-include ':ui:shared' // kmp
-include ':ui:summary' // kmp
-include ':ui:webview' // kmp
+include ':ui:profile'
+include ':ui:reader:epub'
+include ':ui:search'
+include ':ui:shared'
+include ':ui:summary'
+include ':ui:webview'
 
 include ':core-playback'
 include ':ui-playback'

@@ -8,7 +8,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.core.downloader)
                 implementation(projects.ui.common)
                 implementation(projects.ui.theme)
 

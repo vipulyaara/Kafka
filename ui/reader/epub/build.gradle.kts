@@ -11,14 +11,12 @@ kotlin {
             dependencies {
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
                 implementation(projects.core.downloaderKt)
                 implementation(projects.data.repo)
                 implementation(projects.domain)
                 implementation(projects.navigation)
                 implementation(projects.ui.common)
                 implementation(projects.ui.components)
-                implementation(projects.ui.downloader)
 
                 implementation(compose.components.resources)
                 implementation(compose.material3)

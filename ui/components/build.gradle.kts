@@ -9,10 +9,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.base.domain)
-                implementation(projects.core.downloader)
                 implementation(projects.data.repo)
                 implementation(projects.ui.common)
-                implementation(projects.ui.downloader)
 
                 api(compose.components.resources)
                 api(compose.components.uiToolingPreview)

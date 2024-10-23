@@ -12,7 +12,6 @@ import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.ItemDetail
-import com.kafka.data.feature.item.DownloadStatus
 import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.ResumeAlbum
 import com.kafka.domain.interactors.UpdateCreatorItems
@@ -35,7 +34,6 @@ import com.kafka.navigation.graph.Screen.Search
 import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
 import com.kafka.remote.config.RemoteConfig
-import com.kafka.remote.config.borrowableBookMessage
 import com.kafka.remote.config.isAppReviewPromptEnabled
 import com.kafka.remote.config.isItemDetailDynamicThemeEnabled
 import com.kafka.remote.config.isShareEnabled
@@ -45,12 +43,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByItemId
 import javax.inject.Inject
 
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
-    observeDownloadByItemId: ObserveDownloadByItemId,
     isResumableAudio: IsResumableAudio,
     shouldUseOnlineReader: ShouldUseOnlineReader,
     observePrimaryFile: ObservePrimaryFile,
@@ -84,24 +80,18 @@ class ItemDetailViewModel @Inject constructor(
         ) { loadingStates ->
             loadingStates.any { loading -> loading }
         },
-        observeDownloadByItemId.flow,
         isResumableAudio.flow,
-        shouldUseOnlineReader.flow,
         observePrimaryFile.flow
-    ) { itemDetail, itemsByCreator, isFavorite, loading,
-        downloadItem, isResumableAudio, useOnlineReader, primaryFile ->
+    ) { itemDetail, itemsByCreator, isFavorite, loading, isResumableAudio, primaryFile ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
             isLoading = loading,
-            downloadItem = downloadItem,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
-            borrowableBookMessage = remoteConfig.borrowableBookMessage(),
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),
-            useOnlineReader = useOnlineReader,
-            primaryFile = primaryFile
+            shareEnabled = remoteConfig.isShareEnabled() && itemDetail != null
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -114,13 +104,6 @@ class ItemDetailViewModel @Inject constructor(
         isResumableAudio(IsResumableAudio.Params(itemId))
         shouldUseOnlineReader(ShouldUseOnlineReader.Param(itemId))
         observePrimaryFile(ObservePrimaryFile.Param(itemId))
-
-        observeDownloadByItemId(
-            ObserveDownloadByItemId.Params(
-                itemId = itemId,
-                statuses = listOf(DownloadStatus.COMPLETED)
-            )
-        )
 
         refresh()
     }
@@ -152,11 +135,8 @@ class ItemDetailViewModel @Inject constructor(
 
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
-        val primaryFile = state.value.primaryFile
 
-        if (primaryFile != null && itemDetail != null) {
-            addRecentItem(primaryFile.fileId)
-
+        if (itemDetail != null) {
             analytics.log { readItem(itemId = itemId, type = "offline") }
             navigator.navigate(Screen.EpubReader(primaryFile.fileId))
         } else {
@@ -209,8 +189,6 @@ class ItemDetailViewModel @Inject constructor(
     fun openItemDescription(itemId: String) {
         navigator.navigate(ItemDescription(itemId))
     }
-
-    fun isShareEnabled() = remoteConfig.isShareEnabled() && state.value.itemDetail != null
 
     fun shareItemText(context: Any?) {
         analytics.log { this.shareItem(itemId, "item_detail") }

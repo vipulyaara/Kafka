@@ -106,7 +106,6 @@ dependencies {
 
     implementation(projects.base.domain)
     implementation(projects.core.analytics)
-    implementation(projects.core.downloader)
     implementation(projects.core.downloaderKt)
     implementation(projects.core.networking)
     implementation(projects.core.play)
@@ -120,7 +119,6 @@ dependencies {
     implementation(projects.ui.auth)
     implementation(projects.ui.common)
     implementation(projects.ui.components)
-    implementation(projects.ui.downloader)
     implementation(projects.ui.homepage)
     implementation(projects.ui.item.detail)
     implementation(projects.ui.library)
