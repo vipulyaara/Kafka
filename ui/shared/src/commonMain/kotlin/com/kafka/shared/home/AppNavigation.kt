@@ -23,7 +23,6 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -61,14 +60,8 @@ import com.kafka.profile.ProfileScreen
 import com.kafka.profile.ProfileViewModel
 import com.kafka.profile.feedback.FeedbackScreen
 import com.kafka.profile.feedback.FeedbackViewModel
-import com.kafka.reader.ReaderScreen
-import com.kafka.reader.ReaderViewModel
 import com.kafka.reader.epub.EpubReader
 import com.kafka.reader.epub.EpubReaderViewModel
-import com.kafka.reader.online.OnlineReader
-import com.kafka.reader.online.OnlineReaderViewModel
-import com.kafka.reader.pdf.PdfReader
-import com.kafka.reader.pdf.PdfReaderViewModel
 import com.kafka.search.SearchScreen
 import com.kafka.search.SearchViewModel
 import com.kafka.shared.playback.PlaybackViewModel
@@ -153,7 +146,7 @@ internal fun AppNavigation(
     ) {
         navigation<RootScreen.Home>(startDestination = Screen.Home) {
             addHome()
-            addItemDetailGroup(navController)
+            addItemDetailGroup()
             addLibrary()
             addProfile()
             addFeedback()
@@ -166,14 +159,14 @@ internal fun AppNavigation(
 
         navigation<RootScreen.Search>(startDestination = Screen.Search()) {
             addSearch()
-            addItemDetailGroup(navController)
+            addItemDetailGroup()
             addPlayer()
             addWebView()
         }
 
         navigation<RootScreen.Library>(startDestination = Screen.Library) {
             addLibrary()
-            addItemDetailGroup(navController)
+            addItemDetailGroup()
             addSearch()
             addPlayer()
             addWebView()
@@ -183,27 +176,20 @@ internal fun AppNavigation(
     }
 }
 
-typealias addItemDetailGroup = NavGraphBuilder.(NavController) -> Unit
+typealias addItemDetailGroup = NavGraphBuilder.() -> Unit
 
 @Inject
 internal fun NavGraphBuilder.addItemDetailGroup(
-    @Assisted navController: NavController,
     addItemDetail: addItemDetail,
     addItemDescription: addItemDescription,
     addFiles: addFiles,
-    addReader: addReader,
-    addOnlineReader: addOnlineReader,
     addEpubReader: addEpubReader,
-    addPdfReader: addPdfReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
     addFiles()
-    addReader()
     addEpubReader()
-    addPdfReader()
-    addOnlineReader(navController)
     addSummary()
 }
 
@@ -315,22 +301,6 @@ internal fun NavGraphBuilder.addFiles(viewModelFactory: (SavedStateHandle) -> Fi
     }
 }
 
-typealias addReader = NavGraphBuilder.() -> Unit
-
-@Inject
-internal fun NavGraphBuilder.addReader(
-    readerViewModelFactory: (SavedStateHandle) -> ReaderViewModel,
-    pdfReaderViewModelFactory: (SavedStateHandle) -> PdfReaderViewModel,
-    epubReaderViewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
-) {
-    composable<Screen.Reader> {
-        val viewModel = viewModel { readerViewModelFactory(createSavedStateHandle()) }
-        val pdfReaderViewModel = viewModel { pdfReaderViewModelFactory(createSavedStateHandle()) }
-        val epubReaderViewModel = viewModel { epubReaderViewModelFactory(createSavedStateHandle()) }
-        ReaderScreen(viewModel, pdfReaderViewModel, epubReaderViewModel)
-    }
-}
-
 typealias addLogin = NavGraphBuilder.() -> Unit
 
 @Inject
@@ -391,25 +361,6 @@ internal fun NavGraphBuilder.addWebView() {
     }
 }
 
-typealias addOnlineReader = NavGraphBuilder.(NavController) -> Unit
-
-@Inject
-internal fun NavGraphBuilder.addOnlineReader(
-    @Assisted navController: NavController,
-    viewModelFactory: (SavedStateHandle) -> OnlineReaderViewModel,
-) {
-    composable<Screen.OnlineReader> {
-        val currentDestination = navController.currentDestination?.route
-        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-
-        OnlineReader(viewModel) { fileId ->
-            navController.navigate(Screen.Reader(fileId)) {
-                popUpTo(currentDestination.orEmpty()) { inclusive = true }
-            }
-        }
-    }
-}
-
 typealias addEpubReader = NavGraphBuilder.() -> Unit
 
 @Inject
@@ -419,17 +370,6 @@ internal fun NavGraphBuilder.addEpubReader(
     composable<Screen.EpubReader> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         EpubReader(viewModel = viewModel)
-    }
-}
-
-typealias addPdfReader = NavGraphBuilder.() -> Unit
-
-@Inject
-internal fun NavGraphBuilder.addPdfReader(
-    viewModelFactory: (SavedStateHandle) -> PdfReaderViewModel,
-) {
-    composable<Screen.PdfReader> {
-        PdfReader(viewModelFactory = viewModelFactory)
     }
 }
 

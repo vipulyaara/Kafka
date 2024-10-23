@@ -126,8 +126,6 @@ dependencies {
     implementation(projects.uiPlayback)
     implementation(projects.ui.profile)
     implementation(projects.ui.reader.epub)
-    implementation(projects.ui.reader.online)
-    implementation(projects.ui.reader.pdf)
     implementation(projects.ui.search)
     implementation(projects.ui.shared)
     implementation(projects.ui.summary)

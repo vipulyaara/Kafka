@@ -31,7 +31,6 @@ import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.Screen.ItemDescription
-import com.kafka.navigation.graph.Screen.OnlineReader
 import com.kafka.navigation.graph.Screen.Search
 import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
@@ -158,18 +157,8 @@ class ItemDetailViewModel @Inject constructor(
         if (primaryFile != null && itemDetail != null) {
             addRecentItem(primaryFile.fileId)
 
-            if (state.value.useOnlineReader) {
-                logOnlineReader(itemDetail = itemDetail)
-                navigator.navigate(OnlineReader(itemDetail.itemId, primaryFile.fileId))
-            } else {
-                if (primaryFile.isEpub) {
-                    analytics.log { readItem(itemId = itemId, type = "offline") }
-                    navigator.navigate(Screen.EpubReader(primaryFile.fileId))
-                } else {
-                    analytics.log { readItem(itemId = itemId, type = "offline") }
-                    navigator.navigate(Screen.PdfReader(primaryFile.fileId))
-                }
-            }
+            analytics.log { readItem(itemId = itemId, type = "offline") }
+            navigator.navigate(Screen.EpubReader(primaryFile.fileId))
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }
             viewModelScope.launch {

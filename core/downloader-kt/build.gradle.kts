@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
     alias(libs.plugins.kotlin.serialization)
 }
@@ -11,22 +10,9 @@ kotlin {
             dependencies {
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
+                implementation(projects.core.remoteConfig)
                 implementation(projects.data.repo)
-                implementation(projects.domain)
-                implementation(projects.navigation)
                 implementation(projects.ui.common)
-                implementation(projects.ui.components)
-                implementation(projects.ui.downloader)
-
-                implementation(compose.components.resources)
-                implementation(compose.material3)
-
-                implementation(libs.jsoup)
-                implementation(libs.jetbrains.lifecycle.runtime.compose)
-                implementation(libs.jetbrains.lifecycle.viewmodel.compose)
-
-                implementation(libs.kotlin.serialization.proto)
             }
         }
 
@@ -42,12 +28,15 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
+                implementation(libs.androidx.documentfile)
+                implementation(libs.fetch)
+                implementation(libs.kotlininject.runtime)
+                implementation(libs.threeTenAbp)
             }
         }
     }
 }
 
 android {
-    namespace = "com.kafka.reader.epub"
+    namespace = "com.kafka.downloader.kt"
 }
-

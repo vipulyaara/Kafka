@@ -17,6 +17,10 @@
 
 package com.kafka.reader.epub.models
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.protobuf.ProtoNumber
+
 /**
  * Represents a chapter in an epub book.
  *
@@ -24,8 +28,10 @@ package com.kafka.reader.epub.models
  * @param title The title of the chapter.
  * @param body The body of the chapter.
  */
-data class EpubChapter(
-    val absPath: String,
-    val title: String,
-    val body: String
+@Serializable
+data class EpubChapter @OptIn(ExperimentalSerializationApi::class) constructor(
+    @ProtoNumber(1) val chapterId: String,
+    @ProtoNumber(2) val absPath: String,
+    @ProtoNumber(3) val title: String,
+    @ProtoNumber(4) val body: String
 )

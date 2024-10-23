@@ -70,11 +70,7 @@ class FilesViewModel @Inject constructor(
         if (file.isAudio()) {
             playbackConnection.playAudio(file.asAudio())
         } else {
-            if (file.isEpub) {
-                navigator.navigate(Screen.EpubReader(file.fileId))
-            } else {
-                navigator.navigate(Screen.PdfReader(file.fileId))
-            }
+            navigator.navigate(Screen.EpubReader(file.fileId))
         }
     }
 

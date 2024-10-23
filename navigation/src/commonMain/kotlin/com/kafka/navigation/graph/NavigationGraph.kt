@@ -77,21 +77,7 @@ sealed class Screen {
     data class Files(@SerialName("itemId") val itemId: String) : Screen()
 
     @Serializable
-    data class Reader(@SerialName("fileId") val fileId: String) : Screen()
-
-    @Serializable
     data class Web(@SerialName("url") val url: String) : Screen()
-
-    @Serializable
-    data class OnlineReader(
-        @SerialName("itemId") val itemId: String,
-        @SerialName("fileId") val fileId: String,
-    ) : Screen()
-
-    @Serializable
-    data class PdfReader(
-        @SerialName("fileId") val fileId: String
-    ) : Screen()
 
     @Serializable
     data class EpubReader(

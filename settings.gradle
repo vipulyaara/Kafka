@@ -27,6 +27,7 @@ include ':base:domain' // kmp
 include ':baselineprofile' // kmp
 include ':core:analytics' // kmp
 include ':core:downloader' // kmp
+include ':core:downloader-kt' // kmp
 include ':core:image-loading' // kmp
 include ':core:play' // kmp
 include ':core:networking' // kmp
@@ -49,8 +50,6 @@ include ':ui:homepage' // kmp
 include ':ui:item:detail'
 include ':ui:profile' // kmp
 include ':ui:reader:epub' // kmp
-include ':ui:reader:online' // kmp
-include ':ui:reader:pdf' // kmp
 include ':ui:search' // kmp
 include ':ui:shared' // kmp
 include ':ui:summary' // kmp

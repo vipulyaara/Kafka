@@ -17,13 +17,21 @@
 
 package com.kafka.reader.epub.models
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.protobuf.ProtoNumber
+
 /**
  * Represents an image in an epub book.
  *
  * @param absPath The absolute path of the image.
  * @param image The image data.
  */
-data class EpubImage(val absPath: String, val image: ByteArray) {
+@Serializable
+data class EpubImage @OptIn(ExperimentalSerializationApi::class) constructor(
+    @ProtoNumber(1) val absPath: String,
+    @ProtoNumber(2) val image: ByteArray
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

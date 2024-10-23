@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.kafka.reader.epub.parser
 
 import org.w3c.dom.Document
