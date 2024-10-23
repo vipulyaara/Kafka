@@ -2,10 +2,10 @@ package com.kafka.data.feature.homepage
 
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
+import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
-import com.kafka.data.feature.recommendation.RecommendationRepository
 import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
@@ -26,7 +26,6 @@ class HomepageMapper @Inject constructor(
     private val itemDao: ItemDao,
     private val remoteConfig: RemoteConfig,
     private val auth: FirebaseAuth,
-    private val recommendationRepository: RecommendationRepository,
     private val recentItemRepository: RecentItemRepository
 ) {
     fun map(collection: List<HomepageCollectionResponse>): Flow<List<HomepageCollection>> {
@@ -69,7 +68,7 @@ class HomepageMapper @Inject constructor(
     }
 
     private fun HomepageCollectionResponse.Recommendation.mapRecommendations() =
-        recommendationRepository.observeRecommendations(itemIds)
+        flowOf(emptyList<Item>())
             .map { items ->
                 HomepageCollection.Recommendations(
                     labels = listOf(label),

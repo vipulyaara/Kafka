@@ -1,22 +1,21 @@
 package com.kafka.domain.interactors.recent
 
 import com.kafka.base.domain.Interactor
-import com.kafka.data.feature.firestore.FirestoreGraph
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import com.kafka.data.feature.Supabase
+import com.kafka.data.feature.auth.AccountRepository
 import javax.inject.Inject
 
 class RemoveAllRecentItems @Inject constructor(
-    private val firestoreGraph: FirestoreGraph,
+    private val accountRepository: AccountRepository,
+    private val supabase: Supabase
 ) : Interactor<Unit, Unit>() {
     override suspend fun doWork(params: Unit) {
-        val documentIds = firestoreGraph.recentItemsCollection
-            .snapshots()
-            .map { it.documents.map { document -> document.id } }
-            .first()
+        val user = accountRepository.currentUser
 
-        documentIds.forEach { documentId ->
-            firestoreGraph.recentItemsCollection.document(documentId).delete()
+        if (user != null) {
+            supabase.recentItems.delete {
+                filter { eq("uid", user.id) }
+            }
         }
     }
 }

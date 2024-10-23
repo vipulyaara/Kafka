@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.Delayed
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
@@ -65,7 +64,7 @@ fun RecentSearchItem(
         Row(
             modifier = modifier
                 .clickable(onClick = { onSearchClicked(recentSearch) })
-                .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing08),
+                .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing24),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -78,12 +77,10 @@ fun RecentSearchItem(
             IconResource(
                 modifier = Modifier
                     .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
-                    .padding(10.dp)
+                    .padding(horizontal = Dimens.Spacing08)
                     .size(Dimens.Spacing24),
                 imageVector = Icons.XCircle
             )
         }
     }
 }
-
-

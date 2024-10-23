@@ -3,16 +3,11 @@ package com.kafka.remote.config
 import com.kafka.base.ApplicationScope
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.errorLog
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.remoteconfig.get
-import dev.gitlive.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
@@ -21,27 +16,27 @@ class RemoteConfig @Inject constructor(
     private val json: Json,
     @ProcessLifetime private val scope: CoroutineScope
 ) {
-    private val remoteConfig by lazy { Firebase.remoteConfig }
+//    private val remoteConfig by lazy { Firebase.remoteConfig }
 
     fun init() {
-        scope.launch {
-            try {
-                remoteConfig.fetchAndActivate()
-                remoteConfig.setDefaults(*getDefaults())
-                remoteConfig.settings {
-                    minimumFetchInterval = REMOTE_CONFIG_FETCH_INTERVAL_SECONDS.seconds
-                }
-            } catch (e: Exception) {
-                errorLog(e) { "Error fetching remote config" }
-            }
-        }
+//        scope.launch {
+//            try {
+//                remoteConfig.fetchAndActivate()
+//                remoteConfig.setDefaults(*getDefaults())
+//                remoteConfig.settings {
+//                    minimumFetchInterval = REMOTE_CONFIG_FETCH_INTERVAL_SECONDS.seconds
+//                }
+//            } catch (e: Exception) {
+//                errorLog(e) { "Error fetching remote config" }
+//            }
+//        }
     }
 
-     fun get(key: String): String = remoteConfig[key]
+     fun get(key: String): String = "remoteConfig[key]"
 
-     fun getBoolean(key: String): Boolean = remoteConfig[key]
+     fun getBoolean(key: String): Boolean = true
 
-     fun getLong(key: String): Long = remoteConfig[key]
+     fun getLong(key: String): Long = 0L
 
     private fun getDefaults(): Array<Pair<String, Any?>> {
         return arrayOf(

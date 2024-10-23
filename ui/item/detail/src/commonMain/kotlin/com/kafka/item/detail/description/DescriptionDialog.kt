@@ -26,7 +26,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
@@ -88,7 +87,7 @@ internal fun DescriptionText(
     overflow: TextOverflow = TextOverflow.Clip,
 ) {
     val formattedDescription = remember(itemDetail.description) {
-        AnnotatedString.fromHtml(itemDetail.trimmedDescription)
+        AnnotatedString(itemDetail.formattedDescription)
     }
 
     SelectionContainer {

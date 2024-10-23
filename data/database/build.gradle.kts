@@ -29,11 +29,11 @@ kotlin {
 
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
+                implementation(libs.kotlininject.runtime)
                 implementation(libs.threeTenAbp)
 
+                api(libs.jsoup)
                 api(libs.kotlinx.datetime)
-
-                implementation(libs.kotlininject.runtime)
             }
         }
     }

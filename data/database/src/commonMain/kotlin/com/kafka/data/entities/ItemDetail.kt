@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.jsoup.Jsoup
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -42,10 +43,12 @@ data class ItemDetail(
     val immutableSubjects: ImmutableList<String>
         get() = subject.orEmpty().toPersistentList()
 
-    val trimmedDescription: String
+    private val trimmedDescription: String
         get() = description?.replaceFirst("<p>", "")
             ?.replaceFirst("</p>", "")
             ?.trim()
             .orEmpty()
 
+    val formattedDescription: String
+        get() = Jsoup.parse(trimmedDescription).text()
 }

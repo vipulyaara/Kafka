@@ -15,14 +15,9 @@
  */
 
 
-package com.starry.myne.epub
+package com.kafka.reader.epub.parser
 
-import android.graphics.BitmapFactory
-import android.util.Log
-import com.kafka.reader.epub.parser.BookTextMapper
-import com.kafka.reader.epub.parser.EpubParser
-import com.kafka.reader.epub.parser.decodedURL
-import com.kafka.reader.epub.parser.nextSiblingNodes
+import com.kafka.base.debug
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
@@ -76,18 +71,16 @@ class EpubXMLFileParser(
 
             if (bodyElement != null) {
                 // If the fragment ID represents a <div> tag, fetch the entire body content
-                Log.d(
-                    "EpubXMLFileParser",
+                debug {
                     "Fragment ID: $fragmentId represents a <div> tag. Using the fragment ID."
-                )
+                }
                 title = document.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
                 bodyElement.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
                 bodyContent = getNodeStructuredText(bodyElement)
             } else {
-                Log.d(
-                    "EpubXMLFileParser",
+                debug {
                     "Fragment ID: $fragmentId doesn't represent a <div> tag. Using the fragment and next fragment logic."
-                )
+                }
                 // If the fragment ID doesn't represent a <div> tag, use the fragment and next fragment logic
                 val fragmentElement = document.selectFirst("#$fragmentId")
                 title = fragmentElement?.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
@@ -108,7 +101,7 @@ class EpubXMLFileParser(
             }
         } else {
             // If no fragment ID is provided, fetch the entire body content
-            Log.d("EpubXMLFileParser", "No fragment ID provided. Fetching the entire body content.")
+            debug { "No fragment ID provided. Fetching the entire body content." }
             bodyElement = document.body()
             title = document.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
             document.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
@@ -128,14 +121,12 @@ class EpubXMLFileParser(
      * @return [String] The image path and aspect ratio.
      */
     fun parseAsImage(absolutePathImage: String): String {
-        // Use run catching so it can be run locally without crash
-        val bitmap = zipFile[absolutePathImage]?.data?.runCatching {
-            BitmapFactory.decodeByteArray(this, 0, this.size)
-        }?.getOrNull()
+        val imageData = zipFile[absolutePathImage]?.data
+        val aspectRatio = imageData?.let { ImageDecoder.getAspectRatio(it) } ?: 1.45f
 
         val text = BookTextMapper.ImgEntry(
             path = absolutePathImage,
-            yrel = bitmap?.let { it.height.toFloat() / it.width.toFloat() } ?: 1.45f
+            yrel = aspectRatio
         ).toXMLString()
 
         return "\n\n$text\n\n"

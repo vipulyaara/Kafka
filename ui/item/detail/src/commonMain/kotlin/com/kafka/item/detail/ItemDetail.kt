@@ -33,12 +33,10 @@ import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
-import com.kafka.common.animation.Delayed
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
-import com.kafka.item.detail.description.AccessRestricted
 import com.kafka.item.detail.description.DescriptionText
 import com.kafka.item.detail.description.ItemDescription
 import com.kafka.item.preloadImages
@@ -65,12 +63,13 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
     debug { "Item Detail launch" }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val itemsByCreator by viewModel.creatorItems.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val platformContext = LocalPlatformContext.current
     val context = getContext()
 
-    LaunchedEffect(state.itemsByCreator) {
-        preloadImages(platformContext, state.itemsByCreator)
+    LaunchedEffect(itemsByCreator) {
+        preloadImages(platformContext, itemsByCreator)
     }
 
     val lazyGridState = rememberLazyGridState()
@@ -89,7 +88,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
             )
         }) { padding ->
             ProvideScaffoldPadding(padding = padding) {
-                ItemDetail(state = state, viewModel = viewModel)
+                ItemDetail(state = state, itemsByCreator = itemsByCreator, viewModel = viewModel)
             }
         }
     }
@@ -98,6 +97,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
+    itemsByCreator: List<Item>,
     viewModel: ItemDetailViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -105,6 +105,7 @@ private fun ItemDetail(
 
     ItemDetail(
         state = state,
+        itemsByCreator = itemsByCreator,
         openDescription = viewModel::openItemDescription,
         goToCreator = viewModel::goToCreator,
         onPrimaryAction = {
@@ -123,6 +124,7 @@ private fun ItemDetail(
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
+    itemsByCreator: List<Item>,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
@@ -143,7 +145,7 @@ private fun ItemDetail(
 
         AnimatedVisibilityFade(state.itemDetail != null) {
             ItemDetailScaffold(
-                supportingPaneEnabled = useWideLayout && (state.isLoading || state.hasItemsByCreator),
+                supportingPaneEnabled = useWideLayout,
                 mainPane = {
                     fullSpanItem {
                         VerticalLayout(
@@ -160,11 +162,12 @@ private fun ItemDetail(
                     }
                 },
                 supportingPane = {
-                    if (state.hasItemsByCreator) {
+                    if (itemsByCreator.isNotEmpty()) {
                         itemsByCreator(
                             state = state,
                             goToCreator = goToCreator,
-                            openItemDetail = openItemDetail
+                            openItemDetail = openItemDetail,
+                            itemsByCreator = itemsByCreator
                         )
                     }
 
@@ -184,6 +187,7 @@ private fun ItemDetail(
 
 private fun LazyGridScope.itemsByCreator(
     state: ItemDetailViewState,
+    itemsByCreator: List<Item>,
     goToCreator: (String?) -> Unit,
     openItemDetail: (String, String) -> Unit
 ) {
@@ -205,7 +209,7 @@ private fun LazyGridScope.itemsByCreator(
             overflow = TextOverflow.Ellipsis)
     }
 
-    fullSpanItems(state.itemsByCreator!!, key = { it.itemId }) { item ->
+    fullSpanItems(itemsByCreator, key = { it.itemId }) { item ->
         ItemByCreator(item = item, openItemDetail = openItemDetail)
     }
 }

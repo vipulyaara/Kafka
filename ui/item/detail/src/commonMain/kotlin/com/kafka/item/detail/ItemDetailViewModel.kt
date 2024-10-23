@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
-import com.kafka.base.combine
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.extensions.getActivity
@@ -65,12 +64,11 @@ class ItemDetailViewModel @Inject constructor(
     private val shareUtils: ShareUtils
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.get<String>("itemId")!!
+    val creatorItems = observeCreatorItems.flow.stateInDefault(viewModelScope, emptyList())
 
     val state: StateFlow<ItemDetailViewState> = combine(
-        observeItemDetail.flow.onEach { item ->
-            updateItemsByCreator(item?.creator)
-        },
-        observeCreatorItems.flow,
+        observeItemDetail.flow
+            .onEach { item -> updateItemsByCreator(item?.creator) },
         observeFavoriteStatus.flow,
         combine(
             updateItemDetail.inProgress,
@@ -80,10 +78,9 @@ class ItemDetailViewModel @Inject constructor(
         },
         isResumableAudio.flow,
         observePrimaryFile.flow
-    ) { itemDetail, itemsByCreator, isFavorite, loading, isResumableAudio, primaryFile ->
+    ) { itemDetail, isFavorite, loading, isResumableAudio, primaryFile ->
         ItemDetailViewState(
             itemDetail = itemDetail,
-            itemsByCreator = itemsByCreator,
             isFavorite = isFavorite,
             isLoading = loading,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),

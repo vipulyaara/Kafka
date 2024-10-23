@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DownloadItem @Inject constructor(
-    private val downloader: KtorDownloader,
+    private val downloader: Downloader,
     private val dispatchers: CoroutineDispatchers
 ) : Interactor<String, Unit>() {
 

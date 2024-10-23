@@ -16,12 +16,16 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
+import com.kafka.common.testTagUi
 import com.kafka.common.widgets.IconResource
 import kafka.ui.search.generated.resources.Res
 import kafka.ui.search.generated.resources.cd_clear_text
@@ -45,8 +49,16 @@ fun SearchWidget(
     ) {
         OutlinedTextField(
             modifier = modifier
-                .fillMaxWidth(),
-//                .testTagUi("search_widget"),
+                .fillMaxWidth()
+                .testTagUi("search_widget")
+                .onKeyEvent { keyEvent ->
+                    if (keyEvent.key == Key.Enter) {
+                        onImeAction(searchText)
+                        true
+                    } else {
+                        false
+                    }
+                },
             value = searchText,
             placeholder = {
                 Row {
@@ -89,7 +101,8 @@ fun SearchWidget(
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 cursorColor = MaterialTheme.colorScheme.primary
             ),
-            shape = RoundedCornerShape(Dimens.Spacing08)
+            shape = RoundedCornerShape(Dimens.Spacing08),
+            maxLines = 1
         )
     }
 }
@@ -98,7 +111,7 @@ fun SearchWidget(
 private fun ClearIcon(onTextCleared: () -> Unit) {
     IconResource(
         modifier = Modifier
-//            .testTagUi("search_clear")
+            .testTagUi("search_clear")
             .clickable(onClick = { onTextCleared() })
             .padding(Dimens.Spacing12)
             .size(24.dp),

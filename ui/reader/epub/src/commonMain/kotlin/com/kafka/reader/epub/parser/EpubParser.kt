@@ -22,7 +22,6 @@ import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
 import com.kafka.reader.epub.models.EpubImage
 import com.kafka.reader.epub.models.cache.EpubCache
-import com.starry.myne.epub.EpubXMLFileParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Element
@@ -185,7 +184,7 @@ class EpubParser @Inject constructor(
         val metadataLanguage =
             document.metadata.selectFirstChildTag("dc:language")?.textContent ?: "en"
 
-        val metadataCoverId = getMetadataCoverId(document.metadata)
+//        val metadataCoverId = getMetadataCoverId(document.metadata)
         val hrefRootPath = File(document.opfFilePath).parentFile ?: File("")
 
         val manifestItems = getManifestItems(manifest = document.manifest, hrefRootPath)
