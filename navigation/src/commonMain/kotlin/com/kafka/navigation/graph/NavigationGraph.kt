@@ -78,6 +78,7 @@ sealed class Screen {
 
     @Serializable
     data class EpubReader(
+        @SerialName("itemId") val itemId: String,
         @SerialName("fileId") val fileId: String
     ) : Screen()
 

@@ -1,6 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class) @file:JvmName("ReaderSettingsKt")
 
-package com.kafka.reader.epub.ui
+package com.kafka.reader.epub.settings
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kafka.common.simpleClickable
-import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.ReaderSettings.Background
 import com.kafka.reader.epub.settings.ReaderSettings.FontSize
 import com.kafka.reader.epub.settings.ReaderSettings.FontStyle
@@ -46,7 +45,11 @@ fun SettingsSheet(
     changeSettings: (ReaderSettings) -> Unit,
     onDismiss: () -> Unit
 ) {
-    ModalBottomSheet(onDismissRequest = onDismiss) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        containerColor = colorScheme.surface,
+        contentColor = colorScheme.onSurface
+    ) {
         Column(
             modifier = Modifier.padding(Dimens.Spacing24),
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing36)

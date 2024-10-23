@@ -23,13 +23,11 @@ import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.ObservePrimaryFile
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.navigation.Navigator
-import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.Screen.ItemDescription
 import com.kafka.navigation.graph.Screen.Search
-import com.kafka.navigation.graph.encodeUrl
 import com.kafka.play.AppReviewManager
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isAppReviewPromptEnabled
@@ -67,8 +65,7 @@ class ItemDetailViewModel @Inject constructor(
     val creatorItems = observeCreatorItems.flow.stateInDefault(viewModelScope, emptyList())
 
     val state: StateFlow<ItemDetailViewState> = combine(
-        observeItemDetail.flow
-            .onEach { item -> updateItemsByCreator(item?.creator) },
+        observeItemDetail.flow.onEach { item -> updateItemsByCreator(item?.creator) },
         observeFavoriteStatus.flow,
         combine(
             updateItemDetail.inProgress,
@@ -131,7 +128,7 @@ class ItemDetailViewModel @Inject constructor(
             addRecentItem(primaryFile.fileId)
 
             analytics.log { readItem(itemId = itemId, type = "offline") }
-            navigator.navigate(Screen.EpubReader(primaryFile.fileId))
+            navigator.navigate(Screen.EpubReader(itemId, primaryFile.fileId))
         } else {
             analytics.log { fileNotSupported(itemId = itemId) }
             viewModelScope.launch {
@@ -191,11 +188,6 @@ class ItemDetailViewModel @Inject constructor(
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
         shareUtils.shareText(text = text, context = context)
-    }
-
-    fun openArchiveItem() {
-        analytics.log { this.openArchiveItem(itemId) }
-        navigator.navigate(Screen.Web(Config.archiveDetailUrl(itemId).encodeUrl()))
     }
 
     fun openSummary(itemId: String) {

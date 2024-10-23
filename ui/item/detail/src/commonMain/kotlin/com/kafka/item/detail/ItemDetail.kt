@@ -82,7 +82,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
             TopBar(
                 lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
-                onShareLongClicked = { viewModel.openArchiveItem() },
                 onBackPressed = { navigator.goBack() },
                 isShareVisible = state.shareEnabled
             )

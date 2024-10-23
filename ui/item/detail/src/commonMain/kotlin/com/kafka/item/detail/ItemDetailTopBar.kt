@@ -29,7 +29,6 @@ import ui.common.theme.theme.Dimens
 @Composable
 internal fun TopBar(
     onShareClicked: () -> Unit,
-    onShareLongClicked: () -> Unit,
     onBackPressed: () -> Unit,
     lazyGridState: LazyGridState,
     isShareVisible: Boolean = true
@@ -58,8 +57,7 @@ internal fun TopBar(
             if (isShareVisible) {
                 ShareIcon(
                     isRaised = isRaised,
-                    onClick = onShareClicked,
-                    onLongClick = onShareLongClicked
+                    onClick = onShareClicked
                 )
             }
         }
@@ -69,13 +67,11 @@ internal fun TopBar(
 @Composable
 private fun ShareIcon(
     isRaised: Boolean,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onClick: () -> Unit
 ) {
     AnimatedVisibilityFade(!isRaised) {
         IconButton(
             onClick = onClick,
-            onLongClick = onLongClick,
             modifier = Modifier.padding(Dimens.Spacing08)
         ) {
             IconResource(

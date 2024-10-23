@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.kafka.reader.epub
 
 import androidx.compose.foundation.background
@@ -9,8 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,13 +32,15 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.kafka.common.extensions.getContext
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.simpleClickable
+import com.kafka.navigation.LocalNavigator
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
 import com.kafka.reader.epub.parser.BookTextMapper
 import com.kafka.reader.epub.settings.ReaderSettings
-import com.kafka.reader.epub.ui.SettingsSheet
+import com.kafka.reader.epub.settings.SettingsSheet
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -40,17 +48,31 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun EpubReader(viewModel: EpubReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val navigator = LocalNavigator.current
+    val context = getContext()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (state.epubBook != null) {
-            EpubBook(
-                ebook = state.epubBook!!,
-                chapters = state.epubBook!!.chapters,
-                lazyListState = viewModel.lazyListState
-            )
-        } else {
-            if (state.loading) {
-                InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopBar(
+                scrollBehavior = scrollBehavior,
+                onShareClicked = { viewModel.shareItemText(context) },
+                onBackPressed = { navigator.goBack() })
+        }
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (state.epubBook != null) {
+                EpubBook(
+                    ebook = state.epubBook!!,
+                    chapters = state.epubBook!!.chapters,
+                    lazyListState = viewModel.lazyListState
+                )
+            } else {
+                if (state.loading) {
+                    InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }
