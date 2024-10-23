@@ -52,9 +52,5 @@ interface DatabaseModule {
 
     @Provides
     @ApplicationScope
-    fun provideDownloadRequestsDao(db: KafkaRoomDatabase) = db.downloadRequestsDao()
-
-    @Provides
-    @ApplicationScope
     fun provideDownloadDao(db: KafkaRoomDatabase) = db.downloadDao()
 }
