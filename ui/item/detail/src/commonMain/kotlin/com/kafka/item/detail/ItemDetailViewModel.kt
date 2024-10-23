@@ -22,7 +22,6 @@ import com.kafka.domain.interactors.recent.IsResumableAudio
 import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.ObservePrimaryFile
-import com.kafka.domain.observers.ShouldUseOnlineReader
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
@@ -48,7 +47,6 @@ import javax.inject.Inject
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     isResumableAudio: IsResumableAudio,
-    shouldUseOnlineReader: ShouldUseOnlineReader,
     observePrimaryFile: ObservePrimaryFile,
     @Assisted savedStateHandle: SavedStateHandle,
     private val updateItemDetail: UpdateItemDetail,
@@ -91,7 +89,8 @@ class ItemDetailViewModel @Inject constructor(
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),
-            shareEnabled = remoteConfig.isShareEnabled() && itemDetail != null
+            shareEnabled = remoteConfig.isShareEnabled() && itemDetail != null,
+            primaryFile = primaryFile
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -102,7 +101,6 @@ class ItemDetailViewModel @Inject constructor(
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
-        shouldUseOnlineReader(ShouldUseOnlineReader.Param(itemId))
         observePrimaryFile(ObservePrimaryFile.Param(itemId))
 
         refresh()
@@ -128,15 +126,13 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    fun openFiles(itemId: String) {
-        analytics.log { this.openFiles(itemId) }
-        navigator.navigate(Screen.Files(itemId))
-    }
-
     private fun openReader(itemId: String) {
         val itemDetail = state.value.itemDetail
+        val primaryFile = state.value.primaryFile
 
-        if (itemDetail != null) {
+        if (primaryFile != null && itemDetail != null) {
+            addRecentItem(primaryFile.fileId)
+
             analytics.log { readItem(itemId = itemId, type = "offline") }
             navigator.navigate(Screen.EpubReader(primaryFile.fileId))
         } else {
@@ -218,16 +214,6 @@ class ItemDetailViewModel @Inject constructor(
         }
     }
 
-    private fun logOnlineReader(itemDetail: ItemDetail) {
-        analytics.log {
-            readItem(
-                itemId = itemDetail.itemId,
-                type = "online",
-                isRestrictedAccess = itemDetail.isAccessRestricted
-            )
-        }
-    }
-
     private fun ctaText(itemDetail: ItemDetail, isResumableAudio: Boolean) =
         if (itemDetail.isAudio) {
             if (isResumableAudio) {
@@ -236,11 +222,7 @@ class ItemDetailViewModel @Inject constructor(
                 "Play"
             }
         } else {
-            if (itemDetail.isAccessRestricted) {
-                "Borrow"
-            } else {
-                "Read"
-            }
+            "Read"
         }
 }
 

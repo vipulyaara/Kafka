@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="downloader.downloadsLocationSelect.title" translatable="false">Downloads location</string>
-    <string name="downloader.downloadsLocationSelect.text" translatable="false">Select a folder location</string>
-    <string name="downloader.downloadsLocationSelect.next" translatable="false">Next</string>
-</resources>

@@ -6,7 +6,6 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import com.kafka.data.dao.DownloadDao
-import com.kafka.data.dao.DownloadRequestsDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.dao.ItemDetailDao
@@ -14,7 +13,6 @@ import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.RecentTextDao
 import com.kafka.data.entities.Download
-import com.kafka.data.entities.DownloadRequest
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
@@ -29,7 +27,6 @@ interface KafkaDatabase {
     fun recentSearchDao(): RecentSearchDao
     fun recentTextDao(): RecentTextDao
     fun recentAudioDao(): RecentAudioDao
-    fun downloadRequestsDao(): DownloadRequestsDao
     fun downloadDao(): DownloadDao
 }
 
@@ -47,7 +44,6 @@ expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDataba
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,
-        DownloadRequest::class,
     ],
     version = 1,
     exportSchema = true,

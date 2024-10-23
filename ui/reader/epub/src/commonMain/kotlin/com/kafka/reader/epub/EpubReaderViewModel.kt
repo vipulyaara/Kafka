@@ -8,14 +8,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.debug
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.Download
 import com.kafka.domain.interactors.UpdateCurrentPage
-import com.kafka.domain.observers.ObserveRecentTextItem
 import com.kafka.downloader.core.KtorDownloader
 import com.kafka.downloader.core.ObserveDownload
 import com.kafka.reader.epub.domain.ParseEbook
@@ -24,7 +22,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import tm.alashow.datmusic.downloader.interactors.ObserveDownloadByFileId
 import java.io.File
 import javax.inject.Inject
 

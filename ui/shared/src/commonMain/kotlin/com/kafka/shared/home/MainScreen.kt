@@ -20,8 +20,8 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.NavigatorHost
 import com.kafka.shared.RequestNotificationPermission
 import com.kafka.shared.home.bottombar.HomeNavigation
-import com.kafka.ui.components.snackbar.SnackbarMessagesHost
 import com.kafka.shared.home.overlays.Overlays
+import com.kafka.ui.components.snackbar.SnackbarMessagesHost
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.ui.audio.AudioActionHost
 import com.sarahang.playback.ui.audio.PlaybackHost
@@ -30,8 +30,6 @@ import com.sarahang.playback.ui.color.LocalColorExtractor
 import kotlinx.coroutines.flow.collectLatest
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import tm.alashow.datmusic.downloader.Downloader
-import tm.alashow.datmusic.ui.downloader.DownloaderHost
 import ui.common.theme.theme.LocalTheme
 
 typealias MainScreen = @Composable (NavHostController, BottomSheetNavigator, Theme) -> Unit
@@ -45,7 +43,6 @@ fun MainScreen(
     colorExtractor: ColorExtractor,
     playbackConnection: PlaybackConnection,
     navigator: Navigator,
-    downloader: Downloader,
     snackbarManager: SnackbarManager,
     viewModelFactory: () -> MainViewModel,
     home: HomeNavigation,
@@ -62,7 +59,7 @@ fun MainScreen(
 
     CompositionLocalProvider(LocalColorExtractor provides colorExtractor) {
         CompositionLocalProvider(LocalTheme provides theme) {
-            CompositionHosts(playbackConnection, navigator, downloader, snackbarManager) {
+            CompositionHosts(playbackConnection, navigator, snackbarManager) {
                 ModalBottomSheetLayout(
                     bottomSheetNavigator = bottomSheetNavigator,
                     sheetShape = MaterialTheme.shapes.large.copy(
@@ -85,19 +82,16 @@ fun MainScreen(
 private fun CompositionHosts(
     playbackConnection: PlaybackConnection,
     navigator: Navigator,
-    downloader: Downloader,
     snackbarManager: SnackbarManager,
     content: @Composable () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
         NavigatorHost(navigator) {
-            DownloaderHost(downloader) {
-                PlaybackHost(playbackConnection) {
-                    AudioActionHost(showMessage = { snackbarManager.addMessage(UiMessage.Plain(it)) }) {
-                        SnackbarMessagesHost(snackbarManager = snackbarManager)
-                        content()
-                    }
+            PlaybackHost(playbackConnection) {
+                AudioActionHost(showMessage = { snackbarManager.addMessage(UiMessage.Plain(it)) }) {
+                    SnackbarMessagesHost(snackbarManager = snackbarManager)
+                    content()
                 }
             }
         }

@@ -8,11 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import com.kafka.library.downloads.Downloads
-import com.kafka.library.downloads.DownloadsViewModel
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.library.favorites.Favorites
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -20,18 +16,10 @@ import com.kafka.ui.components.scaffoldPadding
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun LibraryScreen(favoriteViewModel: FavoriteViewModel, downloadsViewModel: DownloadsViewModel) {
+fun LibraryScreen(favoriteViewModel: FavoriteViewModel) {
     Scaffold { padding ->
         ProvideScaffoldPadding(padding = padding) {
             val pagerState = rememberPagerState(pageCount = { LibraryTab.entries.size })
-
-            LaunchedEffect(pagerState) {
-                snapshotFlow { pagerState.currentPage }.collect { page ->
-                    if (page == 1) {
-                        downloadsViewModel.logDownloadPageOpen()
-                    }
-                }
-            }
 
             Column(
                 modifier = Modifier
@@ -47,7 +35,7 @@ fun LibraryScreen(favoriteViewModel: FavoriteViewModel, downloadsViewModel: Down
                 HorizontalPager(modifier = Modifier.fillMaxSize(), state = pagerState) { page ->
                     when (LibraryTab.entries[page]) {
                         LibraryTab.Favorites -> Favorites(favoriteViewModel)
-                        LibraryTab.Downloads -> Downloads(downloadsViewModel)
+                        LibraryTab.Downloads -> {}
                     }
                 }
             }

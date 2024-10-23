@@ -85,7 +85,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
                 onShareClicked = { viewModel.shareItemText(context) },
                 onShareLongClicked = { viewModel.openArchiveItem() },
                 onBackPressed = { navigator.goBack() },
-                isShareVisible = viewModel.isShareEnabled()
+                isShareVisible = state.shareEnabled
             )
         }) { padding ->
             ProvideScaffoldPadding(padding = padding) {
@@ -111,7 +111,7 @@ private fun ItemDetail(
             viewModel.onPrimaryAction(it)
             viewModel.showAppRatingIfNeeded(context)
         },
-        openFiles = viewModel::openFiles,
+        shareItem = { viewModel.shareItemText(context) },
         toggleFavorite = viewModel::updateFavorite,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
@@ -126,7 +126,7 @@ private fun ItemDetail(
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
-    openFiles: (String) -> Unit,
+    shareItem: (String) -> Unit,
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
@@ -152,10 +152,10 @@ private fun ItemDetail(
                             openDescription = openDescription,
                             goToCreator = goToCreator,
                             onPrimaryAction = onPrimaryAction,
-                            openFiles = openFiles,
                             toggleFavorite = toggleFavorite,
                             openSubject = openSubject,
-                            openSummary = openSummary
+                            openSummary = openSummary,
+                            shareItem = shareItem
                         )
                     }
                 },
@@ -217,10 +217,10 @@ private fun VerticalLayout(
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
-    openFiles: (String) -> Unit,
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
-    openSummary: (String) -> Unit
+    openSummary: (String) -> Unit,
+    shareItem: (String) -> Unit,
 ) {
     if (state.itemDetail != null) {
         Column {
@@ -239,8 +239,8 @@ private fun VerticalLayout(
                 onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
                 isFavorite = state.isFavorite,
                 toggleFavorite = toggleFavorite,
-                showDownloads = state.showDownloads,
-                openFiles = { openFiles(state.itemDetail.itemId) },
+                shareEnabled = state.shareEnabled,
+                shareItem = { shareItem(state.itemDetail.itemId) },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
@@ -260,15 +260,6 @@ private fun VerticalLayout(
                         .fillMaxWidth()
                         .padding(vertical = Dimens.Spacing08, horizontal = Dimens.Spacing24),
                     onClick = { openSummary(state.itemDetail.itemId) },
-                )
-            }
-
-            if (state.itemDetail.isAccessRestricted) {
-                AccessRestricted(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    isAudio = state.itemDetail.isAudio,
-                    borrowableBookMessage = state.borrowableBookMessage,
-                    onClick = { onPrimaryAction(state.itemDetail.itemId) }
                 )
             }
 

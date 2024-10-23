@@ -1,8 +1,8 @@
 package com.kafka.analytics
 
+import com.kafka.base.ApplicationScope
 import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
 import me.tatarka.inject.annotations.Inject
-import com.kafka.base.ApplicationScope
 
 @ApplicationScope
 class EventRepository @Inject constructor() {
@@ -63,10 +63,6 @@ class EventRepository @Inject constructor() {
         "source" to source,
     )
 
-    fun openFiles(itemId: String) = "open_files" to mapOf(
-        "item_id" to itemId,
-    )
-
     fun downloadFile(fileId: String, itemId: String, source: String? = null) =
         "download_file" to mapOf(
             "item_id" to itemId,
@@ -115,12 +111,6 @@ class EventRepository @Inject constructor() {
 
     fun openArchiveItem(itemId: String) = "open_archive_item" to mapOf("item_id" to itemId)
 
-    fun setDownloadLocation(location: String) = "set_download_location" to mapOf(
-        "location" to location,
-    )
-
-    fun resetDownloadLocation() = "reset_download_location" to mapOf<String, String>()
-
     fun forgotPasswordSuccess() = "forgot_password_success" to mapOf<String, String>()
 
     fun themeChanged(theme: String) = "theme_changed" to mapOf("theme" to theme)
@@ -155,10 +145,6 @@ class EventRepository @Inject constructor() {
     fun remoteConfigValue(key: String, value: Any?) = "remote_config_value" to mapOf(
         "key" to key,
         "value" to value.toString()
-    )
-
-    fun openLibraryPage(page: String) = "open_library_page" to mapOf(
-        "page" to page
     )
 
     fun appMessageDismissed(id: String) = "app_message_dismissed" to mapOf(

@@ -8,6 +8,7 @@ import com.kafka.data.injection.DataComponent
 import com.kafka.data.injection.DatabaseModule
 import com.kafka.data.platform.device.PlatformCountryComponent
 import com.kafka.data.prefs.PreferenceStoreComponent
+import com.kafka.downloader.core.DownloadComponent
 import com.kafka.image.ImageLoadingPlatformComponent
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
@@ -17,7 +18,6 @@ import com.kafka.remote.config.getGoogleServerClientId
 import com.kafka.remote.config.getOpenAiApiKey
 import kafka.ui.shared.BuildConfig
 import me.tatarka.inject.annotations.Provides
-import tm.alashow.datmusic.downloader.DownloaderModule
 
 expect interface SharedPlatformApplicationComponent
 
@@ -36,7 +36,7 @@ interface SharedApplicationComponent :
     InitializersComponent,
     PlayerComponent,
     PlayStoreComponent,
-    DownloaderModule {
+    DownloadComponent {
 
     @Provides
     fun provideSecretsProvider(remoteConfig: RemoteConfig) = object : SecretsProvider {

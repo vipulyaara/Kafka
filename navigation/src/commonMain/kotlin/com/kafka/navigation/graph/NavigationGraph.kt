@@ -74,9 +74,6 @@ sealed class Screen {
     data class Summary(@SerialName("itemId") val itemId: String) : Screen()
 
     @Serializable
-    data class Files(@SerialName("itemId") val itemId: String) : Screen()
-
-    @Serializable
     data class Web(@SerialName("url") val url: String) : Screen()
 
     @Serializable

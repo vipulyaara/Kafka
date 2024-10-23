@@ -46,7 +46,6 @@ import com.kafka.item.detail.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.item.detail.description.DescriptionDialog
 import com.kafka.library.LibraryScreen
-import com.kafka.library.downloads.DownloadsViewModel
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.NavigationEvent
@@ -245,15 +244,10 @@ typealias addLibrary = NavGraphBuilder.() -> Unit
 @Inject
 internal fun NavGraphBuilder.addLibrary(
     favoriteViewmodelFactory: () -> FavoriteViewModel,
-    downloadsViewmodelFactory: () -> DownloadsViewModel,
 ) {
     composable<Screen.Library> {
         val favoriteViewModel = viewModel { favoriteViewmodelFactory() }
-        val downloadsViewModel = viewModel { downloadsViewmodelFactory() }
-        LibraryScreen(
-            favoriteViewModel = favoriteViewModel,
-            downloadsViewModel = downloadsViewModel
-        )
+        LibraryScreen(favoriteViewModel = favoriteViewModel)
     }
 }
 

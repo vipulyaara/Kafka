@@ -24,7 +24,6 @@ class KafkaApplication : Application(), PlayerServiceDependencies {
         super.onCreate()
 
         component.appInitializers.init()
-        component.downloadInitializer.init()
     }
 
     override val player: SarahangPlayer
