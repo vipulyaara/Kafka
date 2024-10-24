@@ -123,8 +123,6 @@ compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
-fetch = "com.github.abbas7777:fetch2-android14:3.2.0-beta07"
-
 google-bom = "com.google.firebase:firebase-bom:33.4.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
@@ -142,8 +140,6 @@ google-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
-firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase" }
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
 firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }

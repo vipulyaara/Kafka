@@ -29,7 +29,6 @@ kotlin {
 
             dependencies {
                 implementation(libs.androidx.documentfile)
-                implementation(libs.fetch)
                 implementation(libs.kotlininject.runtime)
                 implementation(libs.threeTenAbp)
             }

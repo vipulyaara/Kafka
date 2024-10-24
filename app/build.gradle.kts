@@ -152,12 +152,10 @@ dependencies {
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)
-    implementation(libs.fetch)
     implementation(libs.firebase.firestore)
     implementation(libs.google.analytics)
     implementation(libs.google.crashlytics)
     implementation(libs.google.messaging)
-    implementation(libs.google.performance)
     implementation(libs.google.review)
     implementation(libs.google.appupdate)
     implementation(libs.haze)
@@ -179,7 +177,6 @@ dependencies {
 
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.okhttp.okhttp)
-    implementation(libs.threeTenAbp)
     implementation(libs.profileinstaller)
 
     debugImplementation(libs.leakCanary)

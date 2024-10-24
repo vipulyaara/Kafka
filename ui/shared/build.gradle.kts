@@ -76,7 +76,6 @@ kotlin {
                 implementation(libs.firebase.firestore)
                 implementation(libs.kotlin.coroutines.swing)
                 implementation(libs.kotlininject.runtime)
-                implementation(libs.threeTenAbp)
 
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
@@ -107,11 +106,8 @@ kotlin {
             dependencies {
                 implementation(libs.accompanist.permissions)
                 implementation(libs.androidx.lifecycle.process)
-                implementation(libs.firebase.common)
                 implementation(libs.kermit)
                 implementation(libs.kermit.crashlytics)
-                implementation(libs.threeTenAbp)
-                implementation(libs.fetch)
                 implementation(libs.okhttp.okhttp)
             }
         }
