@@ -11,7 +11,7 @@ kotlin {
             dependencies {
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloaderKt)
+                implementation(projects.core.downloader)
                 implementation(projects.data.repo)
                 implementation(projects.domain)
                 implementation(projects.navigation)

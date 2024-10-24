@@ -18,7 +18,7 @@ kotlin {
                 implementation(projects.base.annotations)
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
-                implementation(projects.core.downloaderKt)
+                implementation(projects.core.downloader)
                 implementation(projects.core.networking)
                 implementation(projects.core.play)
                 implementation(projects.corePlayback)
