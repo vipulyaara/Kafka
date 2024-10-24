@@ -16,7 +16,7 @@ class UpdateCreatorItems @Inject constructor(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            val items = supabase.books.select {
+            val items = supabase.items.select {
                 filter { Item::creators contains listOf(params.creator) }
             }.decodeList<Item>()
 

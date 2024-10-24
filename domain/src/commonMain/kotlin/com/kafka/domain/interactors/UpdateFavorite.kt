@@ -6,7 +6,6 @@ import com.kafka.base.debug
 import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.FavoriteItem
-import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.listIdFavorites
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
@@ -34,24 +33,20 @@ class UpdateFavorite @Inject constructor(
                 signInAnonymously(Unit)
             }
 
+            if (!accountRepository.isUserLoggedIn) {
+                return@withContext
+            }
+
             val itemDetail = itemDetailDao.get(params.itemId)
+            val uid = accountRepository.currentUser!!.id
+
             favoritesRepository.updateList(
-                favoriteItem = mapFavoriteItem(itemDetail),
+                favoriteItem = FavoriteItem(itemDetail.itemId, uid),
                 listId = listIdFavorites,
                 addFavorite = params.markFavorite
             )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }
         }
-    }
-
-    private fun mapFavoriteItem(itemDetail: ItemDetail): FavoriteItem {
-        return FavoriteItem(
-            itemId = itemDetail.itemId,
-            title = itemDetail.title.orEmpty(),
-            creator = itemDetail.creator.orEmpty(),
-            mediaType = itemDetail.mediaType.value,
-            coverImage = itemDetail.coverImage.orEmpty(),
-        )
     }
 
     data class Params(val itemId: String, val markFavorite: Boolean)

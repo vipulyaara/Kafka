@@ -17,7 +17,7 @@ class ObserveUser @Inject constructor(
 ) : SubjectInteractor<ObserveUser.Params, User?>() {
 
     override fun createObservable(params: Params): Flow<User?> {
-        return accountRepository.observeCurrentUserOrNull()
+        return accountRepository.observeCurrentUser()
             .onEach { debug { "User changed ${it?.id}" } }
             .map { if (!params.includeAnonymous) it.takeIf { it?.anonymous == false } else it }
             .flowOn(dispatchers.io)

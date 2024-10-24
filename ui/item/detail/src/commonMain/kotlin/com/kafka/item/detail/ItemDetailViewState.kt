@@ -9,6 +9,7 @@ data class ItemDetailViewState(
     val isFavorite: Boolean = false,
     val itemDetail: ItemDetail? = null,
     val isLoading: Boolean = false,
+    val favoriteLoading: Boolean = false,
     val ctaText: String? = null,
     val isDynamicThemeEnabled: Boolean = false,
     val isSummaryEnabled: Boolean = false,

@@ -237,6 +237,7 @@ private fun VerticalLayout(
                 ctaText = state.ctaText.orEmpty(),
                 onPrimaryAction = { onPrimaryAction(state.itemDetail.itemId) },
                 isFavorite = state.isFavorite,
+                favoriteLoading = state.favoriteLoading,
                 toggleFavorite = toggleFavorite,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

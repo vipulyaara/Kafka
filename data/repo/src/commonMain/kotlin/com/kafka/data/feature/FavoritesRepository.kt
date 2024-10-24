@@ -1,34 +1,38 @@
+@file:OptIn(SupabaseExperimental::class, SupabaseExperimental::class)
+
 package com.kafka.data.feature
 
-import com.google.firebase.firestore.Query
 import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.FavoriteItem
-import com.kafka.data.feature.auth.AccountRepository
-import com.kafka.data.feature.firestore.FirestoreGraph
+import com.kafka.data.entities.Item
+import io.github.jan.supabase.annotations.SupabaseExperimental
+import io.github.jan.supabase.postgrest.query.filter.FilterOperation
+import io.github.jan.supabase.postgrest.query.filter.FilterOperator
+import io.github.jan.supabase.realtime.selectAsFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @ApplicationScope
 class FavoritesRepository @Inject constructor(
-    private val firestoreGraph: FirestoreGraph,
-    private val accountRepository: AccountRepository,
+    private val supabase: Supabase
 ) {
-    fun observeList(uid: String, listId: String) = firestoreGraph.getListCollection(uid, listId)
-        .orderBy("createdAt", Query.Direction.DESCENDING)
-        .snapshots()
-        .map { snapshots -> snapshots.documents
-            .map { it.data<FavoriteItem>().copy(itemId = it.id) }
+    fun observeList(uid: String, listId: String) = supabase.favoriteList
+        .selectAsFlow(
+            listOf(FavoriteItem::itemId, FavoriteItem::uid),
+            filter = FilterOperation("uid", FilterOperator.EQ, uid)
+        ).map { favorites ->
+            supabase.items.select {
+                filter { Item::itemId isIn favorites.map { it.itemId } }
+            }.decodeList<Item>()
         }
 
     suspend fun updateList(favoriteItem: FavoriteItem, listId: String, addFavorite: Boolean) {
-        accountRepository.currentUser?.id
-            ?.let { firestoreGraph.getListCollection(it, listId) }
-            ?.run {
-                if (addFavorite) {
-                    document(favoriteItem.itemId).set(favoriteItem)
-                } else {
-                    document(favoriteItem.itemId).delete()
-                }
+        if (addFavorite) {
+            supabase.favoriteList.insert(favoriteItem)
+        } else {
+            supabase.favoriteList.delete {
+                filter { FavoriteItem::itemId eq favoriteItem.itemId }
             }
+        }
     }
 }

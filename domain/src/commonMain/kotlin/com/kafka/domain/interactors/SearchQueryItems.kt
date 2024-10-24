@@ -22,7 +22,7 @@ class SearchQueryItems @Inject constructor(
         val query = params.keyword.split(" ")
             .joinToString(separator = "&", prefix = "'", postfix = "'")
 
-        supabase.books.select {
+        supabase.items.select {
             filter {
                 textSearch("fts", query, TextSearchType.NONE)
                 if (params.mediaType != null) {

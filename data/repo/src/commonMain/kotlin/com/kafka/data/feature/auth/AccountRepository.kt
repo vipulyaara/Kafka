@@ -48,7 +48,7 @@ class AccountRepository @Inject constructor(
         auth.resetPasswordForEmail(email)
     }
 
-    fun observeCurrentUserOrNull(): Flow<User?> {
+    fun observeCurrentUser(): Flow<User?> {
         return supabase.auth.sessionStatus.map {
             when (it) {
                 is SessionStatus.Authenticated -> {

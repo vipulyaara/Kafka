@@ -21,7 +21,7 @@ class RecentItemRepository @Inject constructor(
             listOf(CurrentlyReading::fileId, CurrentlyReading::itemId, CurrentlyReading::uid)
         ).map {
             it.map { cr ->
-                val it = supabase.books.select {
+                val it = supabase.items.select {
                     filter { Item::itemId eq cr.itemId }
                 }.decodeSingle<Item>()
 

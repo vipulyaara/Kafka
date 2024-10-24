@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
+import com.kafka.base.combine
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.extensions.getActivity
@@ -73,13 +74,15 @@ class ItemDetailViewModel @Inject constructor(
         ) { loadingStates ->
             loadingStates.any { loading -> loading }
         },
+        updateFavorite.inProgress,
         isResumableAudio.flow,
         observePrimaryFile.flow
-    ) { itemDetail, isFavorite, loading, isResumableAudio, primaryFile ->
+    ) { itemDetail, isFavorite, loading, favoriteLoading, isResumableAudio, primaryFile ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             isFavorite = isFavorite,
             isLoading = loading,
+            favoriteLoading = favoriteLoading,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),

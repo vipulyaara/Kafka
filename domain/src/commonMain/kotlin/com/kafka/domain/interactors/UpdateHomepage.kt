@@ -33,7 +33,7 @@ class UpdateHomepage @Inject constructor(
             }
 
             formattedIds.forEach { ids ->
-                val items = supabase.books.select {
+                val items = supabase.items.select {
                     filter { Item::itemId isIn ids }
                 }.decodeList<Item>()
 
