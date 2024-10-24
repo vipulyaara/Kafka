@@ -22,7 +22,6 @@ data class File(
     @SerialName("format") val format: String,
     @SerialName("path") val path: String?,
     @SerialName("url") val url: String?,
-    val localUri: String? = null,
     val position: Int = 0
 ) : BaseEntity {
     val isEpub: Boolean

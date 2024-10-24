@@ -30,9 +30,6 @@ abstract class FileDao : EntityDao<File> {
     @Query("SELECT * FROM file WHERE fileId IN (:ids) ORDER BY position")
     abstract suspend fun getByIds(ids: List<String>): List<File>
 
-    @Query("update file set localUri = :localUri where fileId = :fileId")
-    abstract suspend fun updateLocalUri(fileId: String, localUri: String)
-
     suspend fun playerFilesByItemId(itemId: String): List<File> {
         val items = getByItemId(itemId).groupBy { it.extension }
         val selectedFormat = File.playableExtensions.firstOrNull { it in items.keys }

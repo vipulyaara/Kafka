@@ -40,6 +40,6 @@ fun File.asAudio() = Audio(
     albumId = itemId,
     duration = duration ?: 0L,
     playbackUrl = url.orEmpty(),
-    localUri = localUri,
+    localUri = null,
     coverImage = coverImage
 )

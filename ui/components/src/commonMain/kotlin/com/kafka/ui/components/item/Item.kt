@@ -72,7 +72,7 @@ fun Item(
             if (isInAppropriate) {
                 Text(
                     text = stringResource(Res.string.explicit),
-                    style = MaterialTheme.typography.labelSmall.alignCenter(),
+                    style = MaterialTheme.typography.labelMedium.alignCenter(),
                     color = MaterialTheme.colorScheme.primary,
                     maxLines = 1,
                     modifier = Modifier
@@ -100,11 +100,11 @@ fun ItemDescription(
 ) {
     Column(modifier.padding(vertical = Dimens.Spacing04)) {
         title()
-        Spacer(modifier = Modifier.height(Dimens.Spacing02))
+        Spacer(modifier = Modifier.height(Dimens.Spacing04))
         Row(verticalAlignment = Alignment.CenterVertically) {
             creator()
         }
-        Spacer(modifier = Modifier.height(Dimens.Spacing08))
+        Spacer(modifier = Modifier.height(Dimens.Spacing12))
         mediaType()
     }
 }

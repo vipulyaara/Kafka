@@ -42,7 +42,6 @@ kotlin {
                 implementation(libs.kotlin.coroutines.core)
                 implementation(libs.kotlin.coroutines.swing)
 
-                implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
                 implementation(libs.firebase.analytics)
 

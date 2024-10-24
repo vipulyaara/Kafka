@@ -18,7 +18,6 @@ kotlin {
 
                 implementation(libs.androidx.room.runtime)
 
-                implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
 
                 implementation(libs.kotlininject.runtime)

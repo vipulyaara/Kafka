@@ -7,7 +7,6 @@ import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.data.platform.DataPlatformComponent
 import com.kafka.networking.SerializationPolymorphicDefaultPair
 import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
@@ -31,10 +30,6 @@ interface DataComponent : SerializersModule, DataPlatformComponent {
         install(Realtime)
         install(Storage)
     }
-
-    @Provides
-    @ApplicationScope
-    fun provideFirebaseAuth() = Firebase.auth
 
     @Provides
     @ApplicationScope

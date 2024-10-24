@@ -155,7 +155,6 @@ dependencies {
     implementation(libs.fetch)
     implementation(libs.firebase.firestore)
     implementation(libs.google.analytics)
-    implementation(libs.firebase.auth)
     implementation(libs.google.crashlytics)
     implementation(libs.google.messaging)
     implementation(libs.google.performance)

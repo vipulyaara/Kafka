@@ -10,8 +10,9 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
 import dev.gitlive.firebase.analytics.FirebaseAnalyticsParam
 import dev.gitlive.firebase.analytics.analytics
-import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.crashlytics.crashlytics
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class FirebaseAnalytics @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,
     private val applicationInfo: ApplicationInfo,
-    private val auth: FirebaseAuth,
+    private val supabaseClient: SupabaseClient
 ) : AnalyticsProvider {
     private val firebaseAnalytics by lazy { Firebase.analytics }
     private val crashlytics by lazy { Firebase.crashlytics }
@@ -47,7 +48,7 @@ class FirebaseAnalytics @Inject constructor(
     }
 
     private suspend fun updateUserProperty() {
-        val userId = auth.currentUser?.uid
+        val userId = supabaseClient.auth.currentUserOrNull()?.id
         val country = userDataRepository.getUserCountry()
 
         if (userId != null) {

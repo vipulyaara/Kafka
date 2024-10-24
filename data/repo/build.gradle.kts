@@ -26,7 +26,6 @@ kotlin {
                 implementation(libs.supabase.realtime)
                 implementation(libs.supabase.storage)
 
-                implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
                 implementation(libs.kotlin.serialization)
 

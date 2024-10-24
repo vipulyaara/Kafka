@@ -4,8 +4,9 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.ProcessLifetime
 import com.kafka.data.platform.UserDataRepository
 import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.crashlytics.crashlytics
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class CrashlyticsInitializer @Inject constructor(
     @ProcessLifetime private val scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
-    private val auth: FirebaseAuth,
+    private val supabaseClient: SupabaseClient
 ) {
     private val crashlytics by lazy { Firebase.crashlytics }
 
@@ -25,7 +26,7 @@ class CrashlyticsInitializer @Inject constructor(
     }
 
     private suspend fun updateUserProperty() {
-        val userId = auth.currentUser?.uid
+        val userId = supabaseClient.auth.currentUserOrNull()?.id
         val country = userDataRepository.getUserCountry()
 
         if (userId != null) {

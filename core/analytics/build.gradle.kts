@@ -13,7 +13,9 @@ kotlin {
                 implementation(libs.kotlininject.runtime)
 
                 implementation(libs.firebase.analytics)
-                implementation(libs.firebase.auth)
+
+                implementation(project.dependencies.platform(libs.supabase.bom))
+                implementation(libs.supabase.auth)
             }
         }
 

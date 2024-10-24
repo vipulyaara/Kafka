@@ -20,8 +20,6 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 
-                implementation(libs.firebase.auth)
-
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }

@@ -7,7 +7,8 @@ import com.kafka.base.ApplicationInfo
 import com.kafka.base.ProcessLifetime
 import com.kafka.base.SecretsProvider
 import com.mixpanel.android.mpmetrics.MixpanelAPI
-import dev.gitlive.firebase.auth.FirebaseAuth
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -19,7 +20,7 @@ class MixpanelAnalytics @Inject constructor(
     secretsProvider: SecretsProvider,
     private val eventRepository: EventRepository,
     private val applicationInfo: ApplicationInfo,
-    private val auth: FirebaseAuth,
+    private val supabaseClient: SupabaseClient
 ) : AnalyticsProvider {
     private val mixPanel = MixpanelAPI.getInstance(context, secretsProvider.mixpanelToken, true)
 
@@ -41,7 +42,7 @@ class MixpanelAnalytics @Inject constructor(
     }
 
     private fun updateUserProperty() {
-        val userId = auth.currentUser?.uid
+        val userId = supabaseClient.auth.currentUserOrNull()?.id
 
         if (userId != null) {
             mixPanel.identify(userId)
