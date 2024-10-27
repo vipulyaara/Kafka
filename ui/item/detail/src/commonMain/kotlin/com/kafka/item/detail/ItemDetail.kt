@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +26,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.LocalPlatformContext
-import com.kafka.base.debug
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
@@ -39,7 +36,6 @@ import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
 import com.kafka.item.detail.description.DescriptionText
 import com.kafka.item.detail.description.ItemDescription
-import com.kafka.item.preloadImages
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -60,17 +56,10 @@ import ui.common.theme.theme.shouldUseDarkColors
 @Composable
 @Inject
 fun ItemDetail(viewModel: ItemDetailViewModel) {
-    debug { "Item Detail launch" }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
     val itemsByCreator by viewModel.creatorItems.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
-    val platformContext = LocalPlatformContext.current
     val context = getContext()
-
-    LaunchedEffect(itemsByCreator) {
-        preloadImages(platformContext, itemsByCreator)
-    }
 
     val lazyGridState = rememberLazyGridState()
 
@@ -231,7 +220,7 @@ private fun VerticalLayout(
                 goToCreator = goToCreator
             )
 
-            Spacer(Modifier.height(Dimens.Spacing08))
+            Spacer(Modifier.height(Dimens.Spacing16))
 
             ItemDetailActionsRow(
                 ctaText = state.ctaText.orEmpty(),

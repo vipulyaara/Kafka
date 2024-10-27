@@ -4,46 +4,51 @@ import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kafka.data.model.MediaType
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
 data class CurrentlyReading(
+    @SerialName("uid") val uid: String,
     @SerialName("file_id") val fileId: String,
     @SerialName("item_id") val itemId: String,
-    @SerialName("uid") val uid: String,
     @SerialName("current_page") val currentPage: Long,
     @SerialName("current_page_offset") val currentPageOffset: Long,
+    @SerialName("updated_at") val updatedAt: Instant = Clock.System.now(),
 )
 
 @Keep
 @Serializable
 @Entity
-data class RecentItem(
+data class RecentItemSchema(
     @SerialName("file_id") val fileId: String,
     @SerialName("item_id") val itemId: String,
-    @SerialName("title") val title: String,
-    @SerialName("cover_url") val coverUrl: String,
-    @SerialName("creator") val creator: String,
-    @SerialName("media_type") val mediaType: MediaType = MediaType.Default,
-    @SerialName("createdAt") val updatedAt: Long,
-    @SerialName("uid") val uid: String,
+    @SerialName("items") val item: Item,
 ) {
     companion object {
-        fun fromItem(file: File, uid: String): RecentItem {
-            return RecentItem(
-                fileId = file.fileId,
-                itemId = file.itemId,
-                title = file.itemTitle.orEmpty(),
-                coverUrl = file.coverImage.orEmpty(),
-                creator = file.creator,
-                updatedAt = System.currentTimeMillis(),
-                mediaType = file.mediaType,
-                uid = uid
-            )
-        }
+        const val joinedColumns =
+            "file_id, item_id, updated_at, items(title, creators, cover_image, media_type)"
     }
+}
+
+@Keep
+@Serializable
+@Entity
+data class RecentItem(
+    @SerialName("uid") val uid: String,
+    @SerialName("title") val title: String,
+    @SerialName("file_id") val fileId: String,
+    @SerialName("item_id") val itemId: String,
+    @SerialName("cover_image") val coverUrl: String?,
+    @SerialName("creators") val creators: List<String>,
+    @SerialName("media_type") val mediaType: MediaType = MediaType.Default,
+    @SerialName("updated_at") val updatedAt: Instant,
+    @SerialName("progress") val progress: Float = 0f,
+) {
+    val creator = creators.take(5).joinToString()
 }
 
 @Entity(tableName = "recent_text")

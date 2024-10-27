@@ -3,12 +3,6 @@ package com.kafka.data.entities
 import kotlinx.collections.immutable.persistentListOf
 
 data class Homepage(val collection: List<HomepageCollection>) {
-    val continueReadingItems: List<RecentItemWithProgress>
-        get() = collection.recentItems.subList(
-            fromIndex = 0,
-            toIndex = ContinueReadingItemsThreshold.coerceAtMost(collection.recentItems.size),
-        )
-
     val hasSearchPrompt: Boolean
         get() = collection.isNotEmpty()
 
@@ -30,7 +24,7 @@ sealed class HomepageCollection {
     ) : HomepageCollection()
 
     data class RecentItems(
-        val items: List<RecentItemWithProgress>,
+        val items: List<RecentItem>,
     ) : HomepageCollection()
 
     data class Recommendations(
@@ -81,5 +75,3 @@ sealed class HomepageCollection {
         val key = items.joinToString(separator = ",")
     }
 }
-
-private const val ContinueReadingItemsThreshold = 30

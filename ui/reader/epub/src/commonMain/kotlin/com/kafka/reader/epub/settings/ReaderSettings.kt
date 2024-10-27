@@ -4,8 +4,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import ui.common.theme.theme.Laila
 
 data class ReaderSettings(
     val fontStyle: FontStyle,
@@ -58,16 +60,32 @@ data class ReaderSettings(
         }
     }
 
-    data class FontStyle(val name: String, val fontFamily: FontFamily) {
+    data class FontStyle(val name: String, val fontFamily: FontFamily, val fontWeight: FontWeight) {
         companion object {
-            val Default = Options[0]
+            val Default
+                @Composable get() = OptionsEnglish[0]
 
-            val Options
-                get() = listOf(
-                    FontStyle("Serif", FontFamily.Serif),
-                    FontStyle("Sans serif", FontFamily.SansSerif),
-                    FontStyle("Monospace", FontFamily.Monospace),
-                    FontStyle("Cursive", FontFamily.Cursive),
+            @Composable
+            fun Options(language: String) = if (language.startsWith("hi", true)) {
+                OptionsHindi
+            } else {
+                OptionsEnglish
+            }
+
+            val OptionsEnglish
+                @Composable get() = listOf(
+                    FontStyle("Serif", FontFamily.Serif, FontWeight.Normal),
+                    FontStyle("Sans serif", FontFamily.SansSerif, FontWeight.Normal),
+                    FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal),
+                    FontStyle("Cursive", FontFamily.Cursive, FontWeight.Normal),
+                )
+
+            private val OptionsHindi
+                @Composable get() = listOf(
+                    FontStyle("Laila", Laila, FontWeight.Medium),
+                    FontStyle("Sans serif", FontFamily.SansSerif, FontWeight.Normal),
+                    FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal),
+                    FontStyle("Cursive", FontFamily.Cursive, FontWeight.Normal),
                 )
         }
     }

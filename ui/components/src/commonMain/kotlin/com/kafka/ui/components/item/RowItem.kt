@@ -52,13 +52,19 @@ fun RowItem(
     }
 
     Column(modifier = modifier.widthIn(max = size.width)) {
-        CoverImage(
-            size = size,
-            data = coverImage,
-            placeholder = placeholder,
-            contentScale = ContentScale.Crop,
-            shape = RoundedCornerShape(Dimens.RadiusMedium)
-        )
+        ItemCover(
+            modifier = Modifier
+                .size(size)
+                .clip(RoundedCornerShape(Dimens.RadiusMedium))
+        ) {
+            CoverImage(
+                size = size,
+                data = coverImage,
+                placeholder = placeholder,
+                contentScale = ContentScale.Crop,
+                shape = RoundedCornerShape(Dimens.RadiusMedium)
+            )
+        }
 
         Column(
             modifier = Modifier.padding(

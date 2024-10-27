@@ -68,7 +68,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 internal fun RecentItems(
-    readingList: List<RecentItemWithProgress>,
+    readingList: List<RecentItem>,
     modifier: Modifier = Modifier,
     openItemDetail: (String) -> Unit,
     removeRecentItem: (String) -> Unit,
@@ -76,7 +76,7 @@ internal fun RecentItems(
 ) {
     val showAllAction = remember(readingList) { readingList.size > 2 }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,11 +92,12 @@ internal fun RecentItems(
             if (showAllAction) {
                 TextButton(
                     onClick = openRecentItems,
-                    modifier = Modifier.padding(end = Dimens.Spacing04)
+                    modifier = Modifier.padding(end = Dimens.Spacing04),
                 ) {
                     Text(
                         text = stringResource(Res.string.see_all),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             } else {
@@ -112,11 +113,11 @@ internal fun RecentItems(
             ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing20)
         ) {
-            items(readingList, key = { it.recentItem.itemId }) { continueReading ->
+            items(readingList, key = { it.itemId }) { continueReading ->
                 RecentItem(
                     item = continueReading,
                     modifier = Modifier.animateItem(),
-                    onItemClicked = { openItemDetail(continueReading.recentItem.itemId) },
+                    onItemClicked = { openItemDetail(continueReading.itemId) },
                     onItemRemoved = { removeRecentItem(it) }
                 )
             }
@@ -126,19 +127,19 @@ internal fun RecentItems(
 
 @Composable
 private fun RecentItem(
-    item: RecentItemWithProgress,
+    item: RecentItem,
     modifier: Modifier = Modifier,
     onItemRemoved: (String) -> Unit,
     onItemClicked: () -> Unit
 ) {
     var isInEditMode by remember { mutableStateOf(false) }
-    val recentItem by remember { derivedStateOf { item.recentItem } }
+    val recentItem by remember { derivedStateOf { item } }
 
     Box(modifier = modifier
         .clip(RoundedCornerShape(Dimens.Spacing08))
         .combinedClickable(
             onLongClick = { isInEditMode = !isInEditMode },
-            onClickLabel = item.recentItem.title,
+            onClickLabel = item.title,
             onClick = {
                 isInEditMode = false
                 onItemClicked()
@@ -176,9 +177,9 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
             .fillMaxWidth()
             .height(Dimens.Spacing12)
             .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing12))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)),
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)),
         shape = RoundedCornerShape(Dimens.Spacing12),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
     ) {
         Spacer(modifier = Modifier.fillMaxSize())
         Spacer(
@@ -248,7 +249,7 @@ private fun RecentItemCoverImage(item: RecentItem) {
         CoverImage(
             data = item.coverUrl,
             contentDescription = null,
-            size = DpSize(64.dp, 76.dp),
+            size = DpSize(64.dp, 96.dp),
             containerColor = MaterialTheme.colorScheme.background,
             contentScale = ContentScale.Crop,
             placeholder = null

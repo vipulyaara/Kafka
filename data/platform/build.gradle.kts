@@ -13,8 +13,6 @@ kotlin {
                 implementation(projects.data.models)
                 implementation(projects.data.prefs)
 
-                implementation(libs.ktor.client.core)
-
                 implementation(libs.kotlininject.runtime)
             }
         }

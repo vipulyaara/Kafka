@@ -26,4 +26,14 @@ class FirestoreGraph @Inject constructor(
 
     val summaryCollection: CollectionReference
         get() = firestoreKt.collection("summary")
+
+    fun readingListCollection(uid: String) = firestoreKt
+        .collection("users")
+        .document(uid)
+        .collection("reading_list")
+
+    fun favoriteListCollection(uid: String) = firestoreKt
+        .collection("users")
+        .document(uid)
+        .collection("favorite_list")
 }

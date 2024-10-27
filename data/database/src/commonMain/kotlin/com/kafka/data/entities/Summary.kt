@@ -8,7 +8,5 @@ import kotlinx.serialization.Serializable
 @Keep
 data class Summary(
     @SerialName("item_id") val itemId: String,
-    @SerialName("content") val content: String,
-) {
-    constructor() : this("", "")
-}
+    @SerialName("text") val content: String,
+)

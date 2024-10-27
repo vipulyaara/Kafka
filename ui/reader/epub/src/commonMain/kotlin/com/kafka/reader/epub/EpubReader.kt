@@ -119,6 +119,7 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
                     modifier = Modifier.padding(Dimens.Spacing16),
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = settings.fontStyle.fontFamily,
+                    fontWeight = settings.fontStyle.fontWeight,
                     fontSize = settings.fontSize.fontSize,
                     lineHeight = settings.fontSize.lineHeight,
                     textAlign = TextAlign.Justify

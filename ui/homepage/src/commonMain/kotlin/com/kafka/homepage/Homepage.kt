@@ -39,6 +39,7 @@ import com.kafka.common.widgets.FullScreenMessage
 import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.RecentItem
 import com.kafka.homepage.components.Carousels
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
@@ -62,12 +63,16 @@ import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
 import kafka.ui.homepage.generated.resources.share_app_message
 import kafka.ui.homepage.generated.resources.share_app_prompt
 import org.jetbrains.compose.resources.stringResource
+import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.LocalTheme
+import ui.common.theme.theme.isDark
 
 @Composable
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val viewModel = viewModel { viewModelFactory() }
     val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val recentItems by viewModel.recentItems.collectAsStateWithLifecycle()
     val shareAppText = stringResource(Res.string.share_app_message, Config.PLAY_STORE_URL)
     val context = getContext()
 
@@ -80,6 +85,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
                 AnimatedVisibilityFade(visible = viewState.showHomepageFeed) {
                     HomepageFeedItems(
                         homepage = viewState.homepage,
+                        recentItems = recentItems,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
@@ -111,6 +117,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
 @Composable
 private fun HomepageFeedItems(
     homepage: Homepage,
+    recentItems: List<RecentItem>,
     appShareIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
@@ -141,14 +148,16 @@ private fun HomepageFeedItems(
             when (collection) {
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
-                        if (homepage.continueReadingItems.isNotEmpty()) {
-                            RecentItems(
-                                readingList = homepage.continueReadingItems,
-                                openItemDetail = openRecentItemDetail,
-                                removeRecentItem = removeRecentItem,
-                                modifier = Modifier.padding(top = Dimens.Gutter),
-                                openRecentItems = openRecentItems
-                            )
+                        if (recentItems.isNotEmpty()) {
+                            AppTheme(isDarkTheme = LocalTheme.current.isDark()) {
+                                RecentItems(
+                                    readingList = recentItems,
+                                    openItemDetail = openRecentItemDetail,
+                                    removeRecentItem = removeRecentItem,
+                                    modifier = Modifier.padding(top = Dimens.Gutter),
+                                    openRecentItems = openRecentItems
+                                )
+                            }
                         } else {
                             Spacer(
                                 modifier = Modifier

@@ -9,7 +9,7 @@ class SignInAnonymously @Inject constructor(
 ) : Interactor<Unit, Unit>() {
 
     override suspend fun doWork(params: Unit) {
-        if (!accountRepository.isUserLoggedIn) {
+        if (accountRepository.currentUserOrNull == null) {
             accountRepository.signInAnonymously()
         }
     }

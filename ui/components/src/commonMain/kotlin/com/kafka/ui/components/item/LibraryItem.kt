@@ -1,6 +1,5 @@
 package com.kafka.ui.components.item
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,13 +7,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.Item
-import com.kafka.image.LoadImage
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -44,13 +41,13 @@ fun LibraryItem(
             .clickable { openItemDetail(itemId) }
             .padding(Dimens.Spacing08)
     ) {
-        LoadImage(
+        CoverImage(
             data = coverImage,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
-                .shadowMaterial(Dimens.Elevation04, RectangleShape)
-                .background(MaterialTheme.colorScheme.surface)
+                .aspectRatio(0.66f),
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(Dimens.Radius08)
         )
 
         Column(

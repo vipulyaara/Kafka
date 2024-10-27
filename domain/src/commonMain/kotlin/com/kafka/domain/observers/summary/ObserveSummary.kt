@@ -1,17 +1,20 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.kafka.domain.observers.summary
 
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.Summary
 import com.kafka.data.feature.ai.OpenAiRepository
 import com.kafka.data.feature.ai.SummaryRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.SubjectInteractor
 import javax.inject.Inject
 
 class ObserveSummary @Inject constructor(
@@ -36,7 +39,7 @@ class ObserveSummary @Inject constructor(
     private suspend fun getSummary(itemId: String): Flow<Summary?> {
         val item = itemDetailDao.get(itemId)
 
-        return openAiRepository.observerSummary(item.title.orEmpty(), item.creator, item.language)
+        return openAiRepository.observerSummary(item.title, item.creator, item.language)
             .onEach { response ->
                 if (response.finished) {
                     val summary = Summary(itemId = itemId, content = response.content)

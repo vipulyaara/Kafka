@@ -1,9 +1,10 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.kafka.data.feature.homepage
 
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
-import com.kafka.data.entities.RecentItemWithProgress
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.homepage.HomepageMapperConfig.shuffleIndices
@@ -11,8 +12,10 @@ import com.kafka.data.model.homepage.HomepageCollectionResponse
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -40,7 +43,7 @@ class HomepageMapper @Inject constructor(
                     is HomepageCollectionResponse.PersonRow -> homepageItem.mapPersonRow()
                     is HomepageCollectionResponse.Subjects -> homepageItem.mapSubjects()
                     is HomepageCollectionResponse.Recommendation ->
-                        if (remoteConfig.isRecommendationRowEnabled() && accountRepository.isUserLoggedIn) {
+                        if (remoteConfig.isRecommendationRowEnabled()) { //todo
                             homepageItem.mapRecommendations()
                         } else {
                             flowOf(null)
@@ -68,7 +71,8 @@ class HomepageMapper @Inject constructor(
     }
 
     private fun HomepageCollectionResponse.Recommendation.mapRecommendations() =
-        flowOf(emptyList<Item>())
+        accountRepository.observeCurrentUser() // todo: should not be anonymous
+            .flatMapLatest { flowOf(emptyList<Item>()) }
             .map { items ->
                 HomepageCollection.Recommendations(
                     labels = listOf(label),
@@ -136,9 +140,11 @@ class HomepageMapper @Inject constructor(
         }
     }
 
-    private fun mapRecentItems() = recentItemRepository.observeRecentItems(RECENT_ITEMS_LIMIT)
-        .map { it.map { RecentItemWithProgress(it, 0) } }
-        .onStart { emit(emptyList()) }
+    private fun mapRecentItems() = accountRepository.observeCurrentUser()
+        .flatMapLatest { user ->
+            recentItemRepository.observeRecentItems(user.id, RECENT_ITEMS_LIMIT)
+                .onStart { emit(emptyList()) } // todo
+        }
         .map { items -> HomepageCollection.RecentItems(items) }
 
     private fun HomepageCollectionResponse.FeaturedItem.mapFeatured(): Flow<HomepageCollection.FeaturedItem> {

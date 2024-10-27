@@ -9,6 +9,7 @@ import io.github.jan.supabase.auth.status.SessionSource
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.auth.user.UserInfo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -18,16 +19,14 @@ import javax.inject.Inject
  * Anonymous users can keep their data when they link their account.
  * */
 @ApplicationScope
-class AccountRepository @Inject constructor(
-    private val supabase: Supabase,
-) {
+class AccountRepository @Inject constructor(private val supabase: Supabase) {
     val auth = supabase.auth
 
     val currentUser
-        get() = auth.currentUserOrNull()
+        get() = auth.currentUserOrNull()!!
 
-    val isUserLoggedIn
-        get() = currentUser != null
+    val currentUserOrNull
+        get() = auth.currentUserOrNull()
 
     suspend fun signInAnonymously() = auth.signInAnonymously()
 
@@ -48,36 +47,20 @@ class AccountRepository @Inject constructor(
         auth.resetPasswordForEmail(email)
     }
 
-    fun observeCurrentUser(): Flow<User?> {
-        return supabase.auth.sessionStatus.map {
-            when (it) {
+    fun observeCurrentUser(): Flow<User> {
+        return supabase.auth.sessionStatus.map { session ->
+            when (session) {
                 is SessionStatus.Authenticated -> {
                     debug { "Received new authenticated session." }
-                    when (it.source) {
-                        SessionSource.External,
-                        SessionSource.Storage,
-                        SessionSource.Unknown,
-                        is SessionSource.Refresh,
-                        is SessionSource.SignIn,
-                        is SessionSource.SignUp,
-                        is SessionSource.UserChanged,
-                        is SessionSource.UserIdentitiesChanged -> {
-                            supabase.auth.currentUserOrNull()!!.asUser(false)
-                        }
-
-                        SessionSource.AnonymousSignIn -> {
-                            supabase.auth.currentUserOrNull()!!.asUser(true)
-                        }
-                    }
+                    supabase.auth.currentUserOrNull()!!
+                        .asUser(session.source is SessionSource.AnonymousSignIn)
                 }
 
-                SessionStatus.Initializing,
-                is SessionStatus.RefreshFailure,
-                is SessionStatus.NotAuthenticated -> {
-                    null
-                }
+                SessionStatus.Initializing -> null
+                is SessionStatus.NotAuthenticated -> null
+                is SessionStatus.RefreshFailure -> null
             }
-        }
+        }.filterNotNull()
     }
 
     private fun UserInfo.asUser(anonymous: Boolean) = User(

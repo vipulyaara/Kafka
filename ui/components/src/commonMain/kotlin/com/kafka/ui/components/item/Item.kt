@@ -63,11 +63,17 @@ fun Item(
                 .size(Dimens.CoverSizeMedium)
                 .align(Alignment.CenterVertically)
         ) {
-            CoverImage(
-                data = coverImage,
-                placeholder = placeholder(mediaType),
-                size = Dimens.CoverSizeMedium
-            )
+            ItemCover(
+                modifier = Modifier
+                    .size(Dimens.CoverSizeMedium)
+                    .clip(CoverDefaults.shape)
+            ) {
+                CoverImage(
+                    data = coverImage,
+                    placeholder = placeholder(mediaType),
+                    size = Dimens.CoverSizeMedium
+                )
+            }
 
             if (isInAppropriate) {
                 Text(
@@ -166,12 +172,19 @@ fun ItemSmall(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {
-        CoverImage(
-            data = coverImage,
-            placeholder = placeholder(mediaType),
-            modifier = Modifier.align(Alignment.CenterVertically),
-            size = Dimens.CoverSizeSmall
-        )
+        ItemCover(
+            modifier = Modifier
+                .size(Dimens.CoverSizeSmall)
+                .clip(CoverDefaults.shape)
+        ) {
+            CoverImage(
+                data = coverImage,
+                placeholder = placeholder(mediaType),
+                modifier = Modifier.align(Alignment.CenterVertically),
+                size = Dimens.CoverSizeSmall
+            )
+        }
+
         ItemDescription(
             title = { ItemTitleSmall(title, maxLines = 2) },
             creator = { ItemCreatorSmall(creator) },
@@ -186,6 +199,7 @@ fun ItemTitleSmall(title: String?, maxLines: Int = 1) {
     Text(
         text = title.orEmpty(),
         style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurface,
         maxLines = maxLines,
         overflow = TextOverflow.Ellipsis
     )
@@ -195,7 +209,7 @@ fun ItemTitleSmall(title: String?, maxLines: Int = 1) {
 fun ItemCreatorSmall(creator: String?, modifier: Modifier = Modifier) {
     Text(
         text = creator.orEmpty(),
-        style = MaterialTheme.typography.labelSmall,
+        style = MaterialTheme.typography.labelMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         color = MaterialTheme.colorScheme.secondary,

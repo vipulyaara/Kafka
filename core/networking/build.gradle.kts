@@ -12,9 +12,7 @@ dependencies {
     implementation(projects.base.domain)
 
     implementation(libs.kotlininject.runtime)
-    api(libs.ktor.client.core)
-    api(libs.ktor.client.contentnegotiation)
-    api(libs.ktor.client.java)
+    api(libs.ktor.client.cio)
     api(libs.ktor.client.logging)
-    api(libs.ktor.serialization)
+    api(libs.kotlin.serialization)
 }

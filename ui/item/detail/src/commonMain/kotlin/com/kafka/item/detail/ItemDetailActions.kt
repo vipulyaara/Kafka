@@ -24,7 +24,6 @@ import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.ui.components.material.FloatingButton
-import com.sarahang.playback.ui.components.AnimatedVisibilityFade
 import com.sarahang.playback.ui.components.WIDE_LAYOUT_MIN_WIDTH
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_add_to_favorites
@@ -93,20 +92,18 @@ private fun FavoriteIcon(
             .background(background)
             .clickable { onClicked() }
     ) {
-        AnimatedVisibilityFade(!favoriteLoading) {
-            IconButton(
-                onClick = onClicked,
-                onClickLabel = stringResource(contentDescription),
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
-            ) {
-                IconResource(
-                    imageVector = icon,
-                    tint = iconTint,
-                    contentDescription = stringResource(Res.string.cd_favorite)
-                )
-            }
+        IconButton(
+            onClick = onClicked,
+            onClickLabel = stringResource(contentDescription),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
+        ) {
+            IconResource(
+                imageVector = icon,
+                tint = iconTint,
+                contentDescription = stringResource(Res.string.cd_favorite)
+            )
         }
     }
 }

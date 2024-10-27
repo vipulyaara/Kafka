@@ -43,6 +43,10 @@ android {
             "/*.properties",
             "fabric/*.properties",
             "META-INF/*.properties",
+            "META-INF/kotlinx-io.kotlin_module",
+            "META-INF/atomicfu.kotlin_module",
+            "META-INF/kotlinx-coroutines-io.kotlin_module",
+            "META-INF/kotlinx-coroutines-core.kotlin_module"
         )
     }
 
@@ -169,11 +173,10 @@ dependencies {
     implementation(libs.kotlin.stdlib)
 
     implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.contentnegotiation)
-    implementation(libs.ktor.client.java)
-    implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization)
+
+    implementation(project.dependencies.platform(libs.openai.kotlin.bom))
+    implementation(libs.openai.client)
 
     implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.okhttp.okhttp)

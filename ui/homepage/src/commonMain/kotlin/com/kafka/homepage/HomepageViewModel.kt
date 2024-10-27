@@ -11,6 +11,7 @@ import com.kafka.common.snackbar.UiMessage
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveHomepage
+import com.kafka.domain.observers.ObserveRecentItems
 import com.kafka.domain.observers.ObserveShareAppIndex
 import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
@@ -25,6 +26,7 @@ class HomepageViewModel @Inject constructor(
     observeHomepage: ObserveHomepage,
     observeUser: ObserveUser,
     observeShareAppIndex: ObserveShareAppIndex,
+    observeRecentItems: ObserveRecentItems,
     private val updateHomepage: UpdateHomepage,
     private val removeRecentItem: RemoveRecentItem,
     private val navigator: Navigator,
@@ -33,6 +35,7 @@ class HomepageViewModel @Inject constructor(
     private val snackbarManager: SnackbarManager,
     private val uiMessageManager: UiMessageManager,
 ) : ViewModel() {
+    val recentItems = observeRecentItems.flow.stateInDefault(viewModelScope, emptyList())
 
     val state: StateFlow<HomepageViewState> = combine(
         observeHomepage.flow,
@@ -47,6 +50,7 @@ class HomepageViewModel @Inject constructor(
         observeHomepage(Unit)
         observeUser(ObserveUser.Params())
         observeShareAppIndex(Unit)
+        observeRecentItems(ObserveRecentItems.Params(10))
 
         updateItems()
     }

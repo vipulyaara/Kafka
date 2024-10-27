@@ -10,6 +10,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.logging.LogLevel
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
 import io.github.jan.supabase.storage.Storage
@@ -24,6 +25,8 @@ interface DataComponent : SerializersModule, DataPlatformComponent {
         supabaseUrl = secretsProvider.supabaseUrl,
         supabaseKey = secretsProvider.supabaseKey
     ) {
+        defaultLogLevel = LogLevel.DEBUG
+
         useHTTPS = true
         install(Auth)
         install(Postgrest)

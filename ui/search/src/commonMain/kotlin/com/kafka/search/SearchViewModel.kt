@@ -14,7 +14,7 @@ import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.domain.interactors.AddRecentSearch
 import com.kafka.domain.interactors.RemoveRecentSearch
-import com.kafka.domain.interactors.SearchQueryItems
+import com.kafka.domain.interactors.PerformSearch
 import com.kafka.domain.observers.ObserveRecentSearch
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
@@ -29,7 +29,7 @@ class SearchViewModel @Inject constructor(
     observeRecentSearch: ObserveRecentSearch,
     private val addRecentSearch: AddRecentSearch,
     private val removeRecentSearch: RemoveRecentSearch,
-    private val searchQueryItems: SearchQueryItems,
+    private val performSearch: PerformSearch,
     private val navigator: Navigator,
     private val analytics: Analytics,
     private val snackbarManager: SnackbarManager,
@@ -73,8 +73,8 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             loadingState.addLoader()
 
-            searchResults.value = searchQueryItems(
-                SearchQueryItems.Params(keyword = keyword.trim(), mediaTypes = mediaTypes.toList())
+            searchResults.value = performSearch(
+                PerformSearch.Params(keyword = keyword.trim(), mediaTypes = mediaTypes.toList())
             ).also { result ->
                 result.onException { snackbarManager.addMessage(it.toUiMessage()) }
             }.getOrElse { emptyList() }

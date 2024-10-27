@@ -21,9 +21,10 @@ class UpdateHomepage @Inject constructor(
     override suspend fun doWork(params: Unit) {
         withContext(dispatchers.io) {
             // todo: see if we need a refresh mechanism
-            val unFetchedIds = homepageRepository.getHomepageIds().map { ids ->
-                ids.filter { !itemRepository.exists(it) }
-            }
+            val unFetchedIds = homepageRepository.getHomepageIds()
+//                .map { ids ->
+//                ids.filter { !itemRepository.exists(it) }
+//            }
 
             // If there are less than 50 un-fetched IDs, we make a single request
             val formattedIds = if (unFetchedIds.sumOf { it.size } <= 50) {

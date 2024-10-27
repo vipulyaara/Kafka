@@ -6,15 +6,12 @@ import com.kafka.base.debug
 import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.entities.FavoriteItem
-import com.kafka.data.entities.listIdFavorites
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
-import com.kafka.domain.interactors.account.SignInAnonymously
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UpdateFavorite @Inject constructor(
-    private val signInAnonymously: SignInAnonymously,
     private val accountRepository: AccountRepository,
     private val favoritesRepository: FavoritesRepository,
     private val itemDetailDao: ItemDetailDao,
@@ -29,20 +26,11 @@ class UpdateFavorite @Inject constructor(
                 analytics.log { removeFavorite((params.itemId)) }
             }
 
-            if (!accountRepository.isUserLoggedIn) {
-                signInAnonymously(Unit)
-            }
-
-            if (!accountRepository.isUserLoggedIn) {
-                return@withContext
-            }
-
             val itemDetail = itemDetailDao.get(params.itemId)
-            val uid = accountRepository.currentUser!!.id
 
-            favoritesRepository.updateList(
-                favoriteItem = FavoriteItem(itemDetail.itemId, uid),
-                listId = listIdFavorites,
+            favoritesRepository.updateFavorite(
+                uid = accountRepository.currentUser.id,
+                favoriteItem = FavoriteItem(itemDetail.itemId, accountRepository.currentUser.id),
                 addFavorite = params.markFavorite
             )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }

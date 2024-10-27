@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
-import com.kafka.base.combine
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.extensions.getActivity
@@ -13,6 +12,7 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.prefs.ItemReadCounter
+import com.kafka.domain.interactors.GetPrimaryFile
 import com.kafka.domain.interactors.ResumeAlbum
 import com.kafka.domain.interactors.UpdateCreatorItems
 import com.kafka.domain.interactors.UpdateFavorite
@@ -21,7 +21,6 @@ import com.kafka.domain.interactors.recent.AddRecentItem
 import com.kafka.domain.interactors.recent.IsResumableAudio
 import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItemDetail
-import com.kafka.domain.observers.ObservePrimaryFile
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
@@ -45,7 +44,7 @@ import javax.inject.Inject
 class ItemDetailViewModel @Inject constructor(
     observeItemDetail: ObserveItemDetail,
     isResumableAudio: IsResumableAudio,
-    observePrimaryFile: ObservePrimaryFile,
+    getPrimaryFile: GetPrimaryFile,
     @Assisted savedStateHandle: SavedStateHandle,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
@@ -75,9 +74,8 @@ class ItemDetailViewModel @Inject constructor(
             loadingStates.any { loading -> loading }
         },
         updateFavorite.inProgress,
-        isResumableAudio.flow,
-        observePrimaryFile.flow
-    ) { itemDetail, isFavorite, loading, favoriteLoading, isResumableAudio, primaryFile ->
+        isResumableAudio.flow
+    ) { itemDetail, isFavorite, loading, favoriteLoading, isResumableAudio ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             isFavorite = isFavorite,
@@ -87,7 +85,7 @@ class ItemDetailViewModel @Inject constructor(
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),
             shareEnabled = remoteConfig.isShareEnabled() && itemDetail != null,
-            primaryFile = primaryFile
+            primaryFile = getPrimaryFile(itemId).getOrNull()
         )
     }.stateInDefault(
         scope = viewModelScope,
@@ -98,7 +96,6 @@ class ItemDetailViewModel @Inject constructor(
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
-        observePrimaryFile(ObservePrimaryFile.Param(itemId))
 
         refresh()
     }
@@ -128,7 +125,7 @@ class ItemDetailViewModel @Inject constructor(
         val primaryFile = state.value.primaryFile
 
         if (primaryFile != null && itemDetail != null) {
-            addRecentItem(primaryFile.fileId)
+            addRecentItem(itemId)
 
             analytics.log { readItem(itemId = itemId, type = "offline") }
             navigator.navigate(Screen.EpubReader(itemId, primaryFile.fileId))

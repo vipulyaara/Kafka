@@ -19,7 +19,7 @@ import com.kafka.data.prefs.observeTheme
 @Composable
 fun AppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    isTrueContrast: Boolean = false,
+    isTrueContrast: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val themeColor = if (isDarkTheme) ThemeColor.Dark else ThemeColor.Light
@@ -103,6 +103,13 @@ fun Theme.shouldUseDarkColors(): Boolean {
 
 val LocalTheme = staticCompositionLocalOf<Theme> {
     error("LocalTheme not provided")
+}
+
+@Composable
+fun Theme.isDark() = when (this) {
+    Theme.LIGHT -> false
+    Theme.DARK -> true
+    Theme.SYSTEM -> isSystemInDarkTheme()
 }
 
 expect fun setStatusBarColor(context: Any?, lightStatusBar: Boolean)

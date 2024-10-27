@@ -4,6 +4,7 @@ package com.kafka.homepage.recent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.elevation
@@ -34,6 +36,7 @@ import com.kafka.ui.components.material.AlertDialogAction
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.SwipeToDelete
 import com.kafka.ui.components.material.TopBar
+import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.homepage.generated.resources.Res
 import kafka.ui.homepage.generated.resources.cancel
@@ -46,7 +49,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun RecentItemsScreen(viewModel: RecentItemsViewModel) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val loading by viewModel.loading.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
     val navigator = LocalNavigator.current
 
@@ -68,12 +71,18 @@ fun RecentItemsScreen(viewModel: RecentItemsViewModel) {
         )
     }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            RecentItems(
-                items = viewState.recentItems,
-                openItemDetail = viewModel::openItemDetail,
-                removeRecentItem = viewModel::removeItem,
-                lazyListState = lazyListState
-            )
+            if (loading && viewModel.recentItems.isEmpty()) {
+                Box(Modifier.fillMaxSize()) {
+                    InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
+                }
+            } else {
+                RecentItems(
+                    items = viewModel.recentItems,
+                    openItemDetail = viewModel::openItemDetail,
+                    removeRecentItem = viewModel::removeItem,
+                    lazyListState = lazyListState
+                )
+            }
         }
     }
 }

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="check_out_on_kafka" translatable="false">"\n            Check out %1$s on Kafka\n            \n            %2$s\n        "</string>
-    <string name="download_complete">Download Complete</string>
-    <string name="continue_reading_offline">Continue reading offline for better experience.</string>
-    <string name="open_offline">Open Offline</string>
-    <string name="close">Close</string>
-    <string name="cd_download_file">Download</string>
-</resources>

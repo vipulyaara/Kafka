@@ -116,7 +116,7 @@ private fun FontStyle(fontStyle: FontStyle, onClick: (FontStyle) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            FontStyle.Options.forEach {
+            FontStyle.OptionsEnglish.forEach {
                 val alpha by animateFloatAsState(if (it == fontStyle) 1f else 0.2f)
 
                 Column(

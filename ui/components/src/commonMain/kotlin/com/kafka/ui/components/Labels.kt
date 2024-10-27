@@ -33,6 +33,7 @@ fun LabelMedium(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onBackground,
         maxLines = maxLines,
         overflow = overflow
     )

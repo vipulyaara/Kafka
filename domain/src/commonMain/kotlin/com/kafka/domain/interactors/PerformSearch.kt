@@ -10,21 +10,21 @@ import io.github.jan.supabase.postgrest.query.filter.TextSearchType
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SearchQueryItems @Inject constructor(
+class PerformSearch @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val itemRepository: ItemRepository,
     private val supabase: Supabase
-) : Interactor<SearchQueryItems.Params, List<Item>>() {
+) : Interactor<PerformSearch.Params, List<Item>>() {
 
     override suspend fun doWork(params: Params): List<Item> = withContext(dispatchers.io) {
         if (params.keyword.isEmpty()) return@withContext listOf()
 
         val query = params.keyword.split(" ")
-            .joinToString(separator = "&", prefix = "'", postfix = "'")
+            .joinToString(separator = "|", prefix = "'", postfix = "'")
 
         supabase.items.select {
             filter {
-                textSearch("fts", query, TextSearchType.NONE)
+                textSearch("fts", query, TextSearchType.WEBSEARCH)
                 if (params.mediaType != null) {
                     Item::mediaType eq params.mediaType.value
                 }
