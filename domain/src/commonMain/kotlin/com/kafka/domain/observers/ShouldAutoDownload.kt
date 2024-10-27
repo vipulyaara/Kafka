@@ -7,9 +7,10 @@ import com.kafka.data.dao.ItemDetailDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ShouldAutoDownload @Inject constructor(
+@Inject
+class ShouldAutoDownload(
     private val dispatchers: CoroutineDispatchers,
     private val itemDetailDao: ItemDetailDao,
     private val fileDao: FileDao,

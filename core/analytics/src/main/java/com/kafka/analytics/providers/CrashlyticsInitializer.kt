@@ -9,10 +9,11 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class CrashlyticsInitializer @Inject constructor(
+@Inject
+class CrashlyticsInitializer(
     @ProcessLifetime private val scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val supabaseClient: SupabaseClient

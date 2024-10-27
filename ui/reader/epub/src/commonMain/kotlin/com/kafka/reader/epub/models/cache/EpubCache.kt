@@ -22,8 +22,8 @@ import com.kafka.reader.epub.models.EpubBook
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
+import me.tatarka.inject.annotations.Inject
 import java.io.File
-import javax.inject.Inject
 
 /**
  * A cache storage based on Protocol Buffers for storing [EpubBook] objects.
@@ -31,7 +31,8 @@ import javax.inject.Inject
  *
  * @param context The context of the application.
  */
-class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo) {
+@Inject
+class EpubCache(private val applicationInfo: ApplicationInfo) {
 
     companion object {
         private const val TAG = "EpubCache"
@@ -60,25 +61,25 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
 
     // Checks if the cache version matches the current version.
     private fun checkCacheVersion() {
-        debug {"Checking cache version" }
+        debug { "Checking cache version" }
         val versionFile = File(getVersionFilePath())
         if (versionFile.exists()) {
             val cachedVersion = versionFile.readText().toIntOrNull()
             if (cachedVersion != EPUB_CACHE_VERSION) {
-                debug {"Cache version mismatch, clearing cache" }
+                debug { "Cache version mismatch, clearing cache" }
                 clear()
                 create()
                 saveCacheVersion()
             }
         } else {
-            debug {"Cache version not found, saving cache version" }
+            debug { "Cache version not found, saving cache version" }
             saveCacheVersion()
         }
     }
 
     // Saves the current cache version.
     private fun saveCacheVersion() {
-        debug {"Saving cache version" }
+        debug { "Saving cache version" }
         val versionFile = File(getVersionFilePath())
         versionFile.writeText(EPUB_CACHE_VERSION.toString())
     }
@@ -86,7 +87,7 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
     private fun create() {
         val cacheDir = File(getPath())
         if (!cacheDir.exists()) {
-            debug {"Creating cache directory" }
+            debug { "Creating cache directory" }
             cacheDir.mkdirs()
         }
     }
@@ -94,7 +95,7 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
     private fun clear() {
         val cacheDir = File(getPath())
         if (cacheDir.exists()) {
-            debug {"Clearing cache directory" }
+            debug { "Clearing cache directory" }
             cacheDir.deleteRecursively()
         }
     }
@@ -105,7 +106,7 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
     private fun printSchema() {
         val protoSchema =
             ProtoBufSchemaGenerator.generateSchemaText(EpubBook.serializer().descriptor)
-        debug {"Proto schema: $protoSchema" }
+        debug { "Proto schema: $protoSchema" }
     }
 
     /**
@@ -116,7 +117,7 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
      */
     @OptIn(ExperimentalSerializationApi::class)
     fun put(book: EpubBook, filepath: String) {
-        debug {"Inserting book into cache: ${book.title}" }
+        debug { "Inserting book into cache: ${book.title}" }
         val fileName = File(filepath).nameWithoutExtension
         val bookFile = File(getPath(), "$fileName.protobuf")
         val protoBytes = protobuf.encodeToByteArray(EpubBook.serializer(), book)
@@ -131,15 +132,15 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
      */
     @OptIn(ExperimentalSerializationApi::class)
     fun get(filepath: String): EpubBook? {
-        debug {"Getting book from cache: $filepath" }
+        debug { "Getting book from cache: $filepath" }
         val fileName = File(filepath).nameWithoutExtension
         val bookFile = File(getPath(), "$fileName.protobuf")
         return if (bookFile.exists()) {
-            debug {"Book found in cache: $filepath" }
+            debug { "Book found in cache: $filepath" }
             val protoBytes = bookFile.readBytes()
             protobuf.decodeFromByteArray(EpubBook.serializer(), protoBytes)
         } else {
-            debug {"Book not found in cache: $filepath" }
+            debug { "Book not found in cache: $filepath" }
             null
         }
     }
@@ -150,7 +151,7 @@ class EpubCache @Inject constructor(private val applicationInfo: ApplicationInfo
      * @param filepath The path to the book file.
      */
     fun remove(filepath: String): Boolean {
-        debug {"Removing book from cache: $filepath" }
+        debug { "Removing book from cache: $filepath" }
         val fileName = File(filepath).nameWithoutExtension
         val bookFile = File(getPath(), "$fileName.protobuf")
         return if (bookFile.exists()) {

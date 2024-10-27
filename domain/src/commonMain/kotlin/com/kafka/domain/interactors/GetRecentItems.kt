@@ -6,9 +6,10 @@ import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.RecentItemRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class GetRecentItems @Inject constructor(
+@Inject
+class GetRecentItems(
     private val dispatchers: CoroutineDispatchers,
     private val recentItemRepository: RecentItemRepository,
     private val accountRepository: AccountRepository

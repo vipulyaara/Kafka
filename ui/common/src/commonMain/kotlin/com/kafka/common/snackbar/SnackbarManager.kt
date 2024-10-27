@@ -11,13 +11,14 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 data class SnackbarAction<T>(val label: UiMessage, val argument: T)
 open class SnackbarMessage<T>(val message: UiMessage, val action: SnackbarAction<T>? = null)
 
 @ApplicationScope
-class SnackbarManager @Inject constructor() {
+@Inject
+class SnackbarManager {
 
     private val messagesChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)
     private val actionDismissedMessageChannel = Channel<SnackbarMessage<*>>(Channel.CONFLATED)

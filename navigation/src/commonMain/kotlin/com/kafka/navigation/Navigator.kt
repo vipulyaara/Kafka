@@ -8,7 +8,7 @@ import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 interface Navigator {
     fun navigate(route: Screen, root: RootScreen? = null)
@@ -36,7 +36,8 @@ sealed class NavigationEvent(open val route: Screen) {
     ) : NavigationEvent(route)
 }
 
-class NavigatorImpl @Inject constructor() : Navigator {
+@Inject
+class NavigatorImpl : Navigator {
     private val navigationQueue = Channel<NavigationEvent>(Channel.CONFLATED)
     override val queue = navigationQueue.receiveAsFlow()
 

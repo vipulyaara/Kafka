@@ -15,9 +15,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveSummary @Inject constructor(
+@Inject
+class ObserveSummary(
     private val summaryRepository: SummaryRepository,
     private val itemDetailDao: ItemDetailDao,
     private val openAiRepository: OpenAiRepository,

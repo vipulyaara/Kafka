@@ -9,9 +9,10 @@ import com.kafka.data.encodeUrl
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.entities.nameWithoutExtension
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class GetReaderState @Inject constructor(
+@Inject
+class GetReaderState(
     private val itemDetailDao: ItemDetailDao,
     private val fileDao: FileDao,
     private val recentTextDao: RecentTextDao,

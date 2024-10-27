@@ -3,9 +3,10 @@ package com.kafka.downloader.core
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class DownloadItem @Inject constructor(
+@Inject
+class DownloadItem(
     private val downloader: Downloader,
     private val dispatchers: CoroutineDispatchers
 ) : Interactor<String, Unit>() {

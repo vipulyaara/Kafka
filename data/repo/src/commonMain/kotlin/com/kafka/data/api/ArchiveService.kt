@@ -9,7 +9,8 @@ import io.ktor.client.request.url
 import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class ArchiveService @Inject constructor(private val httpClient: HttpClient) {
+@Inject
+class ArchiveService(private val httpClient: HttpClient) {
     suspend fun getLibrivoxAudioTracks(id: String?): LibrivoxFileResponse = httpClient.get {
         url(audioTracksUrl(id))
     }.body()

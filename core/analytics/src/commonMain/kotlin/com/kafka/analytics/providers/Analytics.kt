@@ -1,12 +1,14 @@
 package com.kafka.analytics.providers
 
 import com.kafka.analytics.EventRepository
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class Analytics @Inject constructor(val providers: Set<AnalyticsProvider>) {
+@Inject
+class Analytics(val providers: Set<AnalyticsProvider>) {
     fun log(eventInfo: EventInfo) {
         providers.forEach { it.log(eventInfo) }
     }
+
     fun log(eventInfo: EventRepository.() -> EventInfo) {
         providers.forEach { it.log(eventInfo) }
     }

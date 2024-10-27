@@ -11,9 +11,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveFavorites @Inject constructor(
+@Inject
+class ObserveFavorites(
     private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository,
     private val favoritesRepository: FavoritesRepository,

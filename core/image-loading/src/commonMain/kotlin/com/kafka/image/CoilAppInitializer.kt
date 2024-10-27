@@ -11,7 +11,8 @@ import com.kafka.base.AppInitializer
 import me.tatarka.inject.annotations.Inject
 import okio.FileSystem
 
-class CoilAppInitializer @Inject constructor() : AppInitializer {
+@Inject
+class CoilAppInitializer : AppInitializer {
     override fun init() {
         SingletonImageLoader.setSafe {
             ImageLoader.Builder(it)

@@ -5,9 +5,10 @@ import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.FileDao
 import com.kafka.data.entities.File
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class GetPrimaryFile @Inject constructor(
+@Inject
+class GetPrimaryFile(
     private val dispatchers: CoroutineDispatchers,
     private val fileDao: FileDao,
 ) : Interactor<String, File?>() {

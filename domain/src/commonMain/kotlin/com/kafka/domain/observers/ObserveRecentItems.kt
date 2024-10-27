@@ -11,9 +11,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveRecentItems @Inject constructor(
+@Inject
+class ObserveRecentItems(
     private val dispatchers: CoroutineDispatchers,
     private val recentItemRepository: RecentItemRepository,
     private val accountRepository: AccountRepository,

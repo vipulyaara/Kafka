@@ -26,7 +26,6 @@ kotlin {
 
             dependencies {
                 implementation(projects.base.annotations)
-                implementation(libs.javax.inject)
             }
         }
 

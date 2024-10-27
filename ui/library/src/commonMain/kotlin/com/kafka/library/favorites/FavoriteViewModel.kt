@@ -16,9 +16,10 @@ import com.kafka.ui.components.item.LayoutType
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class FavoriteViewModel @Inject constructor(
+@Inject
+class FavoriteViewModel(
     observeFavorites: ObserveFavorites,
     preferencesStore: PreferencesStore,
     observeUser: ObserveUser,

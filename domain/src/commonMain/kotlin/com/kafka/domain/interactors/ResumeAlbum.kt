@@ -5,13 +5,14 @@ import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.RecentAudioDao
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.apis.AudioDataSource
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * Resumes an album from the last played audio
  * or start from the beginning if last played audio is not found or in case of an error.
  * */
-class ResumeAlbum @Inject constructor(
+@Inject
+class ResumeAlbum(
     private val playbackConnection: PlaybackConnection,
     private val recentAudioDao: RecentAudioDao,
     private val audioDataSource: AudioDataSource,

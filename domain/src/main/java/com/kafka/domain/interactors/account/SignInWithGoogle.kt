@@ -13,9 +13,9 @@
 //import dev.gitlive.firebase.auth.GoogleAuthProvider
 //import dev.gitlive.firebase.auth.auth
 //import kotlinx.coroutines.withContext
-//import javax.inject.Inject
+//import me.tatarka.inject.annotations.Inject
 //
-//actual class SignInWithGoogle @Inject constructor(
+//actual class SignInWithGoogle (
 //    private val dispatchers: CoroutineDispatchers,
 //    private val secretsProvider: SecretsProvider
 //) {

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * An [AppInitializer] that updates the the currently playing audio.
@@ -23,7 +23,8 @@ import javax.inject.Inject
  * It listens to the [PlaybackConnection.playbackProgress] and updates the recent audio item
  * so that it can be played from last item when the user plays the album again.
  */
-class AudioProgressInitializer @Inject constructor(
+@Inject
+class AudioProgressInitializer(
     private val playbackConnection: PlaybackConnection,
     private val dispatchers: CoroutineDispatchers,
     private val recentAudioDao: RecentAudioDao,

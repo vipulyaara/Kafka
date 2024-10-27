@@ -7,9 +7,10 @@ import com.kafka.data.entities.Item
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveCreatorItems @Inject constructor(
+@Inject
+class ObserveCreatorItems(
     private val dispatchers: CoroutineDispatchers,
     private val itemDao: ItemDao,
 ) : SubjectInteractor<ObserveCreatorItems.Params, List<Item>>() {

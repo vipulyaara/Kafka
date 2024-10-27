@@ -4,9 +4,10 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ResetPassword @Inject constructor(
+@Inject
+class ResetPassword(
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,
 ) : Interactor<ResetPassword.Params, Unit>() {

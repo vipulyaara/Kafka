@@ -6,9 +6,10 @@ import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.model.MediaType
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class AddRecentSearch @Inject constructor(
+@Inject
+class AddRecentSearch(
     private val dispatchers: CoroutineDispatchers,
     private val recentSearchDao: RecentSearchDao,
 ) : Interactor<AddRecentSearch.Params, Unit>() {
@@ -29,7 +30,8 @@ class AddRecentSearch @Inject constructor(
     )
 }
 
-class RemoveRecentSearch @Inject constructor(
+@Inject
+class RemoveRecentSearch(
     private val recentSearchDao: RecentSearchDao,
     private val dispatchers: CoroutineDispatchers,
 ) : Interactor<String, Unit>() {

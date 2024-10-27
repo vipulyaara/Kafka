@@ -21,9 +21,9 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
+import me.tatarka.inject.annotations.Inject
 import java.io.File
 import java.io.OutputStream
-import javax.inject.Inject
 import kotlin.math.min
 
 interface Downloader {
@@ -33,7 +33,8 @@ interface Downloader {
 }
 
 @ApplicationScope
-class KtorDownloader @Inject constructor(
+@Inject
+class KtorDownloader(
     private val client: HttpClient,
     private val fileDao: FileDao,
     private val downloadDao: DownloadDao,

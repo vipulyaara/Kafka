@@ -4,9 +4,10 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.item.LibrivoxFileResponse
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class LibrivoxFileMapper @Inject constructor() {
+@Inject
+class LibrivoxFileMapper {
     fun map(response: LibrivoxFileResponse, item: ItemDetail) =
         response.sections.sortedBy { it.sectionNumber.toIntOrNull() }.mapIndexed { index, section ->
             val extension = section.listenUrl.split(".").last()

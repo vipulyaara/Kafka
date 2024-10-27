@@ -8,9 +8,10 @@ import com.kafka.base.debug
 import com.kafka.base.errorLog
 import com.sarahang.playback.core.apis.Logger
 import com.sarahang.playback.core.apis.PlayerEventLogger
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class KafkaPlayerEventLogger @Inject constructor(
+@Inject
+class KafkaPlayerEventLogger(
     private val analytics: Analytics,
 ) : PlayerEventLogger {
     override fun logEvent(event: String, data: Map<String, String>) {
@@ -18,7 +19,8 @@ class KafkaPlayerEventLogger @Inject constructor(
     }
 }
 
-class PlayerLogger @Inject constructor() : Logger {
+@Inject
+class PlayerLogger : Logger {
     override fun i(message: String) = com.kafka.base.i { message }
 
     override fun d(message: String) = debug { message }

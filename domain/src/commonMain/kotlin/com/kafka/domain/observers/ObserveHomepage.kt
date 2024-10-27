@@ -7,9 +7,10 @@ import com.kafka.data.feature.homepage.HomepageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveHomepage @Inject constructor(
+@Inject
+class ObserveHomepage(
     private val coroutineDispatchers: CoroutineDispatchers,
     private val homepageRepository: HomepageRepository,
 ) : SubjectInteractor<Unit, Homepage>() {

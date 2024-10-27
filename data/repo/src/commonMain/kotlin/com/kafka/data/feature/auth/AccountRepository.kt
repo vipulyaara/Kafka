@@ -11,7 +11,7 @@ import io.github.jan.supabase.auth.user.UserInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * Account management has complex rules specifically due to anonymous authentication.
@@ -19,7 +19,8 @@ import javax.inject.Inject
  * Anonymous users can keep their data when they link their account.
  * */
 @ApplicationScope
-class AccountRepository @Inject constructor(private val supabase: Supabase) {
+@Inject
+class AccountRepository(private val supabase: Supabase) {
     val auth = supabase.auth
 
     val currentUser

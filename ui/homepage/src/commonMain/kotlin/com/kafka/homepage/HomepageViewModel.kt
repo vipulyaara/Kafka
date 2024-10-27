@@ -20,9 +20,10 @@ import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class HomepageViewModel @Inject constructor(
+@Inject
+class HomepageViewModel(
     observeHomepage: ObserveHomepage,
     observeUser: ObserveUser,
     observeShareAppIndex: ObserveShareAppIndex,

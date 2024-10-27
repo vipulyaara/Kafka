@@ -10,10 +10,11 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.modules.SerializersModule
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class HomepageRepository @Inject constructor(
+@Inject
+class HomepageRepository(
     private val firestoreGraph: FirestoreGraph,
     private val homepageMapper: HomepageMapper,
     private val userDataRepository: UserDataRepository,

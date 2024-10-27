@@ -8,9 +8,10 @@ import com.kafka.data.feature.item.ItemRepository
 import com.kafka.data.model.MediaType
 import io.github.jan.supabase.postgrest.query.filter.TextSearchType
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class PerformSearch @Inject constructor(
+@Inject
+class PerformSearch(
     private val dispatchers: CoroutineDispatchers,
     private val itemRepository: ItemRepository,
     private val supabase: Supabase

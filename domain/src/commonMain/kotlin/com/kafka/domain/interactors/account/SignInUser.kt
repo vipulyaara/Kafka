@@ -5,9 +5,10 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class SignInUser @Inject constructor(
+@Inject
+class SignInUser(
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,
     private val analytics: Analytics,

@@ -13,9 +13,10 @@ import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.models.toMediaId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class PlaybackViewModel @Inject constructor(
+@Inject
+class PlaybackViewModel(
     private val playbackConnection: PlaybackConnection,
     private val fileDao: FileDao,
     private val navigator: Navigator,

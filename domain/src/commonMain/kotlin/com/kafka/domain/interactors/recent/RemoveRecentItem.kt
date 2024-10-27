@@ -3,9 +3,10 @@ package com.kafka.domain.interactors.recent
 import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class RemoveRecentItem @Inject constructor(
+@Inject
+class RemoveRecentItem(
     private val accountRepository: AccountRepository,
     private val firestoreGraph: FirestoreGraph
 ) : Interactor<String, Unit>() {

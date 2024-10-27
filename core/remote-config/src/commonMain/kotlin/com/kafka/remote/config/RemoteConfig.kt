@@ -7,12 +7,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 const val REMOTE_CONFIG_FETCH_INTERVAL_SECONDS = 3600L
 
 @ApplicationScope
-class RemoteConfig @Inject constructor(
+@Inject
+class RemoteConfig(
     private val json: Json,
     @ProcessLifetime private val scope: CoroutineScope
 ) {
@@ -32,11 +33,11 @@ class RemoteConfig @Inject constructor(
 //        }
     }
 
-     fun get(key: String): String = "remoteConfig[key]"
+    fun get(key: String): String = "remoteConfig[key]"
 
-     fun getBoolean(key: String): Boolean = true
+    fun getBoolean(key: String): Boolean = true
 
-     fun getLong(key: String): Long = 0L
+    fun getLong(key: String): Long = 0L
 
     private fun getDefaults(): Array<Pair<String, Any?>> {
         return arrayOf(

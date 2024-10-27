@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class FeedbackViewModel @Inject constructor(
+@Inject
+class FeedbackViewModel(
     private val updateFeedback: UpdateFeedback,
     private val snackbarManager: SnackbarManager,
     private val navigator: Navigator,

@@ -15,9 +15,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveAppMessage @Inject constructor(
+@Inject
+class ObserveAppMessage(
     private val firestoreGraph: FirestoreGraph,
     private val preferencesStore: PreferencesStore,
     private val userCountryRepository: UserCountryRepository,

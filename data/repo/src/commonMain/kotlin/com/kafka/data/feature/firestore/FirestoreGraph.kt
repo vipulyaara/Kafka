@@ -3,11 +3,12 @@ package com.kafka.data.feature.firestore
 import com.kafka.base.ApplicationScope
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.DocumentReference
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 
 @ApplicationScope
-class FirestoreGraph @Inject constructor(
+@Inject
+class FirestoreGraph(
     private val firestoreKt: FirebaseFirestoreKt
 ) {
     val homepageCollection: CollectionReference

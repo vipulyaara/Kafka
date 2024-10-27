@@ -23,9 +23,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class MainViewModel @Inject constructor(
+@Inject
+class MainViewModel(
     private val analytics: Analytics,
     private val signInAnonymously: SignInAnonymously,
     private val remoteConfig: RemoteConfig,
@@ -61,7 +62,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             combine(observeUser.flow, signInAnonymously.inProgress) { user, loading ->
                 signInState = signInState.copy(user = user, loading = loading)
-            }.collectLatest {  }
+            }.collectLatest { }
         }
     }
 

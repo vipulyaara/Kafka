@@ -8,9 +8,10 @@ import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveFavoriteStatus @Inject constructor(
+@Inject
+class ObserveFavoriteStatus(
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,
     private val firestoreGraph: FirestoreGraph,

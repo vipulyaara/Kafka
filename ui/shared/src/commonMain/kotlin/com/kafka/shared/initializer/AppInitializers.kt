@@ -2,13 +2,14 @@ package com.kafka.shared.initializer
 
 import com.kafka.base.AppInitializer
 import com.kafka.remote.config.RemoteConfig
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 expect class LoggerInitializer : AppInitializer
 
 expect class FirebaseInitializer : AppInitializer
 
-class RemoteConfigInitializer @Inject constructor(
+@Inject
+class RemoteConfigInitializer(
     private val remoteConfig: RemoteConfig,
 ) {
     fun init() {
@@ -16,7 +17,8 @@ class RemoteConfigInitializer @Inject constructor(
     }
 }
 
-class AppInitializers @Inject constructor(
+@Inject
+class AppInitializers(
     private val initializers: Set<AppInitializer>,
 ) {
     fun init() {

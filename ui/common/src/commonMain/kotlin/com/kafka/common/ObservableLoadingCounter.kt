@@ -4,10 +4,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import me.tatarka.inject.annotations.Inject
 import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
 
-class ObservableLoadingCounter @Inject constructor() {
+@Inject
+class ObservableLoadingCounter {
     private val count = AtomicInteger()
     private val loadingState = MutableStateFlow(count.get())
 

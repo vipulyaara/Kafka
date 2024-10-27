@@ -7,13 +7,14 @@ import com.sarahang.playback.core.apis.AudioDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * Checks if the item has been played before.
  * It does not explicitly check if the item is an audio item but if it exists in recent audios then it must be an audio.
  * */
-class IsResumableAudio @Inject constructor(
+@Inject
+class IsResumableAudio(
     private val dispatchers: CoroutineDispatchers,
     private val recentAudioDao: RecentAudioDao,
     private val audioDataSource: AudioDataSource

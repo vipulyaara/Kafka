@@ -9,9 +9,10 @@ import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.domain.interactors.GetPrimaryFile
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class AddRecentItem @Inject constructor(
+@Inject
+class AddRecentItem(
     private val dispatchers: CoroutineDispatchers,
     private val itemDao: ItemDao,
     private val getPrimaryFile: GetPrimaryFile,

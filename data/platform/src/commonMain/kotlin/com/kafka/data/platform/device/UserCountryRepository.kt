@@ -13,7 +13,7 @@ import io.ktor.client.request.url
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * Repository to reliably provide user's country.
@@ -26,7 +26,8 @@ import javax.inject.Inject
  * Additionally, the country is saved in local storage using IP lookup the first time app is launched as we might need it later when it's no longer available through other means
  * */
 @ApplicationScope
-class UserCountryRepository @Inject constructor(
+@Inject
+class UserCountryRepository(
     private val preferencesStore: PreferencesStore,
     private val httpClient: HttpClient,
     @ProcessLifetime private val processScope: CoroutineScope,

@@ -5,9 +5,10 @@ import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.Supabase
 import io.github.jan.supabase.auth.providers.Google
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class SignInWithGoogle @Inject constructor(
+@Inject
+class SignInWithGoogle(
     private val coroutineDispatchers: CoroutineDispatchers,
     private val supabase: Supabase
 ) : Interactor<Any?, Unit>() {

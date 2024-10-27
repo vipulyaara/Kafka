@@ -6,17 +6,18 @@ import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.http.Timeout
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import com.kafka.base.ApplicationScope
+import com.kafka.base.SecretsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import com.kafka.base.ApplicationScope
-import com.kafka.base.SecretsProvider
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @ApplicationScope
-class OpenAiRepository @Inject constructor(secretsProvider: SecretsProvider) {
+@Inject
+class OpenAiRepository(secretsProvider: SecretsProvider) {
     private val openai = OpenAI(
         token = secretsProvider.openAiApiKey.orEmpty(),
         timeout = Timeout(socket = 60.seconds)

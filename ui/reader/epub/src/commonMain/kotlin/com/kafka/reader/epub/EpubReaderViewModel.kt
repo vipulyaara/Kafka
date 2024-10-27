@@ -27,9 +27,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class EpubReaderViewModel @Inject constructor(
+@Inject
+class EpubReaderViewModel(
     observeItemDetail: ObserveItemDetail,
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val updateCurrentPage: UpdateCurrentPage,

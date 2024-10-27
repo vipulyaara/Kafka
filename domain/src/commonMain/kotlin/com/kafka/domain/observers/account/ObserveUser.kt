@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveUser @Inject constructor(
+@Inject
+class ObserveUser(
     private val dispatchers: CoroutineDispatchers,
     private val accountRepository: AccountRepository
 ) : SubjectInteractor<ObserveUser.Params, User?>() {

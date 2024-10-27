@@ -1,17 +1,18 @@
 package com.kafka.domain.observers
 
 import androidx.datastore.preferences.core.intPreferencesKey
+import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.prefs.PreferencesStore
+import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.shareAppIndex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import com.kafka.base.CoroutineDispatchers
-import com.kafka.base.domain.SubjectInteractor
-import com.kafka.remote.config.RemoteConfig
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveShareAppIndex @Inject constructor(
+@Inject
+class ObserveShareAppIndex(
     private val preferencesStore: PreferencesStore,
     private val remoteConfig: RemoteConfig,
     private val dispatchers: CoroutineDispatchers

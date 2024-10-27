@@ -5,12 +5,13 @@ import com.kafka.base.domain.Interactor
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.parser.EpubParser
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 /**
  * Parses an epub book from a given path on local storage.
  * */
-class ParseEbook @Inject constructor(
+@Inject
+class ParseEbook(
     private val epubParser: EpubParser,
     private val dispatchers: CoroutineDispatchers
 ) : Interactor<String, EpubBook>() {

@@ -9,9 +9,10 @@ import com.kafka.data.entities.FavoriteItem
 import com.kafka.data.feature.FavoritesRepository
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class UpdateFavorite @Inject constructor(
+@Inject
+class UpdateFavorite(
     private val accountRepository: AccountRepository,
     private val favoritesRepository: FavoritesRepository,
     private val itemDetailDao: ItemDetailDao,

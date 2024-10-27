@@ -26,9 +26,10 @@ import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ProfileViewModel @Inject constructor(
+@Inject
+class ProfileViewModel(
     private val snackbarManager: SnackbarManager,
     private val preferencesStore: PreferencesStore,
     private val logoutUser: LogoutUser,

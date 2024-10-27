@@ -19,13 +19,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 object HomepageMapperConfig {
     val shuffleIndices = (0 until 50).shuffled()
 }
 
-class HomepageMapper @Inject constructor(
+@Inject
+class HomepageMapper(
     private val itemDao: ItemDao,
     private val remoteConfig: RemoteConfig,
     private val accountRepository: AccountRepository,

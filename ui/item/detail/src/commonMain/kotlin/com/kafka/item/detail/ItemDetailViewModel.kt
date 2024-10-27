@@ -39,9 +39,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ItemDetailViewModel @Inject constructor(
+@Inject
+class ItemDetailViewModel(
     observeItemDetail: ObserveItemDetail,
     isResumableAudio: IsResumableAudio,
     getPrimaryFile: GetPrimaryFile,

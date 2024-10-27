@@ -15,9 +15,10 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class FirebaseAnalytics @Inject constructor(
+@Inject
+class FirebaseAnalytics(
     @ProcessLifetime scope: CoroutineScope,
     private val userDataRepository: UserDataRepository,
     private val eventRepository: EventRepository,

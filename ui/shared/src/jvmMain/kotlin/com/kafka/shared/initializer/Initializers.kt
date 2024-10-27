@@ -14,17 +14,19 @@ import dev.gitlive.firebase.FirebaseOptions
 import dev.gitlive.firebase.initialize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import java.io.File
-import javax.inject.Inject
 
-actual class LoggerInitializer @Inject constructor() : AppInitializer {
+@Inject
+actual class LoggerInitializer : AppInitializer {
     override fun init() {
         val logWriters = listOf(SystemWriter())
         Logger.setLogWriters(logWriters)
     }
 }
 
-actual class FirebaseInitializer @Inject constructor(
+@Inject
+actual class FirebaseInitializer(
     private val dispatchers: CoroutineDispatchers,
     private val remoteConfigInitializer: RemoteConfigInitializer,
     @ProcessLifetime private val coroutineScope: CoroutineScope,

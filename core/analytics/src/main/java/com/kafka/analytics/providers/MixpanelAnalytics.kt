@@ -11,10 +11,11 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import org.json.JSONObject
-import javax.inject.Inject
 
-class MixpanelAnalytics @Inject constructor(
+@Inject
+class MixpanelAnalytics(
     context: Application,
     @ProcessLifetime scope: CoroutineScope,
     secretsProvider: SecretsProvider,

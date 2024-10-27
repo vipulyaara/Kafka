@@ -114,9 +114,9 @@ kotlin {
     }
 }
 
-ksp {
-    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
-}
+//ksp {
+//    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
+//}
 
 android {
     namespace = "com.kafka.shared"

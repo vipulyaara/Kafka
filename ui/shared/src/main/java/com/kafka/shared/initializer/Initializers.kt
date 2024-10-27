@@ -14,10 +14,11 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 @OptIn(ExperimentalKermitApi::class)
-actual class LoggerInitializer @Inject constructor() : AppInitializer {
+actual class LoggerInitializer : AppInitializer {
     override fun init() {
         val logWriters = listOf(
             LogcatWriter(),
@@ -27,7 +28,8 @@ actual class LoggerInitializer @Inject constructor() : AppInitializer {
     }
 }
 
-actual class FirebaseInitializer @Inject constructor(
+@Inject
+actual class FirebaseInitializer(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
     private val crashlyticsInitializer: CrashlyticsInitializer,

@@ -8,9 +8,10 @@ import com.kafka.data.entities.Download
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveDownload @Inject constructor(
+@Inject
+class ObserveDownload(
     private val downloadDao: DownloadDao,
     private val dispatchers: CoroutineDispatchers
 ) : SubjectInteractor<String, Download?>() {

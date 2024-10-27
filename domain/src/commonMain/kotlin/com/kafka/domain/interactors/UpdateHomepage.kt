@@ -8,9 +8,10 @@ import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.homepage.HomepageRepository
 import com.kafka.data.feature.item.ItemRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class UpdateHomepage @Inject constructor(
+@Inject
+class UpdateHomepage(
     private val dispatchers: CoroutineDispatchers,
     private val homepageRepository: HomepageRepository,
     private val itemRepository: ItemRepository,

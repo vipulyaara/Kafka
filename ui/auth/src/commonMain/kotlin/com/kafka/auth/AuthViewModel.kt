@@ -19,9 +19,10 @@ import com.kafka.remote.config.isGoogleLoginEnabled
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class AuthViewModel @Inject constructor(
+@Inject
+class AuthViewModel(
     private val analytics: Analytics,
     private val signInUser: SignInUser,
     private val signUpUser: SignUpUser,

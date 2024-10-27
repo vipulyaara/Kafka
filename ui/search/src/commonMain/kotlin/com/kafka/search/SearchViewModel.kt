@@ -13,8 +13,8 @@ import com.kafka.common.snackbar.toUiMessage
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.domain.interactors.AddRecentSearch
-import com.kafka.domain.interactors.RemoveRecentSearch
 import com.kafka.domain.interactors.PerformSearch
+import com.kafka.domain.interactors.RemoveRecentSearch
 import com.kafka.domain.observers.ObserveRecentSearch
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
@@ -23,9 +23,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class SearchViewModel @Inject constructor(
+@Inject
+class SearchViewModel(
     observeRecentSearch: ObserveRecentSearch,
     private val addRecentSearch: AddRecentSearch,
     private val removeRecentSearch: RemoveRecentSearch,

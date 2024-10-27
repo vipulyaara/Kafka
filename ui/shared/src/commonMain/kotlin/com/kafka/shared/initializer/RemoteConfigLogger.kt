@@ -6,10 +6,11 @@ import com.kafka.base.ApplicationScope
 import com.kafka.remote.config.RECOMMENDATION_ROW_ENABLED
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isRecommendationRowEnabled
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class RemoteConfigLogger @Inject constructor(
+@Inject
+class RemoteConfigLogger(
     private val remoteConfig: RemoteConfig,
     private val analytics: Analytics,
 ) : AppInitializer {

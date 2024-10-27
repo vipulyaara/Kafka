@@ -24,6 +24,7 @@ import com.kafka.reader.epub.models.EpubImage
 import com.kafka.reader.epub.models.cache.EpubCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -32,12 +33,12 @@ import java.io.InputStream
 import java.util.concurrent.ThreadLocalRandom
 import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
-import javax.inject.Inject
 
 /**
  * Parses an EPUB file and creates an [EpubBook] object.
  */
-class EpubParser @Inject constructor(
+@Inject
+class EpubParser(
     private val epubCache: EpubCache,
     private val applicationInfo: ApplicationInfo
 ) {

@@ -13,10 +13,11 @@ import io.github.jan.supabase.postgrest.query.filter.PostgrestFilterBuilder
 import io.github.jan.supabase.realtime.selectAsFlow
 import io.github.jan.supabase.realtime.selectSingleValueAsFlow
 import kotlinx.coroutines.flow.catch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 import kotlin.reflect.KProperty1
 
-class Supabase @Inject constructor(client: SupabaseClient) {
+@Inject
+class Supabase(client: SupabaseClient) {
     val items = client.from("items")
     val bookDetail = client.from("item_detail")
     val files = client.from("files")

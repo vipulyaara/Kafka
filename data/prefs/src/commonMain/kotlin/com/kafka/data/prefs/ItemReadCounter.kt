@@ -1,13 +1,14 @@
 package com.kafka.data.prefs
 
 import androidx.datastore.preferences.core.intPreferencesKey
-import kotlinx.coroutines.CoroutineScope
 import com.kafka.base.ApplicationScope
 import com.kafka.base.ProcessLifetime
-import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class ItemReadCounter @Inject constructor(
+@Inject
+class ItemReadCounter(
     preferencesStore: PreferencesStore,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
 ) {

@@ -39,8 +39,8 @@ import com.kafka.ui.components.bottomScaffoldPadding
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.progress.InfiniteProgressBarSmall
 import com.kafka.ui.components.topScaffoldPadding
+import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.Dimens
-import javax.inject.Inject
 
 @Composable
 @Inject

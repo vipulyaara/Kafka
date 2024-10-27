@@ -7,9 +7,10 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.feature.Supabase
 import com.kafka.data.model.item.Publishers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ItemDetailDataSource @Inject constructor(
+@Inject
+class ItemDetailDataSource(
     private val dispatchers: CoroutineDispatchers,
     private val librivoxFileMapper: LibrivoxFileMapper,
     private val archiveService: ArchiveService,

@@ -3,9 +3,10 @@ package com.kafka.domain.interactors.account
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-actual class LogoutCredentialManager @Inject constructor() {
+@Inject
+actual class LogoutCredentialManager {
     actual suspend operator fun invoke(context: Any?): Result<Unit> {
         try {
             CredentialManager.create(context as Context)

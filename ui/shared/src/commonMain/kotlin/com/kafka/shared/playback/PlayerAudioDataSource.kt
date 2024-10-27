@@ -5,9 +5,10 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.isPlayable
 import com.sarahang.playback.core.apis.AudioDataSource
 import com.sarahang.playback.core.models.Audio
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class PlayerAudioDataSource @Inject constructor(private val fileDao: FileDao) : AudioDataSource {
+@Inject
+class PlayerAudioDataSource(private val fileDao: FileDao) : AudioDataSource {
     override suspend fun getByIds(ids: List<String>): List<Audio> {
         return fileDao.getByIds(ids.take(SQL_QUERY_LIMIT))
             .sortedBy { it.format }

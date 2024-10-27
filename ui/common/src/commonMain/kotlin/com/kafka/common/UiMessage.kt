@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class UiMessageManager @Inject constructor(){
+@Inject
+class UiMessageManager {
     private val mutex = Mutex()
 
     private val _messages = MutableStateFlow(emptyList<UiMessage>())

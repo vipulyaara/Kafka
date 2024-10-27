@@ -6,9 +6,10 @@ import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.feature.item.ItemDetailDataSource
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class UpdateItemDetail @Inject constructor(
+@Inject
+class UpdateItemDetail(
     private val dispatchers: CoroutineDispatchers,
     private val repository: ItemDetailDataSource,
     private val itemDetailDao: ItemDetailDao,

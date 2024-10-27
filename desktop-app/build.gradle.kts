@@ -71,7 +71,10 @@ compose.desktop {
         }
 
         jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
-        jvmArgs("--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED") // recommended but not necessary
+        jvmArgs(
+            "--add-opens",
+            "java.desktop/java.awt.peer=ALL-UNNAMED"
+        ) // recommended but not necessary
 
         if (System.getProperty("os.name").contains("Mac")) {
             jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
@@ -80,6 +83,6 @@ compose.desktop {
     }
 }
 
-ksp {
-    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
-}
+//ksp {
+//    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
+//}

@@ -6,10 +6,11 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationScope
 import com.kafka.base.errorLog
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class AppReviewManagerImpl @Inject constructor(
+@Inject
+class AppReviewManagerImpl(
     context: Application,
     private val analytics: Analytics,
 ) : AppReviewManager {

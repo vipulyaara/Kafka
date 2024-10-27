@@ -16,9 +16,10 @@ import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class RecentItemsViewModel @Inject constructor(
+@Inject
+class RecentItemsViewModel(
     getRecentItems: GetRecentItems,
     private val removeAllRecentItems: RemoveAllRecentItems,
     private val removeRecentItem: RemoveRecentItem,

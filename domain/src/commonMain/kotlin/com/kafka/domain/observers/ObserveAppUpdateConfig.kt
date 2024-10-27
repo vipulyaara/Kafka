@@ -5,9 +5,10 @@ import com.kafka.data.feature.firestore.FirestoreGraph
 import com.kafka.data.model.AppUpdateConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ObserveAppUpdateConfig @Inject constructor(
+@Inject
+class ObserveAppUpdateConfig(
     private val firestoreGraph: FirestoreGraph
 ) : SubjectInteractor<Unit, AppUpdateConfig>() {
     override fun createObservable(params: Unit): Flow<AppUpdateConfig> {

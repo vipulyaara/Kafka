@@ -14,9 +14,10 @@ import com.kafka.navigation.graph.Screen.Search
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import me.tatarka.inject.annotations.Assisted
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class SummaryViewModel @Inject constructor(
+@Inject
+class SummaryViewModel(
     observeSummary: ObserveSummary,
     observeItemDetail: ObserveItemDetail,
     @Assisted savedStateHandle: SavedStateHandle,

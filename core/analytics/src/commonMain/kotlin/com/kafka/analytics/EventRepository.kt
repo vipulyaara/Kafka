@@ -5,7 +5,8 @@ import dev.gitlive.firebase.analytics.FirebaseAnalyticsEvents
 import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class EventRepository @Inject constructor() {
+@Inject
+class EventRepository {
     fun searchQuery(
         keyword: String,
         filters: List<String>? = null,

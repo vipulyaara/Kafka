@@ -4,11 +4,12 @@ import android.app.Application
 import android.util.Log
 import com.google.android.gms.ads.MobileAds
 import com.kafka.base.AppInitializer
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NativeAdInitializer @Inject constructor(
+@Inject
+class NativeAdInitializer(
     private val application: Application,
 ) : AppInitializer {
     override fun init() {

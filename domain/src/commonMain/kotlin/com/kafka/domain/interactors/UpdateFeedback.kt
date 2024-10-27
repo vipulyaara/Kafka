@@ -6,9 +6,10 @@ import com.kafka.data.entities.Feedback
 import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class UpdateFeedback @Inject constructor(
+@Inject
+class UpdateFeedback(
     private val supabase: Supabase,
     private val accountRepository: AccountRepository,
     private val dispatchers: CoroutineDispatchers,

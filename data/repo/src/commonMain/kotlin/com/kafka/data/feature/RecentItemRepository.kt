@@ -5,10 +5,11 @@ import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
-class RecentItemRepository @Inject constructor(
+@Inject
+class RecentItemRepository(
     private val firestoreGraph: FirestoreGraph
 ) {
     suspend fun getRecentItems(uid: String): List<RecentItem> {
