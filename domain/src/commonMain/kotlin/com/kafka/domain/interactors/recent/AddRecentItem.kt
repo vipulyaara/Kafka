@@ -33,6 +33,7 @@ class AddRecentItem @Inject constructor(
                     title = item.title,
                     coverUrl = item.coverImage,
                     creators = item.creators,
+                    mediaType = primaryFile.mediaType,
                     updatedAt = Clock.System.now()
                 )
 

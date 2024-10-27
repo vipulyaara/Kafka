@@ -15,7 +15,7 @@ class UpdateFeedback @Inject constructor(
 ) : Interactor<UpdateFeedback.Params, Unit>() {
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            val email = params.email ?: accountRepository.currentUser?.email
+            val email = params.email ?: accountRepository.currentUser.email
             val feedback = Feedback(email = email, text = params.text)
 
             supabase.feedback.insert(feedback)

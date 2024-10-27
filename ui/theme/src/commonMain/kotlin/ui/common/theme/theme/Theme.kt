@@ -105,11 +105,4 @@ val LocalTheme = staticCompositionLocalOf<Theme> {
     error("LocalTheme not provided")
 }
 
-@Composable
-fun Theme.isDark() = when (this) {
-    Theme.LIGHT -> false
-    Theme.DARK -> true
-    Theme.SYSTEM -> isSystemInDarkTheme()
-}
-
 expect fun setStatusBarColor(context: Any?, lightStatusBar: Boolean)

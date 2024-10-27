@@ -30,8 +30,8 @@ import me.tatarka.inject.annotations.Assisted
 import javax.inject.Inject
 
 class EpubReaderViewModel @Inject constructor(
+    observeItemDetail: ObserveItemDetail,
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val observeItemDetail: ObserveItemDetail,
     private val updateCurrentPage: UpdateCurrentPage,
     private val observeDownload: ObserveDownload,
     private val snackbarManager: SnackbarManager,

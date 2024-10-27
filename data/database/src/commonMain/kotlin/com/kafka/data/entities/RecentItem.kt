@@ -44,7 +44,7 @@ data class RecentItem(
     @SerialName("item_id") val itemId: String,
     @SerialName("cover_image") val coverUrl: String?,
     @SerialName("creators") val creators: List<String>,
-    @SerialName("media_type") val mediaType: MediaType = MediaType.Default,
+    @SerialName("media_type") val mediaType: MediaType,
     @SerialName("updated_at") val updatedAt: Instant,
     @SerialName("progress") val progress: Float = 0f,
 ) {

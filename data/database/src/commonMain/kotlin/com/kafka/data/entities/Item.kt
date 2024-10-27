@@ -18,7 +18,7 @@ data class Item(
     @SerialName("creators") val creators: List<String> = emptyList(),
     @SerialName("languages") val languages: List<String>? = null,
     @SerialName("description") val description: String? = null,
-    @SerialName("cover_image") val coverImage: String? = null,
+    @SerialName("cover_image_alt") val coverImage: String? = null,
     @SerialName("collections") val collections: List<String>? = null,
     @SerialName("subjects") val subjects: List<String> = emptyList(),
 ) : BaseEntity {

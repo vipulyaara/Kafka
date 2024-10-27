@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 fun ItemCover(modifier: Modifier = Modifier, cover: @Composable () -> Unit) {
     Box(modifier.height(IntrinsicSize.Max)) {
         cover()
+
         Row(Modifier.fillMaxHeight()) {
             Box(
                 Modifier
