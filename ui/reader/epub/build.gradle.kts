@@ -21,7 +21,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 
-                implementation(libs.jsoup)
+                implementation(libs.ksoup)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
 
@@ -41,6 +41,7 @@ kotlin {
             dependsOn(jvmCommon)
 
             dependencies {
+                implementation(libs.jsoup)
             }
         }
     }

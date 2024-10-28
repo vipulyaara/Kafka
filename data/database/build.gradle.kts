@@ -32,7 +32,7 @@ kotlin {
                 implementation(libs.kotlininject.runtime)
                 implementation(libs.threeTenAbp)
 
-                api(libs.jsoup)
+                api(libs.ksoup)
                 api(libs.kotlinx.datetime)
             }
         }

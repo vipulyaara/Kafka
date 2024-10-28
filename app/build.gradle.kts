@@ -152,7 +152,6 @@ dependencies {
     implementation(libs.compose.foundation.layout)
     implementation(libs.compose.material.material3)
     implementation(libs.compose.material.navigation)
-    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.util)
     implementation(libs.dataStore)

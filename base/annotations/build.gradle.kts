@@ -1,13 +1,15 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.kotlin.jvm)
+    id("com.kafka.kotlin.multiplatform")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(libs.kotlininject.runtime)
+            }
+        }
 
-dependencies {
-    api(libs.kotlininject.runtime)
+        val jvmMain by getting
+    }
 }

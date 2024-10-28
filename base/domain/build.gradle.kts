@@ -9,18 +9,26 @@ kotlin {
             dependencies {
                 api(projects.base.annotations)
 
-                api(libs.kotlin.coroutines.swing)
-
                 api(libs.kermit)
-                api(libs.kinject)
                 api(libs.kotlin.coroutines.core)
-                api(libs.kotlin.stdlib)
                 api(libs.kotlin.immutable)
+                api(libs.kotlin.stdlib)
                 api(libs.kotlinx.atomicfu)
                 api(libs.kotlininject.runtime)
             }
         }
 
-        val jvmMain by getting
+        val jvmCommon by creating {
+            dependsOn(commonMain)
+        }
+
+        val jvmMain by getting {
+            dependsOn(jvmCommon)
+
+            dependencies {
+                api(libs.kotlin.coroutines.swing)
+            }
+        }
+
     }
 }

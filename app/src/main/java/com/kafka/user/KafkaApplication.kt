@@ -17,7 +17,7 @@ import com.sarahang.playback.core.timer.SleepTimer
  */
 class KafkaApplication : Application(), PlayerServiceDependencies {
     internal val component: AndroidApplicationComponent by lazy(LazyThreadSafetyMode.NONE) {
-        AndroidApplicationComponent::class.create(this)
+        AndroidApplicationComponent.create(this)
     }
 
     override fun onCreate() {

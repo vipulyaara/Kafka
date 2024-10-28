@@ -21,7 +21,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
 
-                api(libs.kotlin.coroutines.swing)
                 implementation(libs.kotlininject.runtime)
             }
         }
@@ -32,6 +31,9 @@ kotlin {
 
         val jvmMain by getting {
             dependsOn(jvmCommon)
+            dependencies {
+                api(libs.kotlin.coroutines.swing)
+            }
         }
 
         val androidMain by getting {

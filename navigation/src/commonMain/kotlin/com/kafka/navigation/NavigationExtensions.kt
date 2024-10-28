@@ -36,11 +36,11 @@ fun NavController.selectRootScreen(tab: RootScreen) {
 @Composable
 fun NavController.currentScreenAsState(): State<RootScreen> {
     val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
-    val rootScreens = com.kafka.navigation.ROOT_SCREENS
+    val rootScreens = ROOT_SCREENS
     DisposableEffect(this) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.navigationRoute } }
-                ?.let { selectedItem.value = it }
+                ?.let { selectedItem.value = it as RootScreen }
         }
         addOnDestinationChangedListener(listener)
 

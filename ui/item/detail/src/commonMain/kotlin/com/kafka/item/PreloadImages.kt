@@ -6,6 +6,7 @@ import coil3.request.ImageRequest
 import coil3.size.Size
 import com.kafka.data.entities.Item
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 suspend fun preloadImages(context: PlatformContext, items: List<Item>?, size: Int = 200) {

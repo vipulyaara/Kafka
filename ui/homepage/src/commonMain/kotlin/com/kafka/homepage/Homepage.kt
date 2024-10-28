@@ -278,11 +278,7 @@ private fun RowItems(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {
         if (items.isNotEmpty()) {
-            items(
-                items = items,
-                key = { it.itemId },
-                contentType = { it.javaClass }
-            ) { item ->
+            items(items = items, key = { it.itemId }) { item ->
                 RowItem(
                     item = item,
                     modifier = Modifier.clickable { openItemDetail(item.itemId) }
@@ -332,11 +328,7 @@ private fun LazyListScope.columnItems(
     openItemDetail: (String) -> Unit,
 ) {
     if (collection.items.isNotEmpty()) {
-        items(
-            items = collection.items,
-            key = { it.itemId },
-            contentType = { it.javaClass }
-        ) { item ->
+        items(items = collection.items, key = { it.itemId }) { item ->
             Item(
                 item = item,
                 modifier = Modifier

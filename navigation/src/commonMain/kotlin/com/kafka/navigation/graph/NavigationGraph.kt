@@ -4,8 +4,6 @@ package com.kafka.navigation.graph
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Serializable
 sealed class RootScreen(val analyticsKey: String) {
@@ -85,8 +83,6 @@ sealed class Screen {
     @Serializable
     data object Back : Screen()
 }
-
-fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
 
 val Any.navigationRoute
     get() = this::class.qualifiedName?.removeSuffix(".Companion")

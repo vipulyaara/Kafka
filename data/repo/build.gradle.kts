@@ -45,7 +45,7 @@ kotlin {
         }
 
         val androidMain by getting {
-            dependsOn(jvmMain)
+            dependsOn(jvmCommon)
         }
     }
 }

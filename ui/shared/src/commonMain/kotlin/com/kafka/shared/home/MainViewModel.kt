@@ -17,6 +17,7 @@ import com.kafka.domain.interactors.account.SignInAnonymously
 import com.kafka.domain.observers.ObserveAppMessage
 import com.kafka.domain.observers.ObserveAppUpdateConfig
 import com.kafka.domain.observers.account.ObserveUser
+import com.kafka.networking.localizedMessage
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getPlayerTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -70,7 +71,7 @@ class MainViewModel(
         signInState = signInState.copy(error = null)
         viewModelScope.launch {
             signInAnonymously(Unit)
-                .onException { signInState = signInState.copy(error = it.localizedMessage) }
+                .onException { signInState = signInState.copy(error = it.message) }
         }
     }
 

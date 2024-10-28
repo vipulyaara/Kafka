@@ -18,7 +18,6 @@ kotlin {
                 api(compose.material3)
                 api(compose.components.resources)
                 api(compose.runtime)
-                api(compose.uiTooling)
                 api(compose.ui)
 
                 api(libs.jetbrains.adaptive)
@@ -27,6 +26,7 @@ kotlin {
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)
 
+                implementation(libs.kotlinx.atomicfu)
                 implementation(libs.kotlin.stdlib)
             }
         }

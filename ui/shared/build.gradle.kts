@@ -1,4 +1,5 @@
 import com.kafka.gradle.addKspDependencyForAllTargets
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -47,7 +48,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.base.domain)
-                implementation(projects.core.analytics)
+                api(projects.core.analytics)
                 implementation(projects.core.downloader)
                 implementation(projects.core.networking)
                 implementation(projects.core.play)
@@ -74,7 +75,6 @@ kotlin {
                 implementation(compose.components.resources)
 
                 implementation(libs.firebase.firestore)
-                implementation(libs.kotlin.coroutines.swing)
                 implementation(libs.kotlininject.runtime)
 
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
@@ -98,6 +98,10 @@ kotlin {
 
         val jvmMain by getting {
             dependsOn(jvmCommon)
+
+            dependencies {
+                implementation(libs.kotlin.coroutines.swing)
+            }
         }
 
         val androidMain by getting {
@@ -111,12 +115,58 @@ kotlin {
                 implementation(libs.okhttp.okhttp)
             }
         }
+
+//        iosMain {
+//            resources.srcDirs("src/commonMain/resources","src/iosMain/resources")
+//            dependencies {
+//                //Your dependencies
+//            }
+//        }
+    }
+
+    targets.withType<KotlinNativeTarget>().configureEach {
+        binaries.framework {
+            isStatic = true
+            baseName = "KafkaKt"
+
+            export(projects.core.analytics)
+        }
     }
 }
+
+tasks.register<Copy>("aggregateResources") {
+    val outputDir = layout.buildDirectory.dir("kotlin-multiplatform-resources/aggregated-resources")
+    from("src/commonMain/resources")
+    into(outputDir)
+}
+
+tasks.register("copyComposeResources") {
+    doLast {
+        val resourceDir = file("${projectDir}/build/kotlin-multiplatform-resources/aggregated-resources/iosSimulatorArm64")
+        val composeResourcesDir = file("${resourceDir}/composeResources")
+        val targetDir = file("${resourceDir}/compose-resources")
+
+        mkdir(targetDir)
+        copy {
+            from(composeResourcesDir)
+            into(targetDir)
+        }
+    }
+}
+
+//because the dependency on the compose library is a project dependency
+compose.resources {
+    generateResClass = always
+}
+
 
 //ksp {
 //    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
 //}
+
+ksp {
+    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+}
 
 android {
     namespace = "com.kafka.shared"

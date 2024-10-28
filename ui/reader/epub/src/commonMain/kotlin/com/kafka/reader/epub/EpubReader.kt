@@ -38,7 +38,7 @@ import com.kafka.common.simpleClickable
 import com.kafka.navigation.LocalNavigator
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
-import com.kafka.reader.epub.parser.BookTextMapper
+import com.kafka.reader.epub.parser.EpubImageParser
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
 import com.kafka.ui.components.progress.InfiniteProgressBar
@@ -110,7 +110,7 @@ private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>, lazyListState
 private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSettings) {
     val paragraphs = remember { chunkText(chapter.body) }
     paragraphs.forEach { para ->
-        val imgEntry = BookTextMapper.ImgEntry.fromXMLString(para)
+        val imgEntry = EpubImageParser.getImagePath(para)
 
         if (imgEntry == null) {
             SelectionContainer {
@@ -126,7 +126,7 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
                 )
             }
         } else {
-            val image = ebook.images.find { it.absPath == imgEntry.path }
+            val image = ebook.images.find { it.absPath == imgEntry }
             image?.let {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalPlatformContext.current)

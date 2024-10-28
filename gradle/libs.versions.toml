@@ -2,7 +2,7 @@
 accompanist = "0.36.0"
 adaptive = "1.0.0"
 appupdate = "2.1.0"
-agp = "8.6.1"
+agp = "8.7.1"
 androidxlifecycle = "2.9.0-alpha05"
 coil = "2.6.0"
 coil3 = "3.0.0-rc01"
@@ -57,7 +57,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.0.21-1.0.25"
+ksp = "com.google.devtools.ksp:2.0.21-1.0.26"
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 spotless = "com.diffplug.spotless:6.25.0"
@@ -123,7 +123,7 @@ compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
-google-bom = "com.google.firebase:firebase-bom:33.4.0"
+google-bom = "com.google.firebase:firebase-bom:33.5.1"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
@@ -149,6 +149,7 @@ haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
 jsoup = "org.jsoup:jsoup:1.17.2"
+ksoup = "com.fleeksoft.ksoup:ksoup-lite:0.1.9"
 
 kermit = "co.touchlab:kermit:2.0.4"
 kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
@@ -166,7 +167,7 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlin-serialization-proto = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
 
-kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
+kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.26.0"
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }

@@ -40,7 +40,6 @@ kotlin {
 
                 implementation(libs.kotlininject.runtime)
                 implementation(libs.kotlin.coroutines.core)
-                implementation(libs.kotlin.coroutines.swing)
 
                 implementation(libs.firebase.firestore)
                 implementation(libs.firebase.analytics)

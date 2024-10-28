@@ -1,6 +1,5 @@
 package com.kafka.data.feature
 
-import com.google.firebase.firestore.Query
 import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
@@ -20,7 +19,7 @@ class RecentItemRepository(
 
     fun observeRecentItems(uid: String, limit: Int) =
         firestoreGraph.readingListCollection(uid)
-            .orderBy("updated_at", Query.Direction.DESCENDING)
+//            .orderBy("updated_at", Query.Direction.DESCENDING) //todo
             .limit(limit)
             .snapshots
             .map { snapshot ->

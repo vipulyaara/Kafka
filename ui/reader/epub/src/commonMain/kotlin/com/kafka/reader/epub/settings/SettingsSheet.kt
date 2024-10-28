@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class) @file:JvmName("ReaderSettingsKt")
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.kafka.reader.epub.settings
 

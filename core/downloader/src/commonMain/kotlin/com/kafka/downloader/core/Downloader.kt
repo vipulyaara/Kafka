@@ -16,15 +16,20 @@ import io.ktor.utils.io.core.readAvailable
 import io.ktor.utils.io.readAvailable
 import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.io.IOException
 import me.tatarka.inject.annotations.Inject
-import java.io.File
-import java.io.OutputStream
+import okio.FileSystem
+import okio.Path.Companion.toPath
+import okio.SYSTEM
+import okio.buffer
+import okio.use
 import kotlin.math.min
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 interface Downloader {
     suspend fun download(fileId: String)
@@ -41,12 +46,13 @@ class KtorDownloader(
     applicationInfo: ApplicationInfo
 ) : Downloader {
     private val downloadsPath = applicationInfo.cachePath()
+    private val sinkMutex = Mutex()
 
     override suspend fun download(fileId: String) {
         val file = fileById(fileId)
         val url = file.url!!
         val name = file.name
-        val filePath = File(downloadsPath, name).absolutePath
+        val filePath = "$downloadsPath/$name"
 
         debug(tag) { "Starting to download file: $fileId from $url" }
 
@@ -56,7 +62,7 @@ class KtorDownloader(
 //                downloadDao.delete(fileId)
 //            }
 
-        if (File(filePath).exists()) {
+        if (FileSystem.SYSTEM.exists(filePath.toPath())) {
             debug(tag) { "File already exists: $filePath" }
             val download = Download(fileId, Download.Status.Completed, 100, filePath)
             downloadDao.insert(download)
@@ -100,8 +106,8 @@ class KtorDownloader(
         val chunks = (contentLength + chunkSize - 1) / chunkSize
         debug(tag) { "Parallel download for $fileId: $chunks chunks of $chunkSize bytes each" }
 
-        val tempFile = File(downloadsPath, "$name.temp")
-        tempFile.outputStream().use { outputStream ->
+        val tempPath = "$downloadsPath/$name.temp".toPath()
+        FileSystem.SYSTEM.sink(tempPath).buffer().use { sink ->
             coroutineScope {
                 val jobs = (0 until chunks).map { chunkIndex ->
                     launch {
@@ -114,7 +120,7 @@ class KtorDownloader(
                             start = start,
                             end = end,
                             totalLength = contentLength,
-                            outputStream = outputStream,
+                            sink = sink,
                             chunkIndex = chunkIndex
                         )
                     }
@@ -123,13 +129,8 @@ class KtorDownloader(
             }
         }
 
-        // Rename temp file to final file name
-        val finalFile = File(downloadsPath, name)
-        if (tempFile.renameTo(finalFile)) {
-            debug(tag) { "Renamed temp file to $name for $fileId" }
-        } else {
-            throw IOException("Failed to rename temp file for $fileId")
-        }
+        val finalPath = "$downloadsPath/$name".toPath()
+        FileSystem.SYSTEM.atomicMove(tempPath, finalPath)
 
         debug(tag) { "All chunks downloaded and assembled for $fileId" }
     }
@@ -140,7 +141,7 @@ class KtorDownloader(
         start: Long,
         end: Long,
         totalLength: Long,
-        outputStream: OutputStream,
+        sink: okio.BufferedSink,
         chunkIndex: Long
     ) {
         val response = client.get(url) {
@@ -160,8 +161,11 @@ class KtorDownloader(
 
             bytesRead += read
 
-            synchronized(outputStream) {
-                outputStream.write(buffer, 0, read)
+            withContext(Dispatchers.IO) {
+                sinkMutex.withLock {
+                    sink.write(buffer, 0, read)
+                    sink.flush()
+                }
             }
             updateProgress(fileId, ((start + bytesRead).toFloat() / totalLength * 100).toInt())
         }
@@ -176,7 +180,8 @@ class KtorDownloader(
 
         debug(tag) { "Single-threaded download started for $fileId" }
 
-        File(downloadsPath, name).outputStream().buffered().use { outputStream ->
+        val path = "$downloadsPath/$name".toPath()
+        FileSystem.SYSTEM.sink(path).buffer().use { sink ->
             var bytesRead = 0L
             val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
 
@@ -184,7 +189,8 @@ class KtorDownloader(
                 val read = channel.readAvailable(buffer)
                 if (read == -1) break
 
-                outputStream.write(buffer, 0, read)
+                sink.write(buffer, 0, read)
+                sink.flush()
                 bytesRead += read
 
                 if (contentLength > 0) {
@@ -232,10 +238,10 @@ class KtorDownloader(
 
     private suspend fun removeFile(fileId: String, name: String) {
         withContext(Dispatchers.IO) {
-            val file = File(downloadsPath, name)
-            if (file.exists()) {
-                val deleted = file.delete()
-                debug(tag) { "File deletion for $fileId: ${if (deleted) "successful" else "failed"}" }
+            val path = "$downloadsPath/$name".toPath()
+            if (FileSystem.SYSTEM.exists(path)) {
+                FileSystem.SYSTEM.delete(path)
+                debug(tag) { "File deletion for $fileId: successful" }
             } else {
                 debug(tag) { "File for $fileId does not exist, skipping deletion" }
             }

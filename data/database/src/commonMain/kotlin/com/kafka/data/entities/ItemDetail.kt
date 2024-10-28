@@ -3,12 +3,12 @@ package com.kafka.data.entities
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.fleeksoft.ksoup.Ksoup
 import com.kafka.data.model.MediaType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.jsoup.Jsoup
 
 /**
  * @author Vipul Kumar; dated 13/02/19.
@@ -50,5 +50,5 @@ data class ItemDetail(
             .orEmpty()
 
     val formattedDescription: String
-        get() = Jsoup.parse(trimmedDescription).text()
+        get() = Ksoup.parse(trimmedDescription).text()
 }

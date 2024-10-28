@@ -3,9 +3,9 @@ package com.kafka.data.injection
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.kafka.base.ApplicationScope
+import com.kafka.base.CoroutineDispatchers
 import com.kafka.data.db.KafkaDatabase
 import com.kafka.data.db.KafkaRoomDatabase
-import kotlinx.coroutines.Dispatchers
 import me.tatarka.inject.annotations.Provides
 
 const val databaseName = "kafka_1.db"
@@ -13,12 +13,15 @@ const val databaseName = "kafka_1.db"
 interface DatabaseModule {
     @Provides
     @ApplicationScope
-    fun provideDatabase(builder: RoomDatabase.Builder<KafkaRoomDatabase>): KafkaRoomDatabase {
+    fun provideDatabase(
+        builder: RoomDatabase.Builder<KafkaRoomDatabase>,
+        dispatchers: CoroutineDispatchers
+    ): KafkaRoomDatabase {
         return builder
             .fallbackToDestructiveMigrationOnDowngrade(true)
             .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
-            .setQueryCoroutineContext(Dispatchers.IO)
+            .setQueryCoroutineContext(dispatchers.io)
             .build()
     }
 

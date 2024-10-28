@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val applicationComponent = AndroidApplicationComponent.from(this)
-        val component = AndroidActivityComponent::class.create(this, applicationComponent)
+        val component = AndroidActivityComponent.create(this, applicationComponent)
 
         setContent {
             val theme by applicationComponent.preferencesStore.observeTheme()

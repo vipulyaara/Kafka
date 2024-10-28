@@ -1,6 +1,5 @@
 package com.kafka.data.entities
 
-import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kafka.data.model.MediaType
@@ -9,7 +8,6 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Keep
 @Serializable
 data class CurrentlyReading(
     @SerialName("uid") val uid: String,
@@ -20,7 +18,6 @@ data class CurrentlyReading(
     @SerialName("updated_at") val updatedAt: Instant = Clock.System.now(),
 )
 
-@Keep
 @Serializable
 @Entity
 data class RecentItemSchema(
@@ -34,7 +31,6 @@ data class RecentItemSchema(
     }
 }
 
-@Keep
 @Serializable
 @Entity
 data class RecentItem(
