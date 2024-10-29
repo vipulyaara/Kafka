@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.domain)
                 api(projects.core.imageLoading)
@@ -31,17 +31,7 @@ kotlin {
             }
         }
 
-        val jvmCommon by creating {
-            dependsOn(commonMain)
-        }
-
-        val jvmMain by getting {
-            dependsOn(jvmCommon)
-        }
-
-        val androidMain by getting {
-            dependsOn(jvmCommon)
-
+        androidMain {
             dependencies {
             }
         }

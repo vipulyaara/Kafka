@@ -17,7 +17,7 @@ dependencies {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(projects.base.domain)
                 api(projects.data.models)

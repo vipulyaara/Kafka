@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.domain)
                 implementation(projects.core.analytics)
@@ -13,16 +13,11 @@ kotlin {
         }
 
         val jvmCommon by creating {
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
-        val jvmMain by getting {
+        androidMain {
             dependsOn(jvmCommon)
-        }
-
-        val androidMain by getting {
-            dependsOn(jvmCommon)
-
             dependencies {
                 implementation(libs.google.review)
             }

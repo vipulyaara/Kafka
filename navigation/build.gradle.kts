@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.annotations)
                 implementation(projects.data.repo)
@@ -22,14 +22,14 @@ kotlin {
         }
 
         val jvmCommon by creating {
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
-        val jvmMain by getting {
+        jvmMain {
             dependsOn(jvmCommon)
         }
 
-        val androidMain by getting {
+        androidMain {
             dependsOn(jvmCommon)
 
             dependencies {

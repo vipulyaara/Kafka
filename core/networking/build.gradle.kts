@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.domain)
 
@@ -14,7 +14,5 @@ kotlin {
                 api(libs.kotlin.serialization)
             }
         }
-
-        val jvmMain by getting
     }
 }

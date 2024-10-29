@@ -45,7 +45,7 @@ buildConfig {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.domain)
                 api(projects.core.analytics)
@@ -93,20 +93,18 @@ kotlin {
         }
 
         val jvmCommon by creating {
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
-        val jvmMain by getting {
+        jvmMain {
             dependsOn(jvmCommon)
-
             dependencies {
                 implementation(libs.kotlin.coroutines.swing)
             }
         }
 
-        val androidMain by getting {
+        androidMain {
             dependsOn(jvmCommon)
-
             dependencies {
                 implementation(libs.accompanist.permissions)
                 implementation(libs.androidx.lifecycle.process)
@@ -158,11 +156,6 @@ tasks.register("copyComposeResources") {
 compose.resources {
     generateResClass = always
 }
-
-
-//ksp {
-//    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
-//}
 
 ksp {
     arg("me.tatarka.inject.generateCompanionExtensions", "true")

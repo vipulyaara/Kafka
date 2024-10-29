@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.base.annotations)
                 implementation(projects.base.domain)
@@ -26,19 +26,18 @@ kotlin {
         }
 
         val jvmCommon by creating {
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
-        val jvmMain by getting {
+        jvmMain {
             dependsOn(jvmCommon)
             dependencies {
                 api(libs.kotlin.coroutines.swing)
             }
         }
 
-        val androidMain by getting {
+        androidMain {
             dependsOn(jvmCommon)
-
             dependencies {
                 implementation(libs.coil.coil)
                 implementation(libs.coil.compose)

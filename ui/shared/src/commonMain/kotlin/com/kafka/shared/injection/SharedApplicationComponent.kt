@@ -46,7 +46,6 @@ interface SharedApplicationComponent :
 
         override val supabaseUrl: String = BuildConfig.SUPABASE_PROJECT_URL
         override val supabaseKey: String = BuildConfig.SUPABASE_KEY
-
-        override val mixpanelToken: String = "BuildConfig."
+        override val mixpanelToken: String = BuildConfig.MIXPANEL_TOKEN
     }
 }

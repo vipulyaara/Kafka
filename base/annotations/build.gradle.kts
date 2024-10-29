@@ -4,12 +4,10 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(libs.kotlininject.runtime)
             }
         }
-
-        val jvmMain by getting
     }
 }

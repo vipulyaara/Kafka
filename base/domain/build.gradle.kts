@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(projects.base.annotations)
 
@@ -18,13 +18,7 @@ kotlin {
             }
         }
 
-        val jvmCommon by creating {
-            dependsOn(commonMain)
-        }
-
-        val jvmMain by getting {
-            dependsOn(jvmCommon)
-
+        jvmMain {
             dependencies {
                 api(libs.kotlin.coroutines.swing)
             }

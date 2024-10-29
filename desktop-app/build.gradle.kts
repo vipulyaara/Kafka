@@ -13,7 +13,7 @@ dependencies {
 
 kotlin {
     sourceSets {
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(projects.base.annotations)
                 implementation(projects.base.domain)
@@ -81,7 +81,3 @@ compose.desktop {
         }
     }
 }
-
-//ksp {
-//    arg("me.tatarka.inject.enableJavaxAnnotations", "true")
-//}
