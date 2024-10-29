@@ -24,11 +24,11 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
     ) {
         val applicationComponent = remember {
-            DesktopApplicationComponent::class.create()
+            DesktopApplicationComponent.create()
         }
 
         val component = remember(applicationComponent) {
-            WindowComponent::class.create(applicationComponent)
+            WindowComponent.create(applicationComponent)
         }
 
         component.appInitializers.forEach { it.init() }
