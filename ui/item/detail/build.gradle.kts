@@ -8,15 +8,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.base.domain)
-                implementation(projects.core.analytics)
                 implementation(projects.core.play)
-                implementation(projects.corePlayback)
-                implementation(projects.core.remoteConfig)
-                implementation(projects.data.repo)
                 implementation(projects.domain)
                 implementation(projects.navigation)
-                implementation(projects.ui.common)
                 implementation(projects.ui.components)
                 implementation(projects.uiPlayback)
 

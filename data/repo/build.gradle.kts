@@ -8,31 +8,29 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.base.domain)
-                implementation(projects.core.networking)
+                api(projects.base.domain)
+                api(projects.core.networking)
                 implementation(projects.core.remoteConfig)
                 api(projects.data.database)
                 api(projects.data.models)
-                implementation(projects.data.platform)
+                api(projects.data.platform)
 
-                implementation(libs.androidx.room.runtime)
+                api(libs.androidx.room.runtime)
 
-                implementation(project.dependencies.platform(libs.openai.kotlin.bom))
-                implementation(libs.openai.client)
-                implementation(libs.openai.client)
+                api(project.dependencies.platform(libs.openai.kotlin.bom))
+                api(libs.openai.client)
+                api(libs.openai.client)
 
-                implementation(project.dependencies.platform(libs.supabase.bom))
-                implementation(libs.supabase.auth)
-                implementation(libs.supabase.postgrest)
-                implementation(libs.supabase.realtime)
-                implementation(libs.supabase.storage)
+                api(project.dependencies.platform(libs.supabase.bom))
+                api(libs.supabase.auth)
+                api(libs.supabase.postgrest)
+                api(libs.supabase.realtime)
+                api(libs.supabase.storage)
 
-                implementation(libs.firebase.firestore)
-                implementation(libs.kotlin.serialization)
+                api(libs.firebase.firestore)
+                api(libs.kotlin.serialization)
 
-                implementation(libs.ktor.client.cio)
-
-                implementation(libs.kotlininject.runtime)
+                api(libs.ktor.client.cio)
             }
         }
 

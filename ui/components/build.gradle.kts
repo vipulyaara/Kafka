@@ -8,9 +8,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.base.domain)
                 implementation(projects.data.repo)
-                implementation(projects.ui.common)
+                api(projects.ui.common)
 
                 api(compose.components.resources)
                 api(compose.components.uiToolingPreview)

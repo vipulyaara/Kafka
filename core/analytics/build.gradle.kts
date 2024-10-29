@@ -10,8 +10,6 @@ kotlin {
                 implementation(projects.base.domain)
                 implementation(projects.data.platform)
 
-                implementation(libs.kotlininject.runtime)
-
                 implementation(libs.firebase.analytics)
 
                 implementation(project.dependencies.platform(libs.supabase.bom))

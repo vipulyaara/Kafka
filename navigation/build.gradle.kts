@@ -9,13 +9,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.base.annotations)
                 implementation(projects.data.repo)
                 implementation(projects.ui.common)
 
                 implementation(compose.material)
 
-                implementation(libs.kotlin.serialization)
                 implementation(libs.jetbrains.navigation.compose)
                 implementation(libs.jetbrains.material.navigation)
             }
@@ -31,11 +29,6 @@ kotlin {
 
         androidMain {
             dependsOn(jvmCommon)
-
-            dependencies {
-                api(libs.androidx.navigation.compose)
-                implementation(libs.compose.material.navigation)
-            }
         }
     }
 }

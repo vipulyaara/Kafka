@@ -15,8 +15,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 88
-        versionName = "0.48.0"
+        versionCode = 1
+        versionName = "0.0.1"
     }
 
     compileOptions {
@@ -172,6 +172,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
 
     implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.contentnegotiation)
     implementation(libs.ktor.serialization)
 
     implementation(project.dependencies.platform(libs.openai.kotlin.bom))

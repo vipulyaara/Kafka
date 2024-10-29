@@ -8,10 +8,12 @@ kotlin {
             dependencies {
                 implementation(projects.base.domain)
 
-                implementation(libs.kotlininject.runtime)
+                implementation(libs.kotlin.serialization)
+
                 api(libs.ktor.client.cio)
+                api(libs.ktor.client.contentnegotiation)
                 api(libs.ktor.client.logging)
-                api(libs.kotlin.serialization)
+                api(libs.ktor.serialization)
             }
         }
     }

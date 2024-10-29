@@ -8,7 +8,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.base.annotations)
                 implementation(projects.base.domain)
 
                 api(libs.coil3.coil)
@@ -20,8 +19,6 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.runtime)
                 implementation(compose.ui)
-
-                implementation(libs.kotlininject.runtime)
             }
         }
 
@@ -39,8 +36,6 @@ kotlin {
         androidMain {
             dependsOn(jvmCommon)
             dependencies {
-                implementation(libs.coil.coil)
-                implementation(libs.coil.compose)
             }
         }
     }

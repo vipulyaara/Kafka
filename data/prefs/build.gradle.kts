@@ -10,7 +10,6 @@ kotlin {
                 api(projects.base.domain)
 
                 api(libs.dataStore)
-                api(libs.kinject)
             }
         }
     }

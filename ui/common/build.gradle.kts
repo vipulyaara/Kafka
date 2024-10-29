@@ -25,9 +25,6 @@ kotlin {
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)
-
-                implementation(libs.kotlinx.atomicfu)
-                implementation(libs.kotlin.stdlib)
             }
         }
 

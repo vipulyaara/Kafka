@@ -8,8 +8,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.base.domain)
-                implementation(projects.data.repo)
-                implementation(projects.ui.common)
                 implementation(projects.ui.components)
 
                 implementation(compose.components.resources)

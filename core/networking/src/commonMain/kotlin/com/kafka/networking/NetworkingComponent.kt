@@ -4,6 +4,7 @@ import com.kafka.base.ApplicationScope
 import com.kafka.base.debug
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -18,6 +19,7 @@ import kotlinx.serialization.serializer
 import me.tatarka.inject.annotations.Provides
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.seconds
+import io.ktor.serialization.kotlinx.json.*
 
 interface NetworkingComponent {
 
@@ -47,9 +49,9 @@ interface NetworkingComponent {
     @ApplicationScope
     @Provides
     fun provideHttpClient(json: Json): HttpClient = HttpClient {
-//        install(ContentNegotiation) {
-//            json(json)
-//        }
+        install(ContentNegotiation) {
+            json(json)
+        }
 
         install(HttpTimeout) {
             requestTimeoutMillis = Config.API_TIMEOUT

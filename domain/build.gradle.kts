@@ -8,25 +8,12 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.corePlayback)
-                implementation(projects.base.domain)
-                implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
-
-                implementation(projects.core.remoteConfig)
-                implementation(projects.data.repo)
-
-                implementation(libs.androidx.room.runtime)
-
-                implementation(libs.firebase.firestore)
-
-                implementation(libs.kotlininject.runtime)
-
-                implementation(project.dependencies.platform(libs.supabase.bom))
-                implementation(libs.supabase.auth.compose)
-                implementation(libs.supabase.postgrest)
-                implementation(libs.supabase.realtime)
-                implementation(libs.supabase.storage)
+                api(projects.corePlayback)
+                api(projects.base.domain)
+                api(projects.core.analytics)
+                api(projects.core.downloader)
+                api(projects.core.remoteConfig)
+                api(projects.data.repo)
             }
         }
 
