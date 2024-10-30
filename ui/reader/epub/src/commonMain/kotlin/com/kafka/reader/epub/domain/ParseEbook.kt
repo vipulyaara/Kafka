@@ -6,6 +6,10 @@ import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.parser.EpubParser
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
+import okio.FileSystem
+import okio.Path.Companion.toPath
+import okio.SYSTEM
+import okio.use
 
 /**
  * Parses an epub book from a given path on local storage.
@@ -17,7 +21,11 @@ class ParseEbook(
 ) : Interactor<String, EpubBook>() {
     override suspend fun doWork(params: String): EpubBook {
         return withContext(dispatchers.io) {
-            epubParser.createEpubBook(params)
+            FileSystem.SYSTEM
+                .source(params.toPath())
+                .use { source ->
+                    epubParser.createEpubBook(source)
+                }
         }
     }
 }

@@ -198,6 +198,8 @@ media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", vers
 okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
+okio = "com.squareup.okio:okio:3.9.1"
+
 openai-kotlin-bom = "com.aallam.openai:openai-client-bom:3.8.2"
 openai-client = { module = "com.aallam.openai:openai-client" }
 

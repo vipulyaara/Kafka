@@ -23,7 +23,9 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
 import me.tatarka.inject.annotations.Inject
-import java.io.File
+import okio.FileSystem
+import okio.Path
+import okio.Path.Companion.toPath
 
 /**
  * A cache storage based on Protocol Buffers for storing [EpubBook] objects.
@@ -32,14 +34,14 @@ import java.io.File
  * @param context The context of the application.
  */
 @Inject
-class EpubCache(private val applicationInfo: ApplicationInfo) {
+class EpubCache(
+    private val applicationInfo: ApplicationInfo,
+    private val fileSystem: FileSystem
+) {
 
     companion object {
-        private const val TAG = "EpubCache"
         private const val EPUB_CACHE = "epub_cache"
         private const val CACHE_VERSION_FILE = "cache_version"
-
-        // Increment this if the cache format changes.
         private const val EPUB_CACHE_VERSION = 2
     }
 
@@ -51,20 +53,20 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
     @OptIn(ExperimentalSerializationApi::class)
     private val protobuf = ProtoBuf { encodeDefaults = true }
 
-    private fun getPath(): String {
-        return applicationInfo.cachePath() + File.separator + EPUB_CACHE
+    private fun getPath(): Path {
+        return (applicationInfo.cachePath() + "/$EPUB_CACHE").toPath()
     }
 
-    private fun getVersionFilePath(): String {
-        return getPath() + File.separator + CACHE_VERSION_FILE
+    private fun getVersionFilePath(): Path {
+        return (getPath().toString() + "/$CACHE_VERSION_FILE").toPath()
     }
 
     // Checks if the cache version matches the current version.
     private fun checkCacheVersion() {
         debug { "Checking cache version" }
-        val versionFile = File(getVersionFilePath())
-        if (versionFile.exists()) {
-            val cachedVersion = versionFile.readText().toIntOrNull()
+        val versionFile = getVersionFilePath()
+        if (fileSystem.exists(versionFile)) {
+            val cachedVersion = fileSystem.read(versionFile) { readUtf8() }.toIntOrNull()
             if (cachedVersion != EPUB_CACHE_VERSION) {
                 debug { "Cache version mismatch, clearing cache" }
                 clear()
@@ -80,23 +82,24 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
     // Saves the current cache version.
     private fun saveCacheVersion() {
         debug { "Saving cache version" }
-        val versionFile = File(getVersionFilePath())
-        versionFile.writeText(EPUB_CACHE_VERSION.toString())
+        fileSystem.write(getVersionFilePath()) {
+            writeUtf8(EPUB_CACHE_VERSION.toString())
+        }
     }
 
     private fun create() {
-        val cacheDir = File(getPath())
-        if (!cacheDir.exists()) {
+        val cacheDir = getPath()
+        if (!fileSystem.exists(cacheDir)) {
             debug { "Creating cache directory" }
-            cacheDir.mkdirs()
+            fileSystem.createDirectories(cacheDir)
         }
     }
 
     private fun clear() {
-        val cacheDir = File(getPath())
-        if (cacheDir.exists()) {
+        val cacheDir = getPath()
+        if (fileSystem.exists(cacheDir)) {
             debug { "Clearing cache directory" }
-            cacheDir.deleteRecursively()
+            fileSystem.deleteRecursively(cacheDir)
         }
     }
 
@@ -118,10 +121,12 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
     @OptIn(ExperimentalSerializationApi::class)
     fun put(book: EpubBook, filepath: String) {
         debug { "Inserting book into cache: ${book.title}" }
-        val fileName = File(filepath).nameWithoutExtension
-        val bookFile = File(getPath(), "$fileName.protobuf")
+        val fileName = filepath.toPath().name.substringBeforeLast('.')
+        val bookFile = (getPath().toString() + "/$fileName.protobuf").toPath()
         val protoBytes = protobuf.encodeToByteArray(EpubBook.serializer(), book)
-        bookFile.writeBytes(protoBytes)
+        fileSystem.write(bookFile) {
+            write(protoBytes)
+        }
     }
 
     /**
@@ -133,11 +138,11 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
     @OptIn(ExperimentalSerializationApi::class)
     fun get(filepath: String): EpubBook? {
         debug { "Getting book from cache: $filepath" }
-        val fileName = File(filepath).nameWithoutExtension
-        val bookFile = File(getPath(), "$fileName.protobuf")
-        return if (bookFile.exists()) {
+        val fileName = filepath.toPath().name.substringBeforeLast('.')
+        val bookFile = (getPath().toString() + "/$fileName.protobuf").toPath()
+        return if (fileSystem.exists(bookFile)) {
             debug { "Book found in cache: $filepath" }
-            val protoBytes = bookFile.readBytes()
+            val protoBytes = fileSystem.read(bookFile) { readByteArray() }
             protobuf.decodeFromByteArray(EpubBook.serializer(), protoBytes)
         } else {
             debug { "Book not found in cache: $filepath" }
@@ -152,10 +157,11 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
      */
     fun remove(filepath: String): Boolean {
         debug { "Removing book from cache: $filepath" }
-        val fileName = File(filepath).nameWithoutExtension
-        val bookFile = File(getPath(), "$fileName.protobuf")
-        return if (bookFile.exists()) {
-            bookFile.delete()
+        val fileName = filepath.toPath().name.substringBeforeLast('.')
+        val bookFile = (getPath().toString() + "/$fileName.protobuf").toPath()
+        return if (fileSystem.exists(bookFile)) {
+            fileSystem.delete(bookFile)
+            true
         } else {
             false
         }
@@ -168,8 +174,8 @@ class EpubCache(private val applicationInfo: ApplicationInfo) {
      * @return True if the book is cached, false otherwise.
      */
     fun isCached(filepath: String): Boolean {
-        val fileName = File(filepath).nameWithoutExtension
-        val bookFile = File(getPath(), "$fileName.protobuf")
-        return bookFile.exists()
+        val fileName = filepath.toPath().name.substringBeforeLast('.')
+        val bookFile = (getPath().toString() + "/$fileName.protobuf").toPath()
+        return fileSystem.exists(bookFile)
     }
 }

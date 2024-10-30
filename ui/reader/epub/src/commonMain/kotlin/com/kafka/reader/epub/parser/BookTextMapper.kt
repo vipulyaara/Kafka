@@ -15,8 +15,7 @@
  */
 package com.kafka.reader.epub.parser
 
-import org.jsoup.Jsoup
-import java.util.Locale
+import com.fleeksoft.ksoup.Ksoup
 
 object BookTextMapper {
 
@@ -34,9 +33,9 @@ object BookTextMapper {
             }
 
             private fun fromXMLStringV1(text: String): ImgEntry? {
-                return Jsoup.parse(text).selectFirst("img")?.let {
+                return Ksoup.parse(text).selectFirst("img")?.let {
                     ImgEntry(
-                        path = it.attr("src") ?: return null,
+                        path = it.attr("src"),
                         yrel = it.attr("yrel").toFloatOrNull() ?: return null
                     )
                 }
@@ -48,10 +47,10 @@ object BookTextMapper {
                 // Fast discard filter
                 if (!text.matches(XMLForm_v0))
                     return null
-                return parseXMLText(text)?.selectFirstTag("img")?.let {
+                return parseXMLText(text).selectFirstTag("img")?.let { node ->
                     ImgEntry(
-                        path = it.textContent ?: return null,
-                        yrel = it.getAttributeValue("yrel")?.toFloatOrNull() ?: return null
+                        path = node.text(),
+                        yrel = node.getAttributeValue("yrel")?.toFloatOrNull() ?: return null
                     )
                 }
             }
@@ -62,7 +61,8 @@ object BookTextMapper {
         }
 
         private fun toXMLStringV1(): String {
-            return """<img src="$path" yrel="${"%.2f".format(Locale.US, yrel)}">"""
+            val roundedYrel = (yrel * 100).toInt() / 100.0  // Rounds to 2 decimal places
+            return """<img src="$path" yrel="$roundedYrel">"""
         }
 
         /*

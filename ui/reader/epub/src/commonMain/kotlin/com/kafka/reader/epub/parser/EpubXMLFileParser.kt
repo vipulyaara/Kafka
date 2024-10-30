@@ -17,12 +17,13 @@
 
 package com.kafka.reader.epub.parser
 
+import com.fleeksoft.ksoup.Ksoup
+import com.fleeksoft.ksoup.nodes.Element
+import com.fleeksoft.ksoup.nodes.Node
+import com.fleeksoft.ksoup.nodes.TextNode
 import com.kafka.base.debug
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Node
-import org.jsoup.nodes.TextNode
-import java.io.File
-import kotlin.io.path.invariantSeparatorsPathString
+import okio.Path
+import okio.Path.Companion.toPath
 
 /**
  * Parses an XML file from an EPUB archive and extracts the title and body content.
@@ -50,7 +51,7 @@ class EpubXMLFileParser(
     data class Output(val title: String?, val body: String)
 
     // The parent folder of the XML file.
-    private val fileParentFolder: File = File(fileAbsolutePath).parentFile ?: File("")
+    private val fileParentFolder: Path = fileAbsolutePath.toPath().parent ?: "".toPath()
 
 
     /**
@@ -59,11 +60,11 @@ class EpubXMLFileParser(
      * @return [Output] The title and body content of the XML document.
      */
     fun parseAsDocument(): Output {
-        val document = Jsoup.parse(data.inputStream(), "UTF-8", "")
+        val document = Ksoup.parse(data.decodeToString(), "")
 
         val title: String
         val bodyContent: String
-        val bodyElement: org.jsoup.nodes.Element?
+        val bodyElement: Element?
 
         if (fragmentId != null) {
             // Check if the fragment ID represents a <div> tag
@@ -172,10 +173,9 @@ class EpubXMLFileParser(
         val attrs = node.attributes().associate { it.key to it.value }
         val relPathEncoded = attrs["src"] ?: attrs["xlink:href"] ?: ""
 
-        val absolutePathImage = File(fileParentFolder, relPathEncoded.decodedURL)
-            .canonicalFile
-            .toPath()
-            .invariantSeparatorsPathString
+        val absolutePathImage = (fileParentFolder / relPathEncoded.decodeURL())
+            .normalized()
+            .toString()
             .removePrefix("/")
 
         return parseAsImage(absolutePathImage)
