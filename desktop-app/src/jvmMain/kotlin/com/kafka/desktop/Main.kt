@@ -11,11 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.navigation.rememberBottomSheetNavigator
-import com.kafka.shared.injection.DesktopApplicationComponent
-import com.kafka.shared.injection.WindowComponent
-import com.kafka.shared.injection.create
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
+import com.kafka.shared.DesktopApplicationComponent
+import com.kafka.shared.WindowComponent
+import com.kafka.shared.create
 
 fun main() = application {
     Window(
@@ -41,7 +41,7 @@ fun main() = application {
         AppTheme(
             isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors()
         ) {
-            component.mainScreen(navController, bottomSheetNavigator, theme)
+            component.rootContent.Content(navController, bottomSheetNavigator, theme)
         }
     }
 }

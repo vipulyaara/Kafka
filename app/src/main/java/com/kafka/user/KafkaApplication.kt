@@ -1,8 +1,8 @@
 package com.kafka.user
 
 import android.app.Application
-import com.kafka.shared.injection.AndroidApplicationComponent
-import com.kafka.shared.injection.create
+import com.kafka.shared.AndroidApplicationComponent
+import com.kafka.shared.create
 import com.sarahang.playback.core.MediaNotifications
 import com.sarahang.playback.core.PlaybackConnection
 import com.sarahang.playback.core.apis.AudioDataSource

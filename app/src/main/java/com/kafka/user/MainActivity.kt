@@ -18,9 +18,9 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.navigation.rememberBottomSheetNavigator
 import com.kafka.remote.config.isTrueContrastEnabled
-import com.kafka.shared.injection.AndroidActivityComponent
-import com.kafka.shared.injection.AndroidApplicationComponent
-import com.kafka.shared.injection.create
+import com.kafka.shared.AndroidActivityComponent
+import com.kafka.shared.AndroidApplicationComponent
+import com.kafka.shared.create
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors(),
                 isTrueContrast = applicationComponent.remoteConfig.isTrueContrastEnabled()
             ) {
-                component.mainScreen(navController, bottomSheetNavigator, theme)
+                component.rootContent.Content(navController, bottomSheetNavigator, theme)
             }
         }
     }

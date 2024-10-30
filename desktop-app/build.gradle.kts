@@ -1,3 +1,4 @@
+import com.kafka.gradle.addKspDependencyForAllTargets
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -13,28 +14,16 @@ dependencies {
 
 kotlin {
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.shared.prod)
+            }
+        }
+
         jvmMain {
             dependencies {
-                implementation(projects.base.annotations)
-                implementation(projects.base.domain)
-                implementation(projects.core.analytics)
-                implementation(projects.core.downloader)
-                implementation(projects.core.networking)
-                implementation(projects.core.play)
-                implementation(projects.corePlayback)
-                implementation(projects.core.remoteConfig)
-                implementation(projects.data.platform)
-                implementation(projects.data.prefs)
-                implementation(projects.data.repo)
-                implementation(projects.domain)
-                implementation(projects.navigation)
-                implementation(projects.ui.common)
-                implementation(projects.ui.components)
-                implementation(projects.ui.homepage)
-                implementation(projects.uiPlayback)
-                implementation(projects.ui.reader.epub)
-                implementation(projects.ui.shared)
-                implementation(projects.ui.webview)
+                implementation(projects.shared.common)
+                implementation(projects.shared.prod)
 
                 implementation(compose.desktop.currentOs)
 
@@ -43,6 +32,8 @@ kotlin {
 
                 implementation(libs.firebase.firestore)
                 implementation(libs.firebase.analytics)
+
+                implementation(libs.kotlininject.runtime)
 
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.lifecycle.runtime)

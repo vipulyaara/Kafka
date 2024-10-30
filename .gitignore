@@ -78,4 +78,5 @@ fastlane/readme.md
 desktop-app/src/jvmMain/kotlin/com/kafka/desktop/Secrets.kt
 ui/shared/src/jvmMain/kotlin/com/kafka/shared/main/initializer/Secrets.kt
 ui/shared/src/jvmMain/kotlin/com/kafka/shared/initializer/Secrets.kt
+shared/common/src/jvmMain/kotlin/com/kafka/shared/common/initializer/Secrets.kt
 iosApp/iosApp/GoogleService-Info.plist

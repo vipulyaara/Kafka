@@ -96,9 +96,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 fun Project.addKspDependencyForAllTargets(dependencyNotation: Any) =
     addKspDependencyForAllTargets("", dependencyNotation)
 
-fun Project.addKspTestDependencyForAllTargets(dependencyNotation: Any) =
-    addKspDependencyForAllTargets("Test", dependencyNotation)
-
 private fun Project.addKspDependencyForAllTargets(
     configurationNameSuffix: String,
     dependencyNotation: Any,

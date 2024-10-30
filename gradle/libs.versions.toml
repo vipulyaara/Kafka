@@ -127,7 +127,7 @@ google-bom = "com.google.firebase:firebase-bom:33.5.1"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
-google-admob = "com.google.android.gms:play-services-ads:23.4.0"
+google-admob = "com.google.android.gms:play-services-ads:23.5.0"
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
 google-performance = { module = "com.google.firebase:firebase-perf" }
 google-playservices-auth = "com.google.android.gms:play-services-auth:21.2.0"

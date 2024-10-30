@@ -37,10 +37,11 @@ fun RowItem(item: Item, modifier: Modifier = Modifier) {
 @Composable
 fun RowItem(
     coverImage: Any?,
+    mediaType: MediaType,
     modifier: Modifier = Modifier,
     title: String? = null,
-    mediaType: MediaType,
     creator: String? = null,
+    showLabels: Boolean = false,
     placeholder: ImageVector = CoverDefaults.placeholder,
 ) {
     val size = remember(mediaType) {
@@ -66,20 +67,22 @@ fun RowItem(
             )
         }
 
-        Column(
-            modifier = Modifier.padding(
-                vertical = Dimens.Spacing08,
-                horizontal = Dimens.Spacing04
-            )
-        ) {
-            ItemTitleSmall(title = title.orEmpty())
-            Spacer(modifier = Modifier.height(Dimens.Spacing02))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),
-                verticalAlignment = Alignment.CenterVertically
+        if (showLabels) {
+            Column(
+                modifier = Modifier.padding(
+                    vertical = Dimens.Spacing08,
+                    horizontal = Dimens.Spacing04
+                )
             ) {
-                ItemMediaType(mediaType = mediaType, size = Dimens.IconSizeSmall)
-                ItemCreatorSmall(creator = creator)
+                ItemTitleSmall(title = title.orEmpty())
+                Spacer(modifier = Modifier.height(Dimens.Spacing02))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing08),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ItemMediaType(mediaType = mediaType, size = Dimens.IconSizeSmall)
+                    ItemCreatorSmall(creator = creator)
+                }
             }
         }
     }
