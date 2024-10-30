@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -56,6 +57,7 @@ import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.navigationRoute
 import com.kafka.navigation.selectRootScreen
 import com.kafka.root.home.AppNavigation
+import com.kafka.root.playback.MiniPlayer
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.HazeScaffold
 import com.kafka.ui.components.snackbar.DismissableSnackbarHost
@@ -181,13 +183,12 @@ private fun HomeNavigationBar(
 ) {
     Column(modifier = modifier) {
         if (navigationType.shouldShowMiniPlayer()) {
-//            MiniPlayer(
-//                useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
-//                modifier = Modifier
-//                    .padding(Dimens.Spacing08)
-//                    .zIndex(2f),
-//                openPlaybackSheet = openPlaybackSheet
-//            )
+            MiniPlayer(
+                modifier = Modifier
+                    .padding(Dimens.Spacing08)
+                    .zIndex(2f),
+                openPlaybackSheet = openPlaybackSheet
+            )
         }
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
