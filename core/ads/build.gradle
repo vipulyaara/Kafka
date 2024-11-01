@@ -12,7 +12,7 @@ kapt {
 }
 
 android {
-    namespace 'org.kafka.core.ads'
+    namespace 'com.kafka.core.ads'
 
     viewBinding {
         enabled = true
@@ -28,8 +28,4 @@ dependencies {
     implementation libs.compose.ui.viewbinding
 
     implementation libs.google.admob
-
-    implementation libs.hilt.android
-
-    kapt libs.hilt.compiler
 }

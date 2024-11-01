@@ -1,7 +1,12 @@
 package com.kafka.data.platform
 
-expect class UserDataRepository {
-    fun getUserData(): UserData
-}
+import com.kafka.base.ApplicationScope
+import com.kafka.data.platform.device.UserCountryRepository
+import javax.inject.Inject
 
-data class UserData(val userId: String? = null, val country: String? = null)
+@ApplicationScope
+class UserDataRepository @Inject constructor(
+    private val userCountryRepository: UserCountryRepository
+) {
+    suspend fun getUserCountry(): String? = userCountryRepository.getUserCountry()
+}

@@ -1,6 +1,6 @@
 package com.kafka.data.model
 
-import org.kafka.base.debug
+import com.kafka.base.debug
 
 enum class SearchFilter {
     Name, Creator, Subject;

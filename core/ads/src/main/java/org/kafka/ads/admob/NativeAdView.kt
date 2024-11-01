@@ -1,4 +1,4 @@
-package org.kafka.ads.admob
+package com.kafka.ads.admob
 
 import android.view.View
 import androidx.compose.runtime.Composable

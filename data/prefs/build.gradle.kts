@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library") // todo: use build-logic
+    id("com.android.library")
     id("com.kafka.kotlin.multiplatform")
 }
 
@@ -11,12 +11,6 @@ kotlin {
 
                 api(libs.dataStore)
                 api(libs.kinject)
-            }
-        }
-
-        val androidMain by getting {
-            dependencies {
-                api(libs.dataStore)
             }
         }
     }

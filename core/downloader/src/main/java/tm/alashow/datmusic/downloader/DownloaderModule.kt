@@ -4,40 +4,47 @@
  */
 package tm.alashow.datmusic.downloader
 
-import android.content.Context
+import android.app.Application
+import com.kafka.base.ApplicationScope
+import com.kafka.base.Named
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.downloaderType
 import com.tonyodev.fetch2.Fetch
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchNotificationManager
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import me.tatarka.inject.annotations.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
-import javax.inject.Named
-import javax.inject.Singleton
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
 import com.tonyodev.fetch2core.Downloader as FetchDownloader
 
-@InstallIn(SingletonComponent::class)
-@Module
-class DownloaderModule {
+actual interface DownloaderModule {
+    @Provides
+    fun provideDownloader(downloader: DownloaderImpl): Downloader = downloader
 
     @Provides
-    internal fun provideDownloader(downloader: DownloaderImpl): Downloader = downloader
-
-    @Provides
-    @Singleton
+    @ApplicationScope
     fun fetchNotificationManager(
-        @ApplicationContext context: Context,
+        context: Application,
     ): FetchNotificationManager = DownloaderNotificationManager(context)
 
     @Provides
-    @Singleton
+    @Named("downloader")
+    fun downloaderOkHttp(
+        cache: Cache,
+    ) = OkHttpClient.Builder()
+        .cache(cache)
+        .retryOnConnectionFailure(true)
+        .readTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .writeTimeout(Config.DOWNLOADER_TIMEOUT, TimeUnit.MILLISECONDS)
+        .build()
+
+    @Provides
+    @ApplicationScope
     fun provideFetch(
-        @ApplicationContext context: Context,
+        context: Application,
         @Named("downloader") okHttpClient: OkHttpClient,
         notificationManager: FetchNotificationManager,
         remoteConfig: RemoteConfig,
@@ -59,5 +66,9 @@ class DownloaderModule {
             .build()
         Fetch.Impl.setDefaultInstanceConfiguration(fetcherConfig)
         return Fetch.Impl.getInstance(fetcherConfig)
+    }
+
+    object Config {
+        val DOWNLOADER_TIMEOUT = 7.minutes.inWholeMilliseconds
     }
 }
