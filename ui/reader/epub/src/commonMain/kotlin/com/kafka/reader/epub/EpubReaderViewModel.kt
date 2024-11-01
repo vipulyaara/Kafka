@@ -1,6 +1,5 @@
 package com.kafka.reader.epub
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -55,8 +54,6 @@ class EpubReaderViewModel(
     ) { loading, ebook, itemDetail ->
         EpubState(loading = loading, epubBook = ebook, itemDetail = itemDetail)
     }.stateInDefault(viewModelScope, EpubState())
-
-    val lazyListState = LazyListState()
 
     init {
         observeDownload(fileId)

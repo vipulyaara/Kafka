@@ -12,8 +12,8 @@ import kafka.ui.theme.generated.resources.inter_regular
 import kafka.ui.theme.generated.resources.inter_semibold
 import kafka.ui.theme.generated.resources.laila_bold
 import kafka.ui.theme.generated.resources.laila_medium
-import kafka.ui.theme.generated.resources.laila_regular
 import kafka.ui.theme.generated.resources.laila_semibold
+import kafka.ui.theme.generated.resources.nirmala_regular
 import org.jetbrains.compose.resources.Font
 
 val Inter: FontFamily
@@ -28,8 +28,8 @@ val Inter: FontFamily
 
 val Laila: FontFamily
     @Composable get() = FontFamily(
-        Font(Res.font.laila_regular, weight = FontWeight.Light),
-        Font(Res.font.laila_regular, weight = FontWeight.Normal),
+        Font(Res.font.nirmala_regular, weight = FontWeight.Light),
+        Font(Res.font.nirmala_regular, weight = FontWeight.Normal),
         Font(Res.font.laila_medium, weight = FontWeight.Medium),
         Font(Res.font.laila_semibold, weight = FontWeight.SemiBold),
         Font(Res.font.laila_bold, weight = FontWeight.Bold),

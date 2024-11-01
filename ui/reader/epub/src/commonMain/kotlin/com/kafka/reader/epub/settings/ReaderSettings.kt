@@ -49,18 +49,22 @@ data class ReaderSettings(
             val Default = Options[2]
             val Options
                 get() = listOf(
-                    FontSize(12.sp, 18.sp),
-                    FontSize(14.sp, 18.sp),
-                    FontSize(16.sp, 24.sp),
-                    FontSize(18.sp, 26.sp),
-                    FontSize(20.sp, 28.sp),
-                    FontSize(22.sp, 30.sp),
-                    FontSize(24.sp, 32.sp),
+                    FontSize(12.sp, 22.sp),
+                    FontSize(14.sp, 24.sp),
+                    FontSize(16.sp, 32.sp),
+                    FontSize(18.sp, 36.sp),
+                    FontSize(20.sp, 40.sp),
+                    FontSize(22.sp, 44.sp),
+                    FontSize(24.sp, 48.sp),
                 )
         }
     }
 
-    data class FontStyle(val name: String, val fontFamily: FontFamily, val fontWeight: FontWeight) {
+    data class FontStyle(
+        val name: String,
+        val fontFamily: FontFamily,
+        val fontWeight: FontWeight
+    ) {
         companion object {
             val Default
                 @Composable get() = OptionsEnglish[0]
@@ -74,7 +78,7 @@ data class ReaderSettings(
 
             val OptionsEnglish
                 @Composable get() = listOf(
-                    FontStyle("Serif", FontFamily.Serif, FontWeight.Normal),
+                    FontStyle("Serif", Laila, FontWeight.Normal),
                     FontStyle("Sans serif", FontFamily.SansSerif, FontWeight.Normal),
                     FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal),
                     FontStyle("Cursive", FontFamily.Cursive, FontWeight.Normal),
@@ -82,7 +86,7 @@ data class ReaderSettings(
 
             private val OptionsHindi
                 @Composable get() = listOf(
-                    FontStyle("Laila", Laila, FontWeight.Medium),
+                    FontStyle("Laila", Laila, FontWeight.Normal),
                     FontStyle("Sans serif", FontFamily.SansSerif, FontWeight.Normal),
                     FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal),
                     FontStyle("Cursive", FontFamily.Cursive, FontWeight.Normal),

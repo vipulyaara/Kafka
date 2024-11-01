@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +37,7 @@ import com.kafka.common.simpleClickable
 import com.kafka.navigation.LocalNavigator
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
+import com.kafka.reader.epub.models.EpubPage
 import com.kafka.reader.epub.parser.EpubImageParser
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
@@ -66,8 +66,7 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
             if (state.epubBook != null) {
                 EpubBook(
                     ebook = state.epubBook!!,
-                    chapters = state.epubBook!!.chapters,
-                    lazyListState = viewModel.lazyListState
+                    chapters = state.epubBook!!.chapters
                 )
             } else {
                 if (state.loading) {
@@ -79,7 +78,8 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
 }
 
 @Composable
-private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>, lazyListState: LazyListState) {
+private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>) {
+    val pages = remember(chapters) { chapters.map { it.pages }.flatten() }
     val readerSettings = ReaderSettings.Default
     var settings by remember { mutableStateOf(readerSettings) }
     var showSettings by rememberMutableState { false }
@@ -93,22 +93,23 @@ private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>, lazyListState
     }
 
     LazyColumn(
-        state = lazyListState,
         modifier = Modifier
             .fillMaxWidth()
             .background(settings.background.color)
             .simpleClickable { showSettings = !showSettings },
         contentPadding = scaffoldPadding()
     ) {
-        items(chapters) { chapter ->
-            Chapter(ebook = ebook, chapter = chapter, settings = settings)
+        items(pages) { page ->
+            Page(ebook = ebook, page = page, settings = settings)
         }
     }
 }
 
+
 @Composable
-private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSettings) {
-    val paragraphs = remember { chunkText(chapter.body) }
+private fun Page(ebook: EpubBook, page: EpubPage, settings: ReaderSettings) {
+    val paragraphs = remember { chunkText(page.content) }
+
     paragraphs.forEach { para ->
         val imgEntry = EpubImageParser.getImagePath(para)
 

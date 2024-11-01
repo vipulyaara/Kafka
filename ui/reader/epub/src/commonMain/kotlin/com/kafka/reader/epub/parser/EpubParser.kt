@@ -24,6 +24,7 @@ import com.kafka.reader.epub.cache.EpubCache
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
 import com.kafka.reader.epub.models.EpubImage
+import com.kafka.reader.epub.models.EpubPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -504,7 +505,7 @@ class EpubParser(
                             chapterId = generateId(),
                             absPath = chapterSrc,
                             title = title?.takeIf { it.isNotEmpty() } ?: "Chapter $index",
-                            body = res.body
+                            pages = splitIntoPages(res.body)
                         )
                     )
                 } else {
@@ -513,7 +514,7 @@ class EpubParser(
             } else {
                 emptyList()
             }
-        }.filter { it.body.isNotBlank() }.toList()
+        }.filter { it.pages.isNotEmpty() }.toList()
 
         // If 25% or more chapters have empty bodies, that means the ToC file is not
         // reliable and has incorrect references. In such cases, switch to spine-based parsing.
@@ -581,14 +582,15 @@ class EpubParser(
             }.groupBy {
                 it.chapterIndex
             }.map { (index, list) ->
+                val combinedBody = list.joinToString("\n\n") { it.body }
                 EpubChapter(
                     chapterId = generateId(),
                     absPath = list.first().url,
                     title = list.first().title?.takeIf { it.isNotBlank() } ?: "Chapter $index",
-                    body = list.joinToString("\n\n") { it.body }
+                    pages = splitIntoPages(combinedBody)
                 )
             }.filter {
-                it.body.isNotBlank()
+                it.pages.isNotEmpty()
             }
     }
 
@@ -641,5 +643,37 @@ class EpubParser(
         } finally {
             close()
         }
+    }
+
+    // Add this function to split text into pages
+    private fun splitIntoPages(text: String, maxCharsPerPage: Int = 3000): List<EpubPage> {
+        if (text.length <= maxCharsPerPage) {
+            return listOf(EpubPage(generateId(), text, 1))
+        }
+
+        return text.split("\n\n")
+            .fold(mutableListOf<StringBuilder>() to StringBuilder()) { (pages, currentPage), paragraph ->
+                if (currentPage.length + paragraph.length > maxCharsPerPage) {
+                    pages.add(currentPage)
+                    StringBuilder(paragraph)
+                } else {
+                    if (currentPage.isNotEmpty()) {
+                        currentPage.append("\n\n")
+                    }
+                    currentPage.append(paragraph)
+                    currentPage
+                }.let { pages to it }
+            }.let { (pages, lastPage) ->
+                if (lastPage.isNotEmpty()) {
+                    pages.add(lastPage)
+                }
+                pages
+            }.mapIndexed { index, content ->
+                EpubPage(
+                    pageId = generateId(),
+                    content = content.toString().trim(),
+                    pageNumber = index + 1
+                )
+            }
     }
 }
