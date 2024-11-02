@@ -105,38 +105,24 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
     implementation(platform(libs.google.bom))
 
     implementation(projects.shared.prod)
 
     implementation(compose.material3)
+    implementation(libs.compose.material.navigation)
 
     implementation(libs.androidx.activity.compose)
 
-    implementation(libs.compose.animation.animation)
-    implementation(libs.compose.foundation.foundation)
-    implementation(libs.compose.foundation.layout)
-    implementation(libs.compose.material.material3)
-    implementation(libs.compose.material.navigation)
-    implementation(libs.compose.ui.ui)
-    implementation(libs.compose.ui.util)
-
     implementation(libs.google.messaging)
-
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.contentnegotiation)
-    implementation(libs.ktor.serialization)
 
     implementation(project.dependencies.platform(libs.openai.kotlin.bom))
     implementation(libs.openai.client)
 
     implementation(libs.profileinstaller)
-
     debugImplementation(libs.leakCanary)
+    baselineProfile(projects.baselineprofile)
 
     ksp(libs.kotlininject.compiler)
     implementation(libs.kotlininject.runtime)
-
-    baselineProfile(projects.baselineprofile)
 }
