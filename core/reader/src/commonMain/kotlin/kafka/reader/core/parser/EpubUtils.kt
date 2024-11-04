@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kafka.reader.epub.parser
+package kafka.reader.core.parser
 
 import com.fleeksoft.ksoup.nodes.Document
 import com.fleeksoft.ksoup.nodes.Element

@@ -1,4 +1,4 @@
-package com.kafka.reader.epub.parser
+package kafka.reader.core.parser
 
 /**
  * Exception thrown when an error occurs while parsing an EPUB file.
