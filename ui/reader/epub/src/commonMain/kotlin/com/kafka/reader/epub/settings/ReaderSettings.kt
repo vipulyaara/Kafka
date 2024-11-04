@@ -52,10 +52,10 @@ data class ReaderSettings(
                     FontSize(12.sp, 20.sp),
                     FontSize(14.sp, 20.sp),
                     FontSize(16.sp, 24.sp),
-                    FontSize(18.sp, 36.sp),
-                    FontSize(20.sp, 40.sp),
-                    FontSize(22.sp, 44.sp),
-                    FontSize(24.sp, 48.sp),
+                    FontSize(18.sp, 26.sp),
+                    FontSize(20.sp, 30.sp),
+                    FontSize(22.sp, 36.sp),
+                    FontSize(24.sp, 40.sp),
                 )
         }
     }

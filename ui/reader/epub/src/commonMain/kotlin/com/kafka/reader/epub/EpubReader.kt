@@ -3,6 +3,9 @@
 package com.kafka.reader.epub
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +31,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,11 +41,11 @@ import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kafka.common.extensions.rememberMutableState
-import com.kafka.common.simpleClickable
 import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
 import com.kafka.reader.epub.components.ListElement
 import com.kafka.reader.epub.components.QuoteElement
+import com.kafka.reader.epub.components.TableComponent
 import com.kafka.reader.epub.components.TextElement
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
@@ -93,11 +99,22 @@ private fun EpubBook(ebook: EpubBook) {
         )
     }
 
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(1),
         modifier = Modifier
             .fillMaxWidth()
             .background(settings.background.color)
-            .simpleClickable { showSettings = !showSettings },
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    val down: PointerInputChange = awaitFirstDown()
+                    val up: PointerInputChange? = waitForUpOrCancellation()
+                    // only trigger the click if the pointer hasn't moved up or down
+                    // i.e only on tap gesture
+                    if (up != null && down.id == up.id) {
+                        showSettings = !showSettings
+                    }
+                }
+            },
         contentPadding = scaffoldPadding()
     ) {
         items(chapters) { page ->
@@ -112,11 +129,26 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
         Column {
             chapter.contentElements.forEach { element ->
                 when (element) {
-                    is ContentElement.Text -> TextElement(element, settings)
-                    is ContentElement.Heading -> HeadingElement(element, settings)
-                    is ContentElement.Quote -> QuoteElement(element, settings)
-                    is ContentElement.List -> ListElement(element, settings)
-                    is ContentElement.CodeBlock -> CodeBlockElement(element, settings)
+                    is ContentElement.Text -> {
+                        TextElement(element = element, settings = settings)
+                    }
+
+                    is ContentElement.Heading -> {
+                        HeadingElement(element = element, settings = settings)
+                    }
+
+                    is ContentElement.Quote -> {
+                        QuoteElement(element = element, settings = settings)
+                    }
+
+                    is ContentElement.Listing -> {
+                        ListElement(element = element, settings = settings)
+                    }
+
+                    is ContentElement.CodeBlock -> {
+                        CodeBlockElement(element = element, settings = settings)
+                    }
+
                     is ContentElement.Image -> {
                         val image = ebook.images.find { it.absPath == element.path }
                         image?.let {
@@ -128,14 +160,14 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
                                 contentDescription = element.caption,
                                 contentScale = ContentScale.FillWidth,
                                 modifier = Modifier
-                                    .fillMaxWidth()
                                     .padding(vertical = 8.dp)
+                                    .align(Alignment.CenterHorizontally)
                             )
                         }
                     }
 
                     is ContentElement.Table -> {
-                        // TODO: Implement table rendering
+                        TableComponent(element = element, settings = settings)
                     }
 
                     is ContentElement.Divider -> {
@@ -146,10 +178,6 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
                                 .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
                                 .padding(vertical = 16.dp)
                         )
-                    }
-
-                    else -> {
-
                     }
                 }
             }

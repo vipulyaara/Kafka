@@ -6,8 +6,18 @@ import kotlinx.serialization.Serializable
 sealed interface ContentElement {
     data class Text(
         val content: String,
-        val style: TextStyle = TextStyle.Normal
-    ) : ContentElement
+        val styles: Set<TextStyle> = emptySet(),
+        val alignment: TextAlignment = TextAlignment.JUSTIFY,
+        val sizeFactor: Float = 1.0f,
+        val color: String? = null,
+        val backgroundColor: String? = null,
+        val letterSpacing: Float? = null,
+        val lineHeight: Float? = null,
+        val inlineElements: List<InlineElement> = emptyList()
+    ) : ContentElement {
+        val style: TextStyle
+            get() = styles.first()
+    }
 
     data class Heading(
         val content: String,
@@ -26,25 +36,26 @@ sealed interface ContentElement {
         val attribution: String? = null
     ) : ContentElement
 
-    data class List(
-        val items: kotlin.collections.List<String>,
+    data class Listing(
+        val items: List<String>,
         val ordered: Boolean,
         val startIndex: Int = 1
     ) : ContentElement
 
     data class Table(
-        val headers: kotlin.collections.List<String>,
-        val rows: kotlin.collections.List<kotlin.collections.List<String>>
+        val headers: List<String>,
+        val rows: List<List<String>>,
+        val caption: String? = null,
+        val summary: String? = null,
+        val columnAlignments: List<ColumnAlignment> = emptyList(),
+        val isHeaderRow: Boolean = true,
+        val isHeaderColumn: Boolean = false,
+        val style: TableStyle = TableStyle.Default
     ) : ContentElement
 
     data class CodeBlock(
         val content: String,
         val language: String? = null
-    ) : ContentElement
-
-    data class Link(
-        val content: String,
-        val href: String? = null
     ) : ContentElement
 
     data object Divider : ContentElement
@@ -64,5 +75,56 @@ enum class TextStyle {
     Heading3,
     Heading4,
     Heading5,
-    Heading6
+    Heading6,
+    Monospace
+}
+
+enum class ColumnAlignment {
+    LEFT,
+    CENTER,
+    RIGHT
+}
+
+enum class TableStyle {
+    Default,
+    Striped,
+    Bordered,
+    Compact,
+    Custom
+}
+
+enum class TextAlignment {
+    LEFT,
+    CENTER,
+    RIGHT,
+    JUSTIFY
+}
+
+sealed interface InlineElement {
+    val start: Int
+    val end: Int
+    
+    data class Link(
+        override val start: Int,
+        override val end: Int,
+        val href: String
+    ) : InlineElement
+    
+    data class Style(
+        override val start: Int,
+        override val end: Int,
+        val styles: Set<TextStyle>
+    ) : InlineElement
+    
+    data class Color(
+        override val start: Int,
+        override val end: Int,
+        val color: String
+    ) : InlineElement
+    
+    data class BackgroundColor(
+        override val start: Int,
+        override val end: Int,
+        val color: String
+    ) : InlineElement
 } 

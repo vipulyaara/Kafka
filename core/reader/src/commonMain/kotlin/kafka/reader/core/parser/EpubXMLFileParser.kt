@@ -75,17 +75,23 @@ class EpubXMLFileParser(
 
     private fun parseFragmentContent(document: Document): List<ContentElement> {
         val fragmentElement = document.selectFirst("#$fragmentId") ?: return emptyList()
-        val elements = mutableListOf<ContentElement>()
         
-        var currentNode: Node? = fragmentElement
-        val nextFragmentElement = nextFragmentId?.let { document.selectFirst("#$it") }
-
-        while (currentNode != null && currentNode != nextFragmentElement) {
-            elements.addAll(ContentParser.parseNode(currentNode, ::parseImageElement))
-            currentNode = getNextSibling(currentNode)
+        // If next fragment exists, get all content between fragment and next
+        return if (nextFragmentId != null) {
+            val nextElement = document.selectFirst("#$nextFragmentId")
+            val elements = mutableListOf<Node>()
+            
+            var current: Node? = fragmentElement
+            while (current != null && current != nextElement) {
+                elements.add(current)
+                current = getNextSibling(current)
+            }
+            
+            elements.flatMap { ContentParser.parseNode(it, ::parseImageElement) }
+        } else {
+            // Just parse from fragment to end
+            ContentParser.parseNode(fragmentElement, ::parseImageElement)
         }
-
-        return elements
     }
 
     /**
@@ -152,71 +158,6 @@ class EpubXMLFileParser(
             .removePrefix("/")
 
         return parseAsImage(absolutePathImage)
-    }
-
-    // Traverses the <p> tag to extract the text content.
-    private fun getPTraverse(node: Node): String {
-        fun innerTraverse(node: Node): String =
-            node.childNodes().joinToString("") { child ->
-                when {
-                    child.nodeName() == "br" -> "\n"
-                    child.nodeName() == "img" -> declareImgEntry(child)
-                    child.nodeName() == "image" -> declareImgEntry(child)
-                    child is TextNode -> child.text()
-                    else -> innerTraverse(child)
-                }
-            }
-
-        val paragraph = innerTraverse(node).trim()
-        return if (paragraph.isNotEmpty()) "$paragraph\n\n" else ""
-    }
-
-    // Traverses the node to extract the text content.
-    private fun getNodeTextTraverse(node: Node): String {
-        val children = node.childNodes()
-        if (children.isEmpty())
-            return ""
-
-        return children.joinToString("") { child ->
-            when {
-                child.nodeName() == "p" -> getPTraverse(child)
-                child.nodeName() == "br" -> "\n"
-                child.nodeName() == "hr" -> "\n\n"
-                child.nodeName() == "img" -> declareImgEntry(child)
-                child.nodeName() == "image" -> declareImgEntry(child)
-                child is TextNode -> {
-                    val text = child.text().trim()
-                    if (text.isEmpty()) "" else text + "\n\n"
-                }
-
-                else -> getNodeTextTraverse(child)
-            }
-        }
-    }
-
-    // Traverses the node to extract the structured text content
-    // based on the node type and its children.
-    private fun getNodeStructuredText(node: Node, singleNode: Boolean = false): String {
-        val nodeActions = mapOf(
-            "p" to { n: Node -> getPTraverse(n) },
-            "br" to { "\n" },
-            "hr" to { "\n\n" },
-            "img" to ::declareImgEntry,
-            "image" to ::declareImgEntry
-        )
-
-        val action: (Node) -> String = { n: Node ->
-            if (n is TextNode) {
-                n.text().trim()
-            } else {
-                getNodeTextTraverse(n)
-            }
-        }
-
-        val children = if (singleNode) listOf(node) else node.childNodes()
-        return children.joinToString("") { child ->
-            nodeActions[child.nodeName()]?.invoke(child) ?: action(child)
-        }
     }
 
     private fun parseImageElement(node: Node): ContentElement.Image {
