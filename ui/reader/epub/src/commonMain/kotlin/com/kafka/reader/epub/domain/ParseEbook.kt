@@ -2,8 +2,8 @@ package com.kafka.reader.epub.domain
 
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
-import com.kafka.reader.epub.models.EpubBook
-import com.kafka.reader.epub.parser.EpubParser
+import kafka.reader.core.parser.EpubParser
+import kafka.reader.core.models.EpubBook
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import okio.FileSystem

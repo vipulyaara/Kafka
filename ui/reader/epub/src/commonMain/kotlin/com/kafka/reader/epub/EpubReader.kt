@@ -41,14 +41,14 @@ import com.kafka.reader.epub.components.HeadingElement
 import com.kafka.reader.epub.components.ListElement
 import com.kafka.reader.epub.components.QuoteElement
 import com.kafka.reader.epub.components.TextElement
-import com.kafka.reader.epub.models.ContentElement
-import com.kafka.reader.epub.models.EpubBook
-import com.kafka.reader.epub.models.EpubChapter
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
+import kafka.reader.core.models.ContentElement
+import kafka.reader.core.models.EpubBook
+import kafka.reader.core.models.EpubChapter
 import ui.common.theme.theme.Dimens
 
 @Composable

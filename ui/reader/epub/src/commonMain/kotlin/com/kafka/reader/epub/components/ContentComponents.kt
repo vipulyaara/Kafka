@@ -15,9 +15,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.kafka.reader.epub.models.ContentElement
-import com.kafka.reader.epub.models.TextStyle
 import com.kafka.reader.epub.settings.ReaderSettings
+import kafka.reader.core.models.ContentElement
+import kafka.reader.core.models.TextStyle
 import ui.common.theme.theme.Dimens
 
 @Composable

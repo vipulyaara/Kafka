@@ -22,7 +22,7 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
 import com.kafka.reader.epub.domain.ParseEbook
-import com.kafka.reader.epub.models.EpubBook
+import kafka.reader.core.models.EpubBook
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch

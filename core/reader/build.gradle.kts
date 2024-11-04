@@ -11,11 +11,7 @@ kotlin {
             dependencies {
                 implementation(projects.domain)
                 implementation(projects.navigation)
-                implementation(projects.core.reader)
                 implementation(projects.ui.components)
-
-                implementation(compose.components.resources)
-                implementation(compose.material3)
 
                 implementation(libs.okio)
 
@@ -26,16 +22,9 @@ kotlin {
                 implementation(libs.kotlin.serialization.proto)
             }
         }
-
-        androidMain {
-            dependencies {
-                implementation(libs.jsoup)
-            }
-        }
     }
 }
 
 android {
-    namespace = "com.kafka.reader.epub"
+    namespace = "com.kafka.reader.core"
 }
-

@@ -51,6 +51,7 @@ kotlin {
                 api(projects.core.networking)
                 api(projects.core.play)
                 api(projects.corePlayback)
+                api(projects.core.reader)
                 api(projects.core.remoteConfig)
                 api(projects.data.platform)
                 api(projects.data.repo)
