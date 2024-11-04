@@ -18,10 +18,12 @@
 package com.kafka.reader.epub.parser
 
 import com.fleeksoft.ksoup.Ksoup
+import com.fleeksoft.ksoup.nodes.Document
 import com.fleeksoft.ksoup.nodes.Element
 import com.fleeksoft.ksoup.nodes.Node
 import com.fleeksoft.ksoup.nodes.TextNode
 import com.kafka.base.debug
+import com.kafka.reader.epub.models.ContentElement
 import okio.Path
 import okio.Path.Companion.toPath
 
@@ -42,77 +44,49 @@ class EpubXMLFileParser(
     private val nextFragmentId: String? = null
 ) {
 
-    /**
-     * Represents the output of the XML document parsing.
-     *
-     * @property title The title of the XML document.
-     * @property body The body content of the XML document.
-     */
-    data class Output(val title: String?, val body: String)
-
     // The parent folder of the XML file.
     private val fileParentFolder: Path = fileAbsolutePath.toPath().parent ?: "".toPath()
 
 
     /**
-     * Parses the input data as an XML document and returns the title and body content.
+     * Parses the input data as an XML document and returns content elements.
      *
-     * @return [Output] The title and body content of the XML document.
+     * @return List<ContentElement> The parsed content elements.
      */
-    fun parseAsDocument(): Output {
+    fun parseAsDocument(): List<ContentElement> {
         val document = Ksoup.parse(data.decodeToString(), "")
-
-        val title: String
-        val bodyContent: String
-        val bodyElement: Element?
-
-        if (fragmentId != null) {
-            // Check if the fragment ID represents a <div> tag
-            bodyElement = document.selectFirst("div#$fragmentId")
-
-            if (bodyElement != null) {
-                // If the fragment ID represents a <div> tag, fetch the entire body content
-                debug {
-                    "Fragment ID: $fragmentId represents a <div> tag. Using the fragment ID."
-                }
-                title = document.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
-                bodyElement.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
-                bodyContent = getNodeStructuredText(bodyElement)
-            } else {
-                debug {
-                    "Fragment ID: $fragmentId doesn't represent a <div> tag. Using the fragment and next fragment logic."
-                }
-                // If the fragment ID doesn't represent a <div> tag, use the fragment and next fragment logic
-                val fragmentElement = document.selectFirst("#$fragmentId")
-                title = fragmentElement?.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
-                val bodyBuilder = StringBuilder()
-                var currentNode: Node? = fragmentElement?.nextSibling()
-                val nextFragmentIdElement = if (nextFragmentId != null) {
-                    document.selectFirst("#$nextFragmentId")
+        
+        return when {
+            fragmentId != null -> {
+                val divElement = document.selectFirst("div#$fragmentId")
+                if (divElement != null) {
+                    debug { "Fragment ID: $fragmentId represents a <div> tag" }
+                    ContentParser.parseNode(divElement, ::parseImageElement)
                 } else {
-                    null
+                    debug { "Using fragment and next fragment logic" }
+                    parseFragmentContent(document)
                 }
-                fragmentElement?.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
-
-                while (currentNode != null && currentNode != nextFragmentIdElement) {
-                    bodyBuilder.append(getNodeStructuredText(currentNode, true) + "\n\n")
-                    currentNode = getNextSibling(currentNode)
-                }
-                bodyContent = bodyBuilder.toString()
             }
-        } else {
-            // If no fragment ID is provided, fetch the entire body content
-            debug { "No fragment ID provided. Fetching the entire body content." }
-            bodyElement = document.body()
-            title = document.selectFirst("h1, h2, h3, h4, h5, h6")?.text() ?: ""
-            document.selectFirst("h1, h2, h3, h4, h5, h6")?.remove()
-            bodyContent = getNodeStructuredText(bodyElement)
+            else -> {
+                debug { "Parsing entire document" }
+                ContentParser.parseNode(document.body(), ::parseImageElement)
+            }
+        }
+    }
+
+    private fun parseFragmentContent(document: Document): List<ContentElement> {
+        val fragmentElement = document.selectFirst("#$fragmentId") ?: return emptyList()
+        val elements = mutableListOf<ContentElement>()
+        
+        var currentNode: Node? = fragmentElement
+        val nextFragmentElement = nextFragmentId?.let { document.selectFirst("#$it") }
+
+        while (currentNode != null && currentNode != nextFragmentElement) {
+            elements.addAll(ContentParser.parseNode(currentNode, ::parseImageElement))
+            currentNode = getNextSibling(currentNode)
         }
 
-        return Output(
-            title = title,
-            body = bodyContent
-        )
+        return elements
     }
 
     /**
@@ -244,5 +218,25 @@ class EpubXMLFileParser(
         return children.joinToString("") { child ->
             nodeActions[child.nodeName()]?.invoke(child) ?: action(child)
         }
+    }
+
+    private fun parseImageElement(node: Node): ContentElement.Image {
+        val attrs = node.attributes().associate { it.key to it.value }
+        val relPathEncoded = attrs["src"] ?: attrs["xlink:href"] ?: ""
+
+        val absolutePathImage = (fileParentFolder / relPathEncoded.decodeURL())
+            .normalized()
+            .toString()
+            .removePrefix("/")
+
+        val imageData = zipFile[absolutePathImage]?.data
+        val aspectRatio = imageData?.let { ImageDecoder.getAspectRatio(it) } ?: 1.45f
+
+        return ContentElement.Image(
+            path = absolutePathImage,
+            caption = attrs["alt"],
+            data = imageData,
+            aspectRatio = aspectRatio
+        )
     }
 }

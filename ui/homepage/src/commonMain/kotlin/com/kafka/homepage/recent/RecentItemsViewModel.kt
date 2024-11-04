@@ -58,4 +58,4 @@ class RecentItemsViewModel(
     }
 }
 
-private const val RECENT_ITEMS_LIMIT = 100
+private const val RECENT_ITEMS_LIMIT = 50

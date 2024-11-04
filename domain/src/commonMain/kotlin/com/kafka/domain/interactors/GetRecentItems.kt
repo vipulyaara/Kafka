@@ -15,11 +15,11 @@ class GetRecentItems(
     private val accountRepository: AccountRepository
 ) : Interactor<GetRecentItems.Params, List<RecentItem>>() {
 
-    data class Params(val limit: Int)
-
     override suspend fun doWork(params: Params): List<RecentItem> {
         return withContext(dispatchers.io) {
-            recentItemRepository.getRecentItems(accountRepository.currentUser.id)
+            recentItemRepository.getRecentItems(accountRepository.currentUser.id, params.limit)
         }
     }
+
+    data class Params(val limit: Int)
 }

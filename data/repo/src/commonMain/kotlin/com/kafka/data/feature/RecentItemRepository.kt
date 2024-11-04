@@ -3,6 +3,7 @@ package com.kafka.data.feature
 import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.RecentItem
 import com.kafka.data.feature.firestore.FirestoreGraph
+import dev.gitlive.firebase.firestore.Direction
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 
@@ -11,15 +12,17 @@ import me.tatarka.inject.annotations.Inject
 class RecentItemRepository(
     private val firestoreGraph: FirestoreGraph
 ) {
-    suspend fun getRecentItems(uid: String): List<RecentItem> {
+    suspend fun getRecentItems(uid: String, limit: Int): List<RecentItem> {
         return firestoreGraph.readingListCollection(uid)
+            .orderBy("updated_at", Direction.DESCENDING)
+            .limit(limit)
             .get()
             .documents.map { it.data() }
     }
 
     fun observeRecentItems(uid: String, limit: Int) =
         firestoreGraph.readingListCollection(uid)
-//            .orderBy("updated_at", Query.Direction.DESCENDING) //todo
+            .orderBy("updated_at", Direction.DESCENDING)
             .limit(limit)
             .snapshots
             .map { snapshot ->

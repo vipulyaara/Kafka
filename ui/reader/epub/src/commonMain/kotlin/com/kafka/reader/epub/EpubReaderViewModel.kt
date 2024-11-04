@@ -18,6 +18,7 @@ import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.downloader.core.DownloadItem
 import com.kafka.downloader.core.ObserveDownload
+import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
 import com.kafka.reader.epub.domain.ParseEbook
@@ -38,7 +39,8 @@ class EpubReaderViewModel(
     private val downloadItem: DownloadItem,
     private val parseEbook: ParseEbook,
     private val analytics: Analytics,
-    private val shareUtils: ShareUtils
+    private val shareUtils: ShareUtils,
+    private val navigator: Navigator
 ) : ViewModel() {
     private val itemId = savedStateHandle.get<String>("itemId")!!
     private val fileId = savedStateHandle.get<String>("fileId")!!
@@ -50,9 +52,17 @@ class EpubReaderViewModel(
             downloadItem.inProgress
         ) { loadings -> loadings.any { it } },
         snapshotFlow { ebook },
-        observeItemDetail.flow
-    ) { loading, ebook, itemDetail ->
-        EpubState(loading = loading, epubBook = ebook, itemDetail = itemDetail)
+        observeItemDetail.flow,
+        observeDownload.flow
+    ) { loading, ebook, itemDetail, download ->
+        val progress = download?.progress?.takeIf { it in 1..99 }?.let { "$it%" }
+
+        EpubState(
+            loading = loading,
+            epubBook = ebook,
+            itemDetail = itemDetail,
+            progress = progress
+        )
     }.stateInDefault(viewModelScope, EpubState())
 
     init {
@@ -70,6 +80,10 @@ class EpubReaderViewModel(
                 }
             }
         }
+    }
+
+    fun goBack() {
+        navigator.goBack()
     }
 
     private fun onPageChanged(fileId: String, page: Int) {
@@ -101,11 +115,6 @@ class EpubReaderViewModel(
 data class EpubState(
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
-    val itemDetail: ItemDetail? = null
+    val itemDetail: ItemDetail? = null,
+    val progress: String? = null
 )
-
-internal fun chunkText(text: String): List<String> {
-    return text.splitToSequence("\n\n")
-        .filter { it.isNotBlank() }
-        .toList()
-}

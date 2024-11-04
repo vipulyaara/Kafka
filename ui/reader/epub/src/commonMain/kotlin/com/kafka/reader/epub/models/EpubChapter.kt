@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.kafka.reader.epub.models
 
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -33,15 +32,6 @@ data class EpubChapter @OptIn(ExperimentalSerializationApi::class) constructor(
     @ProtoNumber(1) val chapterId: String,
     @ProtoNumber(2) val absPath: String,
     @ProtoNumber(3) val title: String,
-    @ProtoNumber(4) val pages: List<EpubPage>
-) {
-    val body: String
-        get() = pages.joinToString("\n\n") { it.content }
-}
-
-@Serializable
-data class EpubPage @OptIn(ExperimentalSerializationApi::class) constructor(
-    @ProtoNumber(1) val pageId: String,
-    @ProtoNumber(2) val content: String,
-    @ProtoNumber(3) val pageNumber: Int
+    @ProtoNumber(4) val content: String,
+    @ProtoNumber(5) val contentElements: List<ContentElement>
 )

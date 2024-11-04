@@ -1,4 +1,3 @@
-import com.kafka.gradle.addKspDependencyForAllTargets
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {

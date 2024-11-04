@@ -3,9 +3,13 @@
 package com.kafka.reader.epub
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,23 +28,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.kafka.common.extensions.getContext
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.common.simpleClickable
-import com.kafka.navigation.LocalNavigator
+import com.kafka.reader.epub.components.CodeBlockElement
+import com.kafka.reader.epub.components.HeadingElement
+import com.kafka.reader.epub.components.ListElement
+import com.kafka.reader.epub.components.QuoteElement
+import com.kafka.reader.epub.components.TextElement
+import com.kafka.reader.epub.models.ContentElement
 import com.kafka.reader.epub.models.EpubBook
 import com.kafka.reader.epub.models.EpubChapter
-import com.kafka.reader.epub.models.EpubPage
-import com.kafka.reader.epub.parser.EpubImageParser
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
+import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import ui.common.theme.theme.Dimens
@@ -48,29 +54,24 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun EpubReader(viewModel: EpubReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val navigator = LocalNavigator.current
-    val context = getContext()
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopBar(
-                scrollBehavior = scrollBehavior,
-                onShareClicked = { viewModel.shareItemText(context) },
-                onBackPressed = { navigator.goBack() })
-        }
+        topBar = { ReaderTopBar(scrollBehavior = scrollBehavior, viewModel = viewModel) }
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (state.epubBook != null) {
-                EpubBook(
-                    ebook = state.epubBook!!,
-                    chapters = state.epubBook!!.chapters
-                )
-            } else {
-                if (state.loading) {
-                    InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
+        ProvideScaffoldPadding(it) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (state.epubBook != null) {
+                    EpubBook(ebook = state.epubBook!!)
+                } else {
+                    if (state.loading) {
+                        LoadingWithProgress(
+                            progress = state.progress,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }
@@ -78,8 +79,8 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
 }
 
 @Composable
-private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>) {
-    val pages = remember(chapters) { chapters.map { it.pages }.flatten() }
+private fun EpubBook(ebook: EpubBook) {
+    val chapters = ebook.chapters
     val readerSettings = ReaderSettings.Default
     var settings by remember { mutableStateOf(readerSettings) }
     var showSettings by rememberMutableState { false }
@@ -99,48 +100,77 @@ private fun EpubBook(ebook: EpubBook, chapters: List<EpubChapter>) {
             .simpleClickable { showSettings = !showSettings },
         contentPadding = scaffoldPadding()
     ) {
-        items(pages) { page ->
-            Page(ebook = ebook, page = page, settings = settings)
+        items(chapters) { page ->
+            Chapter(ebook = ebook, chapter = page, settings = settings)
         }
     }
 }
 
+@Composable
+private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSettings) {
+    SelectionContainer {
+        Column {
+            chapter.contentElements.forEach { element ->
+                when (element) {
+                    is ContentElement.Text -> TextElement(element, settings)
+                    is ContentElement.Heading -> HeadingElement(element, settings)
+                    is ContentElement.Quote -> QuoteElement(element, settings)
+                    is ContentElement.List -> ListElement(element, settings)
+                    is ContentElement.CodeBlock -> CodeBlockElement(element, settings)
+                    is ContentElement.Image -> {
+                        val image = ebook.images.find { it.absPath == element.path }
+                        image?.let {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalPlatformContext.current)
+                                    .data(image.image)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = element.caption,
+                                contentScale = ContentScale.FillWidth,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            )
+                        }
+                    }
+
+                    is ContentElement.Table -> {
+                        // TODO: Implement table rendering
+                    }
+
+                    is ContentElement.Divider -> {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+                                .padding(vertical = 16.dp)
+                        )
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
-private fun Page(ebook: EpubBook, page: EpubPage, settings: ReaderSettings) {
-    val paragraphs = remember { chunkText(page.content) }
-
-    paragraphs.forEach { para ->
-        val imgEntry = EpubImageParser.getImagePath(para)
-
-        if (imgEntry == null) {
-            SelectionContainer {
-                Text(
-                    text = para,
-                    modifier = Modifier.padding(Dimens.Spacing16),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = settings.fontStyle.fontFamily,
-                    fontWeight = settings.fontStyle.fontWeight,
-                    fontSize = settings.fontSize.fontSize,
-                    lineHeight = settings.fontSize.lineHeight,
-                    textAlign = TextAlign.Justify
-                )
-            }
-        } else {
-            val image = ebook.images.find { it.absPath == imgEntry }
-            image?.let {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalPlatformContext.current)
-                        .data(image.image)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 6.dp)
-                )
-            }
+private fun LoadingWithProgress(progress: String?, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        InfiniteProgressBar()
+        if (progress != null) {
+            Text(
+                text = progress,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

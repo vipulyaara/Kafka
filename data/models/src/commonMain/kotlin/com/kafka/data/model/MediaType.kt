@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MediaType(val value: String) {
-    @SerialName("texts")
-    Text("texts"),
+    @SerialName("text")
+    Text("text"),
 
     @SerialName("audio")
     Audio("audio");
@@ -16,7 +16,5 @@ enum class MediaType(val value: String) {
 
     companion object {
         fun from(value: String?) = MediaType.entries.firstOrNull { it.value == value } ?: Text
-
-        val Default: MediaType = Text
     }
 }

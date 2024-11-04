@@ -183,12 +183,12 @@ private fun HomeNavigationBar(
 ) {
     Column(modifier = modifier) {
         if (navigationType.shouldShowMiniPlayer()) {
-            MiniPlayer(
-                modifier = Modifier
-                    .padding(Dimens.Spacing08)
-                    .zIndex(2f),
-                openPlaybackSheet = openPlaybackSheet
-            )
+//            MiniPlayer(
+//                modifier = Modifier
+//                    .padding(Dimens.Spacing08)
+//                    .zIndex(2f),
+//                openPlaybackSheet = openPlaybackSheet
+//            )
         }
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
