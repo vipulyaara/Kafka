@@ -8,83 +8,6 @@ import kafka.reader.core.models.InlineElement
 import kafka.reader.core.models.TextStyle
 
 object ContentParser {
-    private fun parseTextWithStyle(
-        text: String,
-        element: Element?,
-        inlineElements: List<InlineElement> = emptyList()
-    ): ContentElement.Text {
-        if (element == null) return ContentElement.Text(text, inlineElements = inlineElements)
-
-        return when (element.tagName().lowercase()) {
-            "h1" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading1),
-                sizeFactor = 2.0f
-            )
-
-            "h2" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading2),
-                sizeFactor = 1.75f
-            )
-
-            "h3" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading3),
-                sizeFactor = 1.5f
-            )
-
-            "h4" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading4),
-                sizeFactor = 1.25f
-            )
-
-            "h5" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading5),
-                sizeFactor = 1.1f
-            )
-
-            "h6" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading6),
-                sizeFactor = 1.0f
-            )
-
-            "p" -> createTextElement(text, element, inlineElements)
-            "caption" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Italic)
-            )
-
-            "strong" -> ContentElement.Text(
-                content = text,
-                styles = setOf(TextStyle.Heading3)
-            )
-
-            else -> createTextElement(text, element, inlineElements)
-        }
-    }
-
-    private fun createTextElement(
-        content: String,
-        element: Element,
-        inlineElements: List<InlineElement> = emptyList()
-    ): ContentElement.Text {
-        val styleProps = parseStyles(element)
-        return ContentElement.Text(
-            content = content,
-            styles = styleProps.styles,
-            alignment = styleProps.alignment,
-            sizeFactor = styleProps.sizeFactor,
-            color = styleProps.color,
-            backgroundColor = styleProps.backgroundColor,
-            letterSpacing = styleProps.letterSpacing,
-            lineHeight = styleProps.lineHeight,
-            inlineElements = inlineElements
-        )
-    }
 
     fun parseNode(
         node: Node,
@@ -153,7 +76,12 @@ object ContentParser {
                                     )
                                 }
 
-                                else -> addAll(parseNode(node, imageParser))
+                                else -> {
+                                    val (content, inlineElements) = parseInlineContent(node)
+                                    if (content.isNotEmpty()) {
+                                        add(parseTextWithStyle(content, node, inlineElements))
+                                    }
+                                }
                             }
                         }
 
@@ -165,6 +93,84 @@ object ContentParser {
                     }
                 }
             }
+        }
+    }
+
+    private fun createTextElement(
+        content: String,
+        element: Element,
+        inlineElements: List<InlineElement> = emptyList()
+    ): ContentElement.Text {
+        val styleProps = parseStyles(element)
+        return ContentElement.Text(
+            content = content,
+            styles = styleProps.styles,
+            alignment = styleProps.alignment,
+            sizeFactor = styleProps.sizeFactor,
+            color = styleProps.color,
+            backgroundColor = styleProps.backgroundColor,
+            letterSpacing = styleProps.letterSpacing,
+            lineHeight = styleProps.lineHeight,
+            inlineElements = inlineElements
+        )
+    }
+
+    private fun parseTextWithStyle(
+        text: String,
+        element: Element?,
+        inlineElements: List<InlineElement> = emptyList()
+    ): ContentElement.Text {
+        if (element == null) return ContentElement.Text(text, inlineElements = inlineElements)
+
+        return when (element.tagName().lowercase()) {
+            "h1" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading1),
+                sizeFactor = 2.0f
+            )
+
+            "h2" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading2),
+                sizeFactor = 1.75f
+            )
+
+            "h3" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading3),
+                sizeFactor = 1.5f
+            )
+
+            "h4" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading4),
+                sizeFactor = 1.25f
+            )
+
+            "h5" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading5),
+                sizeFactor = 1.1f
+            )
+
+            "h6" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading6),
+                sizeFactor = 1.0f
+            )
+
+            "p" -> createTextElement(text, element, inlineElements)
+            "caption" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Italic)
+            )
+
+            "strong" -> ContentElement.Text(
+                content = text,
+                styles = setOf(TextStyle.Heading3)
+            )
+
+            else -> createTextElement(text, element, inlineElements)
         }
     }
 
@@ -261,15 +267,15 @@ object ContentParser {
         if (stringBuilder.isNotEmpty() && !stringBuilder.last().isWhitespace()) {
             stringBuilder.append(' ')
         }
-        
+
         val startIndex = stringBuilder.length
         val (content, _) = parseInlineContent(node)
         stringBuilder.append(content)
-        
+
         if (!content.endsWith(' ')) {
             stringBuilder.append(' ')
         }
-        
+
         inlineElements.add(
             InlineElement.Link(
                 start = startIndex,
@@ -288,15 +294,15 @@ object ContentParser {
         if (stringBuilder.isNotEmpty() && !stringBuilder.last().isWhitespace()) {
             stringBuilder.append(' ')
         }
-        
+
         val startIndex = stringBuilder.length
         val (content, nestedInline) = parseInlineContent(node)
         stringBuilder.append(content)
-        
+
         if (!content.endsWith(' ')) {
             stringBuilder.append(' ')
         }
-        
+
         inlineElements.addAll(nestedInline)
         inlineElements.add(
             InlineElement.Style(
