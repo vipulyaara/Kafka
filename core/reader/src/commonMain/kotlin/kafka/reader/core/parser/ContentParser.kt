@@ -86,8 +86,9 @@ object ContentParser {
                         }
 
                         else -> {
-                            node.childNodes().forEach { child ->
-                                addAll(parseNode(child, imageParser))
+                            val (content, inlineElements) = parseInlineContent(node)
+                            if (content.isNotEmpty()) {
+                                add(parseTextWithStyle(content, node, inlineElements))
                             }
                         }
                     }

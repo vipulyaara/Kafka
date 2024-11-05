@@ -5,19 +5,19 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.kafka.reader.epub.settings.ReaderSettings
 import kafka.reader.core.models.ColumnAlignment
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.TableStyle
+import kafka.reader.core.models.TextStyle
+import kafka.reader.core.models.toTextAlignment
 
 @Composable
 fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
@@ -26,7 +26,7 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        // Caption
+
         element.caption?.let { caption ->
             Text(
                 text = caption,
@@ -36,7 +36,7 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
             )
         }
 
-        // Table content
+
         Box(
             modifier = Modifier
                 .then(
@@ -51,7 +51,7 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
                 )
         ) {
             Column {
-                // Headers
+                // Headers using headerElements
                 if (element.isHeaderRow) {
                     Row(
                         modifier = Modifier
@@ -59,21 +59,24 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
                             .background(MaterialTheme.colorScheme.surfaceVariant)
                             .padding(8.dp)
                     ) {
-                        element.headers.forEachIndexed { index, header ->
-                            TableCell(
-                                text = header,
-                                weight = 1f,
-                                alignment = element.columnAlignments.getOrNull(index)
-                                    ?: ColumnAlignment.LEFT,
-                                isHeader = true,
-                                settings = settings
+                        element.headerElements.forEachIndexed { index, headerElement ->
+                            val textElement = headerElement.copy(
+                                alignment = (element.columnAlignments.getOrNull(index)
+                                    ?: ColumnAlignment.LEFT).toTextAlignment(),
+                                styles = setOf(TextStyle.Heading5)
+                            )
+
+                            TextElement(
+                                element = textElement,
+                                settings = settings,
+                                modifier = Modifier.weight(1f)
                             )
                         }
                     }
                 }
 
-                // Rows
-                element.rows.forEachIndexed { rowIndex, row ->
+                // Rows using rowElements
+                element.rowElements.forEachIndexed { rowIndex, row ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -88,13 +91,22 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
                             .padding(8.dp)
                     ) {
                         row.forEachIndexed { colIndex, cell ->
-                            TableCell(
-                                text = cell,
-                                weight = 1f,
-                                alignment = element.columnAlignments.getOrNull(colIndex)
-                                    ?: ColumnAlignment.LEFT,
-                                isHeader = element.isHeaderColumn && colIndex == 0,
-                                settings = settings
+                            val textElement = cell.copy(
+                                alignment = (element.columnAlignments.getOrNull(colIndex)
+                                    ?: ColumnAlignment.LEFT).toTextAlignment(),
+                                styles = setOf(
+                                    if (element.isHeaderColumn && colIndex == 0) {
+                                        TextStyle.Heading5
+                                    } else {
+                                        TextStyle.Normal
+                                    }
+                                )
+                            )
+
+                            TextElement(
+                                element = textElement,
+                                settings = settings,
+                                modifier = Modifier.weight(1f)
                             )
                         }
                     }
@@ -103,26 +115,3 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
         }
     }
 }
-
-@Composable
-private fun RowScope.TableCell(
-    text: String,
-    weight: Float,
-    alignment: ColumnAlignment,
-    isHeader: Boolean,
-    settings: ReaderSettings
-) {
-    Text(
-        text = text,
-        style = if (isHeader) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurface,
-        textAlign = when (alignment) {
-            ColumnAlignment.LEFT -> TextAlign.Start
-            ColumnAlignment.CENTER -> TextAlign.Center
-            ColumnAlignment.RIGHT -> TextAlign.End
-        },
-        modifier = Modifier
-            .weight(weight)
-            .padding(horizontal = 4.dp)
-    )
-} 

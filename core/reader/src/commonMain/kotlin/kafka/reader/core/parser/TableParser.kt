@@ -9,8 +9,11 @@ fun parseTable(element: Element): ContentElement.Table {
     val caption = element.select("caption").firstOrNull()?.text()
     val summary = element.attr("data-summary")
 
-    // Parse headers
-    val headers = element.select("thead tr th").map { it.text() }
+    // Parse headers as Text elements with full styling
+    val headerElements = element.select("thead tr th").map { cell ->
+        ContentParser.parseNode(cell).firstOrNull() as? ContentElement.Text 
+            ?: ContentElement.Text(cell.text())
+    }
 
     // Parse column alignments
     val columnAlignments = element.select("thead tr th").map { th ->
@@ -21,10 +24,11 @@ fun parseTable(element: Element): ContentElement.Table {
         }
     }
 
-    // Parse rows
-    val rows = element.select("tbody tr").map { row ->
+    // Parse rows with full text styling support
+    val rowElements = element.select("tbody tr").map { row ->
         row.select("td").map { cell ->
-            cell.text()
+            ContentParser.parseNode(cell).firstOrNull() as? ContentElement.Text 
+                ?: ContentElement.Text(cell.text())
         }
     }
 
@@ -42,13 +46,13 @@ fun parseTable(element: Element): ContentElement.Table {
     }
 
     return ContentElement.Table(
-        headers = headers,
-        rows = rows,
         caption = caption,
         summary = summary,
         columnAlignments = columnAlignments,
         isHeaderRow = isHeaderRow,
         isHeaderColumn = isHeaderColumn,
-        style = style
+        style = style,
+        headerElements = headerElements,
+        rowElements = rowElements
     )
 } 

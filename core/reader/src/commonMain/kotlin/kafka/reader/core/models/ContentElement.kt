@@ -43,14 +43,14 @@ sealed interface ContentElement {
     ) : ContentElement
 
     data class Table(
-        val headers: List<String>,
-        val rows: List<List<String>>,
         val caption: String? = null,
         val summary: String? = null,
         val columnAlignments: List<ColumnAlignment> = emptyList(),
         val isHeaderRow: Boolean = true,
         val isHeaderColumn: Boolean = false,
-        val style: TableStyle = TableStyle.Default
+        val style: TableStyle = TableStyle.Default,
+        val headerElements: List<Text> = emptyList(),
+        val rowElements: List<List<Text>> = emptyList()
     ) : ContentElement
 
     data class CodeBlock(
@@ -127,4 +127,10 @@ sealed interface InlineElement {
         override val end: Int,
         val color: String
     ) : InlineElement
-} 
+}
+
+fun ColumnAlignment.toTextAlignment() = when(this) {
+    ColumnAlignment.LEFT -> TextAlignment.LEFT
+    ColumnAlignment.CENTER -> TextAlignment.CENTER
+    ColumnAlignment.RIGHT -> TextAlignment.RIGHT
+}

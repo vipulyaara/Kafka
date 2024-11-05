@@ -35,11 +35,12 @@ import androidx.compose.ui.unit.sp
 import com.kafka.reader.epub.settings.ReaderSettings
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.InlineElement
+import kafka.reader.core.models.TextAlignment
 import kafka.reader.core.models.TextStyle
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun TextElement(element: ContentElement.Text, settings: ReaderSettings) {
+fun TextElement(element: ContentElement.Text, settings: ReaderSettings, modifier: Modifier = Modifier) {
     val isHeading = element.style in TextStyle.Heading1..TextStyle.Heading6
     val uriHandler = LocalUriHandler.current
     val linkColor = if (isSystemInDarkTheme()) {
@@ -54,12 +55,10 @@ fun TextElement(element: ContentElement.Text, settings: ReaderSettings) {
 
     Text(
         text = if (element.inlineElements.isEmpty()) AnnotatedString(element.content) else annotatedString,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = Dimens.Spacing16)
-            .padding(
-                vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08
-            ),
+            .padding(vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08),
         style = getHeadingStyle(element.style),
         fontFamily = settings.fontStyle.fontFamily,
         fontWeight = when {
@@ -83,13 +82,12 @@ fun TextElement(element: ContentElement.Text, settings: ReaderSettings) {
         textAlign = if (isHeading) {
             TextAlign.Center
         } else {
-            TextAlign.Justify
-//            when (element.alignment) {
-//                TextAlignment.LEFT -> TextAlign.Start
-//                TextAlignment.CENTER -> TextAlign.Center
-//                TextAlignment.RIGHT -> TextAlign.End
-//                TextAlignment.JUSTIFY -> TextAlign.Justify
-//            }
+            when (element.alignment) {
+                TextAlignment.LEFT -> TextAlign.Start
+                TextAlignment.CENTER -> TextAlign.Center
+                TextAlignment.RIGHT -> TextAlign.End
+                TextAlignment.JUSTIFY -> TextAlign.Justify
+            }
         },
         color = contentColorFor(settings.background.color)
 //        color = element.color?.let { Rgb(it) Color(Color.parseColor(it)) }
