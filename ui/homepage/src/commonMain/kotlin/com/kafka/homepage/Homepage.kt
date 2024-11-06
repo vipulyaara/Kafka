@@ -66,7 +66,7 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
-import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.isDark
 
 @Composable
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
@@ -149,7 +149,7 @@ private fun HomepageFeedItems(
                 is HomepageCollection.RecentItems -> {
                     item(key = "recent", contentType = "recent") {
                         if (recentItems.isNotEmpty()) {
-                            AppTheme(isDarkTheme = LocalTheme.current.shouldUseDarkColors()) {
+                            AppTheme(isDarkTheme = LocalTheme.current.isDark()) {
                                 RecentItems(
                                     readingList = recentItems,
                                     openItemDetail = openRecentItemDetail,

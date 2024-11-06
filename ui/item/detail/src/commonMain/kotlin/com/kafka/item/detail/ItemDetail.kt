@@ -51,7 +51,7 @@ import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
-import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.isDark
 
 @Composable
 @Inject
@@ -282,7 +282,7 @@ private fun ItemDetailTheme(
     content: @Composable () -> Unit,
 ) {
     if (isDynamicThemeEnabled) {
-        DynamicTheme(model = model, useDarkTheme = LocalTheme.current.shouldUseDarkColors()) {
+        DynamicTheme(model = model, useDarkTheme = LocalTheme.current.isDark()) {
             content()
         }
     } else {

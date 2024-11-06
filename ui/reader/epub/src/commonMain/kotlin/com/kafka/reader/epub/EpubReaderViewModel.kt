@@ -65,6 +65,7 @@ class EpubReaderViewModel(
             loading = loading,
             epubBook = ebook,
             itemDetail = itemDetail,
+            url = download?.url,
             progress = progress
         )
     }.stateInDefault(viewModelScope, EpubState())
@@ -134,5 +135,6 @@ data class EpubState(
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
     val itemDetail: ItemDetail? = null,
-    val progress: String? = null
+    val progress: String? = null,
+    val url: String? = null
 )

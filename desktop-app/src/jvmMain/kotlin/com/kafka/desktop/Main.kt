@@ -12,7 +12,7 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.navigation.rememberBottomSheetNavigator
 import ui.common.theme.theme.AppTheme
-import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.isDark
 import com.kafka.shared.DesktopApplicationComponent
 import com.kafka.shared.WindowComponent
 import com.kafka.shared.create
@@ -39,7 +39,7 @@ fun main() = application {
         val navController = rememberNavController(bottomSheetNavigator)
 
         AppTheme(
-            isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors()
+            isDarkTheme = applicationComponent.preferencesStore.isDark()
         ) {
             component.rootContent.Content(navController, bottomSheetNavigator, theme)
         }

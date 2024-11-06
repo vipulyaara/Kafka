@@ -85,14 +85,14 @@ val KafkaTypography: Typography
     }
 
 @Composable
-fun PreferencesStore.shouldUseDarkColors(): Boolean {
+fun PreferencesStore.isDark(): Boolean {
     val themePreference by remember { observeTheme() }.collectAsState(Theme.SYSTEM)
 
-    return themePreference.shouldUseDarkColors()
+    return themePreference.isDark()
 }
 
 @Composable
-fun Theme.shouldUseDarkColors(): Boolean {
+fun Theme.isDark(): Boolean {
     return when (this) {
         Theme.SYSTEM -> isSystemInDarkTheme()
         Theme.DARK -> true

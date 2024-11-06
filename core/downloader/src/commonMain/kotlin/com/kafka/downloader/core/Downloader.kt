@@ -20,6 +20,8 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import okio.FileSystem
@@ -28,8 +30,6 @@ import okio.SYSTEM
 import okio.buffer
 import okio.use
 import kotlin.math.min
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 interface Downloader {
     suspend fun download(fileId: String)
@@ -56,21 +56,15 @@ class KtorDownloader(
 
         debug(tag) { "Starting to download file: $fileId from $url" }
 
-//            if (File(filePath).exists()) {
-//                debug(tag) { "Removing existing file: $filePath" }
-//                File(filePath).delete()
-//                downloadDao.delete(fileId)
-//            }
-
         if (FileSystem.SYSTEM.exists(filePath.toPath())) {
             debug(tag) { "File already exists: $filePath" }
-            val download = Download(fileId, Download.Status.Completed, 100, filePath)
+            val download = Download(fileId, url, Download.Status.Completed, 100, filePath)
             downloadDao.insert(download)
             return
         }
 
         try {
-            val download = Download(fileId, Download.Status.Downloading, 0, filePath)
+            val download = Download(fileId, url, Download.Status.Downloading, 0, filePath)
             downloadDao.insert(download)
 
             debug(tag) { "Updated file path for $fileId to $filePath" }

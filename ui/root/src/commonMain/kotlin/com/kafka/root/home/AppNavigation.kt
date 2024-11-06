@@ -74,7 +74,7 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.setStatusBarColor
-import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.isDark
 
 typealias AppNavigation = @Composable (NavHostController) -> Unit
 
@@ -230,7 +230,7 @@ fun NavGraphBuilder.addPlayer(
             goToItem = { viewModel.goToAlbum() },
             goToCreator = { viewModel.goToCreator() },
             playerTheme = viewModel.playerTheme,
-            useDarkTheme = LocalTheme.current.shouldUseDarkColors(),
+            useDarkTheme = LocalTheme.current.isDark(),
             resizableViewModelFactory = resizableViewModelFactory,
             sleepTimerViewModelFactory = sleepTimerViewModelFactory,
             playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
@@ -382,7 +382,7 @@ internal fun SwitchStatusBarsOnPlayer(navController: NavHostController) {
     val isPlayerUp = destination == "player"
 
     val context = getContext()
-    val useDarkTheme = LocalTheme.current.shouldUseDarkColors()
+    val useDarkTheme = LocalTheme.current.isDark()
 
     DisposableEffect(isPlayerUp, useDarkTheme) {
         setStatusBarColor(context, if (isPlayerUp) useDarkTheme else !useDarkTheme)

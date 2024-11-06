@@ -34,12 +34,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.kafka.common.extensions.alignCenter
 import com.kafka.common.extensions.rememberMutableState
 import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
@@ -139,6 +141,19 @@ private fun Chapter(
 ) {
     SelectionContainer {
         Column {
+            Text(
+                text = chapter.title,
+                style = MaterialTheme.typography.titleLarge.alignCenter(),
+                fontSize = settings.fontSize.fontSize,
+                lineHeight = settings.fontSize.lineHeight,
+                fontFamily = settings.fontStyle.fontFamily,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = Dimens.Spacing16)
+                    .padding(horizontal = Dimens.Spacing16)
+            )
+
             chapter.contentElements.forEach { element ->
                 when (element) {
                     is ContentElement.Text -> {

@@ -22,7 +22,7 @@ import com.kafka.shared.AndroidActivityComponent
 import com.kafka.shared.AndroidApplicationComponent
 import com.kafka.shared.create
 import ui.common.theme.theme.AppTheme
-import ui.common.theme.theme.shouldUseDarkColors
+import ui.common.theme.theme.isDark
 
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val theme by applicationComponent.preferencesStore.observeTheme()
                 .collectAsStateWithLifecycle(Theme.SYSTEM)
-            val isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors()
+            val isDarkTheme = applicationComponent.preferencesStore.isDark()
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             navController = rememberNavController(bottomSheetNavigator)
 
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(
-                isDarkTheme = applicationComponent.preferencesStore.shouldUseDarkColors(),
+                isDarkTheme = applicationComponent.preferencesStore.isDark(),
                 isTrueContrast = applicationComponent.remoteConfig.isTrueContrastEnabled()
             ) {
                 component.rootContent.Content(navController, bottomSheetNavigator, theme)
