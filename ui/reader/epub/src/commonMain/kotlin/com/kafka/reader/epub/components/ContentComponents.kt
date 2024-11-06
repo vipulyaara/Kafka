@@ -15,8 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -40,9 +38,13 @@ import kafka.reader.core.models.TextStyle
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun TextElement(element: ContentElement.Text, settings: ReaderSettings, modifier: Modifier = Modifier) {
+fun TextElement(
+    element: ContentElement.Text,
+    settings: ReaderSettings,
+    navigate: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val isHeading = element.style in TextStyle.Heading1..TextStyle.Heading6
-    val uriHandler = LocalUriHandler.current
     val linkColor = if (isSystemInDarkTheme()) {
         Color(0xFF66B2FF)
     } else {
@@ -50,7 +52,11 @@ fun TextElement(element: ContentElement.Text, settings: ReaderSettings, modifier
     }
 
     val annotatedString = remember(element) {
-        buildTextAnnotatedString(element, linkColor, uriHandler)
+        buildTextAnnotatedString(
+            element = element,
+            linkColor = linkColor,
+            navigateToUrl = navigate
+        )
     }
 
     Text(
@@ -102,7 +108,7 @@ fun TextElement(element: ContentElement.Text, settings: ReaderSettings, modifier
 private fun buildTextAnnotatedString(
     element: ContentElement.Text,
     linkColor: Color,
-    uriHandler: UriHandler
+    navigateToUrl: (String) -> Unit
 ): AnnotatedString {
     return buildAnnotatedString {
         if (element.inlineElements.isEmpty()) {
@@ -112,37 +118,34 @@ private fun buildTextAnnotatedString(
 
         val content = element.content
         val length = content.length
-        
+
         // Sort and validate inline elements
         val sortedInlines = element.inlineElements
             .sortedBy { it.start }
             .filter { inline ->
                 // Filter out invalid inline elements
-                inline.start >= 0 && 
-                inline.end <= length && 
-                inline.start < inline.end
+                inline.start >= 0 &&
+                        inline.end <= length &&
+                        inline.start < inline.end
             }
-        
+
         var currentIndex = 0
-        
+
         sortedInlines.forEach { inline ->
             val safeStart = inline.start.coerceIn(currentIndex, length)
             val safeEnd = inline.end.coerceIn(safeStart, length)
-            
-            // Add text before the inline element if there is any
+
             if (safeStart > currentIndex) {
                 append(content.substring(currentIndex, safeStart))
             }
 
-            // Apply the appropriate style based on inline element type
             when (inline) {
                 is InlineElement.Link -> {
                     val link = LinkAnnotation.Url(
                         inline.href,
                         TextLinkStyles(SpanStyle(color = linkColor))
                     ) {
-                        val url = (it as LinkAnnotation.Url).url
-                        uriHandler.openUri(url)
+                        navigateToUrl((it as LinkAnnotation.Url).url)
                     }
                     withLink(link) {
                         append(content.substring(safeStart, safeEnd))
@@ -181,11 +184,10 @@ private fun buildTextAnnotatedString(
                 is InlineElement.BackgroundColor -> {}
                 is InlineElement.Color -> {}
             }
-            
+
             currentIndex = safeEnd
         }
 
-        // Add remaining text after the last inline element
         if (currentIndex < length) {
             append(content.substring(currentIndex))
         }

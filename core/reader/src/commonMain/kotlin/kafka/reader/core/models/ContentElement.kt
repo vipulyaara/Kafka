@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface ContentElement {
+    @Serializable
     data class Text(
         val content: String,
         val styles: Set<TextStyle> = emptySet(),
@@ -19,11 +20,13 @@ sealed interface ContentElement {
             get() = styles.first()
     }
 
+    @Serializable
     data class Heading(
         val content: String,
         val level: Int
     ) : ContentElement
 
+    @Serializable
     data class Image(
         val path: String,
         val caption: String?,
@@ -31,17 +34,20 @@ sealed interface ContentElement {
         val aspectRatio: Float
     ) : ContentElement
 
+    @Serializable
     data class Quote(
         val content: String,
         val attribution: String? = null
     ) : ContentElement
 
+    @Serializable
     data class Listing(
         val items: List<String>,
         val ordered: Boolean,
         val startIndex: Int = 1
     ) : ContentElement
 
+    @Serializable
     data class Table(
         val caption: String? = null,
         val summary: String? = null,
@@ -53,11 +59,13 @@ sealed interface ContentElement {
         val rowElements: List<List<Text>> = emptyList()
     ) : ContentElement
 
+    @Serializable
     data class CodeBlock(
         val content: String,
         val language: String? = null
     ) : ContentElement
 
+    @Serializable
     data object Divider : ContentElement
 }
 
@@ -100,28 +108,33 @@ enum class TextAlignment {
     JUSTIFY
 }
 
+@Serializable
 sealed interface InlineElement {
     val start: Int
     val end: Int
-    
+
+    @Serializable
     data class Link(
         override val start: Int,
         override val end: Int,
         val href: String
     ) : InlineElement
-    
+
+    @Serializable
     data class Style(
         override val start: Int,
         override val end: Int,
         val styles: Set<TextStyle>
     ) : InlineElement
-    
+
+    @Serializable
     data class Color(
         override val start: Int,
         override val end: Int,
         val color: String
     ) : InlineElement
-    
+
+    @Serializable
     data class BackgroundColor(
         override val start: Int,
         override val end: Int,

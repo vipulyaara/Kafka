@@ -24,6 +24,20 @@ object ContentParser {
 
                 is Element -> {
                     when (node.tagName().lowercase()) {
+                        "body", "section", "header", "div", "hgroup" -> {
+                            node.childNodes().forEach { child ->
+                                addAll(parseNode(child, imageParser))
+                            }
+                        }
+
+                        "h1", "h2", "h3", "h4", "h5", "h6" -> {
+                            val (content, inlineElements) = parseInlineContent(node)
+                            if (content.isNotEmpty()) {
+                                val epubType = node.attr("epub:type")
+                                add(parseTextWithStyle(content, node, inlineElements))
+                            }
+                        }
+
                         "p" -> {
                             val (content, inlineElements) = parseInlineContent(node)
                             if (content.isNotEmpty()) {
@@ -58,12 +72,6 @@ object ContentParser {
 
                         "hr" -> add(ContentElement.Divider)
                         "table" -> add(parseTable(node))
-
-                        "div", "section" -> {
-                            node.childNodes().forEach { child ->
-                                addAll(parseNode(child, imageParser))
-                            }
-                        }
 
                         "span" -> {
                             when {
@@ -123,43 +131,48 @@ object ContentParser {
     ): ContentElement.Text {
         if (element == null) return ContentElement.Text(text, inlineElements = inlineElements)
 
-        return when (element.tagName().lowercase()) {
-            "h1" -> ContentElement.Text(
+        val tag = element.tagName().lowercase()
+
+        if (element.hasClass("h1") || tag == "h1") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading1),
                 sizeFactor = 2.0f
             )
-
-            "h2" -> ContentElement.Text(
+        } else if (element.hasClass("h2") || tag == "h2" || tag == "title") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading2),
                 sizeFactor = 1.75f
             )
-
-            "h3" -> ContentElement.Text(
+        } else if (element.hasClass("h3") || tag == "h3") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading3),
                 sizeFactor = 1.5f
             )
-
-            "h4" -> ContentElement.Text(
+        } else if (element.hasClass("h4") || tag == "h4") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading4),
                 sizeFactor = 1.25f
             )
-
-            "h5" -> ContentElement.Text(
+        } else if (element.hasClass("h5") || tag == "h5") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading5),
                 sizeFactor = 1.1f
             )
-
-            "h6" -> ContentElement.Text(
+        } else if (element.hasClass("h6") || tag == "h6") {
+            return ContentElement.Text(
                 content = text,
                 styles = setOf(TextStyle.Heading6),
                 sizeFactor = 1.0f
             )
+        }
 
+        // Existing tag-based checks
+        return when (element.tagName().lowercase()) {
             "p" -> createTextElement(text, element, inlineElements)
             "caption" -> ContentElement.Text(
                 content = text,

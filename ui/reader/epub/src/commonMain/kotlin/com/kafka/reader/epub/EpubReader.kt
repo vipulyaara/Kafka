@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +47,7 @@ import com.kafka.reader.epub.components.ListElement
 import com.kafka.reader.epub.components.QuoteElement
 import com.kafka.reader.epub.components.TableComponent
 import com.kafka.reader.epub.components.TextElement
+import com.kafka.reader.epub.components.TocComponent
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -60,7 +61,6 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun EpubReader(viewModel: EpubReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -70,7 +70,16 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
         ProvideScaffoldPadding(it) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.epubBook != null) {
-                    EpubBook(ebook = state.epubBook!!)
+                    EpubBook(
+                        ebook = state.epubBook!!,
+                        lazyListState = viewModel.lazyListState,
+                        navigate = viewModel::navigate
+                    )
+                    TocComponent(
+                        show = viewModel.showTocSheet,
+                        chapters = state.epubBook!!.chapters,
+                        selectChapter = viewModel::navigate
+                    )
                 } else {
                     if (state.loading) {
                         LoadingWithProgress(
@@ -85,7 +94,7 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
 }
 
 @Composable
-private fun EpubBook(ebook: EpubBook) {
+private fun EpubBook(ebook: EpubBook, lazyListState: LazyListState, navigate: (String) -> Unit) {
     val chapters = ebook.chapters
     val readerSettings = ReaderSettings.Default
     var settings by remember { mutableStateOf(readerSettings) }
@@ -99,8 +108,8 @@ private fun EpubBook(ebook: EpubBook) {
         )
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(1),
+    LazyColumn(
+        state = lazyListState,
         modifier = Modifier
             .fillMaxWidth()
             .background(settings.background.color)
@@ -108,8 +117,6 @@ private fun EpubBook(ebook: EpubBook) {
                 awaitEachGesture {
                     val down: PointerInputChange = awaitFirstDown()
                     val up: PointerInputChange? = waitForUpOrCancellation()
-                    // only trigger the click if the pointer hasn't moved up or down
-                    // i.e only on tap gesture
                     if (up != null && down.id == up.id) {
                         showSettings = !showSettings
                     }
@@ -118,19 +125,24 @@ private fun EpubBook(ebook: EpubBook) {
         contentPadding = scaffoldPadding()
     ) {
         items(chapters) { page ->
-            Chapter(ebook = ebook, chapter = page, settings = settings)
+            Chapter(ebook = ebook, chapter = page, settings = settings, navigate = navigate)
         }
     }
 }
 
 @Composable
-private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSettings) {
+private fun Chapter(
+    ebook: EpubBook,
+    chapter: EpubChapter,
+    settings: ReaderSettings,
+    navigate: (String) -> Unit
+) {
     SelectionContainer {
         Column {
             chapter.contentElements.forEach { element ->
                 when (element) {
                     is ContentElement.Text -> {
-                        TextElement(element = element, settings = settings)
+                        TextElement(element = element, settings = settings, navigate = navigate)
                     }
 
                     is ContentElement.Heading -> {
@@ -167,7 +179,7 @@ private fun Chapter(ebook: EpubBook, chapter: EpubChapter, settings: ReaderSetti
                     }
 
                     is ContentElement.Table -> {
-                        TableComponent(element = element, settings = settings)
+                        TableComponent(element = element, settings = settings, navigate = navigate)
                     }
 
                     is ContentElement.Divider -> {

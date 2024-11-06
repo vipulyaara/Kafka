@@ -33,7 +33,7 @@ fun ReaderTopBar(
             ) { viewModel.shareItemText(context) }
 
             ActionIcon(Icons.List, "Table of contents") {
-
+                viewModel.showTocSheet.value = true
             }
         },
     )

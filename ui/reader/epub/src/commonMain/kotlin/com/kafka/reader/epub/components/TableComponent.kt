@@ -20,7 +20,11 @@ import kafka.reader.core.models.TextStyle
 import kafka.reader.core.models.toTextAlignment
 
 @Composable
-fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
+fun TableComponent(
+    element: ContentElement.Table,
+    settings: ReaderSettings,
+    navigate: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,7 +73,8 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
                             TextElement(
                                 element = textElement,
                                 settings = settings,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                navigate = navigate
                             )
                         }
                     }
@@ -106,7 +111,8 @@ fun TableComponent(element: ContentElement.Table, settings: ReaderSettings) {
                             TextElement(
                                 element = textElement,
                                 settings = settings,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                navigate = navigate
                             )
                         }
                     }

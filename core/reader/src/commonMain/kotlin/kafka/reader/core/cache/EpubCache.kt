@@ -51,7 +51,9 @@ class EpubCache(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    private val protobuf = ProtoBuf { encodeDefaults = true }
+    private val protobuf = ProtoBuf {
+        encodeDefaults = false
+    }
 
     private fun getPath(): Path {
         return (applicationInfo.cachePath() + "/$EPUB_CACHE").toPath()

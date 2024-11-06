@@ -1,5 +1,6 @@
 package com.kafka.reader.epub
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,6 +46,9 @@ class EpubReaderViewModel(
     private val itemId = savedStateHandle.get<String>("itemId")!!
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
+
+    val showTocSheet = mutableStateOf(false)
+    val lazyListState = LazyListState()
 
     val state = combine(
         combine(
@@ -92,6 +96,21 @@ class EpubReaderViewModel(
         }
     }
 
+    fun navigate(url: String) {
+        val chapterIds = state.value.epubBook?.chapters?.map { it.chapterId }.orEmpty()
+        val chapterId = chapterIds.find {
+            it == url || it == url.substringAfter("#")
+        }
+
+        if (chapterId != null) {
+            viewModelScope.launch {
+                lazyListState.scrollToItem(chapterIds.indexOf(chapterId))
+            }
+        } else {
+            navigator.navigate(Screen.Web(url))
+        }
+    }
+
     private fun loadEbook(uri: String) {
         viewModelScope.launch {
             val result = parseEbook(uri)
@@ -109,7 +128,6 @@ class EpubReaderViewModel(
 
         shareUtils.shareText(text = text, context = context)
     }
-
 }
 
 data class EpubState(

@@ -74,18 +74,6 @@ class EpubParser(
     )
 
     /**
-     * Represents a temporary EPUB chapter.
-     *
-     * @param url The URL of the chapter.
-     * @param title The title of the chapter.
-     * @param body The body of the chapter.
-     * @param chapterIndex The index of the chapter.
-     */
-    data class TempEpubChapter(
-        val url: String, val title: String?, val body: String, val chapterIndex: Int
-    )
-
-    /**
      * Represents an EPUB file.
      *
      * @param absPath The absolute path of the file.
@@ -109,10 +97,6 @@ class EpubParser(
         }
     }
 
-    companion object {
-        const val TAG = "EpubParser"
-    }
-
     /**
      * Creates an [EpubBook] object from an EPUB file.
      *
@@ -122,11 +106,11 @@ class EpubParser(
      */
     suspend fun createEpubBook(filePath: String, shouldUseToc: Boolean): EpubBook {
         return withContext(Dispatchers.IO) {
-            val epubBook = epubCache.get(filePath)
-            if (epubBook != null) {
-                debug { "EpubBook found in cache" }
-                return@withContext epubBook
-            }
+//            val epubBook = epubCache.get(filePath)
+//            if (epubBook != null) {
+//                debug { "EpubBook found in cache" }
+//                return@withContext epubBook
+//            }
             debug { "Parsing EPUB file: $filePath" }
             val files = getZipFilesFromFile(filePath)
             val document = createEpubDocument(files)
@@ -497,7 +481,6 @@ class EpubParser(
                             chapterId = generateId(),
                             absPath = chapterSrc,
                             title = title?.takeIf { it.isNotEmpty() } ?: "Chapter $index",
-                            content = contentElements.joinToString("\n") { it.toString() },
                             contentElements = contentElements
                         )
                     )
@@ -507,7 +490,7 @@ class EpubParser(
             } else {
                 emptyList()
             }
-        }.filter { it.content.isNotEmpty() }
+        }.filter { it.contentElements.isNotEmpty() }
 
         // Fallback to spine-based parsing if ToC is unreliable
         val emptyChapterThreshold = 0.25
@@ -566,13 +549,12 @@ class EpubParser(
                             chapterId = generateId(),
                             absPath = file.absPath,
                             title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
-                            content = contentElements.joinToString("\n") { it.toString() },
                             contentElements = contentElements
                         )
                     } else null
                 }
             }
-            .filter { it.content.isNotEmpty() }
+            .filter { it.contentElements.isNotEmpty() }
             .toList()
     }
 
