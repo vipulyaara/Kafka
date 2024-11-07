@@ -19,7 +19,7 @@ class ObserveShareAppIndex(
 ) : SubjectInteractor<Unit, Int>() {
 
     override fun createObservable(params: Unit): Flow<Int> {
-        return preferencesStore.get(intPreferencesKey("item_opens"), 0).map {
+        return preferencesStore.get(intPreferencesKey("item_opens"), -1).map {
             if (it > 20) {
                 remoteConfig.shareAppIndex().toInt()
             } else {

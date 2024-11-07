@@ -14,6 +14,9 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 
+                implementation(libs.haze)
+                implementation(libs.haze.materials)
+
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }

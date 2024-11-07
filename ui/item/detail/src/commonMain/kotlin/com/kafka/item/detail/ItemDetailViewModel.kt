@@ -20,6 +20,7 @@ import com.kafka.domain.interactors.UpdateItemDetail
 import com.kafka.domain.interactors.recent.AddRecentItem
 import com.kafka.domain.interactors.recent.IsResumableAudio
 import com.kafka.domain.observers.ObserveCreatorItems
+import com.kafka.domain.observers.ObserveItem
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.library.ObserveFavoriteStatus
 import com.kafka.navigation.Navigator
@@ -36,6 +37,7 @@ import com.kafka.remote.config.isShareEnabled
 import com.kafka.remote.config.isSummaryEnabled
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -44,6 +46,7 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class ItemDetailViewModel(
     observeItemDetail: ObserveItemDetail,
+    observeItem: ObserveItem,
     isResumableAudio: IsResumableAudio,
     getPrimaryFile: GetPrimaryFile,
     @Assisted savedStateHandle: SavedStateHandle,
@@ -64,6 +67,8 @@ class ItemDetailViewModel(
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.get<String>("itemId")!!
     val creatorItems = observeCreatorItems.flow.stateInDefault(viewModelScope, emptyList())
+    val itemPlaceholder = observeItem.flow.map { it.asPlaceholder() }
+        .stateInDefault(viewModelScope, null)
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { item -> updateItemsByCreator(item?.creator) },
@@ -95,6 +100,7 @@ class ItemDetailViewModel(
 
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
+        observeItem(itemId)
         observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
 

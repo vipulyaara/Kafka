@@ -129,7 +129,7 @@ class EpubParser(
      * @param shouldUseToc Whether to use the table of contents (ToC) file for parsing.
      * @return The [EpubBook] object.
      */
-    suspend fun createEpubBook(source: Source, shouldUseToc: Boolean = true): EpubBook {
+    private suspend fun createEpubBook(source: Source, shouldUseToc: Boolean = true): EpubBook {
         return withContext(Dispatchers.IO) {
             debug { "Parsing EPUB input stream" }
             val (files, document) = getZipFilesAndDocument(source)

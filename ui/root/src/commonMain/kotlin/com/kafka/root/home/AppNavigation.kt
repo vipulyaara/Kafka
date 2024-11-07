@@ -1,16 +1,22 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.kafka.root.home
 
 //noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,8 +29,10 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -35,6 +43,8 @@ import androidx.navigation.toRoute
 import com.kafka.auth.AuthViewModel
 import com.kafka.auth.LoginScreen
 import com.kafka.base.debug
+import com.kafka.common.animation.LocalSharedTransitionScope
+import com.kafka.common.animation.ProvideLocalAnimatedContentScope
 import com.kafka.common.extensions.getContext
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
@@ -75,6 +85,7 @@ import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.setStatusBarColor
 import ui.common.theme.theme.isDark
+import kotlin.reflect.KType
 
 typealias AppNavigation = @Composable (NavHostController) -> Unit
 
@@ -132,43 +143,47 @@ fun AppNavigation(
 
     SwitchStatusBarsOnPlayer(navController = navController)
 
-    NavHost(
-        modifier = modifier.fillMaxSize(),
-        navController = navController,
-        startDestination = RootScreen.Home,
-        enterTransition = { enter() },
-        exitTransition = { fadeOut() },
-        popEnterTransition = { fadeIn() },
-        popExitTransition = { exit() }
-    ) {
-        navigation<RootScreen.Home>(startDestination = Screen.Home) {
-            addHome()
-            addItemDetailGroup()
-            addLibrary()
-            addProfile()
-            addFeedback()
-            addSearch()
-            addLogin()
-            addPlayer()
-            addWebView()
-            addRecentItems()
-        }
+    SharedTransitionLayout {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+            NavHost(
+                modifier = modifier.fillMaxSize(),
+                navController = navController,
+                startDestination = RootScreen.Home,
+                enterTransition = { enter() },
+                exitTransition = { fadeOut() },
+                popEnterTransition = { fadeIn() },
+                popExitTransition = { exit() }
+            ) {
+                navigation<RootScreen.Home>(startDestination = Screen.Home) {
+                    addHome()
+                    addItemDetailGroup()
+                    addLibrary()
+                    addProfile()
+                    addFeedback()
+                    addSearch()
+                    addLogin()
+                    addPlayer()
+                    addWebView()
+                    addRecentItems()
+                }
 
-        navigation<RootScreen.Search>(startDestination = Screen.Search()) {
-            addSearch()
-            addItemDetailGroup()
-            addPlayer()
-            addWebView()
-        }
+                navigation<RootScreen.Search>(startDestination = Screen.Search()) {
+                    addSearch()
+                    addItemDetailGroup()
+                    addPlayer()
+                    addWebView()
+                }
 
-        navigation<RootScreen.Library>(startDestination = Screen.Library) {
-            addLibrary()
-            addItemDetailGroup()
-            addSearch()
-            addPlayer()
-            addWebView()
-            addLogin()
-            addProfile()
+                navigation<RootScreen.Library>(startDestination = Screen.Library) {
+                    addLibrary()
+                    addItemDetailGroup()
+                    addSearch()
+                    addPlayer()
+                    addWebView()
+                    addLogin()
+                    addProfile()
+                }
+            }
         }
     }
 }
@@ -192,7 +207,7 @@ typealias addHome = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addHome(viewModelFactory: () -> HomepageViewModel) {
-    composable<Screen.Home> {
+    composableScreen<Screen.Home> {
         Homepage(viewModelFactory = viewModelFactory)
     }
 }
@@ -264,8 +279,11 @@ fun NavGraphBuilder.addItemDetail(
             navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
         )
     ) {
-        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        ItemDetail(viewModel)
+
+        ProvideLocalAnimatedContentScope(this@composable) {
+            val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+            ItemDetail(viewModel)
+        }
     }
 }
 
@@ -403,6 +421,18 @@ fun <T> CollectEvent(
     lifecycle.repeatOnLifecycle(minActiveState) {
         flow.collect {
             collector(it)
+        }
+    }
+}
+
+inline fun <reified T : Screen> NavGraphBuilder.composableScreen(
+    typeMap: Map<KType, NavType<*>> = emptyMap(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+) {
+    composable<T>(typeMap = typeMap, deepLinks = deepLinks) {
+        ProvideLocalAnimatedContentScope(this@composable) {
+            content(it)
         }
     }
 }

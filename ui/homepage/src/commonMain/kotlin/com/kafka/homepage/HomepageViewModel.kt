@@ -70,10 +70,10 @@ class HomepageViewModel(
         updateItems()
     }
 
-    fun removeRecentItem(fileId: String) {
+    fun removeRecentItem(itemId: String) {
         viewModelScope.launch {
-            analytics.log { removeRecentItem(fileId) }
-            removeRecentItem.invoke(fileId)
+            analytics.log { removeRecentItem(itemId) }
+            removeRecentItem.invoke(itemId)
         }
     }
 

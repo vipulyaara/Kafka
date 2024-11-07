@@ -3,13 +3,13 @@ accompanist = "0.36.0"
 appupdate = "2.1.0"
 agp = "8.7.1"
 androidxlifecycle = "2.9.0-alpha06"
-coil3 = "3.0.0-rc01"
+coil3 = "3.0.0"
 compose-material-navigation = "1.7.0-beta01"
 compose-multiplatform = "1.7.0"
 coroutines = "1.9.0"
 firebase = "2.1.0"
 icons = "1.1.1"
-haze = "0.7.3"
+haze = "0.9.0-rc03"
 jbadaptive = "1.0.0-rc01"
 jblifecycle = "2.8.3"
 jbnavigation = "2.8.0-alpha10"
@@ -121,6 +121,7 @@ google-review = { module = "com.google.android.play:review-ktx", version.ref = "
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
 
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
 firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
 firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase" }

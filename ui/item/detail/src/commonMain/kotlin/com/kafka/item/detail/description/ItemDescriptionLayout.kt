@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.kafka.item.detail.description
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,11 +22,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
+import com.kafka.common.animation.LocalAnimatedContentScope
+import com.kafka.common.animation.LocalSharedTransitionScope
+import com.kafka.common.animation.coverImageKey
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
+import com.kafka.item.detail.ItemPlaceholder
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.CoverImage
 import kafka.ui.item.detail.generated.resources.Res
@@ -54,27 +60,34 @@ internal fun DescriptionText(
 
 @Composable
 internal fun ItemDescription(
-    itemDetail: ItemDetail,
+    itemDetail: ItemDetail?,
+    itemPlaceholder: ItemPlaceholder,
     modifier: Modifier = Modifier,
     goToCreator: (String?) -> Unit,
 ) {
-    SelectionContainer(modifier) {
-        Column(
-            modifier = Modifier.padding(top = Dimens.Spacing24),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Column(
+        modifier = modifier.padding(top = Dimens.Spacing24),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        with(LocalSharedTransitionScope.current) {
             CoverImage(
-                data = itemDetail.coverImage,
-                size = if (itemDetail.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail,
+                data = itemPlaceholder.coverImage ?: itemDetail?.coverImage,
+                size = if (itemPlaceholder.isAudio) Dimens.CoverSizeDetailSquare else Dimens.CoverSizeDetail,
                 shape = RoundedCornerShape(Dimens.Spacing08),
                 elevation = 0.dp,
                 tonalElevation = 0.dp,
                 contentScale = ContentScale.Crop,
-                placeholder = null
+                placeholder = null,
+                modifier = Modifier.sharedElement(
+                    rememberSharedContentState(key = coverImageKey(itemDetail?.coverImage)),
+                    animatedVisibilityScope = LocalAnimatedContentScope.current
+                )
             )
+        }
 
-            Spacer(Modifier.height(Dimens.Spacing24))
+        Spacer(Modifier.height(Dimens.Spacing24))
 
+        if (itemDetail != null) {
             Text(
                 text = itemDetail.title,
                 style = MaterialTheme.typography.titleLarge.alignCenter(),

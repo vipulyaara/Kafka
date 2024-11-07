@@ -226,7 +226,7 @@ private fun BoxScope.RemoveRecentItemButton(
                     scaleY = scale
                     rotationZ = rotation
                 },
-            onClick = { onItemRemoved(continueReading.fileId) },
+            onClick = { onItemRemoved(continueReading.itemId) },
         ) {
             Icon(
                 imageVector = Icons.XCircle,

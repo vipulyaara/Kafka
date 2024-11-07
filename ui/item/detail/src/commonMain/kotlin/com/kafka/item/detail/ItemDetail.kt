@@ -30,7 +30,6 @@ import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
-import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
@@ -57,6 +56,7 @@ import ui.common.theme.theme.isDark
 @Inject
 fun ItemDetail(viewModel: ItemDetailViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val itemPlaceholder by viewModel.itemPlaceholder.collectAsStateWithLifecycle()
     val itemsByCreator by viewModel.creatorItems.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val context = getContext()
@@ -76,7 +76,12 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
             )
         }) { padding ->
             ProvideScaffoldPadding(padding = padding) {
-                ItemDetail(state = state, itemsByCreator = itemsByCreator, viewModel = viewModel)
+                ItemDetail(
+                    state = state,
+                    itemPlaceholder = itemPlaceholder,
+                    itemsByCreator = itemsByCreator,
+                    viewModel = viewModel
+                )
             }
         }
     }
@@ -85,6 +90,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
+    itemPlaceholder: ItemPlaceholder?,
     itemsByCreator: List<Item>,
     viewModel: ItemDetailViewModel,
     modifier: Modifier = Modifier,
@@ -93,6 +99,7 @@ private fun ItemDetail(
 
     ItemDetail(
         state = state,
+        itemPlaceholder = itemPlaceholder,
         itemsByCreator = itemsByCreator,
         openDescription = viewModel::openItemDescription,
         goToCreator = viewModel::goToCreator,
@@ -111,6 +118,7 @@ private fun ItemDetail(
 @Composable
 private fun ItemDetail(
     state: ItemDetailViewState,
+    itemPlaceholder: ItemPlaceholder?,
     itemsByCreator: List<Item>,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
@@ -124,49 +132,43 @@ private fun ItemDetail(
     val useWideLayout = windowWidthSizeClass().useWideLayout()
 
     Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
-        InfiniteProgressBar(
-            show = state.isFullScreenLoading,
-            modifier = Modifier.align(Alignment.Center)
-        )
+        ItemDetailScaffold(
+            supportingPaneEnabled = useWideLayout,
+            mainPane = {
+                fullSpanItem {
+                    VerticalLayout(
+                        state = state,
+                        itemPlaceholder = itemPlaceholder,
+                        useWideLayout = useWideLayout,
+                        openDescription = openDescription,
+                        goToCreator = goToCreator,
+                        onPrimaryAction = onPrimaryAction,
+                        toggleFavorite = toggleFavorite,
+                        openSubject = openSubject,
+                        openSummary = openSummary
+                    )
+                }
+            },
+            supportingPane = {
+                if (state.itemDetail != null && itemsByCreator.isNotEmpty()) {
+                    itemsByCreator(
+                        state = state,
+                        goToCreator = goToCreator,
+                        openItemDetail = openItemDetail,
+                        itemsByCreator = itemsByCreator
+                    )
+                }
 
-        AnimatedVisibilityFade(state.itemDetail != null) {
-            ItemDetailScaffold(
-                supportingPaneEnabled = useWideLayout,
-                mainPane = {
-                    fullSpanItem {
-                        VerticalLayout(
-                            state = state,
-                            useWideLayout = useWideLayout,
-                            openDescription = openDescription,
-                            goToCreator = goToCreator,
-                            onPrimaryAction = onPrimaryAction,
-                            toggleFavorite = toggleFavorite,
-                            openSubject = openSubject,
-                            openSummary = openSummary
+                fullSpanItem {
+                    Box {
+                        InfiniteProgressBar(
+                            show = state.isLoading,
+                            modifier = Modifier.align(Alignment.Center)
                         )
-                    }
-                },
-                supportingPane = {
-                    if (itemsByCreator.isNotEmpty()) {
-                        itemsByCreator(
-                            state = state,
-                            goToCreator = goToCreator,
-                            openItemDetail = openItemDetail,
-                            itemsByCreator = itemsByCreator
-                        )
-                    }
-
-                    fullSpanItem {
-                        Box {
-                            InfiniteProgressBar(
-                                show = state.isLoading,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
                     }
                 }
-            )
-        }
+            }
+        )
     }
 }
 
@@ -202,6 +204,7 @@ private fun LazyGridScope.itemsByCreator(
 @Composable
 private fun VerticalLayout(
     state: ItemDetailViewState,
+    itemPlaceholder: ItemPlaceholder?,
     useWideLayout: Boolean,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
@@ -210,16 +213,19 @@ private fun VerticalLayout(
     openSubject: (String) -> Unit,
     openSummary: (String) -> Unit,
 ) {
-    if (state.itemDetail != null) {
-        Column {
+    Column {
+        if (itemPlaceholder != null) {
             ItemDescription(
                 itemDetail = state.itemDetail,
+                itemPlaceholder = itemPlaceholder,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
                 goToCreator = goToCreator
             )
+        }
 
+        if (state.itemDetail != null) {
             Spacer(Modifier.height(Dimens.Spacing16))
 
             ItemDetailActionsRow(
