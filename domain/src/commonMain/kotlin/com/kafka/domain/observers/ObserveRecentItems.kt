@@ -22,7 +22,7 @@ class ObserveRecentItems(
 
     override fun createObservable(params: Params): Flow<List<RecentItem>> {
         return accountRepository.observeCurrentUser()
-            .flatMapLatest { recentItemRepository.observeRecentItems(it.id, params.limit) }
+            .flatMapLatest { recentItemRepository.observeRecentItems(it.uid, params.limit) }
             .flowOn(dispatchers.io)
     }
 

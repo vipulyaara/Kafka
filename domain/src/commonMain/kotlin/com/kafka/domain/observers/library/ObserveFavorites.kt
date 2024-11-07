@@ -22,7 +22,7 @@ class ObserveFavorites(
 
     override fun createObservable(params: Unit): Flow<List<Item>> {
         return accountRepository.observeCurrentUser()
-            .flatMapLatest { user -> favoritesRepository.observeFavorites(user.id) }
+            .flatMapLatest { user -> favoritesRepository.observeFavorites(user.uid) }
             .flowOn(dispatchers.io)
     }
 }

@@ -4,6 +4,7 @@ import com.kafka.base.ApplicationScope
 import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.EmailAuthProvider
 import dev.gitlive.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onStart
 import me.tatarka.inject.annotations.Inject
 
@@ -15,7 +16,7 @@ import me.tatarka.inject.annotations.Inject
 @ApplicationScope
 @Inject
 class AccountRepository(private val auth: FirebaseAuth) {
-    private val currentUserOrNull
+    val currentUserOrNull
         get() = auth.currentUser
 
     val currentUser
@@ -42,8 +43,11 @@ class AccountRepository(private val auth: FirebaseAuth) {
         auth.sendPasswordResetEmail(email)
     }
 
-    fun observeCurrentUser() = auth.authStateChanged
+    fun observeCurrentUserOrNull() = auth.authStateChanged
         .onStart { emit(null) }
+
+    fun observeCurrentUser() = observeCurrentUserOrNull()
+        .filterNotNull()
 
     suspend fun signOut() {
         auth.signOut()

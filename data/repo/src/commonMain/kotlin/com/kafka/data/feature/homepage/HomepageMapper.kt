@@ -15,6 +15,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -72,7 +73,8 @@ class HomepageMapper(
     }
 
     private fun HomepageCollectionResponse.Recommendation.mapRecommendations() =
-        accountRepository.observeCurrentUser() // todo: should not be anonymous
+        accountRepository.observeCurrentUser()
+            .filter { !it.isAnonymous }
             .flatMapLatest { flowOf(emptyList<Item>()) }
             .map { items ->
                 HomepageCollection.Recommendations(
@@ -143,7 +145,7 @@ class HomepageMapper(
 
     private fun mapRecentItems() = accountRepository.observeCurrentUser()
         .flatMapLatest { user ->
-            recentItemRepository.observeRecentItems(user.id, RECENT_ITEMS_LIMIT)
+            recentItemRepository.observeRecentItems(user.uid, RECENT_ITEMS_LIMIT)
                 .onStart { emit(emptyList()) } // todo
         }
         .map { items -> HomepageCollection.RecentItems(items) }
