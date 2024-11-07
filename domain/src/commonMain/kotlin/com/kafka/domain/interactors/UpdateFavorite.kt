@@ -30,8 +30,8 @@ class UpdateFavorite(
             val itemDetail = itemDetailDao.get(params.itemId)
 
             favoritesRepository.updateFavorite(
-                uid = accountRepository.currentUser.id,
-                favoriteItem = FavoriteItem(itemDetail.itemId, accountRepository.currentUser.id),
+                uid = accountRepository.currentUserId,
+                favoriteItem = FavoriteItem(itemDetail.itemId, accountRepository.currentUserId),
                 addFavorite = params.markFavorite
             )
             debug { "Favorite updated: ${params.itemId} isFavorite: ${params.markFavorite}" }

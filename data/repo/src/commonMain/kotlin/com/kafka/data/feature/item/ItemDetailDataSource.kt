@@ -17,7 +17,7 @@ class ItemDetailDataSource(
     private val supabase: Supabase
 ) {
     suspend fun updateItemDetail(contentId: String): ItemDetail = withContext(dispatchers.io) {
-        supabase.bookDetail.select {
+        supabase.itemDetail.select {
             filter { ItemDetail::itemId eq contentId }
         }.decodeSingle<ItemDetail>()
     }

@@ -12,9 +12,7 @@ class RemoveRecentItem(
 ) : Interactor<String, Unit>() {
 
     override suspend fun doWork(params: String) {
-        val user = accountRepository.currentUser
-
-        firestoreGraph.readingListCollection(user.id)
+        firestoreGraph.readingListCollection(accountRepository.currentUserId)
             .document(params)
             .delete()
     }

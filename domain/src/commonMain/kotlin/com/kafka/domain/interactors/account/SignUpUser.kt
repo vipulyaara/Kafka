@@ -16,8 +16,13 @@ class SignUpUser(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            accountRepository.signUp(params.email, params.password)
+            accountRepository.signUpOrLinkUser(params.email, params.password)
+            accountRepository.updateUser(params.name.orEmpty())
             analytics.log { signUp(params.name) }
+
+            //todo
+//            accountRepository.signOut()
+//            signInUser(SignInUser.Params(params.email, params.password))
         }
     }
 

@@ -17,7 +17,7 @@ class GetRecentItems(
 
     override suspend fun doWork(params: Params): List<RecentItem> {
         return withContext(dispatchers.io) {
-            recentItemRepository.getRecentItems(accountRepository.currentUser.id, params.limit)
+            recentItemRepository.getRecentItems(accountRepository.currentUserId, params.limit)
         }
     }
 

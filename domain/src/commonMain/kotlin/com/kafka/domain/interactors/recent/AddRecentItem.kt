@@ -23,12 +23,12 @@ class AddRecentItem(
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
             val item = itemDao.getOrNull(params.itemId)
-            val user = accountRepository.currentUser
+            val userId = accountRepository.currentUserId
             val primaryFile = getPrimaryFile(params.itemId).getOrThrow()
 
             if (item != null && primaryFile != null) {
                 val recentItem = RecentItem(
-                    uid = user.id,
+                    uid = userId,
                     fileId = primaryFile.fileId,
                     itemId = item.itemId,
                     title = item.title,
@@ -38,26 +38,10 @@ class AddRecentItem(
                     updatedAt = Clock.System.now()
                 )
 
-                firestoreGraph.readingListCollection(user.id)
+                firestoreGraph.readingListCollection(userId)
                     .document(item.itemId)
                     .set(recentItem)
             }
-
-//            if (file != null) {
-//                val item = CurrentlyReading(
-//                    fileId = file.fileId,
-//                    uid = user.id,
-//                    itemId = file.itemId,
-//                    currentPage = 0L,
-//                    currentPageOffset = 0L
-//                )
-//
-//                supabase.recentItems.upsert(item) {
-//                    filter { CurrentlyReading::fileId eq file.fileId }
-//                    filter { CurrentlyReading::itemId eq file.itemId }
-//                    filter { CurrentlyReading::uid eq user.id }
-//                }
-//            }
         }
     }
 

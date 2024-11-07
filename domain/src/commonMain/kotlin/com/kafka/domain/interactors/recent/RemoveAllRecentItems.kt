@@ -11,14 +11,14 @@ class RemoveAllRecentItems(
     private val firestoreGraph: FirestoreGraph
 ) : Interactor<Unit, Unit>() {
     override suspend fun doWork(params: Unit) {
-        val user = accountRepository.currentUser
+        val userId = accountRepository.currentUserId
 
-        firestoreGraph.readingListCollection(user.id)
+        firestoreGraph.readingListCollection(userId)
             .get()
             .documents
             .map { it.id }
             .forEach {
-                firestoreGraph.readingListCollection(user.id)
+                firestoreGraph.readingListCollection(userId)
                     .document(it)
                     .delete()
             }
