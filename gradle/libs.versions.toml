@@ -163,6 +163,9 @@ ktor-server-defaultheaders = { module = "io.ktor:ktor-server-default-headers", v
 icons-feather = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "icons" }
 icons-font-awesome = { module = "br.com.devsrsouza.compose.icons:font-awesome", version.ref = "icons" }
 icons-tabler = { module = "br.com.devsrsouza.compose.icons:tabler-icons", version.ref = "icons" }
+icons-oct = { module = "br.com.devsrsouza.compose.icons:octicons", version.ref = "icons" }
+icons-eva = { module = "br.com.devsrsouza.compose.icons:eva-icons", version.ref = "icons" }
+icons-line = { module = "br.com.devsrsouza.compose.icons:line-awesome", version.ref = "icons" }
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 

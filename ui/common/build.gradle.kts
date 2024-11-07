@@ -25,6 +25,7 @@ kotlin {
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
                 implementation(libs.icons.tabler)
+                implementation(libs.icons.oct)
             }
         }
 

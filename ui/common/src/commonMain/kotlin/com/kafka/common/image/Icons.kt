@@ -8,8 +8,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
+import compose.icons.Octicons
 import compose.icons.TablerIcons
-import compose.icons.feathericons.ArrowRightCircle
 import compose.icons.feathericons.Search
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
@@ -17,6 +17,7 @@ import compose.icons.fontawesomeicons.brands.Google
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
+import compose.icons.octicons.ArrowDownRight24
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Bell
@@ -95,5 +96,5 @@ object Icons {
     val Google = FontAwesomeIcons.Brands.Google
     val Bell = TablerIcons.Bell
     val ReadOffline = TablerIcons.FileText
-    val ArrowForwardCircle = FeatherIcons.ArrowRightCircle
+    val ArrowForwardCircle = Octicons.ArrowDownRight24
 }
