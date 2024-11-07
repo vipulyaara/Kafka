@@ -55,6 +55,8 @@ import com.kafka.homepage.recent.RecentItemsViewModel
 import com.kafka.item.detail.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.item.detail.description.DescriptionDialog
+import com.kafka.item.report.ReportContentScreen
+import com.kafka.item.report.ReportContentViewModel
 import com.kafka.library.LibraryScreen
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.navigation.LocalNavigator
@@ -120,6 +122,10 @@ fun AppNavigation(
 
                     Screen.Feedback -> {
                         navController.navigate(Screen.Feedback.route)
+                    }
+
+                    is Screen.ReportContent -> {
+                        navController.navigate(Screen.ReportContent.route(screen.itemId))
                     }
 
                     Screen.Player -> {
@@ -194,11 +200,13 @@ typealias addItemDetailGroup = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addItemDetailGroup(
     addItemDetail: addItemDetail,
     addItemDescription: addItemDescription,
+    addReportContent: addReportContent,
     addEpubReader: addEpubReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
+    addReportContent()
     addEpubReader()
     addSummary()
 }
@@ -326,6 +334,16 @@ fun NavGraphBuilder.addFeedback(viewModelFactory: () -> FeedbackViewModel) {
     bottomSheet(route = Screen.Feedback.route) {
         val viewModel = viewModel { viewModelFactory() }
         FeedbackScreen(viewModel)
+    }
+}
+
+typealias addReportContent = NavGraphBuilder.() -> Unit
+
+@Inject
+fun NavGraphBuilder.addReportContent(viewModelFactory: () -> ReportContentViewModel) {
+    bottomSheet(route = Screen.ReportContent.route) {
+        val viewModel = viewModel { viewModelFactory() }
+        ReportContentScreen(viewModel)
     }
 }
 

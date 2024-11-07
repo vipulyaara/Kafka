@@ -60,7 +60,6 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
     val itemsByCreator by viewModel.creatorItems.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val context = getContext()
-
     val lazyGridState = rememberLazyGridState()
 
     ItemDetailTheme(
@@ -71,8 +70,10 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
             TopBar(
                 lazyGridState = lazyGridState,
                 onShareClicked = { viewModel.shareItemText(context) },
-                onBackPressed = { navigator.goBack() },
-                isShareVisible = state.shareEnabled
+                onBackPressed = navigator::goBack,
+                report = viewModel::openReportContent,
+                shareVisible = state.shareEnabled,
+                overflowVisible = state.itemDetail != null
             )
         }) { padding ->
             ProvideScaffoldPadding(padding = padding) {

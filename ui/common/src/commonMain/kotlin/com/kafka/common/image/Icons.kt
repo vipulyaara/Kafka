@@ -27,6 +27,7 @@ import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Copy
+import compose.icons.tablericons.DotsVertical
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
@@ -96,5 +97,6 @@ object Icons {
     val Google = FontAwesomeIcons.Brands.Google
     val Bell = TablerIcons.Bell
     val ReadOffline = TablerIcons.FileText
+    val OverflowMenu = TablerIcons.DotsVertical
     val ArrowForwardCircle = Octicons.ArrowDownRight24
 }

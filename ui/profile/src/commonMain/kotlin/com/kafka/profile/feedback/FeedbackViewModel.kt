@@ -27,6 +27,10 @@ class FeedbackViewModel(
         ::FeedbackViewState
     ).stateInDefault(scope = viewModelScope, initialValue = FeedbackViewState())
 
+    init {
+        observeUser(ObserveUser.Params())
+    }
+
     fun sendFeedback(text: String, email: String) {
         viewModelScope.launch {
             updateFeedback(UpdateFeedback.Params(text, email))
@@ -35,7 +39,7 @@ class FeedbackViewModel(
                     navigator.goBack()
                 }
                 .onFailure {
-                    snackbarManager.addMessage(UiMessage("Error send feedback"))
+                    snackbarManager.addMessage(UiMessage("An error occurred while sending feedback"))
                 }
         }
     }

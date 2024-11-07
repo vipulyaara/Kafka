@@ -59,10 +59,7 @@ import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
 import kafka.ui.homepage.generated.resources.share_app_message
 import kafka.ui.homepage.generated.resources.share_app_prompt
 import org.jetbrains.compose.resources.stringResource
-import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.LocalTheme
-import ui.common.theme.theme.isDark
 
 @Composable
 fun Homepage(viewModelFactory: () -> HomepageViewModel) {
@@ -146,15 +143,13 @@ private fun HomepageFeedItems(
                 is HomepageCollection.RecentItems -> {
                     fullSpanItem(key = "recent", contentType = "recent") {
                         if (recentItems.isNotEmpty()) {
-                            AppTheme(isDarkTheme = LocalTheme.current.isDark()) {
-                                RecentItems(
-                                    readingList = recentItems,
-                                    openItemDetail = openRecentItemDetail,
-                                    removeRecentItem = removeRecentItem,
-                                    modifier = Modifier.padding(top = Dimens.Gutter),
-                                    openRecentItems = openRecentItems
-                                )
-                            }
+                            RecentItems(
+                                readingList = recentItems,
+                                openItemDetail = openRecentItemDetail,
+                                removeRecentItem = removeRecentItem,
+                                modifier = Modifier.padding(top = Dimens.Gutter),
+                                openRecentItems = openRecentItems
+                            )
                         } else {
                             Spacer(
                                 modifier = Modifier
@@ -197,7 +192,7 @@ private fun HomepageFeedItems(
                             FullPageCarousels(
                                 carouselItems = collection.items,
                                 images = collection.image,
-                                onBannerClick = { openItemDetail(it, "featuredItem") }
+                                onClick = { openItemDetail(it, "featuredItem") }
                             )
                         } else {
                             FeaturedItemPlaceholder()

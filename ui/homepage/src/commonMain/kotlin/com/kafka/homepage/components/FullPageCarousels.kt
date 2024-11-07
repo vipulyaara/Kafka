@@ -20,6 +20,7 @@ import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.LocalAnimatedContentScope
@@ -34,7 +35,7 @@ import ui.common.theme.theme.Dimens
 internal fun FullPageCarousels(
     carouselItems: List<Item>,
     images: List<String>,
-    onBannerClick: (String) -> Unit,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state = rememberCarouselState { carouselItems.size }
@@ -54,7 +55,7 @@ internal fun FullPageCarousels(
                     Text(
                         text = dates.getOrNull(index).orEmpty(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = colors[index],
                         modifier = Modifier
                             .padding(horizontal = Dimens.Gutter)
                             .padding(end = Dimens.Spacing08)
@@ -69,7 +70,7 @@ internal fun FullPageCarousels(
                             label = null,
                             aspectRatio = 0.66f,
                             imageUrl = images.getOrNull(index),
-                            onClick = { onBannerClick(item.itemId) },
+                            onClick = { onClick(item.itemId) },
                             modifier = Modifier
                                 .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
                                 .sharedElement(
@@ -135,4 +136,14 @@ val dates = listOf(
     "24 November 2024",
     "25 November 2024",
     "26 November 2024",
+)
+
+val colors = listOf(
+    Color(0xFFD48545),
+    Color(0xFFE92E15),
+    Color(0xFFDE7F21),
+    Color(0xFFE62418),
+    Color(0xFFFCEA47),
+    Color(0xFFFCEA47),
+    Color(0xFFFCEA47),
 )

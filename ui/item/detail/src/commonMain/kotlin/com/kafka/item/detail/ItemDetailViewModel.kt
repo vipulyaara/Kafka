@@ -202,6 +202,11 @@ class ItemDetailViewModel(
         navigator.navigate(Screen.Summary(itemId))
     }
 
+    fun openReportContent() {
+        analytics.log { this.openReportContent(itemId) }
+        navigator.navigate(Screen.ReportContent(itemId))
+    }
+
     fun showAppRatingIfNeeded(context: Any?) {
         if (remoteConfig.isAppReviewPromptEnabled()) {
             if (itemReadCounter.totalItemOpens % itemOpenThresholdForAppReview == 0) {

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.domain.onException
+import com.kafka.base.extensions.isValidEmail
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.ObservableLoadingCounter
 import com.kafka.common.snackbar.SnackbarManager
@@ -125,9 +126,6 @@ class AuthViewModel(
 
     private fun SnackbarManager.add(resource: String) = addMessage(resource)
 
-    private fun String.isValidEmail() =
-        isNotEmpty() && isValidEmail(this)
-
     private fun CharSequence.isValidPassword() = length > 4
 }
 
@@ -137,12 +135,7 @@ data class AuthViewState(
     val isGoogleLoginEnabled: Boolean = false,
 )
 
-fun isValidEmail(email: String): Boolean {
-    val emailRegex = EMAIL_REGEX.toRegex()
-    return emailRegex.matches(email)
-}
 
-const val EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
 const val invalidEmailMessage = "Please enter a valid email"
 const val invalidPasswordMessage = "Please enter a valid password"
 const val loginErrorMessage = "Could not log in. Please try again."

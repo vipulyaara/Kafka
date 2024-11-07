@@ -143,6 +143,10 @@ class EventRepository {
         "item_id" to itemId
     )
 
+    fun openReportContent(itemId: String) = "open_report_content" to mapOf(
+        "item_id" to itemId
+    )
+
     fun remoteConfigValue(key: String, value: Any?) = "remote_config_value" to mapOf(
         "key" to key,
         "value" to value.toString()

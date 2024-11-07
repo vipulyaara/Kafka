@@ -51,9 +51,9 @@ data class ReaderSettings(
                 get() = listOf(
                     FontSize(12.sp, 20.sp),
                     FontSize(14.sp, 20.sp),
-                    FontSize(16.sp, 24.sp),
-                    FontSize(18.sp, 26.sp),
-                    FontSize(20.sp, 30.sp),
+                    FontSize(16.sp, 32.sp),
+                    FontSize(18.sp, 36.sp),
+                    FontSize(20.sp, 40.sp),
                     FontSize(22.sp, 36.sp),
                     FontSize(24.sp, 40.sp),
                 )
@@ -78,7 +78,7 @@ data class ReaderSettings(
 
             val OptionsEnglish
                 @Composable get() = listOf(
-                    FontStyle("Serif", FontFamily.Serif, FontWeight.Normal),
+                    FontStyle("Laila", Laila, FontWeight.Medium),
                     FontStyle("Sans serif", FontFamily.SansSerif, FontWeight.Normal),
                     FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal),
                     FontStyle("Cursive", FontFamily.Cursive, FontWeight.Normal),

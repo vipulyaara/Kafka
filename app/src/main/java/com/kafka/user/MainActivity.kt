@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(
-                isDarkTheme = applicationComponent.preferencesStore.isDark(),
+                isDarkTheme = isDarkTheme,
                 isTrueContrast = applicationComponent.remoteConfig.isTrueContrastEnabled()
             ) {
                 component.rootContent.Content(navController, bottomSheetNavigator, theme)

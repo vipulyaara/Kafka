@@ -28,6 +28,9 @@ class FirestoreGraph(
     val summaryCollection: CollectionReference
         get() = firestoreKt.collection("summary")
 
+    val reportsCollection: CollectionReference
+        get() = firestoreKt.collection("reports")
+
     fun readingListCollection(uid: String) = firestoreKt
         .collection("users")
         .document(uid)
