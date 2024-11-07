@@ -36,17 +36,19 @@ fun FeaturedItem(
     label: String? = null,
     imageUrl: String? = null,
     shape: Shape = RoundedCornerShape(Dimens.Radius16),
+    aspectRatio: Float = 1f,
     onClick: () -> Unit = {},
 ) {
     FeaturedItem(
+        placeHolder = if (item.isAudio) Icons.Audio else Icons.Texts,
         coverImage = item.coverImage,
+        aspectRatio = aspectRatio,
         creator = item.creator,
         modifier = modifier,
-        placeHolder = if (item.isAudio) Icons.Audio else Icons.Texts,
         label = label,
         imageUrl = imageUrl,
         shape = shape,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
@@ -59,6 +61,7 @@ fun FeaturedItem(
     imageUrl: String? = null,
     placeHolder: ImageVector = CoverDefaults.placeholder,
     shape: Shape = RoundedCornerShape(16.dp),
+    aspectRatio: Float = 1f,
     onClick: () -> Unit = {},
 ) {
     Surface(modifier = modifier.fillMaxWidth(), onClick = onClick, shape = shape) {
@@ -69,7 +72,7 @@ fun FeaturedItem(
                 shape = shape,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f)
+                    .aspectRatio(aspectRatio),
             )
 
             if (!label.isNullOrBlank()) {

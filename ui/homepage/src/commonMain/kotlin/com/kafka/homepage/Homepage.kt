@@ -11,15 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
@@ -27,10 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kafka.common.adaptive.fullSpanItem
+import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
@@ -40,16 +36,16 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
-import com.kafka.homepage.components.Carousels
+import com.kafka.homepage.components.FullPageCarousels
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
 import com.kafka.ui.components.item.GenreItem
+import com.kafka.ui.components.item.GridItem
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.item.ItemPlaceholder
-import com.kafka.ui.components.item.ItemSmall
 import com.kafka.ui.components.item.PersonItem
 import com.kafka.ui.components.item.PersonItemPlaceholder
 import com.kafka.ui.components.item.RowItem
@@ -128,13 +124,14 @@ private fun HomepageFeedItems(
     openRecentItems: () -> Unit,
     shareApp: () -> Unit,
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier.testTagUi("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
         homepage.collection.forEachIndexed { index, collection ->
             if (index == appShareIndex) {
-                item {
+                fullSpanItem {
                     MessageBox(
                         text = stringResource(Res.string.share_app_prompt),
                         trailingIcon = Icons.Share,
@@ -147,7 +144,7 @@ private fun HomepageFeedItems(
 
             when (collection) {
                 is HomepageCollection.RecentItems -> {
-                    item(key = "recent", contentType = "recent") {
+                    fullSpanItem(key = "recent", contentType = "recent") {
                         if (recentItems.isNotEmpty()) {
                             AppTheme(isDarkTheme = LocalTheme.current.isDark()) {
                                 RecentItems(
@@ -169,7 +166,7 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.PersonRow -> {
-                    item(contentType = "person_row") {
+                    fullSpanItem(contentType = "person_row") {
                         Authors(
                             titles = collection.items,
                             images = collection.images,
@@ -179,7 +176,7 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Subjects -> {
-                    item {
+                    fullSpanItem {
                         StaggeredFlowRow(
                             modifier = Modifier
                                 .horizontalScroll(rememberScrollState())
@@ -195,9 +192,9 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.FeaturedItem -> {
-                    item {
+                    fullSpanItem {
                         if (collection.items.isNotEmpty()) {
-                            Carousels(
+                            FullPageCarousels(
                                 carouselItems = collection.items,
                                 images = collection.image,
                                 onBannerClick = { openItemDetail(it, "featuredItem") }
@@ -209,7 +206,7 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Row -> {
-                    item(key = collection.key, contentType = "row") {
+                    fullSpanItem(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                         RowItems(items = collection.items) {
                             openItemDetail(it, "row")
@@ -219,7 +216,7 @@ private fun HomepageFeedItems(
 
                 is HomepageCollection.Recommendations -> {
                     if (collection.items.isNotEmpty()) {
-                        item(contentType = "row") {
+                        fullSpanItem(contentType = "row") {
                             SubjectItems(collection.labels, false, goToSubject)
                             RowItems(items = collection.items) {
                                 openItemDetail(it, "recommendation")
@@ -229,18 +226,18 @@ private fun HomepageFeedItems(
                 }
 
                 is HomepageCollection.Grid -> {
-                    item(key = collection.key, contentType = "grid") {
+                    fullSpanItem(key = collection.key, contentType = "grid") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
-                        GridItems(
-                            collection = collection,
-                            openItemDetail = { openItemDetail(it, "grid") },
-                            modifier = Modifier.testTag("grid_$index")
-                        )
                     }
+
+                    gridItems(
+                        collection = collection,
+                        openItemDetail = { openItemDetail(it, "grid") }
+                    )
                 }
 
                 is HomepageCollection.Column -> {
-                    item(key = collection.key) {
+                    fullSpanItem(key = collection.key) {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                     }
                     columnItems(collection) { openItemDetail(it, "column") }
@@ -249,7 +246,7 @@ private fun HomepageFeedItems(
         }
 
         if (homepage.hasSearchPrompt) {
-            item(key = "search_prompt") {
+            fullSpanItem(key = "search_prompt") {
                 MessageBox(
                     text = stringResource(Res.string.find_many_more_on_the_search_page),
                     trailingIcon = Icons.ArrowForward,
@@ -323,12 +320,12 @@ private fun Authors(
     }
 }
 
-private fun LazyListScope.columnItems(
+private fun LazyGridScope.columnItems(
     collection: HomepageCollection.Column,
     openItemDetail: (String) -> Unit,
 ) {
     if (collection.items.isNotEmpty()) {
-        items(items = collection.items, key = { it.itemId }) { item ->
+        fullSpanItems(items = collection.items, key = { it.itemId }) { item ->
             Item(
                 item = item,
                 modifier = Modifier
@@ -340,7 +337,7 @@ private fun LazyListScope.columnItems(
             )
         }
     } else {
-        items(
+        fullSpanItems(
             count = PlaceholderItemCount,
             key = { index -> "column_placeholder_${collection.key}_$index" }) {
             ItemPlaceholder(
@@ -353,46 +350,34 @@ private fun LazyListScope.columnItems(
     }
 }
 
-@Composable
-private fun GridItems(
+private fun LazyGridScope.gridItems(
     collection: HomepageCollection.Grid,
-    openItemDetail: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    lazyListState: LazyGridState = rememberLazyGridState(),
+    openItemDetail: (String) -> Unit
 ) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(3),
-        modifier = modifier.height(HorizontalGridHeight.dp),
-        state = lazyListState
-    ) {
-        if (collection.items.isNotEmpty()) {
-            items(
-                items = collection.items,
-                key = { it.itemId },
-                contentType = { "item" }
-            ) { item ->
-                ItemSmall(
-                    item = item,
-                    modifier = Modifier
-                        .widthIn(max = RowItemMaxWidth.dp)
-                        .clickable { openItemDetail(item.itemId) }
-                        .padding(
-                            horizontal = Dimens.Gutter,
-                            vertical = Dimens.Spacing06
-                        )
+    if (collection.items.isNotEmpty()) {
+        items(
+            items = collection.items,
+            key = { it.itemId },
+            contentType = { "item" }
+        ) { item ->
+            GridItem(
+                coverImage = item.coverImage,
+                mediaType = item.mediaType,
+                modifier = Modifier
+                    .clickable { openItemDetail(item.itemId) }
+                    .padding(Dimens.Spacing06)
+            )
+        }
+    } else {
+        fullSpanItems(
+            count = PlaceholderItemCount,
+            key = { index -> "grid_placeholder_${collection.key}_$index" }) {
+            ItemPlaceholder(
+                Modifier.padding(
+                    horizontal = Dimens.Gutter,
+                    vertical = Dimens.Spacing06
                 )
-            }
-        } else {
-            items(
-                count = PlaceholderItemCount,
-                key = { index -> "grid_placeholder_${collection.key}_$index" }) {
-                ItemPlaceholder(
-                    Modifier.padding(
-                        horizontal = Dimens.Gutter,
-                        vertical = Dimens.Spacing06
-                    )
-                )
-            }
+            )
         }
     }
 }
@@ -413,6 +398,4 @@ private val subjectModifier = Modifier
     .padding(top = Dimens.Gutter, bottom = Dimens.Spacing08)
     .padding(horizontal = Dimens.Gutter)
 
-private const val HorizontalGridHeight = 356
-private const val RowItemMaxWidth = 344
 private const val PlaceholderItemCount = 6

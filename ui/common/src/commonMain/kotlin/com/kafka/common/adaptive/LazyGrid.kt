@@ -33,3 +33,19 @@ fun <T> LazyGridScope.fullSpanItems(
         itemContent = itemContent,
     )
 }
+
+
+fun LazyGridScope.fullSpanItems(
+    count: Int,
+    key: ((inex: Int) -> Any)? = null,
+    contentType: (index: Int) -> Any? = { null },
+    itemContent: @Composable LazyGridItemScope.(index: Int) -> Unit
+) {
+    items(
+        count = count,
+        key = key,
+        span = { GridItemSpan(maxLineSpan) },
+        contentType = contentType,
+        itemContent = itemContent,
+    )
+}

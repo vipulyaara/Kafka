@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import compose.icons.FeatherIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.TablerIcons
+import compose.icons.feathericons.ArrowRightCircle
 import compose.icons.feathericons.Search
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
@@ -94,4 +95,5 @@ object Icons {
     val Google = FontAwesomeIcons.Brands.Google
     val Bell = TablerIcons.Bell
     val ReadOffline = TablerIcons.FileText
+    val ArrowForwardCircle = FeatherIcons.ArrowRightCircle
 }
