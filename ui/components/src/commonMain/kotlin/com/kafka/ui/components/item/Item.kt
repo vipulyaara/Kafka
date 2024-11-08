@@ -198,7 +198,7 @@ fun ItemSmall(
 fun ItemTitleSmall(title: String?, maxLines: Int = 1) {
     Text(
         text = title.orEmpty(),
-        style = MaterialTheme.typography.titleSmall,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onSurface,
         maxLines = maxLines,
         overflow = TextOverflow.Ellipsis

@@ -49,4 +49,4 @@ class ReportContentViewModel(
     }
 }
 
-data class ReportContentState(val email: String? = null, val isLoading: Boolean = true)
+data class ReportContentState(val email: String? = null, val isLoading: Boolean = false)

@@ -58,6 +58,7 @@ import com.kafka.ui.components.item.ItemCreatorSmall
 import com.kafka.ui.components.item.ItemDescription
 import com.kafka.ui.components.item.ItemMediaType
 import com.kafka.ui.components.item.ItemTitleSmall
+import com.kafka.ui.components.item.PerspectiveShapeWithShadow
 import kafka.ui.homepage.generated.resources.Res
 import kafka.ui.homepage.generated.resources.cd_remove_from_reading_list
 import kafka.ui.homepage.generated.resources.continue_reading
@@ -74,6 +75,7 @@ internal fun RecentItems(
     openRecentItems: () -> Unit
 ) {
     val showAllAction = remember(readingList) { readingList.size > 2 }
+
 
     Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
         Row(
@@ -145,9 +147,16 @@ private fun RecentItem(
             }
         )
     ) {
-        Column(modifier = Modifier.widthIn(50.dp, 286.dp)) {
+        Box(modifier = Modifier.widthIn(50.dp, 286.dp)) {
+            ShelfWithProgress(
+                progress = item.progress,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+
             Row(
-                modifier = Modifier.padding(Dimens.Spacing08),
+                modifier = Modifier
+                    .padding(Dimens.Spacing08)
+                    .padding(start = Dimens.Spacing12, bottom = Dimens.Spacing12),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
                 RecentItemCoverImage(recentItem)
@@ -159,33 +168,43 @@ private fun RecentItem(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
-            Spacer(modifier = Modifier.height(Dimens.Spacing12))
-
-            ShelfWithProgress(progress = item.progress)
         }
 
-        RemoveRecentItemButton(isInEditMode, onItemRemoved, recentItem)
+        RemoveRecentItemButton(
+            isInEditMode = isInEditMode,
+            onItemRemoved = onItemRemoved,
+            continueReading = recentItem
+        )
     }
 }
 
 @Composable
 private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(Dimens.Spacing12)
-            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing12))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)),
-        shape = RoundedCornerShape(Dimens.Spacing12),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-    ) {
-        Spacer(modifier = Modifier.fillMaxSize())
-        Spacer(
+    Box(modifier = modifier) {
+        PerspectiveShapeWithShadow(
             modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(progress)
+                .fillMaxWidth()
+                .height(Dimens.Spacing56),
+            color = MaterialTheme.colorScheme.surfaceContainerLow
         )
+
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(Dimens.Spacing12)
+                .align(Alignment.BottomCenter),
+            shape = RoundedCornerShape(Dimens.Spacing12),
+            tonalElevation = Dimens.Elevation04,
+            shadowElevation = Dimens.Elevation04,
+            color = MaterialTheme.colorScheme.surfaceContainer
+        ) {
+            Spacer(modifier = Modifier.fillMaxSize())
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(progress)
+            )
+        }
     }
 }
 
