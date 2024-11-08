@@ -1,4 +1,4 @@
-package com.kafka.reader.epub
+package com.kafka.reader.epub.injection
 
 import com.kafka.base.ApplicationScope
 import me.tatarka.inject.annotations.Provides
@@ -10,5 +10,4 @@ interface FileSystemComponent {
     @Provides
     @ApplicationScope
     fun provideFileSystem(): FileSystem = FileSystem.SYSTEM
-
 }

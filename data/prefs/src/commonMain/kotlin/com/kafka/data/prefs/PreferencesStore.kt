@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import com.kafka.base.debug
 
 @OptIn(FlowPreview::class)
-class PreferencesStore(private val dataStore: DataStore<Preferences>) {
+class PreferencesStore(val dataStore: DataStore<Preferences>) {
     suspend fun <T> remove(key: Preferences.Key<T>) {
         dataStore.edit { settings ->
             settings.remove(key)

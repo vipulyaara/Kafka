@@ -39,3 +39,16 @@ fun String.toColor(): Color {
         else -> throw IllegalArgumentException("Invalid hex color string: $this")
     }
 }
+
+fun Color.toHexString(includeAlpha: Boolean = false): String {
+    val r = (red * 255).toInt().toString(16).padStart(2, '0')
+    val g = (green * 255).toInt().toString(16).padStart(2, '0')
+    val b = (blue * 255).toInt().toString(16).padStart(2, '0')
+    
+    return if (includeAlpha) {
+        val a = (alpha * 255).toInt().toString(16).padStart(2, '0')
+        "#$r$g$b$a"
+    } else {
+        "#$r$g$b"
+    }
+}

@@ -45,7 +45,7 @@ fun TextElement(
     modifier: Modifier = Modifier
 ) {
     val isHeading = element.style in TextStyle.Heading1..TextStyle.Heading6
-    val linkColor = if (isSystemInDarkTheme()) {
+    val linkColor = if (settings.isDarkMode) {
         Color(0xFF66B2FF)
     } else {
         Color(0xFF0066CC)
@@ -63,7 +63,7 @@ fun TextElement(
         text = if (element.inlineElements.isEmpty()) AnnotatedString(element.content) else annotatedString,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.Spacing16)
+            .padding(horizontal = settings.horizontalMargin)
             .padding(vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08),
         style = getHeadingStyle(element.style),
         fontFamily = settings.fontStyle.fontFamily,
@@ -78,30 +78,25 @@ fun TextElement(
         },
         fontSize = when {
             isHeading -> getHeadingStyle(element.style).fontSize
-            else -> (settings.fontSize.fontSize.value * element.sizeFactor).sp
+            else -> (settings.fontSize.value * element.sizeFactor).sp
         },
         lineHeight = when {
             isHeading -> getHeadingStyle(element.style).lineHeight
-            element.lineHeight != null -> element.lineHeight?.sp ?: settings.fontSize.lineHeight
-            else -> settings.fontSize.lineHeight
+            element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
+            else -> settings.lineHeight
         },
         textAlign = if (isHeading) {
             TextAlign.Center
         } else {
-            when (element.alignment) {
-                TextAlignment.LEFT -> TextAlign.Start
-                TextAlignment.CENTER -> TextAlign.Center
-                TextAlignment.RIGHT -> TextAlign.End
-                TextAlignment.JUSTIFY -> TextAlign.Justify
-            }
+            settings.textAlignment.asAlignment()
+//            when (element.alignment) {
+//                TextAlignment.LEFT -> TextAlign.Start
+//                TextAlignment.CENTER -> TextAlign.Center
+//                TextAlignment.RIGHT -> TextAlign.End
+//                TextAlignment.JUSTIFY -> TextAlign.Justify
+//            }
         },
-        color = contentColorFor(settings.background.color)
-//        color = element.color?.let { Rgb(it) Color(Color.parseColor(it)) }
-//            ?: MaterialTheme.colorScheme.onBackground,
-//        letterSpacing = element.letterSpacing?.sp ?: TextUnit.Unspecified,
-//        background = element.backgroundColor?.let {
-//            Color(android.graphics.Color.parseColor(it))
-//        }
+        color = settings.textColor,
     )
 }
 
@@ -212,7 +207,7 @@ fun HeadingElement(element: ContentElement.Heading, settings: ReaderSettings) {
         text = element.content,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.Spacing16)
+            .padding(horizontal = settings.horizontalMargin)
             .padding(
                 top = Dimens.Spacing24,
                 bottom = Dimens.Spacing16
@@ -225,7 +220,8 @@ fun HeadingElement(element: ContentElement.Heading, settings: ReaderSettings) {
         },
         fontFamily = settings.fontStyle.fontFamily,
         fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Start
+        textAlign = TextAlign.Start,
+        color = settings.textColor,
     )
 }
 
@@ -234,7 +230,8 @@ fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Dimens.Spacing16)
+            .padding(horizontal = settings.horizontalMargin)
+            .padding(vertical = Dimens.Spacing16)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(Dimens.Spacing16)
@@ -244,7 +241,7 @@ fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
             style = MaterialTheme.typography.bodyMedium,
             fontStyle = FontStyle.Italic,
             fontFamily = settings.fontStyle.fontFamily,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = settings.textColor,
         )
 
         element.attribution?.let {
@@ -254,7 +251,8 @@ fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
                     .fillMaxWidth()
                     .padding(top = 8.dp),
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.End
+                textAlign = TextAlign.End,
+                color = settings.textColor.copy(alpha = 0.7f),
             )
         }
     }
@@ -265,7 +263,8 @@ fun ListElement(element: ContentElement.Listing, settings: ReaderSettings) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing08)
+            .padding(horizontal = settings.horizontalMargin)
+            .padding(vertical = Dimens.Spacing08)
     ) {
         element.items.forEachIndexed { index, item ->
             Row(
@@ -274,12 +273,14 @@ fun ListElement(element: ContentElement.Listing, settings: ReaderSettings) {
                 Text(
                     text = if (element.ordered) "${index + element.startIndex}. " else "• ",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = settings.fontStyle.fontFamily
+                    fontFamily = settings.fontStyle.fontFamily,
+                    color = settings.textColor,
                 )
                 Text(
                     text = item,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = settings.fontStyle.fontFamily
+                    fontFamily = settings.fontStyle.fontFamily,
+                    color = settings.textColor,
                 )
             }
         }
@@ -291,7 +292,8 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Dimens.Spacing16)
+            .padding(horizontal = settings.horizontalMargin)
+            .padding(vertical = Dimens.Spacing16)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(Dimens.Spacing16)
@@ -300,7 +302,7 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
             Text(
                 text = it,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = settings.textColor.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -308,7 +310,8 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
             text = element.content,
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-            fontSize = settings.fontSize.fontSize
+            fontSize = settings.fontSize,
+            color = settings.textColor,
         )
     }
 }

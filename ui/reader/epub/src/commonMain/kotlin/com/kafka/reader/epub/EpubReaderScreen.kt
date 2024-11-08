@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,8 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +53,7 @@ import com.kafka.ui.components.scaffoldPadding
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.EpubBook
 import kafka.reader.core.models.EpubChapter
+import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -63,29 +61,41 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { ReaderTopBar(scrollBehavior = scrollBehavior, viewModel = viewModel) }
-    ) {
-        ProvideScaffoldPadding(it) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (state.epubBook != null) {
-                    EpubBook(
-                        ebook = state.epubBook!!,
-                        lazyListState = viewModel.lazyListState,
-                        navigate = viewModel::navigate
-                    )
-                    TocComponent(
-                        show = viewModel.showTocSheet,
-                        chapters = state.epubBook!!.chapters,
-                        selectChapter = viewModel::navigate
-                    )
-                } else {
-                    if (state.loading) {
-                        LoadingWithProgress(
-                            progress = state.progress,
-                            modifier = Modifier.align(Alignment.Center)
+    val settings by viewModel.readerSettings.collectAsStateWithLifecycle()
+
+    AppTheme(isDarkTheme = settings.isDarkMode) {
+        Scaffold(
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                ReaderTopBar(
+                    scrollBehavior = scrollBehavior,
+                    viewModel = viewModel,
+                    containerColor = settings.backgroundColor
+                )
+            }
+        ) {
+            ProvideScaffoldPadding(it) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    if (state.epubBook != null) {
+                        EpubBook(
+                            ebook = state.epubBook!!,
+                            settings = settings,
+                            lazyListState = viewModel.lazyListState,
+                            navigate = viewModel::navigate,
+                            changeSettings = viewModel::updateSettings
                         )
+                        TocComponent(
+                            show = viewModel.showTocSheet,
+                            chapters = state.epubBook!!.chapters,
+                            selectChapter = viewModel::navigate
+                        )
+                    } else {
+                        if (state.loading) {
+                            LoadingWithProgress(
+                                progress = state.progress,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                     }
                 }
             }
@@ -94,17 +104,22 @@ fun EpubReader(viewModel: EpubReaderViewModel) {
 }
 
 @Composable
-private fun EpubBook(ebook: EpubBook, lazyListState: LazyListState, navigate: (String) -> Unit) {
+private fun EpubBook(
+    ebook: EpubBook,
+    settings: ReaderSettings,
+    lazyListState: LazyListState,
+    navigate: (String) -> Unit,
+    changeSettings: (ReaderSettings) -> Unit
+) {
     val chapters = ebook.chapters
-    val readerSettings = ReaderSettings.Default
-    var settings by remember { mutableStateOf(readerSettings) }
     var showSettings by rememberMutableState { false }
 
     if (showSettings) {
         SettingsSheet(
             settings = settings,
+            language = ebook.language,
             onDismiss = { showSettings = false },
-            changeSettings = { settings = it }
+            changeSettings = changeSettings
         )
     }
 
@@ -112,7 +127,7 @@ private fun EpubBook(ebook: EpubBook, lazyListState: LazyListState, navigate: (S
         state = lazyListState,
         modifier = Modifier
             .fillMaxWidth()
-            .background(settings.background.color)
+            .background(settings.backgroundColor)
             .pointerInput(Unit) {
                 awaitEachGesture {
                     val down: PointerInputChange = awaitFirstDown()
@@ -137,62 +152,70 @@ private fun Chapter(
     settings: ReaderSettings,
     navigate: (String) -> Unit
 ) {
-    SelectionContainer {
+    ReaderSelectionContainer {
         Column {
             chapter.contentElements.forEach { element ->
-                when (element) {
-                    is ContentElement.Text -> {
-                        TextElement(element = element, settings = settings, navigate = navigate)
-                    }
-
-                    is ContentElement.Heading -> {
-                        HeadingElement(element = element, settings = settings)
-                    }
-
-                    is ContentElement.Quote -> {
-                        QuoteElement(element = element, settings = settings)
-                    }
-
-                    is ContentElement.Listing -> {
-                        ListElement(element = element, settings = settings)
-                    }
-
-                    is ContentElement.CodeBlock -> {
-                        CodeBlockElement(element = element, settings = settings)
-                    }
-
-                    is ContentElement.Image -> {
-                        val image = ebook.images.find { it.absPath == element.path }
-                        image?.let {
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalPlatformContext.current)
-                                    .data(image.image)
-                                    .crossfade(true)
-                                    .build(),
-                                contentDescription = element.caption,
-                                contentScale = ContentScale.FillWidth,
-                                modifier = Modifier
-                                    .padding(vertical = 8.dp)
-                                    .align(Alignment.CenterHorizontally)
-                            )
-                        }
-                    }
-
-                    is ContentElement.Table -> {
-                        TableComponent(element = element, settings = settings, navigate = navigate)
-                    }
-
-                    is ContentElement.Divider -> {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
-                                .padding(vertical = 16.dp)
-                        )
-                    }
-                }
+                ContentElement(element, settings, navigate, ebook)
             }
+        }
+    }
+}
+
+@Composable
+private fun ContentElement(
+    element: ContentElement,
+    settings: ReaderSettings,
+    navigate: (String) -> Unit,
+    ebook: EpubBook
+) {
+    when (element) {
+        is ContentElement.Text -> {
+            TextElement(element = element, settings = settings, navigate = navigate)
+        }
+
+        is ContentElement.Heading -> {
+            HeadingElement(element = element, settings = settings)
+        }
+
+        is ContentElement.Quote -> {
+            QuoteElement(element = element, settings = settings)
+        }
+
+        is ContentElement.Listing -> {
+            ListElement(element = element, settings = settings)
+        }
+
+        is ContentElement.CodeBlock -> {
+            CodeBlockElement(element = element, settings = settings)
+        }
+
+        is ContentElement.Image -> {
+            val image = ebook.images.find { it.absPath == element.path }
+            image?.let {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalPlatformContext.current)
+                        .data(image.image)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = element.caption,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+        }
+
+        is ContentElement.Table -> {
+            TableComponent(element = element, settings = settings, navigate = navigate)
+        }
+
+        is ContentElement.Divider -> {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+                    .padding(vertical = 16.dp)
+            )
         }
     }
 }

@@ -13,7 +13,7 @@ import com.kafka.image.ImageLoadingPlatformComponent
 import com.kafka.navigation.NavigationModule
 import com.kafka.networking.NetworkingComponent
 import com.kafka.play.PlayStoreComponent
-import com.kafka.reader.epub.FileSystemComponent
+import com.kafka.reader.epub.injection.FileSystemComponent
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.getGoogleServerClientId
 import com.kafka.remote.config.getOpenAiApiKey

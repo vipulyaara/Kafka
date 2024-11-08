@@ -23,6 +23,8 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
 import com.kafka.reader.epub.domain.ParseEbook
+import com.kafka.reader.epub.settings.ReaderSettings
+import com.kafka.reader.epub.settings.ReaderSettingsRepository
 import kafka.reader.core.models.EpubBook
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -34,6 +36,7 @@ import me.tatarka.inject.annotations.Inject
 class EpubReaderViewModel(
     observeItemDetail: ObserveItemDetail,
     @Assisted private val savedStateHandle: SavedStateHandle,
+    private val settingsRepository: ReaderSettingsRepository,
     private val updateCurrentPage: UpdateCurrentPage,
     private val observeDownload: ObserveDownload,
     private val snackbarManager: SnackbarManager,
@@ -46,6 +49,9 @@ class EpubReaderViewModel(
     private val itemId = savedStateHandle.get<String>("itemId")!!
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
+
+    val readerSettings = settingsRepository.getSettings()
+        .stateInDefault(scope = viewModelScope, initialValue = ReaderSettings())
 
     val showTocSheet = mutableStateOf(false)
     val lazyListState = LazyListState()
@@ -128,6 +134,12 @@ class EpubReaderViewModel(
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
         shareUtils.shareText(text = text, context = context)
+    }
+
+    fun updateSettings(newSettings: ReaderSettings) {
+        viewModelScope.launch {
+            settingsRepository.updateSettings(newSettings)
+        }
     }
 }
 

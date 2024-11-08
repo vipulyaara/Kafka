@@ -7,6 +7,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
@@ -17,11 +18,12 @@ import com.kafka.ui.components.material.TopBar
 fun ReaderTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     viewModel: EpubReaderViewModel,
+    containerColor: Color
 ) {
     val context = getContext()
 
     TopBar(
-        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+        containerColor = containerColor.copy(alpha = 0.7f),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             ActionIcon(icon = Icons.Back, contentDescription = "Back", onClick = viewModel::goBack)
