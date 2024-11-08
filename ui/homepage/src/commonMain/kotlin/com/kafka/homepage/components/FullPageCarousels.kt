@@ -80,14 +80,16 @@ internal fun FullPageCarousels(
                         )
                     }
 
-                    Spacer(Modifier.height(Dimens.Spacing12))
+                    if (item.description != null) {
+                        Spacer(Modifier.height(Dimens.Spacing12))
 
-                    Text(
-                        text = item.description.orEmpty(),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = Dimens.Gutter)
-                    )
+                        Text(
+                            text = item.description.orEmpty(),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = Dimens.Gutter)
+                        )
+                    }
                 }
             }
         }

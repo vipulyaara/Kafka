@@ -76,7 +76,6 @@ internal fun RecentItems(
 ) {
     val showAllAction = remember(readingList) { readingList.size > 2 }
 
-
     Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
         Row(
             modifier = Modifier
@@ -184,7 +183,7 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
         PerspectiveShapeWithShadow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Dimens.Spacing56),
+                .height(Dimens.Spacing64),
             color = MaterialTheme.colorScheme.surfaceContainerLow
         )
 
@@ -193,7 +192,7 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
                 .fillMaxWidth()
                 .height(Dimens.Spacing12)
                 .align(Alignment.BottomCenter),
-            shape = RoundedCornerShape(Dimens.Spacing12),
+            shape = RoundedCornerShape(Dimens.Spacing04),
             tonalElevation = Dimens.Elevation04,
             shadowElevation = Dimens.Elevation04,
             color = MaterialTheme.colorScheme.surfaceContainer
@@ -267,7 +266,7 @@ private fun RecentItemCoverImage(item: RecentItem) {
         CoverImage(
             data = item.coverUrl,
             contentDescription = null,
-            size = DpSize(64.dp, 96.dp),
+            size = DpSize(64.dp, 92.dp),
             containerColor = MaterialTheme.colorScheme.background,
             contentScale = ContentScale.Crop,
             placeholder = null

@@ -18,15 +18,20 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
+import com.kafka.common.adaptive.isCompact
+import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
@@ -121,8 +126,14 @@ private fun HomepageFeedItems(
     openRecentItems: () -> Unit,
     shareApp: () -> Unit,
 ) {
+    val columns = if (windowWidthSizeClass().isCompact()) {
+        GridCells.Fixed(2)
+    } else {
+        GridCells.Adaptive(260.dp)
+    }
+
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = columns,
         modifier = Modifier.testTagUi("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
@@ -359,8 +370,9 @@ private fun LazyGridScope.gridItems(
                 coverImage = item.coverImage,
                 mediaType = item.mediaType,
                 modifier = Modifier
-                    .clickable { openItemDetail(item.itemId) }
                     .padding(Dimens.Spacing06)
+                    .clip(RoundedCornerShape(Dimens.Radius08))
+                    .clickable { openItemDetail(item.itemId) }
             )
         }
     } else {

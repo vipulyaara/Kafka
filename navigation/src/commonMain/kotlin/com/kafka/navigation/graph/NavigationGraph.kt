@@ -56,7 +56,9 @@ sealed class Screen {
     data object RecentItems : Screen()
 
     @Serializable
-    data class ItemDetail(@SerialName("itemId") val itemId: String) : Screen() {
+    data class ItemDetail(
+        @SerialName("itemId") val itemId: String
+    ) : Screen() {
         companion object {
             const val route = "item/{itemId}"
             fun route(itemId: String) = "item/$itemId"

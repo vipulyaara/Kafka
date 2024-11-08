@@ -26,10 +26,7 @@ fun GridItem(
     modifier: Modifier = Modifier,
     isInAppropriate: Boolean = false,
 ) {
-    Box(
-        modifier = modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
 //        ItemCover(
 //            modifier = Modifier
 //                .fillMaxWidth()
@@ -41,7 +38,8 @@ fun GridItem(
             elevation = Dimens.Elevation08,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.66f)
+                .aspectRatio(0.66f),
+            shape = RoundedCornerShape(Dimens.Radius08)
         )
 //        }
 
