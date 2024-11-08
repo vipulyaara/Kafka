@@ -97,7 +97,7 @@ internal fun FullPageCarousels(
 }
 
 @Composable
-private fun Header() {
+internal fun Header() {
     Column {
         Text(
             text = "Book of the",

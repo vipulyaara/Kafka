@@ -41,7 +41,7 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
-import com.kafka.homepage.components.FullPageCarousels
+import com.kafka.homepage.components.CubePager
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
 import com.kafka.ui.components.MessageBox
@@ -200,7 +200,7 @@ private fun HomepageFeedItems(
                 is HomepageCollection.FeaturedItem -> {
                     fullSpanItem {
                         if (collection.items.isNotEmpty()) {
-                            FullPageCarousels(
+                            CubePager(
                                 carouselItems = collection.items,
                                 images = collection.image,
                                 onClick = { openItemDetail(it, "featuredItem") }

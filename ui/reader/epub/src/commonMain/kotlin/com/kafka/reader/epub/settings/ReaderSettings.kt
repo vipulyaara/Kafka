@@ -23,7 +23,7 @@ data class ReaderSettings(
     val isReadingMode: Boolean = false,
     val textAlignment: TextAlignment = TextAlignment.LEFT
 ) {
-    val fontSize get() = (14 * fontScale).sp
+    val fontSize get() = (16 * fontScale).sp
     val lineHeight get() = (fontSize.value * lineHeightType.multiplier).sp
     val horizontalMargin get() = (16 * marginScale).dp
 
