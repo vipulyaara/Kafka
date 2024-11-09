@@ -18,50 +18,48 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.reader.epub.components.TocComponent
+import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.progress.InfiniteProgressBar
-import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun EpubReader(viewModel: EpubReaderViewModel) {
+fun ReaderScreen(viewModel: ReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val settings by viewModel.readerSettings.collectAsStateWithLifecycle()
 
-    AppTheme(isDarkTheme = settings.isDarkMode) {
-        Scaffold(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                ReaderTopBar(
-                    scrollBehavior = scrollBehavior,
-                    viewModel = viewModel,
-                    containerColor = settings.backgroundColor
-                )
-            }
-        ) {
-            ProvideScaffoldPadding(it) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    if (state.epubBook != null) {
-                        EpubBook(
-                            ebook = state.epubBook!!,
-                            settings = settings,
-                            lazyListState = viewModel.lazyListState,
-                            navigate = viewModel::navigate,
-                            changeSettings = viewModel::updateSettings
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            ReaderTopBar(
+                scrollBehavior = scrollBehavior,
+                viewModel = viewModel,
+                theme = state.settings.theme
+            )
+        }
+    ) {
+        ProvideScaffoldPadding(it) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (state.epubBook != null) {
+                    EpubBook(
+                        ebook = state.epubBook!!,
+                        settings = state.settings,
+                        language = state.itemDetail?.language,
+                        lazyListState = viewModel.lazyListState,
+                        navigate = viewModel::navigate,
+                        changeSettings = viewModel::updateSettings
+                    )
+                    TocComponent(
+                        show = viewModel.showTocSheet,
+                        chapters = state.epubBook!!.chapters,
+                        selectChapter = viewModel::navigate
+                    )
+                } else {
+                    if (state.loading) {
+                        LoadingWithProgress(
+                            progress = state.progress,
+                            modifier = Modifier.align(Alignment.Center)
                         )
-                        TocComponent(
-                            show = viewModel.showTocSheet,
-                            chapters = state.epubBook!!.chapters,
-                            selectChapter = viewModel::navigate
-                        )
-                    } else {
-                        if (state.loading) {
-                            LoadingWithProgress(
-                                progress = state.progress,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
                     }
                 }
             }

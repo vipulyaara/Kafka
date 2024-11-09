@@ -41,11 +41,7 @@ object ElementStyleParser {
             else -> TextStyle.Normal to 1.0f
         }
 
-        return ContentElement.Text(
-            content = text,
-            styles = setOf(style),
-            sizeFactor = sizeFactor
-        )
+        return ContentElement.Text(content = text, styles = setOf(style), sizeFactor = sizeFactor)
     }
 
     private fun createStyledText(
@@ -63,7 +59,8 @@ object ElementStyleParser {
             backgroundColor = styleProps.backgroundColor,
             letterSpacing = styleProps.letterSpacing,
             lineHeight = styleProps.lineHeight,
-            inlineElements = inlineElements
+            inlineElements = inlineElements,
+            indentSize = styleProps.indentSize
         )
     }
-} 
+}

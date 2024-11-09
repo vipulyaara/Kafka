@@ -31,8 +31,8 @@ data class ItemDetail(
     val creator: String?
         get() = creators?.take(5)?.joinToString()
 
-    val language: String?
-        get() = languages?.take(5)?.joinToString()
+    val language: String
+        get() = languages?.take(5)?.joinToString() ?: "en"
 
     val uiRating: Int
         get() = (rating ?: 0.0).toInt()

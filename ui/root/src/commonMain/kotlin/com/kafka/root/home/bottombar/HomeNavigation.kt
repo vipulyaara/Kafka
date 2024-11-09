@@ -183,12 +183,12 @@ private fun HomeNavigationBar(
 ) {
     Column(modifier = modifier) {
         if (navigationType.shouldShowMiniPlayer()) {
-//            MiniPlayer(
-//                modifier = Modifier
-//                    .padding(Dimens.Spacing08)
-//                    .zIndex(2f),
-//                openPlaybackSheet = openPlaybackSheet
-//            )
+            MiniPlayer(
+                modifier = Modifier
+                    .padding(Dimens.Spacing08)
+                    .zIndex(2f),
+                openPlaybackSheet = openPlaybackSheet
+            )
         }
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
@@ -350,7 +350,9 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
         derivedStateOf { currentRoute?.destination?.route?.substringBefore("/") }
     }
 
-    return destination != Screen.EpubReader.navigationRoute
+    val blackLabelledDestinations = listOf(Screen.EpubReader, Screen.Web)
+
+    return !blackLabelledDestinations.map { it.navigationRoute }.contains(destination)
 }
 
 internal enum class NavigationType {

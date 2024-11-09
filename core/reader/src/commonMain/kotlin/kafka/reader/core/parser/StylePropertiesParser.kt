@@ -4,6 +4,17 @@ import com.fleeksoft.ksoup.nodes.Element
 import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
 
+internal data class StyleProperties(
+    val styles: Set<TextStyle> = setOf(),
+    val sizeFactor: Float = 1.0f,
+    val color: String? = null,
+    val backgroundColor: String? = null,
+    val letterSpacing: Float? = null,
+    val lineHeight: Float? = null,
+    val alignment: TextAlignment = TextAlignment.JUSTIFY,
+    val indentSize: Float? = null
+)
+
 internal object StylePropertiesParser {
     fun parse(element: Element): StyleProperties {
         return StyleProperties(
@@ -13,7 +24,8 @@ internal object StylePropertiesParser {
             color = parseColor(element),
             backgroundColor = parseBackgroundColor(element),
             letterSpacing = parseLetterSpacing(element),
-            lineHeight = parseLineHeight(element)
+            lineHeight = parseLineHeight(element),
+            indentSize = parseIndentation(element)
         )
     }
 
@@ -186,4 +198,27 @@ internal object StylePropertiesParser {
             styles.add(TextStyle.SmallCaps)
         }
     }
-} 
+
+    private fun parseIndentation(element: Element): Float? {
+        // Check for text-indent CSS property
+        element.attr("style").let { styleAttr ->
+            val indentRegex = "text-indent:\\s*([\\d.]+)(px|em|rem)".toRegex()
+            indentRegex.find(styleAttr)?.let { match ->
+                val indent = match.groupValues[1].toFloatOrNull() ?: return null
+                return when (match.groupValues[2]) {
+                    "em", "rem" -> indent
+                    "px" -> indent / 16f // Convert px to em assuming 16px base
+                    else -> null
+                }
+            }
+        }
+
+        // Check for paragraph or first paragraph class/type
+        if (element.tagName() == "p" || element.hasClass("indent")) {
+            return 1.5f // Standard paragraph indent
+        }
+
+        return null
+    }
+
+}

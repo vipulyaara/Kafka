@@ -1,7 +1,6 @@
 package com.kafka.reader.epub.settings
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -9,61 +8,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kafka.common.toColor
-import com.kafka.common.toHexString
+import com.kafka.reader.epub.settings.ReaderSettings.FontStyleKey
+import kotlinx.serialization.Serializable
+import ui.common.theme.theme.Inter
 import ui.common.theme.theme.Laila
 
+@Serializable
 data class ReaderSettings(
-    val fontScale: Float = 1f,
-    val lineHeightType: LineHeight = LineHeight.NORMAL,
-    val fontStyle: FontStyle = FontStyle.Default,
-    val marginScale: Float = 1f,
-    val isDarkMode: Boolean = false,
-    val background: Background = Background.default(isDarkMode),
-    val isReadingMode: Boolean = false,
-    val textAlignment: TextAlignment = TextAlignment.LEFT
+    val themeKey: ThemeKey,
+    val fontStyleKey: FontStyleKey,
+    val fontScale: Float,
+    val lineHeightType: LineHeight,
+    val textAlignment: TextAlignment,
+    val marginScale: Float,
+    val horizontalNavigation: Boolean
 ) {
-    val fontSize get() = (16 * fontScale).sp
+    val fontSize get() = (DEFAULT_FONT_SIZE * fontScale).sp
     val lineHeight get() = (fontSize.value * lineHeightType.multiplier).sp
-    val horizontalMargin get() = (16 * marginScale).dp
+    val horizontalMargin get() = (DEFAULT_MARGIN * marginScale).dp
 
-    val backgroundColor: Color
-        @Composable
-        get() = when {
-            // Reading mode takes precedence - warm dark background
-            isReadingMode -> Color(0xFF2C1810) // Warm dark brown color
-            else -> background.color
-        }
-
-    val textColor: Color
-        @Composable
-        get() = when {
-            isReadingMode -> Color(0xFFFFB74D) // Existing warm orange
-            else -> calculateTextColor()
-        }
-
-    @Composable
-    private fun calculateTextColor(): Color {
-        // Now use backgroundColor instead of background.color
-        val baseColor = contentColorFor(backgroundColor)
-        
-        return if (isDarkMode) {
-            baseColor.copy(alpha = 0.87f)
-        } else {
-            baseColor
-        }
-    }
-
-    enum class LineHeight(val multiplier: Float, val label: String) {
-        COMPACT(1.2f, "Compact"),
-        NORMAL(1.4f, "Normal"),
-        RELAXED(1.7f, "Relaxed");
+    enum class FontStyleKey {
+        Serif, SansSerif, Cursive, Laila;
 
         companion object {
-            fun from(value: String) = LineHeight.entries.find { it.name == value } ?: COMPACT
+            fun default(language: String) = if (language == "hi") {
+                Laila
+            } else {
+                SansSerif
+            }
         }
     }
 
+    enum class ThemeKey {
+        System, Light, Dark, Sepia, Night;
+
+        companion object {
+            val Default = System
+        }
+    }
+
+    @Serializable
+    enum class LineHeight(val multiplier: Float, val label: String) {
+        COMPACT(1.4f, "Compact"),
+        NORMAL(1.7f, "Normal"),
+        RELAXED(2f, "Relaxed");
+
+        companion object {
+            val DEFAULT = NORMAL
+        }
+    }
+
+    @Serializable
     enum class TextAlignment(val label: String) {
         LEFT("Left"),
         RIGHT("Right"),
@@ -76,83 +71,109 @@ data class ReaderSettings(
         }
 
         companion object {
-            fun from(value: String) = TextAlignment.entries.find { it.name == value } ?: LEFT
-        }
-    }
-
-    data class FontStyle(
-        val name: String,
-        val fontFamily: FontFamily,
-        val fontWeight: FontWeight
-    ) {
-        override fun toString(): String = name
-
-        companion object {
-            // todo
-            val Default = FontStyle("Default", FontFamily.Default, FontWeight.Normal)
-
-            fun fromString(value: String): FontStyle =
-                defaultOptions.find { it.name == value } ?: Default
-
-            @Composable
-            fun getOptionsForLanguage(language: String) = when {
-                language.startsWith("hi", true) -> hindiOptions
-                else -> defaultOptions
-            }
-
-            private val defaultOptions = listOf(
-                Default,
-                FontStyle("Sans Serif", FontFamily.SansSerif, FontWeight.Normal),
-                FontStyle("Serif", FontFamily.Serif, FontWeight.Normal),
-                FontStyle("Monospace", FontFamily.Monospace, FontWeight.Normal)
-            )
-
-            private val hindiOptions
-                @Composable get() = listOf(
-                    FontStyle("Laila", Laila, FontWeight.Medium),
-                    FontStyle("Laila", Laila, FontWeight.Medium),
-                    // Add more Hindi-specific fonts
-                )
-        }
-    }
-
-    data class Background(val color: Color) {
-        override fun toString(): String = color.toHexString()
-
-        companion object {
-            fun default(isDark: Boolean) = if (isDark) {
-                Background(Color(0xFF000000))
-            } else {
-                Background(Color(0xFFFFFFFF))
-            }
-
-            fun fromString(value: String): Background = Background(value.toColor())
-
-            @Composable
-            fun getOptions(isDark: Boolean) = if (isDark) darkOptions else lightOptions
-
-            private val lightOptions
-                @Composable get() = listOf(
-                    Background(Color(0xFFFFFFFF)),
-                    Background(MaterialTheme.colorScheme.surfaceVariant),
-                    Background(Color(0xFFF5F5F5)),
-                    Background(Color(0xFFFAF3E0)),
-                    Background(Color(0xFFE9E9E9))
-                )
-
-            private val darkOptions
-                @Composable get() = listOf(
-                    Background(Color(0xFF000000)),
-                    Background(MaterialTheme.colorScheme.surfaceVariant),
-                    Background(Color(0xFF2C2C2E)),
-                    Background(Color(0xFF1C1C1E)),
-                    Background(Color(0xFF121212))
-                )
+            val DEFAULT = LEFT
         }
     }
 
     companion object {
-        val fontScaleOptions = listOf(0.5f, 0.75f, 1f, 1.2f, 1.4f, 1.5f, 1.7f, 2f, 2.5f, 3f)
-        val marginScaleOptions = listOf(0.25f, 0.5f, 1f, 1.5f, 2f, 2.5f, 3f)
+        const val DEFAULT_LANGUAGE = "en"
+        const val DEFAULT_FONT_SIZE = 16f
+        const val DEFAULT_MARGIN = 16f
+        private const val DEFAULT_FONT_SCALE = 1f
+        private const val DEFAULT_MARGIN_SCALE = 1f
+
+        val fontScaleOptions =
+            listOf(0.5f, 0.75f, DEFAULT_FONT_SCALE, 1.2f, 1.4f, 1.5f, 1.7f, 2f, 2.5f, 3f)
+        val marginScaleOptions = listOf(0.25f, 0.5f, DEFAULT_MARGIN_SCALE, 1.5f, 2f, 2.5f, 3f)
+
+        fun default(language: String) = ReaderSettings(
+            themeKey = ThemeKey.Default,
+            fontStyleKey = FontStyleKey.default(language),
+            fontScale = DEFAULT_FONT_SCALE,
+            lineHeightType = LineHeight.DEFAULT,
+            textAlignment = TextAlignment.DEFAULT,
+            marginScale = DEFAULT_MARGIN_SCALE,
+            horizontalNavigation = false
+        )
+    }
+}
+
+val ReaderSettings.font: ReaderFont
+    @Composable get() = ReaderFont.from(fontStyleKey)
+
+val ReaderSettings.theme: ReaderTheme
+    @Composable get() = ReaderTheme.from(themeKey)
+
+data class ReaderTheme(
+    val key: ReaderSettings.ThemeKey,
+    val backgroundColor: Color = Color.Transparent,
+    val contentColor: Color = Color.Transparent
+) {
+    val isSystemTheme get() = key == ReaderSettings.ThemeKey.System
+
+    companion object {
+        val options
+            @Composable get() = listOf(
+                ReaderTheme(
+                    key = ReaderSettings.ThemeKey.System,
+                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                ),
+                ReaderTheme(
+                    key = ReaderSettings.ThemeKey.Light,
+                    backgroundColor = Color(0xFFFFFFFF),
+                    contentColor = Color(0xFF000000)
+                ),
+                ReaderTheme(
+                    key = ReaderSettings.ThemeKey.Dark,
+                    backgroundColor = Color(0xFF000000),
+                    contentColor = Color(0xFFFFFFFF)
+                ),
+                ReaderTheme(
+                    key = ReaderSettings.ThemeKey.Sepia,
+                    backgroundColor = Color(0xFFFAF3E0),
+                    contentColor = Color(0xFF000000)
+                ),
+                ReaderTheme(
+                    key = ReaderSettings.ThemeKey.Night,
+                    backgroundColor = Color(0xFF2C1810),
+                    contentColor = Color(0xFFFFB74D)
+                ),
+            )
+
+        @Composable
+        fun from(key: ReaderSettings.ThemeKey): ReaderTheme {
+            return options.first { it.key == key }
+        }
+    }
+}
+
+data class ReaderFont(
+    val key: FontStyleKey,
+    val name: String,
+    val fontFamily: FontFamily,
+    val fontWeight: FontWeight,
+    val supportedLanguages: Set<String> = setOf("*")
+) {
+    companion object {
+        @Composable
+        fun from(value: FontStyleKey): ReaderFont = options().first { it.key == value }
+
+        private fun ReaderFont.supportsLanguage(language: String): Boolean =
+            supportedLanguages.contains("*") || supportedLanguages.contains(language.lowercase())
+
+        @Composable
+        fun options(language: String) = options().filter { it.supportsLanguage(language) }
+
+        @Composable
+        private fun options(): List<ReaderFont> = buildList {
+            // Language-specific fonts
+            add(ReaderFont(FontStyleKey.Laila, "Laila", Laila, FontWeight.Medium, setOf("hi")))
+
+            // Default fonts for all languages
+            add(ReaderFont(FontStyleKey.SansSerif, "Sans Serif", Inter, FontWeight.Normal))
+            add(ReaderFont(FontStyleKey.Serif, "Serif", FontFamily.Serif, FontWeight.Normal))
+            add(ReaderFont(FontStyleKey.Cursive, "Cursive", FontFamily.Cursive, FontWeight.Normal))
+        }
     }
 }

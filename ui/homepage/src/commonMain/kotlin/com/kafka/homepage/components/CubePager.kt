@@ -42,9 +42,9 @@ fun CubePager(
                 .align(Alignment.End)
         )
 
-        HorizontalCubePager(state, modifier) { page ->
+        HorizontalCubePager(state = state, modifier = modifier) { page ->
             AsyncImage(
-                model = images[page],
+                model = images.getOrNull(page) ?: carouselItems[page].coverImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

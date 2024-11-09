@@ -18,7 +18,8 @@ sealed interface ContentElement {
         val backgroundColor: String? = null,
         val letterSpacing: Float? = null,
         val lineHeight: Float? = null,
-        val inlineElements: List<InlineElement> = emptyList()
+        val inlineElements: List<InlineElement> = emptyList(),
+        val indentSize: Float? = null
     ) : ContentElement
 
     @Serializable

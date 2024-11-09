@@ -27,9 +27,10 @@ fun RemoteConfig.isGoogleLoginEnabled() = getBoolean(GOOGLE_LOGIN_ENABLED)
 
 fun RemoteConfig.isRecommendationRowEnabled() = getBoolean(RECOMMENDATION_ROW_ENABLED)
 
-fun RemoteConfig.isOnlineReaderEnabled() = getBoolean(ONLINE_READER_ENABLED) && appService == Service.Archive
+fun RemoteConfig.isOnlineReaderEnabled() =
+    getBoolean(ONLINE_READER_ENABLED) && appService == Service.Archive
 
-fun RemoteConfig.shareAppIndex() = getLong(SHARE_APP_INDEX)
+fun RemoteConfig.shareAppIndex() = 4 // todo
 
 fun RemoteConfig.isItemDetailDynamicThemeEnabled() = getBoolean(ITEM_DETAIL_DYNAMIC_THEME_ENABLED)
 

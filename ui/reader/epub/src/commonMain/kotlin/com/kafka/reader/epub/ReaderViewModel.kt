@@ -22,9 +22,10 @@ import com.kafka.downloader.core.ObserveDownload
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
+import com.kafka.reader.epub.domain.ObserveReaderSettings
 import com.kafka.reader.epub.domain.ParseEbook
+import com.kafka.reader.epub.domain.UpdateReaderSettings
 import com.kafka.reader.epub.settings.ReaderSettings
-import com.kafka.reader.epub.settings.ReaderSettingsRepository
 import kafka.reader.core.models.EpubBook
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -33,10 +34,11 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class EpubReaderViewModel(
+class ReaderViewModel(
     observeItemDetail: ObserveItemDetail,
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val settingsRepository: ReaderSettingsRepository,
+    observeReaderSettings: ObserveReaderSettings,
+    private val updateReaderSettings: UpdateReaderSettings,
     private val updateCurrentPage: UpdateCurrentPage,
     private val observeDownload: ObserveDownload,
     private val snackbarManager: SnackbarManager,
@@ -50,9 +52,6 @@ class EpubReaderViewModel(
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
 
-    val readerSettings = settingsRepository.getSettings()
-        .stateInDefault(scope = viewModelScope, initialValue = ReaderSettings())
-
     val showTocSheet = mutableStateOf(false)
     val lazyListState = LazyListState()
 
@@ -63,22 +62,22 @@ class EpubReaderViewModel(
         ) { loadings -> loadings.any { it } },
         snapshotFlow { ebook },
         observeItemDetail.flow,
-        observeDownload.flow
-    ) { loading, ebook, itemDetail, download ->
-        val progress = download?.progress?.takeIf { it in 1..99 }?.let { "$it%" }
-
+        observeDownload.flow,
+        observeReaderSettings.flow
+    ) { loading, ebook, itemDetail, download, settings ->
         EpubState(
             loading = loading,
             epubBook = ebook,
             itemDetail = itemDetail,
-            url = download?.url,
-            progress = progress
+            download = download,
+            settings = settings
         )
     }.stateInDefault(viewModelScope, EpubState())
 
     init {
         observeDownload(fileId)
         observeItemDetail(ObserveItemDetail.Param(itemId))
+        observeReaderSettings(ObserveReaderSettings.Params(itemId))
 
         viewModelScope.launch {
             downloadItem(fileId)
@@ -138,7 +137,7 @@ class EpubReaderViewModel(
 
     fun updateSettings(newSettings: ReaderSettings) {
         viewModelScope.launch {
-            settingsRepository.updateSettings(newSettings)
+            updateReaderSettings(newSettings)
         }
     }
 }
@@ -147,6 +146,9 @@ data class EpubState(
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
     val itemDetail: ItemDetail? = null,
-    val progress: String? = null,
-    val url: String? = null
-)
+    val download: Download? = null,
+    val settings: ReaderSettings = ReaderSettings.default(ReaderSettings.DEFAULT_LANGUAGE)
+) {
+    val progress: String?
+        get() = download?.progress?.takeIf { it in 1..99 }?.let { "$it%" }
+}

@@ -69,8 +69,8 @@ import com.kafka.profile.ProfileScreen
 import com.kafka.profile.ProfileViewModel
 import com.kafka.profile.feedback.FeedbackScreen
 import com.kafka.profile.feedback.FeedbackViewModel
-import com.kafka.reader.epub.EpubReader
-import com.kafka.reader.epub.EpubReaderViewModel
+import com.kafka.reader.epub.ReaderScreen
+import com.kafka.reader.epub.ReaderViewModel
 import com.kafka.root.playback.PlaybackViewModel
 import com.kafka.search.SearchScreen
 import com.kafka.search.SearchViewModel
@@ -381,11 +381,11 @@ typealias addEpubReader = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addEpubReader(
-    viewModelFactory: (SavedStateHandle) -> EpubReaderViewModel,
+    viewModelFactory: (SavedStateHandle) -> ReaderViewModel,
 ) {
     composable<Screen.EpubReader> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        EpubReader(viewModel = viewModel)
+        ReaderScreen(viewModel = viewModel)
     }
 }
 

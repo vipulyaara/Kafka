@@ -24,11 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kafka.reader.epub.settings.ReaderSettings
+import com.kafka.reader.epub.settings.font
+import com.kafka.reader.epub.settings.theme
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.InlineElement
 import kafka.reader.core.models.enums.TextStyle
@@ -44,12 +47,13 @@ fun TextElement(
 ) {
     val style = element.getEffectiveStyle()
     val isHeading = style in TextStyle.Heading1..TextStyle.Heading6
+    val linkColor = Color(0xFF0066CC)
 
-    val linkColor = if (settings.isDarkMode) {
-        Color(0xFF66B2FF)
-    } else {
-        Color(0xFF0066CC)
-    }
+    val firstLineIndent = element.indentSize?.let { indent ->
+        (indent * settings.fontSize.value).sp
+    } ?: 0.sp
+
+    val textStyle = getHeadingStyle(style).copy(textIndent = TextIndent(firstLine = firstLineIndent))
 
     val annotatedString = remember(element) {
         buildTextAnnotatedString(
@@ -64,24 +68,26 @@ fun TextElement(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = settings.horizontalMargin)
-            .padding(vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08),
-        style = getHeadingStyle(style),
-        fontFamily = settings.fontStyle.fontFamily,
+            .padding(
+                vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08,
+            ),
+        style = textStyle,
+        fontFamily = settings.font.fontFamily,
         fontWeight = when {
             TextStyle.Bold in element.styles -> FontWeight.Bold
             style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
-            else -> settings.fontStyle.fontWeight
+            else -> settings.font.fontWeight
         },
         fontStyle = when {
             TextStyle.Italic in element.styles -> FontStyle.Italic
             else -> FontStyle.Normal
         },
         fontSize = when {
-            isHeading -> getHeadingStyle(style).fontSize
+            isHeading -> textStyle.fontSize
             else -> (settings.fontSize.value * element.sizeFactor).sp
         },
         lineHeight = when {
-            isHeading -> getHeadingStyle(style).lineHeight
+            isHeading -> textStyle.lineHeight
             element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
             else -> settings.lineHeight
         },
@@ -89,14 +95,8 @@ fun TextElement(
             TextAlign.Center
         } else {
             settings.textAlignment.asAlignment()
-//            when (element.alignment) {
-//                TextAlignment.LEFT -> TextAlign.Start
-//                TextAlignment.CENTER -> TextAlign.Center
-//                TextAlignment.RIGHT -> TextAlign.End
-//                TextAlignment.JUSTIFY -> TextAlign.Justify
-//            }
         },
-        color = settings.textColor,
+        color = settings.theme.contentColor,
     )
 }
 
@@ -114,7 +114,6 @@ private fun buildTextAnnotatedString(
         val content = element.content
         val length = content.length
 
-        // Sort and validate inline elements
         val sortedInlines = element.inlineElements
             .sortedBy { it.start }
             .filter { inline ->
@@ -127,15 +126,18 @@ private fun buildTextAnnotatedString(
         var currentIndex = 0
 
         sortedInlines.forEach { inline ->
-            val safeStart = inline.start.coerceIn(currentIndex, length)
-            val safeEnd = inline.end.coerceIn(safeStart, length)
+            // Make start exclusive (add 1) and end inclusive (add 1)
+            val adjustedStart = (inline.start + 1).coerceIn(currentIndex, length)
+            val adjustedEnd = (inline.end + 1).coerceIn(adjustedStart, length)
 
-            if (safeStart > currentIndex) {
-                append(content.substring(currentIndex, safeStart))
+            // Add any text before the inline element
+            if (adjustedStart > currentIndex) {
+                append(content.substring(currentIndex, adjustedStart))
             }
 
             when (inline) {
                 is InlineElement.Link -> {
+                    val linkText = content.substring(adjustedStart, adjustedEnd)
                     val link = LinkAnnotation.Url(
                         inline.href,
                         TextLinkStyles(SpanStyle(color = linkColor))
@@ -143,7 +145,7 @@ private fun buildTextAnnotatedString(
                         navigateToUrl((it as LinkAnnotation.Url).url)
                     }
                     withLink(link) {
-                        append(content.substring(safeStart, safeEnd))
+                        append(linkText)
                     }
                 }
 
@@ -172,7 +174,7 @@ private fun buildTextAnnotatedString(
                             }
                         )
                     ) {
-                        append(content.substring(safeStart, safeEnd))
+                        append(content.substring(adjustedStart, adjustedEnd))
                     }
                 }
 
@@ -180,9 +182,10 @@ private fun buildTextAnnotatedString(
                 is InlineElement.Color -> {}
             }
 
-            currentIndex = safeEnd
+            currentIndex = adjustedEnd
         }
 
+        // Append any remaining text
         if (currentIndex < length) {
             append(content.substring(currentIndex))
         }
@@ -218,10 +221,10 @@ fun HeadingElement(element: ContentElement.Heading, settings: ReaderSettings) {
             3 -> MaterialTheme.typography.headlineSmall
             else -> MaterialTheme.typography.titleMedium
         },
-        fontFamily = settings.fontStyle.fontFamily,
+        fontFamily = settings.font.fontFamily,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        color = settings.textColor,
+        color = settings.theme.contentColor,
     )
 }
 
@@ -240,8 +243,8 @@ fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
             text = element.content,
             style = MaterialTheme.typography.bodyMedium,
             fontStyle = FontStyle.Italic,
-            fontFamily = settings.fontStyle.fontFamily,
-            color = settings.textColor,
+            fontFamily = settings.font.fontFamily,
+            color = settings.theme.contentColor,
         )
 
         element.attribution?.let {
@@ -252,7 +255,7 @@ fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
                     .padding(top = 8.dp),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.End,
-                color = settings.textColor.copy(alpha = 0.7f),
+                color = settings.theme.contentColor.copy(alpha = 0.7f),
             )
         }
     }
@@ -273,14 +276,14 @@ fun ListElement(element: ContentElement.Listing, settings: ReaderSettings) {
                 Text(
                     text = if (element.ordered) "${index + element.startIndex}. " else "• ",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = settings.fontStyle.fontFamily,
-                    color = settings.textColor,
+                    fontFamily = settings.font.fontFamily,
+                    color = settings.theme.contentColor,
                 )
                 Text(
                     text = item,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontFamily = settings.fontStyle.fontFamily,
-                    color = settings.textColor,
+                    fontFamily = settings.font.fontFamily,
+                    color = settings.theme.contentColor,
                 )
             }
         }
@@ -302,7 +305,7 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
             Text(
                 text = it,
                 style = MaterialTheme.typography.labelSmall,
-                color = settings.textColor.copy(alpha = 0.7f),
+                color = settings.theme.contentColor.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
@@ -311,7 +314,7 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
             fontSize = settings.fontSize,
-            color = settings.textColor,
+            color = settings.theme.contentColor,
         )
     }
 }

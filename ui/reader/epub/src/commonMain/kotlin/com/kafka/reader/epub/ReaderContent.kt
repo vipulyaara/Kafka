@@ -6,16 +6,19 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kafka.common.extensions.rememberMutableState
+import com.kafka.common.plus
 import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
 import com.kafka.reader.epub.components.ListElement
@@ -36,16 +40,17 @@ import com.kafka.reader.epub.components.TableComponent
 import com.kafka.reader.epub.components.TextElement
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.SettingsSheet
+import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.scaffoldPadding
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.EpubBook
-import kafka.reader.core.models.EpubChapter
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun EpubBook(
     ebook: EpubBook,
     settings: ReaderSettings,
+    language: String?,
     lazyListState: LazyListState,
     navigate: (String) -> Unit,
     changeSettings: (ReaderSettings) -> Unit
@@ -56,50 +61,45 @@ fun EpubBook(
     if (showSettings) {
         SettingsSheet(
             settings = settings,
-            language = ebook.language,
+            language = language ?: ebook.language,
             onDismiss = { showSettings = false },
             changeSettings = changeSettings
         )
     }
 
-    LazyColumn(
-        state = lazyListState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(settings.backgroundColor)
-            .pointerInput(Unit) {
-                awaitEachGesture {
-                    val down: PointerInputChange = awaitFirstDown()
-                    val up: PointerInputChange? = waitForUpOrCancellation()
-                    if (up != null && down.id == up.id) {
-                        showSettings = !showSettings
+    val pagerState = rememberPagerState { chapters.size }
+
+    PageTurnHorizontalPager(pagerState) { page ->
+        val chapter = remember(chapters, page) { chapters[page] }
+
+        LazyColumn(
+            contentPadding = scaffoldPadding() + PaddingValues(vertical = Dimens.Gutter),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(settings.theme.backgroundColor)
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        val down: PointerInputChange = awaitFirstDown()
+                        val up: PointerInputChange? = waitForUpOrCancellation()
+                        if (up != null && down.id == up.id) {
+                            showSettings = !showSettings
+                        }
+                    }
+                },
+        ) {
+            item {
+                ReaderSelectionContainer {
+                    Column {
+                        chapter.contentElements.forEach { element ->
+                            ReaderContent(
+                                element = element,
+                                settings = settings,
+                                navigate = navigate,
+                                ebook = ebook
+                            )
+                        }
                     }
                 }
-            },
-        contentPadding = scaffoldPadding()
-    ) {
-        items(chapters) { chapter ->
-            ReaderChapter(
-                ebook = ebook,
-                chapter = chapter,
-                settings = settings,
-                navigate = navigate
-            )
-        }
-    }
-}
-
-@Composable
-internal fun ReaderChapter(
-    ebook: EpubBook,
-    chapter: EpubChapter,
-    settings: ReaderSettings,
-    navigate: (String) -> Unit
-) {
-    ReaderSelectionContainer {
-        Column {
-            chapter.contentElements.forEach { element ->
-                ReaderContent(element, settings, navigate, ebook)
             }
         }
     }
