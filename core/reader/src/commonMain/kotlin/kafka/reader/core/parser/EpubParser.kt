@@ -18,6 +18,7 @@ package kafka.reader.core.parser
 import com.fleeksoft.ksoup.nodes.Element
 import com.fleeksoft.ksoup.nodes.Node
 import com.kafka.base.ApplicationInfo
+import com.kafka.base.ApplicationScope
 import com.kafka.base.debug
 import com.kafka.base.errorLog
 import kafka.reader.core.cache.EpubCache
@@ -43,6 +44,7 @@ import kotlin.random.Random
  * Parses an EPUB file and creates an [EpubBook] object.
  */
 @Inject
+@ApplicationScope
 class EpubParser(
     private val epubCache: EpubCache,
     private val applicationInfo: ApplicationInfo,
@@ -540,8 +542,11 @@ class EpubParser(
 
                     val contentElements = parser.parseAsDocument()
                     if (contentElements.isNotEmpty()) {
-                        val title = contentElements.firstOrNull { it is ContentElement.Heading }
-                            ?.let { (it as ContentElement.Heading).content }
+                        // Extract title from h2 with epub:type="title" if present
+                        val titleElement = parser.findTitleElement()
+                        val title = titleElement?.text()?.takeIf { it.isNotBlank() }
+                            ?: contentElements.firstOrNull { it is ContentElement.Heading }
+                                ?.let { (it as ContentElement.Heading).content }
 
                         if (title != null) chapterIndex++
 
@@ -596,5 +601,18 @@ class EpubParser(
         } finally {
             close()
         }
+    }
+
+    // Add this extension function to EpubXMLFileParser
+    private fun EpubXMLFileParser.findTitleElement(): Element? {
+        // Skip title search for titlepage.xhtml
+        if (fileAbsolutePath.endsWith("titlepage.xhtml", ignoreCase = true)) {
+            return null
+        }
+        
+        return document.selectFirst("h2[epub:type=title]")
+            ?: document.selectFirst("h1[epub:type=title]")
+            ?: document.selectFirst("h3[epub:type=title]")
+            ?: document.selectFirst("h4[epub:type=title]")
     }
 }

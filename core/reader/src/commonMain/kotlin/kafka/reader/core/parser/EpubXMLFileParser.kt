@@ -19,9 +19,8 @@ package kafka.reader.core.parser
 
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
+import com.fleeksoft.ksoup.nodes.Element
 import com.fleeksoft.ksoup.nodes.Node
-import com.fleeksoft.ksoup.nodes.TextNode
-import com.kafka.base.debug
 import kafka.reader.core.models.ContentElement
 import okio.Path
 import okio.Path.Companion.toPath
@@ -42,56 +41,37 @@ class EpubXMLFileParser(
     private val fragmentId: String? = null,
     private val nextFragmentId: String? = null
 ) {
-
-    // The parent folder of the XML file.
+    // Make document accessible throughout the class
+    val document: Document = Ksoup.parse(data.decodeToString(), "")
     private val fileParentFolder: Path = fileAbsolutePath.toPath().parent ?: "".toPath()
-
+    private val contentParser = DocumentContentParser(::parseImageElement)
 
     /**
      * Parses the input data as an XML document and returns content elements.
      *
      * @return List<ContentElement> The parsed content elements.
      */
-    fun parseAsDocument(): List<ContentElement> {
-        val document = Ksoup.parse(data.decodeToString(), "")
+    fun parseAsDocument(): List<ContentElement> = when {
+        fragmentId != null -> parseFragmentContent()
+        fileAbsolutePath.endsWith("titlepage.xhtml", ignoreCase = true) -> parseTitlePageContent()
+        else -> contentParser.parse(document.body())
+    }
+
+    private fun parseFragmentContent(): List<ContentElement> {
+        val fragmentElement = document.selectFirst("#$fragmentId") ?: return emptyList()
         
         return when {
-            fragmentId != null -> {
-                val divElement = document.selectFirst("div#$fragmentId")
-                if (divElement != null) {
-                    debug { "Fragment ID: $fragmentId represents a <div> tag" }
-                    ContentParser.parseNode(divElement, ::parseImageElement)
-                } else {
-                    debug { "Using fragment and next fragment logic" }
-                    parseFragmentContent(document)
-                }
-            }
-            else -> {
-                debug { "Parsing entire document" }
-                ContentParser.parseNode(document.body(), ::parseImageElement)
-            }
+            nextFragmentId != null -> parseFragmentToNextFragment(fragmentElement)
+            else -> contentParser.parse(fragmentElement)
         }
     }
 
-    private fun parseFragmentContent(document: Document): List<ContentElement> {
-        val fragmentElement = document.selectFirst("#$fragmentId") ?: return emptyList()
-        
-        // If next fragment exists, get all content between fragment and next
-        return if (nextFragmentId != null) {
-            val nextElement = document.selectFirst("#$nextFragmentId")
-            val elements = mutableListOf<Node>()
-            
-            var current: Node? = fragmentElement
-            while (current != null && current != nextElement) {
-                elements.add(current)
-                current = getNextSibling(current)
-            }
-            
-            elements.flatMap { ContentParser.parseNode(it, ::parseImageElement) }
-        } else {
-            // Just parse from fragment to end
-            ContentParser.parseNode(fragmentElement, ::parseImageElement)
-        }
+    @Suppress("CANDIDATE_CHOSEN_USING_OVERLOAD_RESOLUTION_BY_LAMBDA_ANNOTATION")
+    private fun parseFragmentToNextFragment(fragmentElement: Element): List<ContentElement> {
+        val nextElement = document.selectFirst("#$nextFragmentId")
+        return DocumentTraverser(fragmentElement, nextElement)
+            .traverse()
+            .flatMap { contentParser.parse(it) }
     }
 
     /**
@@ -178,5 +158,15 @@ class EpubXMLFileParser(
             data = imageData,
             aspectRatio = aspectRatio
         )
+    }
+
+    private fun parseTitlePageContent(): List<ContentElement> {
+        // Find the titlepage.svg image
+        val titlePageImage = document.selectFirst("img[src$=titlepage.svg]")
+            ?: return emptyList()
+        
+        return titlePageImage?.let { 
+            listOf(parseImageElement(it))
+        } ?: emptyList()
     }
 }

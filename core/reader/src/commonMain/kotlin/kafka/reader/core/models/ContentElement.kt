@@ -1,5 +1,9 @@
 package kafka.reader.core.models
 
+import kafka.reader.core.models.enums.ColumnAlignment
+import kafka.reader.core.models.enums.TableStyle
+import kafka.reader.core.models.enums.TextAlignment
+import kafka.reader.core.models.enums.TextStyle
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,10 +19,7 @@ sealed interface ContentElement {
         val letterSpacing: Float? = null,
         val lineHeight: Float? = null,
         val inlineElements: List<InlineElement> = emptyList()
-    ) : ContentElement {
-        val style: TextStyle
-            get() = styles.first()
-    }
+    ) : ContentElement
 
     @Serializable
     data class Heading(
@@ -67,83 +68,4 @@ sealed interface ContentElement {
 
     @Serializable
     data object Divider : ContentElement
-}
-
-enum class TextStyle {
-    Normal,
-    Bold,
-    Italic,
-    Underline,
-    Strikethrough,
-    Subscript,
-    Superscript,
-    SmallCaps,
-    Heading1,
-    Heading2,
-    Heading3,
-    Heading4,
-    Heading5,
-    Heading6,
-    Monospace
-}
-
-enum class ColumnAlignment {
-    LEFT,
-    CENTER,
-    RIGHT
-}
-
-enum class TableStyle {
-    Default,
-    Striped,
-    Bordered,
-    Compact,
-    Custom
-}
-
-enum class TextAlignment {
-    LEFT,
-    CENTER,
-    RIGHT,
-    JUSTIFY
-}
-
-@Serializable
-sealed interface InlineElement {
-    val start: Int
-    val end: Int
-
-    @Serializable
-    data class Link(
-        override val start: Int,
-        override val end: Int,
-        val href: String
-    ) : InlineElement
-
-    @Serializable
-    data class Style(
-        override val start: Int,
-        override val end: Int,
-        val styles: Set<TextStyle>
-    ) : InlineElement
-
-    @Serializable
-    data class Color(
-        override val start: Int,
-        override val end: Int,
-        val color: String
-    ) : InlineElement
-
-    @Serializable
-    data class BackgroundColor(
-        override val start: Int,
-        override val end: Int,
-        val color: String
-    ) : InlineElement
-}
-
-fun ColumnAlignment.toTextAlignment() = when(this) {
-    ColumnAlignment.LEFT -> TextAlignment.LEFT
-    ColumnAlignment.CENTER -> TextAlignment.CENTER
-    ColumnAlignment.RIGHT -> TextAlignment.RIGHT
 }

@@ -1,7 +1,6 @@
 package com.kafka.reader.epub.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -33,8 +31,8 @@ import androidx.compose.ui.unit.sp
 import com.kafka.reader.epub.settings.ReaderSettings
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.InlineElement
-import kafka.reader.core.models.TextAlignment
-import kafka.reader.core.models.TextStyle
+import kafka.reader.core.models.enums.TextStyle
+import kafka.reader.core.models.getEffectiveStyle
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -44,7 +42,9 @@ fun TextElement(
     navigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isHeading = element.style in TextStyle.Heading1..TextStyle.Heading6
+    val style = element.getEffectiveStyle()
+    val isHeading = style in TextStyle.Heading1..TextStyle.Heading6
+
     val linkColor = if (settings.isDarkMode) {
         Color(0xFF66B2FF)
     } else {
@@ -65,11 +65,11 @@ fun TextElement(
             .fillMaxWidth()
             .padding(horizontal = settings.horizontalMargin)
             .padding(vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08),
-        style = getHeadingStyle(element.style),
+        style = getHeadingStyle(style),
         fontFamily = settings.fontStyle.fontFamily,
         fontWeight = when {
             TextStyle.Bold in element.styles -> FontWeight.Bold
-            element.style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
+            style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
             else -> settings.fontStyle.fontWeight
         },
         fontStyle = when {
@@ -77,11 +77,11 @@ fun TextElement(
             else -> FontStyle.Normal
         },
         fontSize = when {
-            isHeading -> getHeadingStyle(element.style).fontSize
+            isHeading -> getHeadingStyle(style).fontSize
             else -> (settings.fontSize.value * element.sizeFactor).sp
         },
         lineHeight = when {
-            isHeading -> getHeadingStyle(element.style).lineHeight
+            isHeading -> getHeadingStyle(style).lineHeight
             element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
             else -> settings.lineHeight
         },
@@ -220,7 +220,7 @@ fun HeadingElement(element: ContentElement.Heading, settings: ReaderSettings) {
         },
         fontFamily = settings.fontStyle.fontFamily,
         fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Start,
+        textAlign = TextAlign.Center,
         color = settings.textColor,
     )
 }
@@ -315,4 +315,3 @@ fun CodeBlockElement(element: ContentElement.CodeBlock, settings: ReaderSettings
         )
     }
 }
-

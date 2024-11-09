@@ -1,8 +1,8 @@
 package kafka.reader.core.parser
 
 import com.fleeksoft.ksoup.nodes.Element
-import kafka.reader.core.models.TextAlignment
-import kafka.reader.core.models.TextStyle
+import kafka.reader.core.models.enums.TextAlignment
+import kafka.reader.core.models.enums.TextStyle
 
 internal data class StyleProperties(
     val styles: Set<TextStyle> = setOf(),

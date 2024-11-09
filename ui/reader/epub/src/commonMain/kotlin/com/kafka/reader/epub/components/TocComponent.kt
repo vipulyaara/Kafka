@@ -67,9 +67,12 @@ private fun ChapterHeading(text: String, modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxSize(), color = Color.Transparent) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
-                .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing16)
+                .padding(
+                    horizontal = Dimens.Gutter,
+                    vertical = Dimens.Spacing16
+                )
         )
     }
 }

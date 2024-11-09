@@ -13,11 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kafka.reader.epub.settings.ReaderSettings
-import kafka.reader.core.models.ColumnAlignment
 import kafka.reader.core.models.ContentElement
-import kafka.reader.core.models.TableStyle
-import kafka.reader.core.models.TextStyle
-import kafka.reader.core.models.toTextAlignment
+import kafka.reader.core.models.enums.ColumnAlignment
+import kafka.reader.core.models.enums.TableStyle
+import kafka.reader.core.models.enums.TextStyle
+import kafka.reader.core.models.enums.toTextAlignment
 
 @Composable
 fun TableComponent(
@@ -30,7 +30,6 @@ fun TableComponent(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-
         element.caption?.let { caption ->
             Text(
                 text = caption,
@@ -39,7 +38,6 @@ fun TableComponent(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
-
 
         Box(
             modifier = Modifier
