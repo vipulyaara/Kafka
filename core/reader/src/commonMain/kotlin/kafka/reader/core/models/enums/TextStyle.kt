@@ -16,5 +16,6 @@ enum class TextStyle {
     Heading4,
     Heading5,
     Heading6,
-    Monospace
+    Monospace,
+    Highlight
 } 

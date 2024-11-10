@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class TableStyle {
-    Default,
+    Borderless,
     Bordered,
     Striped,
     BorderedAndStriped,

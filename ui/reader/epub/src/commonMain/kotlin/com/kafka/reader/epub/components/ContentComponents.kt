@@ -1,10 +1,15 @@
 package com.kafka.reader.epub.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +34,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kafka.common.toColor
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.font
 import com.kafka.reader.epub.settings.theme
@@ -53,7 +59,8 @@ fun TextElement(
         (indent * settings.fontSize.value).sp
     } ?: 0.sp
 
-    val textStyle = getHeadingStyle(style).copy(textIndent = TextIndent(firstLine = firstLineIndent))
+    val textStyle =
+        getHeadingStyle(style).copy(textIndent = TextIndent(firstLine = firstLineIndent))
 
     val annotatedString = remember(element) {
         buildTextAnnotatedString(
@@ -171,6 +178,10 @@ private fun buildTextAnnotatedString(
                             fontSize = when {
                                 TextStyle.SmallCaps in inline.styles -> 12.sp
                                 else -> 14.sp
+                            },
+                            background = when {
+                                TextStyle.Highlight in inline.styles -> Color(0xFFFFEB3B) // Default yellow highlight
+                                else -> Color.Unspecified
                             }
                         )
                     ) {
@@ -178,8 +189,42 @@ private fun buildTextAnnotatedString(
                     }
                 }
 
-                is InlineElement.BackgroundColor -> {}
-                is InlineElement.Color -> {}
+                is InlineElement.BackgroundColor -> {
+                    withStyle(SpanStyle(background = inline.color.toColor())) {
+                        append(content.substring(adjustedStart, adjustedEnd))
+                    }
+                }
+
+                is InlineElement.Color -> {
+                    withStyle(SpanStyle(color = inline.color.toColor())) {
+                        append(content.substring(adjustedStart, adjustedEnd))
+                    }
+                }
+
+                is InlineElement.Data -> {
+                    // Data elements typically contain custom attributes
+                    // Just append the content without special styling
+                    append(content.substring(adjustedStart, adjustedEnd))
+                }
+
+                is InlineElement.Direction -> {
+                    // Handle RTL/LTR text direction
+                    withStyle(
+                        SpanStyle(
+                            // Note: Compose currently doesn't support direct text direction styling
+                            // We'll append the content as-is, and text direction should be handled
+                            // at the container level
+                        )
+                    ) {
+                        append(content.substring(adjustedStart, adjustedEnd))
+                    }
+                }
+
+                is InlineElement.Tooltip -> {
+                    // For tooltips, we'll just show the main content
+                    // Tooltip functionality would need to be implemented at a higher level
+                    append(content.substring(adjustedStart, adjustedEnd))
+                }
             }
 
             currentIndex = adjustedEnd
@@ -230,33 +275,48 @@ fun HeadingElement(element: ContentElement.Heading, settings: ReaderSettings) {
 
 @Composable
 fun QuoteElement(element: ContentElement.Quote, settings: ReaderSettings) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(IntrinsicSize.Max)
             .padding(horizontal = settings.horizontalMargin)
             .padding(vertical = Dimens.Spacing16)
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(Dimens.Spacing16)
     ) {
-        Text(
-            text = element.content,
-            style = MaterialTheme.typography.bodyMedium,
-            fontStyle = FontStyle.Italic,
-            fontFamily = settings.font.fontFamily,
-            color = settings.theme.contentColor,
+        Box(
+            modifier = Modifier
+                .width(6.dp)
+                .fillMaxHeight()
+                .background(
+                    color = settings.theme.prominentColor,
+                    shape = RoundedCornerShape(Dimens.Radius04)
+                )
         )
 
-        element.attribution?.let {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = settings.horizontalMargin)
+                .padding(Dimens.Spacing16)
+        ) {
             Text(
-                text = "— $it",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.End,
-                color = settings.theme.contentColor.copy(alpha = 0.7f),
+                text = element.content,
+                style = MaterialTheme.typography.bodyMedium,
+                fontStyle = FontStyle.Italic,
+                fontFamily = settings.font.fontFamily,
+                color = settings.theme.contentColor,
             )
+
+            element.attribution?.let {
+                Text(
+                    text = "— $it",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.End,
+                    color = settings.theme.contentColor.copy(alpha = 0.7f),
+                )
+            }
         }
     }
 }

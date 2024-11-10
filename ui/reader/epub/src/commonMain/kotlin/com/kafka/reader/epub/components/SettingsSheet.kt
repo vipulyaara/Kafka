@@ -286,7 +286,7 @@ private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (Reader
                     .weight(1f)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(Dimens.Radius04))
-                    .background(colorScheme.surfaceContainer.copy(alpha = 0.4f))
+                    .background(colorScheme.surfaceContainer.copy(alpha = 0.2f))
                     .simpleClickable { onClick(it) },
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

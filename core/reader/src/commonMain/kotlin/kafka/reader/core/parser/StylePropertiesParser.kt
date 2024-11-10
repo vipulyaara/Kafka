@@ -29,7 +29,7 @@ internal object StylePropertiesParser {
         )
     }
 
-    private fun parseStyles(element: Element): Set<TextStyle> {
+    fun parseStyles(element: Element): Set<TextStyle> {
         val styles = mutableSetOf<TextStyle>()
 
         // Parse tag-based styles

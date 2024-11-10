@@ -35,4 +35,22 @@ sealed interface InlineElement {
         override val end: Int,
         val color: String
     ) : InlineElement
+
+    data class Tooltip(
+        override val start: Int,
+        override val end: Int,
+        val tooltip: String
+    ) : InlineElement
+    
+    data class Direction(
+        override val start: Int,
+        override val end: Int,
+        val direction: String
+    ) : InlineElement
+    
+    data class Data(
+        override val start: Int,
+        override val end: Int,
+        val value: String
+    ) : InlineElement
 } 

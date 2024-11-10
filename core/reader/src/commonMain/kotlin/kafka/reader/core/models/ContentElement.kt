@@ -54,11 +54,13 @@ sealed interface ContentElement {
         val caption: String? = null,
         val summary: String? = null,
         val columnAlignments: List<ColumnAlignment> = emptyList(),
-        val isHeaderRow: Boolean = true,
+        val isHeaderRow: Boolean = false,
         val isHeaderColumn: Boolean = false,
-        val style: TableStyle = TableStyle.Default,
         val headerElements: List<Text> = emptyList(),
-        val rowElements: List<List<Text>> = emptyList()
+        val rowElements: List<List<Text>> = emptyList(),
+        val columnWeights: List<Float> = emptyList(),
+        val columnTypes: List<String> = emptyList(),
+        val style: TableStyle = TableStyle.Compact
     ) : ContentElement
 
     @Serializable

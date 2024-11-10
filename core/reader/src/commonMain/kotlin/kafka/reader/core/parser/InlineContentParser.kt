@@ -37,6 +37,8 @@ object InlineContentParser {
         stringBuilder: StringBuilder
     ) {
         when (element.tagName().lowercase()) {
+            "span" -> handleSpan(element, inlineElements, stringBuilder)
+            "p" -> handleParagraph(element, inlineElements, stringBuilder)
             "a" -> handleLink(element, inlineElements, stringBuilder)
             "strong", "b" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Bold))
             "em", "i" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Italic))
@@ -46,8 +48,28 @@ object InlineContentParser {
             "sup" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Superscript))
             "code" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Monospace))
             "small" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Small))
+            "mark" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Highlight))
+            "q" -> handleQuote(element, inlineElements, stringBuilder)
+            "cite" -> handleStyle(element, inlineElements, stringBuilder, setOf(TextStyle.Italic))
+            "abbr" -> handleAbbreviation(element, inlineElements, stringBuilder)
+            "time" -> handleTime(element, inlineElements, stringBuilder)
+            "br" -> handleLineBreak(stringBuilder)
+            "wbr" -> {}
+            "bdi", "bdo" -> handleBiDirectional(element, inlineElements, stringBuilder)
+            "ruby", "rt", "rp" -> handleRuby(element, inlineElements, stringBuilder)
+            "data" -> handleData(element, inlineElements, stringBuilder)
             else -> handleCustomElement(element, inlineElements, stringBuilder)
         }
+    }
+
+    private fun handleParagraph(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        inlineElements.addAll(nestedInline)
     }
 
     private fun handleCustomElement(
@@ -146,6 +168,128 @@ object InlineContentParser {
                 color = color
             )
         )
+    }
+
+    private fun handleSpan(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val start = stringBuilder.length
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        
+        // Add any styles from the span's classes or attributes
+        val styles = StylePropertiesParser.parseStyles(element)
+        if (styles.isNotEmpty()) {
+            inlineElements.add(InlineElement.Style(start, stringBuilder.length, styles))
+        }
+        
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleQuote(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        stringBuilder.length
+        stringBuilder.append("")
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        stringBuilder.append("") // Closing quote
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleAbbreviation(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val start = stringBuilder.length
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        
+        val title = element.attr("title")
+        if (title.isNotEmpty()) {
+            inlineElements.add(
+                InlineElement.Tooltip(
+                    start = start,
+                    end = stringBuilder.length,
+                    tooltip = title
+                )
+            )
+        }
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleTime(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleLineBreak(stringBuilder: StringBuilder) {
+        stringBuilder.append('\n')
+    }
+
+    private fun handleBiDirectional(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val start = stringBuilder.length
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        
+        val dir = element.attr("dir")
+        if (dir.isNotEmpty()) {
+            inlineElements.add(
+                InlineElement.Direction(
+                    start = start,
+                    end = stringBuilder.length,
+                    direction = dir
+                )
+            )
+        }
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleRuby(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        // For basic support, just parse the base text
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        inlineElements.addAll(nestedInline)
+    }
+
+    private fun handleData(
+        element: Element,
+        inlineElements: MutableList<InlineElement>,
+        stringBuilder: StringBuilder
+    ) {
+        val start = stringBuilder.length
+        val (content, nestedInline) = parse(element)
+        appendWithSpacing(stringBuilder, content)
+        
+        val value = element.attr("value")
+        if (value.isNotEmpty()) {
+            inlineElements.add(
+                InlineElement.Data(
+                    start = start,
+                    end = stringBuilder.length,
+                    value = value
+                )
+            )
+        }
+        inlineElements.addAll(nestedInline)
     }
 
     private fun appendWithSpacing(stringBuilder: StringBuilder, text: String) {

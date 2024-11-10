@@ -1,11 +1,13 @@
 package kafka.reader.core.parser
 
+import TableAnalyzer
 import com.fleeksoft.ksoup.nodes.Element
 import com.fleeksoft.ksoup.nodes.Node
 import com.fleeksoft.ksoup.nodes.TextNode
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.InlineElement
 import kafka.reader.core.models.enums.ColumnAlignment
+import kafka.reader.core.models.enums.TableStyle
 import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
 
@@ -34,14 +36,15 @@ class DocumentContentParser(
         element.isImageElement() -> parseImageElement(element)
         element.isQuoteElement() -> parseQuoteElement(element)
         element.isCodeElement() -> parseCodeElement(element)
-        element.isDividerElement() -> parseDividerElement(element)
+        element.isDividerElement() -> parseDividerElement()
         element.isFootnoteElement() -> parseFootnoteElement(element)
         element.isAnnotationElement() -> parseAnnotationElement(element)
         else -> parseDefaultElement(element)
     }
 
-    private fun Element.isStructuralElement() =
-        tagName().lowercase() in setOf("body", "section", "header", "div", "hgroup", "article", "main", "aside")
+    private fun Element.isStructuralElement() = tagName().lowercase() in setOf(
+        "body", "section", "header", "div", "hgroup", "article", "main", "aside"
+    )
 
     private fun Element.isHeadingElement() =
         tagName().lowercase().matches(Regex("h[1-6]"))
@@ -80,7 +83,7 @@ class DocumentContentParser(
         val level = element.tagName().lowercase().let { tag ->
             tag.removePrefix("h").toIntOrNull() ?: 1
         }
-        val (content, inlineElements) = InlineContentParser.parse(element)
+        val (content, _) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
             listOf(ContentElement.Heading(content, level))
         } else emptyList()
@@ -100,16 +103,20 @@ class DocumentContentParser(
         }
 
         return if (items.isNotEmpty()) {
-            listOf(ContentElement.Listing(
-                items = items,
-                ordered = element.tagName().lowercase() == "ol",
-                startIndex = element.attr("start").toIntOrNull() ?: 1
-            ))
+            listOf(
+                ContentElement.Listing(
+                    items = items,
+                    ordered = element.tagName().lowercase() == "ol",
+                    startIndex = element.attr("start").toIntOrNull() ?: 1
+                )
+            )
         } else emptyList()
     }
 
     private fun parseListItems(element: Element): List<String> =
-        element.select("li").map { InlineContentParser.parse(it).first }
+        element.select("li").map { li ->
+            InlineContentParser.parse(li).first
+        }.filter { it.isNotEmpty() }
 
     private fun parseDlItems(element: Element): List<String> =
         element.children().flatMap { child ->
@@ -123,6 +130,8 @@ class DocumentContentParser(
     private fun parseTableElement(element: Element): List<ContentElement> {
         val caption = element.selectFirst("caption")?.let { InlineContentParser.parse(it).first }
         val summary = element.attr("summary").takeIf { it.isNotBlank() }
+
+        val tableMetadata = TableAnalyzer.analyzeTable(element)
 
         val headerRow = element.selectFirst("thead")?.selectFirst("tr")
         val headerElements = headerRow?.select("th, td")?.map { cell ->
@@ -142,24 +151,32 @@ class DocumentContentParser(
             }
         }
 
-        val columnAlignments = headerElements.map { cell ->
-            when (cell.alignment) {
-                TextAlignment.LEFT -> ColumnAlignment.LEFT
-                TextAlignment.CENTER -> ColumnAlignment.CENTER
-                TextAlignment.RIGHT -> ColumnAlignment.RIGHT
-                else -> ColumnAlignment.LEFT
-            }
-        }
-
-        return listOf(ContentElement.Table(
-            caption = caption,
-            summary = summary,
-            columnAlignments = columnAlignments,
-            isHeaderRow = headerRow != null,
-            isHeaderColumn = element.select("tr").any { it.selectFirst("th") != null },
-            headerElements = headerElements,
-            rowElements = rowElements
-        ))
+        return listOf(
+            ContentElement.Table(
+                caption = caption,
+                summary = summary,
+                columnAlignments = headerElements.map { cell ->
+                    when (cell.alignment) {
+                        TextAlignment.LEFT -> ColumnAlignment.LEFT
+                        TextAlignment.CENTER -> ColumnAlignment.CENTER
+                        TextAlignment.RIGHT -> ColumnAlignment.RIGHT
+                        else -> ColumnAlignment.LEFT
+                    }
+                },
+                isHeaderRow = tableMetadata.hasHeader,
+                isHeaderColumn = tableMetadata.isDialogueTable,
+                headerElements = headerElements,
+                rowElements = rowElements,
+                columnWeights = tableMetadata.columnWeights,
+                columnTypes = tableMetadata.columnTypes.map { it.name },
+                style = when {
+                    element.hasClass("bordered") -> TableStyle.Bordered
+                    element.hasClass("striped") -> TableStyle.Striped
+                    element.hasClass("borderless") -> TableStyle.Borderless
+                    else -> TableStyle.Borderless
+                }
+            )
+        )
     }
 
     private fun parseImageElement(element: Element): List<ContentElement> {
@@ -179,13 +196,26 @@ class DocumentContentParser(
     }
 
     private fun parseQuoteElement(element: Element): List<ContentElement> {
+        // Get all content except the citation
+        val mainContent = element.children()
+            .filterNot { it.tagName().lowercase() == "cite" }
+            .joinToString("\n") { child ->
+                InlineContentParser.parse(child).first
+            }
+            .trim()
+
         val attribution = element.selectFirst("cite")?.let {
             InlineContentParser.parse(it).first
         }
-        return listOf(ContentElement.Quote(
-            content = InlineContentParser.parse(element).first,
-            attribution = attribution
-        ))
+
+        return if (mainContent.isNotEmpty()) {
+            listOf(
+                ContentElement.Quote(
+                    content = mainContent,
+                    attribution = attribution
+                )
+            )
+        } else emptyList()
     }
 
     private fun parseCodeElement(element: Element): List<ContentElement> {
@@ -198,28 +228,35 @@ class DocumentContentParser(
         ))
     }
 
-    private fun parseDividerElement(element: Element): List<ContentElement> =
-        listOf(ContentElement.Divider)
+    private fun parseDividerElement(): List<ContentElement> = listOf(ContentElement.Divider)
 
     private fun parseFootnoteElement(element: Element): List<ContentElement> {
         val (content, inlineElements) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
-            listOf(ElementStyleParser.parseTextWithStyle(
-                content,
-                element,
-                inlineElements + InlineElement.Style(0, content.length, setOf(TextStyle.SmallCaps))
-            ))
+            listOf(
+                ElementStyleParser.parseTextWithStyle(
+                    content,
+                    element,
+                    inlineElements + InlineElement.Style(
+                        start = 0,
+                        end = content.length,
+                        styles = setOf(TextStyle.SmallCaps)
+                    )
+                )
+            )
         } else emptyList()
     }
 
     private fun parseAnnotationElement(element: Element): List<ContentElement> {
         val (content, inlineElements) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
-            listOf(ElementStyleParser.parseTextWithStyle(
-                content,
-                element,
-                inlineElements + InlineElement.Style(0, content.length, setOf(TextStyle.Italic))
-            ))
+            listOf(
+                ElementStyleParser.parseTextWithStyle(
+                    content,
+                    element,
+                    inlineElements + InlineElement.Style(0, content.length, setOf(TextStyle.Italic))
+                )
+            )
         } else emptyList()
     }
 

@@ -43,10 +43,8 @@ fun TableComponent(
             modifier = Modifier
                 .then(
                     when (element.style) {
-                        TableStyle.Bordered -> Modifier.border(
-                            1.dp,
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-                        )
+                        TableStyle.Bordered -> Modifier
+                            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
 
                         else -> Modifier
                     }
@@ -106,10 +104,22 @@ fun TableComponent(
                                 )
                             )
 
+                            val weight =
+                                element.columnWeights.getOrNull(colIndex) ?: (1f / row.size)
+
                             TextElement(
                                 element = textElement,
                                 settings = settings,
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(weight)
+                                    .then(
+                                        // Add specific styling based on column type
+                                        when (element.columnTypes.getOrNull(colIndex)) {
+                                            "NUMERIC" -> Modifier.padding(horizontal = 8.dp)
+                                            "NAME" -> Modifier.padding(start = 16.dp)
+                                            else -> Modifier
+                                        }
+                                    ),
                                 navigate = navigate
                             )
                         }

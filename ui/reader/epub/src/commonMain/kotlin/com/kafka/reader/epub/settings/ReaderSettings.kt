@@ -110,6 +110,9 @@ data class ReaderTheme(
 ) {
     val isSystemTheme get() = key == ReaderSettings.ThemeKey.System
 
+    val prominentColor
+        @Composable get() = MaterialTheme.colorScheme.primary
+
     companion object {
         val options
             @Composable get() = listOf(
