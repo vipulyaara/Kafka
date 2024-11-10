@@ -400,17 +400,17 @@ class EpubParser(
      * @param element The element to search for nested navPoints.
      * @return The list of nested navPoints.
      */
-    private fun findNestedNavPoints(element: Element?): List<Element> {
-        val navPoints = mutableListOf<Element>()
+    private fun findNestedNavPoints(element: Element?, level: Int = 0): List<Pair<Element, Int>> {
+        val navPoints = mutableListOf<Pair<Element, Int>>()
         if (element == null) {
             return navPoints
         }
         if (element.tagName() == "navPoint") {
-            navPoints.add(element)
+            navPoints.add(element to level)
         }
-        // Recursively search for nested navPoints
+        // Recursively search for nested navPoints with incremented level
         for (child in element.childElements) {
-            navPoints.addAll(findNestedNavPoints(child))
+            navPoints.addAll(findNestedNavPoints(child, if (element.tagName() == "navPoint") level + 1 else level))
         }
         return navPoints
     }
@@ -438,16 +438,15 @@ class EpubParser(
      * @return The list of parsed chapters.
      */
     private fun parseUsingTocFile(
-        tocNavPoints: List<Element>,
+        tocNavPoints: List<Pair<Element, Int>>,
         files: Map<String, EpubFile>,
         hrefRootPath: Path,
         document: EpubDocument,
         manifestItems: Map<String, EpubManifestItem>
     ): List<EpubChapter> {
         // Parse each chapter entry
-        val chapters = tocNavPoints.flatMapIndexed { index, navPoint ->
-            val title =
-                navPoint.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")?.text()
+        val chapters = tocNavPoints.flatMapIndexed { index, (navPoint, level) ->
+            val title = navPoint.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")?.text()
             val chapterSrc = navPoint.selectFirstChildTag("content")?.getAttributeValue("src")
                 ?.decodeURL()?.getCanonicalPath(hrefRootPath.toString())
 
@@ -483,6 +482,7 @@ class EpubParser(
                             chapterId = generateId(),
                             absPath = chapterSrc,
                             title = title?.takeIf { it.isNotEmpty() } ?: "Chapter $index",
+                            level = level,
                             contentElements = contentElements
                         )
                     )
@@ -524,6 +524,22 @@ class EpubParser(
         var chapterIndex = 0
         val chapterExtensions = listOf("xhtml", "xml", "html", "htm").map { ".$it" }
 
+        // Try to find TOC landmarks for level information
+        val landmarkLevels = try {
+            val tocFile = files.entries.find { it.key.endsWith("toc.xhtml", ignoreCase = true) }
+            val landmarks = tocFile?.let { parseXMLFile(it.value.data).selectFirst("nav#landmarks") }
+            landmarks?.selectChildTag("ol")
+                ?.firstOrNull()
+                ?.selectChildTag("li")
+                ?.mapNotNull { li ->
+                    li.selectFirst("a")?.attr("href")?.let { href ->
+                        href.substringAfterLast("/") to 0
+                    }
+                }?.toMap() ?: emptyMap()
+        } catch (e: Exception) {
+            emptyMap()
+        }
+
         return spine.selectChildTag("itemref")
             .ifEmpty { spine.selectChildTag("opf:itemref") }
             .mapNotNull { manifestItems[it.attr("idref")] }
@@ -550,10 +566,14 @@ class EpubParser(
 
                         if (title != null) chapterIndex++
 
+                        val fileName = file.absPath.substringAfterLast("/")
+                        val level = landmarkLevels[fileName] ?: 0
+
                         EpubChapter(
                             chapterId = generateId(),
                             absPath = file.absPath,
                             title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
+                            level = level,
                             contentElements = contentElements
                         )
                     } else null

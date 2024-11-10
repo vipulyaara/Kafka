@@ -32,5 +32,6 @@ data class EpubChapter @OptIn(ExperimentalSerializationApi::class) constructor(
     @ProtoNumber(1) val chapterId: String,
     @ProtoNumber(2) val absPath: String,
     @ProtoNumber(3) val title: String,
+    @ProtoNumber(4) val level: Int,
     @ProtoNumber(5) val contentElements: List<ContentElement>
 )

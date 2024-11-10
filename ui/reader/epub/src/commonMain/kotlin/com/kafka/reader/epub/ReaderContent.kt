@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -49,6 +49,7 @@ import ui.common.theme.theme.Dimens
 fun EpubBook(
     readerState: ReaderState,
     settingsState: SettingsState,
+    pagerState: PagerState,
     lazyListState: LazyListState,
     navigate: (String) -> Unit,
     changeSettings: (ReaderSettings) -> Unit
@@ -63,8 +64,6 @@ fun EpubBook(
         language = readerState.itemDetail?.language ?: book.language,
         changeSettings = changeSettings
     )
-
-    val pagerState = rememberPagerState { chapters.size }
 
     HorizontalPager(pagerState) { page ->
         val chapter = remember(chapters, page) { chapters[page] }

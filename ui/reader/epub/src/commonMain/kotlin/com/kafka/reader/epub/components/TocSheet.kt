@@ -3,6 +3,7 @@
 package com.kafka.reader.epub.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import com.kafka.ui.components.material.ModalBottomSheet
 import com.kafka.ui.components.search.SearchWidget
 import kafka.reader.core.models.EpubChapter
@@ -70,6 +73,7 @@ fun TocSheet(tocState: TocState, chapters: List<EpubChapter>, selectChapter: (St
             items(filteredChapters) { chapter ->
                 ChapterHeading(
                     text = chapter.title,
+                    level = chapter.level,
                     modifier = Modifier.clickable {
                         dismissSheet()
                         selectChapter(chapter.chapterId)
@@ -82,7 +86,7 @@ fun TocSheet(tocState: TocState, chapters: List<EpubChapter>, selectChapter: (St
 
 @Composable
 private fun Label(chapterSize: Int, modifier: Modifier = Modifier) {
-    androidx.compose.foundation.layout.Row(
+    Row(
         modifier = modifier.padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing16),
         verticalAlignment = Alignment.Bottom
     ) {
@@ -101,15 +105,19 @@ private fun Label(chapterSize: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ChapterHeading(text: String, modifier: Modifier = Modifier) {
+private fun ChapterHeading(text: String, modifier: Modifier = Modifier, level: Int) {
+    val indentation = with(LocalDensity.current) { Dimens.Spacing12.toPx() }
+
     Surface(modifier = modifier.fillMaxSize(), color = Color.Transparent) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .padding(
-                    horizontal = Dimens.Gutter,
-                    vertical = Dimens.Spacing16
+                    start = Dimens.Gutter + (level * indentation).dp,
+                    end = Dimens.Gutter,
+                    top = Dimens.Spacing16,
+                    bottom = Dimens.Spacing16
                 )
         )
     }
