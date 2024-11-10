@@ -40,12 +40,12 @@ internal fun FullPageCarousels(
 ) {
     val state = rememberCarouselState { carouselItems.size }
 
-    Column {
+    Column(modifier = modifier) {
         Header()
 
         HorizontalMultiBrowseCarousel(
             state = state,
-            modifier = modifier.padding(Dimens.Spacing08),
+            modifier = Modifier.padding(Dimens.Spacing08),
             preferredItemWidth = CarouselItemPreferredWidth.dp,
             itemSpacing = Dimens.Spacing04,
             contentPadding = PaddingValues(horizontal = Dimens.Spacing16)
@@ -55,7 +55,7 @@ internal fun FullPageCarousels(
                     Text(
                         text = dates.getOrNull(index).orEmpty(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = colors[index],
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .padding(horizontal = Dimens.Gutter)
                             .padding(end = Dimens.Spacing08)
@@ -100,7 +100,7 @@ internal fun FullPageCarousels(
 internal fun Header() {
     Column {
         Text(
-            text = "Book of the",
+            text = "Books of",
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Light,
             color = MaterialTheme.colorScheme.onSurface.copy(0.7f),
@@ -109,7 +109,7 @@ internal fun Header() {
 
         Row {
             Text(
-                text = "Day",
+                text = "Week 2",
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Light,
                 color = MaterialTheme.colorScheme.onSurface,

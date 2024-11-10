@@ -14,6 +14,9 @@ import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
+import com.kafka.navigation.LocalNavigator
+import com.kafka.reader.epub.components.SettingsState
+import com.kafka.reader.epub.components.TocState
 import com.kafka.reader.epub.settings.ReaderTheme
 import com.kafka.ui.components.material.TopBar
 import ui.common.theme.theme.Dimens
@@ -21,10 +24,12 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun ReaderTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: ReaderViewModel,
-    theme: ReaderTheme
+    settingsState: SettingsState,
+    tocState: TocState,
+    theme: ReaderTheme,
+    shareItem: () -> Unit,
 ) {
-    val context = getContext()
+    val navigator = LocalNavigator.current
 
     TopBar(
         modifier = Modifier
@@ -37,21 +42,30 @@ fun ReaderTopBar(
                 icon = Icons.Back,
                 contentColor = theme.contentColor,
                 contentDescription = "Back",
-                onClick = viewModel::goBack
+                onClick = navigator::goBack
             )
         },
         actions = {
             ActionIcon(
                 icon = Icons.Share,
                 contentColor = theme.contentColor,
-                contentDescription = "Share"
-            ) { viewModel.shareItemText(context) }
+                contentDescription = "Share",
+                onClick = shareItem
+            )
 
             ActionIcon(
                 icon = Icons.List,
                 contentColor = theme.contentColor,
-                contentDescription = "Table of contents"
-            ) { viewModel.showTocSheet.value = true }
+                contentDescription = "Table of contents",
+                onClick = { tocState.show() }
+            )
+
+            ActionIcon(
+                icon = Icons.Settings,
+                contentColor = theme.contentColor,
+                contentDescription = "Reader Settings",
+                onClick = { settingsState.show() }
+            )
         },
     )
 }

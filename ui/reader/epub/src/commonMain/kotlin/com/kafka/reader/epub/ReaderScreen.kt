@@ -17,7 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.reader.epub.components.TocComponent
+import com.kafka.common.extensions.getContext
+import com.kafka.reader.epub.components.TocSheet
+import com.kafka.reader.epub.components.rememberSettingsState
+import com.kafka.reader.epub.components.rememberTocState
 import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.progress.InfiniteProgressBar
@@ -27,14 +30,19 @@ import ui.common.theme.theme.Dimens
 fun ReaderScreen(viewModel: ReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val settingsState = rememberSettingsState()
+    val tocState = rememberTocState()
+    val context = getContext()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             ReaderTopBar(
                 scrollBehavior = scrollBehavior,
-                viewModel = viewModel,
-                theme = state.settings.theme
+                settingsState = settingsState,
+                tocState = tocState,
+                theme = state.settings.theme,
+                shareItem = { viewModel.shareItemText(context) }
             )
         }
     ) {
@@ -42,17 +50,17 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.epubBook != null) {
                     EpubBook(
-                        ebook = state.epubBook!!,
-                        settings = state.settings,
-                        language = state.itemDetail?.language,
+                        readerState = state,
+                        settingsState = settingsState,
                         lazyListState = viewModel.lazyListState,
                         navigate = viewModel::navigate,
                         changeSettings = viewModel::updateSettings
                     )
-                    TocComponent(
-                        show = viewModel.showTocSheet,
+
+                    TocSheet(
+                        tocState = tocState,
                         chapters = state.epubBook!!.chapters,
-                        selectChapter = viewModel::navigate
+                        selectChapter = viewModel::navigate,
                     )
                 } else {
                     if (state.loading) {

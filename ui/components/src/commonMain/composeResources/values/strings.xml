@@ -11,5 +11,8 @@
     <string name="explicit">Explicit</string>
     <string name="cd_download_file">Download</string>
     <string name="beta">Beta</string>
-    <string name="downloading_hint" translatable="false">Download is in progress. You can leave this screen and we will notify you when it's complete.</string>
+
+    <string name="search" translatable="false">Search...</string>
+    <string name="recent_searches" translatable="false">Recent searches</string>
+    <string name="cd_clear_text" translatable="false">Clear text</string>
 </resources>

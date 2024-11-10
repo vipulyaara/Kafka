@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -25,13 +24,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
-import com.kafka.common.adaptive.isCompact
-import com.kafka.common.adaptive.windowWidthSizeClass
+import com.kafka.common.adaptive.gridColumns
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
@@ -41,7 +38,7 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
-import com.kafka.homepage.components.CubePager
+import com.kafka.homepage.components.FullPageCarousels
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
 import com.kafka.ui.components.MessageBox
@@ -126,14 +123,8 @@ private fun HomepageFeedItems(
     openRecentItems: () -> Unit,
     shareApp: () -> Unit,
 ) {
-    val columns = if (windowWidthSizeClass().isCompact()) {
-        GridCells.Fixed(2)
-    } else {
-        GridCells.Adaptive(260.dp)
-    }
-
     LazyVerticalGrid(
-        columns = columns,
+        columns = gridColumns(),
         modifier = Modifier.testTagUi("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {
@@ -151,6 +142,21 @@ private fun HomepageFeedItems(
             }
 
             when (collection) {
+                is HomepageCollection.FeaturedItem -> {
+                    fullSpanItem {
+                        if (collection.items.isNotEmpty()) {
+                            FullPageCarousels(
+                                modifier = Modifier.padding(top = Dimens.Gutter),
+                                carouselItems = collection.items,
+                                images = collection.image,
+                                onClick = { openItemDetail(it, "featuredItem") }
+                            )
+                        } else {
+                            FeaturedItemPlaceholder()
+                        }
+                    }
+                }
+
                 is HomepageCollection.RecentItems -> {
                     fullSpanItem(key = "recent", contentType = "recent") {
                         if (recentItems.isNotEmpty()) {
@@ -193,20 +199,6 @@ private fun HomepageFeedItems(
                             collection.items.forEach { subject ->
                                 GenreItem(text = subject, onClicked = { goToSubject(subject) })
                             }
-                        }
-                    }
-                }
-
-                is HomepageCollection.FeaturedItem -> {
-                    fullSpanItem {
-                        if (collection.items.isNotEmpty()) {
-                            CubePager(
-                                carouselItems = collection.items,
-                                images = collection.image,
-                                onClick = { openItemDetail(it, "featuredItem") }
-                            )
-                        } else {
-                            FeaturedItemPlaceholder()
                         }
                     }
                 }

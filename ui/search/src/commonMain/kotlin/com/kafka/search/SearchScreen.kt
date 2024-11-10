@@ -33,11 +33,11 @@ import com.kafka.common.extensions.rememberMutableState
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.search.widget.MediaTypeChips
-import com.kafka.search.widget.SearchWidget
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.bottomScaffoldPadding
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.progress.InfiniteProgressBarSmall
+import com.kafka.ui.components.search.SearchWidget
 import com.kafka.ui.components.topScaffoldPadding
 import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.Dimens

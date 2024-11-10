@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.kafka.reader.epub.settings
+package com.kafka.reader.epub.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
@@ -26,13 +26,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,23 +45,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
+import com.kafka.reader.epub.settings.ReaderFont
+import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.ReaderSettings.LineHeight
+import com.kafka.reader.epub.settings.ReaderTheme
+import com.kafka.reader.epub.settings.font
+import com.kafka.reader.epub.settings.theme
+import com.kafka.ui.components.material.ModalBottomSheet
+import kafka.ui.reader.epub.generated.resources.Res
+import kafka.ui.reader.epub.generated.resources.font_size
+import kafka.ui.reader.epub.generated.resources.horizontal_navigation
+import kafka.ui.reader.epub.generated.resources.horizontal_navigation_text
+import kafka.ui.reader.epub.generated.resources.margins
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun SettingsSheet(
+    settingsState: SettingsState,
     settings: ReaderSettings,
     language: String,
-    changeSettings: (ReaderSettings) -> Unit,
-    onDismiss: () -> Unit
+    changeSettings: (ReaderSettings) -> Unit
 ) {
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        containerColor = colorScheme.surface,
-        contentColor = colorScheme.onSurface
+        show = settingsState.show,
+        onDismissRequest = settingsState::hide,
     ) {
         Column(
-            modifier = Modifier.padding(Dimens.Spacing24),
+            modifier = Modifier.padding(vertical = Dimens.Spacing24),
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing36)
         ) {
             TextControls(
@@ -103,11 +116,7 @@ private fun TextControls(
     onLineHeightChange: (LineHeight) -> Unit,
     onTextAlignmentChange: (ReaderSettings.TextAlignment) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Label(text = "Text")
-
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
-
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.Gutter)) {
         // First Row: Font Size and Margin Controls
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -117,7 +126,7 @@ private fun TextControls(
             // Font Size Controls
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Font Size",
+                    text = stringResource(Res.string.font_size),
                     style = MaterialTheme.typography.labelSmall,
                     color = colorScheme.onSurface.copy(alpha = 0.7f)
                 )
@@ -160,7 +169,7 @@ private fun TextControls(
             // Margin Controls
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Margins",
+                    text = stringResource(Res.string.margins),
                     style = MaterialTheme.typography.labelSmall,
                     color = colorScheme.onSurface.copy(alpha = 0.7f)
                 )
@@ -262,133 +271,122 @@ private fun TextControls(
 
 @Composable
 private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (ReaderFont) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Label(text = "Font Style")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = Dimens.Gutter),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        ReaderFont.options(language).forEach {
+            val alpha by animateFloatAsState(if (it == readerFont) 1f else 0.2f)
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing08))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(Dimens.Radius04))
+                    .background(colorScheme.surfaceContainer)
+                    .simpleClickable { onClick(it) },
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Aa",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontFamily = it.fontFamily,
+                    color = sheetContentColor.copy(alpha = alpha)
+                )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-        ) {
-            ReaderFont.options(language).forEach {
-                val alpha by animateFloatAsState(if (it == readerFont) 1f else 0.2f)
+                Spacer(modifier = Modifier.height(Dimens.Spacing02))
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .clip(RoundedCornerShape(Dimens.Radius04))
-                        .background(colorScheme.surfaceContainer)
-                        .simpleClickable { onClick(it) },
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Aa",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontFamily = it.fontFamily,
-                        color = sheetContentColor.copy(alpha = alpha)
-                    )
-
-                    Spacer(modifier = Modifier.height(Dimens.Spacing02))
-
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontFamily = it.fontFamily,
-                        color = sheetContentColor.copy(alpha = alpha)
-                    )
-                }
+                Text(
+                    text = it.name,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = it.fontFamily,
+                    color = sheetContentColor.copy(alpha = alpha)
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ThemeSelector(
-    currentTheme: ReaderTheme,
-    onThemeChange: (ReaderTheme) -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Label(text = "Theme")
+private fun ThemeSelector(currentTheme: ReaderTheme, onThemeChange: (ReaderTheme) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = Dimens.Gutter),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        ReaderTheme.options.forEach { theme ->
+            val selected = theme.key == currentTheme.key
+            val borderColor = if (selected) colorScheme.primary else colorScheme.surfaceVariant
+            val borderWidth = if (selected) 2.dp else 1.dp
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-        ) {
-            ReaderTheme.options.forEach { theme ->
-                val selected = theme.key == currentTheme.key
-                val borderColor = if (selected) colorScheme.primary else colorScheme.surfaceVariant
-                val borderWidth = if (selected) 2.dp else 1.dp
-
-                Surface(
+            Surface(
+                modifier = Modifier
+                    .widthIn(max = Dimens.Spacing76)
+                    .aspectRatio(1f),
+                color = if (!theme.isSystemTheme) theme.backgroundColor else Color.Transparent,
+                border = BorderStroke(borderWidth, borderColor),
+                shape = RoundedCornerShape(Dimens.Radius04),
+                onClick = { onThemeChange(theme) }
+            ) {
+                Box(
                     modifier = Modifier
-                        .widthIn(max = Dimens.Spacing52)
-                        .aspectRatio(1f),
-                    color = if (!theme.isSystemTheme) theme.backgroundColor else Color.Transparent,
-                    border = BorderStroke(borderWidth, borderColor),
-                    shape = RoundedCornerShape(Dimens.Radius04),
-                    onClick = { onThemeChange(theme) }
+                        .fillMaxSize()
+                        .then(
+                            if (theme.isSystemTheme) {
+                                Modifier.drawBehind {
+                                    // Draw diagonal split background
+                                    drawPath(
+                                        path = Path().apply {
+                                            moveTo(0f, 0f)
+                                            lineTo(size.width, 0f)
+                                            lineTo(size.width, size.height)
+                                            lineTo(0f, size.height)
+                                            close()
+                                        },
+                                        color = Color.White
+                                    )
+                                    drawPath(
+                                        path = Path().apply {
+                                            moveTo(0f, size.height)
+                                            lineTo(size.width, 0f)
+                                            lineTo(size.width, size.height)
+                                            close()
+                                        },
+                                        color = Color.Black
+                                    )
+                                }
+                            } else Modifier
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .then(
-                                if (theme.isSystemTheme) {
-                                    Modifier.drawBehind {
-                                        // Draw diagonal split background
-                                        drawPath(
-                                            path = Path().apply {
-                                                moveTo(0f, 0f)
-                                                lineTo(size.width, 0f)
-                                                lineTo(size.width, size.height)
-                                                lineTo(0f, size.height)
-                                                close()
-                                            },
-                                            color = Color.White
-                                        )
-                                        drawPath(
-                                            path = Path().apply {
-                                                moveTo(0f, size.height)
-                                                lineTo(size.width, 0f)
-                                                lineTo(size.width, size.height)
-                                                close()
-                                            },
-                                            color = Color.Black
-                                        )
-                                    }
-                                } else Modifier
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (theme.isSystemTheme) {
-                            Row(
-                                modifier = Modifier.offset(y = (-2).dp),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "A",
-                                    color = Color.Black,
-                                    style = MaterialTheme.typography.labelSmall
-                                )
-                                Text(
-                                    text = "a",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.labelSmall
-                                )
-                            }
-                        } else {
+                    if (theme.isSystemTheme) {
+                        Row(
+                            modifier = Modifier.offset(y = (-2).dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
                             Text(
-                                text = "Aa",
-                                color = theme.contentColor,
-                                style = MaterialTheme.typography.labelSmall
+                                text = "A",
+                                color = Color.Black,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            Text(
+                                text = "a",
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleLarge
                             )
                         }
+                    } else {
+                        Text(
+                            text = "Aa",
+                            color = theme.contentColor,
+                            style = MaterialTheme.typography.titleLarge
+                        )
                     }
                 }
             }
@@ -401,56 +399,42 @@ private fun NavigationControl(
     horizontalNavigation: Boolean,
     onNavigationChange: (Boolean) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Label(text = "Navigation")
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = Dimens.Gutter)
+            .simpleClickable { onNavigationChange(!horizontalNavigation) },
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = stringResource(Res.string.horizontal_navigation),
+                style = MaterialTheme.typography.titleSmall,
+                color = colorScheme.onSurface
+            )
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing12))
-
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .simpleClickable { onNavigationChange(!horizontalNavigation) },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "Horizontal Navigation",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = colorScheme.onSurface
-                )
-                Text(
-                    text = "Swipe left/right to change chapters",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-            }
-
-            Switch(
-                checked = horizontalNavigation,
-                onCheckedChange = onNavigationChange,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = colorScheme.primary,
-                    checkedTrackColor = colorScheme.primaryContainer,
-                    uncheckedThumbColor = colorScheme.outline,
-                    uncheckedTrackColor = colorScheme.surfaceVariant
-                )
+            Text(
+                text = stringResource(Res.string.horizontal_navigation_text),
+                style = MaterialTheme.typography.bodySmall,
+                color = colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
+
+        Switch(
+            checked = horizontalNavigation,
+            onCheckedChange = onNavigationChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = colorScheme.primary,
+                checkedTrackColor = colorScheme.primaryContainer,
+                uncheckedThumbColor = colorScheme.outline,
+                uncheckedTrackColor = colorScheme.surfaceVariant
+            )
+        )
     }
 }
 
 private val sheetContentColor
     @Composable get() = colorScheme.onSurface
-
-@Composable
-private fun Label(text: String) {
-//    Text(
-//        text = text.uppercase(),
-//        style = MaterialTheme.typography.titleMedium,
-//        fontWeight = FontWeight.Black,
-//        color = colorScheme.primary.copy(alpha = 0.5f)
-//    )
-}
 
 @Composable
 private fun SurfaceIcon(
@@ -472,3 +456,22 @@ private fun SurfaceIcon(
         }
     }
 }
+
+class SettingsState {
+    var show by mutableStateOf(false)
+
+    fun show() {
+        show = true
+    }
+
+    fun hide() {
+        show = false
+    }
+
+    fun toggle() {
+        if (show) hide() else show()
+    }
+}
+
+@Composable
+fun rememberSettingsState() = remember { SettingsState() }

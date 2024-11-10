@@ -1,4 +1,4 @@
-package com.kafka.search.widget
+package com.kafka.ui.components.search
 
 import android.app.Activity
 import android.content.Intent
@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
-import com.kafka.search.R
+import com.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
 import java.util.Locale
 

@@ -54,6 +54,7 @@ import compose.icons.tablericons.PlayerPause
 import compose.icons.tablericons.PlayerPlay
 import compose.icons.tablericons.Plus
 import compose.icons.tablericons.Search
+import compose.icons.tablericons.Settings
 import compose.icons.tablericons.Share
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
@@ -119,4 +120,5 @@ object Icons {
     val AlignLeft = FeatherIcons.AlignLeft
     val AlignRight = FeatherIcons.AlignRight
     val AlignJustified = FeatherIcons.AlignJustify
+    val Settings = TablerIcons.Settings
 }

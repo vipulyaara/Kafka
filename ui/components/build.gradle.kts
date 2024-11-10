@@ -27,6 +27,7 @@ kotlin {
 
         androidMain {
             dependencies {
+                implementation(libs.androidx.activity.compose)
                 implementation(libs.lottie.compose)
                 implementation(libs.lottie.core)
             }

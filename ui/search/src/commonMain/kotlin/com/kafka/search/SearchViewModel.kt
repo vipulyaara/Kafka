@@ -59,10 +59,7 @@ class SearchViewModel(
     }.stateInDefault(scope = viewModelScope, initialValue = SearchViewState())
 
     init {
-        search(
-            keyword = route.keyword,
-            mediaTypes = selectedMediaTypes
-        )
+        search(keyword = route.keyword, mediaTypes = selectedMediaTypes)
 
         observeRecentSearch(Unit)
     }

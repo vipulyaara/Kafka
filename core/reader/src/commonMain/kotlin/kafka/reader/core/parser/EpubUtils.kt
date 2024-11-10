@@ -36,7 +36,6 @@ fun String.getCanonicalPath(rootPath: String): String {
     return fullPath.normalized().toString().removePrefix("/")
 }
 
-
 fun Document.selectFirstTag(tag: String): Element? = getElementsByTag(tag).firstOrNull()
 fun Node.selectFirstChildTag(tag: String) = childElements.find { it.tagName() == tag }
 fun Node.selectChildTag(tag: String) = childElements.filter { it.tagName() == tag }

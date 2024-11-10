@@ -1,5 +1,4 @@
 plugins {
-    id("com.android.library")
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
 }
@@ -19,15 +18,5 @@ kotlin {
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }
         }
-
-        androidMain {
-            dependencies {
-                implementation(libs.androidx.activity.compose)
-            }
-        }
     }
-}
-
-android {
-    namespace = "com.kafka.search"
 }

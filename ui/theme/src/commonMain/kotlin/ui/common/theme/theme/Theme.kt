@@ -41,7 +41,10 @@ val KafkaTypography: Typography
             displayMedium = default.displayMedium.copy(fontFamily = DefaultFont),
             displaySmall = default.displaySmall.copy(fontFamily = DefaultFont),
             headlineLarge = default.headlineLarge.copy(fontFamily = DefaultFont),
-            headlineMedium = default.headlineMedium.copy(fontFamily = DefaultFont),
+            headlineMedium = default.headlineMedium.copy(
+                fontFamily = DefaultFont,
+                fontWeight = FontWeight.SemiBold
+            ),
             headlineSmall = TextStyle(
                 fontFamily = DefaultFont,
                 fontWeight = FontWeight.Bold,

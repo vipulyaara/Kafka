@@ -52,7 +52,6 @@ class ReaderViewModel(
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
 
-    val showTocSheet = mutableStateOf(false)
     val lazyListState = LazyListState()
 
     val state = combine(
@@ -65,14 +64,14 @@ class ReaderViewModel(
         observeDownload.flow,
         observeReaderSettings.flow
     ) { loading, ebook, itemDetail, download, settings ->
-        EpubState(
+        ReaderState(
             loading = loading,
             epubBook = ebook,
             itemDetail = itemDetail,
             download = download,
             settings = settings
         )
-    }.stateInDefault(viewModelScope, EpubState())
+    }.stateInDefault(viewModelScope, ReaderState())
 
     init {
         observeDownload(fileId)
@@ -90,10 +89,6 @@ class ReaderViewModel(
                 }
             }
         }
-    }
-
-    fun goBack() {
-        navigator.goBack()
     }
 
     private fun onPageChanged(fileId: String, page: Int) {
@@ -142,7 +137,7 @@ class ReaderViewModel(
     }
 }
 
-data class EpubState(
+data class ReaderState(
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
     val itemDetail: ItemDetail? = null,

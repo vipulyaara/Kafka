@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="background">Background</string>
+    <string name="chapters">Chapters</string>
+    <string name="font_size">Font Size</string>
+    <string name="margins">Margins</string>
+    <string name="horizontal_navigation">Horizontal Navigation</string>
+    <string name="horizontal_navigation_text">Swipe left/right to change chapters</string>
 </resources>

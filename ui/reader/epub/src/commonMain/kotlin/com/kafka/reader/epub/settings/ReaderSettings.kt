@@ -79,17 +79,16 @@ data class ReaderSettings(
         const val DEFAULT_LANGUAGE = "en"
         const val DEFAULT_FONT_SIZE = 16f
         const val DEFAULT_MARGIN = 16f
-        private const val DEFAULT_FONT_SCALE = 1f
         private const val DEFAULT_MARGIN_SCALE = 1f
 
         val fontScaleOptions =
-            listOf(0.5f, 0.75f, DEFAULT_FONT_SCALE, 1.2f, 1.4f, 1.5f, 1.7f, 2f, 2.5f, 3f)
+            listOf(0.5f, 0.75f, 1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f, 2f, 2.5f, 3f)
         val marginScaleOptions = listOf(0.25f, 0.5f, DEFAULT_MARGIN_SCALE, 1.5f, 2f, 2.5f, 3f)
 
         fun default(language: String) = ReaderSettings(
             themeKey = ThemeKey.Default,
             fontStyleKey = FontStyleKey.default(language),
-            fontScale = DEFAULT_FONT_SCALE,
+            fontScale = 1.0f,
             lineHeightType = LineHeight.DEFAULT,
             textAlignment = TextAlignment.DEFAULT,
             marginScale = DEFAULT_MARGIN_SCALE,

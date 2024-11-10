@@ -183,7 +183,7 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
         PerspectiveShapeWithShadow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Dimens.Spacing64),
+                .height(Dimens.Spacing56),
             color = MaterialTheme.colorScheme.surfaceContainerLow
         )
 

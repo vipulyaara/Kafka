@@ -43,10 +43,10 @@ class RecentItemsViewModel(
         navigator.navigate(Screen.ItemDetail(itemId))
     }
 
-    fun removeItem(fileId: String) {
+    fun removeItem(itemId: String) {
         analytics.log { this.removeRecentItem() }
         viewModelScope.launch {
-            removeRecentItem(fileId)
+            removeRecentItem(itemId)
         }
     }
 
