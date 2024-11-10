@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -230,13 +231,11 @@ private fun TextControls(
                         onClick = { onLineHeightChange(option) },
                         selected = selected
                     ) {
-                        val icon = when (option) {
-                            LineHeight.COMPACT -> Icons.LineHeightCompact
-                            LineHeight.NORMAL -> Icons.LineHeightNormal
-                            LineHeight.RELAXED -> Icons.LineHeightRelaxed
-                        }
-
-                        Icon(imageVector = icon, contentDescription = option.label, tint = color)
+                        LineHeightIcon(
+                            variant = option,
+                            modifier = Modifier.size(Dimens.Spacing24),
+                            color = color
+                        )
                     }
                 }
             }

@@ -193,7 +193,7 @@ object InlineContentParser {
         inlineElements: MutableList<InlineElement>,
         stringBuilder: StringBuilder
     ) {
-        stringBuilder.length
+        val start = stringBuilder.length
         stringBuilder.append("")
         val (content, nestedInline) = parse(element)
         appendWithSpacing(stringBuilder, content)
