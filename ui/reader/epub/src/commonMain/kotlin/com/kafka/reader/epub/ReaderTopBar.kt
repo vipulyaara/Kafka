@@ -26,7 +26,7 @@ fun ReaderTopBar(
     settingsState: SettingsState,
     tocState: TocState,
     theme: ReaderTheme,
-    areActionButtonsEnabled: Boolean,
+    actionsButtonVisible: Boolean,
     shareItem: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
@@ -46,29 +46,28 @@ fun ReaderTopBar(
             )
         },
         actions = {
-            ActionIcon(
-                icon = Icons.Share,
-                contentColor = theme.contentColor,
-                contentDescription = "Share",
-                enabled = areActionButtonsEnabled,
-                onClick = shareItem,
-            )
+            if (actionsButtonVisible) {
+                ActionIcon(
+                    icon = Icons.Share,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Share",
+                    onClick = shareItem,
+                )
 
-            ActionIcon(
-                icon = Icons.List,
-                contentColor = theme.contentColor,
-                contentDescription = "Table of contents",
-                enabled = areActionButtonsEnabled,
-                onClick = { tocState.show() }
-            )
+                ActionIcon(
+                    icon = Icons.List,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Table of contents",
+                    onClick = { tocState.show() }
+                )
 
-            ActionIcon(
-                icon = Icons.Settings,
-                contentColor = theme.contentColor,
-                contentDescription = "Reader Settings",
-                enabled = areActionButtonsEnabled,
-                onClick = { settingsState.show() }
-            )
+                ActionIcon(
+                    icon = Icons.Settings,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Reader Settings",
+                    onClick = { settingsState.show() }
+                )
+            }
         },
     )
 }
@@ -77,11 +76,10 @@ fun ReaderTopBar(
 private fun ActionIcon(
     icon: ImageVector,
     contentColor: Color,
-    enabled: Boolean = true,
     contentDescription: String? = null,
     onClick: () -> Unit
 ) {
-    IconButton(onClick = onClick, enabled = enabled) {
+    IconButton(onClick = onClick) {
         IconResource(
             imageVector = icon,
             tint = contentColor,
