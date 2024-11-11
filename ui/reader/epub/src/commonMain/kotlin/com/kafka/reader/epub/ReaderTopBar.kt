@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
@@ -27,6 +26,7 @@ fun ReaderTopBar(
     settingsState: SettingsState,
     tocState: TocState,
     theme: ReaderTheme,
+    actionsButtonVisible: Boolean,
     shareItem: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
@@ -46,26 +46,28 @@ fun ReaderTopBar(
             )
         },
         actions = {
-            ActionIcon(
-                icon = Icons.Share,
-                contentColor = theme.contentColor,
-                contentDescription = "Share",
-                onClick = shareItem
-            )
+            if (actionsButtonVisible) {
+                ActionIcon(
+                    icon = Icons.Share,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Share",
+                    onClick = shareItem,
+                )
 
-            ActionIcon(
-                icon = Icons.List,
-                contentColor = theme.contentColor,
-                contentDescription = "Table of contents",
-                onClick = { tocState.show() }
-            )
+                ActionIcon(
+                    icon = Icons.List,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Table of contents",
+                    onClick = { tocState.show() }
+                )
 
-            ActionIcon(
-                icon = Icons.Settings,
-                contentColor = theme.contentColor,
-                contentDescription = "Reader Settings",
-                onClick = { settingsState.show() }
-            )
+                ActionIcon(
+                    icon = Icons.Settings,
+                    contentColor = theme.contentColor,
+                    contentDescription = "Reader Settings",
+                    onClick = { settingsState.show() }
+                )
+            }
         },
     )
 }
