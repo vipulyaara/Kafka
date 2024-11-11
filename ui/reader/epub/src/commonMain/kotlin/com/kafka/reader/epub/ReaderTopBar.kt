@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
@@ -27,6 +26,7 @@ fun ReaderTopBar(
     settingsState: SettingsState,
     tocState: TocState,
     theme: ReaderTheme,
+    areActionButtonsEnabled: Boolean,
     shareItem: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
@@ -50,13 +50,15 @@ fun ReaderTopBar(
                 icon = Icons.Share,
                 contentColor = theme.contentColor,
                 contentDescription = "Share",
-                onClick = shareItem
+                enabled = areActionButtonsEnabled,
+                onClick = shareItem,
             )
 
             ActionIcon(
                 icon = Icons.List,
                 contentColor = theme.contentColor,
                 contentDescription = "Table of contents",
+                enabled = areActionButtonsEnabled,
                 onClick = { tocState.show() }
             )
 
@@ -64,6 +66,7 @@ fun ReaderTopBar(
                 icon = Icons.Settings,
                 contentColor = theme.contentColor,
                 contentDescription = "Reader Settings",
+                enabled = areActionButtonsEnabled,
                 onClick = { settingsState.show() }
             )
         },
@@ -74,10 +77,11 @@ fun ReaderTopBar(
 private fun ActionIcon(
     icon: ImageVector,
     contentColor: Color,
+    enabled: Boolean = true,
     contentDescription: String? = null,
     onClick: () -> Unit
 ) {
-    IconButton(onClick = onClick) {
+    IconButton(onClick = onClick, enabled = enabled) {
         IconResource(
             imageVector = icon,
             tint = contentColor,

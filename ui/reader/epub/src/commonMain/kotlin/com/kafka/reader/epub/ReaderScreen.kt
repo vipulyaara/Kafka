@@ -46,6 +46,7 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
                 settingsState = settingsState,
                 tocState = tocState,
                 theme = state.settings.theme,
+                areActionButtonsEnabled = state.epubBook != null,
                 shareItem = { viewModel.shareItemText(context) }
             )
         }
