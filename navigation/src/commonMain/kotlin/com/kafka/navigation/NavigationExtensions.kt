@@ -40,7 +40,7 @@ fun NavController.currentScreenAsState(): State<RootScreen> {
     DisposableEffect(this) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.navigationRoute } }
-                ?.let { selectedItem.value = it as RootScreen }
+                ?.let { selectedItem.value = it }
         }
         addOnDestinationChangedListener(listener)
 

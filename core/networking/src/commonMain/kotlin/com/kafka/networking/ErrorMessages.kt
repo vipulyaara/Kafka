@@ -1,6 +1,5 @@
 package com.kafka.networking
 
-import io.ktor.client.network.sockets.InterruptedIOException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ResponseException

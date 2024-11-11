@@ -5,7 +5,6 @@ import com.kafka.base.debug
 import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.entities.User
 import com.kafka.data.feature.auth.AccountRepository
-import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -22,19 +21,9 @@ class ObserveUser(
         return accountRepository.observeCurrentUserOrNull()
             .onEach { debug { "User changed ${it?.uid}" } }
             .map { if (!params.includeAnonymous) it.takeIf { it?.isAnonymous == false } else it }
-            .map { mapUser(it) }
+            .map { it?.asUser() }
             .flowOn(dispatchers.io)
     }
 
     data class Params(val includeAnonymous: Boolean = false)
-
-    private fun mapUser(it: FirebaseUser?) = it?.let {
-        User(
-            id = it.uid,
-            displayName = it.displayName.orEmpty(),
-            email = it.email,
-            imageUrl = it.photoURL.toString(),
-            anonymous = it.isAnonymous,
-        )
-    }
 }

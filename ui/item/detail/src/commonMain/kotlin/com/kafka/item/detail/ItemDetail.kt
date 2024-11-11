@@ -108,7 +108,7 @@ private fun ItemDetail(
             viewModel.onPrimaryAction(it)
             viewModel.showAppRatingIfNeeded(context)
         },
-        toggleFavorite = viewModel::updateFavorite,
+        toggleFavorite = viewModel::openAddToBookshelf,
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
         openSummary = viewModel::openSummary,

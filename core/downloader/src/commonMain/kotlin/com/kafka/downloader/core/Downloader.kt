@@ -258,19 +258,4 @@ class KtorDownloader(
     }
 }
 
-/***
- *
- * data class Download(val fileId: String, val status: Status, val filePath: String) {
- *     enum class Status { Downloading, Completed, Failed }
- * }
- *
- * interface DownloadDao {
- *     suspend fun updateStatus(fileId: String, status: Download.Status)
- *     suspend fun updateProgress(fileId: String, progress: Int)
- *     suspend fun updateFilePath(fileId: String, filePath: String?)
- *     suspend fun delete(fileId: String)
- * }
- *
- * */
-
-const val tag = "KtorDownloader"
+const val tag = "Downloader"

@@ -16,7 +16,10 @@ class RemoteConfigLogger(
 ) : AppInitializer {
     override fun init() {
         analytics.log {
-            remoteConfigValue(RECOMMENDATION_ROW_ENABLED, remoteConfig.isRecommendationRowEnabled())
+            remoteConfigValue(
+                key = RECOMMENDATION_ROW_ENABLED,
+                value = remoteConfig.isRecommendationRowEnabled()
+            )
         }
     }
 }

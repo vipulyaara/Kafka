@@ -66,6 +66,16 @@ sealed class Screen {
     }
 
     @Serializable
+    data class AddToBookshelf(
+        @SerialName("itemId") val itemId: String
+    ) : Screen() {
+        companion object {
+            const val route = "add_to_bookshelf/{itemId}"
+            fun route(itemId: String) = "add_to_bookshelf/$itemId"
+        }
+    }
+
+    @Serializable
     data class ItemDescription(@SerialName("itemId") val itemId: String) : Screen() {
         companion object {
             const val route = "item_description/{itemId}"

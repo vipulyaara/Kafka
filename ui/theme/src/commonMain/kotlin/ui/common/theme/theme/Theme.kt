@@ -37,10 +37,22 @@ val KafkaTypography: Typography
     @Composable get() {
         val default = Typography()
         return Typography(
-            displayLarge = default.displayLarge.copy(fontFamily = DefaultFont),
-            displayMedium = default.displayMedium.copy(fontFamily = DefaultFont),
-            displaySmall = default.displaySmall.copy(fontFamily = DefaultFont),
-            headlineLarge = default.headlineLarge.copy(fontFamily = DefaultFont),
+            displayLarge = default.displayLarge.copy(
+                fontFamily = DefaultFont,
+                fontWeight = FontWeight.Black
+            ),
+            displayMedium = default.displayMedium.copy(
+                fontFamily = DefaultFont,
+                fontWeight = FontWeight.Bold
+            ),
+            displaySmall = default.displaySmall.copy(
+                fontFamily = DefaultFont,
+                fontWeight = FontWeight.Bold
+            ),
+            headlineLarge = default.headlineLarge.copy(
+                fontFamily = DefaultFont,
+                fontWeight = FontWeight.Black
+            ),
             headlineMedium = default.headlineMedium.copy(
                 fontFamily = DefaultFont,
                 fontWeight = FontWeight.SemiBold

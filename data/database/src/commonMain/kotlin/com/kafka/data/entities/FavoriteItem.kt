@@ -11,3 +11,13 @@ data class FavoriteItem(
     @SerialName("uid") val uid: String,
     @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
 )
+
+@Serializable
+data class Bookshelf(
+    @SerialName("bookshelf_id") val bookshelfId: String,
+    @SerialName("name") val name: String,
+    @SerialName("type") val type: Type,
+    @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
+) {
+    enum class Type { Favorite, Reading, Completed, Wishlist, Custom }
+}

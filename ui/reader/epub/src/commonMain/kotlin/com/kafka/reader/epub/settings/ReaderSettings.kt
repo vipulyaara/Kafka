@@ -82,7 +82,7 @@ data class ReaderSettings(
         private const val DEFAULT_MARGIN_SCALE = 1f
 
         val fontScaleOptions =
-            listOf(0.5f, 0.75f, 1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f, 2f, 2.5f, 3f)
+            listOf(0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f, 2f, 2.5f, 3f)
         val marginScaleOptions = listOf(0.25f, 0.5f, DEFAULT_MARGIN_SCALE, 1.5f, 2f, 2.5f, 3f)
 
         fun default(language: String) = ReaderSettings(

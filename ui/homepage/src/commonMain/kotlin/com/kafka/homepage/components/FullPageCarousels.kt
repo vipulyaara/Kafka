@@ -43,6 +43,8 @@ internal fun FullPageCarousels(
     Column(modifier = modifier) {
         Header()
 
+        Spacer(Modifier.height(Dimens.Spacing08))
+
         HorizontalMultiBrowseCarousel(
             state = state,
             modifier = Modifier.padding(Dimens.Spacing08),

@@ -66,7 +66,6 @@ class EpubXMLFileParser(
         }
     }
 
-    @Suppress("CANDIDATE_CHOSEN_USING_OVERLOAD_RESOLUTION_BY_LAMBDA_ANNOTATION")
     private fun parseFragmentToNextFragment(fragmentElement: Element): List<ContentElement> {
         val nextElement = document.selectFirst("#$nextFragmentId")
         return DocumentTraverser(fragmentElement, nextElement)
@@ -80,7 +79,7 @@ class EpubXMLFileParser(
      * @param absolutePathImage The absolute path of the image file.
      * @return [String] The image path and aspect ratio.
      */
-    fun parseAsImage(absolutePathImage: String): String {
+    private fun parseAsImage(absolutePathImage: String): String {
         val imageData = zipFile[absolutePathImage]?.data
         val aspectRatio = imageData?.let { ImageDecoder.getAspectRatio(it) } ?: 1.45f
 
@@ -165,8 +164,6 @@ class EpubXMLFileParser(
         val titlePageImage = document.selectFirst("img[src$=titlepage.svg]")
             ?: return emptyList()
         
-        return titlePageImage?.let { 
-            listOf(parseImageElement(it))
-        } ?: emptyList()
+        return listOf(parseImageElement(titlePageImage))
     }
 }

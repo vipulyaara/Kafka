@@ -38,7 +38,7 @@ fun FloatingButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium.alignCenter(),
+            style = MaterialTheme.typography.labelLarge.alignCenter(),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp)
         )

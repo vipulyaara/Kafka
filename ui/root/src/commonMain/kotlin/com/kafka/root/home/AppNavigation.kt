@@ -58,6 +58,8 @@ import com.kafka.item.detail.description.DescriptionDialog
 import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.library.LibraryScreen
+import com.kafka.library.bookshelf.AddToBookshelf
+import com.kafka.library.bookshelf.BookshelfViewModel
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.NavigationEvent
@@ -85,8 +87,8 @@ import kotlinx.coroutines.flow.Flow
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.LocalTheme
-import ui.common.theme.theme.setStatusBarColor
 import ui.common.theme.theme.isDark
+import ui.common.theme.theme.setStatusBarColor
 import kotlin.reflect.KType
 
 typealias AppNavigation = @Composable (NavHostController) -> Unit
@@ -118,6 +120,10 @@ fun AppNavigation(
 
                     is Screen.ItemDescription -> {
                         navController.navigate(Screen.ItemDescription.route(screen.itemId))
+                    }
+
+                    is Screen.AddToBookshelf -> {
+                        navController.navigate(Screen.AddToBookshelf.route(screen.itemId))
                     }
 
                     Screen.Feedback -> {
@@ -200,12 +206,14 @@ typealias addItemDetailGroup = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addItemDetailGroup(
     addItemDetail: addItemDetail,
     addItemDescription: addItemDescription,
+    addToBookshelf: addToBookshelf,
     addReportContent: addReportContent,
     addEpubReader: addEpubReader,
     addSummary: addSummary,
 ) {
     addItemDetail()
     addItemDescription()
+    addToBookshelf()
     addReportContent()
     addEpubReader()
     addSummary()
@@ -304,6 +312,18 @@ fun NavGraphBuilder.addItemDescription(
     bottomSheet(Screen.ItemDescription.route) {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         DescriptionDialog(viewModel)
+    }
+}
+
+typealias addToBookshelf = NavGraphBuilder.() -> Unit
+
+@Inject
+fun NavGraphBuilder.addToBookshelf(
+    viewModelFactory: (SavedStateHandle) -> BookshelfViewModel,
+) {
+    bottomSheet(Screen.AddToBookshelf.route) {
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        AddToBookshelf(viewModel)
     }
 }
 

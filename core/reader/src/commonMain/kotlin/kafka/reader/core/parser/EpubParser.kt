@@ -108,11 +108,11 @@ class EpubParser(
      */
     suspend fun createEpubBook(filePath: String, shouldUseToc: Boolean): EpubBook {
         return withContext(Dispatchers.IO) {
-            val epubBook = epubCache.get(filePath)
-            if (epubBook != null) {
-                debug { "EpubBook found in cache" }
-                return@withContext epubBook
-            }
+//            val epubBook = epubCache.get(filePath)
+//            if (epubBook != null) {
+//                debug { "EpubBook found in cache" }
+//                return@withContext epubBook
+//            }
             debug { "Parsing EPUB file: $filePath" }
             val files = getZipFilesFromFile(filePath)
             val document = createEpubDocument(files)

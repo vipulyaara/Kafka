@@ -152,6 +152,10 @@ class ItemDetailViewModel(
         }
     }
 
+    fun openAddToBookshelf() {
+        navigator.navigate(Screen.AddToBookshelf(itemId))
+    }
+
     private fun updateItemsByCreator(creator: String?) {
         creator?.let { query ->
             observeCreatorItems(ObserveCreatorItems.Params(itemId, query))
