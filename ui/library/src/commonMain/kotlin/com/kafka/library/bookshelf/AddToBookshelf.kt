@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,7 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.image.Icons
+import com.kafka.common.widgets.IconButton
 import com.kafka.data.entities.Bookshelf
+import kafka.ui.library.generated.resources.Res
+import kafka.ui.library.generated.resources.bookshelves
+import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -34,7 +37,8 @@ fun AddToBookshelf(viewModel: BookshelfViewModel) {
     Bookshelves(
         bookshelves = state.bookshelves,
         title = state.itemDetail?.title.orEmpty(),
-        modifier = Modifier.padding(vertical = Dimens.Spacing24)
+        modifier = Modifier.padding(vertical = Dimens.Spacing24),
+        addToBookshelf = viewModel::addToBookShelf
     )
 }
 
@@ -42,7 +46,8 @@ fun AddToBookshelf(viewModel: BookshelfViewModel) {
 private fun Bookshelves(
     bookshelves: List<Bookshelf>,
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    addToBookshelf: (String) -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -55,7 +60,9 @@ private fun Bookshelves(
             }
 
             items(bookshelves) { bookshelf ->
-                BookshelfItem(bookshelf = bookshelf, added = false, onClick = {})
+                BookshelfItem(bookshelf = bookshelf, added = false) {
+                    addToBookshelf(bookshelf.bookshelfId)
+                }
             }
         }
     }
@@ -70,23 +77,23 @@ private fun Header(title: String) {
     ) {
         Column {
             Text(
-                text = "Bookshelves",
-                style = MaterialTheme.typography.headlineSmall
+                text = stringResource(Res.string.bookshelves),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
+
             Spacer(Modifier.height(Dimens.Spacing02))
+
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelMedium,
-                color = Color(0xFF929292)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
 
-        Surface(
-            color = MaterialTheme.colorScheme.primary,
-            shape = CircleShape
-        ) {
+        Surface(color = MaterialTheme.colorScheme.primary, shape = CircleShape) {
             Icon(
-                Icons.Plus,
+                imageVector = Icons.Plus,
                 contentDescription = null,
                 modifier = Modifier.padding(Dimens.Spacing12),
                 tint = MaterialTheme.colorScheme.onPrimary
@@ -110,14 +117,19 @@ private fun BookshelfItem(bookshelf: Bookshelf, added: Boolean, onClick: (Boolea
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
+
             Spacer(Modifier.height(Dimens.Spacing02))
+
             Text(
                 text = "Private",
                 style = MaterialTheme.typography.labelMedium,
                 color = Color(0x88929292)
             )
         }
+
         Spacer(Modifier.weight(1f))
-        Checkbox(added, { onClick(it) })
+
+        val icon = if (added) Icons.Check else Icons.Plus
+        IconButton(icon, onClick = { onClick(!added) })
     }
 }
