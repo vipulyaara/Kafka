@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" height="363" width="363" viewBox="0 0 363 363">
+	<circle cx="181.5" cy="181.5" fill="black" r="181.5"/>
+	<circle cx="181" cy="182" r="132.5" stroke="white" stroke-width="25"/>
+	<rect fill="white" height="124" rx="2" width="25" x="131" y="120"/>
+	<path clip-rule="evenodd" d="M223 122L222.915 121.915L178.556 166.274C169.965 174.865 169.965 188.795 178.556 197.387L223.585 242.415L239 227L239.844 222.612L239.491 222.966L198.355 181.83L238.83 141.355L239.193 141.718L239 138L223 122V122Z" fill="white" fill-rule="evenodd"/>
+</svg>
