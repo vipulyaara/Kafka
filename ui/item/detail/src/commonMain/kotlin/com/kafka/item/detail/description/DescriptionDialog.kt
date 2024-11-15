@@ -64,9 +64,10 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel) {
                             .verticalScroll(rememberScrollState())
                     )
 
-                    itemDetail.language?.let {
-                        Text(text = "Language : $it", style = MaterialTheme.typography.titleSmall)
-                    }
+                    Text(
+                        text = "Language : ${itemDetail.language}",
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
 
                 InfiniteProgressBar(

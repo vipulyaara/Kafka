@@ -67,7 +67,7 @@ class ItemDetailViewModel(
     private val shareUtils: ShareUtils
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.get<String>("itemId")!!
-    private val origin = savedStateHandle.get<Origin>("origin")!!
+    private val origin = savedStateHandle.get<Origin>("origin") ?: Origin.Unknown
 
     val creatorItems = observeCreatorItems.flow.stateInDefault(viewModelScope, emptyList())
     val itemPlaceholder = observeItem.flow.map { it.asPlaceholder(origin) }
