@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
+import kotlin.time.Duration.Companion.seconds
 
 interface DataComponent : SerializersModule, DataPlatformComponent {
     @Provides
@@ -28,6 +29,7 @@ interface DataComponent : SerializersModule, DataPlatformComponent {
         supabaseKey = secretsProvider.supabaseKey
     ) {
         defaultLogLevel = LogLevel.DEBUG
+        requestTimeout = 30.seconds
 
         useHTTPS = true
         install(Auth)

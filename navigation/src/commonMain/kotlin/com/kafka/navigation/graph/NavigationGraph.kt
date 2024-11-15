@@ -57,17 +57,16 @@ sealed class Screen {
 
     @Serializable
     data class ItemDetail(
-        @SerialName("itemId") val itemId: String
+        @SerialName("itemId") val itemId: String,
+        @SerialName("origin") val origin: Origin = Origin.Unknown
     ) : Screen() {
-        companion object {
-            const val route = "item/{itemId}"
-            fun route(itemId: String) = "item/$itemId"
-        }
+        enum class Origin { Carousel, Row, Column, Grid, Recommendation, Unknown }
+        data class SharedElementCoverKey(val cover: String?, val origin: Origin)
     }
 
     @Serializable
     data class AddToBookshelf(
-        @SerialName("itemId") val itemId: String
+        @SerialName("itemId") val itemId: String,
     ) : Screen() {
         companion object {
             const val route = "add_to_bookshelf/{itemId}"

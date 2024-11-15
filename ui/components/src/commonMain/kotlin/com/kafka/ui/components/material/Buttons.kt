@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.alignCenter
+import com.kafka.common.extensions.semiBold
 import com.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
 
@@ -38,7 +39,7 @@ fun FloatingButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelLarge.alignCenter(),
+            style = MaterialTheme.typography.labelLarge.alignCenter().semiBold(),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 14.dp)
         )

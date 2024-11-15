@@ -28,6 +28,7 @@ import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.Screen.ItemDescription
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import com.kafka.navigation.graph.Screen.Search
 import com.kafka.play.AppReviewManager
 import com.kafka.remote.config.RemoteConfig
@@ -66,8 +67,10 @@ class ItemDetailViewModel(
     private val shareUtils: ShareUtils
 ) : ViewModel() {
     private val itemId: String = savedStateHandle.get<String>("itemId")!!
+    private val origin = savedStateHandle.get<Origin>("origin")!!
+
     val creatorItems = observeCreatorItems.flow.stateInDefault(viewModelScope, emptyList())
-    val itemPlaceholder = observeItem.flow.map { it.asPlaceholder() }
+    val itemPlaceholder = observeItem.flow.map { it.asPlaceholder(origin) }
         .stateInDefault(viewModelScope, null)
 
     val state: StateFlow<ItemDetailViewState> = combine(

@@ -80,3 +80,12 @@ ui/shared/src/jvmMain/kotlin/com/kafka/shared/main/initializer/Secrets.kt
 ui/shared/src/jvmMain/kotlin/com/kafka/shared/initializer/Secrets.kt
 shared/common/src/jvmMain/kotlin/com/kafka/shared/common/initializer/Secrets.kt
 iosApp/iosApp/GoogleService-Info.plist
+/desktop-app/kafka_1.db
+/desktop-kms/kafka_1.db
+/desktop-app/kafka_1.db.lck
+/desktop-kms/kafka_1.db.lck
+/desktop-app/kafka_1.db-shm
+/desktop-kms/kafka_1.db-shm
+/desktop-app/kafka_1.db-wal
+/desktop-kms/kafka_1.db-wal
+/.fleet/run.json

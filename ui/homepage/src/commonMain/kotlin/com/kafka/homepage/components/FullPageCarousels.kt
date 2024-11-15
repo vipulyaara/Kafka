@@ -25,9 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.LocalAnimatedContentScope
 import com.kafka.common.animation.LocalSharedTransitionScope
-import com.kafka.common.animation.coverImageKey
 import com.kafka.common.image.Icons
 import com.kafka.data.entities.Item
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
+import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
 import com.kafka.ui.components.item.FeaturedItem
 import ui.common.theme.theme.Dimens
 
@@ -74,11 +75,16 @@ internal fun FullPageCarousels(
                             imageUrl = images.getOrNull(index),
                             onClick = { onClick(item.itemId) },
                             modifier = Modifier
-                                .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
                                 .sharedElement(
-                                    state = rememberSharedContentState(key = coverImageKey(item.coverImage)),
+                                    state = rememberSharedContentState(
+                                        key = SharedElementCoverKey(
+                                            cover = item.coverImage.orEmpty(),
+                                            origin = Origin.Carousel
+                                        )
+                                    ),
                                     animatedVisibilityScope = LocalAnimatedContentScope.current
-                                ),
+                                )
+                                .maskClip(shape = RoundedCornerShape(Dimens.Radius16)),
                         )
                     }
 

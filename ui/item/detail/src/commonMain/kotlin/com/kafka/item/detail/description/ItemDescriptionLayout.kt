@@ -24,13 +24,13 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.LocalAnimatedContentScope
 import com.kafka.common.animation.LocalSharedTransitionScope
-import com.kafka.common.animation.coverImageKey
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
 import com.kafka.item.detail.ItemPlaceholder
+import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.CoverImage
 import kafka.ui.item.detail.generated.resources.Res
@@ -79,7 +79,12 @@ internal fun ItemDescription(
                 contentScale = ContentScale.Crop,
                 placeholder = null,
                 modifier = Modifier.sharedElement(
-                    rememberSharedContentState(key = coverImageKey(itemDetail?.coverImage)),
+                    state = rememberSharedContentState(
+                        key = SharedElementCoverKey(
+                            cover = itemPlaceholder.coverImage,
+                            origin = itemPlaceholder.origin
+                        )
+                    ),
                     animatedVisibilityScope = LocalAnimatedContentScope.current
                 )
             )

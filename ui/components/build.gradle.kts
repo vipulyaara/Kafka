@@ -9,6 +9,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.data.repo)
+                implementation(projects.navigation)
                 api(projects.ui.common)
 
                 api(compose.components.resources)

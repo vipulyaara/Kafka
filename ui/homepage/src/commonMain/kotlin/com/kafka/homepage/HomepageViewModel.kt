@@ -17,6 +17,7 @@ import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -81,9 +82,14 @@ class HomepageViewModel(
         navigator.navigate(Screen.Profile)
     }
 
-    fun openItemDetail(itemId: String, collection: String?, source: String = "homepage") {
-        analytics.log { openItemDetail(itemId = itemId, source = source, collection = collection) }
-        navigator.navigate(Screen.ItemDetail(itemId))
+    fun openItemDetail(
+        itemId: String,
+        origin: Origin = Origin.Unknown,
+        source: String = "homepage"
+    ) {
+        val originKey = if (origin == Origin.Unknown) "Homepage" else origin.name
+        analytics.log { openItemDetail(itemId = itemId, source = source, origin = originKey) }
+        navigator.navigate(Screen.ItemDetail(itemId = itemId, origin = origin))
     }
 
     fun openRecentItemDetail(itemId: String) {

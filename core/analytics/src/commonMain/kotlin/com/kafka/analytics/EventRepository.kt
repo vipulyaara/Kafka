@@ -22,11 +22,11 @@ class EventRepository {
     fun openItemDetail(
         itemId: String,
         source: String? = null,
-        collection: String? = null,
+        origin: String? = null,
     ) = "open_item_detail" to mapOf(
         "item_id" to itemId,
         "source" to source,
-        "collection" to collection,
+        "source_component" to origin,
     )
 
     fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(

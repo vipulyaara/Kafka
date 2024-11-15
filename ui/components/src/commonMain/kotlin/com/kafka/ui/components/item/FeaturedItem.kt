@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.kafka.ui.components.item
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,7 +57,7 @@ fun FeaturedItem(
 
 @Composable
 fun FeaturedItem(
-    coverImage: Any?,
+    coverImage: String?,
     modifier: Modifier = Modifier,
     creator: String? = null,
     label: String? = null,

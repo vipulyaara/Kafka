@@ -17,6 +17,8 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.material3)
                 
+                implementation(libs.ktor.client.contentnegotiation)
+
                 implementation(libs.material.kolor)
 
                 implementation(libs.jetbrains.lifecycle.runtime.compose)

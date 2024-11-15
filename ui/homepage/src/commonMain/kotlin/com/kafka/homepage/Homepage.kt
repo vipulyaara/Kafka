@@ -41,6 +41,7 @@ import com.kafka.data.entities.RecentItem
 import com.kafka.homepage.components.FullPageCarousels
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
@@ -115,7 +116,7 @@ private fun HomepageFeedItems(
     recentItems: List<RecentItem>,
     appShareIndex: Int,
     openRecentItemDetail: (String) -> Unit,
-    openItemDetail: (String, String) -> Unit,
+    openItemDetail: (String, Origin) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -149,7 +150,7 @@ private fun HomepageFeedItems(
                                 modifier = Modifier.padding(top = Dimens.Gutter),
                                 carouselItems = collection.items,
                                 images = collection.image,
-                                onClick = { openItemDetail(it, "featuredItem") }
+                                onClick = { openItemDetail(it, Origin.Carousel) }
                             )
                         } else {
                             FeaturedItemPlaceholder()
@@ -207,7 +208,7 @@ private fun HomepageFeedItems(
                     fullSpanItem(key = collection.key, contentType = "row") {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                         RowItems(items = collection.items) {
-                            openItemDetail(it, "row")
+                            openItemDetail(it, Origin.Row)
                         }
                     }
                 }
@@ -217,7 +218,7 @@ private fun HomepageFeedItems(
                         fullSpanItem(contentType = "row") {
                             SubjectItems(collection.labels, false, goToSubject)
                             RowItems(items = collection.items) {
-                                openItemDetail(it, "recommendation")
+                                openItemDetail(it, Origin.Recommendation)
                             }
                         }
                     }
@@ -230,7 +231,7 @@ private fun HomepageFeedItems(
 
                     gridItems(
                         collection = collection,
-                        openItemDetail = { openItemDetail(it, "grid") }
+                        openItemDetail = { openItemDetail(it, Origin.Grid) }
                     )
                 }
 
@@ -238,7 +239,7 @@ private fun HomepageFeedItems(
                     fullSpanItem(key = collection.key) {
                         SubjectItems(collection.labels, collection.clickable, goToSubject)
                     }
-                    columnItems(collection) { openItemDetail(it, "column") }
+                    columnItems(collection) { openItemDetail(it, Origin.Column) }
                 }
             }
         }

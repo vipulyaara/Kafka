@@ -119,6 +119,8 @@ dependencies {
     implementation(project.dependencies.platform(libs.openai.kotlin.bom))
     implementation(libs.openai.client)
 
+    implementation(libs.ktor.client.contentnegotiation)
+
     implementation(libs.profileinstaller)
     debugImplementation(libs.leakCanary)
     baselineProfile(projects.baselineprofile)

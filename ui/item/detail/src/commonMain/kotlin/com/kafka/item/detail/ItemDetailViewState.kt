@@ -5,6 +5,7 @@ import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.MediaType
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 
 @Immutable
 data class ItemDetailViewState(
@@ -30,18 +31,20 @@ data class ItemPlaceholder(
     val title: String,
     val creators: List<String>,
     val coverImage: String?,
-    val mediaType: MediaType
+    val mediaType: MediaType,
+    val origin: Origin
 ) {
     val isAudio
         get() = this.mediaType.isAudio
 }
 
-fun Item?.asPlaceholder() = this?.let {
+fun Item?.asPlaceholder(origin: Origin) = this?.let {
     ItemPlaceholder(
         itemId = itemId,
         title = title,
         creators = creators,
         coverImage = coverImage,
-        mediaType = mediaType
+        mediaType = mediaType,
+        origin = origin
     )
 }

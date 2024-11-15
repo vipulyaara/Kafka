@@ -19,7 +19,7 @@ kotlin {
 
                 api(project.dependencies.platform(libs.openai.kotlin.bom))
                 api(libs.openai.client)
-                api(libs.openai.client)
+                api(libs.ktor.client.contentnegotiation)
 
                 api(project.dependencies.platform(libs.supabase.bom))
                 api(libs.supabase.auth)

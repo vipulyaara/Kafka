@@ -114,10 +114,6 @@ fun AppNavigation(
         when (event) {
             is NavigationEvent.Destination -> {
                 when (val screen = event.route) {
-                    is Screen.ItemDetail -> {
-                        navController.navigate(Screen.ItemDetail.route(screen.itemId))
-                    }
-
                     is Screen.ItemDescription -> {
                         navController.navigate(Screen.ItemDescription.route(screen.itemId))
                     }
@@ -288,8 +284,7 @@ typealias addItemDetail = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addItemDetail(
     viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel,
 ) {
-    composable(
-        route = Screen.ItemDetail.route,
+    composable<Screen.ItemDetail>(
         deepLinks = listOf(
             navDeepLink<Screen.ItemDetail>("${Config.BASE_URL}item"),
             navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
