@@ -12,15 +12,15 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class Item(
-    @SerialName("item_id") @PrimaryKey val itemId: String = "",
-    @SerialName("title") val title: String = "",
+    @SerialName("item_id") @PrimaryKey val itemId: String,
+    @SerialName("title") val title: String,
     @SerialName("media_type") val mediaType: MediaType,
-    @SerialName("creators") val creators: List<String> = emptyList(),
-    @SerialName("languages") val languages: List<String>? = null,
-    @SerialName("description") val description: String? = null,
-    @SerialName("cover_image") val coverImage: String? = null,
-    @SerialName("collections") val collections: List<String>? = null,
-    @SerialName("subjects") val subjects: List<String> = emptyList(),
+    @SerialName("creators") val creators: List<String>,
+    @SerialName("languages") val languages: List<String>?,
+    @SerialName("description") val description: String?,
+    @SerialName("cover_image") val coverImage: String?,
+    @SerialName("collections") val collections: List<String>?,
+    @SerialName("subjects") val subjects: List<String>,
 ) : BaseEntity {
     val creator: String
         get() = creators.take(5).joinToString()

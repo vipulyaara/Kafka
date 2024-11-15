@@ -19,14 +19,15 @@ data class ItemDetail(
     @SerialName("item_id") @PrimaryKey val itemId: String,
     @SerialName("title") val title: String,
     @SerialName("media_type") val mediaType: MediaType,
-    @SerialName("long_description") val description: String? = null,
-    @SerialName("creators") val creators: List<String>? = null,
-    @SerialName("collections") val collections: List<String>? = null,
-    @SerialName("languages") val languages: List<String>? = null,
-    @SerialName("cover_image") val coverImage: String? = null,
-    @SerialName("subjects") val subject: List<String>? = null,
-    @SerialName("rating") val rating: Double? = null,
-    @SerialName("publishers") val publishers: List<String> = emptyList(),
+    @SerialName("long_description") val description: String?,
+    @SerialName("creators") val creators: List<String>?,
+    @SerialName("translators") val translators: List<String>?,
+    @SerialName("collections") val collections: List<String>?,
+    @SerialName("languages") val languages: List<String>?,
+    @SerialName("cover_image") val coverImage: String?,
+    @SerialName("subjects") val subjects: List<String>?,
+    @SerialName("rating") val rating: Double?,
+    @SerialName("publishers") val publishers: List<String>,
 ) : BaseEntity {
     val creator: String?
         get() = creators?.take(5)?.joinToString()
@@ -41,7 +42,7 @@ data class ItemDetail(
         get() = this.mediaType.isAudio
 
     val immutableSubjects: ImmutableList<String>
-        get() = subject.orEmpty().toPersistentList()
+        get() = subjects.orEmpty().toPersistentList()
 
     private val trimmedDescription: String
         get() = description?.replaceFirst("<p>", "")

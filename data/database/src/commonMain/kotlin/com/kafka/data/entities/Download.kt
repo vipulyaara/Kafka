@@ -12,4 +12,7 @@ data class Download(
     val filePath: String
 ) {
     enum class Status { Downloading, Completed, Failed }
+
+    val isCompleted: Boolean
+        get() = status == Status.Completed
 }

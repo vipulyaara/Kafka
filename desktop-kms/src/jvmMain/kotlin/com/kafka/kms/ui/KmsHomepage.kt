@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.kafka.kms.components.Sidebar
+import com.kafka.kms.data.files.DirectoryPaths
 import com.kafka.kms.ui.directory.FileTree
 import com.kafka.kms.ui.gutenberg.GutenbergScreen
 import com.kafka.kms.ui.gutenberg.GutenbergViewModel
@@ -37,9 +38,15 @@ fun KmsHomepage(gutenbergFactory: () -> GutenbergViewModel) {
                     viewModel = gutenbergFactory(),
                     modifier = Modifier.fillMaxSize()
                 )
-                "books" -> { /* TODO: Implement Books screen */ }
-                "standard-ebooks" -> { /* TODO: Implement Standard Ebooks screen */ }
-                "settings" -> { /* TODO: Implement Settings screen */ }
+
+                "books" -> { /* TODO: Implement Books screen */
+                }
+
+                "standard-ebooks" -> { /* TODO: Implement Standard Ebooks screen */
+                }
+
+                "settings" -> { /* TODO: Implement Settings screen */
+                }
             }
         }
 
@@ -47,7 +54,10 @@ fun KmsHomepage(gutenbergFactory: () -> GutenbergViewModel) {
         FileTree(
             rootPath = System.getProperty("user.home") + "/StudioProjects/kms-tools/ebooks",
             modifier = Modifier.weight(0.25f),
-            onFileSelected = { /* Handle file selection */ }
+            onFileSelected = { /* Handle file selection */ },
+            defaultExpandedDirs = listOf(
+                DirectoryPaths.textPath("kafka_franz-metamorphosis").absolutePath
+            )
         )
     }
 }

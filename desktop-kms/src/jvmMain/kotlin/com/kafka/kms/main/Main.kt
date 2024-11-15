@@ -32,7 +32,7 @@ fun main() = application {
             .collectAsStateWithLifecycle(Theme.SYSTEM)
         val navController = rememberNavController()
 
-        AppleTheme {
+        AppleTheme(false) {
             component.kmsHomepage()
         }
     }

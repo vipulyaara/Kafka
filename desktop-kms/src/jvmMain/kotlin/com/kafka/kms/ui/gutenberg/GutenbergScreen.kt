@@ -2,10 +2,11 @@ package com.kafka.kms.ui.gutenberg
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,10 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.kms.components.TextField
 import com.kafka.ui.components.progress.InfiniteProgressBar
+import ui.common.theme.theme.Dimens
 
 @Composable
 fun GutenbergScreen(viewModel: GutenbergViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    //todo: testing
+    LaunchedEffect(Unit) {
+        viewModel.bookId = "5200"
+        viewModel.fetchBook()
+    }
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -46,43 +54,39 @@ fun GutenbergScreen(viewModel: GutenbergViewModel, modifier: Modifier = Modifier
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
-                TextField(
-                    value = viewModel.bookId,
-                    onValueChange = { viewModel.bookId = it },
-                    onImeAction = { viewModel.fetchBook() },
-                    placeholder = "Enter Gutenberg ID",
-                    modifier = Modifier.width(200.dp)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    TextField(
+                        value = viewModel.bookId,
+                        onValueChange = { viewModel.bookId = it },
+                        onImeAction = { viewModel.fetchBook() },
+                        placeholder = "Enter Gutenberg ID",
+                        modifier = Modifier.width(200.dp)
+                    )
 
-                if (state.loading) {
-                    InfiniteProgressBar(modifier = Modifier.size(32.dp))
-                }
-            }
+                    Spacer(Modifier.width(Dimens.Gutter))
 
-            LaunchedEffect(state.gutenbergBook) {
-                if (state.gutenbergBook != null) {
-                    viewModel.createRepository(state.gutenbergBook!!)
+                    if (state.loading) {
+                        InfiniteProgressBar()
+                    }
                 }
             }
 
             // Book details card
-            state.gutenbergBook?.let { book ->
+            state.itemDetail?.let { book ->
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = book.title,
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    book.authors.getOrNull(0)?.name?.let { authorName ->
-                        Text(
-                            text = "By $authorName",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = book.creator.orEmpty(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }

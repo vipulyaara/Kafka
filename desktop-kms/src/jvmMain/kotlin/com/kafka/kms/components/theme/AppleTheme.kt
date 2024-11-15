@@ -2,6 +2,7 @@ package com.kafka.kms.components.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -53,6 +54,51 @@ private val AppleLight = lightColorScheme(
     inverseSurface = Color(0xFF1E293B),
     inverseOnSurface = Color(0xFFF8FAFC),
     inversePrimary = Color(0xFFE2E8F0),
+)
+
+private val AppleDark = darkColorScheme(
+    // Primary colors
+    primary = Color(0xFFF8FAFC),
+    onPrimary = Color(0xFF020617),
+    primaryContainer = Color(0xFFE2E8F0),
+    onPrimaryContainer = Color(0xFF020617),
+    
+    // Secondary colors
+    secondary = Color(0xFF1E293B),
+    onSecondary = Color(0xFFF8FAFC),
+    secondaryContainer = Color(0xFF334155),
+    onSecondaryContainer = Color(0xFFF8FAFC),
+    
+    // Tertiary colors
+    tertiary = Color(0xFF94A3B8),
+    onTertiary = Color(0xFF020617),
+    tertiaryContainer = Color(0xFF64748B),
+    onTertiaryContainer = Color(0xFFF8FAFC),
+    
+    // Background colors
+    background = Color(0xFF0A0F1A),
+    onBackground = Color(0xFFF8FAFC),
+    
+    // Surface colors
+    surface = Color(0xFF000509),
+    onSurface = Color(0xFFF8FAFC),
+    surfaceVariant = Color(0xFF111827),
+    onSurfaceVariant = Color(0xFFCBD5E1),
+    surfaceTint = Color(0xFFF8FAFC),
+    
+    // Error colors
+    error = Color(0xFFFEE2E2),
+    onError = Color(0xFFB91C1C),
+    errorContainer = Color(0xFFDC2626),
+    onErrorContainer = Color(0xFFFFFFFF),
+    
+    // Additional colors
+    outline = Color(0xFF64748B),
+    outlineVariant = Color(0xFF334155),
+    scrim = Color(0x99F8FAFC),
+    inverseSurface = Color(0xFFF8FAFC),
+    inverseOnSurface = Color(0xFF020617),
+    inversePrimary = Color(0xFF1E293B),
 )
 
 private val AppleTypography = Typography(
@@ -151,10 +197,11 @@ private val AppleTypography = Typography(
 
 @Composable
 fun AppleTheme(
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = AppleLight,
+        colorScheme = if (darkTheme) AppleDark else AppleLight,
         typography = AppleTypography,
         content = content
     )

@@ -19,7 +19,7 @@ class LibrivoxFileMapper {
                 size = 0,
                 title = section.title,
                 extension = extension,
-                creators = item.creators,
+                creators = item.creators.orEmpty(),
                 duration = section.playtime.toLongOrNull(),
                 format = "readable/audio",
                 url = section.listenUrl,

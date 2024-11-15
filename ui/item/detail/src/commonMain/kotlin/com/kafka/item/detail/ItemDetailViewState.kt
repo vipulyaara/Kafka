@@ -19,7 +19,7 @@ data class ItemDetailViewState(
     val primaryFile: File? = null
 ) {
     val hasSubjects
-        get() = !itemDetail?.subject.isNullOrEmpty()
+        get() = !itemDetail?.subjects.isNullOrEmpty()
 
     val isFullScreenLoading: Boolean
         get() = isLoading && itemDetail == null

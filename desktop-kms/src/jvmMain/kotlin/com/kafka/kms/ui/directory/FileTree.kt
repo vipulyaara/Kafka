@@ -1,6 +1,7 @@
 package com.kafka.kms.ui.directory
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -32,10 +33,13 @@ import compose.icons.feathericons.ChevronDown
 import compose.icons.feathericons.ChevronRight
 import compose.icons.tablericons.FileText
 import compose.icons.tablericons.Folder
+import compose.icons.tablericons.ChevronDown
+import compose.icons.tablericons.ChevronUp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ui.common.theme.theme.Dimens
+import java.awt.Desktop
 import java.io.File
 import java.nio.file.FileSystems
 import java.nio.file.Paths
@@ -51,15 +55,16 @@ data class FileTreeNode(
 fun FileTree(
     rootPath: String,
     modifier: Modifier = Modifier,
-    onFileSelected: (File) -> Unit
+    onFileSelected: (File) -> Unit,
+    defaultExpandedDirs: List<String> = emptyList()
 ) {
     var nodes by remember { mutableStateOf(listOf<FileTreeNode>()) }
     val scope = rememberCoroutineScope()
-    
+
     LaunchedEffect(rootPath) {
         val rootFile = File(rootPath)
-        nodes = listOf(FileTreeNode(rootFile, 0))
-        
+        nodes = generateInitialTree(rootFile, defaultExpandedDirs)
+
         // Start watching directory changes
         scope.launch(Dispatchers.IO) {
             val watchService = FileSystems.getDefault().newWatchService()
@@ -70,55 +75,112 @@ fun FileTree(
                 StandardWatchEventKinds.ENTRY_DELETE,
                 StandardWatchEventKinds.ENTRY_MODIFY
             )
-            
+
             while (isActive) {
                 val key = watchService.take()
                 val needsRefresh = key.pollEvents().any { event ->
                     event.kind() != StandardWatchEventKinds.OVERFLOW
                 }
-                
+
                 if (needsRefresh) {
                     // Refresh the entire tree while maintaining expanded states
                     val expandedPaths = nodes.filter { it.isExpanded }.map { it.file.absolutePath }
                     val rootNode = FileTreeNode(rootFile, 0)
                     nodes = regenerateTree(rootNode, expandedPaths)
                 }
-                
+
                 key.reset()
             }
         }
     }
 
     Surface(modifier = modifier.fillMaxHeight(), color = MaterialTheme.colorScheme.surfaceVariant) {
-        LazyColumn(modifier = Modifier.fillMaxHeight().padding(Dimens.Gutter)) {
-            items(nodes) { node ->
-                FileTreeItem(
-                    node = node,
-                    onNodeClick = { clickedNode ->
-                        if (clickedNode.file.isDirectory) {
-                            nodes = updateNodes(nodes, clickedNode)
-                        } else {
-                            onFileSelected(clickedNode.file)
+        Column(modifier = Modifier.fillMaxHeight()) {
+            // Add expand/collapse controls
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.Gutter, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable {
+                            nodes = expandCollapseAll(nodes, true)
                         }
-                    }
-                )
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = TablerIcons.ChevronDown,
+                        contentDescription = "Expand",
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        "Expand",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                Spacer(Modifier.width(16.dp))
+                
+                Row(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable {
+                            nodes = expandCollapseAll(nodes, false)
+                        }
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = TablerIcons.ChevronUp,
+                        contentDescription = "Collapse",
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        "Collapse",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // Existing LazyColumn
+            LazyColumn(modifier = Modifier.fillMaxHeight().padding(Dimens.Gutter)) {
+                items(nodes) { node ->
+                    FileTreeItem(
+                        node = node,
+                        onNodeClick = { clickedNode ->
+                            if (clickedNode.file.isDirectory) {
+                                nodes = updateNodes(nodes, clickedNode)
+                            } else {
+                                onFileSelected(clickedNode.file)
+                                openInSystemExplorer(clickedNode.file)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun FileTreeItem(
-    node: FileTreeNode,
-    onNodeClick: (FileTreeNode) -> Unit
-) {
+private fun FileTreeItem(node: FileTreeNode, onNodeClick: (FileTreeNode) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.small)
             .clickable { onNodeClick(node) }
             .padding(start = (node.level * 16).dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (node.file.isDirectory) {
             Icon(
@@ -146,9 +208,9 @@ private fun FileTreeItem(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = node.file.name,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 2,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
     }
@@ -199,19 +261,86 @@ private fun regenerateTree(
     val result = mutableListOf<FileTreeNode>()
     fun addNode(node: FileTreeNode) {
         result.add(node)
-        if (expandedPaths.contains(node.file.absolutePath) && node.file.isDirectory) {
+        if ((expandedPaths.contains(node.file.absolutePath)) && node.file.isDirectory) {
             node.isExpanded = true
             val childFiles = node.file.listFiles()?.sortedWith(
                 compareBy({ !it.isDirectory }, { it.name.lowercase() })
             ) ?: emptyList()
-            
+
             childFiles.forEach { childFile ->
                 addNode(FileTreeNode(childFile, node.level + 1))
             }
         }
     }
-    
+
     addNode(rootNode)
     return result
 }
 
+private fun openInSystemExplorer(file: File) {
+    try {
+        if (Desktop.isDesktopSupported()) {
+            val desktop = Desktop.getDesktop()
+            if (file.exists()) {
+                desktop.browseFileDirectory(file)
+            }
+        }
+    } catch (e: Exception) {
+        // Handle any errors that might occur when trying to open the file
+        println("Error opening file in system explorer: ${e.message}")
+    }
+}
+
+private fun generateInitialTree(
+    rootFile: File,
+    defaultExpandedDirs: List<String>
+): List<FileTreeNode> {
+    val result = mutableListOf<FileTreeNode>()
+    
+    fun addNode(file: File, level: Int) {
+        val isExpanded = defaultExpandedDirs.any { dir -> 
+            file.absolutePath.startsWith(dir) 
+        }
+        val node = FileTreeNode(file, level, isExpanded)
+        result.add(node)
+        
+        if (isExpanded && file.isDirectory) {
+            val childFiles = file.listFiles()?.sortedWith(
+                compareBy({ !it.isDirectory }, { it.name.lowercase() })
+            ) ?: emptyList()
+            
+            childFiles.forEach { childFile ->
+                addNode(childFile, level + 1)
+            }
+        }
+    }
+    
+    addNode(rootFile, 0)
+    return result
+}
+
+private fun expandCollapseAll(
+    nodes: List<FileTreeNode>,
+    expand: Boolean
+): List<FileTreeNode> {
+    val rootNode = nodes.firstOrNull() ?: return nodes
+    val result = mutableListOf<FileTreeNode>()
+    
+    fun processNode(file: File, level: Int) {
+        val node = FileTreeNode(file, level, expand)
+        result.add(node)
+        
+        if (expand && file.isDirectory) {
+            val childFiles = file.listFiles()?.sortedWith(
+                compareBy({ !it.isDirectory }, { it.name.lowercase() })
+            ) ?: emptyList()
+            
+            childFiles.forEach { childFile ->
+                processNode(childFile, level + 1)
+            }
+        }
+    }
+    
+    processNode(rootNode.file, 0)
+    return result
+}
