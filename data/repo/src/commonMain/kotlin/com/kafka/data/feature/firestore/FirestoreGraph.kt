@@ -1,6 +1,7 @@
 package com.kafka.data.feature.firestore
 
 import com.kafka.base.ApplicationScope
+import com.kafka.data.entities.BookshelfDefaults
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.DocumentReference
 import me.tatarka.inject.annotations.Inject
@@ -31,13 +32,18 @@ class FirestoreGraph(
     val reportsCollection: CollectionReference
         get() = firestoreKt.collection("reports")
 
-    fun readingListCollection(uid: String) = firestoreKt
+    fun listCollection(uid: String) = firestoreKt
         .collection("users")
         .document(uid)
-        .collection("reading_list")
+        .collection("lists")
 
-    fun favoriteListCollection(uid: String) = firestoreKt
-        .collection("users")
-        .document(uid)
-        .collection("favorite_list")
+    fun listItemsCollection(uid: String, listId: String) = listCollection(uid)
+        .document(listId)
+        .collection("items")
+
+    fun readingListCollection(uid: String) =
+        listItemsCollection(uid, BookshelfDefaults.reading.bookshelfId)
+
+    fun favoriteListCollection(uid: String) =
+        listItemsCollection(uid, BookshelfDefaults.favorite.bookshelfId)
 }

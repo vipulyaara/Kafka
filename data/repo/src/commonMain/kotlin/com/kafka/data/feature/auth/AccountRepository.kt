@@ -19,7 +19,7 @@ class AccountRepository(private val auth: FirebaseAuth) {
     val currentUserOrNull
         get() = auth.currentUser
 
-    val currentUser
+    private val currentUser
         get() = currentUserOrNull!!
 
     val currentUserId

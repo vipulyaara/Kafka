@@ -26,7 +26,7 @@ data class ItemDetail(
     @SerialName("languages") val languages: List<String>?,
     @SerialName("cover_image") val coverImage: String?,
     @SerialName("subjects") val subjects: List<String>?,
-    @SerialName("rating") val rating: Double?,
+    @SerialName("rating") val rating: Double? = null,
     @SerialName("publishers") val publishers: List<String>,
 ) : BaseEntity {
     val creator: String?

@@ -59,7 +59,7 @@ import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.library.LibraryScreen
 import com.kafka.library.bookshelf.AddToBookshelf
-import com.kafka.library.bookshelf.BookshelfViewModel
+import com.kafka.library.bookshelf.AddToListViewModel
 import com.kafka.library.favorites.FavoriteViewModel
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.NavigationEvent
@@ -319,7 +319,7 @@ typealias addToBookshelf = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addToBookshelf(
-    viewModelFactory: (SavedStateHandle) -> BookshelfViewModel,
+    viewModelFactory: (SavedStateHandle) -> AddToListViewModel,
 ) {
     bottomSheet(Screen.AddToBookshelf.route) {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }

@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,12 +29,12 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun AddToBookshelf(viewModel: BookshelfViewModel) {
+fun AddToBookshelf(viewModel: AddToListViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Bookshelves(
         bookshelves = state.bookshelves,
-        title = state.itemDetail?.title.orEmpty(),
+        itemTitle = state.itemDetail?.title.orEmpty(),
         modifier = Modifier.padding(vertical = Dimens.Spacing24),
         addToBookshelf = viewModel::addToBookShelf
     )
@@ -44,8 +42,8 @@ fun AddToBookshelf(viewModel: BookshelfViewModel) {
 
 @Composable
 private fun Bookshelves(
+    itemTitle: String,
     bookshelves: List<Bookshelf>,
-    title: String,
     modifier: Modifier = Modifier,
     addToBookshelf: (String) -> Unit
 ) {
@@ -56,7 +54,7 @@ private fun Bookshelves(
     ) {
         LazyColumn {
             item {
-                Header(title = title)
+                Header(title = itemTitle)
             }
 
             items(bookshelves) { bookshelf ->
@@ -69,9 +67,9 @@ private fun Bookshelves(
 }
 
 @Composable
-private fun Header(title: String) {
+private fun Header(title: String, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(Dimens.Spacing24),
+        modifier = modifier.fillMaxWidth().padding(Dimens.Spacing24),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -91,19 +89,24 @@ private fun Header(title: String) {
             )
         }
 
-        Surface(color = MaterialTheme.colorScheme.primary, shape = CircleShape) {
-            Icon(
-                imageVector = Icons.Plus,
-                contentDescription = null,
-                modifier = Modifier.padding(Dimens.Spacing12),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+//        Surface(color = MaterialTheme.colorScheme.primary, shape = CircleShape) {
+//            Icon(
+//                imageVector = Icons.Plus,
+//                contentDescription = null,
+//                modifier = Modifier.padding(Dimens.Spacing12),
+//                tint = MaterialTheme.colorScheme.onPrimary
+//            )
+//        }
     }
 }
 
 @Composable
 private fun BookshelfItem(bookshelf: Bookshelf, added: Boolean, onClick: (Boolean) -> Unit) {
+    val visibility = when (bookshelf.visibility) {
+        Bookshelf.Visibility.Public -> "Public"
+        Bookshelf.Visibility.Private -> "Private"
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,7 +124,7 @@ private fun BookshelfItem(bookshelf: Bookshelf, added: Boolean, onClick: (Boolea
             Spacer(Modifier.height(Dimens.Spacing02))
 
             Text(
-                text = "Private",
+                text = visibility,
                 style = MaterialTheme.typography.labelMedium,
                 color = Color(0x88929292)
             )

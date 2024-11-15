@@ -16,7 +16,7 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class BookshelfViewModel(
+class AddToListViewModel(
     @Assisted private val savedStateHandle: SavedStateHandle,
     observeBookshelves: ObserveBookshelves,
     observeItemDetail: ObserveItemDetail,
@@ -35,6 +35,7 @@ class BookshelfViewModel(
     }
 
     fun addToBookShelf(bookshelfId: String) {
+        analytics.log { addToBookshelf(itemId, bookshelfId) }
         viewModelScope.launch {
             addToBookshelf(AddToBookshelf.Params(itemId, bookshelfId))
         }

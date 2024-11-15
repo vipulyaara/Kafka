@@ -155,4 +155,10 @@ class EventRepository {
     fun appMessageDismissed(id: String) = "app_message_dismissed" to mapOf(
         "id" to id
     )
+
+    fun addToBookshelf(itemId: String, listId: String, title: String? = null) = "add_to_list" to mapOf(
+        "item_id" to itemId,
+        "list_id" to listId,
+        "title" to title,
+    )
 }

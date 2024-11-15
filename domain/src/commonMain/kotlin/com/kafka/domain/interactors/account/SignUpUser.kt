@@ -4,12 +4,14 @@ import com.kafka.analytics.providers.Analytics
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import com.kafka.data.feature.auth.AccountRepository
+import com.kafka.domain.interactors.library.CreateDefaultBookshelves
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 
 @Inject
 class SignUpUser(
     private val accountRepository: AccountRepository,
+    private val createDefaultBookshelves: CreateDefaultBookshelves,
     private val dispatchers: CoroutineDispatchers,
     private val analytics: Analytics,
 ) : Interactor<SignUpUser.Params, Unit>() {
@@ -19,6 +21,8 @@ class SignUpUser(
             accountRepository.signUpOrLinkUser(params.email, params.password)
             accountRepository.updateUser(params.name.orEmpty())
             analytics.log { signUp(params.name) }
+
+            createDefaultBookshelves(Unit)
 
             //todo
 //            accountRepository.signOut()
