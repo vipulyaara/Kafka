@@ -40,39 +40,27 @@ object TableAnalyzer {
             columnTypes = determineColumnTypes(columnContents)
         )
     }
-
     private fun calculateColumnWeights(columnContents: List<List<String>>): List<Float> {
         if (columnContents.isEmpty()) return emptyList()
+        if (columnContents.size < 2) throw IllegalArgumentException("At least two columns are required")
 
-        // Calculate various metrics for each column
-        val columnMetrics = columnContents.map { column ->
-            val lengths = column.map { it.length }
-            ColumnMetrics(
-                maxLength = lengths.maxOrNull()?.toFloat() ?: 0f,
-                avgLength = lengths.average().toFloat(),
-                contentDensity = column.count { it.isNotBlank() }.toFloat() / column.size,
-                hasLongContent = column.any { it.length > 50 }
-            )
-        }
+        // Calculate the maximum length of the content in the first column
+        val firstColumnMaxLength = columnContents[0].maxOfOrNull { it.length }?.toFloat() ?: 0f
 
-        // Calculate base weights using a weighted combination of metrics
-        val baseWeights = columnMetrics.map { metrics ->
-            val weight = (
-                (metrics.maxLength * 0.4f) +     // Max length has high importance
-                (metrics.avgLength * 0.4f) +     // Average length equally important
-                (if (metrics.hasLongContent) 2f else 0f) + // Bonus for long content
-                (metrics.contentDensity * 0.2f)  // Density has some influence
-            )
-            weight.coerceAtLeast(1f)  // Ensure minimum weight
-        }
+        // Total weight to be distributed (1.0)
+        val totalWeight = 1f
 
-        // Normalize weights to sum to 1
-        val total = baseWeights.sum()
-        return if (total > 0) {
-            baseWeights.map { it / total }
-        } else {
-            List(columnContents.size) { 1f / columnContents.size }
-        }
+        // Determine the weight for the first column to fully display its content
+        val firstColumnWeight = firstColumnMaxLength.coerceAtLeast(1f) / MAX_CHARACTERS_PER_LINE // Normalize weight
+
+        // Ensure the first column does not exceed the total weight
+        val clampedFirstColumnWeight = firstColumnWeight.coerceIn(0f, totalWeight)
+
+        // Remaining weight goes to the second column
+        val secondColumnWeight = totalWeight - clampedFirstColumnWeight
+
+        // Return weights for the first and second columns
+        return listOf(clampedFirstColumnWeight, secondColumnWeight)
     }
 
     private fun isDialogueTable(columnContents: List<List<String>>): Boolean {
@@ -97,9 +85,4 @@ object TableAnalyzer {
     }
 }
 
-private data class ColumnMetrics(
-    val maxLength: Float,
-    val avgLength: Float,
-    val contentDensity: Float,
-    val hasLongContent: Boolean
-) 
+const val MAX_CHARACTERS_PER_LINE = 40

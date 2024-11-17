@@ -91,7 +91,7 @@ fun TableComponent(
                             )
                             .padding(8.dp)
                     ) {
-                        row.forEachIndexed { colIndex, cell ->
+                        row.forEachIndexed RowToTextElements@ { colIndex, cell ->
                             val textElement = cell.copy(
                                 alignment = (element.columnAlignments.getOrNull(colIndex)
                                     ?: ColumnAlignment.LEFT).toTextAlignment(),
@@ -103,6 +103,10 @@ fun TableComponent(
                                     }
                                 )
                             )
+
+                            if (textElement.content.isEmpty()) {
+                                return@RowToTextElements
+                            }
 
                             val weight =
                                 element.columnWeights.getOrNull(colIndex) ?: (1f / row.size)

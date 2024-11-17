@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
@@ -78,7 +79,7 @@ fun TextElement(
             .padding(
                 vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08,
             ),
-        style = textStyle,
+        style = textStyle.copy(hyphens = Hyphens.Auto),
         fontFamily = settings.font.fontFamily,
         fontWeight = when {
             TextStyle.Bold in element.styles -> FontWeight.Bold
