@@ -16,6 +16,15 @@ abstract class RecentTextDao : EntityDao<RecentTextItem> {
 
     @Query("update recent_text set currentPage = :currentPage where fileId = :fileId")
     abstract suspend fun updateCurrentPage(fileId: String, currentPage: Int)
+
+    suspend fun insertOrUpdateCurrentPage(fileId: String, currentPage: Int) {
+        val recentTextItem = getOrNull(fileId)
+        if (recentTextItem != null) {
+            updateCurrentPage(fileId, currentPage)
+        } else {
+            insert(RecentTextItem(fileId, currentPage = currentPage))
+        }
+    }
 }
 
 @Dao

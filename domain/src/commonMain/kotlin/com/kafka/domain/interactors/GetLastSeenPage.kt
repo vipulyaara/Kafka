@@ -4,21 +4,20 @@ import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.debug
 import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.RecentTextDao
+import com.kafka.data.entities.RecentTextItem
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class UpdateCurrentPage(
+class GetLastSeenPage(
     private val dispatchers: CoroutineDispatchers,
     private val recentTextDao: RecentTextDao,
-) : Interactor<UpdateCurrentPage.Params, Unit>() {
+) : Interactor<GetLastSeenPage.Params, RecentTextItem?>() {
 
-    override suspend fun doWork(params: Params) {
-        withContext(dispatchers.io) {
-            debug { "UpdateCurrentPage: $params" }
-            recentTextDao.insertOrUpdateCurrentPage(params.fileId, params.currentPage)
-        }
+    override suspend fun doWork(params: Params): RecentTextItem? = withContext(dispatchers.io) {
+        debug { "GetLastSteenPage: $params" }
+        return@withContext recentTextDao.getOrNull(params.fileId)
     }
 
-    data class Params(val fileId: String, val currentPage: Int)
+    data class Params(val fileId: String)
 }

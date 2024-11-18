@@ -13,8 +13,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -54,7 +56,13 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
         ProvideScaffoldPadding(it) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.epubBook != null) {
-                    val pagerState = rememberPagerState { state.epubBook!!.chapters.size }
+                    val pagerState = rememberPagerState(initialPage = state.epubBook!!.lastSeenPage) { state.epubBook!!.chapters.size }
+
+                    LaunchedEffect(pagerState) {
+                        snapshotFlow { pagerState.currentPage }.collect { page ->
+                            viewModel.onPageChanged(page)
+                        }
+                    }
 
                     EpubBook(
                         readerState = state,

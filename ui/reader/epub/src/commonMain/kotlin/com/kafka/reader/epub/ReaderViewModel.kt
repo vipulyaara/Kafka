@@ -15,6 +15,7 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.Download
 import com.kafka.data.entities.ItemDetail
+import com.kafka.domain.interactors.GetLastSeenPage
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.downloader.core.DownloadItem
@@ -41,6 +42,7 @@ class ReaderViewModel(
     private val updateReaderSettings: UpdateReaderSettings,
     private val updateCurrentPage: UpdateCurrentPage,
     private val observeDownload: ObserveDownload,
+    private val getLastSeenPage: GetLastSeenPage,
     private val snackbarManager: SnackbarManager,
     private val downloadItem: DownloadItem,
     private val parseEbook: ParseEbook,
@@ -91,6 +93,10 @@ class ReaderViewModel(
         }
     }
 
+    fun onPageChanged(page: Int) {
+        onPageChanged(fileId, page)
+    }
+
     private fun onPageChanged(fileId: String, page: Int) {
         viewModelScope.launch {
             updateCurrentPage(UpdateCurrentPage.Params(fileId, page))
@@ -115,7 +121,11 @@ class ReaderViewModel(
     private fun loadEbook(uri: String) {
         viewModelScope.launch {
             val result = parseEbook(uri)
-            result.onSuccess { ebook = it }
+            result.onSuccess {
+                val lastSeenPage =
+                    getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull()?.currentPage ?: 0
+                ebook = it.copy(lastSeenPage = lastSeenPage)
+            }
             result.onFailure { snackbarManager.addMessage(UiMessage.Error(it)) }
         }
     }
