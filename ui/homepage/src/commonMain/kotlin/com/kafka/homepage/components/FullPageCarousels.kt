@@ -20,7 +20,6 @@ import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.LocalAnimatedContentScope
@@ -42,7 +41,7 @@ internal fun FullPageCarousels(
     val state = rememberCarouselState { carouselItems.size }
 
     Column(modifier = modifier) {
-//        Header()
+        Header()
 
         Spacer(Modifier.height(Dimens.Spacing08))
 
@@ -53,6 +52,8 @@ internal fun FullPageCarousels(
             itemSpacing = Dimens.Spacing04,
             contentPadding = PaddingValues(horizontal = Dimens.Spacing16)
         ) { index ->
+            val image = images.getOrNull(index) ?: carouselItems.getOrNull(index)?.coverImage
+
             carouselItems.getOrNull(index)?.let { item ->
                 Column {
                     Text(
@@ -72,7 +73,7 @@ internal fun FullPageCarousels(
                             item = item,
                             label = null,
                             aspectRatio = 0.66f,
-                            imageUrl = images.getOrNull(index),
+                            imageUrl = image,
                             onClick = { onClick(item.itemId) },
                             modifier = Modifier
                                 .sharedElement(
@@ -146,14 +147,4 @@ val dates = listOf(
     "24 November 2024",
     "25 November 2024",
     "26 November 2024",
-)
-
-val colors = listOf(
-    Color(0xFFD48545),
-    Color(0xFFE92E15),
-    Color(0xFFDE7F21),
-    Color(0xFFE62418),
-    Color(0xFFFCEA47),
-    Color(0xFFFCEA47),
-    Color(0xFFFCEA47),
 )

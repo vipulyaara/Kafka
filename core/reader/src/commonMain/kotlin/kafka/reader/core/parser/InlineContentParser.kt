@@ -295,7 +295,7 @@ object InlineContentParser {
     private fun appendWithSpacing(stringBuilder: StringBuilder, text: String) {
         if (stringBuilder.isNotEmpty() && 
             !stringBuilder.last().isWhitespace() && 
-            !text.first().isWhitespace()
+            text.firstOrNull()?.isWhitespace() == false
         ) {
             stringBuilder.append(' ')
         }
