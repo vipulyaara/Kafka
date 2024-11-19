@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.kafka.homepage
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.gridColumns
+import com.kafka.common.animation.LocalAnimatedContentScope
+import com.kafka.common.animation.LocalSharedTransitionScope
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
@@ -42,6 +47,7 @@ import com.kafka.homepage.components.FullPageCarousels
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.Screen.ItemDetail.Origin
+import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
@@ -359,14 +365,25 @@ private fun LazyGridScope.gridItems(
             key = { it.itemId },
             contentType = { "item" }
         ) { item ->
-            GridItem(
-                coverImage = item.coverImage,
-                mediaType = item.mediaType,
-                modifier = Modifier
-                    .padding(Dimens.Spacing06)
-                    .clip(RoundedCornerShape(Dimens.Radius08))
-                    .clickable { openItemDetail(item.itemId) }
-            )
+            with(LocalSharedTransitionScope.current) {
+                GridItem(
+                    coverImage = item.coverImage,
+                    mediaType = item.mediaType,
+                    modifier = Modifier
+                        .padding(Dimens.Spacing06)
+                        .clip(RoundedCornerShape(Dimens.Radius08))
+                        .clickable { openItemDetail(item.itemId) }
+                        .sharedElement(
+                            state = rememberSharedContentState(
+                                key = SharedElementCoverKey(
+                                    cover = item.coverImage.orEmpty(),
+                                    origin = Origin.Grid
+                                )
+                            ),
+                            animatedVisibilityScope = LocalAnimatedContentScope.current
+                        )
+                )
+            }
         }
     } else {
         fullSpanItems(
