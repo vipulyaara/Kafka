@@ -7,6 +7,7 @@ import kafka.ui.root.generated.resources.Res
 import kafka.ui.root.generated.resources.bottom_bar_search
 import kafka.ui.root.generated.resources.home
 import kafka.ui.root.generated.resources.library
+import kafka.ui.root.generated.resources.profile
 import org.jetbrains.compose.resources.StringResource
 
 internal val HomeNavigationItems = listOf(
@@ -30,6 +31,13 @@ internal val HomeNavigationItems = listOf(
         contentDescriptionResId = Res.string.library,
         iconImageVector = Icons.Library,
         selectedImageVector = Icons.LibraryActive,
+    ),
+    HomeNavigationItem(
+        rootScreen = RootScreen.Profile,
+        labelResId = Res.string.profile,
+        contentDescriptionResId = Res.string.profile,
+        iconImageVector = Icons.Settings,
+        selectedImageVector = Icons.Settings,
     )
 )
 

@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,6 +20,7 @@ import com.kafka.common.simpleClickable
 import com.kafka.data.entities.User
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.progress.InfiniteProgressBar
+import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.profile.generated.resources.Res
 import kafka.ui.profile.generated.resources.app_version
 import kafka.ui.profile.generated.resources.go_to_favorites
@@ -31,19 +30,17 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ProfileScreen(
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier,
-) {
+fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.current
     val viewState by profileViewModel.state.collectAsStateWithLifecycle()
 
-    CompositeSurface(modifier = modifier.padding(horizontal = Dimens.Spacing24)) {
+    CompositeSurface(
+        modifier = modifier
+            .padding(horizontal = Dimens.Spacing12)
+            .padding(scaffoldPadding())
+    ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(vertical = Dimens.Spacing20),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
@@ -61,6 +58,8 @@ fun ProfileScreen(
                 navigator.goBack()
             }
 
+            Spacer(Modifier.weight(1f))
+
             viewState.appVersion?.let { version ->
                 Text(
                     text = stringResource(Res.string.app_version, version),
@@ -77,14 +76,13 @@ private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Surface(
             shape = MaterialTheme.shapes.large,
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
-        ) {
-            content()
-        }
+            color = MaterialTheme.colorScheme.surface,
+            content = content
+        )
     }
 }
 
@@ -96,7 +94,11 @@ private fun ProfileHeader(
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier,
 ) {
-    Surface(modifier = modifier, shape = MaterialTheme.shapes.large) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = MaterialTheme.shapes.large
+    ) {
         if (isLoading) {
             InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
         } else {

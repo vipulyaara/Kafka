@@ -2,7 +2,7 @@ package com.kafka.kms.service
 
 import com.kafka.base.SecretsProvider
 import com.kafka.data.entities.File
-import com.kafka.data.entities.Item
+import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.MediaType
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import io.ktor.client.HttpClient
@@ -51,7 +51,7 @@ class UploadService(
         val translatorsList = translators.split(",").map { it.trim() }
 
         // Create Item entity
-        val item = Item(
+        val item = ItemDetail(
             itemId = itemId,
             title = title,
             mediaType = mediaType,
@@ -60,7 +60,10 @@ class UploadService(
             description = description,
             coverImage = coverUrl,
             collections = collectionsList,
-            subjects = subjectsList
+            subjects = subjectsList,
+            translators = translatorsList,
+            rating = 0.0,
+            publishers = publishersList
         )
 
         // Create File entity

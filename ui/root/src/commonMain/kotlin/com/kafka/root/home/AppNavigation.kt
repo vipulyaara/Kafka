@@ -14,6 +14,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -104,6 +105,7 @@ fun AppNavigation(
     addItemDetailGroup: addItemDetailGroup,
     addLibrary: addLibrary,
     addProfile: addProfile,
+    addProfileScreen: addProfileScreen,
     addFeedback: addFeedback,
     addLogin: addLogin,
     addPlayer: addPlayer,
@@ -190,6 +192,13 @@ fun AppNavigation(
                     addWebView()
                     addLogin()
                     addProfile()
+                }
+
+                navigation<RootScreen.Profile>(startDestination = Screen.Profile) {
+                    addProfileScreen()
+                    addPlayer()
+                    addWebView()
+                    addLogin()
                 }
             }
         }
@@ -339,6 +348,16 @@ fun NavGraphBuilder.addProfile(viewModelFactory: () -> ProfileViewModel) {
     dialog<Screen.Profile>(dialogProperties = DialogProperties(usePlatformDefaultWidth = false)) {
         val viewModel = viewModel { viewModelFactory() }
         ProfileScreen(viewModel)
+    }
+}
+
+typealias addProfileScreen = NavGraphBuilder.() -> Unit
+
+@Inject
+fun NavGraphBuilder.addProfileScreen(viewModelFactory: () -> ProfileViewModel) {
+    composable<Screen.Profile> {
+        val viewModel = viewModel { viewModelFactory() }
+        ProfileScreen(profileViewModel = viewModel, modifier = Modifier.systemBarsPadding())
     }
 }
 

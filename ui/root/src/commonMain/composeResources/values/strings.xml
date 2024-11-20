@@ -6,6 +6,7 @@
     <string name="library" translatable="false">Library</string>
     <string name="bottom_bar_search" translatable="false">Search</string>
     <string name="home" translatable="false">Home</string>
+    <string name="profile" translatable="false">Profile</string>
 
     <string name="update_available" translatable="false">Update Available</string>
     <string name="force_update_message" translatable="false">This version is outdated. Please update the app to continue using it.</string>

@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.kafka.root.home.bottombar
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
@@ -14,7 +17,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
@@ -25,8 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -76,7 +76,6 @@ import ui.common.theme.theme.Dimens
 
 typealias HomeNavigation = @Composable (NavHostController) -> Unit
 
-@Suppress("UNUSED_PARAMETER")
 @Inject
 @Composable
 fun HomeNavigation(
@@ -152,13 +151,12 @@ fun HomeNavigation(
                             },
                             modifier = Modifier.fillMaxHeight(),
                         ) {
-                            // todo
-//                            WideMiniPlayer(
-//                                playbackConnection = playbackConnection,
-//                                navController = navController,
-//                                sleepTimerViewModelFactory = sleepTimerViewModelFactory,
-//                                playbackSpeedViewModelFactory = playbackSpeedViewModelFactory
-//                            )
+                            WideMiniPlayer(
+                                playbackConnection = playbackConnection,
+                                navController = navController,
+                                sleepTimerViewModelFactory = sleepTimerViewModelFactory,
+                                playbackSpeedViewModelFactory = playbackSpeedViewModelFactory
+                            )
                         }
 
                         VerticalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
@@ -192,24 +190,10 @@ private fun HomeNavigationBar(
         }
 
         if (navigationType == NavigationType.BOTTOM_NAVIGATION) {
-            NavigationBar(
-                containerColor = Color.Transparent,
-                windowInsets = WindowInsets.navigationBars,
-            ) {
-                for (item in navigationItems) {
-                    NavigationBarItem(
-                        icon = {
-                            HomeNavigationItemIcon(
-                                item = item,
-                                selected = selectedNavigation == item.rootScreen,
-                            )
-                        },
-                        label = { Text(text = stringResource(item.labelResId)) },
-                        selected = selectedNavigation == item.rootScreen,
-                        onClick = { onNavigationSelected(item.rootScreen) }
-                    )
-                }
-            }
+            BottomNav(
+                screens = navigationItems,
+                selectedScreen = selectedNavigation
+            ) { onNavigationSelected(it) }
         }
     }
 }
