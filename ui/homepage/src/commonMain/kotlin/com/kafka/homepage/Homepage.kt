@@ -80,7 +80,10 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-//        topBar = { HomeTopBar(openProfile = viewModel::openProfile) },
+        topBar = {
+            Spacer(Modifier.height(Dimens.Spacing56))
+//            HomeTopBar(openProfile = viewModel::openProfile)
+        },
     ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box(modifier = Modifier.fillMaxSize()) {

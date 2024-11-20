@@ -2,6 +2,7 @@ package com.kafka.root.home.bottombar
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -31,6 +32,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import com.kafka.common.simpleClickable
@@ -46,66 +48,93 @@ internal fun BottomNav(
     modifier: Modifier = Modifier,
     select: (RootScreen) -> Unit,
 ) {
-    Column(
+    val colors = listOf(
+        MaterialTheme.colorScheme.primary,
+        MaterialTheme.colorScheme.tertiary,
+        MaterialTheme.colorScheme.secondary,
+        MaterialTheme.colorScheme.error,
+    )
+
+    val selectedIndex = screens.indexOfFirst { it.rootScreen == selectedScreen }
+    val animatedColor by animateColorAsState(colors[selectedIndex])
+    val animatedSelectedIndex by animateFloatAsState(
+        targetValue = selectedIndex.toFloat(),
+        animationSpec = tween(300, easing = FastOutSlowInEasing)
+    )
+
+    Box(
         modifier
             .fillMaxWidth()
             .navigationBarsPadding()
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
+        Column {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
 
-            val color = MaterialTheme.colorScheme.primary
-            val selectedIndex = screens.indexOfFirst { it.rootScreen == selectedScreen }
-            val animatedSelectedIndex by animateFloatAsState(
-                targetValue = selectedIndex.toFloat(),
-                animationSpec = tween(300, easing = FastOutSlowInEasing)
-            )
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-            ) {
-                val tabWidth = size.width / screens.size
-
-                drawLine(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            color.copy(alpha = 0f),
-                            color.copy(alpha = 0.6f),
-                            color.copy(alpha = 0.6f),
-                            color.copy(alpha = 0f),
-                        ),
-                        startX = tabWidth * animatedSelectedIndex,
-                        endX = tabWidth * (animatedSelectedIndex + 1),
-                    ),
-                    start = Offset(tabWidth * animatedSelectedIndex, 0f),
-                    end = Offset(tabWidth * (animatedSelectedIndex + 1), 0f),
-                    strokeWidth = 2.dp.toPx()
+                GleemIndicator(
+                    screens = screens,
+                    animatedColor = animatedColor,
+                    animatedSelectedIndex = animatedSelectedIndex
                 )
             }
-        }
 
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            for (screen in screens) {
-                val selected = screen.rootScreen == selectedScreen
-                val animatedWeight by animateFloatAsState(targetValue = if (selected) 1.5f else 1f)
-                val index = screens.indexOf(screen)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                for (screen in screens) {
+                    val selected = screen.rootScreen == selectedScreen
+                    val animatedWeight by animateFloatAsState(targetValue = if (selected) 1.5f else 1f)
+                    val index = screens.indexOf(screen)
 
-                Box(
-                    modifier = Modifier.weight(animatedWeight),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    BottomNavItem(
-                        modifier = Modifier.simpleClickable { select(screen.rootScreen) },
-                        item = screen,
-                        selected = selected,
-                        totalTabs = screens.size,
-                        index = index
-                    )
+                    Box(
+                        modifier = Modifier.weight(animatedWeight),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        BottomNavItem(
+                            modifier = Modifier.simpleClickable { select(screen.rootScreen) },
+                            item = screen,
+                            color = animatedColor,
+                            selected = selected,
+                            totalTabs = screens.size,
+                            index = index
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun GleemIndicator(
+    screens: List<HomeNavigationItem>,
+    animatedColor: Color,
+    animatedSelectedIndex: Float
+) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimens.Spacing16)
+            .height(1.dp)
+    ) {
+        val tabWidth = size.width / screens.size
+
+        drawLine(
+            brush = Brush.horizontalGradient(
+                colors = listOf(
+                    animatedColor.copy(alpha = 0f),
+                    animatedColor.copy(alpha = 0.6f),
+                    animatedColor.copy(alpha = 0.6f),
+                    animatedColor.copy(alpha = 0f),
+                ),
+                startX = tabWidth * animatedSelectedIndex,
+                endX = tabWidth * (animatedSelectedIndex + 1),
+            ),
+            start = Offset(tabWidth * animatedSelectedIndex, 0f),
+            end = Offset(tabWidth * (animatedSelectedIndex + 1), 0f),
+            strokeWidth = 2.dp.toPx()
+        )
     }
 }
 
@@ -115,10 +144,10 @@ private fun BottomNavItem(
     modifier: Modifier = Modifier,
     item: HomeNavigationItem,
     selected: Boolean,
+    color: Color,
     totalTabs: Int,
     index: Int
 ) {
-    val color = MaterialTheme.colorScheme.primary
     val animatedElevation by animateDpAsState(targetValue = if (selected) 12.dp else 0.dp)
     val animatedAlpha by animateFloatAsState(
         targetValue = if (selected) 0.6f else 0f,
@@ -166,7 +195,7 @@ private fun BottomNavItem(
                 .then(
                     if (selected) {
                         Modifier.background(
-                            color = MaterialTheme.colorScheme.surface,
+                            color = MaterialTheme.colorScheme.inverseSurface,
                             shape = RoundedCornerShape(20.dp)
                         )
                     } else {
@@ -179,6 +208,7 @@ private fun BottomNavItem(
                     Text(
                         text = stringResource(item.labelResId),
                         style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
                         maxLines = 1,
                         modifier = Modifier.padding(
                             horizontal = Dimens.Spacing16,

@@ -41,7 +41,7 @@ internal fun FullPageCarousels(
     val state = rememberCarouselState { carouselItems.size }
 
     Column(modifier = modifier) {
-        Header()
+//        Header()
 
         Spacer(Modifier.height(Dimens.Spacing08))
 
