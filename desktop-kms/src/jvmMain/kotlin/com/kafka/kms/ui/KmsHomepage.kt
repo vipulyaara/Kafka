@@ -11,17 +11,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.kafka.kms.components.Sidebar
 import com.kafka.kms.data.files.DirectoryPaths
+import com.kafka.kms.service.UploadService
 import com.kafka.kms.ui.directory.FileTree
 import com.kafka.kms.ui.gutenberg.GutenbergScreen
 import com.kafka.kms.ui.gutenberg.GutenbergViewModel
+import com.kafka.kms.ui.upload.UploadScreen
 import me.tatarka.inject.annotations.Inject
 
 typealias KmsHomepage = @Composable () -> Unit
 
 @Inject
 @Composable
-fun KmsHomepage(gutenbergFactory: () -> GutenbergViewModel) {
-    var currentRoute by remember { mutableStateOf("gutenberg") }
+fun KmsHomepage(
+    uploadService: UploadService,
+    gutenbergFactory: () -> GutenbergViewModel
+) {
+    var currentRoute by remember { mutableStateOf("upload") }
 
     Row(modifier = Modifier.fillMaxSize()) {
         // Left sidebar
@@ -36,6 +41,11 @@ fun KmsHomepage(gutenbergFactory: () -> GutenbergViewModel) {
             when (currentRoute) {
                 "gutenberg" -> GutenbergScreen(
                     viewModel = gutenbergFactory(),
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                "upload" -> UploadScreen(
+                    uploadService = uploadService,
                     modifier = Modifier.fillMaxSize()
                 )
 

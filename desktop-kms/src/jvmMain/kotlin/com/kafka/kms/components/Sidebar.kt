@@ -28,6 +28,7 @@ import compose.icons.tablericons.BoltOff
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Feather
 import compose.icons.tablericons.Settings
+import compose.icons.tablericons.Upload
 
 @Composable
 fun Sidebar(
@@ -92,6 +93,13 @@ fun Sidebar(
             label = "Standard Ebooks",
             selected = selectedRoute == "standard-ebooks",
             onClick = { onRouteSelected("standard-ebooks") }
+        )
+
+        NavItem(
+            icon = TablerIcons.Upload,
+            label = "Upload",
+            selected = selectedRoute == "upload",
+            onClick = { onRouteSelected("upload") }
         )
 
         Spacer(modifier = Modifier.weight(1f))

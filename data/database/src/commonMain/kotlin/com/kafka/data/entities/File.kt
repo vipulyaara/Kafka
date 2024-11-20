@@ -31,7 +31,7 @@ data class File(
         get() = title + extension
 
     val creator: String
-        get() = creators?.take(5)?.firstOrNull().orEmpty()
+        get() = creators.take(5).firstOrNull().orEmpty()
 
     companion object {
         val audioExtensions = listOf("mp3", "wav", "m4a", "ogg", "aac", "flac")

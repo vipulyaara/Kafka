@@ -28,6 +28,13 @@ buildConfig {
 
     buildConfigField(
         "String",
+        "SUPABASE_ADMIN_KEY",
+        properties["SUPABASE_ADMIN_KEY"]?.toString()
+            ?: System.getenv("SUPABASE_ADMIN_KEY")
+    )
+
+    buildConfigField(
+        "String",
         "SUPABASE_KEY",
         properties["SUPABASE_KEY"]?.toString()
             ?: System.getenv("SUPABASE_KEY")

@@ -28,9 +28,9 @@ object Imprint {
             </header>
             <p>This ebook was created with care and attention to detail by <a href="https://www.kafka.studio">Kafka Studio</a>. We strive to produce high-quality digital reading experiences while respecting intellectual property rights.</p>
             <p>This ebook is based on carefully curated source material, ensuring the highest standards of accuracy and presentation.</p>
-            <p>Digital Publication ${copyrightText(copyrightType)}</p>
+            <p>${copyrightText(copyrightType)}</p>
            
-            <p>${Clock.System.now().toString().substring(0, 4)}</p>
+            <p>Digital Publication Year - ${Clock.System.now().toString().substring(0, 4)}</p>
         </section>
     </body>
 </html>"""
@@ -52,7 +52,7 @@ private fun copyrightText(copyrightType: CopyrightType): String = when (copyrigh
 
     CopyrightType.GutenbergCopyright -> """
         This is a COPYRIGHTED Project Gutenberg eBook. Details Below.
-        Please follow the copyright guidelines in this file or online at www.gutenberg.org.
+        Please follow the copyright guidelines in this file or online at <a href="https://www.gutenberg.org">www.gutenberg.org</a>.
     """.trimIndent()
 
     CopyrightType.KafkaCopyrightOpen -> """

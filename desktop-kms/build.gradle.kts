@@ -1,10 +1,24 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.buildConfig)
+}
+
+buildConfig {
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+
+    buildConfigField(
+        "String",
+        "SUPABASE_ADMIN_KEY",
+        properties["SUPABASE_ADMIN_KEY"]?.toString()
+            ?: System.getenv("SUPABASE_ADMIN_KEY")
+    )
 }
 
 dependencies {
@@ -33,6 +47,7 @@ kotlin {
 
                 implementation(libs.firebase.firestore)
                 implementation(libs.firebase.analytics)
+                implementation(libs.firebase.storage)
 
                 implementation(libs.kotlininject.runtime)
 
