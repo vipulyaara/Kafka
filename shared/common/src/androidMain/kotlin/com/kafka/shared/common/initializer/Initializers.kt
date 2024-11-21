@@ -33,14 +33,12 @@ actual class FirebaseInitializer(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
     private val crashlyticsInitializer: CrashlyticsInitializer,
-    private val remoteConfigInitializer: RemoteConfigInitializer,
     private val context: Application,
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
             Firebase.initialize(context)
             crashlyticsInitializer.init()
-            remoteConfigInitializer.init()
         }
     }
 }

@@ -28,7 +28,6 @@ actual class LoggerInitializer : AppInitializer {
 @Inject
 actual class FirebaseInitializer(
     private val dispatchers: CoroutineDispatchers,
-    private val remoteConfigInitializer: RemoteConfigInitializer,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
     private val applicationInfo: ApplicationInfo
 ) : AppInitializer {
@@ -70,7 +69,6 @@ actual class FirebaseInitializer(
             )
 
             Firebase.initialize(Application(), options)
-            remoteConfigInitializer.init()
         }
     }
 }

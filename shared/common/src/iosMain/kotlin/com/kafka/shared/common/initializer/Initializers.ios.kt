@@ -5,7 +5,6 @@ import co.touchlab.kermit.XcodeSeverityWriter
 import com.kafka.base.AppInitializer
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.ProcessLifetime
-import com.kafka.shared.common.initializer.RemoteConfigInitializer
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 import kotlinx.coroutines.CoroutineScope
@@ -24,12 +23,10 @@ actual class LoggerInitializer : AppInitializer {
 actual class FirebaseInitializer(
     private val dispatchers: CoroutineDispatchers,
     @ProcessLifetime private val coroutineScope: CoroutineScope,
-    private val remoteConfigInitializer: RemoteConfigInitializer,
 ) : AppInitializer {
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
             Firebase.initialize()
-            remoteConfigInitializer.init()
         }
     }
 }

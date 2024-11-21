@@ -5,9 +5,9 @@ import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
 @Inject
-expect class RemoteConfig {
+actual class RemoteConfig {
+    actual fun get(key: String): String = ""
 
-    fun get(key: String): String
+    actual fun getBoolean(key: String): Boolean = false
 
-    fun getBoolean(key: String): Boolean
 }
