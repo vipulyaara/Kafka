@@ -9,9 +9,7 @@ import me.tatarka.inject.annotations.Inject
 
 @ApplicationScope
 @Inject
-class RecentItemRepository(
-    private val firestoreGraph: FirestoreGraph
-) {
+class RecentItemRepository(private val firestoreGraph: FirestoreGraph) {
     suspend fun getRecentItems(uid: String, limit: Int): List<RecentItem> {
         return firestoreGraph.readingListCollection(uid)
             .orderBy("updated_at", Direction.DESCENDING)
@@ -28,6 +26,23 @@ class RecentItemRepository(
             .map { snapshot ->
                 snapshot.documents.map { it.data<RecentItem>() }
             }
+
+    suspend fun removeRecentItem(uid: String, itemId: String) {
+        firestoreGraph.readingListCollection(uid)
+            .document(itemId)
+            .delete()
+    }
+
+    suspend fun clearRecentItems(uid: String) {
+        val batch = firestoreGraph.batch()
+        val documents = firestoreGraph.readingListCollection(uid).get().documents
+
+        documents.forEach { document ->
+            batch.delete(document.reference)
+        }
+
+        batch.commit()
+    }
 
 //    suspend fun getRecentItems(uid: String): List<RecentItem> {
 //        return supabase.recentItems

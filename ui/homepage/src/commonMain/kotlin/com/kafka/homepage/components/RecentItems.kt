@@ -74,7 +74,7 @@ internal fun RecentItems(
     removeRecentItem: (String) -> Unit,
     openRecentItems: () -> Unit
 ) {
-    val showAllAction = remember(readingList) { readingList.size > 2 }
+    val showAllAction = remember(readingList) { readingList.size > 0 }
 
     Column(modifier = modifier.background(MaterialTheme.colorScheme.surface)) {
         Row(

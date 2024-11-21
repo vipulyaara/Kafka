@@ -11,24 +11,30 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.data.entities.RecentItem
 import com.kafka.domain.interactors.GetRecentItems
-import com.kafka.domain.interactors.recent.RemoveAllRecentItems
+import com.kafka.domain.interactors.recent.ClearRecentItems
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 
 @Inject
 class RecentItemsViewModel(
     getRecentItems: GetRecentItems,
-    private val removeAllRecentItems: RemoveAllRecentItems,
+    private val clearRecentItems: ClearRecentItems,
     private val removeRecentItem: RemoveRecentItem,
     private val snackbarManager: SnackbarManager,
     private val navigator: Navigator,
     private val analytics: Analytics,
 ) : ViewModel() {
     var recentItems by mutableStateOf<List<RecentItem>>(emptyList())
-    val loading = getRecentItems.inProgress.stateInDefault(viewModelScope, false)
+    val loading = combine(
+        getRecentItems.inProgress,
+        clearRecentItems.inProgress
+    ) { getRecentItemsInProgress, clearRecentItemInProgress ->
+        getRecentItemsInProgress || clearRecentItemInProgress
+    }.stateInDefault(viewModelScope, false)
 
     init {
         viewModelScope.launch {
@@ -53,7 +59,8 @@ class RecentItemsViewModel(
     fun clearAllRecentItems() {
         analytics.log { this.clearRecentItems() }
         viewModelScope.launch {
-            removeAllRecentItems(Unit)
+            clearRecentItems(Unit)
+            navigator.goBack()
         }
     }
 }

@@ -6,12 +6,11 @@ import com.kafka.data.feature.auth.AccountRepository
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class RemoveRecentItem(
+class ClearRecentItems(
     private val accountRepository: AccountRepository,
     private val recentItemRepository: RecentItemRepository
-) : Interactor<String, Unit>() {
-
-    override suspend fun doWork(params: String) {
-        recentItemRepository.removeRecentItem(accountRepository.currentUserId, params)
+) : Interactor<Unit, Unit>() {
+    override suspend fun doWork(params: Unit) {
+        recentItemRepository.clearRecentItems(accountRepository.currentUserId)
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
+import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
@@ -126,7 +127,7 @@ class ReaderViewModel(
                     getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull()?.currentPage ?: 0
                 ebook = it.copy(lastSeenPage = lastSeenPage)
             }
-            result.onFailure { snackbarManager.addMessage(UiMessage.Error(it)) }
+            result.onException { snackbarManager.addMessage(UiMessage.Error(it)) }
         }
     }
 

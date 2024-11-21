@@ -299,7 +299,6 @@ fun NavGraphBuilder.addItemDetail(
             navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
         )
     ) {
-
         ProvideLocalAnimatedContentScope(this@composable) {
             val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
             ItemDetail(viewModel)

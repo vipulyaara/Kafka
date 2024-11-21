@@ -4,35 +4,33 @@ import com.kafka.base.ApplicationScope
 import com.kafka.data.entities.BookshelfDefaults
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.DocumentReference
+import dev.gitlive.firebase.firestore.FirebaseFirestore
 import me.tatarka.inject.annotations.Inject
-import dev.gitlive.firebase.firestore.FirebaseFirestore as FirebaseFirestoreKt
 
 @ApplicationScope
 @Inject
-class FirestoreGraph(
-    private val firestoreKt: FirebaseFirestoreKt
-) {
+class FirestoreGraph(private val firestore: FirebaseFirestore) {
     val homepageCollection: CollectionReference
-        get() = firestoreKt
+        get() = firestore
             .collection("homepage-collection-debug") //todo
 
     val appUpdateConfig: DocumentReference
-        get() = firestoreKt
+        get() = firestore
             .collection("app_config")
             .document("app_update")
 
     val appMessageConfig: DocumentReference
-        get() = firestoreKt
+        get() = firestore
             .collection("app_config")
             .document("app_message")
 
     val summaryCollection: CollectionReference
-        get() = firestoreKt.collection("summary")
+        get() = firestore.collection("summary")
 
     val reportsCollection: CollectionReference
-        get() = firestoreKt.collection("reports")
+        get() = firestore.collection("reports")
 
-    fun listCollection(uid: String) = firestoreKt
+    fun listCollection(uid: String) = firestore
         .collection("users")
         .document(uid)
         .collection("lists")
@@ -46,4 +44,6 @@ class FirestoreGraph(
 
     fun favoriteListCollection(uid: String) =
         listItemsCollection(uid, BookshelfDefaults.favorite.bookshelfId)
+
+    fun batch() = firestore.batch()
 }

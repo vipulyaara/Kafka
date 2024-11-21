@@ -57,10 +57,7 @@ fun RecentItemsScreen(viewModel: RecentItemsViewModel) {
     ClearConfirmationDialog(
         clearRecentItemsConfirmation = clearRecentItemsConfirmation,
         toggleConfirmation = { clearRecentItemsConfirmation = it },
-        clearRecentItems = {
-            viewModel.clearAllRecentItems()
-            navigator.goBack()
-        }
+        clearRecentItems = viewModel::clearAllRecentItems
     )
 
     Scaffold(topBar = {
@@ -71,17 +68,19 @@ fun RecentItemsScreen(viewModel: RecentItemsViewModel) {
         )
     }) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            if (loading && viewModel.recentItems.isEmpty()) {
-                Box(Modifier.fillMaxSize()) {
-                    InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
-                }
-            } else {
+            if (viewModel.recentItems.isNotEmpty()) {
                 RecentItems(
                     items = viewModel.recentItems,
                     openItemDetail = viewModel::openItemDetail,
                     removeRecentItem = viewModel::removeItem,
                     lazyListState = lazyListState
                 )
+            }
+
+            if (loading) {
+                Box(Modifier.fillMaxSize()) {
+                    InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }
