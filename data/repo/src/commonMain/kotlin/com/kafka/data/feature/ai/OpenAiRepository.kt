@@ -1,27 +1,15 @@
 package com.kafka.data.feature.ai
 
-import com.aallam.openai.api.chat.ChatCompletionRequest
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
-import com.aallam.openai.api.http.Timeout
-import com.aallam.openai.api.model.ModelId
-import com.aallam.openai.client.OpenAI
 import com.kafka.base.ApplicationScope
-import com.kafka.base.SecretsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import me.tatarka.inject.annotations.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @ApplicationScope
 @Inject
-class OpenAiRepository(secretsProvider: SecretsProvider) {
-    private val openai = OpenAI(
-        token = secretsProvider.openAiApiKey.orEmpty(),
-        timeout = Timeout(socket = 60.seconds)
-    )
+class OpenAiRepository(private val openAi: OpenAi) {
 
     fun observerSummary(
         title: String,
@@ -30,22 +18,16 @@ class OpenAiRepository(secretsProvider: SecretsProvider) {
     ): Flow<SummaryResponse> {
         var result = ""
 
-        val completionRequest = ChatCompletionRequest(
-            model = model,
-            temperature = 0.5,
-            messages = listOf(
-                ChatMessage(role = ChatRole.System, content = systemMessage),
-                ChatMessage(role = ChatRole.User, content = summaryPrompt(title, author, language))
-            ),
+        val request = OpenAi.Request(
+            systemMessage = systemMessage,
+            userMessage = summaryPrompt(title = title, author = author, language = language)
         )
 
-        return openai.chatCompletions(completionRequest)
+        return openAi.chatCompletions(request)
             .onEach { result += it.choices.firstOrNull()?.delta?.content.orEmpty() }
             .map { SummaryResponse(result, it.choices.firstOrNull()?.finishReason != null) }
             .catch { it.printStackTrace() }
     }
-
-    private val model = ModelId("gpt-4o")
 
     private val systemMessage = """
         You are a highly skilled literary analyst. Your task is to create detailed and comprehensive summaries of books. 

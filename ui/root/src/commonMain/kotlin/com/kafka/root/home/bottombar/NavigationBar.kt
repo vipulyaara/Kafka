@@ -2,7 +2,6 @@ package com.kafka.root.home.bottombar
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -43,15 +42,7 @@ internal fun BottomNav(
     modifier: Modifier = Modifier,
     select: (RootScreen) -> Unit,
 ) {
-    val colors = listOf(
-        MaterialTheme.colorScheme.onSurface,
-        MaterialTheme.colorScheme.onSurface,
-        MaterialTheme.colorScheme.onSurface,
-        MaterialTheme.colorScheme.onSurface,
-    )
-
     val selectedIndex = screens.indexOfFirst { it.rootScreen == selectedScreen }
-    val animatedColor by animateColorAsState(colors[selectedIndex])
     val animatedSelectedIndex by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
         animationSpec = tween(300, easing = FastOutSlowInEasing)
@@ -68,7 +59,7 @@ internal fun BottomNav(
 
                 GleemIndicator(
                     screens = screens,
-                    animatedColor = animatedColor,
+                    animatedColor = MaterialTheme.colorScheme.onSurface,
                     animatedSelectedIndex = animatedSelectedIndex
                 )
             }
@@ -145,7 +136,7 @@ private fun BottomNavItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(vertical = Dimens.Spacing24)
+                .padding(vertical = Dimens.Spacing20)
                 .then(
                     if (selected) {
                         Modifier.background(

@@ -10,7 +10,7 @@ kotlin {
             dependencies {
                 api(projects.base.domain)
                 api(projects.core.networking)
-                implementation(projects.core.remoteConfig)
+                api(projects.core.remoteConfig)
                 api(projects.data.database)
                 api(projects.data.models)
                 api(projects.data.platform)

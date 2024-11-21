@@ -7,10 +7,3 @@ interface SecretsProvider {
     val supabaseKey: String
     val mixpanelToken: String?
 }
-
-enum class Service {
-    Archive, Supabase
-}
-
-val appService = Service.Supabase
-val appRecentItems = Service.Archive
