@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,27 +59,25 @@ fun RecentSearchItem(
     onSearchClicked: (RecentSearch) -> Unit,
     onRemoveSearch: (String) -> Unit,
 ) {
-    SelectionContainer {
-        Row(
-            modifier = modifier
-                .clickable(onClick = { onSearchClicked(recentSearch) })
-                .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing24),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = recentSearch.searchTerm,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+    Row(
+        modifier = modifier
+            .clickable(onClick = { onSearchClicked(recentSearch) })
+            .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing24),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = recentSearch.searchTerm,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
 
-            IconResource(
-                modifier = Modifier
-                    .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
-                    .padding(horizontal = Dimens.Spacing08)
-                    .size(Dimens.Spacing24),
-                imageVector = Icons.XCircle
-            )
-        }
+        IconResource(
+            modifier = Modifier
+                .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
+                .padding(horizontal = Dimens.Spacing08)
+                .size(Dimens.Spacing24),
+            imageVector = Icons.XCircle
+        )
     }
 }

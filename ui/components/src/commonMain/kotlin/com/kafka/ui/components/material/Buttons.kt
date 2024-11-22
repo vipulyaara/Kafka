@@ -18,12 +18,14 @@ import androidx.compose.ui.graphics.Color
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
+import ui.common.theme.theme.inverseOnSurfaceDeep
+import ui.common.theme.theme.inverseSurfaceDeep
 
 @Composable
 fun FloatingButton(
     text: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.inverseSurface,
+    containerColor: Color = MaterialTheme.colorScheme.inverseSurfaceDeep,
     onClickLabel: String? = null,
     onClicked: () -> Unit,
 ) {
@@ -38,7 +40,7 @@ fun FloatingButton(
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge.alignCenter(),
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            color = MaterialTheme.colorScheme.inverseOnSurfaceDeep,
             modifier = Modifier.padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12)
         )
     }

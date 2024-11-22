@@ -81,7 +81,7 @@ private fun FavoriteIcon(
 ) {
     val background by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
     val iconTint by animateColorAsState(if (isFavorite) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)
-    val icon = if (isFavorite) Icons.HeartFilled else Icons.Heart
+    val icon = if (isFavorite) Icons.BookmarkFilled else Icons.Bookmark
     val contentDescription =
         if (isFavorite) Res.string.cd_remove_from_favorites else Res.string.cd_add_to_favorites
 
@@ -97,6 +97,7 @@ private fun FavoriteIcon(
             onClickLabel = stringResource(contentDescription),
             modifier = Modifier
                 .align(Alignment.Center)
+                .padding(Dimens.Spacing16)
                 .testTagUi(if (isFavorite) "remove_favorite" else "add_favorite")
         ) {
             IconResource(

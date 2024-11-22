@@ -51,6 +51,7 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.isDark
+import ui.common.theme.theme.surfaceDeep
 
 @Composable
 @Inject
@@ -132,7 +133,7 @@ private fun ItemDetail(
 ) {
     val useWideLayout = windowWidthSizeClass().useWideLayout()
 
-    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDeep)) {
         ItemDetailScaffold(
             supportingPaneEnabled = useWideLayout,
             mainPane = {

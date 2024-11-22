@@ -29,7 +29,7 @@ class FavoriteViewModel(
     private val preferenceKey get() = stringPreferencesKey("layout")
 
     private val layoutType = preferencesStore.getStateFlow(
-        keyName = preferenceKey, scope = viewModelScope, initialValue = LayoutType.List.name
+        keyName = preferenceKey, scope = viewModelScope, initialValue = LayoutType.Grid.name
     )
 
     val state: StateFlow<FavoriteViewState> = combine(

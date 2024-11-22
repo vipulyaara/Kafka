@@ -26,6 +26,27 @@ val ColorScheme.shadowMaterial
         primary.copy(alpha = 0.5f)
     }
 
+val ColorScheme.surfaceDeep
+    @Composable get() = if (LocalTheme.current.isDark()) {
+        Color.Black
+    } else {
+        Color.White
+    }
+
+val ColorScheme.inverseSurfaceDeep
+    @Composable get() = if (LocalTheme.current.isDark()) {
+        Color.White
+    } else {
+        Color.Black
+    }
+
+val ColorScheme.inverseOnSurfaceDeep
+    @Composable get() = if (LocalTheme.current.isDark()) {
+        Color.Black
+    } else {
+        Color.White
+    }
+
 val DarkAppColors = darkColorScheme(
     primary = Color(0xFFFFD69A),
     onPrimary = Color(0xFF341000),

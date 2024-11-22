@@ -27,6 +27,8 @@ fun TextStyle.medium() = merge(TextStyle(fontWeight = FontWeight.Medium))
 
 fun TextStyle.semiBold() = merge(TextStyle(fontWeight = FontWeight.SemiBold))
 
+fun TextStyle.bold() = merge(TextStyle(fontWeight = FontWeight.Bold))
+
 @Composable
 inline fun <T> rememberMutableState(
     key: Any? = null,

@@ -15,8 +15,11 @@ import compose.icons.feathericons.AlignLeft
 import compose.icons.feathericons.AlignRight
 import compose.icons.feathericons.Search
 import compose.icons.fontawesomeicons.Brands
+import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Google
+import compose.icons.fontawesomeicons.regular.Bookmark
+import compose.icons.fontawesomeicons.solid.Bookmark
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
 import compose.icons.fontawesomeicons.solid.UserCircle
@@ -42,8 +45,6 @@ import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
 import compose.icons.tablericons.LayoutGrid
 import compose.icons.tablericons.LayoutList
-import compose.icons.tablericons.LineHeight
-import compose.icons.tablericons.List
 import compose.icons.tablericons.Logout
 import compose.icons.tablericons.Message
 import compose.icons.tablericons.Microphone
@@ -114,11 +115,10 @@ object Icons {
     val LightMode = TablerIcons.Sun
     val MenuBook = TablerIcons.BrandBooking
     val Book = TablerIcons.Book
-    val LineHeightCompact = TablerIcons.List
-    val LineHeightNormal = TablerIcons.LayoutList
-    val LineHeightRelaxed = TablerIcons.LineHeight
     val AlignLeft = FeatherIcons.AlignLeft
     val AlignRight = FeatherIcons.AlignRight
     val AlignJustified = FeatherIcons.AlignJustify
     val Settings = TablerIcons.Settings
+    val Bookmark = FontAwesomeIcons.Regular.Bookmark
+    val BookmarkFilled = FontAwesomeIcons.Solid.Bookmark
 }
