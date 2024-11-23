@@ -25,6 +25,7 @@ import com.kafka.common.extensions.alignCenter
 import com.kafka.common.image.Icons
 import com.kafka.common.testTagUi
 import com.kafka.common.widgets.IconResource
+import com.kafka.data.entities.BookshelfItem
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
 import com.kafka.ui.components.placeholder.placeholderDefault
@@ -42,6 +43,17 @@ fun Item(item: Item, modifier: Modifier = Modifier) {
         coverImage = item.coverImage,
         modifier = modifier.testTagUi("content_item"),
         isInAppropriate = item.isInappropriate
+    )
+}
+
+@Composable
+fun Item(item: BookshelfItem, modifier: Modifier = Modifier) {
+    Item(
+        title = item.itemTitle,
+        creator = item.creator,
+        mediaType = item.mediaType,
+        coverImage = item.coverImage,
+        modifier = modifier.testTagUi("content_item")
     )
 }
 

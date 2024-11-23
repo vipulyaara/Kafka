@@ -1,4 +1,4 @@
-package com.kafka.library.bookshelf
+package com.kafka.library.bookshelf.add
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -16,33 +16,33 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class AddToListViewModel(
+class AddToBookshelfViewModel(
     @Assisted private val savedStateHandle: SavedStateHandle,
     observeBookshelves: ObserveBookshelves,
     observeItemDetail: ObserveItemDetail,
     private val addToBookshelf: AddToBookshelf,
-    private val analytics: Analytics
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val itemId = savedStateHandle.get<String>("itemId")!!
 
     val state = combine(observeBookshelves.flow, observeItemDetail.flow) { shelves, item ->
-        BookshelfState(bookshelves = shelves, itemDetail = item)
-    }.stateInDefault(viewModelScope, BookshelfState())
+        AddToBookshelfState(bookshelves = shelves, itemDetail = item)
+    }.stateInDefault(viewModelScope, AddToBookshelfState())
 
     init {
         observeBookshelves(Unit)
         observeItemDetail(ObserveItemDetail.Param(itemId))
     }
 
-    fun addToBookShelf(bookshelfId: String) {
-        analytics.log { addToBookshelf(itemId, bookshelfId) }
+    fun addToBookShelf(bookshelf: Bookshelf) {
+        analytics.log { addToBookshelf(itemId, bookshelf.id) }
         viewModelScope.launch {
-            addToBookshelf(AddToBookshelf.Params(itemId, bookshelfId))
+            addToBookshelf(AddToBookshelf.Params(itemId, bookshelf, true)) // todo: find correct boolean to pass
         }
     }
 }
 
-data class BookshelfState(
+data class AddToBookshelfState(
     val bookshelves: List<Bookshelf> = listOf(),
     val itemDetail: ItemDetail? = null
 )

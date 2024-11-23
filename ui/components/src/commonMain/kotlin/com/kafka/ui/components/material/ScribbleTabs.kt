@@ -38,6 +38,8 @@ import kotlin.math.floor
 
 @Composable
 fun ScribbleTabs(tabs: List<String>, pagerState: PagerState) {
+    if (tabs.isEmpty()) return
+
     val scope = rememberCoroutineScope()
     val sizeList = remember { mutableStateMapOf<Int, Pair<Float, Float>>() }
     val color = MaterialTheme.colorScheme.primary
@@ -49,7 +51,7 @@ fun ScribbleTabs(tabs: List<String>, pagerState: PagerState) {
     }
 
     ScrollableTabRow(
-        selectedTabIndex = pagerState.currentPage,
+        selectedTabIndex = pagerState.currentPage.coerceIn(0, tabs.lastIndex),
         edgePadding = 20.dp,
         containerColor = Color.Transparent,
         contentColor = Color(0xFF362C28),
@@ -115,13 +117,14 @@ fun ScribbleTabs(tabs: List<String>, pagerState: PagerState) {
                     val progress = progressFromFirstPage - floor(progressFromFirstPage)
                     val start = floor(progressFromFirstPage)
                         .toInt()
-                        .coerceIn(0, ribbonSectionsLengths.size - 1)
+                        .coerceIn(0, (ribbonSectionsLengths.size - 1).coerceAtLeast(0))
                     val end = ceil(progressFromFirstPage)
                         .toInt()
-                        .coerceIn(0, ribbonSectionsLengths.size - 1)
+                        .coerceIn(0, (ribbonSectionsLengths.size - 1).coerceAtLeast(0))
 
-                    val ribbonLength =
-                        ribbonSectionsLengths[start]!! + ((ribbonSectionsLengths[end]!! - ribbonSectionsLengths[start]!!) * progress)
+                    val startLength = ribbonSectionsLengths[start] ?: 0f
+                    val endLength = ribbonSectionsLengths[end] ?: 0f
+                    val ribbonLength = startLength + ((endLength - startLength) * progress)
 
                     val lengthUntilStart = ribbonSectionsLengths
                         .keys

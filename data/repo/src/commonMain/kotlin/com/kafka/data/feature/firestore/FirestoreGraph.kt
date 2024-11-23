@@ -40,10 +40,7 @@ class FirestoreGraph(private val firestore: FirebaseFirestore) {
         .collection("items")
 
     fun readingListCollection(uid: String) =
-        listItemsCollection(uid, BookshelfDefaults.reading.bookshelfId)
-
-    fun favoriteListCollection(uid: String) =
-        listItemsCollection(uid, BookshelfDefaults.favorite.bookshelfId)
+        listItemsCollection(uid, BookshelfDefaults.reading.id)
 
     fun batch() = firestore.batch()
 }

@@ -19,8 +19,8 @@ class CreateDefaultBookshelves(
         withContext(dispatchers.io) {
             val collection = firestoreGraph.listCollection(accountRepository.currentUserId)
 
-            BookshelfDefaults.all.forEach { list ->
-                collection.document(list.bookshelfId)
+            BookshelfDefaults.availableShelves.forEach { list ->
+                collection.document(list.id)
                     .set(list)
             }
         }

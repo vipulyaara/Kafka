@@ -21,7 +21,7 @@ object CleanGutenbergHtml {
         val sourceZip = java.util.zip.ZipFile(sourceFilePath)
         val pgHtmlEntry = sourceZip.entries().asSequence()
             .find { it.name.endsWith(htmlFileName) }
-            ?: throw IllegalStateException("pg.html not found in ZIP file")
+            ?: throw IllegalStateException("$htmlFileName not found in ZIP file")
 
         val targetFile = createFile(textPath, "body.html")
         sourceZip.getInputStream(pgHtmlEntry).use { input ->

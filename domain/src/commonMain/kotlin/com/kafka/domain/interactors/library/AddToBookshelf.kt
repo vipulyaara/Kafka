@@ -3,7 +3,8 @@ package com.kafka.domain.interactors.library
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.Interactor
 import com.kafka.data.dao.ItemDetailDao
-import com.kafka.data.entities.ListItem.Companion.asListItem
+import com.kafka.data.entities.Bookshelf
+import com.kafka.data.entities.BookshelfItem.Companion.asBookshelfItem
 import com.kafka.data.feature.auth.AccountRepository
 import com.kafka.data.feature.firestore.FirestoreGraph
 import kotlinx.coroutines.withContext
@@ -21,17 +22,16 @@ class AddToBookshelf(
         withContext(dispatchers.io) {
             val uid = accountRepository.currentUserId
             val document = firestoreGraph
-                .listItemsCollection(uid, params.bookshelfId)
+                .listItemsCollection(uid = uid, listId = params.bookshelf.id)
                 .document(params.itemId)
 
-            if (document.get().exists) {
-                document.delete()
+            if (params.add) {
+                document.set(itemDetailDao.get(params.itemId).asBookshelfItem())
             } else {
-                document.set(itemDetailDao.get(params.itemId).asListItem())
+                document.delete()
             }
-
         }
     }
 
-    data class Params(val itemId: String, val bookshelfId: String)
+    data class Params(val itemId: String, val bookshelf: Bookshelf, val add: Boolean)
 }

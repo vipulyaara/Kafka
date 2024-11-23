@@ -59,9 +59,10 @@ import com.kafka.item.detail.description.DescriptionDialog
 import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.library.LibraryScreen
-import com.kafka.library.bookshelf.AddToBookshelf
-import com.kafka.library.bookshelf.AddToListViewModel
-import com.kafka.library.favorites.FavoriteViewModel
+import com.kafka.library.bookshelf.BookshelfDetailViewModel
+import com.kafka.library.bookshelf.BookshelvesViewModel
+import com.kafka.library.bookshelf.add.AddToBookshelf
+import com.kafka.library.bookshelf.add.AddToBookshelfViewModel
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.NavigationEvent
 import com.kafka.navigation.Navigator
@@ -279,11 +280,11 @@ typealias addLibrary = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addLibrary(
-    favoriteViewmodelFactory: () -> FavoriteViewModel,
+    bookshelfFactory: () -> BookshelvesViewModel,
+    detailFactory: (String) -> BookshelfDetailViewModel
 ) {
     composable<Screen.Library> {
-        val favoriteViewModel = viewModel { favoriteViewmodelFactory() }
-        LibraryScreen(favoriteViewModel = favoriteViewModel)
+        LibraryScreen(bookshelfFactory = bookshelfFactory, detailFactory = detailFactory)
     }
 }
 
@@ -322,7 +323,7 @@ typealias addToBookshelf = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addToBookshelf(
-    viewModelFactory: (SavedStateHandle) -> AddToListViewModel,
+    viewModelFactory: (SavedStateHandle) -> AddToBookshelfViewModel,
 ) {
     bottomSheet(Screen.AddToBookshelf.route) {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }

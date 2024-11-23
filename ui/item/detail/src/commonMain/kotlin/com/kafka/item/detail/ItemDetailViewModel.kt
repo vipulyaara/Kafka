@@ -10,19 +10,20 @@ import com.kafka.common.extensions.getActivity
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
+import com.kafka.data.entities.BookshelfDefaults.default
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.GetPrimaryFile
 import com.kafka.domain.interactors.ResumeAlbum
 import com.kafka.domain.interactors.UpdateCreatorItems
-import com.kafka.domain.interactors.UpdateFavorite
 import com.kafka.domain.interactors.UpdateItemDetail
+import com.kafka.domain.interactors.library.AddToBookshelf
 import com.kafka.domain.interactors.recent.AddRecentItem
 import com.kafka.domain.interactors.recent.IsResumableAudio
 import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItem
 import com.kafka.domain.observers.ObserveItemDetail
-import com.kafka.domain.observers.library.ObserveFavoriteStatus
+import com.kafka.domain.observers.library.ObserveDefaultListStatus
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.RootScreen
@@ -55,8 +56,8 @@ class ItemDetailViewModel(
     private val observeCreatorItems: ObserveCreatorItems,
     private val updateCreatorItems: UpdateCreatorItems,
     private val addRecentItem: AddRecentItem,
-    private val observeFavoriteStatus: ObserveFavoriteStatus,
-    private val updateFavorite: UpdateFavorite,
+    private val observeDefaultListStatus: ObserveDefaultListStatus,
+    private val addToBookshelf: AddToBookshelf,
     private val resumeAlbum: ResumeAlbum,
     private val navigator: Navigator,
     private val remoteConfig: RemoteConfig,
@@ -75,21 +76,19 @@ class ItemDetailViewModel(
 
     val state: StateFlow<ItemDetailViewState> = combine(
         observeItemDetail.flow.onEach { item -> updateItemsByCreator(item?.creator) },
-        observeFavoriteStatus.flow,
+        observeDefaultListStatus.flow,
         combine(
             updateItemDetail.inProgress,
             updateCreatorItems.inProgress
         ) { loadingStates ->
             loadingStates.any { loading -> loading }
         },
-        updateFavorite.inProgress,
         isResumableAudio.flow
-    ) { itemDetail, isFavorite, loading, favoriteLoading, isResumableAudio ->
+    ) { itemDetail, isFavorite, loading, isResumableAudio ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             isFavorite = isFavorite,
             isLoading = loading,
-            favoriteLoading = favoriteLoading,
             ctaText = itemDetail?.let { ctaText(itemDetail, isResumableAudio) }.orEmpty(),
             isDynamicThemeEnabled = remoteConfig.isItemDetailDynamicThemeEnabled(),
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),
@@ -104,7 +103,7 @@ class ItemDetailViewModel(
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeItem(itemId)
-        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
+        observeDefaultListStatus(ObserveDefaultListStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
 
         refresh()
@@ -116,7 +115,7 @@ class ItemDetailViewModel(
                 .onException { snackbarManager.addMessage("Failed to update details") }
         }
 
-        observeFavoriteStatus(ObserveFavoriteStatus.Params(itemId))
+        observeDefaultListStatus(ObserveDefaultListStatus.Params(itemId))
     }
 
     fun onPrimaryAction(itemId: String) {
@@ -149,9 +148,9 @@ class ItemDetailViewModel(
         }
     }
 
-    fun updateFavorite() {
+    fun updateBookshelfStatus() {
         viewModelScope.launch {
-            updateFavorite(UpdateFavorite.Params(itemId, !state.value.isFavorite))
+            addToBookshelf(AddToBookshelf.Params(itemId, default, !state.value.isFavorite))
         }
     }
 

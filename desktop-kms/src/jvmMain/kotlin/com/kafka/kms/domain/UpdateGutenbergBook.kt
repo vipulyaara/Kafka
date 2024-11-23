@@ -49,9 +49,9 @@ class UpdateGutenbergBook(
             saveItemDetail(book)
             saveFiles(book)
 
-            debug { "UpdateGutenbergBook saved" }
+            debug { "UpdateGutenbergBook saved $book" }
 
-            val itemId = gutenbergItemId(params)
+            val itemId = book.itemId
             val itemDetail = itemDetailDao.get(itemId)
             val file = fileDao.getByItemId(itemId).first { it.extension == "html" }
             val repoId = itemDetail.repoId()
@@ -66,7 +66,7 @@ class UpdateGutenbergBook(
             cleanGutenbergHtml(
                 sourceFilePath = download!!.filePath,
                 repoId = repoId,
-                htmlFileName = "pg$params-images.html"
+                htmlFileName = "pg${params.trim()}-images.html"
             )
 
             directoryRepository.cleanupDSStoreFiles()

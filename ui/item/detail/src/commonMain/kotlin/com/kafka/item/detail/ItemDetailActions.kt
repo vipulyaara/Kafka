@@ -39,7 +39,6 @@ fun ItemDetailActionsRow(
     modifier: Modifier = Modifier,
     onPrimaryAction: () -> Unit,
     isFavorite: Boolean,
-    favoriteLoading: Boolean,
     toggleFavorite: () -> Unit
 ) {
     Box(modifier = modifier) {
@@ -54,7 +53,6 @@ fun ItemDetailActionsRow(
             Box(modifier = Modifier.weight(0.2f)) {
                 FavoriteIcon(
                     isFavorite = isFavorite,
-                    favoriteLoading = favoriteLoading,
                     modifier = Modifier.align(Alignment.Center),
                     onClicked = toggleFavorite
                 )
@@ -75,7 +73,6 @@ fun ItemDetailActionsRow(
 @Composable
 private fun FavoriteIcon(
     isFavorite: Boolean,
-    favoriteLoading: Boolean,
     modifier: Modifier = Modifier,
     onClicked: () -> Unit
 ) {

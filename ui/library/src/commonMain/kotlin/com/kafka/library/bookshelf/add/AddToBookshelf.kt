@@ -1,4 +1,4 @@
-package com.kafka.library.bookshelf
+package com.kafka.library.bookshelf.add
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun AddToBookshelf(viewModel: AddToListViewModel) {
+fun AddToBookshelf(viewModel: AddToBookshelfViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Bookshelves(
@@ -45,7 +45,7 @@ private fun Bookshelves(
     itemTitle: String,
     bookshelves: List<Bookshelf>,
     modifier: Modifier = Modifier,
-    addToBookshelf: (String) -> Unit
+    addToBookshelf: (Bookshelf) -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -59,7 +59,7 @@ private fun Bookshelves(
 
             items(bookshelves) { bookshelf ->
                 BookshelfItem(bookshelf = bookshelf, added = false) {
-                    addToBookshelf(bookshelf.bookshelfId)
+                    addToBookshelf(bookshelf)
                 }
             }
         }
