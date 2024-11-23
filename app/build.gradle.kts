@@ -33,23 +33,6 @@ android {
         compose = true
     }
 
-    packaging {
-        packagingOptions.resources.excludes += setOf(
-            // Exclude AndroidX version files
-            "META-INF/*.version",
-            // Exclude consumer proguard files
-            "META-INF/proguard/*",
-            // Exclude the Firebase/Fabric/other random properties files
-            "/*.properties",
-            "fabric/*.properties",
-            "META-INF/*.properties",
-            "META-INF/kotlinx-io.kotlin_module",
-            "META-INF/atomicfu.kotlin_module",
-            "META-INF/kotlinx-coroutines-io.kotlin_module",
-            "META-INF/kotlinx-coroutines-core.kotlin_module"
-        )
-    }
-
     signingConfigs {
         create("release") {
             storeFile = file("keystore.jks")
@@ -101,6 +84,27 @@ android {
         abortOnError = true
         checkDependencies = true
         warning += "AutoboxingStateCreation"
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) {
+        it.packaging.resources.excludes.addAll(
+            setOf(
+                // Exclude AndroidX version files
+                "META-INF/*.version",
+                // Exclude consumer proguard files
+                "META-INF/proguard/*",
+                // Exclude the Firebase/Fabric/other random properties files
+                "/*.properties",
+                "fabric/*.properties",
+                "META-INF/*.properties",
+                "META-INF/kotlinx-io.kotlin_module",
+                "META-INF/atomicfu.kotlin_module",
+                "META-INF/kotlinx-coroutines-io.kotlin_module",
+                "META-INF/kotlinx-coroutines-core.kotlin_module"
+            )
+        )
     }
 }
 
