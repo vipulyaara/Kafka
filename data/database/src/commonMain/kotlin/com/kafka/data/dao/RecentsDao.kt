@@ -17,12 +17,24 @@ abstract class RecentTextDao : EntityDao<RecentTextItem> {
     @Query("update recent_text set currentPage = :currentPage where fileId = :fileId")
     abstract suspend fun updateCurrentPage(fileId: String, currentPage: Int)
 
+    @Query("update recent_text set currentPageOffset = :currentPageOffset where fileId = :fileId")
+    abstract suspend fun updateCurrentPageOffset(fileId: String, currentPageOffset: Int)
+
     suspend fun insertOrUpdateCurrentPage(fileId: String, currentPage: Int) {
         val recentTextItem = getOrNull(fileId)
         if (recentTextItem != null) {
             updateCurrentPage(fileId, currentPage)
         } else {
             insert(RecentTextItem(fileId, currentPage = currentPage))
+        }
+    }
+
+    suspend fun insertOrUpdateCurrentPageOffset(fileId: String, currentPageOffset: Int) {
+        val recentTextItem = getOrNull(fileId)
+        if (recentTextItem != null) {
+            updateCurrentPageOffset(fileId, currentPageOffset)
+        } else {
+            insert(RecentTextItem(fileId, currentPageOffset = currentPageOffset))
         }
     }
 }

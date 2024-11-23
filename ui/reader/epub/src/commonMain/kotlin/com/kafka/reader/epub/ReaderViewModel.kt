@@ -16,8 +16,10 @@ import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.Download
 import com.kafka.data.entities.ItemDetail
+import com.kafka.domain.interactors.GetLastPageOffset
 import com.kafka.domain.interactors.GetLastSeenPage
 import com.kafka.domain.interactors.UpdateCurrentPage
+import com.kafka.domain.interactors.UpdateCurrentPageOffset
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.downloader.core.DownloadItem
 import com.kafka.downloader.core.ObserveDownload
@@ -42,8 +44,10 @@ class ReaderViewModel(
     observeReaderSettings: ObserveReaderSettings,
     private val updateReaderSettings: UpdateReaderSettings,
     private val updateCurrentPage: UpdateCurrentPage,
+    private val updateCurrentPageOffset: UpdateCurrentPageOffset,
     private val observeDownload: ObserveDownload,
     private val getLastSeenPage: GetLastSeenPage,
+    private val getLastPageOffset: GetLastPageOffset,
     private val snackbarManager: SnackbarManager,
     private val downloadItem: DownloadItem,
     private val parseEbook: ParseEbook,
@@ -55,6 +59,7 @@ class ReaderViewModel(
     private val fileId = savedStateHandle.get<String>("fileId")!!
     private var ebook by mutableStateOf<EpubBook?>(null)
 
+    // TODO - Check if we need this state
     val lazyListState = LazyListState()
 
     val state = combine(
@@ -104,6 +109,18 @@ class ReaderViewModel(
         }
     }
 
+    fun onPageScrolled(offset: Int) {
+        viewModelScope.launch {
+            onPageOffsetChanged(fileId, offset)
+        }
+    }
+
+    private fun onPageOffsetChanged(fileId: String, offset: Int) {
+        viewModelScope.launch {
+            updateCurrentPageOffset(UpdateCurrentPageOffset.Params(fileId, offset))
+        }
+    }
+
     fun navigate(url: String) {
         val chapterIds = state.value.epubBook?.chapters?.map { it.chapterId }.orEmpty()
         val chapterId = chapterIds.find {
@@ -123,9 +140,12 @@ class ReaderViewModel(
         viewModelScope.launch {
             val result = parseEbook(uri)
             result.onSuccess {
-                val lastSeenPage =
-                    getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull()?.currentPage ?: 0
-                ebook = it.copy(lastSeenPage = lastSeenPage)
+                val lastSeenPage = getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull() ?: 0
+                val lastPageOffset = getLastPageOffset(GetLastPageOffset.Params(fileId)).getOrNull() ?: 0
+                ebook = it.copy(
+                    lastSeenPage = lastSeenPage,
+                    lastPageOffset = lastPageOffset
+                )
             }
             result.onException { snackbarManager.addMessage(UiMessage.Error(it)) }
         }

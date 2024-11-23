@@ -50,7 +50,7 @@ data class RecentItem(
 @Entity(tableName = "recent_text")
 data class RecentTextItem(
     @PrimaryKey val fileId: String,
-    val currentPage: Int, // starts at 1
+    val currentPage: Int = 0,
     val currentPageOffset: Int = 0,
     val localUri: String = "",
     val type: Type = Type.PDF

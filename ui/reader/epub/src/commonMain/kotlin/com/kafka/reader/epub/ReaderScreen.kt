@@ -68,7 +68,7 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
                         readerState = state,
                         settingsState = settingsState,
                         pagerState = pagerState,
-                        lazyListState = viewModel.lazyListState,
+                        onPageScrolled = viewModel::onPageScrolled,
                         navigate = viewModel::navigate,
                         changeSettings = viewModel::updateSettings
                     )

@@ -18,7 +18,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerInputChange
@@ -29,6 +32,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.kafka.base.debug
 import com.kafka.common.plus
 import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
@@ -43,20 +47,24 @@ import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.scaffoldPadding
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.EpubBook
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import ui.common.theme.theme.Dimens
 
+@OptIn(FlowPreview::class)
 @Composable
 fun EpubBook(
     readerState: ReaderState,
     settingsState: SettingsState,
     pagerState: PagerState,
-    lazyListState: LazyListState,
+    onPageScrolled: (Int) -> Unit,
     navigate: (String) -> Unit,
     changeSettings: (ReaderSettings) -> Unit
 ) {
     val book = readerState.epubBook!!
     val chapters = book.chapters
     val settings = readerState.settings
+    val pagesListStates = remember { mutableStateMapOf<Int, LazyListState>() }
 
     SettingsSheet(
         settingsState = settingsState,
@@ -67,8 +75,25 @@ fun EpubBook(
 
     HorizontalPager(pagerState) { page ->
         val chapter = remember(chapters, page) { chapters[page] }
+        val lazyListState = pagesListStates.getOrPut(page) {
+            LazyListState(
+                firstVisibleItemScrollOffset = if (book.lastSeenPage == page) {
+                    book.lastPageOffset
+                } else {
+                    0
+                }
+            )
+        }
+
+        LaunchedEffect(lazyListState) {
+            snapshotFlow { lazyListState.firstVisibleItemScrollOffset }.debounce(1000)
+                .collect { index ->
+                    onPageScrolled(index)
+                }
+        }
 
         LazyColumn(
+            state = lazyListState,
             contentPadding = scaffoldPadding() + PaddingValues(vertical = Dimens.Gutter),
             modifier = Modifier
                 .fillMaxSize()
