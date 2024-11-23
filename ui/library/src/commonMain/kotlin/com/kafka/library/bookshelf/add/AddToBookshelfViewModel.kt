@@ -10,6 +10,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.domain.interactors.library.AddToBookshelf
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.library.ObserveBookshelves
+import com.kafka.domain.observers.library.ObserveBookshelves.Params.FetchType
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -30,7 +31,7 @@ class AddToBookshelfViewModel(
     }.stateInDefault(viewModelScope, AddToBookshelfState())
 
     init {
-        observeBookshelves(Unit)
+        observeBookshelves(ObserveBookshelves.Params(FetchType.AddToBookshelf))
         observeItemDetail(ObserveItemDetail.Param(itemId))
     }
 

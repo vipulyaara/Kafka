@@ -60,7 +60,7 @@ import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.library.LibraryScreen
 import com.kafka.library.bookshelf.BookshelfDetailViewModel
-import com.kafka.library.bookshelf.BookshelvesViewModel
+import com.kafka.library.bookshelf.LibraryViewModel
 import com.kafka.library.bookshelf.add.AddToBookshelf
 import com.kafka.library.bookshelf.add.AddToBookshelfViewModel
 import com.kafka.navigation.LocalNavigator
@@ -280,7 +280,7 @@ typealias addLibrary = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addLibrary(
-    bookshelfFactory: () -> BookshelvesViewModel,
+    bookshelfFactory: () -> LibraryViewModel,
     detailFactory: (String) -> BookshelfDetailViewModel
 ) {
     composable<Screen.Library> {

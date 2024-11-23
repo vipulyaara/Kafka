@@ -14,14 +14,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.data.entities.Bookshelf
 import com.kafka.library.bookshelf.BookshelfDetailViewModel
 import com.kafka.library.bookshelf.BookshelfItems
-import com.kafka.library.bookshelf.BookshelvesViewModel
+import com.kafka.library.bookshelf.LibraryViewModel
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.ScribbleTabs
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun LibraryScreen(
-    bookshelfFactory: () -> BookshelvesViewModel,
+    bookshelfFactory: () -> LibraryViewModel,
     detailFactory: (String) -> BookshelfDetailViewModel
 ) {
     val bookshelvesViewModel = viewModel { bookshelfFactory() }
