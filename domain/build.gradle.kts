@@ -16,6 +16,8 @@ kotlin {
                 api(projects.core.remoteConfig)
                 api(projects.data.repo)
 
+                api(libs.firebase.storage)
+
                 api(libs.filekit)
             }
         }
