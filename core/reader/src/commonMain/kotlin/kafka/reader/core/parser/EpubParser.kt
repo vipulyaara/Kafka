@@ -131,11 +131,14 @@ class EpubParser(
      * @param shouldUseToc Whether to use the table of contents (ToC) file for parsing.
      * @return The [EpubBook] object.
      */
-    private suspend fun createEpubBook(source: Source, shouldUseToc: Boolean = true): EpubBook {
+    suspend fun createEpubBook(source: Source, shouldUseToc: Boolean = true): EpubBook {
         return withContext(Dispatchers.IO) {
-            debug { "Parsing EPUB input stream" }
+            // todo: add cache
+
             val (files, document) = getZipFilesAndDocument(source)
-            parseAndCreateEbook(files, document, shouldUseToc)
+            val book = parseAndCreateEbook(files, document, shouldUseToc)
+
+            return@withContext book
         }
     }
 
@@ -203,6 +206,9 @@ class EpubParser(
         debug { "Parsing images" }
         val images = parseImages(manifestItems, files)
 
+        val metadataCoverId = getMetadataCoverId(document.metadata)
+        val coverImage = parseCoverImage(metadataCoverId, manifestItems, files)
+
         debug { "EpubBook created" }
         return@withContext EpubBook(
             fileName = metadataTitle.asFileName(),
@@ -210,6 +216,7 @@ class EpubParser(
             author = metadataAuthor,
             language = metadataLanguage,
             chapters = chapters,
+            coverImage = coverImage,
             images = images
         )
     }
@@ -410,7 +417,12 @@ class EpubParser(
         }
         // Recursively search for nested navPoints with incremented level
         for (child in element.childElements) {
-            navPoints.addAll(findNestedNavPoints(child, if (element.tagName() == "navPoint") level + 1 else level))
+            navPoints.addAll(
+                findNestedNavPoints(
+                    child,
+                    if (element.tagName() == "navPoint") level + 1 else level
+                )
+            )
         }
         return navPoints
     }
@@ -446,7 +458,8 @@ class EpubParser(
     ): List<EpubChapter> {
         // Parse each chapter entry
         val chapters = tocNavPoints.flatMapIndexed { index, (navPoint, level) ->
-            val title = navPoint.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")?.text()
+            val title =
+                navPoint.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")?.text()
             val chapterSrc = navPoint.selectFirstChildTag("content")?.getAttributeValue("src")
                 ?.decodeURL()?.getCanonicalPath(hrefRootPath.toString())
 
@@ -527,7 +540,8 @@ class EpubParser(
         // Try to find TOC landmarks for level information
         val landmarkLevels = try {
             val tocFile = files.entries.find { it.key.endsWith("toc.xhtml", ignoreCase = true) }
-            val landmarks = tocFile?.let { parseXMLFile(it.value.data).selectFirst("nav#landmarks") }
+            val landmarks =
+                tocFile?.let { parseXMLFile(it.value.data).selectFirst("nav#landmarks") }
             landmarks?.selectChildTag("ol")
                 ?.firstOrNull()
                 ?.selectChildTag("li")
@@ -623,13 +637,25 @@ class EpubParser(
         }
     }
 
+    private fun parseCoverImage(
+        metadataCoverId: String?,
+        manifestItems: Map<String, EpubManifestItem>,
+        files: Map<String, EpubFile>
+    ): EpubImage? {
+        return manifestItems[metadataCoverId]?.let { manifestItem ->
+            files[manifestItem.absPath]?.let { file ->
+                EpubImage(absPath = file.absPath, image = file.data)
+            }
+        }?.takeIf { it.image.isNotEmpty() }
+    }
+
     // Add this extension function to EpubXMLFileParser
     private fun EpubXMLFileParser.findTitleElement(): Element? {
         // Skip title search for titlepage.xhtml
         if (fileAbsolutePath.endsWith("titlepage.xhtml", ignoreCase = true)) {
             return null
         }
-        
+
         return document.selectFirst("h2[epub:type=title]")
             ?: document.selectFirst("h1[epub:type=title]")
             ?: document.selectFirst("h3[epub:type=title]")

@@ -15,6 +15,7 @@ import com.kafka.domain.interactors.account.SignInUser
 import com.kafka.domain.interactors.account.SignInWithGoogle
 import com.kafka.domain.interactors.account.SignUpUser
 import com.kafka.domain.observers.account.ObserveUser
+import com.kafka.navigation.Navigator
 import com.kafka.remote.config.RemoteConfig
 import com.kafka.remote.config.isGoogleLoginEnabled
 import kotlinx.coroutines.flow.StateFlow
@@ -31,6 +32,7 @@ class AuthViewModel(
     private val signInWithGoogle: SignInWithGoogle,
     private val snackbarManager: SnackbarManager,
     private val remoteConfig: RemoteConfig,
+    private val navigator: Navigator,
     observeUser: ObserveUser,
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
@@ -68,9 +70,9 @@ class AuthViewModel(
             val result = signInWithGoogle.invoke(context)
             loadingCounter.removeLoader()
 
-            result.onException { exception ->
-                snackbarManager.addMessage(exception.toUiMessage())
-            }
+            result
+                .onSuccess { navigator.goBack() }
+                .onException { exception -> snackbarManager.addMessage(exception.toUiMessage()) }
         }
     }
 
@@ -85,8 +87,8 @@ class AuthViewModel(
             else -> {
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
-                        .onSuccess { snackbarManager.add(loginSuccessMessage) }
-                        .onFailure { snackbarManager.add(it.message ?: loginErrorMessage) }
+                        .onSuccess { navigator.goBack() }
+                        .onException { snackbarManager.add(it.message ?: loginErrorMessage) }
                 }
             }
         }
@@ -103,7 +105,8 @@ class AuthViewModel(
 
                 else -> {
                     signUpUser(SignUpUser.Params(email, password))
-                        .onFailure { snackbarManager.add(it.message ?: signUpErrorMessage) }
+                        .onSuccess { navigator.goBack() }
+                        .onException { snackbarManager.add(it.message ?: signUpErrorMessage) }
                 }
             }
         }
@@ -117,7 +120,7 @@ class AuthViewModel(
                         analytics.log { forgotPasswordSuccess() }
                         snackbarManager.add(resetPasswordSuccessMessage)
                     }
-                    .onFailure { snackbarManager.add(resetPasswordErrorMessage) }
+                    .onException { snackbarManager.add(resetPasswordErrorMessage) }
             }
         } else {
             viewModelScope.launch { snackbarManager.add(invalidEmailMessage) }

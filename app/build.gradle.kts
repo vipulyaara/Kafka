@@ -118,6 +118,7 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
 
+    implementation(libs.filekit)
     implementation(libs.google.messaging)
 
     implementation(project.dependencies.platform(libs.openai.kotlin.bom))

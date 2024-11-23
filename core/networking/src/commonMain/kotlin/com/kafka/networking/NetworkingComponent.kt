@@ -9,9 +9,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.accept
-import io.ktor.client.request.header
-import io.ktor.http.ContentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -19,7 +17,6 @@ import kotlinx.serialization.serializer
 import me.tatarka.inject.annotations.Provides
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.seconds
-import io.ktor.serialization.kotlinx.json.*
 
 interface NetworkingComponent {
 
@@ -70,8 +67,7 @@ interface NetworkingComponent {
         }
 
         defaultRequest {
-            accept(ContentType.parse("application/json"))
-            header("content-type", "application/json")
+            headers.clear()
         }
     }
 

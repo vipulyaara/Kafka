@@ -93,7 +93,6 @@ class SupabaseUploadService(
             creators = creatorsList,
             duration = null,
             format = "application/epub+zip",
-            path = epubUrl,
             url = epubUrl,
             size = JavaFile(epubFilePath).length()
         )

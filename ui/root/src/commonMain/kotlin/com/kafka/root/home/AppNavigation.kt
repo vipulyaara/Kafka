@@ -200,6 +200,7 @@ fun AppNavigation(
                     addPlayer()
                     addWebView()
                     addLogin()
+                    addFeedback()
                 }
             }
         }
@@ -283,7 +284,7 @@ fun NavGraphBuilder.addLibrary(
     bookshelfFactory: () -> LibraryViewModel,
     detailFactory: (String) -> BookshelfDetailViewModel
 ) {
-    composable<Screen.Library> {
+    composableScreen<Screen.Library> {
         LibraryScreen(bookshelfFactory = bookshelfFactory, detailFactory = detailFactory)
     }
 }

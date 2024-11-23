@@ -36,7 +36,7 @@ fun FullScreenMessage(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(MaterialTheme.colorScheme.surface)
                 .padding(vertical = 48.dp, horizontal = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
@@ -58,7 +58,7 @@ fun FullScreenMessage(
                 Text(
                     text = uiMessage?.asString().orEmpty(),
                     style = MaterialTheme.typography.titleMedium.alignCenter(),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                 )
 
                 onRetry?.let {
@@ -67,7 +67,7 @@ fun FullScreenMessage(
                     Text(
                         text = "Please try again",
                         style = MaterialTheme.typography.titleMedium.alignCenter(),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.Spacing24))

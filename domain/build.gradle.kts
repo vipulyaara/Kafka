@@ -12,8 +12,11 @@ kotlin {
                 api(projects.base.domain)
                 api(projects.core.analytics)
                 api(projects.core.downloader)
+                api(projects.core.reader)
                 api(projects.core.remoteConfig)
                 api(projects.data.repo)
+
+                api(libs.filekit)
             }
         }
 

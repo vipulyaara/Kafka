@@ -7,7 +7,6 @@ import com.kafka.data.prefs.PreferencesStore
 import com.kafka.reader.epub.settings.ReaderSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
 
@@ -20,16 +19,16 @@ class ObserveReaderSettings(
 
     override fun createObservable(params: Params): Flow<ReaderSettings> {
         return combine(
-            itemDetailDao.observeItemDetail(params.itemId).filterNotNull(),
+            itemDetailDao.observeItemDetail(params.itemId),
             preferencesStore.data
         ) { item, prefs ->
             prefs[SETTINGS]?.let { jsonString ->
                 try {
                     json.decodeFromString<ReaderSettings>(jsonString)
                 } catch (e: Exception) {
-                    ReaderSettings.default(item.language)
+                    ReaderSettings.default(item?.language ?: "en") // todo: find language from epub
                 }
-            } ?: ReaderSettings.default(item.language)
+            } ?: ReaderSettings.default(item?.language ?: "en")
         }
     }
 

@@ -9,6 +9,7 @@ compose-multiplatform = "1.7.0"
 coroutines = "1.9.0"
 firebase = "2.1.0"
 icons = "1.1.1"
+filekit = "0.8.7"
 haze = "0.9.0-rc03"
 jbadaptive = "1.0.0-rc01"
 jblifecycle = "2.8.3"
@@ -119,6 +120,8 @@ google-identity = "com.google.android.libraries.identity.googleid:googleid:1.1.1
 
 google-review = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 google-appupdate = { module = "com.google.android.play:app-update-ktx", version.ref = "appupdate" }
+
+filekit = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }

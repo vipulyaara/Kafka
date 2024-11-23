@@ -131,7 +131,7 @@ fun MenuItem(
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
 

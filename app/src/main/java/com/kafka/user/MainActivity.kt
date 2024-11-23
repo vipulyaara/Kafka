@@ -21,6 +21,7 @@ import com.kafka.remote.config.isTrueContrastEnabled
 import com.kafka.shared.AndroidActivityComponent
 import com.kafka.shared.AndroidApplicationComponent
 import com.kafka.shared.create
+import io.github.vinceglb.filekit.core.FileKit
 import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.isDark
 
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
 
         val applicationComponent = AndroidApplicationComponent.from(this)
         val component = AndroidActivityComponent.create(this, applicationComponent)
+
+        FileKit.init(this)
 
         setContent {
             val theme by applicationComponent.preferencesStore.observeTheme()

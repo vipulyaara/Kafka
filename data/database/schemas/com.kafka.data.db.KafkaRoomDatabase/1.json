@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3f1e33c951876f4b4a6a99af0a023917",
+    "identityHash": "b781c49c624cc4bddbe0dbf14f7c7439",
     "entities": [
       {
         "tableName": "ItemDetail",
@@ -93,7 +93,7 @@
       },
       {
         "tableName": "File",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileId` TEXT NOT NULL, `itemId` TEXT NOT NULL, `itemTitle` TEXT, `size` INTEGER, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `coverImage` TEXT, `extension` TEXT, `creators` TEXT NOT NULL, `duration` INTEGER, `format` TEXT NOT NULL, `path` TEXT, `url` TEXT, `position` INTEGER NOT NULL, PRIMARY KEY(`fileId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileId` TEXT NOT NULL, `itemId` TEXT NOT NULL, `itemTitle` TEXT, `size` INTEGER, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `coverImage` TEXT, `extension` TEXT, `creators` TEXT NOT NULL, `duration` INTEGER, `format` TEXT NOT NULL, `url` TEXT, `position` INTEGER NOT NULL, PRIMARY KEY(`fileId`))",
         "fields": [
           {
             "fieldPath": "fileId",
@@ -155,11 +155,6 @@
             "columnName": "format",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "path",
-            "columnName": "path",
-            "affinity": "TEXT"
           },
           {
             "fieldPath": "url",
@@ -406,7 +401,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f1e33c951876f4b4a6a99af0a023917')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b781c49c624cc4bddbe0dbf14f7c7439')"
     ]
   }
 }

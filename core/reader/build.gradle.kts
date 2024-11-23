@@ -9,12 +9,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.domain)
+                implementation(projects.base.domain)
                 implementation(projects.navigation)
                 implementation(projects.ui.components)
 
                 implementation(libs.okio)
 
+                implementation(libs.kotlinx.datetime)
                 implementation(libs.ksoup)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)

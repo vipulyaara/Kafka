@@ -60,10 +60,6 @@ fun LoginScreen(authViewModel: AuthViewModel) {
     val navigator = LocalNavigator.current
     val context = getContext()
 
-    if (authViewState.currentUser != null) {
-        navigator.goBack()
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

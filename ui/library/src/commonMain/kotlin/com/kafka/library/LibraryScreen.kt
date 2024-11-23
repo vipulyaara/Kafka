@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kafka.data.entities.Bookshelf
 import com.kafka.library.bookshelf.BookshelfDetailViewModel
 import com.kafka.library.bookshelf.BookshelfItems
 import com.kafka.library.bookshelf.LibraryViewModel
@@ -47,23 +46,4 @@ fun LibraryScreen(
             }
         }
     }
-}
-
-@Composable
-private fun BookshelfItems(
-    bookshelf: Bookshelf,
-    detailFactory: (String) -> BookshelfDetailViewModel
-) {
-    val detailViewModel = viewModel(key = bookshelf.id) { detailFactory(bookshelf.id) }
-    BookshelfItems(detailViewModel)
-
-//    when (bookshelf.type) {
-//        Bookshelf.Type.Uploads -> {
-//
-//        }
-//
-//        else -> {
-//            BookshelfItems(detailViewModel)
-//        }
-//    }
 }

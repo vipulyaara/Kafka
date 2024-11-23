@@ -18,17 +18,13 @@ data class File(
     @SerialName("cover_image") val coverImage: String?,
     @SerialName("extension") val extension: String?,
     @SerialName("creators") val creators: List<String>,
-    @SerialName("duration") val duration: Long?,
+    @SerialName("duration") val duration: Long? = null,
     @SerialName("format") val format: String,
-    @SerialName("path") val path: String?,
     @SerialName("url") val url: String?,
     val position: Int = 0
 ) : BaseEntity {
-    val isEpub: Boolean
-        get() = extension.equals("epub", true)
-
     val name: String
-        get() = title + extension
+        get() = title + "." + extension?.removePrefix(".")
 
     val creator: String
         get() = creators.take(5).firstOrNull().orEmpty()
@@ -62,3 +58,6 @@ fun File.isAudio() = this.extension.isAudioExtension()
 fun File.isText() = this.extension.isTextExtension()
 
 fun File.nameWithoutExtension() = title.substringBeforeLast(".")
+
+val fileFormatEpub = "readable/epub"
+val fileFormatAudio = "readable/audio"

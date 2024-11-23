@@ -116,11 +116,6 @@ class ProfileViewModel(
         analytics.log { openLogin() }
         navigator.navigate(Screen.Login)
     }
-
-    fun openLibrary() {
-        navigator.navigate(Screen.Library)
-    }
-
 }
 
 @Immutable

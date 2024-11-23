@@ -16,14 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kafka.common.simpleClickable
-import com.kafka.data.entities.User
+import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.profile.generated.resources.Res
 import kafka.ui.profile.generated.resources.app_version
-import kafka.ui.profile.generated.resources.go_to_favorites
 import kafka.ui.profile.generated.resources.login
 import kafka.ui.profile.generated.resources.login_rationale
 import org.jetbrains.compose.resources.stringResource
@@ -44,21 +42,27 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
-            ProfileHeader(
-                isLoading = viewState.isLoading,
-                userName = viewState.currentUser?.displayName,
-                currentUser = viewState.currentUser,
-                profileViewModel = profileViewModel,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.Spacing12)
-            )
+            Spacer(Modifier.weight(1f))
+
+            AnimatedVisibilityFade(visible = viewState.isLoading) {
+                InfiniteProgressBar(modifier = Modifier.padding(Dimens.Spacing20))
+            }
+
+            Surface(
+                modifier = modifier,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = MaterialTheme.shapes.large
+            ) {
+                if (viewState.currentUser == null) {
+                    LoginPrompt { profileViewModel.openLogin() }
+                }
+            }
 
             ProfileMenu(profileViewModel = profileViewModel) {
                 navigator.goBack()
             }
 
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(Dimens.Spacing24))
 
             viewState.appVersion?.let { version ->
                 Text(
@@ -82,59 +86,6 @@ private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surface,
             content = content
-        )
-    }
-}
-
-@Composable
-private fun ProfileHeader(
-    isLoading: Boolean,
-    userName: String?,
-    currentUser: User?,
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = MaterialTheme.shapes.large
-    ) {
-        if (isLoading) {
-            InfiniteProgressBar(Modifier.padding(Dimens.Spacing20))
-        } else {
-            if (currentUser != null) {
-                UserProfileHeader(userName) { profileViewModel.openLibrary() }
-            } else {
-                LoginPrompt { profileViewModel.openLogin() }
-            }
-        }
-    }
-}
-
-@Composable
-private fun UserProfileHeader(
-    displayName: String?,
-    modifier: Modifier = Modifier,
-    goToFavorites: () -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(Dimens.Spacing24)
-    ) {
-        displayName?.let { name ->
-            Text(
-                text = name,
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Spacer(modifier = Modifier.height(Dimens.Spacing04))
-        }
-        Text(
-            text = stringResource(Res.string.go_to_favorites),
-            modifier = Modifier.simpleClickable { goToFavorites() },
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.primary,
-            maxLines = 1
         )
     }
 }

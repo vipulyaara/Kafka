@@ -20,6 +20,7 @@ import com.kafka.domain.interactors.GetLastPageOffset
 import com.kafka.domain.interactors.GetLastSeenPage
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.interactors.UpdateCurrentPageOffset
+import com.kafka.domain.interactors.reader.ParseEbook
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.downloader.core.DownloadItem
 import com.kafka.downloader.core.ObserveDownload
@@ -27,7 +28,6 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.DeepLinks
 import com.kafka.navigation.graph.Screen
 import com.kafka.reader.epub.domain.ObserveReaderSettings
-import com.kafka.reader.epub.domain.ParseEbook
 import com.kafka.reader.epub.domain.UpdateReaderSettings
 import com.kafka.reader.epub.settings.ReaderSettings
 import kafka.reader.core.models.EpubBook
@@ -60,7 +60,7 @@ class ReaderViewModel(
     private var ebook by mutableStateOf<EpubBook?>(null)
 
     // TODO - Check if we need this state
-    val lazyListState = LazyListState()
+    private val lazyListState = LazyListState()
 
     val state = combine(
         combine(
@@ -136,16 +136,14 @@ class ReaderViewModel(
         }
     }
 
-    private fun loadEbook(uri: String) {
+    private fun loadEbook(path: String) {
         viewModelScope.launch {
-            val result = parseEbook(uri)
+            val result = parseEbook(ParseEbook.Params(filePath = path))
+
             result.onSuccess {
                 val lastSeenPage = getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull() ?: 0
                 val lastPageOffset = getLastPageOffset(GetLastPageOffset.Params(fileId)).getOrNull() ?: 0
-                ebook = it.copy(
-                    lastSeenPage = lastSeenPage,
-                    lastPageOffset = lastPageOffset
-                )
+                ebook = it.copy(lastSeenPage = lastSeenPage, lastPageOffset = lastPageOffset)
             }
             result.onException { snackbarManager.addMessage(UiMessage.Error(it)) }
         }
@@ -153,7 +151,7 @@ class ReaderViewModel(
 
     fun shareItemText(context: Any?) {
         analytics.log { this.shareItem(itemId, "item_detail") }
-        val itemTitle = state.value.itemDetail!!.title
+        val itemTitle = state.value.itemDetail?.title ?: state.value.epubBook?.title
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"

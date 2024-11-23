@@ -38,7 +38,8 @@ data class EpubBook @OptIn(ExperimentalSerializationApi::class) constructor(
     @ProtoNumber(3) val author: String,
     @ProtoNumber(4) val language: String,
     @ProtoNumber(6) val chapters: List<EpubChapter> = emptyList(),
-    @ProtoNumber(7) val images: List<EpubImage> = emptyList(),
-    @ProtoNumber(8) val lastSeenPage: Int = 0,
-    @ProtoNumber(9) val lastPageOffset: Int = 0,
+    @ProtoNumber(7) val coverImage: EpubImage? = null,
+    @ProtoNumber(8) val images: List<EpubImage> = emptyList(),
+    @ProtoNumber(9) val lastSeenPage: Int = 0,
+    @ProtoNumber(10) val lastPageOffset: Int = 0,
 )

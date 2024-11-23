@@ -17,6 +17,8 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
 
+                api(libs.filekit)
+
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
             }
