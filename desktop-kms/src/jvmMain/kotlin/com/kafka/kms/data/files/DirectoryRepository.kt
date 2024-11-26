@@ -43,17 +43,30 @@ class DirectoryRepository {
         debug { "Creating directories " }
     }
 
+    fun createAudioRepository(repoId: String) {
+        // Create audio directory structure
+        val audioPath = DirectoryPaths.audioPath(repoId)
+        val metaPath = DirectoryPaths.audioMetaPath(repoId)
+
+        // Create container.xml in META-INF
+        createFile(metaPath, "container.xml").apply { writeText(containerContent) }
+
+        debug { "Creating audio directories for $repoId" }
+    }
+
     /**
      * Removes all .DS_Store files from the ebooks directory and its subdirectories
      * @return The number of .DS_Store files removed
      */
     fun cleanupDSStoreFiles(): Int {
-        if (!DirectoryPaths.ebooksPath.exists() || !DirectoryPaths.ebooksPath.isDirectory) {
-            debug { "Ebooks directory not found at: ${DirectoryPaths.ebooksPath.absolutePath}" }
-            return 0
+        var count = 0
+        if (DirectoryPaths.ebooksPath.exists() && DirectoryPaths.ebooksPath.isDirectory) {
+            count += removeDSStoreFiles(DirectoryPaths.ebooksPath)
         }
-
-        return removeDSStoreFiles(DirectoryPaths.ebooksPath)
+        if (DirectoryPaths.audiobooksPath.exists() && DirectoryPaths.audiobooksPath.isDirectory) {
+            count += removeDSStoreFiles(DirectoryPaths.audiobooksPath)
+        }
+        return count
     }
 
     /**
@@ -82,9 +95,10 @@ class DirectoryRepository {
 
 object DirectoryPaths {
     private val baseDir = System.getProperty("user.home")
-    private val projectPath = listOf("StudioProjects", "kms-tools", "ebooks")
+    private val projectPath = listOf("StudioProjects", "kms-tools")
 
-    val ebooksPath = createDirectory(baseDir, *projectPath.toTypedArray())
+    // Ebooks paths
+    val ebooksPath = createDirectory(baseDir, *projectPath.toTypedArray(), "ebooks")
 
     fun repoPath(repoId: String) = createDirectory(ebooksPath, repoId)
     fun srcPath(repoId: String) = createDirectory(repoPath(repoId), "src")
@@ -93,5 +107,12 @@ object DirectoryPaths {
     fun cssPath(repoId: String) = createDirectory(epubPath(repoId), "css")
     fun textPath(repoId: String) = createDirectory(epubPath(repoId), "text")
     fun metaPath(repoId: String) = createDirectory(repoPath(repoId), "META-INF")
+
+    // Audiobooks paths
+    val audiobooksPath = createDirectory(baseDir, *projectPath.toTypedArray(), "audiobooks")
+
+    fun audioRepoPath(repoId: String) = createDirectory(audiobooksPath, repoId)
+    fun audioPath(repoId: String) = createDirectory(audioRepoPath(repoId), "audio")
+    fun audioMetaPath(repoId: String) = createDirectory(audioRepoPath(repoId), "META-INF")
 }
 

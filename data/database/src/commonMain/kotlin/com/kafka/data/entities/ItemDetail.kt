@@ -24,13 +24,16 @@ data class ItemDetail(
     @SerialName("translators") val translators: List<String>?,
     @SerialName("collections") val collections: List<String>?,
     @SerialName("languages") val languages: List<String>?,
-    @SerialName("cover_image") val coverImage: String?,
+    @SerialName("cover_images") val coverImages: List<String>?,
     @SerialName("subjects") val subjects: List<String>?,
     @SerialName("rating") val rating: Double? = null,
     @SerialName("publishers") val publishers: List<String>,
 ) : BaseEntity {
     val creator: String?
         get() = creators?.take(5)?.joinToString()
+
+    val coverImage: String?
+        get() = coverImages?.firstOrNull()
 
     val language: String
         get() = languages?.take(5)?.joinToString() ?: "en"

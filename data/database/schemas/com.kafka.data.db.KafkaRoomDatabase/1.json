@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b781c49c624cc4bddbe0dbf14f7c7439",
+    "identityHash": "749b4efadc42c4e02599fa372220b2c6",
     "entities": [
       {
         "tableName": "ItemDetail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImage` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, PRIMARY KEY(`itemId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImages` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, PRIMARY KEY(`itemId`))",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -52,8 +52,8 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "coverImage",
-            "columnName": "coverImage",
+            "fieldPath": "coverImages",
+            "columnName": "coverImages",
             "affinity": "TEXT"
           },
           {
@@ -401,7 +401,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b781c49c624cc4bddbe0dbf14f7c7439')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '749b4efadc42c4e02599fa372220b2c6')"
     ]
   }
 }

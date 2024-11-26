@@ -1,17 +1,14 @@
-package com.kafka.kms.service
+package com.kafka.kms.data.remote
 
 import com.kafka.base.SecretsProvider
 import com.kafka.data.entities.File
-import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.MediaType
-import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.postgrest.postgrest
+import dev.gitlive.firebase.firestore.FirebaseFirestore
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.Dispatchers
@@ -22,9 +19,9 @@ import java.util.UUID
 import java.io.File as JavaFile
 
 @Inject
-class SupabaseUploadService(
+class UploadService(
     private val secretsProvider: SecretsProvider,
-    private val supabaseClient: SupabaseClient,
+    private val firestore: FirebaseFirestore,
     private val httpClient: HttpClient
 ) {
     suspend fun uploadBook(
@@ -54,30 +51,18 @@ class SupabaseUploadService(
         val translatorsList = translators.split(",").map { it.trim() }
 
         // Create Item entity
-        val item = Item(
+        val item = ItemDetail(
             itemId = itemId,
             title = title,
             mediaType = mediaType,
             creators = creatorsList,
             languages = languagesList,
             description = description,
-            coverImage = coverUrl,
+            coverImages = listOf(coverUrl),
             collections = collectionsList,
-            subjects = subjectsList
-        )
-
-        // Create ItemDetail entity
-        val itemDetail = ItemDetail(
-            itemId = itemId,
-            title = title,
-            mediaType = mediaType,
-            description = longDescription,
-            creators = creatorsList,
-            translators = translatorsList,
-            collections = collectionsList,
-            languages = languagesList,
-            coverImage = coverUrl,
             subjects = subjectsList,
+            translators = translatorsList,
+            rating = 0.0,
             publishers = publishersList
         )
 
@@ -98,10 +83,11 @@ class SupabaseUploadService(
         )
 
         withContext(Dispatchers.IO) {
-            // Insert into Supabase database
-            supabaseClient.postgrest["items"].insert(item)
-            supabaseClient.postgrest["item_detail"].insert(itemDetail)
-            supabaseClient.postgrest["files"].insert(file)
+            firestore.runTransaction {
+                set(firestore.collection("items").document(itemId), item)
+                set(firestore.collection("files").document(file.fileId), file)
+                null
+            }
         }
 
         itemId
@@ -113,49 +99,31 @@ class SupabaseUploadService(
         epubFilePath: String
     ): Pair<String, String> = withContext(Dispatchers.IO) {
         try {
-            println("Starting file uploads for item: $itemId")
-            println("Cover file path: $coverFilePath")
-            println("EPUB file path: $epubFilePath")
-
             val coverFile = JavaFile(coverFilePath)
             val epubFile = JavaFile(epubFilePath)
-
-            println("File sizes:")
-            println("- Cover: ${coverFile.length()} bytes")
-            println("- EPUB: ${epubFile.length()} bytes")
 
             val coverFileName = "covers/$itemId/${UUID.randomUUID()}.${coverFile.extension}"
             val epubFileName = "readables/$itemId/${UUID.randomUUID()}.${epubFile.extension}"
 
-            println("Generated file names:")
-            println("- Cover: $coverFileName")
-            println("- EPUB: $epubFileName")
-
             // Upload cover
-            println("Uploading cover file...")
             val coverUrl = uploadFile(
-                bucket = "items",
+                bucket = "kafka-books.appspot.com",
                 objectName = coverFileName,
                 file = coverFile,
                 contentType = "image/${coverFile.extension}"
             )
-            println("Cover upload successful: $coverUrl")
 
             // Upload epub
-            println("Uploading EPUB file...")
             val epubUrl = uploadFile(
-                bucket = "items",
+                bucket = "kafka-books.appspot.com",
                 objectName = epubFileName,
                 file = epubFile,
                 contentType = "application/epub+zip"
             )
-            println("EPUB upload successful: $epubUrl")
 
             coverUrl to epubUrl
         } catch (e: Exception) {
-            println("Upload error in uploadFiles:")
-            println("- Exception type: ${e.javaClass.name}")
-            println("- Message: ${e.message}")
+            println("Upload error: ${e.message}")
             e.printStackTrace()
             throw e
         }
@@ -171,56 +139,25 @@ class SupabaseUploadService(
             throw IllegalArgumentException("File does not exist: ${file.path}")
         }
 
-        val supabaseUrl = secretsProvider.supabaseUrl
-        val supabaseKey = secretsProvider.supabaseKey
-        val uploadUrl = "$supabaseUrl/storage/v1/object/$bucket/$objectName"
+        val apiKey = "AIzaSyBYGSIaD-oP39HC8N23kTTxG03KBx2Wiws"
+        val encodedObjectName = java.net.URLEncoder.encode(objectName, "UTF-8").replace("+", "%20")
+        val uploadUrl = "https://firebasestorage.googleapis.com/v0/b/$bucket/o?name=$encodedObjectName&key=$apiKey"
 
-        println("Attempting file upload:")
-        println("- Bucket: $bucket")
-        println("- Object name: $objectName")
-        println("- File size: ${file.length()} bytes")
-        println("- Content type: $contentType")
-        println("- Upload URL: $uploadUrl")
-
-        try {
-            val fileBytes = file.readBytes()
-            println("- File bytes read successfully: ${fileBytes.size} bytes")
-
-            val response = httpClient.post(uploadUrl) {
-                headers {
-                    append(HttpHeaders.Authorization, "Bearer $supabaseKey")
-                    append(HttpHeaders.ContentType, contentType)
-                    append(HttpHeaders.ContentLength, file.length().toString())
-                }
-                setBody(fileBytes)
+        val response = httpClient.post(uploadUrl) {
+            headers {
+                clear()
+                append(HttpHeaders.ContentType, contentType)
+                append(HttpHeaders.ContentLength, file.length().toString())
             }
-
-            println("Upload response:")
-            println("- Status: ${response.status}")
-            println("- Status code: ${response.status.value}")
-
-            if (!response.status.isSuccess()) {
-                val responseBody = response.bodyAsText()
-                println("- Error response body: $responseBody")
-                throw IOException("""
-                    Upload failed:
-                    Status: ${response.status}
-                    Body: $responseBody
-                    URL: $uploadUrl
-                    Content-Type: $contentType
-                    File size: ${file.length()}
-                """.trimIndent())
-            }
-
-            // Return the public URL
-            return "$supabaseUrl/storage/v1/object/public/$bucket/$objectName"
-        } catch (e: Exception) {
-            println("Exception during upload:")
-            println("- Exception type: ${e.javaClass.name}")
-            println("- Message: ${e.message}")
-            e.printStackTrace()
-            throw e
+            setBody(file.readBytes())
         }
+
+        if (!response.status.isSuccess()) {
+            throw IOException("Upload failed with status: ${response.status}")
+        }
+
+        // Return the download URL
+        return "https://firebasestorage.googleapis.com/v0/b/$bucket/o/$encodedObjectName?alt=media&key=$apiKey"
     }
 
     private val JavaFile.extension: String

@@ -10,11 +10,13 @@ kotlin {
                 implementation(projects.domain)
                 implementation(projects.navigation)
                 implementation(projects.ui.components)
+                implementation(projects.uiPlayback)
 
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 
                 implementation(libs.haze)
+                implementation(libs.material.kolor)
                 implementation(libs.haze.materials)
 
                 implementation(libs.jetbrains.lifecycle.runtime.compose)

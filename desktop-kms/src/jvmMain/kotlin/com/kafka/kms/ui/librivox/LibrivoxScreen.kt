@@ -1,4 +1,4 @@
-package com.kafka.kms.ui.gutenberg
+package com.kafka.kms.ui.librivox
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import com.kafka.ui.components.progress.InfiniteProgressBar
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun GutenbergScreen(viewModel: GutenbergViewModel, modifier: Modifier = Modifier) {
+fun LibrivoxScreen(viewModel: LibrivoxViewModel, modifier: Modifier = Modifier) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Surface(
@@ -42,17 +42,17 @@ fun GutenbergScreen(viewModel: GutenbergViewModel, modifier: Modifier = Modifier
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Search Gutenberg Books",
+                    text = "Search Librivox Audiobooks",
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TextField(
-                        value = viewModel.bookId,
-                        onValueChange = { viewModel.bookId = it },
-                        onImeAction = { viewModel.fetchBook() },
-                        placeholder = "Enter Gutenberg ID",
+                        value = viewModel.itemId,
+                        onValueChange = { viewModel.itemId = it },
+                        onImeAction = { viewModel.fetchItem() },
+                        placeholder = "Enter Librivox ID",
                         maxLines = 1,
                         modifier = Modifier.width(200.dp)
                     )
@@ -65,19 +65,29 @@ fun GutenbergScreen(viewModel: GutenbergViewModel, modifier: Modifier = Modifier
                 }
             }
 
-            // Book details card
-            state.itemDetail?.let { book ->
+            // Audiobook details card
+            state.itemDetail?.let { audiobook ->
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = book.title,
+                        text = audiobook.title,
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = book.creator.orEmpty(),
+                        text = audiobook.author,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "Language: ${audiobook.language}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "Total Sections: ${audiobook.totalSections}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -235,7 +235,7 @@ private fun HomeNavigationDrawer(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .windowInsetsPadding(WindowInsets.safeDrawing)
-            .widthIn(max = 200.dp)
+            .widthIn(max = 300.dp)
             .padding(4.dp),
         verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
     ) {

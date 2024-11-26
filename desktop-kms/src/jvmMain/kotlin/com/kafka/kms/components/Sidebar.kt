@@ -3,6 +3,7 @@ package com.kafka.kms.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,18 +24,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kafka.data.prefs.Theme
 import compose.icons.TablerIcons
 import compose.icons.tablericons.BoltOff
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Feather
+import compose.icons.tablericons.Headphones
 import compose.icons.tablericons.Settings
 import compose.icons.tablericons.Upload
 
 @Composable
 fun Sidebar(
     selectedRoute: String,
+    modifier: Modifier = Modifier,
     onRouteSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    theme: Theme,
+    onThemeChange: (Theme) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -89,6 +94,13 @@ fun Sidebar(
         )
 
         NavItem(
+            icon = TablerIcons.Headphones,
+            label = "Librivox",
+            selected = selectedRoute == "librivox",
+            onClick = { onRouteSelected("librivox") }
+        )
+
+        NavItem(
             icon = TablerIcons.BoltOff,
             label = "Standard Ebooks",
             selected = selectedRoute == "standard-ebooks",
@@ -111,6 +123,19 @@ fun Sidebar(
             selected = selectedRoute == "settings",
             onClick = { onRouteSelected("settings") }
         )
+
+        // Add theme switch at the bottom
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            ThemeSwitch(
+                theme = theme,
+                onThemeChange = onThemeChange
+            )
+        }
     }
 }
 

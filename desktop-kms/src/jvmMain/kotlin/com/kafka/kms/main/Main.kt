@@ -6,6 +6,7 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.kafka.kms.components.theme.AppleTheme
+import ui.common.theme.theme.isDark
 
 fun main() = application {
     Window(
@@ -23,7 +24,9 @@ fun main() = application {
 
         component.appInitializers.forEach { it.init() }
 
-        AppleTheme(false) {
+        val isDarkTheme = applicationComponent.preferencesStore.isDark()
+
+        AppleTheme(isDarkTheme) {
             component.kmsHomepage()
         }
     }

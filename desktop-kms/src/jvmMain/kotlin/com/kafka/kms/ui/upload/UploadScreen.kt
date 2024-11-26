@@ -8,22 +8,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,15 +35,19 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kafka.data.model.MediaType
-import com.kafka.kms.components.DropdownField
+import com.kafka.kms.components.LongTextField
 import com.kafka.kms.components.TextField
-import com.kafka.kms.service.UploadService
+import com.kafka.kms.data.remote.SupabaseUploadService
+import com.kafka.kms.ui.upload.components.FileAndMediaSection
+import com.kafka.kms.ui.upload.components.MainBookInfo
+import com.kafka.kms.ui.upload.components.MetadataFields
+import com.kafka.kms.ui.upload.components.UploadBottomBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.awt.Cursor
 
 @Composable
-fun UploadScreen(uploadService: UploadService, modifier: Modifier = Modifier) {
+fun UploadScreen(uploadService: SupabaseUploadService, modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var longDescription by remember { mutableStateOf("") }
@@ -60,7 +59,7 @@ fun UploadScreen(uploadService: UploadService, modifier: Modifier = Modifier) {
     var sourceUrls by remember { mutableStateOf("") }
     var translators by remember { mutableStateOf("") }
     var epubFilePath by remember { mutableStateOf("") }
-    var coverFilePath by remember { mutableStateOf("") }
+    var coverImagePaths by remember { mutableStateOf(listOf<String>()) }
     var copyright by remember { mutableStateOf("") }
     var mediaType by remember { mutableStateOf(MediaType.Text) }
     var uploadStatus by remember { mutableStateOf("") }
@@ -69,8 +68,6 @@ fun UploadScreen(uploadService: UploadService, modifier: Modifier = Modifier) {
     var hasEditedId by remember { mutableStateOf(false) }
     var contentOpfPath by remember { mutableStateOf("") }
     var dateFeatured by remember { mutableStateOf("") }
-
-    var isMediaTypeExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(title, creators) {
         if (!hasEditedId && title.isNotEmpty() && creators.isNotEmpty()) {
@@ -117,251 +114,110 @@ fun UploadScreen(uploadService: UploadService, modifier: Modifier = Modifier) {
     }
 
     Surface {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // Title section
-            Text("Upload New Book", style = MaterialTheme.typography.headlineMedium)
-
-            // Main book information
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+        Box(modifier = modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(24.dp)
+                    .padding(bottom = 80.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(2f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextField(
-                        value = title,
-                        onValueChange = { title = it },
-                        placeholder = "Title",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = description,
-                        onValueChange = { description = it },
-                        placeholder = "Description",
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                Text("Upload New Book", style = MaterialTheme.typography.headlineMedium)
 
-                    LongDescription(longDescription, Modifier.fillMaxWidth()) {
-                        longDescription = it
-                    }
-                }
+                MainBookInfo(
+                    title = title,
+                    onTitleChange = { title = it },
+                    creators = creators,
+                    onCreatorsChange = { creators = it },
+                    description = description,
+                    onDescriptionChange = { description = it },
+                    id = id,
+                    onIdChange = { id = it },
+                    onIdEdited = { hasEditedId = true },
+                    publishers = publishers,
+                    onPublishersChange = { publishers = it },
+                    translators = translators,
+                    onTranslatorsChange = { translators = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextField(
-                        value = id,
-                        onValueChange = {
-                            id = it
-                            hasEditedId = true
-                        },
-                        placeholder = "ID (author_title)",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        TextField(
-                            value = contentOpfPath,
-                            onValueChange = { contentOpfPath = it },
-                            placeholder = "content.opf File",
-                            modifier = Modifier.weight(1f),
-                            readOnly = true
-                        )
-                        TextButton(onClick = { chooseFile("opf") { contentOpfPath = it } }) {
-                            Text("Choose opf")
-                        }
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        TextField(
-                            value = epubFilePath,
-                            onValueChange = { epubFilePath = it },
-                            placeholder = "EPUB File",
-                            modifier = Modifier.weight(1f),
-                            readOnly = true
-                        )
-                        TextButton(onClick = { chooseFile("epub") { epubFilePath = it } }) {
-                            Text("Choose EPUB")
-                        }
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        TextField(
-                            value = coverFilePath,
-                            onValueChange = { coverFilePath = it },
-                            placeholder = "Cover Image",
-                            modifier = Modifier.weight(1f),
-                            readOnly = true
-                        )
-                        TextButton(onClick = { chooseFile("image") { coverFilePath = it } }) {
-                            Text("Choose Cover")
-                        }
-                    }
-                }
-            }
+                LongDescription(
+                    value = longDescription,
+                    onValueChange = { longDescription = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextField(
-                        value = creators,
-                        onValueChange = { creators = it },
-                        placeholder = "Creators",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = publishers,
-                        onValueChange = { publishers = it },
-                        placeholder = "Publishers",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = collections,
-                        onValueChange = { collections = it },
-                        placeholder = "Collections",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextField(
-                        value = subjects,
-                        onValueChange = { subjects = it },
-                        placeholder = "Subjects",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = languages,
-                        onValueChange = { languages = it },
-                        placeholder = "Languages",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = sourceUrls,
-                        onValueChange = { sourceUrls = it },
-                        placeholder = "Source URLs",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextField(
-                        value = dateFeatured,
-                        onValueChange = { 
-                            if (it.isEmpty() || it.matches(Regex("""^\d{4}-\d{2}-\d{2}$"""))) {
-                                dateFeatured = it
-                            }
-                        },
-                        placeholder = "Date Featured (YYYY-MM-DD)",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = translators,
-                        onValueChange = { translators = it },
-                        placeholder = "Translators",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    TextField(
-                        value = copyright,
-                        onValueChange = { copyright = it },
-                        placeholder = "Copyright",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    DropdownField(
-                        value = mediaType,
-                        options = MediaType.entries,
-                        onValueChange = { mediaType = it },
-                        placeholder = "Media Type",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-
-            // Upload section
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = {
-                        uploadStatus = "Uploading..."
-                        errorMessage = ""
-
-                        GlobalScope.launch {
-                            uploadService.uploadBook(
-                                itemId = id,
-                                title = title,
-                                description = description,
-                                longDescription = longDescription,
-                                creators = creators,
-                                subjects = subjects,
-                                publishers = publishers,
-                                languages = languages,
-                                collections = collections,
-                                translators = translators,
-                                coverFilePath = coverFilePath,
-                                epubFilePath = epubFilePath,
-                                mediaType = mediaType,
-                                copyright = copyright
-                            ).onSuccess {
-                                uploadStatus = "Upload successful!"
-                            }.onFailure {
-                                errorMessage = "Upload failed: ${it.message}"
-                            }
+                MetadataFields(
+                    subjects = subjects,
+                    onSubjectsChange = { subjects = it },
+                    collections = collections,
+                    onCollectionsChange = { collections = it },
+                    languages = languages,
+                    onLanguagesChange = { languages = it },
+                    sourceUrls = sourceUrls,
+                    onSourceUrlsChange = { sourceUrls = it },
+                    copyright = copyright,
+                    onCopyrightChange = { copyright = it },
+                    dateFeatured = dateFeatured,
+                    onDateFeaturedChange = {
+                        if (it.isEmpty() || it.matches(Regex("""^\d{4}-\d{2}-\d{2}$"""))) {
+                            dateFeatured = it
                         }
                     },
-                    modifier = Modifier.widthIn(min = 120.dp),
-                    enabled = id.isNotEmpty() && title.isNotEmpty() && epubFilePath.isNotEmpty()
-                ) {
-                    Text("Upload Book")
-                }
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-                if (uploadStatus.isNotEmpty()) {
-                    Text(
-                        uploadStatus,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.hoverable(remember { MutableInteractionSource() })
-                            .pointerHoverIcon(PointerIcon(Cursor(Cursor.TEXT_CURSOR)))
-                    )
-                }
-                if (errorMessage.isNotEmpty()) {
-                    SelectionContainer {
-                        Text(
-                            errorMessage,
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.hoverable(remember { MutableInteractionSource() })
-                                .pointerHoverIcon(PointerIcon(Cursor(Cursor.TEXT_CURSOR)))
-                        )
-                    }
-                }
+                FileAndMediaSection(
+                    contentOpfPath = contentOpfPath,
+                    onContentOpfSelected = { contentOpfPath = it },
+                    epubFilePath = epubFilePath,
+                    onEpubSelected = { epubFilePath = it },
+                    mediaType = mediaType,
+                    onMediaTypeSelected = { mediaType = it },
+                    coverImagePaths = coverImagePaths,
+                    onCoverImageAdded = { coverImagePaths = coverImagePaths + it },
+                    onCoverImageRemoved = {
+                        coverImagePaths = coverImagePaths.filter { path -> path != it }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
+
+            UploadBottomBar(
+                isEnabled = id.isNotEmpty() && title.isNotEmpty() && epubFilePath.isNotEmpty(),
+                onUploadClick = {
+                    uploadStatus = "Uploading..."
+                    errorMessage = ""
+
+                    GlobalScope.launch {
+                        uploadService.uploadBook(
+                            itemId = id,
+                            title = title,
+                            description = description,
+                            longDescription = longDescription,
+                            creators = creators,
+                            subjects = subjects,
+                            publishers = publishers,
+                            languages = languages,
+                            collections = collections,
+                            translators = translators,
+                            coverImagePaths = coverImagePaths,
+                            epubFilePath = epubFilePath,
+                            mediaType = mediaType,
+                            copyright = copyright
+                        ).onSuccess {
+                            uploadStatus = "Upload successful!"
+                        }.onFailure { error ->
+                            errorMessage = "Upload failed: ${error.message}"
+                        }
+                    }
+                },
+                uploadStatus = uploadStatus,
+                errorMessage = errorMessage,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }
@@ -372,7 +228,7 @@ private fun LongDescription(
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
 ) {
-    TextField(
+    LongTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = "Long Description",
@@ -481,46 +337,4 @@ private fun BoxScope.ResizeIndicator() {
                 shape = CircleShape
             )
     )
-}
-
-private fun chooseFile(
-    fileType: String = "all",
-    onFileSelected: (String) -> Unit
-) {
-    val frame = java.awt.Frame()
-    val fileDialog = java.awt.FileDialog(frame).apply {
-        when (fileType.lowercase()) {
-            "epub" -> {
-                setFilenameFilter { _, name -> name.endsWith(".epub", ignoreCase = true) }
-                title = "Select EPUB File"
-            }
-
-            "image" -> {
-                setFilenameFilter { _, name ->
-                    name.endsWith(".jpg", ignoreCase = true) ||
-                            name.endsWith(".jpeg", ignoreCase = true) ||
-                            name.endsWith(".png", ignoreCase = true)
-                }
-                title = "Select Cover Image"
-            }
-
-            "opf" -> {
-                setFilenameFilter { _, name -> name.endsWith(".opf", ignoreCase = true) }
-                title = "Select content.opf File"
-            }
-
-            else -> {
-                title = "Select File"
-            }
-        }
-        isVisible = true
-    }
-
-    fileDialog.file?.let { fileName ->
-        val filePath = "${fileDialog.directory}$fileName"
-        onFileSelected(filePath)
-    }
-
-    fileDialog.dispose()
-    frame.dispose()
 }

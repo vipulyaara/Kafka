@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.bundle.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -69,6 +70,7 @@ import com.kafka.navigation.Navigator
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import com.kafka.profile.ProfileScreen
 import com.kafka.profile.ProfileViewModel
 import com.kafka.profile.feedback.FeedbackScreen
@@ -92,6 +94,7 @@ import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.isDark
 import ui.common.theme.theme.setStatusBarColor
 import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
 typealias AppNavigation = @Composable (NavHostController) -> Unit
 
@@ -295,10 +298,31 @@ typealias addItemDetail = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addItemDetail(
     viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel,
 ) {
+    val originNavType = object : NavType<Origin>(isNullableAllowed = false) {
+        override fun get(bundle: Bundle, key: String): Origin? {
+            return bundle.getString(key)?.let { Origin.valueOf(it) }
+        }
+
+        override fun parseValue(value: String): Origin {
+            return Origin.valueOf(value)
+        }
+
+        override fun put(bundle: Bundle, key: String, value: Origin) {
+            bundle.putString(key, value.name)
+        }
+    }
+
     composable<Screen.ItemDetail>(
+        typeMap = mapOf(typeOf<Origin>() to originNavType),
         deepLinks = listOf(
-            navDeepLink<Screen.ItemDetail>("${Config.BASE_URL}item"),
-            navDeepLink<Screen.ItemDetail>("${Config.BASE_URL_ALT}item")
+            navDeepLink<Screen.ItemDetail>(
+                basePath = "${Config.BASE_URL}item",
+                typeMap = mapOf(typeOf<Origin>() to originNavType)
+            ),
+            navDeepLink<Screen.ItemDetail>(
+                basePath = "${Config.BASE_URL_ALT}item",
+                typeMap = mapOf(typeOf<Origin>() to originNavType)
+            )
         )
     ) {
         ProvideLocalAnimatedContentScope(this@composable) {

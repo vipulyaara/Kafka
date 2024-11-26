@@ -4,18 +4,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.kafka.data.prefs.PreferencesStore
+import com.kafka.data.prefs.THEME
+import com.kafka.data.prefs.Theme
+import com.kafka.data.prefs.observeTheme
 import com.kafka.kms.components.Sidebar
 import com.kafka.kms.data.files.DirectoryPaths
-import com.kafka.kms.service.UploadService
+import com.kafka.kms.data.remote.SupabaseUploadService
 import com.kafka.kms.ui.directory.FileTree
 import com.kafka.kms.ui.gutenberg.GutenbergScreen
 import com.kafka.kms.ui.gutenberg.GutenbergViewModel
+import com.kafka.kms.ui.librivox.LibrivoxScreen
+import com.kafka.kms.ui.librivox.LibrivoxViewModel
 import com.kafka.kms.ui.upload.UploadScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 
 typealias KmsHomepage = @Composable () -> Unit
@@ -23,17 +33,32 @@ typealias KmsHomepage = @Composable () -> Unit
 @Inject
 @Composable
 fun KmsHomepage(
-    uploadService: UploadService,
-    gutenbergFactory: () -> GutenbergViewModel
+    uploadService: SupabaseUploadService,
+    gutenbergFactory: () -> GutenbergViewModel,
+    librivoxFactory: () -> LibrivoxViewModel,
+    preferencesStore: PreferencesStore,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
     var currentRoute by remember { mutableStateOf("upload") }
+    var theme by remember { mutableStateOf(Theme.SYSTEM) }
+    
+    LaunchedEffect(Unit) {
+        preferencesStore.observeTheme()
+            .collect { theme = it }
+    }
 
     Row(modifier = Modifier.fillMaxSize()) {
-        // Left sidebar
+        // Left sidebar with integrated theme switch
         Sidebar(
             selectedRoute = currentRoute,
             modifier = Modifier.weight(0.2f),
-            onRouteSelected = { route -> currentRoute = route }
+            onRouteSelected = { route -> currentRoute = route },
+            theme = theme,
+            onThemeChange = { newTheme ->
+                scope.launch {
+                    preferencesStore.save(THEME, newTheme.name)
+                }
+            }
         )
 
         // Main content area with padding
@@ -41,6 +66,11 @@ fun KmsHomepage(
             when (currentRoute) {
                 "gutenberg" -> GutenbergScreen(
                     viewModel = gutenbergFactory(),
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                "librivox" -> LibrivoxScreen(
+                    viewModel = librivoxFactory(),
                     modifier = Modifier.fillMaxSize()
                 )
 
@@ -62,7 +92,7 @@ fun KmsHomepage(
 
         // Right sidebar with FileTree
         FileTree(
-            rootPath = System.getProperty("user.home") + "/StudioProjects/kms-tools/ebooks",
+            rootPath = System.getProperty("user.home") + "/StudioProjects/kms-tools",
             modifier = Modifier.weight(0.25f),
             onFileSelected = { /* Handle file selection */ },
             defaultExpandedDirs = listOf(

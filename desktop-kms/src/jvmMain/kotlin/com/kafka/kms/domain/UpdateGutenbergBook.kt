@@ -112,7 +112,7 @@ class UpdateGutenbergBook(
             subjects = book.subjects,
             collections = book.bookshelves,
             publishers = listOf(Publishers.gutenberg),
-            coverImage = null,
+            coverImages = null,
             rating = null
         )
 
@@ -128,7 +128,6 @@ class UpdateGutenbergBook(
             mediaType = MediaType.Text,
             extension = "html",
             format = "readable/html",
-            path = null,
             url = book.formats.octetStream,
             coverImage = null,
             creators = book.authors.map { it.name },

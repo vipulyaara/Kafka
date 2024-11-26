@@ -5,7 +5,6 @@ import com.kafka.base.debug
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -64,10 +63,6 @@ interface NetworkingComponent {
 
             }
             level = LogLevel.ALL
-        }
-
-        defaultRequest {
-            headers.clear()
         }
     }
 
