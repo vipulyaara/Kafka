@@ -53,4 +53,24 @@ sealed interface InlineElement {
         override val end: Int,
         val value: String
     ) : InlineElement
-} 
+
+    data class Highlight(
+        val id: String,
+        val color: String,
+        val note: String?,
+        override val start: Int,
+        override val end: Int,
+    ) : InlineElement
+}
+
+fun List<TextHighlight>.toInlineElements(): List<InlineElement> {
+    return map { highlight ->
+        InlineElement.Highlight(
+            id = highlight.id,
+            start = highlight.startOffset,
+            end = highlight.endOffset,
+            color = highlight.color,
+            note = highlight.note
+        )
+    }
+}

@@ -43,6 +43,7 @@ import compose.icons.tablericons.Gift
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
+import compose.icons.tablericons.Language
 import compose.icons.tablericons.LayoutGrid
 import compose.icons.tablericons.LayoutList
 import compose.icons.tablericons.Logout
@@ -121,4 +122,6 @@ object Icons {
     val Settings = TablerIcons.Settings
     val Bookmark = FontAwesomeIcons.Regular.Bookmark
     val BookmarkFilled = FontAwesomeIcons.Solid.Bookmark
+    val Translate = TablerIcons.Language
+    val Highlight = TablerIcons.Bookmark
 }

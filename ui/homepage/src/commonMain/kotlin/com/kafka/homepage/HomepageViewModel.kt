@@ -3,6 +3,7 @@ package com.kafka.homepage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
+import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.UiMessageManager
 import com.kafka.common.platform.ShareUtils
@@ -59,7 +60,7 @@ class HomepageViewModel(
 
     private fun updateItems() {
         viewModelScope.launch {
-            updateHomepage(Unit).onFailure {
+            updateHomepage(Unit).onException {
                 uiMessageManager.emitMessage(UiMessage("Failed to update Homepage"))
                 snackbarManager.addMessage("Failed to update Homepage")
             }

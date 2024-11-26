@@ -14,6 +14,10 @@ import kafka.reader.core.models.enums.TextStyle
 class DocumentContentParser(
     private val imageParser: ((Node) -> ContentElement.Image)? = null
 ) {
+    private var currentPath = mutableListOf<Int>()
+
+    fun getCurrentPath(): List<Int> = currentPath.toList()
+
     fun parse(node: Node): List<ContentElement> = when (node) {
         is TextNode -> parseTextNode(node)
         is Element -> parseElement(node)
@@ -23,23 +27,35 @@ class DocumentContentParser(
     private fun parseTextNode(node: TextNode): List<ContentElement> {
         val text = node.text().trim()
         return if (text.isNotEmpty()) {
-            listOf(ElementStyleParser.parseTextWithStyle(text, node.parent() as? Element))
+            listOf(ElementStyleParser.parseTextWithStyle(
+                text, 
+                node.parent() as? Element,
+                elementPath = currentPath.toList()
+            ))
         } else emptyList()
     }
 
-    private fun parseElement(element: Element): List<ContentElement> = when {
-        element.isStructuralElement() -> parseStructuralElement(element)
-        element.isHeadingElement() -> parseHeadingElement(element)
-        element.isParagraphElement() -> parseParagraphElement(element)
-        element.isListElement() -> parseListElement(element)
-        element.isTableElement() -> parseTableElement(element)
-        element.isImageElement() -> parseImageElement(element)
-        element.isQuoteElement() -> parseQuoteElement(element)
-        element.isCodeElement() -> parseCodeElement(element)
-        element.isDividerElement() -> parseDividerElement()
-        element.isFootnoteElement() -> parseFootnoteElement(element)
-        element.isAnnotationElement() -> parseAnnotationElement(element)
-        else -> parseDefaultElement(element)
+    private fun parseElement(element: Element): List<ContentElement> {
+        val currentIndex = currentPath.size
+        currentPath.add(currentIndex)
+        
+        val result = when {
+            element.isStructuralElement() -> parseStructuralElement(element)
+            element.isHeadingElement() -> parseHeadingElement(element)
+            element.isParagraphElement() -> parseParagraphElement(element)
+            element.isListElement() -> parseListElement(element)
+            element.isTableElement() -> parseTableElement(element)
+            element.isImageElement() -> parseImageElement(element)
+            element.isQuoteElement() -> parseQuoteElement(element)
+            element.isCodeElement() -> parseCodeElement(element)
+            element.isDividerElement() -> parseDividerElement()
+            element.isFootnoteElement() -> parseFootnoteElement(element)
+            element.isAnnotationElement() -> parseAnnotationElement(element)
+            else -> parseDefaultElement(element)
+        }
+        
+        currentPath.removeLast()
+        return result
     }
 
     private fun Element.isStructuralElement() = tagName().lowercase() in setOf(
@@ -77,7 +93,12 @@ class DocumentContentParser(
         hasClass("annotation") || attr("epub:type") == "annotation"
 
     private fun parseStructuralElement(element: Element): List<ContentElement> =
-        element.childNodes().flatMap { parse(it) }
+        element.childNodes().flatMapIndexed { index, child ->
+            currentPath.add(index)
+            val result = parse(child)
+            currentPath.removeLast()
+            result
+        }
 
     private fun parseHeadingElement(element: Element): List<ContentElement> {
         val level = element.tagName().lowercase().let { tag ->
@@ -85,14 +106,23 @@ class DocumentContentParser(
         }
         val (content, _) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
-            listOf(ContentElement.Heading(content, level))
+            listOf(ContentElement.Heading(
+                content = content,
+                level = level,
+                elementPath = currentPath.toList()
+            ))
         } else emptyList()
     }
 
     private fun parseParagraphElement(element: Element): List<ContentElement> {
         val (content, inlineElements) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
-            listOf(ElementStyleParser.parseTextWithStyle(content, element, inlineElements))
+            listOf(ElementStyleParser.parseTextWithStyle(
+                content,
+                element,
+                inlineElements,
+                elementPath = currentPath.toList()
+            ))
         } else emptyList()
     }
 
@@ -107,7 +137,8 @@ class DocumentContentParser(
                 ContentElement.Listing(
                     items = items,
                     ordered = element.tagName().lowercase() == "ol",
-                    startIndex = element.attr("start").toIntOrNull() ?: 1
+                    startIndex = element.attr("start").toIntOrNull() ?: 1,
+                    elementPath = currentPath.toList()
                 )
             )
         } else emptyList()
@@ -136,8 +167,9 @@ class DocumentContentParser(
         val headerRow = element.selectFirst("thead")?.selectFirst("tr")
         val headerElements = headerRow?.select("th, td")?.map { cell ->
             ElementStyleParser.parseTextWithStyle(
-                InlineContentParser.parse(cell).first,
-                cell
+                text = InlineContentParser.parse(cell).first,
+                element = cell,
+                elementPath = currentPath.toList()
             )
         } ?: emptyList()
 
@@ -145,8 +177,9 @@ class DocumentContentParser(
         val rowElements = rows.map { row ->
             row.select("td, th").map { cell ->
                 ElementStyleParser.parseTextWithStyle(
-                    InlineContentParser.parse(cell).first,
-                    cell
+                    text = InlineContentParser.parse(cell).first,
+                    element = cell,
+                    elementPath = currentPath.toList()
                 )
             }
         }
@@ -174,7 +207,8 @@ class DocumentContentParser(
                     element.hasClass("striped") -> TableStyle.Striped
                     element.hasClass("borderless") -> TableStyle.Borderless
                     else -> TableStyle.Borderless
-                }
+                },
+                elementPath = currentPath.toList()
             )
         )
     }
@@ -189,14 +223,16 @@ class DocumentContentParser(
             val caption = element.selectFirst("figcaption")?.let {
                 InlineContentParser.parse(it).first
             }
-            listOf(image.copy(caption = caption))
+            listOf(image.copy(
+                caption = caption,
+                elementPath = currentPath.toList()
+            ))
         } else {
-            listOf(image)
+            listOf(image.copy(elementPath = currentPath.toList()))
         }
     }
 
     private fun parseQuoteElement(element: Element): List<ContentElement> {
-        // Get all content except the citation
         val mainContent = element.children()
             .filterNot { it.tagName().lowercase() == "cite" }
             .joinToString("\n") { child ->
@@ -212,7 +248,8 @@ class DocumentContentParser(
             listOf(
                 ContentElement.Quote(
                     content = mainContent,
-                    attribution = attribution
+                    attribution = attribution,
+                    elementPath = currentPath.toList()
                 )
             )
         } else emptyList()
@@ -224,11 +261,13 @@ class DocumentContentParser(
             language = element.attr("class")
                 .split(" ")
                 .firstOrNull { it.startsWith("language-") }
-                ?.removePrefix("language-")
+                ?.removePrefix("language-"),
+            elementPath = currentPath.toList()
         ))
     }
 
-    private fun parseDividerElement(): List<ContentElement> = listOf(ContentElement.Divider)
+    private fun parseDividerElement(): List<ContentElement> = 
+        listOf(ContentElement.Divider(elementPath = currentPath.toList()))
 
     private fun parseFootnoteElement(element: Element): List<ContentElement> {
         val (content, inlineElements) = InlineContentParser.parse(element)
@@ -241,7 +280,8 @@ class DocumentContentParser(
                         start = 0,
                         end = content.length,
                         styles = setOf(TextStyle.SmallCaps)
-                    )
+                    ),
+                    elementPath = currentPath.toList()
                 )
             )
         } else emptyList()
@@ -254,7 +294,12 @@ class DocumentContentParser(
                 ElementStyleParser.parseTextWithStyle(
                     content,
                     element,
-                    inlineElements + InlineElement.Style(0, content.length, setOf(TextStyle.Italic))
+                    inlineElements + InlineElement.Style(
+                        0,
+                        content.length,
+                        setOf(TextStyle.Italic)
+                    ),
+                    elementPath = currentPath.toList()
                 )
             )
         } else emptyList()
@@ -263,7 +308,12 @@ class DocumentContentParser(
     private fun parseDefaultElement(element: Element): List<ContentElement> {
         val (content, inlineElements) = InlineContentParser.parse(element)
         return if (content.isNotEmpty()) {
-            listOf(ElementStyleParser.parseTextWithStyle(content, element, inlineElements))
+            listOf(ElementStyleParser.parseTextWithStyle(
+                content,
+                element,
+                inlineElements,
+                elementPath = currentPath.toList()
+            ))
         } else emptyList()
     }
 }

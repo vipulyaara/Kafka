@@ -42,5 +42,8 @@ class FirestoreGraph(private val firestore: FirebaseFirestore) {
     fun readingListCollection(uid: String) =
         listItemsCollection(uid, BookshelfDefaults.reading.id)
 
+    fun highlightCollection() = firestore
+        .collection("highlights")
+
     fun batch() = firestore.batch()
 }

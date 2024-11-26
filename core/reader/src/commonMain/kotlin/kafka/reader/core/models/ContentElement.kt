@@ -8,9 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface ContentElement {
+    val elementPath: List<Int>
+
     @Serializable
     data class Text(
         val content: String,
+        override val elementPath: List<Int>,
         val styles: Set<TextStyle> = emptySet(),
         val alignment: TextAlignment = TextAlignment.JUSTIFY,
         val sizeFactor: Float = 1.0f,
@@ -25,7 +28,8 @@ sealed interface ContentElement {
     @Serializable
     data class Heading(
         val content: String,
-        val level: Int
+        val level: Int,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
@@ -33,20 +37,23 @@ sealed interface ContentElement {
         val path: String,
         val caption: String?,
         val data: ByteArray?,
-        val aspectRatio: Float
+        val aspectRatio: Float,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
     data class Quote(
         val content: String,
-        val attribution: String? = null
+        val attribution: String? = null,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
     data class Listing(
         val items: List<String>,
         val ordered: Boolean,
-        val startIndex: Int = 1
+        val startIndex: Int = 1,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
@@ -60,15 +67,17 @@ sealed interface ContentElement {
         val rowElements: List<List<Text>> = emptyList(),
         val columnWeights: List<Float> = emptyList(),
         val columnTypes: List<String> = emptyList(),
-        val style: TableStyle = TableStyle.Compact
+        val style: TableStyle = TableStyle.Compact,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
     data class CodeBlock(
         val content: String,
-        val language: String? = null
+        val language: String? = null,
+        override val elementPath: List<Int>
     ) : ContentElement
 
     @Serializable
-    data object Divider : ContentElement
+    data class Divider(override val elementPath: List<Int>) : ContentElement
 }

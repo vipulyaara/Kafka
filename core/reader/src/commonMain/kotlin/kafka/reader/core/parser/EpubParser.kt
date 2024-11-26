@@ -29,7 +29,6 @@ import kafka.reader.core.models.EpubImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
 import okio.BufferedSource
 import okio.FileSystem
@@ -38,7 +37,6 @@ import okio.Path.Companion.toPath
 import okio.Source
 import okio.buffer
 import okio.use
-import kotlin.random.Random
 
 /**
  * Parses an EPUB file and creates an [EpubBook] object.
@@ -428,14 +426,52 @@ class EpubParser(
     }
 
     /**
-     * Generate a unique ID for a chapter.
+     * Generate a stable ID for a chapter based on multiple unique identifiers.
+     * This ensures the same chapter always gets the same ID across different parsing sessions.
      *
-     * @return The generated ID.
+     * @param absPath The absolute path of the chapter
+     * @param title The chapter titlel
+     * @param contentElements The chapter's content elements
+     * @param navPoint Optional navPoint element containing additional metadata
+     * @return The generated stable ID
      */
-    private fun generateId(): String {
-        val timestamp = Clock.System.now().toEpochMilliseconds()
-        val randomSuffix = Random.nextInt(1000, 9999)
-        return "$timestamp-$randomSuffix"
+    private fun generateStableChapterId(
+        absPath: String,
+        title: String,
+        contentElements: List<ContentElement>,
+        navPoint: Element? = null
+    ): String {
+        val uniqueIdentifiers = buildList {
+            // Base path and title
+            add(absPath)
+            add(title)
+            
+            // NavPoint specific identifiers
+            navPoint?.let { nav ->
+                add("nav-${nav.id()}")
+                add("order-${nav.attr("playOrder")}")
+                nav.selectFirstChildTag("content")?.attr("src")?.let { add("src-$it") }
+            }
+            
+            // Content based identifiers
+            if (contentElements.isNotEmpty()) {
+                // First paragraph or heading text (truncated)
+                contentElements.firstOrNull { it is ContentElement.Text || it is ContentElement.Heading }
+                    ?.let { element ->
+                        when (element) {
+                            is ContentElement.Text -> element.content.take(50)
+                            is ContentElement.Heading -> element.content.take(50)
+                            else -> null
+                        }?.let { add("content-$it") }
+                    }
+                
+                // Content structure fingerprint
+                add("structure-" + contentElements.take(5).joinToString("-") { it::class.simpleName ?: "" })
+            }
+        }
+
+        val uniqueString = uniqueIdentifiers.joinToString("#")
+        return uniqueString.hashCode().toString(16)
     }
 
     /**
@@ -492,7 +528,12 @@ class EpubParser(
                 if (!contentElements.isNullOrEmpty()) {
                     listOf(
                         EpubChapter(
-                            chapterId = generateId(),
+                            chapterId = generateStableChapterId(
+                                absPath = chapterSrc,
+                                title = title ?: "Chapter $index",
+                                contentElements = contentElements,
+                                navPoint = navPoint
+                            ),
                             absPath = chapterSrc,
                             title = title?.takeIf { it.isNotEmpty() } ?: "Chapter $index",
                             level = level,
@@ -584,7 +625,11 @@ class EpubParser(
                         val level = landmarkLevels[fileName] ?: 0
 
                         EpubChapter(
-                            chapterId = generateId(),
+                            chapterId = generateStableChapterId(
+                                absPath = file.absPath,
+                                title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
+                                contentElements = contentElements
+                            ),
                             absPath = file.absPath,
                             title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
                             level = level,

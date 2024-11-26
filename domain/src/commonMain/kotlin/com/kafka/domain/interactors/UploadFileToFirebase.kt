@@ -17,9 +17,7 @@ class UploadFileToFirebase(
         return withContext(dispatchers.io) {
             try {
                 val fileRef = Firebase.storage.reference.child(params.refPath)
-
                 fileRef.putData(data = storageData(params.byteArray))
-
                 fileRef.getDownloadUrl()
             } catch (e: Exception) {
                 throw StorageException("Failed to upload file: ${e.message}", e)

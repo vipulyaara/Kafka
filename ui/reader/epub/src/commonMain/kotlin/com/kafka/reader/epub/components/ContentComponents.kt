@@ -60,8 +60,8 @@ fun TextElement(
         (indent * settings.fontSize.value).sp
     } ?: 0.sp
 
-    val textStyle =
-        getHeadingStyle(style).copy(textIndent = TextIndent(firstLine = firstLineIndent))
+    val textStyle = getHeadingStyle(style)
+        .copy(textIndent = TextIndent(firstLine = firstLineIndent))
 
     val annotatedString = remember(element) {
         buildTextAnnotatedString(
@@ -72,7 +72,11 @@ fun TextElement(
     }
 
     Text(
-        text = if (element.inlineElements.isEmpty()) AnnotatedString(element.content) else annotatedString,
+        text = if (element.inlineElements.isEmpty()) {
+            AnnotatedString(element.content)
+        } else {
+            annotatedString
+        },
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = settings.horizontalMargin)
@@ -225,6 +229,17 @@ private fun buildTextAnnotatedString(
                     // For tooltips, we'll just show the main content
                     // Tooltip functionality would need to be implemented at a higher level
                     append(content.substring(adjustedStart, adjustedEnd))
+                }
+
+                is InlineElement.Highlight -> {
+                    withStyle(
+                        SpanStyle(
+                            background = inline.color.toColor().copy(alpha = 0.3f),
+                            textDecoration = if (inline.note != null) TextDecoration.Underline else null
+                        )
+                    ) {
+                        append(content.substring(adjustedStart, adjustedEnd))
+                    }
                 }
             }
 

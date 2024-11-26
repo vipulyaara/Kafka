@@ -155,7 +155,8 @@ class EpubXMLFileParser(
             path = absolutePathImage,
             caption = attrs["alt"],
             data = imageData,
-            aspectRatio = aspectRatio
+            aspectRatio = aspectRatio,
+            elementPath = contentParser.getCurrentPath()
         )
     }
 

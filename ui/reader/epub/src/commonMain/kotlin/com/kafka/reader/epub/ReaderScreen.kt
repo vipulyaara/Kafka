@@ -64,13 +64,15 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
                         }
                     }
 
-                    EpubBook(
+                    ReaderContent(
                         readerState = state,
                         settingsState = settingsState,
                         pagerState = pagerState,
                         onPageScrolled = viewModel::onPageScrolled,
                         navigate = viewModel::navigate,
-                        changeSettings = viewModel::updateSettings
+                        changeSettings = viewModel::updateSettings,
+                        highlights = state.highlights,
+                        onHighlight = viewModel::addHighlight
                     )
 
                     TocSheet(

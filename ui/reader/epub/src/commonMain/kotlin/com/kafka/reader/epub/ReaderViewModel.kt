@@ -15,13 +15,14 @@ import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.Download
-import com.kafka.data.entities.ItemDetail
 import com.kafka.domain.interactors.GetLastPageOffset
 import com.kafka.domain.interactors.GetLastSeenPage
 import com.kafka.domain.interactors.UpdateCurrentPage
 import com.kafka.domain.interactors.UpdateCurrentPageOffset
+import com.kafka.domain.interactors.library.AddHighlight
 import com.kafka.domain.interactors.reader.ParseEbook
 import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.library.ObserveHighlights
 import com.kafka.downloader.core.DownloadItem
 import com.kafka.downloader.core.ObserveDownload
 import com.kafka.navigation.Navigator
@@ -31,6 +32,7 @@ import com.kafka.reader.epub.domain.ObserveReaderSettings
 import com.kafka.reader.epub.domain.UpdateReaderSettings
 import com.kafka.reader.epub.settings.ReaderSettings
 import kafka.reader.core.models.EpubBook
+import kafka.reader.core.models.TextHighlight
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -46,8 +48,10 @@ class ReaderViewModel(
     private val updateCurrentPage: UpdateCurrentPage,
     private val updateCurrentPageOffset: UpdateCurrentPageOffset,
     private val observeDownload: ObserveDownload,
+    private val observeHighlights: ObserveHighlights,
     private val getLastSeenPage: GetLastSeenPage,
     private val getLastPageOffset: GetLastPageOffset,
+    private val addHighlight: AddHighlight,
     private val snackbarManager: SnackbarManager,
     private val downloadItem: DownloadItem,
     private val parseEbook: ParseEbook,
@@ -62,7 +66,7 @@ class ReaderViewModel(
     // TODO - Check if we need this state
     private val lazyListState = LazyListState()
 
-    val state = combine(
+    val state = com.kafka.base.combine(
         combine(
             parseEbook.inProgress,
             downloadItem.inProgress
@@ -70,19 +74,23 @@ class ReaderViewModel(
         snapshotFlow { ebook },
         observeItemDetail.flow,
         observeDownload.flow,
+        observeHighlights.flow,
         observeReaderSettings.flow
-    ) { loading, ebook, itemDetail, download, settings ->
+    ) { loading, ebook, itemDetail, download, highlights, settings ->
         ReaderState(
+            itemId = itemId,
             loading = loading,
             epubBook = ebook,
-            itemDetail = itemDetail,
+            language = itemDetail?.language,
             download = download,
+            highlights = highlights,
             settings = settings
         )
     }.stateInDefault(viewModelScope, ReaderState())
 
     init {
         observeDownload(fileId)
+        observeHighlights(ObserveHighlights.Params(itemId))
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeReaderSettings(ObserveReaderSettings.Params(itemId))
 
@@ -142,7 +150,8 @@ class ReaderViewModel(
 
             result.onSuccess {
                 val lastSeenPage = getLastSeenPage(GetLastSeenPage.Params(fileId)).getOrNull() ?: 0
-                val lastPageOffset = getLastPageOffset(GetLastPageOffset.Params(fileId)).getOrNull() ?: 0
+                val lastPageOffset =
+                    getLastPageOffset(GetLastPageOffset.Params(fileId)).getOrNull() ?: 0
                 ebook = it.copy(lastSeenPage = lastSeenPage, lastPageOffset = lastPageOffset)
             }
             result.onException { snackbarManager.addMessage(UiMessage.Error(it)) }
@@ -151,12 +160,19 @@ class ReaderViewModel(
 
     fun shareItemText(context: Any?) {
         analytics.log { this.shareItem(itemId, "item_detail") }
-        val itemTitle = state.value.itemDetail?.title ?: state.value.epubBook?.title
+        val itemTitle = state.value.epubBook?.title
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
         shareUtils.shareText(text = text, context = context)
+    }
+
+    fun addHighlight(highlight: TextHighlight) {
+        snackbarManager.addMessage("Highlight added ${highlight.text}")
+        viewModelScope.launch {
+            addHighlight(AddHighlight.Params(highlight))
+        }
     }
 
     fun updateSettings(newSettings: ReaderSettings) {
@@ -167,10 +183,12 @@ class ReaderViewModel(
 }
 
 data class ReaderState(
+    val itemId: String = "",
+    val language: String? = null,
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
-    val itemDetail: ItemDetail? = null,
     val download: Download? = null,
+    val highlights: List<TextHighlight> = emptyList(),
     val settings: ReaderSettings = ReaderSettings.default(ReaderSettings.DEFAULT_LANGUAGE)
 ) {
     val progress: String?
