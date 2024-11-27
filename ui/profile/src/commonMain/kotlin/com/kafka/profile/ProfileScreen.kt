@@ -42,7 +42,6 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
-            Spacer(Modifier.weight(1f))
 
             AnimatedVisibilityFade(visible = viewState.isLoading) {
                 InfiniteProgressBar(modifier = Modifier.padding(Dimens.Spacing20))
@@ -63,6 +62,8 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
             }
 
             Spacer(Modifier.height(Dimens.Spacing24))
+
+            Spacer(Modifier.weight(1f))
 
             viewState.appVersion?.let { version ->
                 Text(

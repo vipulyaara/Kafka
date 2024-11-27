@@ -199,7 +199,11 @@ private fun LazyGridScope.itemsByCreator(
     }
 
     fullSpanItems(itemsByCreator, key = { it.itemId }) { item ->
-        ItemByCreator(item = item, openItemDetail = openItemDetail)
+        Item(item = item,
+            modifier = Modifier
+                .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
+                .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
+        )
     }
 }
 
@@ -268,18 +272,6 @@ private fun VerticalLayout(
             }
         }
     }
-}
-
-@Composable
-private fun ItemByCreator(
-    item: Item,
-    openItemDetail: (String, String) -> Unit
-) {
-    Item(item = item,
-        modifier = Modifier
-            .clickable { openItemDetail(item.itemId, itemDetailSourceCreator) }
-            .padding(vertical = Dimens.Spacing06, horizontal = Dimens.Gutter)
-    )
 }
 
 @Composable

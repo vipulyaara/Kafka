@@ -14,9 +14,9 @@ kotlin {
                 implementation(projects.data.repo)
                 implementation(projects.ui.common)
 
-                implementation(libs.purchase.core)
-                implementation(libs.purchase.datetime)
-                implementation(libs.purchase.result)
+//                implementation(libs.purchase.core)
+//                implementation(libs.purchase.datetime)
+//                implementation(libs.purchase.result)
             }
         }
     }

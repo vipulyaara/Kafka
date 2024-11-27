@@ -138,11 +138,9 @@ data class AuthViewState(
     val isGoogleLoginEnabled: Boolean = false,
 )
 
-
 const val invalidEmailMessage = "Please enter a valid email"
 const val invalidPasswordMessage = "Please enter a valid password"
 const val loginErrorMessage = "Could not log in. Please try again."
 const val signUpErrorMessage = "Could not register user. Please try again."
 const val resetPasswordErrorMessage = "There was an error resetting your password"
 const val resetPasswordSuccessMessage = "Password reset link has been sent to your email"
-const val loginSuccessMessage = "Logged in"

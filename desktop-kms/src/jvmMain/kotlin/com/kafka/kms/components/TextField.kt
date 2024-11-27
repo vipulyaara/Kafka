@@ -10,11 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.SolidColor
 
 @Composable
 fun TextField(
@@ -31,7 +31,7 @@ fun TextField(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .border(
-                width = 1.5.dp,
+                width = 1.2.dp,
                 color = if (value.isEmpty()) MaterialTheme.colorScheme.outline
                     else MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.small
@@ -67,7 +67,7 @@ fun TextField(
                     Text(
                         text = placeholder,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     )
                 }
                 innerTextField()
@@ -89,7 +89,7 @@ fun LongTextField(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .border(
-                width = 1.5.dp,
+                width = 1.2.dp,
                 color = if (value.isEmpty()) MaterialTheme.colorScheme.outline
                     else MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.small
@@ -124,7 +124,7 @@ fun LongTextField(
                     Text(
                         text = placeholder,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     )
                 }
                 innerTextField()

@@ -29,7 +29,7 @@ fun CubePager(
     val state = rememberPagerState { carouselItems.size }
 
     Column {
-        Header()
+//        Header()
 
         Spacer(Modifier.height(Dimens.Gutter))
 

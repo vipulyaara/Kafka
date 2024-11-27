@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.data.prefs.PreferencesStore
 import com.kafka.data.prefs.THEME
 import com.kafka.data.prefs.Theme
@@ -18,6 +19,8 @@ import com.kafka.data.prefs.observeTheme
 import com.kafka.kms.components.Sidebar
 import com.kafka.kms.data.files.DirectoryPaths
 import com.kafka.kms.data.remote.SupabaseUploadService
+import com.kafka.kms.ui.books.BooksScreen
+import com.kafka.kms.ui.books.BooksViewModel
 import com.kafka.kms.ui.directory.FileTree
 import com.kafka.kms.ui.gutenberg.GutenbergScreen
 import com.kafka.kms.ui.gutenberg.GutenbergViewModel
@@ -36,6 +39,7 @@ fun KmsHomepage(
     uploadService: SupabaseUploadService,
     gutenbergFactory: () -> GutenbergViewModel,
     librivoxFactory: () -> LibrivoxViewModel,
+    booksFactory: () -> BooksViewModel,
     preferencesStore: PreferencesStore,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
@@ -65,12 +69,12 @@ fun KmsHomepage(
         Box(modifier = Modifier.weight(1f)) {
             when (currentRoute) {
                 "gutenberg" -> GutenbergScreen(
-                    viewModel = gutenbergFactory(),
+                    viewModel = viewModel { gutenbergFactory()  } ,
                     modifier = Modifier.fillMaxSize()
                 )
 
                 "librivox" -> LibrivoxScreen(
-                    viewModel = librivoxFactory(),
+                    viewModel = viewModel { librivoxFactory()},
                     modifier = Modifier.fillMaxSize()
                 )
 
@@ -79,8 +83,7 @@ fun KmsHomepage(
                     modifier = Modifier.fillMaxSize()
                 )
 
-                "books" -> { /* TODO: Implement Books screen */
-                }
+                "books" -> { BooksScreen(viewModel { booksFactory()}) }
 
                 "standard-ebooks" -> { /* TODO: Implement Standard Ebooks screen */
                 }

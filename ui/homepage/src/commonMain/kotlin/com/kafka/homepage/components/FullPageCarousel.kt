@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,7 +49,7 @@ import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.isDark
 
 @Composable
-internal fun FullPageCarousels(
+internal fun FullPageCarousel(
     carouselItems: List<Item>,
     images: List<String>,
     onClick: (String) -> Unit,
@@ -71,29 +72,8 @@ internal fun FullPageCarousels(
         ) { index ->
             val image = images.getOrNull(index) ?: carouselItems.getOrNull(index)?.coverImage
 
-            DynamicTheme(model = image, useDarkTheme = isDark, style = PaletteStyle.Neutral) {
-                Box(Modifier.height(IntrinsicSize.Max)) {
-                    AsyncImage(
-                        model = image,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(Dimens.Radius16))
-                            .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
-                            .blur(48.dp)
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(Dimens.Radius16))
-                            .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
-                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f))
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                    )
-
+            DynamicTheme(model = image, useDarkTheme = isDark, style = PaletteStyle.Expressive) {
+                CarouselItemScaffold(image) {
                     carouselItems.getOrNull(index)?.let { item ->
                         CarouselItem(item = item, index = index, image = image, onClick = onClick)
                     }
@@ -116,7 +96,7 @@ private fun CarouselItemScope.CarouselItem(
         Text(
             text = dates.getOrNull(index).orEmpty(),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .padding(horizontal = Dimens.Gutter)
                 .padding(end = Dimens.Spacing08)
@@ -133,7 +113,7 @@ private fun CarouselItemScope.CarouselItem(
                 imageUrl = image,
                 onClick = { onClick(item.itemId) },
                 modifier = Modifier
-                    .padding(Dimens.Spacing08)
+                    .padding(Dimens.Spacing04)
                     .sharedElement(
                         state = rememberSharedContentState(
                             key = SharedElementCoverKey(
@@ -161,7 +141,7 @@ private fun CarouselItemScope.CarouselItem(
             Text(
                 text = item.description.orEmpty(),
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 minLines = 2,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -173,7 +153,36 @@ private fun CarouselItemScope.CarouselItem(
 }
 
 @Composable
-internal fun Header() {
+private fun CarouselItemScope.CarouselItemScaffold(image: String?, content: @Composable () -> Unit) {
+    Box(Modifier.height(IntrinsicSize.Max)) {
+        AsyncImage(
+            model = image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .aspectRatio(0.66f)
+                .clip(RoundedCornerShape(Dimens.Radius16))
+                .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
+                .blur(48.dp)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        )
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(Dimens.Radius16))
+                .maskClip(shape = RoundedCornerShape(Dimens.Radius16))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        )
+
+        content()
+    }
+}
+
+@Composable
+private  fun Header() {
     Column {
         Text(
             text = "Books of",
