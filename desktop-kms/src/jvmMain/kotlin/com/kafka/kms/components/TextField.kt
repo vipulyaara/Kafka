@@ -32,7 +32,7 @@ fun TextField(
             .clip(MaterialTheme.shapes.small)
             .border(
                 width = 1.2.dp,
-                color = if (value.isEmpty()) MaterialTheme.colorScheme.outline
+                color = if (value.isEmpty()) MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
                     else MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.small
             )
@@ -90,7 +90,7 @@ fun LongTextField(
             .clip(MaterialTheme.shapes.small)
             .border(
                 width = 1.2.dp,
-                color = if (value.isEmpty()) MaterialTheme.colorScheme.outline
+                color = if (value.isEmpty()) MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
                     else MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.small
             )

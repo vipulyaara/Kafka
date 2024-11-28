@@ -37,6 +37,7 @@ import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Copy
 import compose.icons.tablericons.DotsVertical
 import compose.icons.tablericons.Download
+import compose.icons.tablericons.Edit
 import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
 import compose.icons.tablericons.FileText
@@ -128,4 +129,5 @@ object Icons {
     val Highlight = TablerIcons.Bookmark
     val Upload = TablerIcons.Upload
     val System = TablerIcons.Adjustments
+    val Edit = TablerIcons.Edit
 }

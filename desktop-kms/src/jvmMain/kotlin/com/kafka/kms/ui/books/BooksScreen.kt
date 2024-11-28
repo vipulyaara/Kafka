@@ -10,13 +10,18 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import com.kafka.common.image.Icons
 import com.kafka.data.entities.ItemDetail
 import com.kafka.ui.components.item.GridItem
 
@@ -34,20 +39,16 @@ fun BooksScreen(viewModel: BooksViewModel) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
-                BooksList(
-                    books = state.books,
-                    onEditBook = viewModel::onEditBook
-                )
+                BooksList(books = state.books)
             }
         }
     }
 }
 
 @Composable
-private fun BooksList(
-    books: List<ItemDetail>,
-    onEditBook: (ItemDetail) -> Unit
-) {
+private fun BooksList(books: List<ItemDetail>) {
+    val clipboardManager = LocalClipboardManager.current
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(200.dp),
         contentPadding = PaddingValues(16.dp),
@@ -55,7 +56,21 @@ private fun BooksList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(books) { book ->
-            GridItem(mediaType = book.mediaType, coverImage = book.coverImage)
+            Box {
+                GridItem(
+                    mediaType = book.mediaType,
+                    coverImage = book.coverImage
+                )
+                IconButton(
+                    onClick = { clipboardManager.setText(AnnotatedString(book.itemId)) },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Copy,
+                        contentDescription = "Edit ${book.title}"
+                    )
+                }
+            }
         }
     }
 }
