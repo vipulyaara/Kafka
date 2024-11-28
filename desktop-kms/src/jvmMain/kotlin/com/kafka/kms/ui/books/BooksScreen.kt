@@ -29,8 +29,32 @@ import com.kafka.ui.components.item.GridItem
 @Composable
 fun BooksScreen(viewModel: BooksViewModel) {
     val state = viewModel.state
+    val clipboardManager = LocalClipboardManager.current
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Library") }) }) { padding ->
+    Scaffold(
+        topBar = { 
+            TopAppBar(
+                title = { Text("Library") },
+                actions = {
+                    // Add copy button in the top bar
+                    IconButton(
+                        onClick = {
+                            val randomIds = state.books
+                                .shuffled()
+                                .joinToString(", ") { it.itemId }
+                            clipboardManager.setText(AnnotatedString(randomIds))
+                        },
+                        enabled = state.books.isNotEmpty()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Copy,
+                            contentDescription = "Copy random IDs"
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -67,7 +91,7 @@ private fun BooksList(books: List<ItemDetail>) {
                 ) {
                     Icon(
                         imageVector = Icons.Copy,
-                        contentDescription = "Edit ${book.title}"
+                        contentDescription = "Copy ${book.title} ID"
                     )
                 }
             }
