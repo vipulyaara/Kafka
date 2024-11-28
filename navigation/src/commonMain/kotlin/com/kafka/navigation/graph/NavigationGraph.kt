@@ -60,8 +60,16 @@ sealed class Screen {
         @SerialName("itemId") val itemId: String,
         @SerialName("origin") val origin: Origin = Origin.Unknown
     ) : Screen() {
-        enum class Origin { Carousel, Row, Column, Grid, Recommendation, Unknown }
+        enum class Origin {
+            Carousel, Row, Column, Grid, Recommendation, Unknown;
+
+            companion object {
+                fun find(value: String?) = entries.find { it.name == value } ?: Unknown
+            }
+        }
+
         data class SharedElementCoverKey(val cover: String?, val origin: Origin)
+
     }
 
     @Serializable

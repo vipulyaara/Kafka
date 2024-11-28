@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,17 +41,14 @@ import androidx.compose.ui.unit.dp
 import com.kafka.data.model.MediaType
 import com.kafka.kms.components.LongTextField
 import com.kafka.kms.components.TextField
-import com.kafka.kms.data.remote.SupabaseUploadService
 import com.kafka.kms.ui.upload.components.FileAndMediaSection
 import com.kafka.kms.ui.upload.components.MainBookInfo
 import com.kafka.kms.ui.upload.components.MetadataFields
 import com.kafka.kms.ui.upload.components.UploadBottomBar
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.awt.Cursor
 
 @Composable
-fun UploadScreen(uploadService: SupabaseUploadService, modifier: Modifier = Modifier) {
+fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var longDescription by remember { mutableStateOf("") }
@@ -68,6 +69,8 @@ fun UploadScreen(uploadService: SupabaseUploadService, modifier: Modifier = Modi
     var hasEditedId by remember { mutableStateOf(false) }
     var contentOpfPath by remember { mutableStateOf("") }
     var dateFeatured by remember { mutableStateOf("") }
+    var isEditMode by remember { mutableStateOf(false) }
+    var isFetching by remember { mutableStateOf(false) }
 
     LaunchedEffect(title, creators) {
         if (!hasEditedId && title.isNotEmpty() && creators.isNotEmpty()) {
@@ -124,7 +127,80 @@ fun UploadScreen(uploadService: SupabaseUploadService, modifier: Modifier = Modi
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                Text("Upload New Book", style = MaterialTheme.typography.headlineMedium)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        if (isEditMode) "Edit Book" else "Upload New Book",
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextField(
+                            value = id,
+                            onValueChange = {
+                                id = it
+                                hasEditedId = true
+                            },
+                            placeholder = "Enter ID to fetch",
+                            modifier = Modifier.width(400.dp),
+                            maxLines = 1
+                        )
+
+                        Button(
+                            onClick = {
+                                if (id.isNotEmpty()) {
+                                    isFetching = true
+                                    errorMessage = ""
+
+                                    uploadViewModel.fetchItem(id)
+                                        .onSuccess { (item, detail) ->
+                                            title = item.title
+                                            description = item.description.orEmpty()
+                                            creators = item.creators.joinToString(", ")
+                                            subjects = item.subjects.joinToString(", ")
+                                            languages = item.languages?.joinToString(", ").orEmpty()
+                                            collections =
+                                                item.collections?.joinToString(", ").orEmpty()
+                                            mediaType = item.mediaType
+
+                                            longDescription = detail.description.orEmpty()
+                                            publishers = detail.publishers.joinToString(", ")
+                                            translators =
+                                                detail.translators?.joinToString(", ").orEmpty()
+
+                                            coverImagePaths = detail.coverImages?.toList()
+                                                ?: detail.coverImage?.let { listOf(it) }
+                                                        ?: emptyList()
+
+                                            isEditMode = true
+                                            hasEditedId = true
+                                        }
+                                        .onFailure { error ->
+                                            errorMessage = "Failed to fetch item: ${error.message}"
+                                        }
+                                    isFetching = false
+                                }
+                            },
+                            enabled = id.isNotEmpty() && !isFetching,
+                            modifier = Modifier.height(40.dp)
+                        ) {
+                            if (isFetching) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                            } else {
+                                Text("Fetch")
+                            }
+                        }
+                    }
+                }
 
                 MainBookInfo(
                     title = title,
@@ -186,36 +262,44 @@ fun UploadScreen(uploadService: SupabaseUploadService, modifier: Modifier = Modi
             }
 
             UploadBottomBar(
-                isEnabled = id.isNotEmpty() && title.isNotEmpty() && epubFilePath.isNotEmpty(),
+                isEnabled = when {
+                    isEditMode -> id.isNotEmpty() && title.isNotEmpty()
+                    else -> id.isNotEmpty() && title.isNotEmpty() && epubFilePath.isNotEmpty()
+                },
                 onUploadClick = {
                     uploadStatus = "Uploading..."
                     errorMessage = ""
 
-                    GlobalScope.launch {
-                        uploadService.uploadBook(
-                            itemId = id,
-                            title = title,
-                            description = description,
-                            longDescription = longDescription,
-                            creators = creators,
-                            subjects = subjects,
-                            publishers = publishers,
-                            languages = languages,
-                            collections = collections,
-                            translators = translators,
-                            coverImagePaths = coverImagePaths,
-                            epubFilePath = epubFilePath,
-                            mediaType = mediaType,
-                            copyright = copyright
-                        ).onSuccess {
-                            uploadStatus = "Upload successful!"
-                        }.onFailure { error ->
-                            errorMessage = "Upload failed: ${error.message}"
+                    uploadViewModel.uploadBook(
+                        itemId = id,
+                        title = title,
+                        description = description,
+                        longDescription = longDescription,
+                        creators = creators,
+                        subjects = subjects,
+                        publishers = publishers,
+                        languages = languages,
+                        collections = collections,
+                        translators = translators,
+                        coverImagePaths = coverImagePaths,
+                        epubFilePath = epubFilePath,
+                        mediaType = mediaType,
+                        copyright = copyright,
+                        isUpdate = isEditMode
+                    ).onSuccess {
+                        uploadStatus =
+                            if (isEditMode) "Update successful!" else "Upload successful!"
+                    }.onFailure { error ->
+                        errorMessage = if (isEditMode) {
+                            "Update failed: ${error.message}"
+                        } else {
+                            "Upload failed: ${error.message}"
                         }
                     }
                 },
                 uploadStatus = uploadStatus,
                 errorMessage = errorMessage,
+                isEditMode = isEditMode,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.android.lint) apply false
     alias(libs.plugins.androidx.room) apply false
     alias(libs.plugins.cacheFixPlugin) apply false
+    alias(libs.plugins.kotlinCocoapods) version "2.0.21" apply false
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose.compiler) apply false

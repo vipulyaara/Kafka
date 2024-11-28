@@ -127,9 +127,12 @@ private fun CarouselItemScope.CarouselItem(
             )
         }
 
-        Spacer(Modifier.height(Dimens.Spacing04))
-
-        Box(modifier = Modifier.padding(horizontal = Dimens.Spacing24)) {
+        Box(
+            modifier = Modifier.padding(
+                horizontal = Dimens.Spacing24,
+                vertical = Dimens.Spacing12
+            )
+        ) {
             Text(
                 text = "\n",
                 style = MaterialTheme.typography.titleSmall,
@@ -147,13 +150,14 @@ private fun CarouselItemScope.CarouselItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
-
-        Spacer(Modifier.height(Dimens.Spacing12))
     }
 }
 
 @Composable
-private fun CarouselItemScope.CarouselItemScaffold(image: String?, content: @Composable () -> Unit) {
+private fun CarouselItemScope.CarouselItemScaffold(
+    image: String?,
+    content: @Composable () -> Unit
+) {
     Box(Modifier.height(IntrinsicSize.Max)) {
         AsyncImage(
             model = image,
@@ -182,7 +186,7 @@ private fun CarouselItemScope.CarouselItemScaffold(image: String?, content: @Com
 }
 
 @Composable
-private  fun Header() {
+private fun Header() {
     Column {
         Text(
             text = "Books of",

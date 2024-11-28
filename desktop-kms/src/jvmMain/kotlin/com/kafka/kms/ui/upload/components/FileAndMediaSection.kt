@@ -36,6 +36,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.kafka.base.debug
 import com.kafka.common.image.Icons
 import com.kafka.data.model.MediaType
 import java.io.File
@@ -57,6 +58,8 @@ fun FileAndMediaSection(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Text("Files and Media", style = MaterialTheme.typography.titleMedium)
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -118,7 +121,6 @@ fun FileAndMediaSection(
         )
     }
 }
-
 
 @Composable
 private fun FileSelectionButton(
@@ -204,6 +206,8 @@ private fun ImageSelectionGrid(
     onRemoveImage: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    debug { "Image paths: $images" }
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 120.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -221,18 +225,29 @@ private fun ImageSelectionGrid(
                         MaterialTheme.shapes.small
                     )
             ) {
-                val context = LocalPlatformContext.current
-                val imageFile = remember(imagePath) { File(imagePath) }
+                if (imagePath.startsWith("http")) {
+                    // For remote URLs, use AsyncImage
+                    AsyncImage(
+                        model = imagePath,
+                        contentDescription = "Cover image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    // For local files
+                    val context = LocalPlatformContext.current
+                    val imageFile = remember(imagePath) { File(imagePath) }
 
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageFile)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Cover image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(imageFile)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Cover image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
 
                 // Add a semi-transparent overlay to make the close button more visible
                 Box(

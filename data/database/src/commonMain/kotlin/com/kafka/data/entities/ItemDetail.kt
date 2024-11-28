@@ -25,7 +25,7 @@ data class ItemDetail(
     @SerialName("collections") val collections: List<String>?,
     @SerialName("languages") val languages: List<String>?,
     @SerialName("cover_images") val coverImages: List<String>?,
-    @SerialName("cover_image") val coverImage:String? = coverImages?.firstOrNull(),
+    @SerialName("cover_image") val coverImage: String? = coverImages?.random(),
     @SerialName("subjects") val subjects: List<String>?,
     @SerialName("rating") val rating: Double? = null,
     @SerialName("publishers") val publishers: List<String>,

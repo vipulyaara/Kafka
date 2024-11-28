@@ -18,7 +18,6 @@ import com.kafka.data.prefs.Theme
 import com.kafka.data.prefs.observeTheme
 import com.kafka.kms.components.Sidebar
 import com.kafka.kms.data.files.DirectoryPaths
-import com.kafka.kms.data.remote.SupabaseUploadService
 import com.kafka.kms.ui.books.BooksScreen
 import com.kafka.kms.ui.books.BooksViewModel
 import com.kafka.kms.ui.directory.FileTree
@@ -27,6 +26,7 @@ import com.kafka.kms.ui.gutenberg.GutenbergViewModel
 import com.kafka.kms.ui.librivox.LibrivoxScreen
 import com.kafka.kms.ui.librivox.LibrivoxViewModel
 import com.kafka.kms.ui.upload.UploadScreen
+import com.kafka.kms.ui.upload.UploadViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
@@ -36,16 +36,16 @@ typealias KmsHomepage = @Composable () -> Unit
 @Inject
 @Composable
 fun KmsHomepage(
-    uploadService: SupabaseUploadService,
     gutenbergFactory: () -> GutenbergViewModel,
     librivoxFactory: () -> LibrivoxViewModel,
     booksFactory: () -> BooksViewModel,
+    uploadFactory: () -> UploadViewModel,
     preferencesStore: PreferencesStore,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     var currentRoute by remember { mutableStateOf("upload") }
     var theme by remember { mutableStateOf(Theme.SYSTEM) }
-    
+
     LaunchedEffect(Unit) {
         preferencesStore.observeTheme()
             .collect { theme = it }
@@ -69,21 +69,23 @@ fun KmsHomepage(
         Box(modifier = Modifier.weight(1f)) {
             when (currentRoute) {
                 "gutenberg" -> GutenbergScreen(
-                    viewModel = viewModel { gutenbergFactory()  } ,
+                    viewModel = viewModel { gutenbergFactory() },
                     modifier = Modifier.fillMaxSize()
                 )
 
                 "librivox" -> LibrivoxScreen(
-                    viewModel = viewModel { librivoxFactory()},
+                    viewModel = viewModel { librivoxFactory() },
                     modifier = Modifier.fillMaxSize()
                 )
 
                 "upload" -> UploadScreen(
-                    uploadService = uploadService,
+                    uploadViewModel = viewModel { uploadFactory() },
                     modifier = Modifier.fillMaxSize()
                 )
 
-                "books" -> { BooksScreen(viewModel { booksFactory()}) }
+                "books" -> {
+                    BooksScreen(viewModel { booksFactory() })
+                }
 
                 "standard-ebooks" -> { /* TODO: Implement Standard Ebooks screen */
                 }
