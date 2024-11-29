@@ -56,7 +56,8 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
         ProvideScaffoldPadding(it) {
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.epubBook != null) {
-                    val pagerState = rememberPagerState(initialPage = state.epubBook!!.lastSeenPage) { state.epubBook!!.chapters.size }
+                    val pagerState =
+                        rememberPagerState(initialPage = state.epubBook!!.lastSeenPage) { state.epubBook!!.chapters.size }
 
                     LaunchedEffect(pagerState) {
                         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -77,11 +78,16 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
 
                     TocSheet(
                         tocState = tocState,
-                        chapters = state.epubBook!!.chapters,
-                        selectChapter = { chapterId ->
+                        navPoints = state.epubBook!!.navPoints,
+                        onNavPointClicked = { navPointSrc ->
+                            // TODO - handle navigation to sub-chapters (fragments after #)
                             coroutineScope.launch {
                                 val index = state.epubBook!!.chapters
-                                    .indexOfFirst { it.chapterId == chapterId }
+                                    .indexOfFirst {
+                                        it.absPath.endsWith(
+                                            navPointSrc.substringBefore("#")
+                                        )
+                                    }
                                 pagerState.scrollToPage(index)
                             }
                         }

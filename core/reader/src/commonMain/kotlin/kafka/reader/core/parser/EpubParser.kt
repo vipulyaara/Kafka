@@ -26,6 +26,7 @@ import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.EpubBook
 import kafka.reader.core.models.EpubChapter
 import kafka.reader.core.models.EpubImage
+import kafka.reader.core.models.NavPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -101,10 +102,9 @@ class EpubParser(
      * Creates an [EpubBook] object from an EPUB file.
      *
      * @param filePath The file path of the EPUB file.
-     * @param shouldUseToc Whether to use the table of contents (ToC) file for parsing.
      * @return The [EpubBook] object.
      */
-    suspend fun createEpubBook(filePath: String, shouldUseToc: Boolean): EpubBook {
+    suspend fun createEpubBook(filePath: String): EpubBook {
         return withContext(Dispatchers.IO) {
 //            val epubBook = epubCache.get(filePath)
 //            if (epubBook != null) {
@@ -114,7 +114,7 @@ class EpubParser(
             debug { "Parsing EPUB file: $filePath" }
             val files = getZipFilesFromFile(filePath)
             val document = createEpubDocument(files)
-            val book = parseAndCreateEbook(files, document, shouldUseToc)
+            val book = parseAndCreateEbook(files, document)
             epubCache.put(book, filePath)
             return@withContext book
         }
@@ -126,15 +126,14 @@ class EpubParser(
      * Note: Caller is responsible for closing the source.
      *
      * @param source The source of the EPUB file.
-     * @param shouldUseToc Whether to use the table of contents (ToC) file for parsing.
      * @return The [EpubBook] object.
      */
-    suspend fun createEpubBook(source: Source, shouldUseToc: Boolean = true): EpubBook {
+    suspend fun createEpubBook(source: Source): EpubBook {
         return withContext(Dispatchers.IO) {
             // todo: add cache
 
             val (files, document) = getZipFilesAndDocument(source)
-            val book = parseAndCreateEbook(files, document, shouldUseToc)
+            val book = parseAndCreateEbook(files, document)
 
             return@withContext book
         }
@@ -165,12 +164,10 @@ class EpubParser(
      *
      * @param files The EPUB files.
      * @param document The EPUB document.
-     * @param shouldUseToc Whether to use the table of contents (ToC) file for parsing.
      * @return The [EpubBook] object.
      */
     private suspend fun parseAndCreateEbook(
-        files: Map<String, EpubFile>, document: EpubDocument, shouldUseToc: Boolean
-    ): EpubBook = withContext(Dispatchers.IO) {
+        files: Map<String, EpubFile>, document: EpubDocument): EpubBook = withContext(Dispatchers.IO) {
         val metadataTitle =
             document.metadata.selectFirstChildTag("dc:title")?.text() ?: "Unknown Title"
         val metadataAuthor =
@@ -193,13 +190,7 @@ class EpubParser(
         }
 
         // Determine parsing method based on ToC presence and validity
-        val chapters = if (shouldUseToc && !tocNavPoints.isNullOrEmpty() && tocNavPoints.size > 1) {
-            debug { "Parsing based on ToC file" }
-            parseUsingTocFile(tocNavPoints, files, hrefRootPath, document, manifestItems)
-        } else {
-            debug { "Parsing based on spine; shouldUseToc: $shouldUseToc" }
-            parseUsingSpine(document.spine, manifestItems, files)
-        }
+        val chapters = parseUsingSpine(document.spine, manifestItems, files)
 
         debug { "Parsing images" }
         val images = parseImages(manifestItems, files)
@@ -214,6 +205,7 @@ class EpubParser(
             author = metadataAuthor,
             language = metadataLanguage,
             chapters = chapters,
+            navPoints = tocNavPoints ?: emptyList(),
             coverImage = coverImage,
             images = images
         )
@@ -405,23 +397,20 @@ class EpubParser(
      * @param element The element to search for nested navPoints.
      * @return The list of nested navPoints.
      */
-    private fun findNestedNavPoints(element: Element?, level: Int = 0): List<Pair<Element, Int>> {
-        val navPoints = mutableListOf<Pair<Element, Int>>()
-        if (element == null) {
-            return navPoints
-        }
-        if (element.tagName() == "navPoint") {
-            navPoints.add(element to level)
-        }
-        // Recursively search for nested navPoints with incremented level
-        for (child in element.childElements) {
-            navPoints.addAll(
-                findNestedNavPoints(
-                    child,
-                    if (element.tagName() == "navPoint") level + 1 else level
-                )
+    private fun findNestedNavPoints(navMap: Element?): List<NavPoint> {
+        val navPoints = mutableListOf<NavPoint>()
+
+        navMap?.childElements?.filter { it.tagName() == "navPoint" }?.forEach { navPointElement ->
+            val navPoint = NavPoint(
+                title = navPointElement.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")
+                    ?.text().orEmpty(),
+                src = navPointElement.selectFirstChildTag("content")?.getAttributeValue("src")
+                    .orEmpty(),
+                children = findNestedNavPoints(navPointElement)
             )
+            navPoints.add(navPoint)
         }
+
         return navPoints
     }
 
@@ -445,14 +434,14 @@ class EpubParser(
             // Base path and title
             add(absPath)
             add(title)
-            
+
             // NavPoint specific identifiers
             navPoint?.let { nav ->
                 add("nav-${nav.id()}")
                 add("order-${nav.attr("playOrder")}")
                 nav.selectFirstChildTag("content")?.attr("src")?.let { add("src-$it") }
             }
-            
+
             // Content based identifiers
             if (contentElements.isNotEmpty()) {
                 // First paragraph or heading text (truncated)
@@ -464,9 +453,11 @@ class EpubParser(
                             else -> null
                         }?.let { add("content-$it") }
                     }
-                
+
                 // Content structure fingerprint
-                add("structure-" + contentElements.take(5).joinToString("-") { it::class.simpleName ?: "" })
+                add(
+                    "structure-" + contentElements.take(5)
+                        .joinToString("-") { it::class.simpleName ?: "" })
             }
         }
 
@@ -627,15 +618,19 @@ class EpubParser(
                         EpubChapter(
                             chapterId = generateStableChapterId(
                                 absPath = file.absPath,
-                                title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
+                                title = title?.takeIf { it.isNotBlank() }
+                                    ?: "Chapter $chapterIndex",
                                 contentElements = contentElements
                             ),
                             absPath = file.absPath,
                             title = title?.takeIf { it.isNotBlank() } ?: "Chapter $chapterIndex",
                             level = level,
                             contentElements = contentElements
-                        )
-                    } else null
+                        ).also { debug { "Added Chapter: $it" } }
+                    } else {
+                        debug { "Empty chapter: ${file.absPath}" }
+                        null
+                    }
                 }
             }
             .filter { it.contentElements.isNotEmpty() }

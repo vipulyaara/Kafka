@@ -163,7 +163,7 @@ class EpubXMLFileParser(
     private fun parseTitlePageContent(): List<ContentElement> {
         // Find the titlepage.svg image
         val titlePageImage = document.selectFirst("img[src$=titlepage.svg]")
-            ?: return emptyList()
+            ?: return contentParser.parse(document.body())
         
         return listOf(parseImageElement(titlePageImage))
     }

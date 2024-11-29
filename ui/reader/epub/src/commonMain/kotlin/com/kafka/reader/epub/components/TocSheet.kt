@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.kafka.ui.components.material.ModalBottomSheet
 import com.kafka.ui.components.search.SearchWidget
-import kafka.reader.core.models.EpubChapter
+import kafka.reader.core.models.NavPoint
 import kafka.ui.reader.epub.generated.resources.Res
 import kafka.ui.reader.epub.generated.resources.chapters
 import kotlinx.coroutines.launch
@@ -37,12 +37,14 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun TocSheet(tocState: TocState, chapters: List<EpubChapter>, selectChapter: (String) -> Unit) {
+fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
-    val filteredChapters = chapters.filter { chapter ->
+
+    // TODO - double check this
+    val filteredChapters = navPoints.filter { chapter ->
         chapter.title.contains(searchQuery, ignoreCase = true)
     }
 
@@ -70,13 +72,13 @@ fun TocSheet(tocState: TocState, chapters: List<EpubChapter>, selectChapter: (St
 
             item { Spacer(Modifier.height(Dimens.Spacing12)) }
 
-            items(filteredChapters) { chapter ->
-                ChapterHeading(
-                    text = chapter.title,
-                    level = chapter.level,
-                    modifier = Modifier.clickable {
+            items(filteredChapters) { navPoint ->
+                NavPointHeading(
+                    navPoint = navPoint,
+                    level = 0,
+                    onNavPointClicked = {
                         dismissSheet()
-                        selectChapter(chapter.chapterId)
+                        onNavPointClicked(it)
                     }
                 )
             }
@@ -105,12 +107,22 @@ private fun Label(chapterSize: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ChapterHeading(text: String, modifier: Modifier = Modifier, level: Int) {
+private fun NavPointHeading(
+    modifier: Modifier = Modifier,
+    navPoint: NavPoint,
+    level: Int,
+    onNavPointClicked: (String) -> Unit = {}
+) {
     val indentation = with(LocalDensity.current) { Dimens.Spacing12.toPx() }
 
-    Surface(modifier = modifier.fillMaxSize(), color = Color.Transparent) {
+    Surface(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable { onNavPointClicked(navPoint.src) },
+        color = Color.Transparent
+    ) {
         Text(
-            text = text,
+            text = navPoint.title,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .padding(
@@ -119,6 +131,14 @@ private fun ChapterHeading(text: String, modifier: Modifier = Modifier, level: I
                     top = Dimens.Spacing16,
                     bottom = Dimens.Spacing16
                 )
+        )
+    }
+
+    navPoint.children.forEach { child ->
+        NavPointHeading(
+            navPoint = child,
+            level = level + 1,
+            onNavPointClicked = onNavPointClicked
         )
     }
 }

@@ -21,12 +21,10 @@ class ParseEbook(
             when {
                 params.filePath != null -> epubParser.createEpubBook(
                     filePath = params.filePath,
-                    shouldUseToc = true
                 )
 
                 params.source != null -> epubParser.createEpubBook(
                     source = params.source,
-                    shouldUseToc = true
                 )
 
                 else -> error("File path or source must be provided")
