@@ -42,10 +42,8 @@ fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
-
-    // TODO - double check this
-    val filteredChapters = navPoints.filter { chapter ->
-        chapter.title.contains(searchQuery, ignoreCase = true)
+    val filteredNavPoints = navPoints.filter { navPoint ->
+        navPoint.title.contains(searchQuery, ignoreCase = true)
     }
 
     val dismissSheet: () -> Unit = {
@@ -60,7 +58,7 @@ fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (
         onDismissRequest = tocState::hide
     ) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            item { Label(filteredChapters.size) }
+            item { Label(filteredNavPoints.size) }
 
             item {
                 SearchWidget(
@@ -72,7 +70,7 @@ fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (
 
             item { Spacer(Modifier.height(Dimens.Spacing12)) }
 
-            items(filteredChapters) { navPoint ->
+            items(filteredNavPoints) { navPoint ->
                 NavPointHeading(
                     navPoint = navPoint,
                     level = 0,
