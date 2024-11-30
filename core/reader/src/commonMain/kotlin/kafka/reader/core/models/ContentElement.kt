@@ -79,5 +79,13 @@ sealed interface ContentElement {
     ) : ContentElement
 
     @Serializable
-    data class Divider(override val elementPath: List<Int>) : ContentElement
+    data class Divider(
+        override val elementPath: List<Int>,
+    ) : ContentElement
+
+    @Serializable
+    data class Anchor(
+        override val elementPath: List<Int>,
+        val id: String? = null
+    ) : ContentElement
 }
