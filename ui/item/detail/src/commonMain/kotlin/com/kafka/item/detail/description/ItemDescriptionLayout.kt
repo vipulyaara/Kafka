@@ -59,7 +59,7 @@ internal fun DescriptionText(
 }
 
 @Composable
-internal fun ItemDescription(
+internal fun ItemDescriptionAndCover(
     itemDetail: ItemDetail?,
     itemPlaceholder: ItemPlaceholder,
     modifier: Modifier = Modifier,

@@ -4,7 +4,6 @@ plugins {
     id("com.android.library")
     id("com.kafka.compose")
     id("com.kafka.kotlin.multiplatform")
-    id("org.jetbrains.kotlin.native.cocoapods")
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.ksp)
 }
@@ -50,17 +49,6 @@ buildConfig {
 }
 
 kotlin {
-    cocoapods {
-        summary = "Some description for the appLauncher Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "16.0"
-        podfile = project.file("../../iosApp/Podfile")
-        framework {
-            baseName = "shared"
-            isStatic = true
-        }
-    }
 
     sourceSets {
         commonMain {
@@ -115,6 +103,12 @@ kotlin {
                 implementation(libs.kermit)
                 implementation(libs.kermit.crashlytics)
                 implementation(libs.okhttp.okhttp)
+            }
+        }
+
+        iosMain {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
             }
         }
     }

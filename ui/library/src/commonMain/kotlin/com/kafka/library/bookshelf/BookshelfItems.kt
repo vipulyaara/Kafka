@@ -94,7 +94,7 @@ internal fun BookshelfItems(
     openItemDetail: (String) -> Unit,
     openLogin: () -> Unit
 ) {
-    if (state.items.isEmpty()) {
+    if (state.items.isEmpty() && !state.loading) {
         FullScreenMessage(UiMessage(stringResource(Res.string.no_favorites_items_message)))
     } else {
         BookshelfItemList(favoriteItems = state.items,

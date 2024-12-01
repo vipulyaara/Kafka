@@ -20,10 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.kafka.common.image.Icons
 import com.kafka.data.entities.Item
 import com.kafka.ui.components.placeholder.placeholderDefault
 import ui.common.theme.theme.Dimens
@@ -40,13 +38,12 @@ fun FeaturedItem(
     onClick: () -> Unit = {},
 ) {
     FeaturedItem(
-        placeHolder = if (item.isAudio) Icons.Audio else Icons.Texts,
         coverImage = item.coverImage,
         aspectRatio = aspectRatio,
         creator = item.creator,
         modifier = modifier,
-        label = label,
         imageUrl = imageUrl,
+        label = label,
         shape = shape,
         onClick = onClick,
     )
@@ -59,7 +56,6 @@ fun FeaturedItem(
     creator: String? = null,
     label: String? = null,
     imageUrl: String? = null,
-    placeHolder: ImageVector = CoverDefaults.placeholder,
     shape: Shape = RoundedCornerShape(16.dp),
     aspectRatio: Float = 1f,
     onClick: () -> Unit = {},
@@ -68,7 +64,7 @@ fun FeaturedItem(
         Box {
             CoverImage(
                 data = imageUrl ?: coverImage,
-                placeholder = placeHolder,
+                placeholder = null,
                 shape = shape,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -3,7 +3,7 @@ import FirebaseAnalytics
 import FirebaseCore
 // import FirebaseCrashlytics
 import SwiftUI
-import KafkaKt
+import shared
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 

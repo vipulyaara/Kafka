@@ -36,7 +36,7 @@ fun NavController.selectRootScreen(tab: RootScreen) {
 @Composable
 fun NavController.currentScreenAsState(): State<RootScreen> {
     val selectedItem = remember { mutableStateOf<RootScreen>(RootScreen.Home) }
-    val rootScreens = ROOT_SCREENS
+    val rootScreens = listOf(RootScreen.Home, RootScreen.Search, RootScreen.Library, RootScreen.Profile)
     DisposableEffect(this) {
         val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
             rootScreens.firstOrNull { rs -> destination.hierarchy.any { it.route == rs.navigationRoute } }
@@ -51,9 +51,6 @@ fun NavController.currentScreenAsState(): State<RootScreen> {
 
     return selectedItem
 }
-
-val ROOT_SCREENS =
-    listOf(RootScreen.Home, RootScreen.Search, RootScreen.Library, RootScreen.Profile)
 
 internal val NavDestination.hostNavGraph: NavGraph
     get() = hierarchy.first { it is NavGraph } as NavGraph

@@ -34,7 +34,7 @@ import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
 import com.kafka.item.detail.description.DescriptionText
-import com.kafka.item.detail.description.ItemDescription
+import com.kafka.item.detail.description.ItemDescriptionAndCover
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -221,7 +221,7 @@ private fun VerticalLayout(
 ) {
     Column {
         if (itemPlaceholder != null) {
-            ItemDescription(
+            ItemDescriptionAndCover(
                 itemDetail = state.itemDetail,
                 itemPlaceholder = itemPlaceholder,
                 modifier = Modifier

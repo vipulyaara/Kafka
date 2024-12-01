@@ -1,6 +1,6 @@
 import UIKit
 import SwiftUI
-import KafkaKt
+import shared
 
 struct ComposeView: UIViewControllerRepresentable {
      private let component: HomeUiControllerComponent

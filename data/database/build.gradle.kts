@@ -1,3 +1,5 @@
+import com.kafka.gradle.addKspDependencyForAllTargets
+
 plugins {
     id("com.android.library")
     id("com.kafka.kotlin.multiplatform")
@@ -8,11 +10,6 @@ plugins {
 
 room {
     schemaDirectory("$projectDir/schemas")
-}
-
-dependencies {
-    kspAndroid(libs.androidx.room.compiler)
-    kspJvm(libs.androidx.room.compiler)
 }
 
 kotlin {
@@ -42,3 +39,5 @@ kotlin {
 android {
     namespace = "com.kafka.database"
 }
+
+addKspDependencyForAllTargets(libs.androidx.room.compiler)
