@@ -60,6 +60,7 @@ sealed class Screen {
         @SerialName("itemId") val itemId: String,
         @SerialName("origin") val origin: Origin = Origin.Unknown
     ) : Screen() {
+        @Serializable
         enum class Origin {
             Carousel, Row, Column, Grid, Recommendation, Unknown;
 

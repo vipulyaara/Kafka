@@ -16,14 +16,27 @@ data class Bookshelf(
     @SerialName("visibility") val visibility: Visibility,
     @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
 ) {
-    enum class Type { Favorite, Reading, Completed, Wishlist, Uploads, Custom }
-    enum class Visibility { Public, Private }
+    @Serializable
+    enum class Type(val value: String) { 
+        Favorite("favorite"), 
+        Reading("reading"), 
+        Completed("completed"), 
+        Wishlist("wishlist"), 
+        Uploads("uploads"), 
+        Custom("custom")
+    }
+
+    @Serializable
+    enum class Visibility(val value: String) { 
+        Public("public"), 
+        Private("private") 
+    }
 }
 
 object BookshelfDefaults {
     val favorites = Bookshelf("favorites", "Favorites", Type.Favorite, Visibility.Public)
     val wishlist = Bookshelf("wishlist", "Wishlist", Type.Wishlist, Visibility.Public)
-    val reading = Bookshelf("reading", "Reading", Type.Wishlist, Visibility.Public)
+    val reading = Bookshelf("reading", "Reading", Type.Reading, Visibility.Public)
     val completed = Bookshelf("completed", "Completed", Type.Completed, Visibility.Public)
     val uploads = Bookshelf("uploads", "Uploads", Type.Uploads, Visibility.Private)
 
