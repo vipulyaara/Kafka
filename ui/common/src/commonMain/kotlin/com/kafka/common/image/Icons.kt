@@ -31,6 +31,7 @@ import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.BrandBooking
+import compose.icons.tablericons.Calendar
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
@@ -130,4 +131,5 @@ object Icons {
     val Upload = TablerIcons.Upload
     val System = TablerIcons.Adjustments
     val Edit = TablerIcons.Edit
+    val Calendar = TablerIcons.Calendar
 }

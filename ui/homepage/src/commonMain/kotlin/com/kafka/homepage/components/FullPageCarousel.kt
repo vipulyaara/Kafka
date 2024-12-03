@@ -186,7 +186,7 @@ private fun CarouselItemScope.CarouselItemScaffold(
 }
 
 @Composable
-private fun Header() {
+fun Header() {
     Column {
         Text(
             text = "Books of",
@@ -220,7 +220,7 @@ private fun Header() {
     }
 }
 
-val dates = listOf(
+private val dates = listOf(
     "21 November 2024",
     "22 November 2024",
     "23 November 2024",

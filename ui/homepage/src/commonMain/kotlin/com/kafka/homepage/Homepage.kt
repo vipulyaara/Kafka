@@ -43,7 +43,7 @@ import com.kafka.data.entities.Homepage
 import com.kafka.data.entities.HomepageCollection
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.RecentItem
-import com.kafka.homepage.components.FullPageCarousel
+import com.kafka.homepage.components.FeaturedItemsPager
 import com.kafka.homepage.components.RecentItems
 import com.kafka.navigation.deeplink.Config
 import com.kafka.navigation.graph.Screen.ItemDetail.Origin
@@ -78,13 +78,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
     val shareAppText = stringResource(Res.string.share_app_message, Config.PLAY_STORE_URL)
     val context = getContext()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            Spacer(Modifier.height(Dimens.Spacing56))
-//            HomeTopBar(openProfile = viewModel::openProfile)
-        },
-    ) { padding ->
+    Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
         ProvideScaffoldPadding(padding = padding) {
             Box(modifier = Modifier.fillMaxSize()) {
                 AnimatedVisibilityFade(visible = viewState.showHomepageFeed) {
@@ -155,8 +149,8 @@ private fun HomepageFeedItems(
                 is HomepageCollection.FeaturedItem -> {
                     fullSpanItem {
                         if (collection.items.isNotEmpty()) {
-                            FullPageCarousel(
-                                modifier = Modifier.padding(top = Dimens.Gutter),
+                            FeaturedItemsPager(
+                                modifier = Modifier,
                                 carouselItems = collection.items,
                                 images = collection.image,
                                 onClick = { openItemDetail(it, Origin.Carousel) }

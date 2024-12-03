@@ -29,6 +29,8 @@ fun TextStyle.semiBold() = merge(TextStyle(fontWeight = FontWeight.SemiBold))
 
 fun TextStyle.bold() = merge(TextStyle(fontWeight = FontWeight.Bold))
 
+fun TextStyle.black() = merge(TextStyle(fontWeight = FontWeight.Black))
+
 @Composable
 inline fun <T> rememberMutableState(
     key: Any? = null,
