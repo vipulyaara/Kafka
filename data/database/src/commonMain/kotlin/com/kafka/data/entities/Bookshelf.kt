@@ -17,7 +17,7 @@ data class Bookshelf(
     @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
 ) {
     @Serializable
-    enum class Type(val value: String) { 
+    enum class Type(val value: String) {
         Favorite("favorite"), 
         Reading("reading"), 
         Completed("completed"), 

@@ -22,12 +22,12 @@ class ObserveBookshelves(
     override fun createObservable(params: Params): Flow<List<Bookshelf>> {
         return firestoreGraph.listCollection(accountRepository.currentUserId)
             .where {
-                val bookshelves = when (params.fetchType) {
+                val bookshelfTypes = when (params.fetchType) {
                     Params.FetchType.Library -> listOf(wishlist, uploads)
                     Params.FetchType.AddToBookshelf -> listOf(wishlist)
                 }.map { it.type }
 
-                "type" inArray bookshelves
+                "type" inArray bookshelfTypes
             }
             .snapshots
             .map { it.documents }

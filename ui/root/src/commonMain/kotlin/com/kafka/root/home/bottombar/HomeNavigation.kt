@@ -263,7 +263,7 @@ private fun HomeNavigationDrawer(
                     label = {
                         Text(
                             text = stringResource(item.labelResId),
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.titleMedium
                         )
                     },
                     selected = selectedNavigation == item.rootScreen,

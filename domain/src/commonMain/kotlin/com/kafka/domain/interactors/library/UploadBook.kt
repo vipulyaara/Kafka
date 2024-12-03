@@ -78,6 +78,7 @@ class UploadBook(
             )
             fileDao.insert(fileEntity)
 
+
             val document = firestoreGraph.listItemsCollection(
                 uid = uid,
                 listId = BookshelfDefaults.uploads.id

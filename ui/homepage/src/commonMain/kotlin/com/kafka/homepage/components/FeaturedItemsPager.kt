@@ -1,26 +1,34 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 
 package com.kafka.homepage.components
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
+import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.kafka.common.adaptive.isExpanded
+import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.animation.LocalAnimatedContentScope
 import com.kafka.common.animation.LocalSharedTransitionScope
 import com.kafka.common.extensions.black
@@ -40,23 +48,19 @@ fun FeaturedItemsPager(
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state = rememberPagerState { carouselItems.size }
     val isDark = LocalTheme.current.isDark()
 
-    HorizontalCubePager(state = state, modifier = modifier) { page ->
+    PagerScaffold(items = carouselItems, modifier = modifier) { page ->
         val item = carouselItems[page]
         val image = images.getOrNull(page) ?: item.coverImage
 
         DynamicTheme(model = image, useDarkTheme = isDark) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
+                    .clickable { onClick(carouselItems[page].itemId) }
             ) {
-                CoverImage(image = image, title = item.title) {
-                    onClick(carouselItems[page].itemId)
-                }
-
+                CoverImage(image = image, title = item.title)
                 Description(item = item, date = dates.getOrNull(page))
             }
         }
@@ -64,7 +68,36 @@ fun FeaturedItemsPager(
 }
 
 @Composable
-private fun CoverImage(image: String?, title: String? = null, onClick: () -> Unit) {
+private fun PagerScaffold(
+    items: List<Item>,
+    modifier: Modifier = Modifier,
+    content: @Composable (Int) -> Unit
+) {
+    val isExpanded = windowWidthSizeClass().isExpanded()
+
+    if (isExpanded) {
+        val state = rememberCarouselState { items.size }
+        HorizontalMultiBrowseCarousel(
+            state = state,
+            modifier = modifier.padding(Dimens.Spacing08),
+            preferredItemWidth = CarouselItemPreferredWidth.dp,
+            itemSpacing = Dimens.Spacing04,
+            contentPadding = PaddingValues(horizontal = Dimens.Spacing16)
+        ) { index ->
+            Box(Modifier.maskClip(shape = RoundedCornerShape(Dimens.Radius16))) {
+                content(index)
+            }
+        }
+    } else {
+        val state = rememberPagerState { items.size }
+        HorizontalCubePager(state = state, modifier = modifier) { page ->
+            content(page)
+        }
+    }
+}
+
+@Composable
+private fun CoverImage(image: String?, title: String? = null) {
     with(LocalSharedTransitionScope.current) {
         AsyncImage(
             model = image,
@@ -73,7 +106,6 @@ private fun CoverImage(image: String?, title: String? = null, onClick: () -> Uni
             modifier = Modifier
                 .fillMaxSize()
                 .aspectRatio(0.66f)
-                .clickable { onClick() }
                 .sharedElement(
                     animatedVisibilityScope = LocalAnimatedContentScope.current,
                     state = rememberSharedContentState(
