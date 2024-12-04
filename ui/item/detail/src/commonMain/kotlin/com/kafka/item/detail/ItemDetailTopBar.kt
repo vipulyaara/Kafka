@@ -32,6 +32,7 @@ import com.kafka.ui.components.material.TopBar
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_back_button
 import org.jetbrains.compose.resources.stringResource
+import ui.common.theme.theme.surfaceDeep
 
 @Composable
 internal fun TopBar(
@@ -66,10 +67,7 @@ internal fun TopBar(
         },
         actions = {
             if (shareVisible) {
-                ShareIcon(
-                    isRaised = isRaised,
-                    onClick = onShareClicked
-                )
+                ShareIcon(isRaised = isRaised, onClick = onShareClicked)
             }
 
             if (overflowVisible) {
@@ -145,12 +143,12 @@ private fun OverflowActions(expanded: Boolean, onDismiss: () -> Unit, report: ()
         onDismissRequest = onDismiss,
         modifier = Modifier
             .width(IntrinsicSize.Min)
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceDeep),
     ) {
         actionLabels.forEach { item ->
             DropdownMenuItem(
                 text = { Text(text = item, color = MaterialTheme.colorScheme.onSurface) },
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                modifier = Modifier.background(MaterialTheme.colorScheme.surfaceDeep),
                 onClick = {
                     onDismiss()
                     report()

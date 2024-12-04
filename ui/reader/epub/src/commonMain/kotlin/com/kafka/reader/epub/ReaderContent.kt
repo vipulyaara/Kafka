@@ -33,7 +33,6 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.kafka.base.debug
 import com.kafka.common.image.Icons
 import com.kafka.common.plus
 import com.kafka.reader.epub.components.CodeBlockElement
@@ -198,7 +197,7 @@ private fun SelectionContainer(
 ) {
     if (element is ContentElement.Text) {
 //        CustomSelectionContainer() {
-            content()
+        content()
 //        }
 //        ReaderSelectionContainer(
 //            bookId = bookId,
@@ -228,7 +227,7 @@ internal fun ReaderContent(
                     location?.elementPath == element.elementPath
                 }
             }
-            
+
             val mergedElement = remember(element, elementHighlights) {
                 val highlightInlines = elementHighlights.toInlineElements()
                 element.copy(

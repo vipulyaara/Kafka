@@ -63,14 +63,11 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
     var coverImagePaths by remember { mutableStateOf(listOf<String>()) }
     var copyright by remember { mutableStateOf("") }
     var mediaType by remember { mutableStateOf(MediaType.Text) }
-    var uploadStatus by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
     var id by remember { mutableStateOf("") }
     var hasEditedId by remember { mutableStateOf(false) }
     var contentOpfPath by remember { mutableStateOf("") }
     var dateFeatured by remember { mutableStateOf("") }
     var isEditMode by remember { mutableStateOf(false) }
-    var isFetching by remember { mutableStateOf(false) }
 
     LaunchedEffect(title, creators) {
         if (!hasEditedId && title.isNotEmpty() && creators.isNotEmpty()) {
@@ -95,8 +92,14 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
 
     LaunchedEffect(contentOpfPath) {
         if (contentOpfPath.isNotEmpty()) {
-            try {
-                val metadata = ContentOpfParser.parse(contentOpfPath)
+            uploadViewModel.parseContentOpf(contentOpfPath)
+        }
+    }
+
+    LaunchedEffect(uploadViewModel.contentOpfState.value) {
+        when (val state = uploadViewModel.contentOpfState.value) {
+            is ContentOpfState.Success -> {
+                val metadata = state.metadata
                 title = metadata.title
                 creators = metadata.creators.joinToString(", ")
                 description = metadata.description
@@ -110,10 +113,60 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                 copyright = metadata.rights
                 translators = metadata.translators.joinToString(", ")
                 sourceUrls = metadata.sources.joinToString(", ")
-            } catch (e: Exception) {
-                errorMessage = "Failed to parse content.opf: ${e.message}"
             }
+            else -> Unit
         }
+    }
+
+    LaunchedEffect(uploadViewModel.fetchState.value) {
+        when (val state = uploadViewModel.fetchState.value) {
+            is FetchState.Success -> {
+                val item = state.data
+                title = item.title
+                description = item.description.orEmpty()
+                creators = item.creators?.joinToString(", ").orEmpty()
+                subjects = item.subjects?.joinToString(", ").orEmpty()
+                languages = item.languages?.joinToString(", ").orEmpty()
+                collections = item.collections?.joinToString(", ").orEmpty()
+                mediaType = item.mediaType
+                longDescription = item.description.orEmpty()
+                publishers = item.publishers.joinToString(", ")
+                translators = item.translators?.joinToString(", ").orEmpty()
+                coverImagePaths = item.coverImages?.toList()
+                    ?: item.coverImage?.let { listOf(it) }
+                    ?: emptyList()
+                isEditMode = true
+                hasEditedId = true
+            }
+            is FetchState.Error -> {
+                // todo
+            }
+            else -> Unit
+        }
+    }
+
+    fun clearAllFields() {
+        title = ""
+        description = ""
+        longDescription = ""
+        creators = ""
+        subjects = ""
+        publishers = ""
+        languages = ""
+        collections = ""
+        sourceUrls = ""
+        translators = ""
+        epubFilePath = ""
+        coverImagePaths = listOf()
+        copyright = ""
+        mediaType = MediaType.Text
+        id = ""
+        hasEditedId = false
+        contentOpfPath = ""
+        dateFeatured = ""
+        isEditMode = false
+        
+        uploadViewModel.resetAllStates()
     }
 
     Surface {
@@ -155,48 +208,20 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                         Button(
                             onClick = {
                                 if (id.isNotEmpty()) {
-                                    isFetching = true
-                                    errorMessage = ""
-
                                     uploadViewModel.fetchItem(id)
-                                        .onSuccess { (item, detail) ->
-                                            title = item.title
-                                            description = item.description.orEmpty()
-                                            creators = item.creators.joinToString(", ")
-                                            subjects = item.subjects.joinToString(", ")
-                                            languages = item.languages?.joinToString(", ").orEmpty()
-                                            collections =
-                                                item.collections?.joinToString(", ").orEmpty()
-                                            mediaType = item.mediaType
-
-                                            longDescription = detail.description.orEmpty()
-                                            publishers = detail.publishers.joinToString(", ")
-                                            translators =
-                                                detail.translators?.joinToString(", ").orEmpty()
-
-                                            coverImagePaths = detail.coverImages?.toList()
-                                                ?: detail.coverImage?.let { listOf(it) }
-                                                        ?: emptyList()
-
-                                            isEditMode = true
-                                            hasEditedId = true
-                                        }
-                                        .onFailure { error ->
-                                            errorMessage = "Failed to fetch item: ${error.message}"
-                                        }
-                                    isFetching = false
                                 }
                             },
-                            enabled = id.isNotEmpty() && !isFetching,
+                            enabled = id.isNotEmpty() && uploadViewModel.fetchState.value !is FetchState.Loading,
                             modifier = Modifier.height(40.dp)
                         ) {
-                            if (isFetching) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(16.dp),
-                                    color = MaterialTheme.colorScheme.onPrimary
-                                )
-                            } else {
-                                Text("Fetch")
+                            when (uploadViewModel.fetchState.value) {
+                                is FetchState.Loading -> {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(16.dp),
+                                        color = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                }
+                                else -> Text("Fetch")
                             }
                         }
                     }
@@ -265,11 +290,8 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                 isEnabled = when {
                     isEditMode -> id.isNotEmpty() && title.isNotEmpty()
                     else -> id.isNotEmpty() && title.isNotEmpty() && epubFilePath.isNotEmpty()
-                },
+                } && uploadViewModel.uploadState.value !is UploadState.Loading,
                 onUploadClick = {
-                    uploadStatus = "Uploading..."
-                    errorMessage = ""
-
                     uploadViewModel.uploadBook(
                         itemId = id,
                         title = title,
@@ -286,19 +308,28 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                         mediaType = mediaType,
                         copyright = copyright,
                         isUpdate = isEditMode
-                    ).onSuccess {
-                        uploadStatus =
-                            if (isEditMode) "Update successful!" else "Upload successful!"
-                    }.onFailure { error ->
-                        errorMessage = if (isEditMode) {
-                            "Update failed: ${error.message}"
-                        } else {
-                            "Upload failed: ${error.message}"
-                        }
-                    }
+                    )
                 },
-                uploadStatus = uploadStatus,
-                errorMessage = errorMessage,
+                onClearClick = ::clearAllFields,
+                uploadStatus = when (uploadViewModel.uploadState.value) {
+                    is UploadState.Loading -> "Uploading..."
+                    is UploadState.Success -> if (isEditMode) "Update successful!" else "Upload successful!"
+                    is UploadState.Error -> ""
+                    else -> ""
+                },
+                errorMessage = when {
+                    uploadViewModel.uploadState.value is UploadState.Error -> {
+                        val error = (uploadViewModel.uploadState.value as UploadState.Error).message
+                        if (isEditMode) "Update failed: $error" else "Upload failed: $error"
+                    }
+                    uploadViewModel.fetchState.value is FetchState.Error -> {
+                        "Failed to fetch item: ${(uploadViewModel.fetchState.value as FetchState.Error).message}"
+                    }
+                    uploadViewModel.contentOpfState.value is ContentOpfState.Error -> {
+                        "Failed to parse content.opf: ${(uploadViewModel.contentOpfState.value as ContentOpfState.Error).message}"
+                    }
+                    else -> ""
+                },
                 isEditMode = isEditMode,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )

@@ -1,8 +1,8 @@
 package com.kafka.kms.ui.upload
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.model.MediaType
 import com.kafka.kms.data.remote.SupabaseUploadService
@@ -11,15 +11,21 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewModel() {
+    val fetchState = mutableStateOf<FetchState>(FetchState.Initial)
+    val uploadState = mutableStateOf<UploadState>(UploadState.Initial)
+    val contentOpfState = mutableStateOf<ContentOpfState>(ContentOpfState.Initial)
 
-    fun fetchItem(itemId: String): Result<Pair<Item, ItemDetail>> {
-        var result: Result<Pair<Item, ItemDetail>>? = null
-
+    fun fetchItem(itemId: String) {
         viewModelScope.launch {
-            result = uploadService.fetchItem(itemId)
+            fetchState.value = FetchState.Loading
+            uploadService.fetchItem(itemId)
+                .onSuccess { (_, detail) ->
+                    fetchState.value = FetchState.Success(detail)
+                }
+                .onFailure { error ->
+                    fetchState.value = FetchState.Error(error.message ?: "Unknown error occurred")
+                }
         }
-
-        return result ?: Result.failure(IllegalStateException("Failed to fetch item"))
     }
 
     fun uploadBook(
@@ -38,11 +44,10 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
         mediaType: MediaType,
         copyright: String,
         isUpdate: Boolean
-    ): Result<Unit> {
-        var result: Result<Unit>? = null
-
+    ) {
         viewModelScope.launch {
-            result = uploadService.uploadBook(
+            uploadState.value = UploadState.Loading
+            uploadService.uploadBook(
                 itemId = itemId,
                 title = title,
                 description = description,
@@ -58,9 +63,58 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
                 mediaType = mediaType,
                 copyright = copyright,
                 isUpdate = isUpdate
-            )
+            ).onSuccess {
+                uploadState.value = UploadState.Success
+            }.onFailure { error ->
+                uploadState.value = UploadState.Error(error.message ?: "Unknown error occurred")
+            }
         }
-
-        return result ?: Result.failure(IllegalStateException("Failed to fetch item"))
     }
+
+    fun parseContentOpf(path: String) {
+        viewModelScope.launch {
+            contentOpfState.value = ContentOpfState.Loading
+            try {
+                val metadata = ContentOpfParser.parse(path)
+                contentOpfState.value = ContentOpfState.Success(metadata)
+            } catch (e: Exception) {
+                contentOpfState.value = ContentOpfState.Error(e.message ?: "Unknown error occurred")
+            }
+        }
+    }
+
+    fun resetUploadState() {
+        uploadState.value = UploadState.Initial
+    }
+
+    fun resetFetchState() {
+        fetchState.value = FetchState.Initial
+    }
+
+    fun resetAllStates() {
+        fetchState.value = FetchState.Initial
+        uploadState.value = UploadState.Initial
+        contentOpfState.value = ContentOpfState.Initial
+    }
+}
+
+sealed interface FetchState {
+    data object Initial : FetchState
+    data object Loading : FetchState
+    data class Success(val data: ItemDetail) : FetchState
+    data class Error(val message: String) : FetchState
+}
+
+sealed interface UploadState {
+    data object Initial : UploadState
+    data object Loading : UploadState
+    data object Success : UploadState
+    data class Error(val message: String) : UploadState
+}
+
+sealed interface ContentOpfState {
+    data object Initial : ContentOpfState
+    data object Loading : ContentOpfState
+    data class Success(val metadata: ContentOpfMetadata) : ContentOpfState
+    data class Error(val message: String) : ContentOpfState
 }

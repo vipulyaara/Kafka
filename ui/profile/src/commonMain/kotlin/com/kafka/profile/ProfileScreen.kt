@@ -42,11 +42,6 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
-
-            AnimatedVisibilityFade(visible = viewState.isLoading) {
-                InfiniteProgressBar(modifier = Modifier.padding(Dimens.Spacing20))
-            }
-
             Surface(
                 modifier = modifier,
                 color = MaterialTheme.colorScheme.surfaceVariant,
@@ -62,6 +57,10 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
             }
 
             Spacer(Modifier.height(Dimens.Spacing24))
+
+            AnimatedVisibilityFade(visible = viewState.isLoading) {
+                InfiniteProgressBar(modifier = Modifier.padding(Dimens.Spacing20))
+            }
 
             Spacer(Modifier.weight(1f))
 
