@@ -29,6 +29,8 @@ data class ItemDetail(
     @SerialName("subjects") val subjects: List<String>?,
     @SerialName("rating") val rating: Double? = null,
     @SerialName("publishers") val publishers: List<String>,
+    @SerialName("copyright") val copyright: Boolean?,
+    @SerialName("copyright_text") val copyrightText: String?,
 ) : BaseEntity {
     val creator: String?
         get() = creators?.take(5)?.joinToString()

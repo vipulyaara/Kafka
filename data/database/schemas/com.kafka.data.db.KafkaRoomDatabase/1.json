@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d41eeaab557d20f1bd5f024bfd2c390e",
+    "identityHash": "9ea29603a0b9edd3ba06caee1a6a4f7c",
     "entities": [
       {
         "tableName": "ItemDetail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImages` TEXT, `coverImage` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, PRIMARY KEY(`itemId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImages` TEXT, `coverImage` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, `copyright` INTEGER, `copyrightText` TEXT, PRIMARY KEY(`itemId`))",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -76,6 +76,16 @@
             "columnName": "publishers",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "copyright",
+            "columnName": "copyright",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "copyrightText",
+            "columnName": "copyrightText",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -406,7 +416,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd41eeaab557d20f1bd5f024bfd2c390e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9ea29603a0b9edd3ba06caee1a6a4f7c')"
     ]
   }
 }

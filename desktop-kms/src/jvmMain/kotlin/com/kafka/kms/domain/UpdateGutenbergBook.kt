@@ -15,14 +15,15 @@ import com.kafka.data.model.item.Publishers
 import com.kafka.downloader.core.Downloader
 import com.kafka.kms.data.files.DirectoryPaths.textPath
 import com.kafka.kms.data.files.DirectoryRepository
-import com.kafka.kms.data.models.CopyrightType
 import com.kafka.kms.data.models.CopyrightType.GutenbergCopyright
+import com.kafka.kms.data.models.CopyrightType.GutenbergPublicDomain
 import com.kafka.kms.data.models.GutenbergBook
 import com.kafka.kms.data.remote.GutendexService
 import com.kafka.kms.domain.gutenberg.CleanGutenbergHtml.cleanGutenbergHtml
 import com.kafka.kms.domain.gutenberg.GutenbergChapters
-import com.kafka.kms.templates.Imprint
-import com.kafka.kms.templates.TitlePage
+import com.kafka.kms.domain.templates.Imprint
+import com.kafka.kms.domain.templates.TitlePage
+import com.kafka.kms.domain.templates.copyrightText
 import com.kafka.kms.ui.directory.createDirectory
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
@@ -72,7 +73,7 @@ class UpdateGutenbergBook(
             directoryRepository.cleanupDSStoreFiles()
 
             val copyright =
-                if (book.copyright) GutenbergCopyright else CopyrightType.GutenbergPublicDomain
+                if (book.copyright) GutenbergCopyright else GutenbergPublicDomain
             Imprint.addImprint(textPath(repoId).absolutePath, copyright)
 
             TitlePage.addTitlePage(textPath(repoId).absolutePath, itemDetail)
@@ -113,7 +114,10 @@ class UpdateGutenbergBook(
             collections = book.bookshelves,
             publishers = listOf(Publishers.gutenberg),
             coverImages = null,
-            rating = null
+            rating = null,
+            copyright = book.copyright,
+            copyrightText = (if (book.copyright) GutenbergCopyright else GutenbergPublicDomain)
+                .copyrightText()
         )
 
         itemDetailDao.insert(itemDetail)

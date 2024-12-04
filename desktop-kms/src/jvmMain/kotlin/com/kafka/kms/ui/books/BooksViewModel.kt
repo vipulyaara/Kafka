@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -33,14 +32,6 @@ class BooksViewModel(private val observeAllBooks: ObserveAllBooks) : ViewModel()
                 )
             }
             .launchIn(viewModelScope)
-    }
-
-    fun onEditBook(book: ItemDetail) {
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            observeAllBooks.updateBook(book)
-            loadBooks()
-        }
     }
 }
 

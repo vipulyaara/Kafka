@@ -3,7 +3,6 @@ package com.kafka.kms.domain
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.debug
 import com.kafka.base.domain.Interactor
-import com.kafka.data.dao.DownloadDao
 import com.kafka.data.dao.FileDao
 import com.kafka.data.dao.ItemDao
 import com.kafka.data.dao.ItemDetailDao
@@ -23,7 +22,6 @@ import java.io.File as JavaFile
 class UpdateLibrivoxBook(
     private val itemDao: ItemDao,
     private val fileDao: FileDao,
-    private val downloadDao: DownloadDao,
     private val itemDetailDao: ItemDetailDao,
     private val librivoxService: LibrivoxService,
     private val directoryRepository: DirectoryRepository,
@@ -79,7 +77,9 @@ class UpdateLibrivoxBook(
             collections = listOf("librivox"),
             publishers = listOf("LibriVox"),
             coverImages = listOfNotNull(audiobook.coverImage),
-            rating = null
+            rating = null,
+            copyright = false,
+            copyrightText = audiobook.copyrightText
         )
 
         itemDetailDao.insert(itemDetail)
@@ -117,6 +117,7 @@ class UpdateLibrivoxBook(
                 |    <dc:identifier>librivox_${audiobook.itemId}</dc:identifier>
                 |    <dc:description>${audiobook.description}</dc:description>
                 |    <dc:publisher>LibriVox</dc:publisher>
+                |    <dc:rights>${audiobook.copyrightText}</dc:rights>
                 |  </metadata>
                 |  <manifest>
             """.trimMargin())

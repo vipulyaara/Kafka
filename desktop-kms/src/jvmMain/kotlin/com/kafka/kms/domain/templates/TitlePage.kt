@@ -1,4 +1,4 @@
-package com.kafka.kms.templates
+package com.kafka.kms.domain.templates
 
 import com.kafka.data.entities.ItemDetail
 

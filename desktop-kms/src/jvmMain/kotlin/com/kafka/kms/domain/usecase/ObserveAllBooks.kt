@@ -19,15 +19,4 @@ class ObserveAllBooks(private val supabase: Supabase) {
             e.printStackTrace()
         }
     }
-
-    suspend fun updateBook(book: ItemDetail) {
-//        try {
-//            supabase.itemDetail
-//                .update(book)
-//                .eq("itemId", book.itemId)
-//                .execute()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-    }
 } 

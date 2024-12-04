@@ -16,10 +16,15 @@ data class ContentOpfMetadata(
     val rights: String = "",
     val contributors: List<String> = emptyList(),
     val translators: List<String> = emptyList(),
-    val sources: List<String> = emptyList()
+    val sources: List<String> = emptyList(),
+    val collections: List<String> = emptyList(),
+    val isCopyrighted: Boolean = false
 )
 
 object ContentOpfParser {
+    private const val SE_PRODUCTION_NOTES_IDENTIFIER = "production-notes"
+    private const val SE_URL_PREFIX = "https://standardebooks.org/ebooks/"
+    
     fun parse(filePath: String): ContentOpfMetadata {
         val file = File(filePath)
         val document = DocumentBuilderFactory.newInstance()
@@ -53,17 +58,55 @@ object ContentOpfParser {
                     }
             }.map { it.textContent }
 
-            val identifierUrl = metadata.getElementsByTagName("dc:identifier")
+            val sourceUrls = buildList {
+                addAll(metadata.getElements("dc:source")
+                    .map { it.textContent.trim() }
+                    .filter { it.isNotEmpty() })
+
+                metadata.getElementsByTagName("dc:identifier")
+                    .toElementList()
+                    .firstOrNull()
+                    ?.textContent
+                    ?.removePrefix("url:")
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
+                    ?.let { add(it) }
+
+                if (metadata.getElementsByTagName("meta")
+                    .toElementList()
+                    .any { it.getAttribute("property") == SE_PRODUCTION_NOTES_IDENTIFIER }
+                ) {
+                    val seUrl = metadata.getElementsByTagName("dc:identifier")
+                        .toElementList()
+                        .firstOrNull { it.textContent.startsWith(SE_URL_PREFIX) }
+                        ?.textContent
+                        ?: metadata.getElementsByTagName("dc:identifier")
+                            .toElementList()
+                            .firstOrNull { it.getAttribute("id") == "uid" }
+                            ?.textContent
+                            ?.let { "$SE_URL_PREFIX$it" }
+                    
+                    seUrl?.let { add(it) }
+                }
+            }.distinct()
+
+            val rights = metadata.getTextContent("dc:rights").trim()
+            
+            val isCopyrighted = when {
+                rights.isEmpty() -> true
+                rights.contains("public domain", ignoreCase = true) -> false
+                rights.contains("CC0", ignoreCase = true) -> false
+                rights.contains("copyrighted", ignoreCase = true) -> true
+                rights.contains("copyright", ignoreCase = true) -> true
+                else -> true
+            }
+
+            val collections = metadata.getElementsByTagName("meta")
                 .toElementList()
-                .firstOrNull()
-                ?.textContent
-                ?.removePrefix("url:")
-                ?.trim()
-
-            val sourceUrls = metadata.getElements("dc:source")
-                .map { it.textContent.trim() }
-
-            val allSources = (listOfNotNull(identifierUrl) + sourceUrls)
+                .filter { meta ->
+                    meta.getAttribute("property") == "belongs-to-collection"
+                }
+                .map { it.textContent }
                 .filter { it.isNotEmpty() }
                 .distinct()
 
@@ -77,10 +120,12 @@ object ContentOpfParser {
                 subjects = metadata.getElements("dc:subject").map { it.textContent },
                 publishers = metadata.getElements("dc:publisher").map { it.textContent },
                 languages = metadata.getElements("dc:language").map { it.textContent },
-                rights = metadata.getTextContent("dc:rights"),
+                rights = rights,
                 contributors = contributors,
                 translators = translators,
-                sources = allSources
+                sources = sourceUrls,
+                collections = collections,
+                isCopyrighted = isCopyrighted
             )
         }
     }

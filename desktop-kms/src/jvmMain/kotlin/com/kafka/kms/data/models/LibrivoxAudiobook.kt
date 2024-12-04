@@ -8,7 +8,9 @@ data class LibrivoxAudiobook(
     val language: String,
     val coverImage: String?,
     val subjects: List<String>,
-    val sections: List<LibrivoxSection>
+    val sections: List<LibrivoxSection>,
+    val copyrightText: String = "This recording is in the public domain.",
+    val isCopyrighted: Boolean = false
 )
 
 data class LibrivoxSection(

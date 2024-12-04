@@ -1,6 +1,6 @@
 package com.kafka.kms.components
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
@@ -61,15 +62,11 @@ private fun ThemeOption(
         modifier = modifier
             .size(40.dp)
             .clip(CircleShape)
-            .border(
-                width = 1.5.dp,
-                color = if (selected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.outline,
-                shape = CircleShape
-            )
+            .background(MaterialTheme.colorScheme.surface)
+            .shadow(8.dp)
             .clickable(onClick = onClick),
         color = if (selected) 
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            MaterialTheme.colorScheme.primary
         else 
             MaterialTheme.colorScheme.surface
     ) {
@@ -78,7 +75,7 @@ private fun ThemeOption(
             contentDescription = "Switch to ${theme.name.lowercase()} theme",
             modifier = Modifier.padding(8.dp),
             tint = if (selected)
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimary
             else
                 MaterialTheme.colorScheme.onSurfaceVariant
         )

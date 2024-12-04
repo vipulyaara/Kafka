@@ -55,8 +55,9 @@ class SupabaseUploadService(
         coverImagePaths: List<String>,
         epubFilePath: String,
         mediaType: MediaType,
-        copyright: String,
-        isUpdate: Boolean = false
+        copyrightText: String,
+        copyrighted: Boolean?,
+        isUpdate: Boolean
     ): Result<Unit> = runCatching {
         // Only upload files if they're provided or it's a new item
         val (coverUrls, epubUrl) = if (!isUpdate || epubFilePath.isNotEmpty()) {
@@ -100,7 +101,9 @@ class SupabaseUploadService(
             languages = languagesList,
             coverImages = coverUrls,
             subjects = subjectsList,
-            publishers = publishersList
+            publishers = publishersList,
+            copyrightText = copyrightText,
+            copyright = copyrighted
         )
 
         withContext(Dispatchers.IO) {

@@ -43,7 +43,8 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
         epubFilePath: String,
         mediaType: MediaType,
         copyright: String,
-        isUpdate: Boolean
+        isUpdate: Boolean,
+        isCopyrighted: Boolean?
     ) {
         viewModelScope.launch {
             uploadState.value = UploadState.Loading
@@ -61,8 +62,9 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
                 coverImagePaths = coverImagePaths,
                 epubFilePath = epubFilePath,
                 mediaType = mediaType,
-                copyright = copyright,
-                isUpdate = isUpdate
+                copyrightText = copyright,
+                copyrighted = isCopyrighted,
+                isUpdate = isUpdate,
             ).onSuccess {
                 uploadState.value = UploadState.Success
             }.onFailure { error ->

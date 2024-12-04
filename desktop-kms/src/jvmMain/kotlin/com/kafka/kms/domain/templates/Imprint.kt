@@ -1,4 +1,4 @@
-package com.kafka.kms.templates
+package com.kafka.kms.domain.templates
 
 import com.kafka.kms.data.models.CopyrightType
 import kotlinx.datetime.Clock
@@ -28,7 +28,7 @@ object Imprint {
             </header>
             <p>This ebook was created with care and attention to detail by <a href="https://www.kafka.studio">Kafka Studio</a>. We strive to produce high-quality digital reading experiences while respecting intellectual property rights.</p>
             <p>This ebook is based on carefully curated source material, ensuring the highest standards of accuracy and presentation.</p>
-            <p>${copyrightText(copyrightType)}</p>
+            <p>${copyrightType.copyrightText()}</p>
            
             <p>Digital Publication Year - ${Clock.System.now().toString().substring(0, 4)}</p>
         </section>
@@ -36,7 +36,7 @@ object Imprint {
 </html>"""
 }
 
-private fun copyrightText(copyrightType: CopyrightType): String = when (copyrightType) {
+fun CopyrightType.copyrightText(): String = when (this) {
     CopyrightType.PublicDomain -> """
         This work is in the public domain in countries where the copyright term is the author's life plus 70 years or less. 
         This digital edition is carefully prepared to maintain the integrity of the original work while making it accessible 
