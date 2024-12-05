@@ -23,12 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
@@ -102,35 +99,3 @@ internal fun DescriptionText(
     }
 }
 
-@Composable
-private fun ratingText(uiRating: Int): AnnotatedString {
-    return AnnotatedString.Builder().apply {
-        repeat(uiRating) {
-            append("✪")
-        }
-        repeat(MaxRating - uiRating) {
-            append("✪")
-        }
-
-        addStyle(
-            style = SpanStyle(color = MaterialTheme.colorScheme.primary),
-            start = 0,
-            end = uiRating
-        )
-        addStyle(
-            style = SpanStyle(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)),
-            start = uiRating,
-            end = MaxRating
-        )
-
-        if (uiRating != 0) {
-            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                append(" $uiRating/$MaxRating ")
-            }
-        }
-
-        append("   ")
-    }.toAnnotatedString()
-}
-
-private const val MaxRating = 5

@@ -147,8 +147,14 @@ private fun OverflowActions(expanded: Boolean, onDismiss: () -> Unit, report: ()
     ) {
         actionLabels.forEach { item ->
             DropdownMenuItem(
-                text = { Text(text = item, color = MaterialTheme.colorScheme.onSurface) },
                 modifier = Modifier.background(MaterialTheme.colorScheme.surfaceDeep),
+                text = {
+                    Text(
+                        text = item,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
                 onClick = {
                     onDismiss()
                     report()

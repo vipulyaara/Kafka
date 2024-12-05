@@ -22,6 +22,7 @@ import compose.icons.fontawesomeicons.regular.Bookmark
 import compose.icons.fontawesomeicons.solid.Bookmark
 import compose.icons.fontawesomeicons.solid.FileContract
 import compose.icons.fontawesomeicons.solid.Headphones
+import compose.icons.fontawesomeicons.solid.Star
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.octicons.ArrowDownRight24
 import compose.icons.tablericons.Adjustments
@@ -61,6 +62,8 @@ import compose.icons.tablericons.Plus
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Settings
 import compose.icons.tablericons.Share
+import compose.icons.tablericons.StarHalf
+import compose.icons.tablericons.StarOff
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.Umbrella
@@ -132,4 +135,6 @@ object Icons {
     val System = TablerIcons.Adjustments
     val Edit = TablerIcons.Edit
     val Calendar = TablerIcons.Calendar
+    val Star = FontAwesomeIcons.Solid.Star
+    val StarHalf = TablerIcons.StarHalf
 }

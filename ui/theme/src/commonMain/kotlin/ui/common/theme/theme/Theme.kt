@@ -81,8 +81,8 @@ val KafkaTypography: Typography
                 lineHeight = 18.sp,
             ),
             bodyLarge = default.bodyLarge.copy(fontFamily = DefaultFont),
-            bodyMedium = default.bodyMedium,
-            bodySmall = default.bodySmall,
+            bodyMedium = default.bodyMedium.copy(fontFamily = DefaultFont, fontSize = 13.sp),
+            bodySmall = default.bodySmall.copy(fontFamily = DefaultFont),
             labelLarge = default.labelLarge.copy(fontFamily = DefaultFont),
             labelMedium = TextStyle(
                 fontFamily = DefaultFont,

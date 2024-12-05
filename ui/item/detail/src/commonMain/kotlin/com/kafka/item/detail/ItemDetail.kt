@@ -4,6 +4,7 @@ package com.kafka.item.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -15,8 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
@@ -39,13 +43,16 @@ import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.Item
+import com.kafka.ui.components.item.ReviewItem
 import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.item.SummaryMessage
 import com.kafka.ui.components.progress.InfiniteProgressBar
+import com.materialkolor.PaletteStyle
 import com.sarahang.playback.ui.color.DynamicTheme
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.more_by
 import kafka.ui.item.detail.generated.resources.or_read_a_summary
+import kafka.ui.item.detail.generated.resources.see_all_reviews
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
@@ -270,7 +277,28 @@ private fun VerticalLayout(
                     }
                 }
             }
+
+            Reviews()
         }
+    }
+}
+
+@Composable
+private fun Reviews() {
+    Column(
+        modifier = Modifier.padding(Dimens.Spacing24),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
+    ) {
+        ReviewItem()
+        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+        ReviewItem()
+
+        Text(
+            text = stringResource(Res.string.see_all_reviews),
+            modifier = Modifier.align(Alignment.End),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -281,7 +309,11 @@ private fun ItemDetailTheme(
     content: @Composable () -> Unit,
 ) {
     if (isDynamicThemeEnabled) {
-        DynamicTheme(model = model, useDarkTheme = LocalTheme.current.isDark()) {
+        DynamicTheme(
+            model = model,
+            useDarkTheme = LocalTheme.current.isDark(),
+            style = PaletteStyle.Neutral
+        ) {
             content()
         }
     } else {
