@@ -182,11 +182,25 @@ class EpubParser(
             it.absPath.endsWith(".ncx", ignoreCase = true)
         }
 
-        // Find the nested navPoints in the table of contents (toc.ncx) file
-        val tocNavPoints = tocFileItem?.let { navItem ->
-            val tocFile = files[navItem.absPath]
-            val tocDocument = tocFile?.let { parseXMLFile(it.data) }
-            findNestedNavPoints(tocDocument?.selectFirstTag("navMap"))
+        val tocXhtmlFileItem = manifestItems.values.firstOrNull {
+            it.absPath.endsWith("/toc.xhtml", ignoreCase = true)
+        }
+
+        // Find the nested navPoints in the table of contents
+        val tocNavPoints = when {
+            tocFileItem != null -> {
+                val tocFile = files[tocFileItem.absPath]
+                val tocDocument = tocFile?.let { parseXMLFile(it.data) }
+                findNestedNavPoints(tocDocument?.selectFirstTag("navMap"))
+            }
+            tocXhtmlFileItem != null -> {
+                val tocFile = files[tocXhtmlFileItem.absPath]
+                val tocDocument = tocFile?.let { parseXMLFile(it.data) }
+                val navElement = tocDocument?.selectFirst("nav#toc")
+                    ?: tocDocument?.selectFirst("nav[epub:type=toc]")
+                findNestedNavPointsFromXhtml(navElement?.selectFirst("ol"))
+            }
+            else -> emptyList()
         }
 
         // Determine parsing method based on ToC presence and validity
@@ -205,7 +219,7 @@ class EpubParser(
             author = metadataAuthor,
             language = metadataLanguage,
             chapters = chapters,
-            navPoints = tocNavPoints ?: emptyList(),
+            navPoints = tocNavPoints,
             coverImage = coverImage,
             images = images
         )
@@ -409,6 +423,32 @@ class EpubParser(
                 children = findNestedNavPoints(navPointElement)
             )
             navPoints.add(navPoint)
+        }
+
+        return navPoints
+    }
+
+    /**
+     * Find all the nested navPoints in the XHTML table of contents (ToC) file.
+     * This method parses the XHTML TOC format where <li> elements represent NavPoints
+     * and nested <ol> tags define the structure.
+     *
+     * @param element The root element containing the TOC structure.
+     * @return The list of nested navPoints.
+     */
+    private fun findNestedNavPointsFromXhtml(element: Element?): List<NavPoint> {
+        val navPoints = mutableListOf<NavPoint>()
+
+        element?.selectChildTag("li")?.forEach { liElement ->
+            val anchor = liElement.selectFirst("a")
+            if (anchor != null) {
+                val navPoint = NavPoint(
+                    title = anchor.text().trim(),
+                    src = anchor.getAttributeValue("href").orEmpty(),
+                    children = liElement.selectFirst("ol")?.let { findNestedNavPointsFromXhtml(it) } ?: emptyList()
+                )
+                navPoints.add(navPoint)
+            }
         }
 
         return navPoints
