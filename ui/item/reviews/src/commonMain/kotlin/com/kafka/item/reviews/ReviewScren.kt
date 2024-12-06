@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.data.entities.Review
 import com.kafka.navigation.LocalNavigator
 import com.kafka.ui.components.ProvideScaffoldPadding
@@ -55,8 +56,8 @@ private fun Reviews(reviews: List<Review>, loading: Boolean) {
             )
         }
 
-        if (loading) {
-            item {
+        item {
+            AnimatedVisibilityFade(loading) {
                 Box(modifier = Modifier.fillMaxSize().padding(Dimens.Spacing24)) {
                     InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
