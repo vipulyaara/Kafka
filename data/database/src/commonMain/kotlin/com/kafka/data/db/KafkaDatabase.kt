@@ -12,6 +12,7 @@ import com.kafka.data.dao.ItemDetailDao
 import com.kafka.data.dao.RecentAudioDao
 import com.kafka.data.dao.RecentSearchDao
 import com.kafka.data.dao.RecentTextDao
+import com.kafka.data.dao.ReviewDao
 import com.kafka.data.entities.Download
 import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
@@ -19,6 +20,7 @@ import com.kafka.data.entities.ItemDetail
 import com.kafka.data.entities.RecentAudioItem
 import com.kafka.data.entities.RecentSearch
 import com.kafka.data.entities.RecentTextItem
+import com.kafka.data.entities.Review
 
 interface KafkaDatabase {
     fun itemDetailDao(): ItemDetailDao
@@ -28,6 +30,7 @@ interface KafkaDatabase {
     fun recentTextDao(): RecentTextDao
     fun recentAudioDao(): RecentAudioDao
     fun downloadDao(): DownloadDao
+    fun reviewDao(): ReviewDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")
@@ -44,6 +47,7 @@ expect object KafkaDatabaseConstructor : RoomDatabaseConstructor<KafkaRoomDataba
         RecentSearch::class,
         RecentTextItem::class,
         RecentAudioItem::class,
+        Review::class
     ],
     version = 1,
     exportSchema = true,

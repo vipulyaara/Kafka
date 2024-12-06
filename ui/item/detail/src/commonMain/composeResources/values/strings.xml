@@ -17,5 +17,5 @@
     <string name="audio_access_restricted_message">This item is available with audio samples only</string>
     <string name="borrow">Borrow/Read</string>
     <string name="or_read_a_summary">Or Read a Summary</string>
-    <string name="see_all_reviews">"See all reviews"</string>
+    <string name="see_all_reviews">See all reviews</string>
 </resources>

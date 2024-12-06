@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9ea29603a0b9edd3ba06caee1a6a4f7c",
+    "identityHash": "3f4cca6b748d3e63a651d236987cb8e8",
     "entities": [
       {
         "tableName": "ItemDetail",
@@ -412,11 +412,64 @@
             "albumId"
           ]
         }
+      },
+      {
+        "tableName": "review",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `chapter_id` TEXT, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
+        "fields": [
+          {
+            "fieldPath": "reviewId",
+            "columnName": "review_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chapterId",
+            "columnName": "chapter_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "itemId",
+            "columnName": "item_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "review_id"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9ea29603a0b9edd3ba06caee1a6a4f7c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f4cca6b748d3e63a651d236987cb8e8')"
     ]
   }
 }

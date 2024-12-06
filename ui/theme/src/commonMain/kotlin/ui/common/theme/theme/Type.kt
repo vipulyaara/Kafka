@@ -37,4 +37,4 @@ val Laila: FontFamily
     )
 
 val DefaultFont
-    @Composable get() = FontFamily.Default
+    @Composable get() = Inter

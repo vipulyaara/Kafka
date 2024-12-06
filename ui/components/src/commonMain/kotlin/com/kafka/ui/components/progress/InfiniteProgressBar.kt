@@ -29,7 +29,7 @@ import ui.common.theme.theme.Dimens
 @Composable
 fun InfiniteProgressBar(modifier: Modifier = Modifier, show: Boolean = true) {
     AnimatedVisibilityFade(visible = show, modifier = modifier) {
-        CircularDualIndicator(modifier = Modifier.padding(Dimens.Gutter).size(Dimens.Spacing32))
+        CircularDualIndicator(modifier = Modifier.padding(Dimens.Gutter).size(Dimens.Spacing28))
     }
 }
 

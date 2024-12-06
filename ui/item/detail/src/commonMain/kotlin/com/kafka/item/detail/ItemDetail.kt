@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,15 +36,18 @@ import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
 import com.kafka.data.entities.Item
+import com.kafka.data.entities.Review
 import com.kafka.item.detail.description.DescriptionText
 import com.kafka.item.detail.description.ItemDescriptionAndCover
 import com.kafka.navigation.LocalNavigator
+import com.kafka.navigation.graph.Screen
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.item.ReviewItem
 import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.item.SummaryMessage
+import com.kafka.ui.components.material.TextButton
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.materialkolor.PaletteStyle
 import com.sarahang.playback.ui.color.DynamicTheme
@@ -278,26 +280,33 @@ private fun VerticalLayout(
                 }
             }
 
-            Reviews()
+            if (state.reviews.isNotEmpty()) {
+                Reviews(reviews = state.reviews)
+            }
         }
     }
 }
 
 @Composable
-private fun Reviews() {
+private fun Reviews(reviews: List<Review>) {
+    val navigator = LocalNavigator.current
+    val itemId = reviews.first().itemId
+
     Column(
         modifier = Modifier.padding(Dimens.Spacing24),
         verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
     ) {
-        ReviewItem()
-        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
-        ReviewItem()
+        reviews.forEachIndexed { index, review ->
+            ReviewItem(review)
+            if (index != reviews.lastIndex) {
+                HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+            }
+        }
 
-        Text(
+        TextButton(
             text = stringResource(Res.string.see_all_reviews),
             modifier = Modifier.align(Alignment.End),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.primary
+            onClick = { navigator.navigate(Screen.Reviews(itemId)) }
         )
     }
 }

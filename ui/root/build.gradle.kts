@@ -24,6 +24,7 @@ kotlin {
                 implementation(projects.ui.components)
                 implementation(projects.ui.homepage)
                 implementation(projects.ui.item.detail)
+                implementation(projects.ui.item.reviews)
                 implementation(projects.ui.library)
                 implementation(projects.uiPlayback)
                 implementation(projects.ui.profile)

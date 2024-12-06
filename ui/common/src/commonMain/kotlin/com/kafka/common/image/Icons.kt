@@ -32,7 +32,6 @@ import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.BrandBooking
-import compose.icons.tablericons.Calendar
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
@@ -62,8 +61,6 @@ import compose.icons.tablericons.Plus
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Settings
 import compose.icons.tablericons.Share
-import compose.icons.tablericons.StarHalf
-import compose.icons.tablericons.StarOff
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.Umbrella
@@ -134,7 +131,5 @@ object Icons {
     val Upload = TablerIcons.Upload
     val System = TablerIcons.Adjustments
     val Edit = TablerIcons.Edit
-    val Calendar = TablerIcons.Calendar
     val Star = FontAwesomeIcons.Solid.Star
-    val StarHalf = TablerIcons.StarHalf
 }

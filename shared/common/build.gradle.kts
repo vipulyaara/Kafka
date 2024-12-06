@@ -71,6 +71,7 @@ kotlin {
                 api(projects.ui.components)
                 api(projects.ui.homepage)
                 api(projects.ui.item.detail)
+                api(projects.ui.item.reviews)
                 api(projects.ui.library)
                 api(projects.uiPlayback)
                 api(projects.ui.profile)

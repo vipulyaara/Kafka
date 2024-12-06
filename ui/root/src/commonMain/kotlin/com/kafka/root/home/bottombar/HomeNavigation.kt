@@ -56,7 +56,7 @@ import com.kafka.navigation.graph.RootScreen
 import com.kafka.navigation.graph.Screen
 import com.kafka.navigation.graph.navigationRoute
 import com.kafka.navigation.selectRootScreen
-import com.kafka.root.home.AppNavigation
+import com.kafka.root.home.navigation.AppNavigation
 import com.kafka.root.playback.MiniPlayer
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.HazeScaffold
