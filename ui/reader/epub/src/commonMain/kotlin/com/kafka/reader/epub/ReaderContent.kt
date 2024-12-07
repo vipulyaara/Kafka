@@ -33,6 +33,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.kafka.base.debug
 import com.kafka.common.image.Icons
 import com.kafka.common.plus
 import com.kafka.reader.epub.components.CodeBlockElement
@@ -140,6 +141,10 @@ fun ReaderContent(
                         }
                     },
             ) {
+                debug { "Chapter: ${chapter.title} has ${chapter.contentElements.size} elements" }
+                chapter.contentElements.forEach {
+                    debug { "Element: $it" }
+                }
                 items(chapter.contentElements) { element ->
                     SelectionContainer(
                         bookId = readerState.itemId,

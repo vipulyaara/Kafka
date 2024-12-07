@@ -10,9 +10,11 @@ import kafka.reader.core.models.enums.ColumnAlignment
 import kafka.reader.core.models.enums.TableStyle
 import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
+import kafka.reader.core.parser.StylesheetParser
 
 class DocumentContentParser(
-    private val imageParser: ((Node) -> ContentElement.Image)? = null
+    private val imageParser: ((Node) -> ContentElement.Image)? = null,
+    private val stylesheetParser: StylesheetParser? = null
 ) {
     private var currentPath = mutableListOf<Int>()
 
@@ -24,13 +26,41 @@ class DocumentContentParser(
         else -> emptyList()
     }
 
+    private fun collectInheritedStyles(element: Element): String {
+        val styles = mutableMapOf<String, String>()
+        
+        var currentElement: Element? = element
+        while (currentElement != null) {
+            val elementStyles = stylesheetParser?.getApplicableStyles(currentElement)
+                ?: emptyMap()
+            
+            elementStyles.forEach { (property, value) ->
+                styles.put(property, value)
+            }
+            
+            currentElement = currentElement.parent()
+        }
+        
+        return styles.entries.joinToString(";") { (property, value) ->
+            "$property:$value"
+        }
+    }
+
     private fun parseTextNode(node: TextNode): List<ContentElement> {
         val text = node.text().trim()
         return if (text.isNotEmpty()) {
+            val parentElement = node.parent() as? Element
+            if (parentElement != null) {
+                val inheritedStyles = collectInheritedStyles(parentElement)
+                if (inheritedStyles.isNotEmpty()) {
+                    val currentStyle = parentElement.attr("style")
+                    parentElement.attr("style", if (currentStyle.isEmpty()) inheritedStyles else "$inheritedStyles;$currentStyle")
+                }
+            }
             listOf(
                 ElementStyleParser.parseTextWithStyle(
                     text,
-                    node.parent() as? Element,
+                    parentElement,
                     elementPath = currentPath.toList()
                 )
             )
@@ -40,6 +70,11 @@ class DocumentContentParser(
     private fun parseElement(element: Element): List<ContentElement> {
         val currentIndex = currentPath.size
         currentPath.add(currentIndex)
+
+        val inheritedStyles = collectInheritedStyles(element)
+        if (inheritedStyles.isNotEmpty()) {
+            element.attr("style", inheritedStyles)
+        }
 
         val result = when {
             element.isStructuralElement() -> parseStructuralElement(element)

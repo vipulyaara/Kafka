@@ -1,6 +1,7 @@
 package kafka.reader.core.parser
 
 import com.fleeksoft.ksoup.nodes.Element
+import com.kafka.base.debug
 import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
 
@@ -57,6 +58,10 @@ internal object StylePropertiesParser {
 
         // Parse inline styles
         parseInlineStyles(element.attr("style"), styles)
+
+        if (styles.contains(TextStyle.SmallCaps)) {
+            debug { "Small caps found for element: $element" }
+        }
 
         return styles
     }

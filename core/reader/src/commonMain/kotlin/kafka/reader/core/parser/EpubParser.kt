@@ -177,6 +177,10 @@ class EpubParser(
         val hrefRootPath = document.opfFilePath.toPath().parent ?: "".toPath()
         val manifestItems = getManifestItems(manifest = document.manifest, hrefRootPath)
 
+        // Find and load CSS files
+        val cssFiles = findCssFiles(document.manifest as Element, hrefRootPath)
+        val cssContent = loadCssContent(cssFiles, files)
+
         // Find the table of contents (toc.ncx) file
         val tocFileItem = manifestItems.values.firstOrNull {
             it.absPath.endsWith(".ncx", ignoreCase = true)
@@ -204,7 +208,7 @@ class EpubParser(
         }
 
         // Determine parsing method based on ToC presence and validity
-        val chapters = parseUsingSpine(document.spine, manifestItems, files)
+        val chapters = parseUsingSpine(document.spine, manifestItems, files, cssContent)
 
         debug { "Parsing images" }
         val images = parseImages(manifestItems, files)
@@ -506,93 +510,6 @@ class EpubParser(
     }
 
     /**
-     * Parse the EPUB file using the table of contents (ToC) file.
-     * This method is called from [parseAndCreateEbook].
-     *
-     * @param tocNavPoints The list of navPoints in the ToC file.
-     * @param files The EPUB files.
-     * @param hrefRootPath The root path of the href attribute.
-     * @param document The EPUB document.
-     * @param manifestItems The manifest items.
-     * @return The list of parsed chapters.
-     */
-    private fun parseUsingTocFile(
-        tocNavPoints: List<Pair<Element, Int>>,
-        files: Map<String, EpubFile>,
-        hrefRootPath: Path,
-        document: EpubDocument,
-        manifestItems: Map<String, EpubManifestItem>
-    ): List<EpubChapter> {
-        // Parse each chapter entry
-        val chapters = tocNavPoints.flatMapIndexed { index, (navPoint, level) ->
-            val title =
-                navPoint.selectFirstChildTag("navLabel")?.selectFirstChildTag("text")?.text()
-            val chapterSrc = navPoint.selectFirstChildTag("content")?.getAttributeValue("src")
-                ?.decodeURL()?.getCanonicalPath(hrefRootPath.toString())
-
-            if (chapterSrc != null) {
-                // Handle fragment IDs
-                val (fragmentPath, fragmentId) = if ('#' in chapterSrc) {
-                    val (path, id) = chapterSrc.split("#", limit = 2)
-                    path to id
-                } else {
-                    chapterSrc to null
-                }
-
-                val nextNavPoint = navPoint.nextSibling()
-                val nextFragmentId = nextNavPoint?.nextSibling()?.selectFirstChildTag("content")
-                    ?.getAttributeValue("src")
-                    ?.let { src -> src.takeIf { '#' in it }?.substringAfterLast('#') }
-
-                val chapterFile = files[fragmentPath]
-                val parser = chapterFile?.let {
-                    EpubXMLFileParser(
-                        fileAbsolutePath = it.absPath,
-                        data = it.data,
-                        zipFile = files,
-                        fragmentId = fragmentId,
-                        nextFragmentId = nextFragmentId
-                    )
-                }
-
-                val contentElements = parser?.parseAsDocument()
-                if (!contentElements.isNullOrEmpty()) {
-                    listOf(
-                        EpubChapter(
-                            chapterId = generateStableChapterId(
-                                absPath = chapterSrc,
-                                title = title ?: "Chapter $index",
-                                contentElements = contentElements,
-                                navPoint = navPoint
-                            ),
-                            absPath = chapterSrc,
-                            title = title?.takeIf { it.isNotEmpty() } ?: "Chapter $index",
-                            level = level,
-                            contentElements = contentElements
-                        )
-                    )
-                } else {
-                    emptyList()
-                }
-            } else {
-                emptyList()
-            }
-        }.filter { it.contentElements.isNotEmpty() }
-
-        // Fallback to spine-based parsing if ToC is unreliable
-        val emptyChapterThreshold = 0.25
-        val totalChapters = tocNavPoints.size
-        val emptyChapters = totalChapters - chapters.size
-
-        if (emptyChapters.toDouble() / totalChapters >= emptyChapterThreshold) {
-            debug { "25% or more chapters have empty bodies; switching to spine-based parsing" }
-            return parseUsingSpine(document.spine, manifestItems, files).toList()
-        }
-
-        return chapters
-    }
-
-    /**
      * Parse the EPUB file using the spine.
      * This method is called from [parseAndCreateEbook].
      *
@@ -605,6 +522,7 @@ class EpubParser(
         spine: Node,
         manifestItems: Map<String, EpubManifestItem>,
         files: Map<String, EpubFile>,
+        cssContent: String,
     ): List<EpubChapter> {
         var chapterIndex = 0
         val chapterExtensions = listOf("xhtml", "xml", "html", "htm").map { ".$it" }
@@ -626,6 +544,8 @@ class EpubParser(
             emptyMap()
         }
 
+        val stylesheetParser = StylesheetParser(cssContent)
+
         return spine.selectChildTag("itemref")
             .ifEmpty { spine.selectChildTag("opf:itemref") }
             .mapNotNull { manifestItems[it.attr("idref")] }
@@ -639,7 +559,8 @@ class EpubParser(
                     val parser = EpubXMLFileParser(
                         fileAbsolutePath = file.absPath,
                         data = file.data,
-                        zipFile = files
+                        zipFile = files,
+                        stylesheetParser = stylesheetParser
                     )
 
                     val contentElements = parser.parseAsDocument()
@@ -740,5 +661,24 @@ class EpubParser(
             ?: document.selectFirst("h1[epub:type=title]")
             ?: document.selectFirst("h3[epub:type=title]")
             ?: document.selectFirst("h4[epub:type=title]")
+    }
+
+    private fun findCssFiles(manifest: Element, hrefRootPath: Path): List<String> {
+        return manifest.select("item")
+            .filter { it.attr("media-type") == "text/css" }
+            .map { it.attr("href").decodeURL().getCanonicalPath(hrefRootPath.toString()) }
+            .filter { it.endsWith(".css", ignoreCase = true) }
+    }
+
+    private fun loadCssContent(cssFiles: List<String>, files: Map<String, EpubFile>): String {
+        debug { "Loading CSS content: ${cssFiles.joinToString(", ")}" }
+        return cssFiles.joinToString("\n") { cssPath ->
+            try {
+                files[cssPath]?.let { it.data.decodeToString() } ?: ""
+            } catch (e: Exception) {
+                println("Failed to read CSS file: $cssPath")
+                ""
+            }
+        }
     }
 }

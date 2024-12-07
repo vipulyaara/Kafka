@@ -35,12 +35,14 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kafka.base.debug
 import com.kafka.common.toColor
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.font
 import com.kafka.reader.epub.settings.theme
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.InlineElement
+import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
 import kafka.reader.core.models.getEffectiveStyle
 import ui.common.theme.theme.Dimens
@@ -83,8 +85,15 @@ fun TextElement(
             .padding(
                 vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08,
             ),
-        style = textStyle.copy(hyphens = Hyphens.Auto),
-        fontFamily = settings.font.fontFamily,
+        style = textStyle.copy(
+            hyphens = Hyphens.Auto,
+            fontFeatureSettings = element.styles
+                .takeIf { TextStyle.SmallCaps in it }
+                ?.also { debug { "Annotated string: Small caps found for element: $element" } }
+                ?.let { "smcp" }
+        ),
+        // TODO - Find a better way to handle font family
+        fontFamily = if (TextStyle.SmallCaps !in element.styles) settings.font.fontFamily else null,
         fontWeight = when {
             TextStyle.Bold in element.styles -> FontWeight.Bold
             style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
@@ -103,7 +112,7 @@ fun TextElement(
             element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
             else -> settings.lineHeight
         },
-        textAlign = if (isHeading) {
+        textAlign = if (isHeading || element.alignment == TextAlignment.CENTER) {
             TextAlign.Center
         } else {
             settings.textAlignment.asAlignment()
@@ -162,6 +171,9 @@ private fun buildTextAnnotatedString(
                 }
 
                 is InlineElement.Style -> {
+                    if (inline.styles.contains(TextStyle.SmallCaps)) {
+                        debug { "Annotated string: Small caps found for element: $element" }
+                    }
                     withStyle(
                         SpanStyle(
                             fontWeight = if (TextStyle.Bold in inline.styles) FontWeight.Bold else null,
@@ -183,6 +195,12 @@ private fun buildTextAnnotatedString(
                             fontSize = when {
                                 TextStyle.SmallCaps in inline.styles -> 12.sp
                                 else -> 14.sp
+                            },
+                            fontFeatureSettings = when {
+                                TextStyle.SmallCaps in inline.styles -> "smcp".also {
+                                    debug { "Small caps applied" }
+                                }
+                                else -> null
                             },
                             background = when {
                                 TextStyle.Highlight in inline.styles -> Color(0xFFFFEB3B) // Default yellow highlight

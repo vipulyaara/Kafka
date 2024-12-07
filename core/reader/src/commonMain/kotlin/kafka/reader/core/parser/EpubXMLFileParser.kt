@@ -39,12 +39,13 @@ class EpubXMLFileParser(
     val data: ByteArray,
     private val zipFile: Map<String, EpubParser.EpubFile>,
     private val fragmentId: String? = null,
-    private val nextFragmentId: String? = null
+    private val nextFragmentId: String? = null,
+    stylesheetParser: StylesheetParser
 ) {
     // Make document accessible throughout the class
     val document: Document = Ksoup.parse(data.decodeToString(), "")
     private val fileParentFolder: Path = fileAbsolutePath.toPath().parent ?: "".toPath()
-    private val contentParser = DocumentContentParser(::parseImageElement)
+    private val contentParser = DocumentContentParser(::parseImageElement, stylesheetParser)
 
     /**
      * Parses the input data as an XML document and returns content elements.
