@@ -292,14 +292,17 @@ private fun Reviews(reviews: List<Review>) {
     val navigator = LocalNavigator.current
     val itemId = reviews.first().itemId
 
-    Column(
-        modifier = Modifier.padding(Dimens.Spacing24),
-        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
-    ) {
-        reviews.forEachIndexed { index, review ->
-            ReviewItem(review)
-            if (index != reviews.lastIndex) {
-                HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+    Column(modifier = Modifier.padding(Dimens.Spacing24)) {
+        Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)) {
+            reviews.forEachIndexed { index, review ->
+                ReviewItem(
+                    review = review,
+                    modifier = Modifier
+                        .simpleClickable { navigator.navigate(Screen.Reviews(review.itemId)) })
+
+                if (index != reviews.lastIndex) {
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+                }
             }
         }
 

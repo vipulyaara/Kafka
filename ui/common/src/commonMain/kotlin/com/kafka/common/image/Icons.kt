@@ -14,6 +14,8 @@ import compose.icons.feathericons.AlignJustify
 import compose.icons.feathericons.AlignLeft
 import compose.icons.feathericons.AlignRight
 import compose.icons.feathericons.Search
+import compose.icons.feathericons.ThumbsDown
+import compose.icons.feathericons.ThumbsUp
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
@@ -32,6 +34,8 @@ import compose.icons.tablericons.Bell
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.BrandBooking
+import compose.icons.tablericons.ChevronDown
+import compose.icons.tablericons.ChevronRight
 import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
@@ -132,4 +136,8 @@ object Icons {
     val System = TablerIcons.Adjustments
     val Edit = TablerIcons.Edit
     val Star = FontAwesomeIcons.Solid.Star
+    val ThumbUp = FeatherIcons.ThumbsUp
+    val ThumbDown = FeatherIcons.ThumbsDown
+    val ChevronRight = TablerIcons.ChevronRight
+    val ChevronDown = TablerIcons.ChevronDown
 }

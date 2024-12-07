@@ -2,10 +2,12 @@ package com.kafka.ui.components.material
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -101,12 +103,14 @@ fun TextButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     color: Color = MaterialTheme.colorScheme.primary,
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
     onClick: () -> Unit,
 ) {
     TextButton(
         modifier = modifier,
         enabled = enabled,
         shape = RoundedCornerShape(Dimens.Spacing08),
+        contentPadding = contentPadding,
         onClick = onClick
     ) {
         Text(

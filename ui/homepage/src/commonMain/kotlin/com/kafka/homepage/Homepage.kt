@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kafka.common.adaptive.WindowWidth
 import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.gridColumns
@@ -128,7 +129,7 @@ private fun HomepageFeedItems(
     shareApp: () -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = gridColumns(),
+        columns = gridColumns(fixedColumns = 2, adaptiveWidth = WindowWidth.Small),
         modifier = Modifier.testTagUi("homepage_feed_items"),
         contentPadding = scaffoldPadding()
     ) {

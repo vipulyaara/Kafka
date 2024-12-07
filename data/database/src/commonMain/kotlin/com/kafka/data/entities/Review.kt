@@ -22,9 +22,15 @@ data class Review(
     @SerialName("text") val text: String,
     @ColumnInfo(name = "rating")
     @SerialName("rating") val rating: Float,
+    @ColumnInfo(name = "likes")
+    @SerialName("likes") val likes: Int,
+    @ColumnInfo(name = "dislikes")
+    @SerialName("dislikes") val dislikes: Int,
     @ColumnInfo(name = "created_at")
     @SerialName("created_at") val createdAt: Instant
 ): BaseEntity
+
+enum class Reaction { Like, Dislike }
 
 data class Comment(
     val commentId: String,

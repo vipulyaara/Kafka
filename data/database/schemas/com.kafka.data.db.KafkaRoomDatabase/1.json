@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3f4cca6b748d3e63a651d236987cb8e8",
+    "identityHash": "6e5f5be799df8bfb41428c4b265ec546",
     "entities": [
       {
         "tableName": "ItemDetail",
@@ -415,7 +415,7 @@
       },
       {
         "tableName": "review",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `chapter_id` TEXT, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `chapter_id` TEXT, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `likes` INTEGER NOT NULL, `dislikes` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
         "fields": [
           {
             "fieldPath": "reviewId",
@@ -453,6 +453,18 @@
             "notNull": true
           },
           {
+            "fieldPath": "likes",
+            "columnName": "likes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dislikes",
+            "columnName": "dislikes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "createdAt",
             "columnName": "created_at",
             "affinity": "INTEGER",
@@ -469,7 +481,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f4cca6b748d3e63a651d236987cb8e8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e5f5be799df8bfb41428c4b265ec546')"
     ]
   }
 }
