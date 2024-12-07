@@ -35,6 +35,11 @@ import kafka.ui.reader.epub.generated.resources.chapters
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 
 @Composable
 fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (String) -> Unit) {
@@ -112,32 +117,56 @@ private fun NavPointHeading(
     onNavPointClicked: (String) -> Unit = {}
 ) {
     val indentation = with(LocalDensity.current) { Dimens.Spacing12.toPx() }
+    var isExpanded by remember { mutableStateOf(true) }
+    val hasChildren = navPoint.children.isNotEmpty()
 
     Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable { onNavPointClicked(navPoint.src) },
+        modifier = modifier.fillMaxSize(),
         color = Color.Transparent
     ) {
-        Text(
-            text = navPoint.title,
-            style = MaterialTheme.typography.titleMedium,
+        Row(
             modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onNavPointClicked(navPoint.src) }
                 .padding(
                     start = Dimens.Gutter + (level * indentation).dp,
                     end = Dimens.Gutter,
                     top = Dimens.Spacing16,
                     bottom = Dimens.Spacing16
-                )
-        )
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (hasChildren) {
+                IconButton(
+                    onClick = { isExpanded = !isExpanded },
+                    modifier = Modifier.padding(end = 4.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowRight,
+                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            } else {
+                // Add spacing equivalent to the icon button for consistent indentation
+                Spacer(modifier = Modifier.padding(start = 40.dp))
+            }
+            
+            Text(
+                text = navPoint.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
     }
 
-    navPoint.children.forEach { child ->
-        NavPointHeading(
-            navPoint = child,
-            level = level + 1,
-            onNavPointClicked = onNavPointClicked
-        )
+    if (isExpanded) {
+        navPoint.children.forEach { child ->
+            NavPointHeading(
+                navPoint = child,
+                level = level + 1,
+                onNavPointClicked = onNavPointClicked
+            )
+        }
     }
 }
 
