@@ -2,7 +2,9 @@
 
 package com.kafka.reader.epub.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.image.Icons
 import com.kafka.ui.components.material.ModalBottomSheet
 import com.kafka.ui.components.search.SearchWidget
 import kafka.reader.core.models.NavPoint
@@ -35,15 +41,10 @@ import kafka.ui.reader.epub.generated.resources.chapters
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 
 @Composable
 fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (String) -> Unit) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
@@ -62,7 +63,11 @@ fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (
         sheetState = sheetState,
         onDismissRequest = tocState::hide
     ) {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize()
+        ) {
             item { Label(filteredNavPoints.size) }
 
             item {
@@ -111,13 +116,13 @@ private fun Label(chapterSize: Int, modifier: Modifier = Modifier) {
 
 @Composable
 private fun NavPointHeading(
-    modifier: Modifier = Modifier,
     navPoint: NavPoint,
     level: Int,
+    modifier: Modifier = Modifier,
     onNavPointClicked: (String) -> Unit = {}
 ) {
     val indentation = with(LocalDensity.current) { Dimens.Spacing12.toPx() }
-    var isExpanded by remember { mutableStateOf(true) }
+    var isExpanded by remember { mutableStateOf(false) }
     val hasChildren = navPoint.children.isNotEmpty()
 
     Surface(
@@ -128,11 +133,10 @@ private fun NavPointHeading(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onNavPointClicked(navPoint.src) }
+                .padding(vertical = if (hasChildren) Dimens.Spacing04 else Dimens.Spacing16)
                 .padding(
                     start = Dimens.Gutter + (level * indentation).dp,
-                    end = Dimens.Gutter,
-                    top = Dimens.Spacing16,
-                    bottom = Dimens.Spacing16
+                    end = Dimens.Gutter
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -142,7 +146,7 @@ private fun NavPointHeading(
                     modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Icon(
-                        imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowRight,
+                        imageVector = if (isExpanded) Icons.ChevronRight else Icons.ChevronDown,
                         contentDescription = if (isExpanded) "Collapse" else "Expand",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
@@ -151,7 +155,7 @@ private fun NavPointHeading(
                 // Add spacing equivalent to the icon button for consistent indentation
                 Spacer(modifier = Modifier.padding(start = 40.dp))
             }
-            
+
             Text(
                 text = navPoint.title,
                 style = MaterialTheme.typography.titleMedium
@@ -159,13 +163,15 @@ private fun NavPointHeading(
         }
     }
 
-    if (isExpanded) {
-        navPoint.children.forEach { child ->
-            NavPointHeading(
-                navPoint = child,
-                level = level + 1,
-                onNavPointClicked = onNavPointClicked
-            )
+    AnimatedVisibilityFade(isExpanded) {
+        Column {
+            navPoint.children.forEach { child ->
+                NavPointHeading(
+                    navPoint = child,
+                    level = level + 1,
+                    onNavPointClicked = onNavPointClicked
+                )
+            }
         }
     }
 }
