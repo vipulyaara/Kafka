@@ -91,7 +91,7 @@ fun LoginScreen(authViewModel: AuthViewModel) {
 private fun Login(
     isGoogleLoginEnabled: Boolean,
     login: (email: String, password: String) -> Unit,
-    signup: (email: String, password: String) -> Unit,
+    signup: (email: String, password: String, name: String) -> Unit,
     forgotPassword: (email: String) -> Unit,
     signInWithGoogle: () -> Unit,
     modifier: Modifier = Modifier,
@@ -118,13 +118,8 @@ private fun Login(
             loginState = loginState,
             modifier = Modifier,
             onFocusChanged = onFocusChanged,
-            login = { email, password ->
-                if (loginState.isLogin) {
-                    login(email, password)
-                } else {
-                    signup(email, password)
-                }
-            },
+            login = login,
+            signUp = signup,
             forgotPassword = { email -> forgotPassword(email) }
         )
 

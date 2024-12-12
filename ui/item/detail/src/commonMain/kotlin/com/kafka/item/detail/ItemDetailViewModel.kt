@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
+import com.kafka.base.combine
 import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.extensions.getActivity
@@ -24,6 +25,7 @@ import com.kafka.domain.interactors.reviews.UpdateReviews
 import com.kafka.domain.observers.ObserveCreatorItems
 import com.kafka.domain.observers.ObserveItem
 import com.kafka.domain.observers.ObserveItemDetail
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.domain.observers.library.ObserveDefaultListStatus
 import com.kafka.domain.observers.reviews.ObserveReviews
 import com.kafka.navigation.Navigator
@@ -54,6 +56,7 @@ class ItemDetailViewModel(
     observeReviews: ObserveReviews,
     isResumableAudio: IsResumableAudio,
     getPrimaryFile: GetPrimaryFile,
+    observeUser: ObserveUser,
     @Assisted savedStateHandle: SavedStateHandle,
     private val updateItemDetail: UpdateItemDetail,
     private val observeCreatorItems: ObserveCreatorItems,
@@ -89,8 +92,9 @@ class ItemDetailViewModel(
             loadingStates.any { loading -> loading }
         },
         isResumableAudio.flow,
-        observeReviews.flow
-    ) { itemDetail, isFavorite, loading, isResumableAudio, reviews ->
+        observeReviews.flow,
+        observeUser.flow
+    ) { itemDetail, isFavorite, loading, isResumableAudio, reviews, user ->
         ItemDetailViewState(
             itemDetail = itemDetail,
             isFavorite = isFavorite,
@@ -100,6 +104,7 @@ class ItemDetailViewModel(
             isSummaryEnabled = remoteConfig.isSummaryEnabled(),
             shareEnabled = remoteConfig.isShareEnabled() && itemDetail != null,
             primaryFile = getPrimaryFile(itemId).getOrNull(),
+            isUserLoggedIn = user != null,
             reviews = reviews
         )
     }.stateInDefault(
@@ -110,6 +115,7 @@ class ItemDetailViewModel(
     init {
         observeItemDetail(ObserveItemDetail.Param(itemId))
         observeItem(itemId)
+        observeUser(ObserveUser.Params())
         observeDefaultListStatus(ObserveDefaultListStatus.Params(itemId))
         isResumableAudio(IsResumableAudio.Params(itemId))
         observeReviews(ObserveReviews.Params(itemId = itemId, limit = reviewsLimit))
@@ -219,6 +225,16 @@ class ItemDetailViewModel(
     fun openReportContent() {
         analytics.log { this.openReportContent(itemId) }
         navigator.navigate(Screen.ReportContent(itemId))
+    }
+
+    fun openWriteReview() {
+        if (state.value.isUserLoggedIn) {
+            analytics.log { this.openWriteReview(itemId) }
+            navigator.navigate(Screen.WriteReview(itemId))
+        } else {
+            analytics.log { this.openLogin("write_review") }
+            navigator.navigate(Screen.Login)
+        }
     }
 
     fun showAppRatingIfNeeded(context: Any?) {

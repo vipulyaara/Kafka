@@ -18,6 +18,7 @@ data class ItemDetailViewState(
     val isSummaryEnabled: Boolean = false,
     val shareEnabled: Boolean = false,
     val primaryFile: File? = null,
+    val isUserLoggedIn: Boolean = false,
     val reviews: List<Review> = listOf()
 ) {
     val hasSubjects

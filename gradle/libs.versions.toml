@@ -24,6 +24,7 @@ mixpanel = "8.0.1"
 purchase = "1.1.2+13.5.0"
 okhttp = "4.12.0"
 readium = "2.4.0"
+richeditor = "1.0.0-rc10"
 room = "2.7.0-alpha11"
 sqlite = "2.5.0-alpha11"
 serialization = "1.7.3"
@@ -107,13 +108,13 @@ compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 
-google-bom = "com.google.firebase:firebase-bom:33.6.0"
+google-bom = "com.google.firebase:firebase-bom:33.7.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
-google-admob = "com.google.android.gms:play-services-ads:23.5.0"
+google-admob = "com.google.android.gms:play-services-ads:23.6.0"
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
-google-playservices-auth = "com.google.android.gms:play-services-auth:21.2.0"
+google-playservices-auth = "com.google.android.gms:play-services-auth:21.3.0"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 
 google-credentials = "androidx.credentials:credentials:1.3.0"
@@ -198,6 +199,8 @@ mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mi
 readium-shared = { module = "org.readium.r2:r2-shared", version.ref = "readium" }
 readium-streamer = { module = "org.readium.r2:r2-streamer", version.ref = "readium" }
 readium-navigator = { module = "org.readium.r2:r2-navigator", version.ref = "readium" }
+
+richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 purchase-core = { module = "com.revenuecat.purchases:purchases-kmp-core", version.ref = "purchase" }
 purchase-datetime = { module = "com.revenuecat.purchases:purchases-kmp-datetime", version.ref = "purchase" }

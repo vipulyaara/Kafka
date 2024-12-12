@@ -53,7 +53,7 @@ class AccountRepository(private val auth: FirebaseAuth) {
         auth.signOut()
     }
 
-    suspend fun updateUser(name: String) {
-        currentUserOrNull!!.updateProfile(displayName = name)
+    suspend fun updateUser(name: String, photoUrl: String?) {
+        currentUserOrNull!!.updateProfile(displayName = name, photoUrl = photoUrl)
     }
 }

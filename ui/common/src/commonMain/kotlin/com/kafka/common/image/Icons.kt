@@ -40,6 +40,7 @@ import compose.icons.tablericons.CircleCheck
 import compose.icons.tablericons.CircleX
 import compose.icons.tablericons.Clock
 import compose.icons.tablericons.Copy
+import compose.icons.tablericons.Dots
 import compose.icons.tablericons.DotsVertical
 import compose.icons.tablericons.Download
 import compose.icons.tablericons.Edit
@@ -140,4 +141,5 @@ object Icons {
     val ThumbDown = FeatherIcons.ThumbsDown
     val ChevronRight = TablerIcons.ChevronRight
     val ChevronDown = TablerIcons.ChevronDown
+    val OverflowMenuHorizontal = TablerIcons.Dots
 }

@@ -23,6 +23,8 @@ kotlin {
 
                 implementation(libs.haze)
                 implementation(libs.haze.materials)
+
+                api(libs.richeditor)
             }
         }
 

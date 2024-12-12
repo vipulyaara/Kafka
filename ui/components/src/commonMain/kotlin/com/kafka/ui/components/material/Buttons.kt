@@ -29,13 +29,13 @@ fun FloatingButton(
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.inverseSurfaceDeep,
     onClickLabel: String? = null,
-    onClicked: () -> Unit,
+    onClick: () -> Unit,
 ) {
     Surface(
         modifier = modifier
             .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
             .background(containerColor)
-            .clickable(onClickLabel = onClickLabel) { onClicked() },
+            .clickable(onClickLabel = onClickLabel) { onClick() },
         shape = RoundedCornerShape(Dimens.Spacing04),
         color = containerColor,
     ) {

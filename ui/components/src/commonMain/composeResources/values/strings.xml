@@ -15,4 +15,6 @@
     <string name="search" translatable="false">Search...</string>
     <string name="recent_searches" translatable="false">Recent searches</string>
     <string name="cd_clear_text" translatable="false">Clear text</string>
+
+    <string name="write_a_review" translatable="false">Review a review</string>
 </resources>

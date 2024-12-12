@@ -64,7 +64,7 @@ fun ItemDetailActionsRow(
                     .weight(0.8f)
                     .fillMaxWidth(),
                 onClickLabel = ctaText,
-                onClicked = onPrimaryAction
+                onClick = onPrimaryAction
             )
         }
     }

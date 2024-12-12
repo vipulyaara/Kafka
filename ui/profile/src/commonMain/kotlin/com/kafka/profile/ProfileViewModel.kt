@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.ApplicationInfo
+import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage.Plain
@@ -101,9 +102,7 @@ class ProfileViewModel(
                     snackbarManager.addMessage(Plain("Logged out successfully"))
                     onLogout()
                 }
-                .onFailure {
-                    snackbarManager.addMessage(Plain("Failed to log out"))
-                }
+                .onException { snackbarManager.addMessage(Plain("Failed to log out")) }
         }
     }
 

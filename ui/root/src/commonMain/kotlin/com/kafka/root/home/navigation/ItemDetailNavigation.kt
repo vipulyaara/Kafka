@@ -17,6 +17,8 @@ import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.item.reviews.ReviewScreen
 import com.kafka.item.reviews.ReviewViewModel
+import com.kafka.item.reviews.write.WriteReviewScreen
+import com.kafka.item.reviews.write.WriteReviewViewModel
 import com.kafka.library.bookshelf.add.AddToBookshelf
 import com.kafka.library.bookshelf.add.AddToBookshelfViewModel
 import com.kafka.navigation.deeplink.Config
@@ -37,7 +39,8 @@ fun NavGraphBuilder.addItemDetailGroup(
     addReportContent: addReportContent,
     addEpubReader: addEpubReader,
     addSummary: addSummary,
-    addReviews: addReviews
+    addReviews: addReviews,
+    addWriteReview: addWriteReview
 ) {
     addItemDetail()
     addItemDescription()
@@ -46,6 +49,7 @@ fun NavGraphBuilder.addItemDetailGroup(
     addEpubReader()
     addSummary()
     addReviews()
+    addWriteReview()
 }
 
 typealias addItemDetail = NavGraphBuilder.() -> Unit
@@ -127,6 +131,16 @@ fun NavGraphBuilder.addReviews(viewModelFactory: (SavedStateHandle) -> ReviewVie
     composable<Screen.Reviews> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         ReviewScreen(viewModel)
+    }
+}
+
+typealias addWriteReview = NavGraphBuilder.() -> Unit
+
+@Inject
+fun NavGraphBuilder.addWriteReview(viewModelFactory: (SavedStateHandle) -> WriteReviewViewModel) {
+    composable<Screen.WriteReview> {
+        val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+        WriteReviewScreen(viewModel)
     }
 }
 

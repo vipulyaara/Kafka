@@ -114,6 +114,11 @@ sealed class Screen {
     ) : Screen()
 
     @Serializable
+    data class WriteReview(
+        @SerialName("itemId") val itemId: String
+    ) : Screen()
+
+    @Serializable
     data object Back : Screen()
 }
 

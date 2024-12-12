@@ -18,8 +18,8 @@ class SignUpUser(
 
     override suspend fun doWork(params: Params) {
         withContext(dispatchers.io) {
-            accountRepository.signUpOrLinkUser(params.email, params.password)
-            accountRepository.updateUser(params.name.orEmpty())
+            val result = accountRepository.signUpOrLinkUser(params.email, params.password)
+            accountRepository.updateUser(params.name, result?.user?.photoURL)
             analytics.log { signUp(params.name) }
 
             createDefaultBookshelves(Unit)
@@ -30,5 +30,5 @@ class SignUpUser(
         }
     }
 
-    data class Params(val email: String, val password: String, val name: String? = null)
+    data class Params(val email: String, val password: String, val name: String)
 }

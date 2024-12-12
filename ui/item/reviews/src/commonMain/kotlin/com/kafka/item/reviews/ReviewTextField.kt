@@ -3,7 +3,6 @@ package com.kafka.item.reviews
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,11 +28,7 @@ fun ReviewTextField(
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
-    Box(
-        modifier = Modifier
-            .padding(horizontal = Dimens.Spacing12)
-            .padding(top = Dimens.Spacing12)
-    ) {
+    Box(modifier = Modifier) {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()

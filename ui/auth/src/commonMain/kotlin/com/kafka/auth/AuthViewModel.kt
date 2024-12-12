@@ -94,7 +94,7 @@ class AuthViewModel(
         }
     }
 
-    fun signup(email: String, password: String) {
+    fun signup(email: String, password: String, name: String) {
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
@@ -104,7 +104,7 @@ class AuthViewModel(
                     snackbarManager.add(invalidPasswordMessage)
 
                 else -> {
-                    signUpUser(SignUpUser.Params(email, password))
+                    signUpUser(SignUpUser.Params(email, password, name))
                         .onSuccess { navigator.goBack() }
                         .onException { snackbarManager.add(it.message ?: signUpErrorMessage) }
                 }

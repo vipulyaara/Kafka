@@ -58,6 +58,7 @@ internal fun LoginWithEmail(
     loginState: LoginState,
     onFocusChanged: (FocusState) -> Unit,
     login: (String, String) -> Unit,
+    signUp: (String, String, String) -> Unit,
     forgotPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -69,6 +70,9 @@ internal fun LoginWithEmail(
         }
         var password by rememberSaveable(stateSaver = TextFieldValue.Saver) {
             mutableStateOf(TextFieldValue("9413613536"))
+        }
+        var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+            mutableStateOf(TextFieldValue("Vipul Kumar"))
         }
 
         val usernameAutofill = AutofillNode(
@@ -83,6 +87,18 @@ internal fun LoginWithEmail(
         val autofill = LocalAutofill.current
         LocalAutofillTree.current += usernameAutofill
         LocalAutofillTree.current += passwordAutofill
+
+        if (loginState == LoginState.Signup) {
+            LoginTextField(
+                modifier = Modifier,
+                loginTextField = LoginTextField.Name,
+                text = name,
+                onValueChange = { name = it },
+                onFocusChanged = onFocusChanged
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.Spacing12))
+        }
 
         LoginTextField(
             modifier = Modifier.autoFill(autofill, usernameAutofill),
@@ -215,6 +231,7 @@ internal enum class LoginTextField(
     val visualTransformation: VisualTransformation,
     val imeAction: ImeAction
 ) {
+    Name("Name", KeyboardType.Text, VisualTransformation.None, ImeAction.Next),
     Username("Email", KeyboardType.Email, VisualTransformation.None, ImeAction.Next),
     Password("Password", KeyboardType.Password, PasswordVisualTransformation(), ImeAction.Done)
 }

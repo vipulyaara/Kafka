@@ -44,9 +44,10 @@ import com.kafka.navigation.graph.Screen
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.Item
-import com.kafka.ui.components.item.ReviewItem
 import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.item.SummaryMessage
+import com.kafka.ui.components.item.review.ReviewItem
+import com.kafka.ui.components.item.review.WriteReviewButton
 import com.kafka.ui.components.material.TextButton
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import com.materialkolor.PaletteStyle
@@ -122,6 +123,7 @@ private fun ItemDetail(
         openSubject = viewModel::goToSubjectSubject,
         openItemDetail = viewModel::openItemDetail,
         openSummary = viewModel::openSummary,
+        openWriteReview = viewModel::openWriteReview,
         modifier = modifier,
     )
 }
@@ -138,6 +140,7 @@ private fun ItemDetail(
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
     openSummary: (String) -> Unit,
+    openWriteReview: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val useWideLayout = windowWidthSizeClass().useWideLayout()
@@ -156,7 +159,8 @@ private fun ItemDetail(
                         onPrimaryAction = onPrimaryAction,
                         toggleFavorite = toggleFavorite,
                         openSubject = openSubject,
-                        openSummary = openSummary
+                        openSummary = openSummary,
+                        writeReview = openWriteReview
                     )
                 }
             },
@@ -227,6 +231,7 @@ private fun VerticalLayout(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openSummary: (String) -> Unit,
+    writeReview: () -> Unit
 ) {
     Column {
         if (itemPlaceholder != null) {
@@ -280,37 +285,41 @@ private fun VerticalLayout(
                 }
             }
 
-            if (state.reviews.isNotEmpty()) {
-                Reviews(reviews = state.reviews)
-            }
+            Reviews(reviews = state.reviews, openWriteReview = writeReview)
         }
     }
 }
 
 @Composable
-private fun Reviews(reviews: List<Review>) {
+private fun Reviews(reviews: List<Review>, openWriteReview: () -> Unit) {
     val navigator = LocalNavigator.current
-    val itemId = reviews.first().itemId
 
     Column(modifier = Modifier.padding(Dimens.Spacing24)) {
-        Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)) {
-            reviews.forEachIndexed { index, review ->
-                ReviewItem(
-                    review = review,
-                    modifier = Modifier
-                        .simpleClickable { navigator.navigate(Screen.Reviews(review.itemId)) })
+        WriteReviewButton(modifier = Modifier.fillMaxWidth(), writeReview = openWriteReview)
 
-                if (index != reviews.lastIndex) {
-                    HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+        if (reviews.isNotEmpty()) {
+            val itemId = reviews.first().itemId
+            Spacer(Modifier.height(Dimens.Spacing24))
+
+            Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
+                reviews.forEachIndexed { index, review ->
+                    ReviewItem(
+                        review = review,
+                        modifier = Modifier
+                            .simpleClickable { navigator.navigate(Screen.Reviews(review.itemId)) })
+
+                    if (index != reviews.lastIndex) {
+                        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+                    }
                 }
             }
-        }
 
-        TextButton(
-            text = stringResource(Res.string.see_all_reviews),
-            modifier = Modifier.align(Alignment.End),
-            onClick = { navigator.navigate(Screen.Reviews(itemId)) }
-        )
+            TextButton(
+                text = stringResource(Res.string.see_all_reviews),
+                modifier = Modifier.align(Alignment.End),
+                onClick = { navigator.navigate(Screen.Reviews(itemId)) }
+            )
+        }
     }
 }
 

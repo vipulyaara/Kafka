@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="write_a_review" translatable="false">Write a review</string>
+    <string name="post" translatable="false">Post</string>
+    <string name="reviews" translatable="false">Reviews</string>
 </resources>

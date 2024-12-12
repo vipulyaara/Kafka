@@ -91,7 +91,9 @@ class EventRepository {
         "title" to title,
     )
 
-    fun openLogin() = "open_login" to mapOf<String, String>()
+    fun openLogin(source: String? = null) = "open_login" to mapOf(
+        "source" to source
+    )
 
     fun signUp(name: String?) = FirebaseAnalyticsEvents.SIGN_UP to mapOf(
         "name" to name,
@@ -154,6 +156,14 @@ class EventRepository {
 
     fun appMessageDismissed(id: String) = "app_message_dismissed" to mapOf(
         "id" to id
+    )
+
+    fun openWriteReview(itemId: String) = "open_write_review" to mapOf(
+        "item_id" to itemId
+    )
+
+    fun deleteReview(itemId: String) = "delete_review" to mapOf(
+        "item_id" to itemId
     )
 
     fun addToBookshelf(itemId: String, listId: String, title: String? = null) = "add_to_list" to mapOf(

@@ -12,4 +12,7 @@ abstract class ReviewDao : EntityDao<Review> {
 
     @Query("SELECT * FROM review WHERE item_id = :itemId ORDER BY created_at DESC LIMIT :limit")
     abstract fun observeReviews(itemId: String, limit: Int): Flow<List<Review>>
+
+    @Query("DELETE from review WHERE review_id = :reviewId")
+    abstract suspend fun delete(reviewId: String)
 }

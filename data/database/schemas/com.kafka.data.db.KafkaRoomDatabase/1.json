@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6e5f5be799df8bfb41428c4b265ec546",
+    "identityHash": "1357e11bada07c973f5cbfdff87f5923",
     "entities": [
       {
         "tableName": "ItemDetail",
@@ -415,18 +415,13 @@
       },
       {
         "tableName": "review",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `chapter_id` TEXT, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `likes` INTEGER NOT NULL, `dislikes` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `user_name` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `likes` INTEGER NOT NULL, `dislikes` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
         "fields": [
           {
             "fieldPath": "reviewId",
             "columnName": "review_id",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "chapterId",
-            "columnName": "chapter_id",
-            "affinity": "TEXT"
           },
           {
             "fieldPath": "itemId",
@@ -437,6 +432,12 @@
           {
             "fieldPath": "userId",
             "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -481,7 +482,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e5f5be799df8bfb41428c4b265ec546')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1357e11bada07c973f5cbfdff87f5923')"
     ]
   }
 }
