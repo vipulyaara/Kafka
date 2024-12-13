@@ -5,5 +5,6 @@ interface SecretsProvider {
     val openAiApiKey: String?
     val supabaseUrl: String
     val supabaseKey: String
+    val supabaseAdminKey: String
     val mixpanelToken: String?
 }

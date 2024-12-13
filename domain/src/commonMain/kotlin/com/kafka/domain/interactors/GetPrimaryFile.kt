@@ -13,12 +13,10 @@ class GetPrimaryFile(
     private val fileDao: FileDao,
 ) : Interactor<String, File?>() {
 
-    override suspend fun doWork(params: String): File {
+    override suspend fun doWork(params: String): File? {
         return withContext(dispatchers.io) {
             fileDao.getByItemId(params).run {
                 firstOrNull { it.extension == "epub" }
-                    ?: firstOrNull { it.extension == "pdf" }
-                    ?: first()
             }
         }
     }

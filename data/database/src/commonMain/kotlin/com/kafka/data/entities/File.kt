@@ -18,10 +18,12 @@ data class File(
     @SerialName("cover_image") val coverImage: String?,
     @SerialName("extension") val extension: String?,
     @SerialName("creators") val creators: List<String>,
+    @SerialName("readers") val readers: List<String> = emptyList(),
+    @SerialName("languages") val languages: List<String>,
     @SerialName("duration") val duration: Long? = null,
     @SerialName("format") val format: String,
     @SerialName("url") val url: String?,
-    val position: Int = 0
+    @SerialName("position") val position: Int = 0
 ) : BaseEntity {
     val name: String
         get() = title + "." + extension?.removePrefix(".")

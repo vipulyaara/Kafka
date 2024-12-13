@@ -73,6 +73,7 @@ class UploadBook(
                 mediaType = MediaType.Text,
                 coverImage = coverImageUrl,
                 creators = listOf(book.author),
+                languages = listOf(book.language),
                 extension = epubFile.extension,
                 format = "readable/${epubFile.extension}",
             )

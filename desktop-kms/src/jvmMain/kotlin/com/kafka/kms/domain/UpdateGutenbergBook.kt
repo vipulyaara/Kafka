@@ -136,7 +136,8 @@ class UpdateGutenbergBook(
             coverImage = null,
             creators = book.authors.map { it.name },
             position = 0,
-            duration = 0
+            duration = 0,
+            languages = book.languages
         )
 
         fileDao.insert(file)

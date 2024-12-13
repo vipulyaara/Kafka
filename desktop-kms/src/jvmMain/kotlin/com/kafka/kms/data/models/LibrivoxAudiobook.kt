@@ -10,12 +10,22 @@ data class LibrivoxAudiobook(
     val subjects: List<String>,
     val sections: List<LibrivoxSection>,
     val copyrightText: String = "This recording is in the public domain.",
-    val isCopyrighted: Boolean = false
+    val isCopyrighted: Boolean = false,
+    val sourceUrl: String,
+    val translators: List<String> = emptyList()
 )
 
 data class LibrivoxSection(
+    val id: String,
+    val sectionNumber: String,
     val title: String,
-    val url: String,
-    val duration: String,
-    val durationInSeconds: Int
+    val listenUrl: String,
+    val language: String,
+    val playtime: String,
+    val readers: List<Reader>
+)
+
+data class Reader(
+    val readerId: String,
+    val displayName: String
 ) 

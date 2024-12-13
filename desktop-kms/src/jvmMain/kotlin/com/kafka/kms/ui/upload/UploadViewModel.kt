@@ -41,6 +41,7 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
         translators: String,
         coverImagePaths: List<String>,
         epubFilePath: String,
+        contentOpfPath: String,
         mediaType: MediaType,
         copyright: String,
         isUpdate: Boolean,
@@ -48,27 +49,33 @@ class UploadViewModel(private val uploadService: SupabaseUploadService) : ViewMo
     ) {
         viewModelScope.launch {
             uploadState.value = UploadState.Loading
-            uploadService.uploadBook(
-                itemId = itemId,
-                title = title,
-                description = description,
-                longDescription = longDescription,
-                creators = creators,
-                subjects = subjects,
-                publishers = publishers,
-                languages = languages,
-                collections = collections,
-                translators = translators,
-                coverImagePaths = coverImagePaths,
-                epubFilePath = epubFilePath,
-                mediaType = mediaType,
-                copyrightText = copyright,
-                copyrighted = isCopyrighted,
-                isUpdate = isUpdate,
-            ).onSuccess {
-                uploadState.value = UploadState.Success
-            }.onFailure { error ->
-                uploadState.value = UploadState.Error(error.message ?: "Unknown error occurred")
+            
+            try {
+                uploadService.uploadBook(
+                    itemId = itemId,
+                    title = title,
+                    description = description,
+                    longDescription = longDescription,
+                    creators = creators,
+                    subjects = subjects,
+                    publishers = publishers,
+                    languages = languages,
+                    collections = collections,
+                    translators = translators,
+                    coverImagePaths = coverImagePaths,
+                    epubFilePath = epubFilePath,
+                    contentOpfPath = contentOpfPath,
+                    mediaType = mediaType,
+                    copyrightText = copyright,
+                    copyrighted = isCopyrighted,
+                    isUpdate = isUpdate
+                ).onSuccess {
+                    uploadState.value = UploadState.Success
+                }.onFailure { error ->
+                    uploadState.value = UploadState.Error(error.message ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                uploadState.value = UploadState.Error(e.message ?: "Unknown error")
             }
         }
     }

@@ -138,6 +138,7 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
             UploadBottomBar(
                 isEnabled = when {
                     state.isEditMode -> state.id.isNotEmpty() && state.title.isNotEmpty()
+                    state.mediaType.isAudio -> state.id.isNotEmpty() && state.title.isNotEmpty()
                     else -> state.id.isNotEmpty() && state.title.isNotEmpty() && state.epubFilePath.isNotEmpty()
                 } && uploadViewModel.uploadState.value !is UploadState.Loading,
                 onUploadClick = {
@@ -154,6 +155,7 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                         translators = state.translators,
                         coverImagePaths = state.coverImagePaths,
                         epubFilePath = state.epubFilePath,
+                        contentOpfPath = state.contentOpfPath,
                         mediaType = state.mediaType,
                         copyright = state.copyrightText,
                         isUpdate = state.isEditMode,

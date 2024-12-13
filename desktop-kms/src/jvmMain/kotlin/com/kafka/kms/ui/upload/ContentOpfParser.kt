@@ -34,21 +34,30 @@ object ContentOpfParser {
         return document.documentElement.let { root ->
             val metadata = root.getElementsByTagName("metadata").item(0) as Element
 
-            val translators = metadata.getElements("dc:contributor").filter { contributor ->
-                val id = contributor.getAttribute("id")
-                metadata.getElementsByTagName("meta")
-                    .toElementList()
-                    .any { meta ->
-                        meta.getAttribute("refines") == "#$id" &&
-                                meta.getAttribute("property") == "role" &&
-                                meta.getAttribute("scheme") == "marc:relators" &&
-                                meta.textContent == "trl"
-                    }
-            }.map { it.textContent }
+            val translators = buildList {
+                // Get translators marked with MARC relator code
+                addAll(metadata.getElements("dc:contributor").filter { contributor ->
+                    val id = contributor.getAttribute("id")
+                    metadata.getElementsByTagName("meta")
+                        .toElementList()
+                        .any { meta ->
+                            meta.getAttribute("refines") == "#$id" &&
+                                    meta.getAttribute("property") == "role" &&
+                                    meta.getAttribute("scheme") == "marc:relators" &&
+                                    meta.textContent == "trl"
+                        }
+                }.map { it.textContent })
+
+                // Get translators marked with opf:role
+                addAll(metadata.getElements("dc:contributor").filter { contributor ->
+                    contributor.getAttribute("opf:role") == "trl"
+                }.map { it.textContent })
+            }.distinct()
 
             val contributors = metadata.getElements("dc:contributor").filter { contributor ->
                 val id = contributor.getAttribute("id")
-                metadata.getElementsByTagName("meta")
+                // Not a translator with MARC relator code
+                val notMarcTranslator = metadata.getElementsByTagName("meta")
                     .toElementList()
                     .none { meta ->
                         meta.getAttribute("refines") == "#$id" &&
@@ -56,6 +65,10 @@ object ContentOpfParser {
                                 meta.getAttribute("scheme") == "marc:relators" &&
                                 meta.textContent == "trl"
                     }
+                // Not a translator with opf:role
+                val notOpfTranslator = contributor.getAttribute("opf:role") != "trl"
+                
+                notMarcTranslator && notOpfTranslator
             }.map { it.textContent }
 
             val sourceUrls = buildList {
@@ -110,13 +123,16 @@ object ContentOpfParser {
                 .filter { it.isNotEmpty() }
                 .distinct()
 
+            val description = metadata.getTextContent("dc:description")
+            val longDescription = metadata.getElementsByTagName("meta")
+                .findByProperty("se:long-description")
+                ?.textContent ?: ""
+
             ContentOpfMetadata(
                 title = metadata.getTextContent("dc:title"),
                 creators = metadata.getElements("dc:creator").map { it.textContent },
-                description = metadata.getTextContent("dc:description"),
-                longDescription = metadata.getElementsByTagName("meta")
-                    .findByProperty("se:long-description")
-                    ?.textContent ?: "",
+                description = description,
+                longDescription = if (longDescription.isBlank()) description else longDescription,
                 subjects = metadata.getElements("dc:subject").map { it.textContent },
                 publishers = metadata.getElements("dc:publisher").map { it.textContent },
                 languages = metadata.getElements("dc:language").map { it.textContent },

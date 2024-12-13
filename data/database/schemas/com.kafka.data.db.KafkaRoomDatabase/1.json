@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1357e11bada07c973f5cbfdff87f5923",
+    "identityHash": "657dac1afec4e928a51b9680bc7b058c",
     "entities": [
       {
         "tableName": "ItemDetail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImages` TEXT, `coverImage` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, `copyright` INTEGER, `copyrightText` TEXT, PRIMARY KEY(`itemId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`itemId` TEXT NOT NULL, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `description` TEXT, `creators` TEXT, `translators` TEXT, `collections` TEXT, `languages` TEXT, `coverImages` TEXT, `subjects` TEXT, `rating` REAL, `publishers` TEXT NOT NULL, `copyright` INTEGER, `copyrightText` TEXT, PRIMARY KEY(`itemId`))",
         "fields": [
           {
             "fieldPath": "itemId",
@@ -57,11 +57,6 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "coverImage",
-            "columnName": "coverImage",
-            "affinity": "TEXT"
-          },
-          {
             "fieldPath": "subjects",
             "columnName": "subjects",
             "affinity": "TEXT"
@@ -108,7 +103,7 @@
       },
       {
         "tableName": "File",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileId` TEXT NOT NULL, `itemId` TEXT NOT NULL, `itemTitle` TEXT, `size` INTEGER, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `coverImage` TEXT, `extension` TEXT, `creators` TEXT NOT NULL, `duration` INTEGER, `format` TEXT NOT NULL, `url` TEXT, `position` INTEGER NOT NULL, PRIMARY KEY(`fileId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileId` TEXT NOT NULL, `itemId` TEXT NOT NULL, `itemTitle` TEXT, `size` INTEGER, `title` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `coverImage` TEXT, `extension` TEXT, `creators` TEXT NOT NULL, `readers` TEXT NOT NULL, `languages` TEXT NOT NULL, `duration` INTEGER, `format` TEXT NOT NULL, `url` TEXT, `position` INTEGER NOT NULL, PRIMARY KEY(`fileId`))",
         "fields": [
           {
             "fieldPath": "fileId",
@@ -157,6 +152,18 @@
           {
             "fieldPath": "creators",
             "columnName": "creators",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "readers",
+            "columnName": "readers",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "languages",
+            "columnName": "languages",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -482,7 +489,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1357e11bada07c973f5cbfdff87f5923')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '657dac1afec4e928a51b9680bc7b058c')"
     ]
   }
 }

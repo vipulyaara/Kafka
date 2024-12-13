@@ -2,6 +2,7 @@ package com.kafka.kms.data.remote
 
 import com.kafka.kms.data.models.LibrivoxAudiobook
 import com.kafka.kms.data.models.LibrivoxSection
+import com.kafka.kms.data.models.Reader
 import com.kafka.kms.domain.librivoxItemId
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -33,6 +34,7 @@ private data class LibrivoxApiBook(
     val description: String,
     val language: String,
     val authors: List<LibrivoxApiAuthor>,
+    val translators: List<LibrivoxApiAuthor> = emptyList(),
     val sections: List<LibrivoxApiSection>,
     val url_zip_file: String,
     val url_project: String,
@@ -50,7 +52,9 @@ private data class LibrivoxApiBook(
         language = language,
         coverImage = null, // Librivox API doesn't provide cover images
         subjects = genres.map { it.name },
-        sections = sections.map { it.toHighestBitrateSection() }
+        sections = sections.map { it.toLibrivoxSection() },
+        sourceUrl = url_librivox,
+        translators = translators.map { it.name }
     )
 }
 
@@ -68,32 +72,36 @@ private data class LibrivoxApiAuthor(
 
 @Serializable
 private data class LibrivoxApiSection(
-    val section_number: Int,
+    val id: String,
+    val section_number: String,
     val title: String,
     val listen_url: String,
-    val duration: String = "0",
-    val formats: List<SectionFormat> = listOf()
+    val language: String,
+    val playtime: String,
+    val readers: List<LibrivoxApiReader>
 ) {
-    fun toHighestBitrateSection(): LibrivoxSection {
-        // Get the highest bitrate URL, fallback to listen_url if no formats available
-        val highestBitrateUrl = formats
-            .filter { it.url.isNotBlank() }
-            .maxByOrNull { it.bitrate }
-            ?.url ?: listen_url
-
+    fun toLibrivoxSection(): LibrivoxSection {
         return LibrivoxSection(
+            id = id,
+            sectionNumber = section_number,
             title = title,
-            url = highestBitrateUrl,
-            duration = duration,
-            durationInSeconds = duration.split(":").let { parts ->
-                when (parts.size) {
-                    3 -> parts[0].toInt() * 3600 + parts[1].toInt() * 60 + parts[2].toInt()
-                    2 -> parts[0].toInt() * 60 + parts[1].toInt()
-                    else -> 0
-                }
-            }
+            listenUrl = listen_url,
+            language = language,
+            playtime = playtime,
+            readers = readers.map { it.toReader() }
         )
     }
+}
+
+@Serializable
+private data class LibrivoxApiReader(
+    val reader_id: String,
+    val display_name: String
+) {
+    fun toReader() = Reader(
+        readerId = reader_id,
+        displayName = display_name
+    )
 }
 
 @Serializable

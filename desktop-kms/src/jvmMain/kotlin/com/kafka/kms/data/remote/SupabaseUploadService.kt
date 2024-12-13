@@ -1,12 +1,17 @@
 package com.kafka.kms.data.remote
 
+import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.SecretsProvider
 import com.kafka.base.debug
+import com.kafka.data.entities.File
 import com.kafka.data.entities.Item
 import com.kafka.data.entities.ItemDetail
+import com.kafka.data.entities.fileFormatAudio
 import com.kafka.data.model.MediaType
+import com.kafka.kms.ui.upload.ContentOpfParser
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Count
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
@@ -17,15 +22,19 @@ import io.ktor.http.isSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
+import org.w3c.dom.Element
+import org.w3c.dom.NodeList
 import java.io.IOException
 import java.util.UUID
+import javax.xml.parsers.DocumentBuilderFactory
 import java.io.File as JavaFile
 
 @Inject
 class SupabaseUploadService(
     private val secretsProvider: SecretsProvider,
     private val supabaseClient: SupabaseClient,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val dispatchers: CoroutineDispatchers
 ) {
     suspend fun fetchItem(itemId: String): Result<Pair<Item, ItemDetail>> = runCatching {
         withContext(Dispatchers.IO) {
@@ -54,18 +63,28 @@ class SupabaseUploadService(
         translators: String,
         coverImagePaths: List<String>,
         epubFilePath: String,
+        contentOpfPath: String,
         mediaType: MediaType,
         copyrightText: String,
         copyrighted: Boolean?,
         isUpdate: Boolean
     ): Result<Unit> = runCatching {
-        // Only upload files if they're provided or it's a new item
-        val (coverUrls, epubUrl) = if (!isUpdate || epubFilePath.isNotEmpty()) {
-            uploadFiles(itemId, coverImagePaths, epubFilePath)
-        } else {
-            // For updates without new epub, only handle cover images
-            val coverUrls = uploadFiles(itemId, coverImagePaths)
-            coverUrls to null // Return null for epubUrl to indicate no change
+        // Handle files based on media type
+        val (coverUrls, _) = when {
+            mediaType.isAudio -> {
+                // For audio, we only upload cover images
+                val coverUrls = uploadFiles(itemId, coverImagePaths)
+                coverUrls to null
+            }
+            !isUpdate || epubFilePath.isNotEmpty() -> {
+                // For new books or updates with new epub
+                uploadFiles(itemId, coverImagePaths, epubFilePath)
+            }
+            else -> {
+                // For updates without new epub, only handle cover images
+                val coverUrls = uploadFiles(itemId, coverImagePaths)
+                coverUrls to null
+            }
         }
 
         // Convert comma-separated strings to lists
@@ -80,13 +99,13 @@ class SupabaseUploadService(
         val item = Item(
             itemId = itemId,
             title = title,
-            mediaType = mediaType,
-            creators = creatorsList,
-            languages = languagesList,
             description = description,
-            coverImage = coverUrls.firstOrNull() ?: "",
+            creators = creatorsList,
+            subjects = subjectsList,
+            languages = languagesList,
             collections = collectionsList,
-            subjects = subjectsList
+            coverImage = coverUrls.firstOrNull(),
+            mediaType = mediaType
         )
 
         // Create ItemDetail entity
@@ -102,15 +121,25 @@ class SupabaseUploadService(
             coverImages = coverUrls,
             subjects = subjectsList,
             publishers = publishersList,
-            copyrightText = copyrightText,
-            copyright = copyrighted
+            copyright = copyrighted,
+            copyrightText = copyrightText
         )
 
-        withContext(Dispatchers.IO) {
-            if (isUpdate) {
+        // Upload to Supabase
+        withContext(dispatchers.io) {
+            // Check if item exists
+            val itemCount = supabaseClient.from("items").select {
+                    filter { Item::itemId eq itemId }
+                    count(Count.EXACT)
+                }.countOrNull()
+
+            val itemExists = (itemCount ?: 0) > 0
+
+            if (itemExists) {
                 // Update existing records
                 supabaseClient.from("items")
                     .update(item) { filter { eq("item_id", itemId) } }
+
                 supabaseClient.from("item_detail")
                     .update(itemDetail) { filter { eq("item_id", itemId) } }
             } else {
@@ -118,9 +147,89 @@ class SupabaseUploadService(
                 supabaseClient.from("items").insert(item)
                 supabaseClient.from("item_detail").insert(itemDetail)
             }
-        }
 
-        Unit
+            // Handle audio sections if it's an audio book
+            if (mediaType.isAudio && contentOpfPath.isNotEmpty()) {
+                val opfMetadata = ContentOpfParser.parse(contentOpfPath)
+
+                debug { "OPF metadata is $opfMetadata" }
+
+                // Parse audio sections
+                val document = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(JavaFile(contentOpfPath))
+
+                val manifest = document.documentElement
+                    .getElementsByTagName("manifest")
+                    .item(0) as Element
+
+                val audioItems = manifest.getElementsByTagName("item")
+                    .toElementList()
+                    .filter { it.getAttribute("media-type") == "audio/mpeg" }
+
+                audioItems.forEach { audioItem ->
+                    val sectionId = audioItem.getAttribute("id")
+                    val fileId = "${itemId}_$sectionId"
+
+                    // Check if file exists
+                    val fileCount  = supabaseClient.from("files").select {
+                        filter { File::fileId eq fileId }
+                        count(Count.EXACT)
+                    }.countOrNull()
+
+                    val fileExists = (fileCount ?: 0) > 0
+
+                    val url = audioItem.getAttribute("href")
+                    val duration = audioItem.getAttribute("duration")
+                    val fileTitle = audioItem.getElementsByTagName("meta")
+                        .toElementList()
+                        .find { it.getAttribute("property") == "title" }
+                        ?.textContent ?: sectionId
+
+                    val position = audioItem.getElementsByTagName("meta")
+                        .toElementList()
+                        .find { it.getAttribute("property") == "position" }
+                        ?.textContent?.toIntOrNull() ?: 0
+
+                    val readers = audioItem.getElementsByTagName("meta")
+                        .toElementList()
+                        .find { it.getAttribute("property") == "readers" }
+                        ?.textContent?.split(",")?.map { it.trim() }
+                        ?: opfMetadata.creators.takeIf { it.isNotEmpty() }
+                        ?: creatorsList
+
+                    val language = audioItem.getElementsByTagName("meta")
+                        .toElementList()
+                        .find { it.getAttribute("property") == "language" }
+                        ?.textContent ?: languagesList.firstOrNull() ?: "en"
+
+                    debug { "File duration is $duration" }
+
+                    val file = File(
+                        fileId = fileId,
+                        itemId = itemId,
+                        itemTitle = title,
+                        title = fileTitle,
+                        mediaType = MediaType.Audio,
+                        extension = "mp3",
+                        format = fileFormatAudio,
+                        url = url,
+                        coverImage = coverUrls.firstOrNull(),
+                        creators = readers,
+                        position = position,
+                        languages = listOf(language),
+                        duration = duration.toLongOrNull()
+                    )
+
+                    if (fileExists) {
+                        supabaseClient.from("files")
+                            .update(file) { filter { eq("file_id", fileId) } }
+                    } else {
+                        supabaseClient.from("files").insert(file)
+                    }
+                }
+            }
+        }
     }
 
     private suspend fun uploadFiles(
@@ -195,8 +304,7 @@ class SupabaseUploadService(
         }
 
         val supabaseUrl = secretsProvider.supabaseUrl
-        val supabaseKey =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrZW9zZ25yYWd6cGdzYmFvY2psIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyODc1Mjk5NCwiZXhwIjoyMDQ0MzI4OTk0fQ.8NddKaJ1s4wIMsH0vU70Hi4UmdWVoNSbVJZ-k4P2uWM"
+        val supabaseKey = secretsProvider.supabaseAdminKey
         val uploadUrl = "$supabaseUrl/storage/v1/object/$bucket/$objectName"
 
         debug { "Uploading file: $objectName (${file.length()} bytes)" }
@@ -215,8 +323,8 @@ class SupabaseUploadService(
 
             if (!response.status.isSuccess()) {
                 val responseBody = response.bodyAsText()
-                debug { "Upload failed with response: $responseBody" }
-                throw IOException("Upload failed: ${response.status}")
+                debug { "File Upload failed with response: $responseBody" }
+                throw IOException("File Upload failed: ${response.status}")
             }
 
             // Return the public URL
@@ -229,4 +337,7 @@ class SupabaseUploadService(
 
     private val JavaFile.extension: String
         get() = name.substringAfterLast('.', "")
+
+    private fun NodeList.toElementList(): List<Element> =
+        (0 until length).map { item(it) as Element }
 } 

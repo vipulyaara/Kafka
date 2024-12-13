@@ -25,7 +25,6 @@ data class ItemDetail(
     @SerialName("collections") val collections: List<String>?,
     @SerialName("languages") val languages: List<String>?,
     @SerialName("cover_images") val coverImages: List<String>?,
-    @SerialName("cover_image") val coverImage: String? = coverImages?.random(),
     @SerialName("subjects") val subjects: List<String>?,
     @SerialName("rating") val rating: Double? = null,
     @SerialName("publishers") val publishers: List<String>,
@@ -34,6 +33,9 @@ data class ItemDetail(
 ) : BaseEntity {
     val creator: String?
         get() = creators?.take(5)?.joinToString()
+
+    val coverImage: String?
+    get() = coverImages?.randomOrNull()
 
     val language: String
         get() = languages?.take(5)?.joinToString() ?: "en"
