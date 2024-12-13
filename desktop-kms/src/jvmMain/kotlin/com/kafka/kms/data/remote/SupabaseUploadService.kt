@@ -203,8 +203,6 @@ class SupabaseUploadService(
                         .find { it.getAttribute("property") == "language" }
                         ?.textContent ?: languagesList.firstOrNull() ?: "en"
 
-                    debug { "File duration is $duration" }
-
                     val file = File(
                         fileId = fileId,
                         itemId = itemId,

@@ -10,6 +10,7 @@ import com.sarahang.playback.core.PlaybackConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -33,23 +34,23 @@ class AudioProgressInitializer(
 
     override fun init() {
         coroutineScope.launch(dispatchers.io) {
-            playbackConnection.playbackProgress
+            val progressState = playbackConnection.playbackProgress
                 .filter { it.isPlaying }
                 .buffer(1)
                 .map { it.position + it.elapsed }
                 .filter { it % 5000 < 1000 }
                 .onEach { debug { "Updating recent audio position: $it" } }
                 .distinctUntilChanged()
-                .collectLatest { timestamp ->
-                    val nowPlaying = playbackConnection.nowPlaying.value
-                    nowPlaying.albumId?.let { albumId ->
-                        updateRecentAudio(
-                            albumId = albumId,
-                            fileId = nowPlaying.fileId,
-                            timestamp = timestamp
-                        )
-                    }
+
+            combine(progressState, playbackConnection.nowPlaying) { progress, nowPlaying ->
+                nowPlaying.albumId?.let { albumId ->
+                    updateRecentAudio(
+                        albumId = albumId,
+                        fileId = nowPlaying.fileId,
+                        timestamp = progress
+                    )
                 }
+            }.collectLatest { }
         }
     }
 

@@ -3,6 +3,7 @@ package com.kafka.root.playback
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.base.CoroutineDispatchers
+import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.dao.FileDao
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.RootScreen
@@ -24,11 +25,13 @@ class PlaybackViewModel(
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
     val playerTheme by lazy { remoteConfig.getPlayerTheme() }
+    private val nowPlaying = playbackConnection.nowPlaying
+        .stateInDefault(viewModelScope, null)
 
     fun goToAlbum() {
         viewModelScope.launch(dispatchers.io) {
-            playbackConnection.nowPlaying.value.id.toMediaId().value.let { id ->
-                fileDao.getOrNull(id)!!.let { file ->
+            nowPlaying.value?.id.toMediaId().value.let { id ->
+                fileDao.getOrNull(id)?.let { file ->
                     navigator.navigate(Screen.ItemDetail(file.itemId))
                 }
             }
@@ -37,7 +40,7 @@ class PlaybackViewModel(
 
     fun goToCreator() {
         viewModelScope.launch {
-            val artist = playbackConnection.nowPlaying.value.artist.orEmpty()
+            val artist = nowPlaying.value?.artist.orEmpty()
             navigator.navigate(
                 route = Search(keyword = artist),
                 root = RootScreen.Search
