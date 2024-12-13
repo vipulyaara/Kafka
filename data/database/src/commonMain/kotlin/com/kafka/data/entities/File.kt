@@ -18,7 +18,7 @@ data class File(
     @SerialName("cover_image") val coverImage: String?,
     @SerialName("extension") val extension: String?,
     @SerialName("creators") val creators: List<String>,
-    @SerialName("readers") val readers: List<String> = emptyList(),
+    @SerialName("readers") val readers: List<String>? = null,
     @SerialName("languages") val languages: List<String>,
     @SerialName("duration") val duration: Long? = null,
     @SerialName("format") val format: String,

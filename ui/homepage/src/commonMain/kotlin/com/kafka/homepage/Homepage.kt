@@ -157,7 +157,7 @@ private fun HomepageFeedItems(
                                 onClick = { openItemDetail(it, Origin.Carousel) }
                             )
                         } else {
-                            FeaturedItemPlaceholder()
+                            FeaturedItemPlaceholder(0.66f)
                         }
                     }
                 }

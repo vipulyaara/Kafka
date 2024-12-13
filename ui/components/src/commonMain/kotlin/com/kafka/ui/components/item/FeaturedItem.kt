@@ -122,11 +122,11 @@ private fun BoxScope.TextOverlay(label: String, creator: String?, shape: Shape) 
 }
 
 @Composable
-fun FeaturedItemPlaceholder() {
+fun FeaturedItemPlaceholder(aspectRatio: Float) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
+            .aspectRatio(aspectRatio)
             .padding(horizontal = Dimens.Gutter)
             .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
             .clip(RoundedCornerShape(Dimens.RadiusMedium))
