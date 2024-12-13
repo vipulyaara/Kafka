@@ -19,7 +19,7 @@ class UpdateItemDetail(
     override suspend fun doWork(params: Param) {
         withContext(dispatchers.io) {
             val itemDetail = repository.updateItemDetail(params.contentId)
-            val files = repository.updateFiles(itemDetail, params.contentId)
+            val files = repository.updateFiles(params.contentId)
 
             itemDetailDao.insert(itemDetail)
             fileDao.insertAll(files)
