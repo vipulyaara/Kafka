@@ -1,16 +1,11 @@
 package com.kafka.ui.components.item.review
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,8 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
 import com.kafka.data.entities.Reaction
+import com.kafka.ui.components.sheets.ActionBottomSheet
+import com.kafka.ui.components.sheets.ActionBottomSheetItem
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.surfaceDeep
 
 @Composable
 fun Reactions(
@@ -39,13 +35,6 @@ fun Reactions(
     delete: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-
-    OverflowActions(
-        expanded = expanded,
-        onDismiss = { expanded = false },
-        edit = edit,
-        delete = delete
-    )
 
     Row(
         modifier = modifier,
@@ -67,6 +56,12 @@ fun Reactions(
         )
 
         Spacer(Modifier.weight(1f))
+
+        if (expanded) {
+            ActionBottomSheet({ expanded = false }) {
+                ActionBottomSheetItem(icon = Icons.Delete, text = "Delete", onClick = delete)
+            }
+        }
 
         MoreOptions { expanded = true }
     }
@@ -124,47 +119,3 @@ private fun MoreOptions(modifier: Modifier = Modifier, onClick: () -> Unit) {
         )
     }
 }
-
-@Composable
-private fun OverflowActions(
-    expanded: Boolean,
-    onDismiss: () -> Unit,
-    edit: () -> Unit,
-    delete: () -> Unit
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismiss,
-        modifier = Modifier
-            .width(IntrinsicSize.Min)
-            .background(MaterialTheme.colorScheme.surfaceDeep),
-    ) {
-        ReviewActions.entries.forEach { item ->
-            OverflowItem(text = item.text, onDismiss = onDismiss, onClick = {
-                when (item) {
-                    ReviewActions.Delete -> delete()
-                }
-            })
-        }
-    }
-}
-
-@Composable
-private fun OverflowItem(text: String, onDismiss: () -> Unit, onClick: () -> Unit) {
-    DropdownMenuItem(
-        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceDeep),
-        text = {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        },
-        onClick = {
-            onDismiss()
-            onClick()
-        }
-    )
-}
-
-enum class ReviewActions(val text: String) { Delete("Delete") }
