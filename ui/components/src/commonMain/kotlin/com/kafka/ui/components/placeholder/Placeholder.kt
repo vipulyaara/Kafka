@@ -33,7 +33,7 @@ fun PlaceholderDefaults.color(
  */
 @Composable
 fun PlaceholderDefaults.fadeHighlightColor(
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     alpha: Float = 0.3f,
 ): Color = backgroundColor.copy(alpha = alpha)
 

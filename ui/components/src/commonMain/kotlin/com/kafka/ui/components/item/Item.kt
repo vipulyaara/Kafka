@@ -28,7 +28,7 @@ import com.kafka.common.widgets.IconResource
 import com.kafka.data.entities.BookshelfItem
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
-import com.kafka.ui.components.placeholder.placeholderDefault
+import com.kafka.ui.components.placeholder.placeholder
 import kafka.ui.components.generated.resources.Res
 import kafka.ui.components.generated.resources.explicit
 import org.jetbrains.compose.resources.stringResource
@@ -241,7 +241,7 @@ fun ItemPlaceholder(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(Dimens.CoverSizeSmall)
                 .clip(RoundedCornerShape(Dimens.Spacing04))
-                .placeholderDefault()
+                .placeholder()
         )
 
         Column(Modifier.padding(vertical = Dimens.Spacing04)) {
@@ -250,7 +250,7 @@ fun ItemPlaceholder(modifier: Modifier = Modifier) {
                     .width(120.dp)
                     .height(16.dp)
                     .clip(RoundedCornerShape(Dimens.Spacing04))
-                    .placeholderDefault()
+                    .placeholder()
             )
 
             Spacer(modifier = Modifier.height(Dimens.Spacing08))
@@ -260,7 +260,7 @@ fun ItemPlaceholder(modifier: Modifier = Modifier) {
                     .width(96.dp)
                     .height(20.dp)
                     .clip(RoundedCornerShape(Dimens.Spacing04))
-                    .placeholderDefault()
+                    .placeholder()
             )
         }
     }

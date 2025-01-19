@@ -14,9 +14,10 @@ import androidx.core.view.WindowCompat
 @Composable
 internal actual fun colorScheme(
     useDarkColors: Boolean,
+    useMaterialYou: Boolean,
     useTrueContrast: Boolean,
 ): ColorScheme = when {
-    isAtLeastS() && useDarkColors -> {
+    (useMaterialYou && isAtLeastS()) && useDarkColors -> {
         dynamicDarkColorScheme(LocalContext.current).run {
             if (useTrueContrast) {
                 copy(background = Color.Black, surface = Color.Black)
@@ -26,7 +27,7 @@ internal actual fun colorScheme(
         }
     }
 
-    isAtLeastS() && !useDarkColors -> {
+    (useMaterialYou && isAtLeastS()) && !useDarkColors -> {
         dynamicLightColorScheme(LocalContext.current).run {
             if (useTrueContrast) {
                 copy(background = Color.White, surface = Color.White)

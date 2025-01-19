@@ -44,7 +44,7 @@ import androidx.compose.ui.util.lerp
 import kotlin.math.max
 
 @Composable
-fun Modifier.placeholderDefault(visible: Boolean = true) = placeholder(
+fun Modifier.placeholder(visible: Boolean = true) = this.placeholder(
     visible = visible,
     highlight = PlaceholderHighlight.fade(),
     color = PlaceholderDefaults.fadeHighlightColor()

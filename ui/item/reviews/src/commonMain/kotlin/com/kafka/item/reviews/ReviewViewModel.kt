@@ -8,7 +8,9 @@ import com.kafka.base.extensions.stateInDefault
 import com.kafka.data.entities.Reaction
 import com.kafka.data.entities.Review
 import com.kafka.domain.interactors.reviews.DeleteReview
+import com.kafka.domain.interactors.reviews.UpdateReviewReaction
 import com.kafka.domain.interactors.reviews.UpdateReviews
+import com.kafka.domain.observers.account.ObserveUser
 import com.kafka.domain.observers.reviews.ObserveReviews
 import com.kafka.navigation.Navigator
 import com.kafka.navigation.graph.Screen
@@ -21,26 +23,36 @@ import me.tatarka.inject.annotations.Inject
 class ReviewViewModel(
     @Assisted val savedStateHandle: SavedStateHandle,
     observeReviews: ObserveReviews,
+    observeUser: ObserveUser,
     private val deleteReview: DeleteReview,
     private val updateReviews: UpdateReviews,
+    private val updateReviewReaction: UpdateReviewReaction,
     private val navigator: Navigator,
     private val analytics: Analytics
 ) : ViewModel() {
     private val itemId = savedStateHandle.get<String>("itemId")!!
 
-    val state = combine(observeReviews.flow, updateReviews.inProgress) { reviews, loading ->
-        ReviewsState(reviews = reviews, loading = loading)
+    val state = combine(
+        observeReviews.flow,
+        observeUser.flow,
+        updateReviews.inProgress
+    ) { reviews, user, loading ->
+        ReviewsState(reviews = reviews, isUserLoggedIn = user != null, loading = loading)
     }.stateInDefault(viewModelScope, ReviewsState())
 
     init {
         observeReviews(ObserveReviews.Params(itemId))
+        observeUser(ObserveUser.Params())
 
         viewModelScope.launch {
             updateReviews(UpdateReviews.Params(itemId))
         }
     }
 
-    fun updateReaction(reaction: Reaction) {
+    fun updateReaction(reviewId: String, reaction: Reaction) {
+        viewModelScope.launch {
+            updateReviewReaction(UpdateReviewReaction.Params(reviewId, reaction))
+        }
 
     }
 

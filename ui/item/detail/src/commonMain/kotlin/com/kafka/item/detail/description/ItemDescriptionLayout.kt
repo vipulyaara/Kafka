@@ -92,17 +92,15 @@ internal fun ItemDescriptionAndCover(
 
         Spacer(Modifier.height(Dimens.Spacing24))
 
-        if (itemDetail != null) {
-            Text(
-                text = itemDetail.title,
-                style = MaterialTheme.typography.titleLarge.alignCenter(),
-                modifier = Modifier.padding(horizontal = Dimens.Spacing24)
-            )
+        Text(
+            text = itemDetail?.title ?: itemPlaceholder.title,
+            style = MaterialTheme.typography.titleLarge.alignCenter(),
+            modifier = Modifier.padding(horizontal = Dimens.Spacing24)
+        )
 
-            Spacer(Modifier.height(Dimens.Spacing04))
+        Spacer(Modifier.height(Dimens.Spacing04))
 
-            Creator(itemDetail.creators, goToCreator)
-        }
+        Creator(creators = itemDetail?.creators ?: itemPlaceholder.creators, goToCreator = goToCreator)
     }
 }
 

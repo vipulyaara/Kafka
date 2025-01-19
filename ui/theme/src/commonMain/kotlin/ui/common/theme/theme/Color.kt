@@ -26,93 +26,74 @@ val ColorScheme.shadowMaterial
         primary.copy(alpha = 0.5f)
     }
 
-val ColorScheme.surfaceDeep
-    @Composable get() = if (LocalTheme.current.isDark()) {
-        Color.Black
-    } else {
-        Color.White
-    }
-
-val ColorScheme.inverseSurfaceDeep
-    @Composable get() = if (LocalTheme.current.isDark()) {
-        Color.White
-    } else {
-        Color.Black
-    }
-
-val ColorScheme.inverseOnSurfaceDeep
-    @Composable get() = if (LocalTheme.current.isDark()) {
-        Color.Black
-    } else {
-        Color.White
-    }
-
 val DarkAppColors = darkColorScheme(
-    primary = Color(0xFFFFD69A),
-    onPrimary = Color(0xFF341000),
-    primaryContainer = Color(0xFFBD8701),
-    onPrimaryContainer = Color(0xFF000000),
-    inversePrimary = Color(0xFF4A3200),
+    primary = Color.White,
+    onPrimary = Color.Black,
+    primaryContainer = Color(0xFFE0E0E0),
+    onPrimaryContainer = Color.Black,
+    inversePrimary = Color.Black,
 
-    secondary = Color(0xFFFFD69A),
-    onSecondary = Color(0xFF341000),
-    secondaryContainer = Color(0xFFB48A3D),
-    onSecondaryContainer = Color(0xFF000000),
+    secondary = Color.White.copy(alpha = 0.7f),
+    onSecondary = Color.Black,
+    secondaryContainer = Color(0xFFE0E0E0),
+    onSecondaryContainer = Color.Black,
 
-    tertiary = Color(0xFFC9E79C),
-    onTertiary = Color(0xFF192A00),
-    tertiaryContainer = Color(0xFF7F9A57),
-    onTertiaryContainer = Color(0xFF000000),
+    tertiary = Color.White,
+    onTertiary = Color.Black,
+    tertiaryContainer = Color(0xFFE0E0E0),
+    onTertiaryContainer = Color.Black,
 
-    background = Color(0xFF000000),
-    onBackground = Color(0xFFE0E5D1),
+    background = Color.Black,
+    onBackground = Color.White,
 
-    surface = Color(0xFF000000),
-    onSurface = Color(0xFFFFFFFF),
+    surface = Color.Black,
+    onSurface = Color.White,
 
-    surfaceVariant = Color(0xFF414A33),
-    onSurfaceVariant = Color(0xFFD6E0C1),
+    surfaceVariant = Color(0xFF202020),
+    onSurfaceVariant = Color.White,
 
-    error = Color(0xFFF2B8B5),
-    onError = Color(0xFF601414),
-    errorContainer = Color(0xFF8C1D18),
-    onErrorContainer = Color(0xFFF9DDDB),
+    error = Color(0xFFeb0046),
+    onError = Color.Black,
+    errorContainer = Color(0xFFE0E0E0),
+    onErrorContainer = Color.Black,
 
-    outline = Color(0xFFACB699),
-    surfaceTint = Color(0xFFFFD69A)
+    outline = Color.White,
+    outlineVariant = Color.White,
+    surfaceTint = Color.White
 )
 
 val LightAppColors = lightColorScheme(
-    primary = Color(0xFF4A3200),
-    onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFF906500),
-    onPrimaryContainer = Color(0xFFFFFFFF),
-    inversePrimary = Color(0xFFFFD69A),
+    primary = Color.Black,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFF404040),
+    onPrimaryContainer = Color.White,
+    inversePrimary = Color.White,
 
-    secondary = Color(0xFF4A3200),
-    onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFF8C661D),
-    onSecondaryContainer = Color(0xFFFFFFFF),
+    secondary = Color.Black.copy(alpha = 0.7f),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFF404040),
+    onSecondaryContainer = Color.White,
 
-    tertiary = Color(0xFF274006),
-    onTertiary = Color(0xFFFFFFFF),
-    tertiaryContainer = Color(0xFF5C7559),
-    onTertiaryContainer = Color(0xFFFFFFFF),
+    tertiary = Color.Black,
+    onTertiary = Color.White,
+    tertiaryContainer = Color(0xFF404040),
+    onTertiaryContainer = Color.White,
 
-    background = Color(0xFFFFFFFF),
-    onBackground = Color(0xFF191D11),
+    background = Color.White,
+    onBackground = Color.Black,
 
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF0E1308),
+    surface = Color.White,
+    onSurface = Color.Black,
 
-    surfaceVariant = Color(0xFFDCF8C7),
-    onSurfaceVariant = Color(0xFF303823),
+    surfaceVariant = Color(0xFFF5F5F5),
+    onSurfaceVariant = Color.Black,
 
-    error = Color(0xFFB4261D),
-    onError = Color(0xFFFFFFFF),
-    errorContainer = Color(0xFFF9DDDB),
-    onErrorContainer = Color(0xFF410E0B),
+    error = Color(0xFFeb0046),
+    onError = Color.White,
+    errorContainer = Color(0xFF404040),
+    onErrorContainer = Color.White,
 
-    outline = Color(0xFF4C5640),
-    surfaceTint = Color(0xFF4A3200)
+    outline = Color.Black,
+    outlineVariant = Color.Black,
+    surfaceTint = Color.Black
 )

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.bold
 import com.kafka.common.extensions.medium
-import com.kafka.ui.components.placeholder.placeholderDefault
+import com.kafka.ui.components.placeholder.placeholder
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -107,7 +107,7 @@ fun PersonItemPlaceholder(modifier: Modifier = Modifier) {
         modifier = modifier
             .size(Dimens.CoverSizeMedium)
             .clip(CircleShape)
-            .placeholderDefault()
+            .placeholder()
     )
 }
 

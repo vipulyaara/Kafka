@@ -39,8 +39,6 @@ import kafka.reader.core.models.TextHighlight
 import kafka.reader.core.parser.EpubCFIParser
 import kotlinx.coroutines.delay
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.inverseOnSurfaceDeep
-import ui.common.theme.theme.inverseSurfaceDeep
 import kotlin.math.roundToInt
 
 //todo: improve text toolbar
@@ -148,8 +146,8 @@ class ReaderTextToolbars(
             shape = MaterialTheme.shapes.large,
             tonalElevation = Dimens.Elevation02,
             shadowElevation = Dimens.Elevation02,
-            color = MaterialTheme.colorScheme.inverseSurfaceDeep,
-            contentColor = MaterialTheme.colorScheme.inverseOnSurfaceDeep
+            color = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = Dimens.Spacing04),

@@ -46,6 +46,8 @@ class OpenAiRepository(private val openAi: OpenAi) {
 
         Each section should contribute to a detailed, comprehensive summary that takes about 10 minutes to read.
         Use beautiful markdown but do not show title and author on top in big heading.
+        Use extra new lines before starting a new section. This is to  be presented in markdown so it should be
+        beautifully formatted as per digital editorial standards.
     """.trimIndent()
 
 }

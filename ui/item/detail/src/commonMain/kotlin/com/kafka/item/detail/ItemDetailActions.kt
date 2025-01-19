@@ -53,7 +53,8 @@ fun ItemDetailActionsRow(
             Box(modifier = Modifier.weight(0.2f)) {
                 FavoriteIcon(
                     isFavorite = isFavorite,
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier
+                        .align(Alignment.Center),
                     onClicked = toggleFavorite
                 )
             }

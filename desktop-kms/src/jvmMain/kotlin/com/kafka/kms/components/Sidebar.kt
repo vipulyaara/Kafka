@@ -114,6 +114,13 @@ fun Sidebar(
             onClick = { onRouteSelected("upload") }
         )
 
+        NavItem(
+            icon = TablerIcons.Upload,
+            label = "Prepare",
+            selected = selectedRoute == "prepare",
+            onClick = { onRouteSelected("prepare") }
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         // Settings at bottom

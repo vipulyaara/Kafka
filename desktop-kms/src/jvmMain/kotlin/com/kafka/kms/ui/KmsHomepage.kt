@@ -25,6 +25,8 @@ import com.kafka.kms.ui.gutenberg.GutenbergScreen
 import com.kafka.kms.ui.gutenberg.GutenbergViewModel
 import com.kafka.kms.ui.librivox.LibrivoxScreen
 import com.kafka.kms.ui.librivox.LibrivoxViewModel
+import com.kafka.kms.ui.text.PrepareEpubScreen
+import com.kafka.kms.ui.text.PrepareEpubViewModel
 import com.kafka.kms.ui.upload.UploadScreen
 import com.kafka.kms.ui.upload.UploadViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -40,10 +42,11 @@ fun KmsHomepage(
     librivoxFactory: () -> LibrivoxViewModel,
     booksFactory: () -> BooksViewModel,
     uploadFactory: () -> UploadViewModel,
+    prepareEpubFactory: () -> PrepareEpubViewModel,
     preferencesStore: PreferencesStore,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    var currentRoute by remember { mutableStateOf("upload") }
+    var currentRoute by remember { mutableStateOf("prepare") }
     var theme by remember { mutableStateOf(Theme.SYSTEM) }
 
     LaunchedEffect(Unit) {
@@ -80,6 +83,11 @@ fun KmsHomepage(
 
                 "upload" -> UploadScreen(
                     uploadViewModel = viewModel { uploadFactory() },
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                "prepare" -> PrepareEpubScreen(
+                    prepareEpubViewModel = viewModel { prepareEpubFactory() },
                     modifier = Modifier.fillMaxSize()
                 )
 

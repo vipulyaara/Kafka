@@ -51,6 +51,7 @@ import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
 import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.bottomScaffoldPadding
 import com.kafka.ui.components.item.FeaturedItemPlaceholder
 import com.kafka.ui.components.item.GenreItem
 import com.kafka.ui.components.item.GridItem
@@ -63,7 +64,6 @@ import com.kafka.ui.components.item.RowItemPlaceholder
 import com.kafka.ui.components.item.SubjectItem
 import com.kafka.ui.components.material.StaggeredFlowRow
 import com.kafka.ui.components.progress.InfiniteProgressBar
-import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.homepage.generated.resources.Res
 import kafka.ui.homepage.generated.resources.find_many_more_on_the_search_page
 import kafka.ui.homepage.generated.resources.share_app_message
@@ -131,7 +131,7 @@ private fun HomepageFeedItems(
     LazyVerticalGrid(
         columns = gridColumns(fixedColumns = 2, adaptiveWidth = WindowWidth.Small),
         modifier = Modifier.testTagUi("homepage_feed_items"),
-        contentPadding = scaffoldPadding()
+        contentPadding = PaddingValues(bottom = bottomScaffoldPadding())
     ) {
         homepage.collection.forEachIndexed { index, collection ->
             if (index == appShareIndex) {

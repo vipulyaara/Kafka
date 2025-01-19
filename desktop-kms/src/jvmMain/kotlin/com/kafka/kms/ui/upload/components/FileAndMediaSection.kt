@@ -123,7 +123,7 @@ fun FileAndMediaSection(
 }
 
 @Composable
-private fun FileSelectionButton(
+fun FileSelectionButton(
     label: String,
     value: String,
     onClick: () -> Unit,
@@ -337,7 +337,7 @@ private fun MediaTypeSelector(
 }
 
 
-private fun chooseFile(
+fun chooseFile(
     fileType: String = "all",
     onFileSelected: (String) -> Unit
 ) {

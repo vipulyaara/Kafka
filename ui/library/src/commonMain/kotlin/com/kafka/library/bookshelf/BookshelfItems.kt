@@ -47,8 +47,6 @@ import kafka.ui.library.generated.resources.log_in_to_sync_favorite
 import kafka.ui.library.generated.resources.no_favorites_items_message
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
-import ui.common.theme.theme.inverseOnSurfaceDeep
-import ui.common.theme.theme.inverseSurfaceDeep
 
 @Composable
 internal fun BookshelfItems(
@@ -73,14 +71,14 @@ internal fun BookshelfItems(
                     .align(Alignment.BottomEnd)
                     .padding(bottom = bottomScaffoldPadding())
                     .padding(Dimens.Spacing24),
-                containerColor = MaterialTheme.colorScheme.inverseSurfaceDeep,
+                containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 onClick = { viewModel.chooseFile() }
             ) {
                 Icon(
                     imageVector = Icons.Plus,
                     contentDescription = "Upload book",
-                    tint = MaterialTheme.colorScheme.inverseOnSurfaceDeep
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }

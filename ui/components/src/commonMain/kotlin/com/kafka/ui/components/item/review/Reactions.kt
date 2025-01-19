@@ -1,5 +1,6 @@
 package com.kafka.ui.components.item.review
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -59,7 +60,14 @@ fun Reactions(
 
         if (expanded) {
             ActionBottomSheet({ expanded = false }) {
-                ActionBottomSheetItem(icon = Icons.Delete, text = "Delete", onClick = delete)
+                ActionBottomSheetItem(
+                    icon = Icons.Delete,
+                    text = "Delete",
+                    onClick = {
+                        delete()
+                        expanded = false
+                    }
+                )
             }
         }
 
@@ -82,7 +90,9 @@ private fun Reaction(
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing04),
+            modifier = Modifier
+                .padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing04)
+                .animateContentSize(),
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
             verticalAlignment = Alignment.CenterVertically
         ) {

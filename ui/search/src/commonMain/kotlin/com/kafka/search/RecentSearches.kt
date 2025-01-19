@@ -1,13 +1,19 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package com.kafka.search
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,13 +46,22 @@ fun RecentSearches(
                 )
             }
 
-            items(recentSearches) { recentSearch ->
-                RecentSearchItem(
-                    recentSearch = recentSearch,
-                    onSearchClicked = onSearchClicked,
-                    onRemoveSearch = onRemoveSearch,
-                    modifier = Modifier.animateItem()
-                )
+            item {
+                FlowRow(
+                    modifier = Modifier
+                        .padding(horizontal = Dimens.Spacing16)
+                        .animateContentSize(),
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing02),
+                ) {
+                    recentSearches.forEach { recentSearch ->
+                        RecentSearchItem(
+                            recentSearch = recentSearch,
+                            onSearchClicked = onSearchClicked,
+                            onRemoveSearch = onRemoveSearch,
+                            modifier = Modifier.animateItem()
+                        )
+                    }
+                }
             }
         }
     }
@@ -59,25 +74,33 @@ fun RecentSearchItem(
     onSearchClicked: (RecentSearch) -> Unit,
     onRemoveSearch: (String) -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .clickable(onClick = { onSearchClicked(recentSearch) })
-            .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing24),
-        verticalAlignment = Alignment.CenterVertically
+    Surface(
+        modifier = Modifier,
+        shape = MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        onClick = { onSearchClicked(recentSearch) }
     ) {
-        Text(
-            modifier = Modifier.weight(1f),
-            text = recentSearch.searchTerm,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+        Row(
+            modifier = modifier
+                .clickable(onClick = { onSearchClicked(recentSearch) })
+                .padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing12),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+        ) {
+            Text(
+                modifier = Modifier,
+                text = recentSearch.searchTerm,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
-        IconResource(
-            modifier = Modifier
-                .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
-                .padding(horizontal = Dimens.Spacing08)
-                .size(Dimens.Spacing24),
-            imageVector = Icons.XCircle
-        )
+            IconResource(
+                modifier = Modifier
+                    .simpleClickable { onRemoveSearch(recentSearch.searchTerm) }
+                    .size(Dimens.Spacing16),
+                imageVector = Icons.XCircle
+            )
+        }
     }
+
 }

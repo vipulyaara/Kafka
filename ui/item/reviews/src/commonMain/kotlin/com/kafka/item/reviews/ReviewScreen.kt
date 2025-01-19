@@ -75,7 +75,7 @@ private fun Reviews(
     loading: Boolean,
     lazyGridState: LazyGridState,
     writeReview: () -> Unit,
-    updateReaction: (Reaction) -> Unit,
+    updateReaction: (String, Reaction) -> Unit,
     editReview: (String) -> Unit,
     deleteReview: (String) -> Unit
 ) {
@@ -96,7 +96,9 @@ private fun Reviews(
                         Reactions(
                             likes = review.likes,
                             dislikes = review.dislikes,
-                            updateReaction = updateReaction,
+                            updateReaction = {
+                                updateReaction(review.reviewId, it)
+                            },
                             edit = { editReview(review.reviewId) },
                             delete = { deleteReview(review.reviewId) })
                     }

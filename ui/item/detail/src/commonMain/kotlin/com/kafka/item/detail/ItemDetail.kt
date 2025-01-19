@@ -50,7 +50,6 @@ import com.kafka.ui.components.item.review.ReviewItem
 import com.kafka.ui.components.item.review.WriteReviewButton
 import com.kafka.ui.components.material.TextButton
 import com.kafka.ui.components.progress.InfiniteProgressBar
-import com.materialkolor.PaletteStyle
 import com.sarahang.playback.ui.color.DynamicTheme
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.more_by
@@ -61,7 +60,6 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.isDark
-import ui.common.theme.theme.surfaceDeep
 
 @Composable
 @Inject
@@ -92,40 +90,21 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
                     state = state,
                     itemPlaceholder = itemPlaceholder,
                     itemsByCreator = itemsByCreator,
-                    viewModel = viewModel
+                    openDescription = viewModel::openItemDescription,
+                    goToCreator = viewModel::goToCreator,
+                    onPrimaryAction = {
+                        viewModel.onPrimaryAction(it)
+                        viewModel.showAppRatingIfNeeded(context)
+                    },
+                    toggleFavorite = viewModel::updateBookshelfStatus,
+                    openSubject = viewModel::goToSubjectSubject,
+                    openItemDetail = viewModel::openItemDetail,
+                    openSummary = viewModel::openSummary,
+                    openWriteReview = viewModel::openWriteReview,
                 )
             }
         }
     }
-}
-
-@Composable
-private fun ItemDetail(
-    state: ItemDetailViewState,
-    itemPlaceholder: ItemPlaceholder?,
-    itemsByCreator: List<Item>,
-    viewModel: ItemDetailViewModel,
-    modifier: Modifier = Modifier,
-) {
-    val context = getContext()
-
-    ItemDetail(
-        state = state,
-        itemPlaceholder = itemPlaceholder,
-        itemsByCreator = itemsByCreator,
-        openDescription = viewModel::openItemDescription,
-        goToCreator = viewModel::goToCreator,
-        onPrimaryAction = {
-            viewModel.onPrimaryAction(it)
-            viewModel.showAppRatingIfNeeded(context)
-        },
-        toggleFavorite = viewModel::updateBookshelfStatus,
-        openSubject = viewModel::goToSubjectSubject,
-        openItemDetail = viewModel::openItemDetail,
-        openSummary = viewModel::openSummary,
-        openWriteReview = viewModel::openWriteReview,
-        modifier = modifier,
-    )
 }
 
 @Composable
@@ -145,7 +124,7 @@ private fun ItemDetail(
 ) {
     val useWideLayout = windowWidthSizeClass().useWideLayout()
 
-    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceDeep)) {
+    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
         ItemDetailScaffold(
             supportingPaneEnabled = useWideLayout,
             mainPane = {
@@ -333,7 +312,6 @@ private fun ItemDetailTheme(
         DynamicTheme(
             model = model,
             useDarkTheme = LocalTheme.current.isDark(),
-            style = PaletteStyle.Neutral
         ) {
             content()
         }

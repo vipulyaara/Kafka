@@ -32,7 +32,6 @@ import com.kafka.ui.components.material.TopBar
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_back_button
 import org.jetbrains.compose.resources.stringResource
-import ui.common.theme.theme.surfaceDeep
 
 @Composable
 internal fun TopBar(
@@ -143,11 +142,11 @@ private fun OverflowActions(expanded: Boolean, onDismiss: () -> Unit, report: ()
         onDismissRequest = onDismiss,
         modifier = Modifier
             .width(IntrinsicSize.Min)
-            .background(MaterialTheme.colorScheme.surfaceDeep),
+            .background(MaterialTheme.colorScheme.surface),
     ) {
         actionLabels.forEach { item ->
             DropdownMenuItem(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surfaceDeep),
+                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 text = {
                     Text(
                         text = item,

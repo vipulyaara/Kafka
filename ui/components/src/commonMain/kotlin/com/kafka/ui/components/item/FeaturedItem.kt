@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kafka.data.entities.Item
-import com.kafka.ui.components.placeholder.placeholderDefault
+import com.kafka.ui.components.placeholder.placeholder
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalThemeColor
 
@@ -130,7 +130,7 @@ fun FeaturedItemPlaceholder(aspectRatio: Float) {
             .padding(horizontal = Dimens.Gutter)
             .padding(top = Dimens.Gutter, bottom = Dimens.Spacing12)
             .clip(RoundedCornerShape(Dimens.RadiusMedium))
-            .placeholderDefault()
+            .placeholder()
     )
 }
 

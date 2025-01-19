@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import com.kafka.data.entities.Item
 import com.kafka.data.model.MediaType
-import com.kafka.ui.components.placeholder.placeholderDefault
+import com.kafka.ui.components.placeholder.placeholder
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -94,6 +94,6 @@ fun RowItemPlaceholder(modifier: Modifier = Modifier) {
         modifier = modifier
             .size(Dimens.CoverSizeLarge)
             .clip(RoundedCornerShape(Dimens.RadiusMedium))
-            .placeholderDefault()
+            .placeholder()
     )
 }

@@ -151,7 +151,10 @@ private fun ClearConfirmationDialog(
             title = stringResource(Res.string.clear_recent_dialog_title),
             onDismissRequest = { toggleConfirmation(false) },
             confirmButton = {
-                AlertDialogAction(text = stringResource(Res.string.remove_all)) {
+                AlertDialogAction(
+                    text = stringResource(Res.string.remove_all),
+                    color = MaterialTheme.colorScheme.error
+                ) {
                     clearRecentItems()
                     toggleConfirmation(false)
                 }
