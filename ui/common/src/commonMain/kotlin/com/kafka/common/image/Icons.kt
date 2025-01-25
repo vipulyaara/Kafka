@@ -31,6 +31,7 @@ import compose.icons.tablericons.Adjustments
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Bell
+import compose.icons.tablericons.Bold
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.Bookmark
 import compose.icons.tablericons.BrandBooking
@@ -51,9 +52,11 @@ import compose.icons.tablericons.Gift
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
+import compose.icons.tablericons.Italic
 import compose.icons.tablericons.Language
 import compose.icons.tablericons.LayoutGrid
 import compose.icons.tablericons.LayoutList
+import compose.icons.tablericons.List
 import compose.icons.tablericons.Logout
 import compose.icons.tablericons.Message
 import compose.icons.tablericons.Microphone
@@ -66,9 +69,11 @@ import compose.icons.tablericons.Plus
 import compose.icons.tablericons.Search
 import compose.icons.tablericons.Settings
 import compose.icons.tablericons.Share
+import compose.icons.tablericons.Strikethrough
 import compose.icons.tablericons.Sun
 import compose.icons.tablericons.Trash
 import compose.icons.tablericons.Umbrella
+import compose.icons.tablericons.Underline
 import compose.icons.tablericons.Upload
 import compose.icons.tablericons.X
 
@@ -142,4 +147,11 @@ object Icons {
     val ChevronRight = TablerIcons.ChevronRight
     val ChevronDown = TablerIcons.ChevronDown
     val OverflowMenuHorizontal = TablerIcons.Dots
+
+    val Bold = TablerIcons.Bold
+    val Italic = TablerIcons.Italic
+    val Underline = TablerIcons.Underline
+    val StrikeThrough = TablerIcons.Strikethrough
+    val OrderedList = TablerIcons.LayoutList
+    val UnorderedList = TablerIcons.List
 }

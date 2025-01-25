@@ -56,8 +56,6 @@ import com.kafka.homepage.recent.RecentItemsViewModel
 import com.kafka.library.LibraryScreen
 import com.kafka.library.bookshelf.BookshelfDetailViewModel
 import com.kafka.library.bookshelf.LibraryViewModel
-import com.kafka.library.bookshelf.add.AddToBookshelf
-import com.kafka.library.bookshelf.add.AddToBookshelfViewModel
 import com.kafka.navigation.LocalNavigator
 import com.kafka.navigation.NavigationEvent
 import com.kafka.navigation.Navigator
@@ -159,6 +157,7 @@ fun AppNavigation(
                 popExitTransition = { exit() }
             ) {
                 navigation<RootScreen.Home>(startDestination = Screen.Home) {
+//                navigation<RootScreen.Home>(startDestination = Screen.WriteReview("book_1731246085889")) {
                     addHome()
                     addItemDetailGroup()
                     addLibrary()

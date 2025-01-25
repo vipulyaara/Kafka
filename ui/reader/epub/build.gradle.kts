@@ -18,6 +18,7 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.okio)
+                implementation(libs.richeditor)
 
                 implementation(libs.ksoup)
                 implementation(libs.jetbrains.lifecycle.runtime.compose)

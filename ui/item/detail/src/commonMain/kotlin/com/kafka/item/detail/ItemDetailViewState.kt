@@ -22,7 +22,9 @@ data class ItemDetailViewState(
     val reviews: List<Review> = listOf()
 ) {
     val hasSubjects
-        get() = !itemDetail?.subjects.isNullOrEmpty()
+        get() = itemDetail?.subjects != null
+                && itemDetail.subjects!!.isNotEmpty()
+                && itemDetail.subjects!!.all { it.isNotEmpty() }
 
     val isFullScreenLoading: Boolean
         get() = isLoading && itemDetail == null

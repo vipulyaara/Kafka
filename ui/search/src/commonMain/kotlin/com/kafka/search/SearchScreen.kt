@@ -25,7 +25,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kafka.common.adaptive.fullSpanItems
 import com.kafka.common.adaptive.useWideLayout
 import com.kafka.common.adaptive.windowWidthSizeClass
 import com.kafka.common.extensions.AnimatedVisibilityFade
@@ -82,17 +81,12 @@ private fun Search(
     val density = LocalDensity.current
     var listTopPadding by rememberMutableState { 0.dp }
     val paddingValues = PaddingValues(top = listTopPadding, bottom = bottomScaffoldPadding())
+    val columns = if (useWideLayout) 2 else 1
 
     if (!searchViewState.items.isNullOrEmpty()) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = paddingValues) {
-            if (useWideLayout) {
-                items(searchViewState.items) { item ->
-                    SearchResultItem(item, openItemDetail)
-                }
-            } else {
-                fullSpanItems(searchViewState.items) { item ->
-                    SearchResultItem(item, openItemDetail)
-                }
+        LazyVerticalGrid(columns = GridCells.Fixed(columns), contentPadding = paddingValues) {
+            items(searchViewState.items) { item ->
+                SearchResultItem(item = item, modifier = Modifier.animateItem(), openItemDetail = openItemDetail)
             }
         }
     }
@@ -140,10 +134,10 @@ private fun Search(
 }
 
 @Composable
-private fun SearchResultItem(item: Item, openItemDetail: (String) -> Unit) {
+private fun SearchResultItem(item: Item, modifier: Modifier = Modifier, openItemDetail: (String) -> Unit) {
     Item(
         item = item,
-        modifier = Modifier
+        modifier = modifier
             .clickable { openItemDetail(item.itemId) }
             .padding(Dimens.Gutter, Dimens.Spacing06)
     )

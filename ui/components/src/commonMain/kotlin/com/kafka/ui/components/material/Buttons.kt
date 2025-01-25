@@ -16,7 +16,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import com.kafka.common.extensions.alignCenter
 import com.kafka.common.widgets.shadowMaterial
 import ui.common.theme.theme.Dimens
@@ -25,23 +28,35 @@ import ui.common.theme.theme.Dimens
 fun FloatingButton(
     text: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.primary,
+    contentPadding: PaddingValues = PaddingValues(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12),
+    elevation: Dp = Dimens.Spacing12,
+    textStyle: TextStyle = MaterialTheme.typography.labelLarge,
     onClickLabel: String? = null,
     onClick: () -> Unit,
 ) {
+    val alpha = if (enabled) 1f else 0.38f
+    val buttonColor = if (enabled) containerColor else containerColor.copy(alpha = 0.12f)
+    val textColor = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    
     Surface(
         modifier = modifier
-            .shadowMaterial(Dimens.Spacing12, RoundedCornerShape(Dimens.Spacing04))
-            .background(containerColor)
-            .clickable(onClickLabel = onClickLabel) { onClick() },
+            .alpha(alpha)
+            .shadowMaterial(if (enabled) elevation else Dimens.Spacing00, RoundedCornerShape(Dimens.Spacing04))
+            .background(buttonColor)
+            .clickable(
+                enabled = enabled,
+                onClickLabel = onClickLabel
+            ) { onClick() },
         shape = RoundedCornerShape(Dimens.Spacing04),
-        color = containerColor,
+        color = buttonColor,
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelLarge.alignCenter(),
-            color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12)
+            style = textStyle.alignCenter(),
+            color = textColor,
+            modifier = Modifier.padding(contentPadding)
         )
     }
 }
@@ -57,6 +72,9 @@ fun PrimaryButton(
         modifier = modifier,
         enabled = enabled,
         shape = RoundedCornerShape(Dimens.Spacing08),
+        colors = ButtonDefaults.buttonColors(
+            disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+        ),
         onClick = onClick
     ) {
         Text(
@@ -81,6 +99,9 @@ fun SecondaryButton(
         modifier = modifier,
         enabled = enabled,
         shape = RoundedCornerShape(Dimens.Spacing08),
+        colors = ButtonDefaults.outlinedButtonColors(
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        ),
         onClick = onClick
     ) {
         Text(
@@ -90,7 +111,7 @@ fun SecondaryButton(
                 .padding(vertical = Dimens.Spacing08),
             text = text,
             style = MaterialTheme.typography.titleSmall.alignCenter(),
-            color = MaterialTheme.colorScheme.primary
+            color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     }
 }
@@ -109,13 +130,16 @@ fun TextButton(
         enabled = enabled,
         shape = RoundedCornerShape(Dimens.Spacing08),
         contentPadding = contentPadding,
+        colors = ButtonDefaults.textButtonColors(
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        ),
         onClick = onClick
     ) {
         Text(
             text = text,
             modifier = Modifier.align(Alignment.CenterVertically),
             style = MaterialTheme.typography.titleSmall.alignCenter(),
-            color = color
+            color = if (enabled) color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     }
 }

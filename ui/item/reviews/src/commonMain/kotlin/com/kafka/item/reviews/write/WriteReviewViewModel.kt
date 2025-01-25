@@ -7,6 +7,7 @@ import com.kafka.base.domain.onException
 import com.kafka.base.extensions.stateInDefault
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.domain.interactors.reviews.PostReview
+import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.navigation.Navigator
 import com.kafka.networking.localizedMessage
 import kotlinx.coroutines.launch
@@ -16,12 +17,19 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class WriteReviewViewModel(
     @Assisted val savedStateHandle: SavedStateHandle,
+    observeItemDetail: ObserveItemDetail,
     private val postReview: PostReview,
     private val navigator: Navigator,
     private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     val itemId = savedStateHandle.get<String>("itemId")!!
     val loading = postReview.inProgress.stateInDefault(viewModelScope, false)
+
+    val item = observeItemDetail.flow.stateInDefault(viewModelScope, null)
+
+    init {
+        observeItemDetail(ObserveItemDetail.Param(itemId))
+    }
 
     fun post(text: String, rating: Float) {
         viewModelScope.launch {
@@ -35,5 +43,3 @@ class WriteReviewViewModel(
         navigator.goBack()
     }
 }
-
-data class WriteReviewState(val loading: Boolean)

@@ -25,17 +25,12 @@ import androidx.compose.ui.unit.dp
 import com.kafka.common.animation.LocalAnimatedContentScope
 import com.kafka.common.animation.LocalSharedTransitionScope
 import com.kafka.common.extensions.alignCenter
-import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.testTagUi
 import com.kafka.data.entities.ItemDetail
 import com.kafka.item.detail.ItemPlaceholder
 import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
-import com.kafka.ui.components.MessageBox
 import com.kafka.ui.components.item.CoverImage
-import kafka.ui.item.detail.generated.resources.Res
-import kafka.ui.item.detail.generated.resources.audio_access_restricted_message
-import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
@@ -128,31 +123,8 @@ internal fun Creator(creators: List<String>?, goToCreator: (String?) -> Unit) {
 
     Text(
         text = annotatedString,
-        modifier = Modifier
-            .padding(horizontal = Dimens.Spacing24),
+        modifier = Modifier.padding(horizontal = Dimens.Spacing24),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center)
-    )
-}
-
-
-@Composable
-internal fun AccessRestricted(
-    isAudio: Boolean,
-    borrowableBookMessage: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    val message = if (isAudio) {
-        stringResource(Res.string.audio_access_restricted_message)
-    } else {
-        borrowableBookMessage
-    }
-
-    MessageBox(
-        text = message,
-        trailingIcon = if (isAudio) null else Icons.ArrowForward,
-        modifier = modifier.padding(Dimens.Spacing24),
-        onClick = if (isAudio) null else onClick
     )
 }

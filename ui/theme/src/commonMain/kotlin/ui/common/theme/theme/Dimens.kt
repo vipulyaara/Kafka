@@ -37,6 +37,10 @@ object Dimens {
 
     val Gutter = 16.dp
 
+    val Border01 = 1.dp
+    val Border02 = 2.dp
+    val Border04 = 4.dp
+
     val Elevation02 = 2.dp
     val Elevation04 = 4.dp
     val Elevation08 = 8.dp

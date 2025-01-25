@@ -34,7 +34,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
 
     CompositeSurface(
         modifier = modifier
-            .padding(horizontal = Dimens.Spacing12)
+            .padding(horizontal = Dimens.Spacing24)
             .padding(scaffoldPadding())
     ) {
         Column(

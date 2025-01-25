@@ -38,13 +38,13 @@ fun SummaryMessage(text: String, modifier: Modifier = Modifier, onClick: () -> U
         ) {
             SummaryAnimation(
                 modifier = Modifier.size(Dimens.Spacing40),
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )
 
