@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import com.kafka.common.extensions.alignCenter
@@ -30,26 +31,28 @@ fun FloatingButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     contentPadding: PaddingValues = PaddingValues(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12),
     elevation: Dp = Dimens.Spacing12,
+    shape: Shape = RoundedCornerShape(Dimens.Spacing02),
     textStyle: TextStyle = MaterialTheme.typography.labelLarge,
     onClickLabel: String? = null,
     onClick: () -> Unit,
 ) {
     val alpha = if (enabled) 1f else 0.38f
     val buttonColor = if (enabled) containerColor else containerColor.copy(alpha = 0.12f)
-    val textColor = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    val textColor = contentColor
     
     Surface(
         modifier = modifier
             .alpha(alpha)
-            .shadowMaterial(if (enabled) elevation else Dimens.Spacing00, RoundedCornerShape(Dimens.Spacing04))
+            .shadowMaterial(if (enabled) elevation else Dimens.Spacing00, shape)
             .background(buttonColor)
             .clickable(
                 enabled = enabled,
                 onClickLabel = onClickLabel
             ) { onClick() },
-        shape = RoundedCornerShape(Dimens.Spacing04),
+        shape = shape,
         color = buttonColor,
     ) {
         Text(
@@ -100,7 +103,7 @@ fun SecondaryButton(
         enabled = enabled,
         shape = RoundedCornerShape(Dimens.Spacing08),
         colors = ButtonDefaults.outlinedButtonColors(
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
         ),
         onClick = onClick
     ) {

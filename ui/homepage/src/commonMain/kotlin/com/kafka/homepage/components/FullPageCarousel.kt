@@ -142,7 +142,7 @@ private fun CarouselItemScope.CarouselItem(
             )
 
             Text(
-                text = item.description.orEmpty(),
+                text = item.formattedDescription,
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 minLines = 2,

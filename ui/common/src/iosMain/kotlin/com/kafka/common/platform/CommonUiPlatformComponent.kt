@@ -10,5 +10,9 @@ actual interface CommonUiPlatformComponent {
         override fun shareText(text: String, context: Any?) {
             // todo: kmp implement this
         }
+        
+        override fun shareImageWithText(photoUrl: String, text: String, context: Any?) {
+            // todo: kmp implement this
+        }
     }
 }

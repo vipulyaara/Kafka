@@ -13,6 +13,8 @@ import com.kafka.common.animation.ProvideLocalAnimatedContentScope
 import com.kafka.item.detail.ItemDetail
 import com.kafka.item.detail.ItemDetailViewModel
 import com.kafka.item.detail.description.DescriptionDialog
+import com.kafka.item.preview.ItemPreviewScreen
+import com.kafka.item.preview.ItemPreviewViewModel
 import com.kafka.item.report.ReportContentScreen
 import com.kafka.item.report.ReportContentViewModel
 import com.kafka.item.reviews.ReviewScreen
@@ -40,7 +42,8 @@ fun NavGraphBuilder.addItemDetailGroup(
     addEpubReader: addEpubReader,
     addSummary: addSummary,
     addReviews: addReviews,
-    addWriteReview: addWriteReview
+    addWriteReview: addWriteReview,
+    addItemPreview: addItemPreview
 ) {
     addItemDetail()
     addItemDescription()
@@ -50,6 +53,7 @@ fun NavGraphBuilder.addItemDetailGroup(
     addSummary()
     addReviews()
     addWriteReview()
+    addItemPreview()
 }
 
 typealias addItemDetail = NavGraphBuilder.() -> Unit
@@ -141,6 +145,18 @@ fun NavGraphBuilder.addWriteReview(viewModelFactory: (SavedStateHandle) -> Write
     composable<Screen.WriteReview> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         WriteReviewScreen(viewModel)
+    }
+}
+
+typealias addItemPreview = NavGraphBuilder.() -> Unit
+
+@Inject
+fun NavGraphBuilder.addItemPreview(viewModelFactory: (SavedStateHandle) -> ItemPreviewViewModel) {
+    composable<Screen.ItemPreview> {
+        ProvideLocalAnimatedContentScope(this@composable) {
+            val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+            ItemPreviewScreen(viewModel)
+        }
     }
 }
 

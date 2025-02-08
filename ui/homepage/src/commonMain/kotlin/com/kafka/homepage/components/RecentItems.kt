@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 
 package com.kafka.homepage.components
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -48,10 +49,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.kafka.common.animation.LocalAnimatedContentScope
+import com.kafka.common.animation.LocalSharedTransitionScope
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.RecentItem
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
+import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
 import com.kafka.ui.components.LabelMedium
 import com.kafka.ui.components.item.CoverImage
 import com.kafka.ui.components.item.ItemCreatorSmall
@@ -158,7 +163,7 @@ private fun RecentItem(
                     .padding(start = Dimens.Spacing12, bottom = Dimens.Spacing12),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
             ) {
-                RecentItemCoverImage(recentItem)
+                RecentItemCoverImage(item = recentItem)
 
                 ItemDescription(
                     title = { ItemTitleSmall(recentItem.title, 1) },
@@ -184,7 +189,7 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(Dimens.Spacing56),
-            color = MaterialTheme.colorScheme.surfaceContainerLow
+            color = MaterialTheme.colorScheme.surfaceVariant
         )
 
         Surface(
@@ -195,7 +200,7 @@ private fun ShelfWithProgress(modifier: Modifier = Modifier, progress: Float) {
             shape = RoundedCornerShape(Dimens.Spacing04),
             tonalElevation = Dimens.Elevation04,
             shadowElevation = Dimens.Elevation04,
-            color = MaterialTheme.colorScheme.surfaceContainer
+            color = MaterialTheme.colorScheme.surfaceVariant
         ) {
             Spacer(modifier = Modifier.fillMaxSize())
             Spacer(
@@ -256,20 +261,30 @@ private fun BoxScope.RemoveRecentItemButton(
 
 @Composable
 private fun RecentItemCoverImage(item: RecentItem) {
-    Box(
-        modifier = Modifier
-            .shadowMaterial(
+    with(LocalSharedTransitionScope.current) {
+        Box(
+            modifier = Modifier.shadowMaterial(
                 elevation = Dimens.Spacing08,
                 shape = RoundedCornerShape(Dimens.Spacing04)
             )
-    ) {
-        CoverImage(
-            data = item.coverUrl,
-            contentDescription = null,
-            size = DpSize(64.dp, 92.dp),
-            containerColor = MaterialTheme.colorScheme.background,
-            contentScale = ContentScale.Crop,
-            placeholder = null
-        )
+        ) {
+            CoverImage(
+                data = item.coverUrl,
+                contentDescription = null,
+                size = DpSize(64.dp, 92.dp),
+                containerColor = MaterialTheme.colorScheme.background,
+                contentScale = ContentScale.Crop,
+                placeholder = null,
+                modifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(
+                        key = SharedElementCoverKey(
+                            cover = item.coverUrl.orEmpty(),
+                            origin = Origin.ReadingList
+                        )
+                    ),
+                    animatedVisibilityScope = LocalAnimatedContentScope.current
+                )
+            )
+        }
     }
 }

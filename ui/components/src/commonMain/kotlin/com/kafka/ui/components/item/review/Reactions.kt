@@ -33,7 +33,8 @@ fun Reactions(
     modifier: Modifier = Modifier,
     updateReaction: (Reaction) -> Unit,
     edit: () -> Unit,
-    delete: () -> Unit
+    delete: () -> Unit,
+    copy: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -59,15 +60,20 @@ fun Reactions(
         Spacer(Modifier.weight(1f))
 
         if (expanded) {
-            ActionBottomSheet({ expanded = false }) {
+            ActionBottomSheet(onDismiss = { expanded = false }) {
+                ActionBottomSheetItem(icon = Icons.Copy, text = "Copy") {
+                    copy()
+                    expanded = false
+                }
+
                 ActionBottomSheetItem(
                     icon = Icons.Delete,
                     text = "Delete",
-                    onClick = {
-                        delete()
-                        expanded = false
-                    }
-                )
+                    contentColor = MaterialTheme.colorScheme.error
+                ) {
+                    delete()
+                    expanded = false
+                }
             }
         }
 
@@ -86,7 +92,7 @@ private fun Reaction(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick
     ) {
         Row(
@@ -118,7 +124,7 @@ private fun MoreOptions(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(Dimens.Radius08),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick
     ) {
         Icon(

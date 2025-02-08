@@ -57,7 +57,7 @@ val DarkAppColors = darkColorScheme(
     errorContainer = Color(0xFFE0E0E0),
     onErrorContainer = Color.Black,
 
-    outline = Color.White,
+    outline = Color(0xFF2C2C2C),
     outlineVariant = Color.White,
     surfaceTint = Color.White
 )
@@ -93,7 +93,11 @@ val LightAppColors = lightColorScheme(
     errorContainer = Color(0xFF404040),
     onErrorContainer = Color.White,
 
-    outline = Color.Black,
+    outline = Color(0xFFE0E0E0),
     outlineVariant = Color.Black,
     surfaceTint = Color.Black
 )
+
+val Yellow500 = Color(0xFF_EAB308)
+val Rose800 = Color(0xFF9F1239)
+val Slate50 = Color(0xFFFFFFFF)

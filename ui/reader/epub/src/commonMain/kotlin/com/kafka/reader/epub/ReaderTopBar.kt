@@ -65,7 +65,7 @@ fun ReaderTopBar(
                     icon = Icons.Settings,
                     contentColor = theme.contentColor,
                     contentDescription = "Reader Settings",
-                    onClick = { settingsState.show() }
+                    onClick = { settingsState.toggle() }
                 )
             }
         },

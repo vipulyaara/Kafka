@@ -5,15 +5,10 @@ package com.kafka.item.detail
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -29,6 +24,8 @@ import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconButton
 import com.kafka.common.widgets.IconResource
 import com.kafka.ui.components.material.TopBar
+import com.kafka.ui.components.sheets.ActionBottomSheet
+import com.kafka.ui.components.sheets.ActionBottomSheetItem
 import kafka.ui.item.detail.generated.resources.Res
 import kafka.ui.item.detail.generated.resources.cd_back_button
 import org.jetbrains.compose.resources.stringResource
@@ -43,6 +40,23 @@ internal fun TopBar(
     shareVisible: Boolean = true
 ) {
     val isRaised by remember { derivedStateOf { lazyGridState.firstVisibleItemIndex > 2 } }
+    var showActions by remember { mutableStateOf(false) }
+
+    if (showActions) {
+        ActionBottomSheet(
+            onDismiss = { showActions = false },
+            actions = {
+                ActionBottomSheetItem(
+                    icon = Icons.Report,
+                    text = "Report copyright",
+                    contentColor = MaterialTheme.colorScheme.error
+                ) {
+                    report()
+                    showActions = false
+                }
+            }
+        )
+    }
 
     val containerColor by animateColorAsState(
         targetValue = if (isRaised) MaterialTheme.colorScheme.primary else Color.Transparent,
@@ -52,8 +66,6 @@ internal fun TopBar(
         targetValue = if (isRaised) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
         label = "content_color"
     )
-
-    var expanded by remember { mutableStateOf(false) }
 
     TopBar(
         containerColor = Color.Transparent,
@@ -71,12 +83,7 @@ internal fun TopBar(
 
             if (overflowVisible) {
                 Box(contentAlignment = Alignment.CenterEnd) {
-                    OverflowIcon(isRaised = isRaised) { expanded = true }
-
-                    OverflowActions(
-                        expanded = expanded,
-                        report = report,
-                        onDismiss = { expanded = false })
+                    OverflowIcon(isRaised = isRaised) { showActions = true }
                 }
             }
         }
@@ -130,35 +137,5 @@ private fun BackIcon(
             tint = contentColor,
             contentDescription = stringResource(Res.string.cd_back_button)
         )
-    }
-}
-
-@Composable
-private fun OverflowActions(expanded: Boolean, onDismiss: () -> Unit, report: () -> Unit) {
-    val actionLabels = listOf("Report copyright")
-
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismiss,
-        modifier = Modifier
-            .width(IntrinsicSize.Min)
-            .background(MaterialTheme.colorScheme.surface),
-    ) {
-        actionLabels.forEach { item ->
-            DropdownMenuItem(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                text = {
-                    Text(
-                        text = item,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                },
-                onClick = {
-                    onDismiss()
-                    report()
-                }
-            )
-        }
     }
 }

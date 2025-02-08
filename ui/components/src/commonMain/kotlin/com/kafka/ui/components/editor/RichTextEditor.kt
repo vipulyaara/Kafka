@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +32,7 @@ fun RichTextEditorFull(textState: RichTextState, modifier: Modifier = Modifier) 
     ) {
         RichTextEditor(
             textState = textState,
+            placeholder = "Write a review here. Remember to stay positive and non-abusive towards our community.",
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
@@ -45,12 +47,22 @@ fun RichTextEditorFull(textState: RichTextState, modifier: Modifier = Modifier) 
 fun RichTextEditor(
     textState: RichTextState,
     modifier: Modifier = Modifier,
+    placeholder: String? = null,
     contentPadding: PaddingValues = PaddingValues()
 ) {
     OutlinedRichTextEditor(
         state = textState,
         modifier = modifier,
         textStyle = MaterialTheme.typography.bodyLarge,
+        placeholder = {
+            placeholder?.let {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                )
+            }
+        },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
         contentPadding = contentPadding,
         colors = RichTextEditorDefaults.outlinedRichTextEditorColors(

@@ -12,10 +12,7 @@ kotlin {
                 implementation(projects.ui.components)
 
                 implementation(compose.components.resources)
-                implementation(compose.foundation)
                 implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
 
                 api(libs.filekit)
 

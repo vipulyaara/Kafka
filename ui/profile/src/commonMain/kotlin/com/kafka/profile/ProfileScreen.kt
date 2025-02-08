@@ -32,18 +32,14 @@ fun ProfileScreen(profileViewModel: ProfileViewModel, modifier: Modifier = Modif
     val navigator = LocalNavigator.current
     val viewState by profileViewModel.state.collectAsStateWithLifecycle()
 
-    CompositeSurface(
-        modifier = modifier
-            .padding(horizontal = Dimens.Spacing24)
-            .padding(scaffoldPadding())
-    ) {
+    CompositeSurface(modifier = modifier.padding(scaffoldPadding())) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
         ) {
             Surface(
-                modifier = modifier,
+                modifier = Modifier.padding(horizontal = Dimens.Spacing24),
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = MaterialTheme.shapes.large
             ) {
@@ -91,10 +87,7 @@ private fun CompositeSurface(modifier: Modifier = Modifier, content: @Composable
 }
 
 @Composable
-private fun LoginPrompt(
-    modifier: Modifier = Modifier,
-    openLogin: () -> Unit,
-) {
+private fun LoginPrompt(modifier: Modifier = Modifier, openLogin: () -> Unit) {
     Column(
         modifier = modifier
             .fillMaxWidth()

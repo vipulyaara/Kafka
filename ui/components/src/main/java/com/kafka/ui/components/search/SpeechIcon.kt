@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kafka.common.image.Icons
-import com.kafka.common.widgets.IconResource
+import com.kafka.common.widgets.IconButton
 import com.kafka.ui.components.R
 import ui.common.theme.theme.Dimens
 import java.util.Locale
@@ -47,14 +47,14 @@ actual fun SpeechIcon(onText: (String) -> Unit) {
             speechRecognizerLauncher.launch(intent)
         } catch (e: Exception) {
             Toast.makeText(
-                context,
-                context.getString(R.string.speech_not_supported),
-                Toast.LENGTH_SHORT
+                /* context = */ context,
+                /* text = */ context.getString(R.string.speech_not_supported),
+                /* duration = */ Toast.LENGTH_SHORT
             ).show()
         }
     }
 
-    IconResource(
+    IconButton(
         modifier = Modifier
             .padding(Dimens.Spacing12)
             .size(Dimens.Spacing24),

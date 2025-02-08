@@ -334,7 +334,12 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
         derivedStateOf { currentRoute?.destination?.route?.substringBefore("/") }
     }
 
-    val blackLabelledDestinations = listOf(Screen.EpubReader, Screen.Web, Screen.WriteReview)
+    val blackLabelledDestinations = listOf(
+        Screen.EpubReader,
+        Screen.Web,
+        Screen.WriteReview,
+        Screen.ItemPreview
+    )
 
     return !blackLabelledDestinations.map { it.navigationRoute }.contains(destination)
 }

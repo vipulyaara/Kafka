@@ -28,6 +28,7 @@ import compose.icons.fontawesomeicons.solid.Star
 import compose.icons.fontawesomeicons.solid.UserCircle
 import compose.icons.octicons.ArrowDownRight24
 import compose.icons.tablericons.Adjustments
+import compose.icons.tablericons.AlertCircle
 import compose.icons.tablericons.ArrowLeft
 import compose.icons.tablericons.ArrowRight
 import compose.icons.tablericons.Bell
@@ -147,6 +148,7 @@ object Icons {
     val ChevronRight = TablerIcons.ChevronRight
     val ChevronDown = TablerIcons.ChevronDown
     val OverflowMenuHorizontal = TablerIcons.Dots
+    val Report = TablerIcons.AlertCircle
 
     val Bold = TablerIcons.Bold
     val Italic = TablerIcons.Italic

@@ -41,7 +41,7 @@ class AuthViewModel(
         loadingCounter.observable,
         resetPassword.inProgress,
         signUpUser.inProgress,
-        signInUser.inProgress
+        signInUser.inProgress,
     ) { loadingStates ->
         loadingStates.any { loading -> loading }
     }

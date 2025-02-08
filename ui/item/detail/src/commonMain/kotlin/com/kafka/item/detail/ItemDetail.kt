@@ -99,6 +99,7 @@ fun ItemDetail(viewModel: ItemDetailViewModel) {
                     toggleFavorite = viewModel::updateBookshelfStatus,
                     openSubject = viewModel::goToSubjectSubject,
                     openItemDetail = viewModel::openItemDetail,
+                    openItemPreview = viewModel::openItemPreview,
                     openSummary = viewModel::openSummary,
                     openWriteReview = viewModel::openWriteReview,
                 )
@@ -118,6 +119,7 @@ private fun ItemDetail(
     toggleFavorite: () -> Unit,
     openSubject: (String) -> Unit,
     openItemDetail: (String, String) -> Unit,
+    openItemPreview: (String) -> Unit,
     openSummary: (String) -> Unit,
     openWriteReview: () -> Unit,
     modifier: Modifier = Modifier,
@@ -133,6 +135,7 @@ private fun ItemDetail(
                         state = state,
                         itemPlaceholder = itemPlaceholder,
                         useWideLayout = useWideLayout,
+                        openItemPreview = openItemPreview,
                         openDescription = openDescription,
                         goToCreator = goToCreator,
                         onPrimaryAction = onPrimaryAction,
@@ -204,6 +207,7 @@ private fun VerticalLayout(
     state: ItemDetailViewState,
     itemPlaceholder: ItemPlaceholder?,
     useWideLayout: Boolean,
+    openItemPreview: (String) -> Unit,
     openDescription: (String) -> Unit,
     goToCreator: (String?) -> Unit,
     onPrimaryAction: (String) -> Unit,
@@ -220,7 +224,8 @@ private fun VerticalLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
-                goToCreator = goToCreator
+                goToCreator = goToCreator,
+                openItemPreview = openItemPreview
             )
         }
 

@@ -13,5 +13,9 @@ actual interface CommonUiPlatformComponent {
         override fun shareText(text: String, context: Any?) {
             (context as? Context)?.shareText(text)
         }
+        
+        override fun shareImageWithText(photoUrl: String, text: String, context: Any?) {
+            (context as? Context)?.shareText(text) // todo
+        }
     }
 }

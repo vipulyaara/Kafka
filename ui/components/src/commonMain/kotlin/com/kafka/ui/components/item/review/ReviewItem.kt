@@ -50,9 +50,10 @@ fun ReviewItem(
             UserHeader(
                 name = review.userName,
                 rating = review.rating,
-                image = null,
+                image = review.userAvatar,
                 createdAt = review.createdAt
             )
+
             ReviewText(reviewId = review.reviewId, text = review.text, maxLines = maxLines)
 
             reactions()
@@ -160,7 +161,7 @@ fun Rating(rating: Float) {
                     Icon(
                         imageVector = Icons.Star,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.surfaceVariant
+                        tint = MaterialTheme.colorScheme.surfaceContainerHigh
                     )
                     // Filled star clipped to half
                     Icon(
@@ -181,7 +182,7 @@ fun Rating(rating: Float) {
                     imageVector = Icons.Star,
                     modifier = Modifier.size(Dimens.Spacing16),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceVariant
+                    tint = MaterialTheme.colorScheme.surfaceContainerHigh
                 )
             }
         }

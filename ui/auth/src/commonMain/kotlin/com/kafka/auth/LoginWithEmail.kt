@@ -2,7 +2,12 @@
 
 package com.kafka.auth
 
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,11 +46,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import com.kafka.common.extensions.rememberMutableState
+import com.kafka.common.extensions.rememberSavableMutableState
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.common.widgets.IconResource
 import com.kafka.ui.components.material.PrimaryButton
+import com.kafka.ui.components.material.TextFieldHint
 import kafka.ui.auth.generated.resources.Res
 import kafka.ui.auth.generated.resources.forgot_password
 import kafka.ui.auth.generated.resources.login
@@ -88,16 +94,27 @@ internal fun LoginWithEmail(
         LocalAutofillTree.current += usernameAutofill
         LocalAutofillTree.current += passwordAutofill
 
-        if (loginState == LoginState.Signup) {
-            LoginTextField(
-                modifier = Modifier,
-                loginTextField = LoginTextField.Name,
-                text = name,
-                onValueChange = { name = it },
-                onFocusChanged = onFocusChanged
+        AnimatedVisibility(
+            visible = loginState == LoginState.Signup,
+            enter = fadeIn() + expandVertically(
+                animationSpec = spring(),
+                expandFrom = Alignment.Top
+            ),
+            exit = fadeOut() + shrinkVertically(
+                animationSpec = spring(),
+                shrinkTowards = Alignment.Top
             )
-
-            Spacer(modifier = Modifier.height(Dimens.Spacing12))
+        ) {
+            Column {
+                LoginTextField(
+                    modifier = Modifier,
+                    loginTextField = LoginTextField.Name,
+                    text = name,
+                    onValueChange = { name = it },
+                    onFocusChanged = onFocusChanged
+                )
+                Spacer(modifier = Modifier.height(Dimens.Spacing12))
+            }
         }
 
         LoginTextField(
@@ -120,7 +137,13 @@ internal fun LoginWithEmail(
 
         Spacer(modifier = Modifier.height(Dimens.Spacing24))
 
-        LoginButton(keyboard, { login(username.text, password.text) }, loginState)
+        LoginButton(keyboard = keyboard, loginState = loginState) {
+            if (loginState.isLogin) {
+                login(username.text, password.text)
+            } else {
+                signUp(name.text, username.text, password.text)
+            }
+        }
 
         Text(
             modifier = Modifier
@@ -140,9 +163,9 @@ internal fun LoginWithEmail(
 @Composable
 private fun LoginButton(
     keyboard: SoftwareKeyboardController?,
-    login: () -> Unit,
     loginState: LoginState,
     enabled: Boolean = true,
+    login: () -> Unit,
 ) {
     PrimaryButton(
         text = if (loginState.isLogin) {
@@ -165,27 +188,21 @@ internal fun LoginTextField(
     onFocusChanged: (FocusState) -> Unit = {},
     onValueChange: (TextFieldValue) -> Unit,
 ) {
-    var isPasswordShown by rememberMutableState { false }
+    var isPasswordShown by rememberSavableMutableState { false }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
             .onFocusChanged(onFocusChanged),
         value = text,
-        placeholder = {
-            Text(
-                text = loginTextField.hint,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        },
+        placeholder = { TextFieldHint(loginTextField.hint) },
         trailingIcon = {
             if (loginTextField == LoginTextField.Password) {
                 IconResource(
                     imageVector = if (isPasswordShown) Icons.EyeOff else Icons.Eye,
                     modifier = Modifier
                         .padding(Dimens.Spacing08)
-                        .clickable { isPasswordShown = !isPasswordShown }
+                        .simpleClickable { isPasswordShown = !isPasswordShown }
                 )
             }
         },

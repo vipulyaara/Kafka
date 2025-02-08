@@ -12,6 +12,8 @@ kotlin {
                 implementation(projects.ui.components)
                 implementation(projects.uiPlayback)
 
+                implementation(libs.coil3.coil)
+
                 implementation(compose.components.resources)
                 implementation(compose.material3)
 

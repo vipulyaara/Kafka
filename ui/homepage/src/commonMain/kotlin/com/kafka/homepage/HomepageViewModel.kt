@@ -9,6 +9,7 @@ import com.kafka.common.UiMessageManager
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
+import com.kafka.data.entities.HomepageCollection
 import com.kafka.domain.interactors.UpdateHomepage
 import com.kafka.domain.interactors.recent.RemoveRecentItem
 import com.kafka.domain.observers.ObserveHomepage
@@ -36,7 +37,7 @@ class HomepageViewModel(
     private val analytics: Analytics,
     private val shareUtils: ShareUtils,
     private val snackbarManager: SnackbarManager,
-    private val uiMessageManager: UiMessageManager,
+    private val uiMessageManager: UiMessageManager
 ) : ViewModel() {
     val recentItems = observeRecentItems.flow.stateInDefault(viewModelScope, emptyList())
 
@@ -93,9 +94,19 @@ class HomepageViewModel(
         navigator.navigate(Screen.ItemDetail(itemId = itemId, origin = origin))
     }
 
+    fun openItemPreview(
+        itemId: String,
+        origin: Origin = Origin.Unknown,
+        source: String = "homepage"
+    ) {
+        val originKey = if (origin == Origin.Unknown) "Homepage" else origin.name
+        analytics.log { openItemPreview(itemId = itemId, source = source, origin = originKey) }
+        navigator.navigate(Screen.ItemPreview(itemId = itemId, origin = origin))
+    }
+
     fun openRecentItemDetail(itemId: String) {
         analytics.log { openRecentItem(itemId) }
-        navigator.navigate(Screen.ItemDetail(itemId))
+        navigator.navigate(Screen.ItemDetail(itemId, Origin.ReadingList))
     }
 
     fun openSubject(name: String) {
@@ -120,5 +131,14 @@ class HomepageViewModel(
     fun shareApp(text: String, context: Any?) {
         analytics.log { this.shareApp() }
         shareUtils.shareText(text = text, context = context)
+    }
+
+    private fun preloadImages(collection: List<HomepageCollection>) {
+//        viewModelScope.launch {
+//            preloadImages(context = platformContext, images = collection
+//                .filterIsInstance<HomepageCollection.FeaturedItem>()
+//                .flatMap { it.items }
+//                .mapNotNull { it.coverImage })
+//        }
     }
 }

@@ -29,6 +29,16 @@ class EventRepository {
         "source_component" to origin,
     )
 
+    fun openItemPreview(
+        itemId: String,
+        source: String? = null,
+        origin: String? = null,
+    ) = "open_item_preview" to mapOf(
+        "item_id" to itemId,
+        "source" to source,
+        "source_component" to origin,
+    )
+
     fun playItem(itemId: String, source: String? = null, index: Int = 0) = "play_item" to mapOf(
         "item_id" to itemId,
         "source" to source,

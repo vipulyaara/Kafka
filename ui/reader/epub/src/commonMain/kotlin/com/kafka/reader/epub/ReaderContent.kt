@@ -40,7 +40,6 @@ import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
 import com.kafka.reader.epub.components.ListElement
 import com.kafka.reader.epub.components.QuoteElement
-import com.kafka.reader.epub.components.SettingsSheet
 import com.kafka.reader.epub.components.SettingsState
 import com.kafka.reader.epub.components.TableComponent
 import com.kafka.reader.epub.components.TextElement
@@ -74,12 +73,12 @@ fun ReaderContent(
     val chapters = book.chapters
     val settings = readerState.settings
 
-    SettingsSheet(
-        settingsState = settingsState,
-        settings = settings,
-        language = readerState.language ?: book.language,
-        changeSettings = changeSettings
-    )
+//    SettingsSheet(
+//        settingsState = settingsState,
+//        settings = settings,
+//        language = readerState.language ?: book.language,
+//        changeSettings = changeSettings
+//    )
 
     HorizontalPager(pagerState) { page ->
         val chapter = remember(chapters, page) { chapters[page] }

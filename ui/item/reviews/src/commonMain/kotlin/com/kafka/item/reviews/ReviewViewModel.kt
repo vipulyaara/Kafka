@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kafka.analytics.providers.Analytics
 import com.kafka.base.extensions.stateInDefault
+import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.data.entities.Reaction
 import com.kafka.data.entities.Review
 import com.kafka.domain.interactors.reviews.DeleteReview
@@ -28,7 +29,8 @@ class ReviewViewModel(
     private val updateReviews: UpdateReviews,
     private val updateReviewReaction: UpdateReviewReaction,
     private val navigator: Navigator,
-    private val analytics: Analytics
+    private val analytics: Analytics,
+    private val snackbarManager: SnackbarManager
 ) : ViewModel() {
     private val itemId = savedStateHandle.get<String>("itemId")!!
 
@@ -54,6 +56,10 @@ class ReviewViewModel(
             updateReviewReaction(UpdateReviewReaction.Params(reviewId, reaction))
         }
 
+    }
+
+    fun onReviewCopied() {
+        snackbarManager.addMessage("Review text copied")
     }
 
     fun editReview(reviewId: String) {

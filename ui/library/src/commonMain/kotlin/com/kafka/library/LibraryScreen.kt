@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kafka.library.bookshelf.BookshelfDetailViewModel
@@ -16,7 +17,6 @@ import com.kafka.library.bookshelf.BookshelfItems
 import com.kafka.library.bookshelf.LibraryViewModel
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.material.ScribbleTabs
-import ui.common.theme.theme.Dimens
 
 @Composable
 fun LibraryScreen(
@@ -25,23 +25,22 @@ fun LibraryScreen(
 ) {
     val bookshelvesViewModel = viewModel { bookshelfFactory() }
     val bookshelves by bookshelvesViewModel.bookshelves.collectAsStateWithLifecycle()
+    val state = rememberPagerState { bookshelves.size }
 
-    Scaffold { padding ->
+    Scaffold(
+        topBar = {
+            ScribbleTabs(
+                tabs = bookshelves.map { it.name },
+                pagerState = state,
+                modifier = Modifier.padding(top = 54.dp)
+            )
+        }
+    ) { padding ->
         ProvideScaffoldPadding(padding = padding) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = Dimens.Spacing56)
-            ) {
-                val state = rememberPagerState { bookshelves.size }
-
-                Column {
-                    ScribbleTabs(tabs = bookshelves.map { it.name }, pagerState = state)
-
-                    HorizontalPager(state = state) { page ->
-                        val bookshelf = bookshelves[page]
-                        BookshelfItems(bookshelf, detailFactory)
-                    }
+            Column(modifier = Modifier.fillMaxSize()) {
+                HorizontalPager(state = state) { page ->
+                    val bookshelf = bookshelves[page]
+                    BookshelfItems(bookshelf = bookshelf, detailFactory = detailFactory)
                 }
             }
         }

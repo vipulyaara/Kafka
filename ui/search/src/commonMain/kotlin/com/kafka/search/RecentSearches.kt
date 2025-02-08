@@ -51,7 +51,7 @@ fun RecentSearches(
                     modifier = Modifier
                         .padding(horizontal = Dimens.Spacing16)
                         .animateContentSize(),
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing02),
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing04),
                 ) {
                     recentSearches.forEach { recentSearch ->
                         RecentSearchItem(
@@ -77,13 +77,13 @@ fun RecentSearchItem(
     Surface(
         modifier = Modifier,
         shape = MaterialTheme.shapes.small,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         onClick = { onSearchClicked(recentSearch) }
     ) {
         Row(
             modifier = modifier
                 .clickable(onClick = { onSearchClicked(recentSearch) })
-                .padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing12),
+                .padding(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing08),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
         ) {

@@ -59,6 +59,7 @@ internal fun ItemDescriptionAndCover(
     itemPlaceholder: ItemPlaceholder,
     modifier: Modifier = Modifier,
     goToCreator: (String?) -> Unit,
+    openItemPreview: (String) -> Unit
 ) {
     Column(
         modifier = modifier.padding(top = Dimens.Spacing24),
@@ -73,7 +74,9 @@ internal fun ItemDescriptionAndCover(
                 tonalElevation = 0.dp,
                 contentScale = ContentScale.Crop,
                 placeholder = null,
-                modifier = Modifier.sharedElement(
+                modifier = Modifier
+                    .simpleClickable { openItemPreview(itemDetail?.itemId ?: itemPlaceholder.itemId) }
+                    .sharedElement(
                     state = rememberSharedContentState(
                         key = SharedElementCoverKey(
                             cover = itemPlaceholder.coverImage,

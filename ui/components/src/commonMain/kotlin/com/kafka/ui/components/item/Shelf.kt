@@ -87,10 +87,7 @@ fun PerspectiveShapeWithShadow(
                 close()
             },
             brush = verticalGradient(
-                colors = listOf(
-                    color.copy(alpha = 0.7f),
-                    color
-                )
+                colors = listOf(color.copy(alpha = 0.7f), color)
             ),
             style = Fill
         )

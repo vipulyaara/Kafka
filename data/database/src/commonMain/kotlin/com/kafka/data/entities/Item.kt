@@ -2,6 +2,7 @@ package com.kafka.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.fleeksoft.ksoup.Ksoup
 import com.kafka.data.model.MediaType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,4 +31,13 @@ data class Item(
 
     val isInappropriate: Boolean
         get() = collections?.contains("no-preview") ?: false
+
+    private val trimmedDescription: String
+        get() = description?.replaceFirst("<p>", "")
+            ?.replaceFirst("</p>", "")
+            ?.trim()
+            .orEmpty()
+
+    val formattedDescription: String
+        get() = Ksoup.parse(trimmedDescription).text()
 }

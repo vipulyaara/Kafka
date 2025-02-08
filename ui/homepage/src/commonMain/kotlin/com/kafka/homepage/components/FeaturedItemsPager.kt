@@ -1,10 +1,15 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalSharedTransitionApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
+)
 
 package com.kafka.homepage.components
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,7 +41,7 @@ import com.kafka.common.extensions.black
 import com.kafka.data.entities.Item
 import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import com.kafka.navigation.graph.Screen.ItemDetail.SharedElementCoverKey
-import com.kafka.ui.components.material.HorizontalCubePager
+import com.kafka.ui.components.material.pagers.StackedHorizontalPager
 import com.sarahang.playback.ui.color.DynamicTheme
 import ui.common.theme.theme.Dimens
 import ui.common.theme.theme.LocalTheme
@@ -47,6 +52,7 @@ fun FeaturedItemsPager(
     carouselItems: List<Item>,
     images: List<String>,
     onClick: (String) -> Unit,
+    onLongClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isDark = LocalTheme.current.isDark()
@@ -59,7 +65,10 @@ fun FeaturedItemsPager(
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
-                    .clickable { onClick(carouselItems[page].itemId) }
+                    .combinedClickable(
+                        onClick = { onClick(carouselItems[page].itemId) },
+                        onLongClick = { onLongClick(carouselItems[page].itemId) }
+                    )
             ) {
                 CoverImage(image = image, title = item.title)
                 Description(item = item, date = dates.getOrNull(page))
@@ -85,13 +94,13 @@ private fun PagerScaffold(
             itemSpacing = Dimens.Spacing04,
             contentPadding = PaddingValues(horizontal = Dimens.Spacing16)
         ) { index ->
-            Box(Modifier.maskClip(shape = RoundedCornerShape(Dimens.Radius16))) {
+            Box(modifier = Modifier.maskClip(shape = RoundedCornerShape(Dimens.Radius16))) {
                 content(index)
             }
         }
     } else {
         val state = rememberPagerState { items.size }
-        HorizontalCubePager(state = state, modifier = modifier) { page ->
+        StackedHorizontalPager(state = state, modifier = modifier) { page ->
             content(page)
         }
     }
@@ -137,7 +146,7 @@ private fun Description(item: Item, date: String?) {
         }
 
         Text(
-            text = item.description.orEmpty(),
+            text = item.formattedDescription,
             modifier = Modifier
                 .padding(vertical = Dimens.Spacing20)
                 .padding(end = Dimens.Spacing20)
@@ -168,4 +177,8 @@ private val dates = listOf(
     "25 Nov",
     "26 Nov",
     "27 Nov",
+    "28 Nov",
+    "29 Nov",
+    "30 Nov",
+    "31 Nov",
 ).reversed()

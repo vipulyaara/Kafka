@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.rememberSavableMutableState
 import com.kafka.ui.components.material.OutlinedTextFieldDefaults
 import com.kafka.ui.components.material.PrimaryButton
+import com.kafka.ui.components.material.TextFieldHint
 import com.kafka.ui.components.placeholder.PlaceholderHighlight
 import com.kafka.ui.components.placeholder.placeholder
 import com.kafka.ui.components.placeholder.shimmer
@@ -99,13 +99,7 @@ internal fun EmailTextField(
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         value = text,
-        placeholder = {
-            Text(
-                text = "Email (Optional)",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        },
+        placeholder = { TextFieldHint("Email (Optional)") },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
             autoCorrectEnabled = false,
@@ -128,13 +122,7 @@ internal fun FeedbackTextField(
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         value = text,
-        placeholder = {
-            Text(
-                text = "Enter your feedback here",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        },
+        placeholder = { TextFieldHint(text = "Enter your feedback here") },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrectEnabled = false,

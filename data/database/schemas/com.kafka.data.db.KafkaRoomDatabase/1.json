@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "671d9d29eb7485272ef10a7816062409",
+    "identityHash": "ef2089a1ea0f89fb19c5051533fd03de",
     "entities": [
       {
         "tableName": "ItemDetail",
@@ -421,7 +421,7 @@
       },
       {
         "tableName": "review",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `user_name` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `likes` INTEGER NOT NULL, `dislikes` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `user_name` TEXT NOT NULL, `user_avatar` TEXT NOT NULL, `text` TEXT NOT NULL, `rating` REAL NOT NULL, `likes` INTEGER NOT NULL, `dislikes` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`review_id`))",
         "fields": [
           {
             "fieldPath": "reviewId",
@@ -444,6 +444,12 @@
           {
             "fieldPath": "userName",
             "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userAvatar",
+            "columnName": "user_avatar",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -488,7 +494,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '671d9d29eb7485272ef10a7816062409')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ef2089a1ea0f89fb19c5051533fd03de')"
     ]
   }
 }

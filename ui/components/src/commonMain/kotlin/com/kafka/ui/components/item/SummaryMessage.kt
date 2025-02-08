@@ -23,10 +23,7 @@ import ui.common.theme.theme.Dimens
 fun SummaryMessage(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        border = BorderStroke(
-            width = 1.5.dp,
-            color = MaterialTheme.colorScheme.surfaceVariant
-        ),
+        border = BorderStroke(width = 1.5.dp, color = MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(Dimens.Radius04),
         color = MaterialTheme.colorScheme.surface,
         onClick = onClick

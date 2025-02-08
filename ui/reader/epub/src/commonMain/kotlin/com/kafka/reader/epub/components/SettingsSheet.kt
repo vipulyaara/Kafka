@@ -2,6 +2,9 @@
 
 package com.kafka.reader.epub.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -10,11 +13,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +25,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.kafka.common.image.Icons
 import com.kafka.common.simpleClickable
 import com.kafka.reader.epub.settings.ReaderFont
@@ -52,55 +53,51 @@ import com.kafka.reader.epub.settings.ReaderSettings.LineHeight
 import com.kafka.reader.epub.settings.ReaderTheme
 import com.kafka.reader.epub.settings.font
 import com.kafka.reader.epub.settings.theme
-import com.kafka.ui.components.material.ModalBottomSheet
 import kafka.ui.reader.epub.generated.resources.Res
-import kafka.ui.reader.epub.generated.resources.font_size
 import kafka.ui.reader.epub.generated.resources.horizontal_navigation
 import kafka.ui.reader.epub.generated.resources.horizontal_navigation_text
-import kafka.ui.reader.epub.generated.resources.margins
 import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun SettingsSheet(
-    settingsState: SettingsState,
     settings: ReaderSettings,
     language: String,
     changeSettings: (ReaderSettings) -> Unit
 ) {
-    ModalBottomSheet(
-        show = settingsState.show,
-        onDismissRequest = settingsState::hide,
+    Column(
+        modifier = Modifier.padding(vertical = Dimens.Spacing48),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing36)
     ) {
-        Column(
-            modifier = Modifier.padding(vertical = Dimens.Spacing24),
-            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing36)
-        ) {
-            TextControls(
-                fontScale = settings.fontScale,
-                marginScale = settings.marginScale,
-                lineHeight = settings.lineHeightType,
-                textAlignment = settings.textAlignment,
-                onMarginChange = { changeSettings(settings.copy(marginScale = it)) },
-                onFontScaleChange = { changeSettings(settings.copy(fontScale = it)) },
-                onLineHeightChange = { changeSettings(settings.copy(lineHeightType = it)) },
-                onTextAlignmentChange = { changeSettings(settings.copy(textAlignment = it)) }
-            )
+        TextControls(
+            lineHeight = settings.lineHeightType,
+            textAlignment = settings.textAlignment,
+            onLineHeightChange = { changeSettings(settings.copy(lineHeightType = it)) },
+            onTextAlignmentChange = { changeSettings(settings.copy(textAlignment = it)) }
+        )
 
+        ThemeSelector(
+            currentTheme = settings.theme,
+            onThemeChange = { changeSettings(settings.copy(themeKey = it.key)) }
+        )
+
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = Dimens.Gutter),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             FontStyle(
                 readerFont = settings.font,
                 language = language,
                 onClick = { changeSettings(settings.copy(fontStyleKey = it.key)) }
             )
-
-            ThemeSelector(
-                currentTheme = settings.theme,
-                onThemeChange = { changeSettings(settings.copy(themeKey = it.key)) }
-            )
-
-            NavigationControl(
-                horizontalNavigation = settings.horizontalNavigation,
-                onNavigationChange = { changeSettings(settings.copy(horizontalNavigation = it)) }
+            FontMarginSize(
+                fontScale = settings.fontScale,
+                onFontScaleChange = { changeSettings(settings.copy(fontScale = it)) },
+                marginScale = settings.marginScale,
+                onMarginChange = { changeSettings(settings.copy(marginScale = it)) }
             )
         }
     }
@@ -108,160 +105,54 @@ fun SettingsSheet(
 
 @Composable
 private fun TextControls(
-    fontScale: Float,
-    marginScale: Float,
     lineHeight: LineHeight,
     textAlignment: ReaderSettings.TextAlignment,
-    onFontScaleChange: (Float) -> Unit,
-    onMarginChange: (Float) -> Unit,
     onLineHeightChange: (LineHeight) -> Unit,
     onTextAlignmentChange: (ReaderSettings.TextAlignment) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.Gutter)) {
-        // First Row: Font Size and Margin Controls
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Font Size Controls
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(Res.string.font_size),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.Gutter),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
+            LineHeight.entries.forEach { option ->
+                val selected = option == lineHeight
+                val color by animateColorAsState(if (selected) colorScheme.primary else colorScheme.surfaceContainerHighest)
+
+                SurfaceIcon(
+                    selected = selected,
+                    onClick = { onLineHeightChange(option) },
                 ) {
-                    IconButton(
-                        onClick = {
-                            val currentIndex = ReaderSettings.fontScaleOptions.indexOf(fontScale)
-                            if (currentIndex > 0) {
-                                onFontScaleChange(ReaderSettings.fontScaleOptions[currentIndex - 1])
-                            }
-                        },
-                        enabled = fontScale > ReaderSettings.fontScaleOptions.first()
-                    ) {
-                        Icon(Icons.Minus, "Decrease font size")
-                    }
-
-                    Text(
-                        text = "${(fontScale * 100).toInt()}%",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                    LineHeightIcon(
+                        variant = option,
+                        modifier = Modifier.size(Dimens.Spacing24),
+                        color = color
                     )
-
-                    IconButton(
-                        onClick = {
-                            val currentIndex = ReaderSettings.fontScaleOptions.indexOf(fontScale)
-                            if (currentIndex < ReaderSettings.fontScaleOptions.lastIndex) {
-                                onFontScaleChange(ReaderSettings.fontScaleOptions[currentIndex + 1])
-                            }
-                        },
-                        enabled = fontScale < ReaderSettings.fontScaleOptions.last()
-                    ) {
-                        Icon(Icons.Plus, "Increase font size")
-                    }
-                }
-            }
-
-            // Margin Controls
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(Res.string.margins),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-                ) {
-                    IconButton(
-                        onClick = {
-                            val currentIndex =
-                                ReaderSettings.marginScaleOptions.indexOf(marginScale)
-                            if (currentIndex > 0) {
-                                onMarginChange(ReaderSettings.marginScaleOptions[currentIndex - 1])
-                            }
-                        },
-                        enabled = marginScale > ReaderSettings.marginScaleOptions.first()
-                    ) {
-                        Icon(Icons.Minus, "Decrease margin")
-                    }
-
-                    Text(
-                        text = "${(marginScale * 100).toInt()}%",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    IconButton(
-                        onClick = {
-                            val currentIndex =
-                                ReaderSettings.marginScaleOptions.indexOf(marginScale)
-                            if (currentIndex < ReaderSettings.marginScaleOptions.lastIndex) {
-                                onMarginChange(ReaderSettings.marginScaleOptions[currentIndex + 1])
-                            }
-                        },
-                        enabled = marginScale < ReaderSettings.marginScaleOptions.last()
-                    ) {
-                        Icon(Icons.Plus, "Increase margin")
-                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(Dimens.Spacing16))
+        Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
+            ReaderSettings.TextAlignment.entries.forEach { option ->
+                val selected = option == textAlignment
+                val color by animateColorAsState(if (selected) colorScheme.primary else colorScheme.surfaceContainerHighest)
 
-        // Second Row: Line Height and Text Alignment
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
-                LineHeight.entries.forEach { option ->
-                    val selected = option == lineHeight
-                    val color =
-                        if (selected) colorScheme.primary else colorScheme.surfaceContainerHighest
-
-                    SurfaceIcon(
-                        onClick = { onLineHeightChange(option) },
-                        selected = selected
-                    ) {
-                        LineHeightIcon(
-                            variant = option,
-                            modifier = Modifier.size(Dimens.Spacing24),
-                            color = color
-                        )
+                SurfaceIcon(
+                    onClick = { onTextAlignmentChange(option) },
+                    selected = selected
+                ) {
+                    val icon = when (option) {
+                        ReaderSettings.TextAlignment.LEFT -> Icons.AlignLeft
+                        ReaderSettings.TextAlignment.RIGHT -> Icons.AlignRight
+                        ReaderSettings.TextAlignment.JUSTIFY -> Icons.AlignJustified
                     }
-                }
-            }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
-                ReaderSettings.TextAlignment.entries.forEach { option ->
-                    val selected = option == textAlignment
-                    val color =
-                        if (selected) colorScheme.primary else colorScheme.surfaceContainerHighest
-
-                    SurfaceIcon(
-                        onClick = { onTextAlignmentChange(option) },
-                        selected = selected
-                    ) {
-                        val icon = when (option) {
-                            ReaderSettings.TextAlignment.LEFT -> Icons.AlignLeft
-                            ReaderSettings.TextAlignment.RIGHT -> Icons.AlignRight
-                            ReaderSettings.TextAlignment.JUSTIFY -> Icons.AlignJustified
-                        }
-
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = option.label,
-                            tint = color
-                        )
-                    }
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = option.label,
+                        tint = color
+                    )
                 }
             }
         }
@@ -269,42 +160,162 @@ private fun TextControls(
 }
 
 @Composable
-private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (ReaderFont) -> Unit) {
+private fun FontMarginSize(
+    fontScale: Float,
+    onFontScaleChange: (Float) -> Unit,
+    marginScale: Float,
+    onMarginChange: (Float) -> Unit
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
-            .padding(horizontal = Dimens.Gutter),
-        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        ReaderFont.options(language).forEach {
-            val alpha by animateFloatAsState(if (it == readerFont) 1f else 0.2f)
-
-            Column(
+        // Font Size Controls
+        Surface(
+            shape = RoundedCornerShape(Dimens.Radius08),
+            color = colorScheme.surfaceVariant
+        ) {
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(Dimens.Radius04))
-                    .background(colorScheme.surfaceContainer.copy(alpha = 0.2f))
-                    .simpleClickable { onClick(it) },
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .animateContentSize()
+                    .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing08),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
             ) {
                 Text(
-                    text = "Aa",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontFamily = it.fontFamily,
-                    color = sheetContentColor.copy(alpha = alpha)
+                    text = "aA",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = colorScheme.onSurface,
+                    modifier = Modifier.simpleClickable {
+                        val currentIndex = ReaderSettings.fontScaleOptions.indexOf(fontScale)
+                        if (currentIndex > 0) {
+                            onFontScaleChange(ReaderSettings.fontScaleOptions[currentIndex - 1])
+                        }
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(Dimens.Spacing02))
 
                 Text(
-                    text = it.name,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontFamily = it.fontFamily,
-                    color = sheetContentColor.copy(alpha = alpha)
+                    text = "${(fontScale * 100).toInt()}%",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorScheme.onSurfaceVariant,
                 )
+
+                Text(
+                    text = "aA",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.simpleClickable {
+                        val currentIndex = ReaderSettings.fontScaleOptions.indexOf(fontScale)
+                        if (currentIndex < ReaderSettings.fontScaleOptions.lastIndex) {
+                            onFontScaleChange(ReaderSettings.fontScaleOptions[currentIndex + 1])
+                        }
+                    }
+                )
+            }
+        }
+
+        // Margin Controls
+        Surface(
+            shape = RoundedCornerShape(Dimens.Radius08),
+            color = colorScheme.surfaceVariant,
+        ) {
+            Row(
+                modifier = Modifier
+                    .animateContentSize()
+                    .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing08),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+            ) {
+                Text(
+                    text = "[ ]",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = colorScheme.onSurface,
+                    modifier = Modifier.simpleClickable {
+                        val currentIndex = ReaderSettings.marginScaleOptions.indexOf(marginScale)
+                        if (currentIndex > 0) {
+                            onMarginChange(ReaderSettings.marginScaleOptions[currentIndex - 1])
+                        }
+                    }
+                )
+
+                Text(
+                    text = "${(marginScale * 100).toInt()}%",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = "[ ]",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.simpleClickable {
+                        val currentIndex = ReaderSettings.marginScaleOptions.indexOf(marginScale)
+                        if (currentIndex < ReaderSettings.marginScaleOptions.lastIndex) {
+                            onMarginChange(ReaderSettings.marginScaleOptions[currentIndex + 1])
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (ReaderFont) -> Unit) {
+    var showFontSelection by remember { mutableStateOf(false) }
+
+    Surface(
+        shape = RoundedCornerShape(Dimens.Radius08),
+        color = colorScheme.surfaceVariant,
+        onClick = { showFontSelection = true }
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing08),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = readerFont.name,
+                style = MaterialTheme.typography.labelMedium,
+                fontFamily = readerFont.fontFamily,
+            )
+
+            Icon(imageVector = Icons.ChevronDown, contentDescription = null, tint = colorScheme.surfaceTint)
+        }
+    }
+
+    if (showFontSelection) {
+        Dialog(onDismissRequest = { showFontSelection = false }) {
+            Surface(color = colorScheme.surfaceVariant, shape = RoundedCornerShape(Dimens.Radius20)) {
+                Column(
+                    modifier = Modifier.padding(Dimens.Spacing24),
+                    verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
+                ) {
+                    ReaderFont.options(language).forEach {
+                        val alpha by animateFloatAsState(if (it == readerFont) 1f else 0.7f)
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing08)
+                                .clip(RoundedCornerShape(Dimens.Radius04))
+                                .background(colorScheme.surfaceContainer.copy(alpha = 0.2f))
+                                .simpleClickable { onClick(it) },
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = it.name,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = it.fontFamily,
+                                color = sheetContentColor.copy(alpha = alpha)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -317,20 +328,20 @@ private fun ThemeSelector(currentTheme: ReaderTheme, onThemeChange: (ReaderTheme
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
             .padding(horizontal = Dimens.Gutter),
-        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ReaderTheme.options.forEach { theme ->
             val selected = theme.key == currentTheme.key
-            val borderColor = if (selected) colorScheme.primary else colorScheme.surfaceVariant
-            val borderWidth = if (selected) 2.dp else 1.dp
+            val borderColor by animateColorAsState(if (selected) colorScheme.primary else colorScheme.surfaceVariant)
+            val borderWidth by animateDpAsState(if (selected) 2.dp else 1.dp)
 
             Surface(
                 modifier = Modifier
-                    .widthIn(max = Dimens.Spacing76)
+                    .widthIn(max = Dimens.Spacing48)
                     .aspectRatio(1f),
                 color = if (!theme.isSystemTheme) theme.backgroundColor else Color.Transparent,
                 border = BorderStroke(borderWidth, borderColor),
-                shape = RoundedCornerShape(Dimens.Radius04),
+                shape = CircleShape,
                 onClick = { onThemeChange(theme) }
             ) {
                 Box(
@@ -372,19 +383,19 @@ private fun ThemeSelector(currentTheme: ReaderTheme, onThemeChange: (ReaderTheme
                             Text(
                                 text = "A",
                                 color = Color.Black,
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.labelMedium
                             )
                             Text(
                                 text = "a",
                                 color = Color.White,
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
                     } else {
                         Text(
                             text = "Aa",
                             color = theme.contentColor,
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 }
@@ -442,7 +453,7 @@ private fun SurfaceIcon(
     onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val borderColor = if (selected) colorScheme.primary else colorScheme.surfaceContainerHighest
+    val borderColor by animateColorAsState(if (selected) colorScheme.primary else colorScheme.outline)
 
     Surface(
         modifier = modifier,
@@ -450,7 +461,7 @@ private fun SurfaceIcon(
         shape = CircleShape,
         onClick = onClick,
     ) {
-        Box(Modifier.padding(Dimens.Spacing12)) {
+        Box(modifier = Modifier.padding(Dimens.Spacing12)) {
             content()
         }
     }

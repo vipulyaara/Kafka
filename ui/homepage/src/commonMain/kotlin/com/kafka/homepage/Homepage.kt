@@ -1,9 +1,11 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalFoundationApi::class)
 
 package com.kafka.homepage
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -88,6 +90,7 @@ fun Homepage(viewModelFactory: () -> HomepageViewModel) {
                         recentItems = recentItems,
                         appShareIndex = viewState.appShareIndex,
                         openItemDetail = viewModel::openItemDetail,
+                        openItemPreview = viewModel::openItemPreview,
                         openRecentItemDetail = viewModel::openRecentItemDetail,
                         removeRecentItem = viewModel::removeRecentItem,
                         goToSearch = viewModel::openSearch,
@@ -121,6 +124,7 @@ private fun HomepageFeedItems(
     appShareIndex: Int,
     openRecentItemDetail: (String) -> Unit,
     openItemDetail: (String, Origin) -> Unit,
+    openItemPreview: (String, Origin) -> Unit,
     removeRecentItem: (String) -> Unit,
     goToSearch: () -> Unit,
     goToSubject: (String) -> Unit,
@@ -154,7 +158,8 @@ private fun HomepageFeedItems(
                                 modifier = Modifier,
                                 carouselItems = collection.items,
                                 images = collection.image,
-                                onClick = { openItemDetail(it, Origin.Carousel) }
+                                onClick = { openItemDetail(it, Origin.Carousel) },
+                                onLongClick = { openItemPreview(it, Origin.Carousel) }
                             )
                         } else {
                             FeaturedItemPlaceholder(0.66f)
@@ -235,7 +240,8 @@ private fun HomepageFeedItems(
 
                     gridItems(
                         collection = collection,
-                        openItemDetail = { openItemDetail(it, Origin.Grid) }
+                        openItemDetail = { openItemDetail(it, Origin.Grid) },
+                        openItemPreview = { openItemPreview(it, Origin.Grid) }
                     )
                 }
 
@@ -355,7 +361,8 @@ private fun LazyGridScope.columnItems(
 
 private fun LazyGridScope.gridItems(
     collection: HomepageCollection.Grid,
-    openItemDetail: (String) -> Unit
+    openItemDetail: (String) -> Unit,
+    openItemPreview: (String) -> Unit,
 ) {
     if (collection.items.isNotEmpty()) {
         items(
@@ -370,7 +377,10 @@ private fun LazyGridScope.gridItems(
                     modifier = Modifier
                         .padding(Dimens.Spacing06)
                         .clip(RoundedCornerShape(Dimens.Radius08))
-                        .clickable { openItemDetail(item.itemId) }
+                        .combinedClickable(
+                            onClick = { openItemDetail(item.itemId) },
+                            onLongClick = { openItemPreview(item.itemId) }
+                        )
                         .sharedElement(
                             state = rememberSharedContentState(
                                 key = SharedElementCoverKey(

@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.adaptive.WindowWidth
@@ -45,6 +47,7 @@ import ui.common.theme.theme.Dimens
 fun ReviewScreen(reviewViewModel: ReviewViewModel) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val lazyGridState = rememberLazyGridState()
+    val clipboardManager = LocalClipboardManager.current
 
     Scaffold(
         topBar = {
@@ -62,6 +65,10 @@ fun ReviewScreen(reviewViewModel: ReviewViewModel) {
                 lazyGridState = lazyGridState,
                 writeReview = reviewViewModel::goToWriteReview,
                 updateReaction = reviewViewModel::updateReaction,
+                copyReview = { text ->
+                    clipboardManager.setText(AnnotatedString(text))
+                    reviewViewModel.onReviewCopied()
+                },
                 editReview = reviewViewModel::editReview,
                 deleteReview = reviewViewModel::deleteReview
             )
@@ -76,6 +83,7 @@ private fun Reviews(
     lazyGridState: LazyGridState,
     writeReview: () -> Unit,
     updateReaction: (String, Reaction) -> Unit,
+    copyReview: (String) -> Unit,
     editReview: (String) -> Unit,
     deleteReview: (String) -> Unit
 ) {
@@ -99,8 +107,10 @@ private fun Reviews(
                             updateReaction = {
                                 updateReaction(review.reviewId, it)
                             },
+                            copy = { copyReview(review.text) },
                             edit = { editReview(review.reviewId) },
-                            delete = { deleteReview(review.reviewId) })
+                            delete = { deleteReview(review.reviewId) }
+                        )
                     }
                 )
 

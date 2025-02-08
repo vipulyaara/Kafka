@@ -18,7 +18,7 @@ fun SubjectItem(text: String, modifier: Modifier = Modifier, onClicked: (() -> U
         modifier = modifier,
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
     ) {
         Text(
             text = text,

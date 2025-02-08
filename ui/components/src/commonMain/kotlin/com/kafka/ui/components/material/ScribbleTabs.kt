@@ -37,7 +37,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 @Composable
-fun ScribbleTabs(tabs: List<String>, pagerState: PagerState) {
+fun ScribbleTabs(tabs: List<String>, pagerState: PagerState, modifier: Modifier = Modifier) {
     if (tabs.isEmpty()) return
 
     val scope = rememberCoroutineScope()
@@ -51,6 +51,7 @@ fun ScribbleTabs(tabs: List<String>, pagerState: PagerState) {
     }
 
     ScrollableTabRow(
+        modifier = modifier,
         selectedTabIndex = pagerState.currentPage.coerceIn(0, tabs.lastIndex),
         edgePadding = 20.dp,
         containerColor = Color.Transparent,

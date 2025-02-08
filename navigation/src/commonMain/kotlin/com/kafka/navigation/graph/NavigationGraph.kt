@@ -2,6 +2,7 @@
 
 package com.kafka.navigation.graph
 
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -62,7 +63,7 @@ sealed class Screen {
     ) : Screen() {
         @Serializable
         enum class Origin {
-            Carousel, Row, Column, Grid, Recommendation, Unknown;
+            Carousel, Row, Column, Grid, ReadingList, Recommendation, Unknown;
 
             companion object {
                 fun find(value: String?) = entries.find { it.name == value } ?: Unknown
@@ -116,6 +117,12 @@ sealed class Screen {
     @Serializable
     data class WriteReview(
         @SerialName("itemId") val itemId: String
+    ) : Screen()
+
+    @Serializable
+    data class ItemPreview(
+        @SerialName("itemId") val itemId: String,
+        @SerialName("origin") val origin: Origin = Origin.Unknown
     ) : Screen()
 
     @Serializable

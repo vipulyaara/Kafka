@@ -40,7 +40,7 @@ fun WriteReviewScreen(viewModel: WriteReviewViewModel) {
                         contentPadding = PaddingValues(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing08),
                         elevation = Dimens.Elevation04,
                         textStyle = MaterialTheme.typography.labelMedium,
-                        onClick = { viewModel.post(textState.toText(), 4f) }
+                        onClick = { viewModel.post(textState.toMarkdown(), 4f) }
                     )
                 },
                 modifier = Modifier.shadowMaterial(lazyGridState.elevation)

@@ -14,6 +14,7 @@ data class Review(
     @ColumnInfo(name = "item_id") @SerialName("item_id") val itemId: String,
     @ColumnInfo(name = "user_id") @SerialName("user_id") val userId: String,
     @ColumnInfo(name = "user_name") @SerialName("user_name") val userName: String,
+    @ColumnInfo(name = "user_avatar") @SerialName("user_avatar") val userAvatar: String,
     @ColumnInfo(name = "text") @SerialName("text") val text: String,
     @ColumnInfo(name = "rating") @SerialName("rating") val rating: Float,
     @ColumnInfo(name = "likes") @SerialName("likes") val likes: Int,

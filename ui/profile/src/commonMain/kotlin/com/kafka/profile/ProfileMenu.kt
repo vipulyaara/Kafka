@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.ProvideInteractiveEnforcement
 import com.kafka.common.extensions.getContext
 import com.kafka.common.image.Icons
+import com.kafka.ui.components.material.Switch
 import kafka.ui.profile.generated.resources.Res
 import kafka.ui.profile.generated.resources.adult_content_is_hidden
 import kafka.ui.profile.generated.resources.adult_content_is_shown
@@ -61,7 +61,7 @@ internal fun ProfileMenu(profileViewModel: ProfileViewModel, dismiss: () -> Unit
             )
         }
 
-        NotificationMenuItem(dismiss, profileViewModel::logOpenNotificationSettings)
+        NotificationMenuItem(logClick = dismiss, dismiss = profileViewModel::logOpenNotificationSettings)
 
         val adultContentDescription = if (state.safeMode) {
             stringResource(Res.string.adult_content_is_hidden)
@@ -115,7 +115,7 @@ fun MenuItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(horizontal = Dimens.Spacing32, vertical = Dimens.Spacing16)
+            .padding(horizontal = Dimens.Spacing48, vertical = Dimens.Spacing16)
     ) {
         Icon(
             imageVector = icon,

@@ -1,7 +1,6 @@
 package com.kafka.ui.components.search
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kafka.common.image.Icons
 import com.kafka.common.testTagUi
-import com.kafka.common.widgets.IconResource
+import com.kafka.common.widgets.IconButton
 import com.kafka.ui.components.material.OutlinedTextFieldDefaults
 import kafka.ui.components.generated.resources.Res
 import kafka.ui.components.generated.resources.cd_clear_text
@@ -99,15 +98,15 @@ fun SearchWidget(
 
 @Composable
 private fun ClearIcon(onTextCleared: () -> Unit) {
-    IconResource(
+    IconButton(
         modifier = Modifier
             .testTagUi("search_clear")
-            .clickable(onClick = { onTextCleared() })
             .padding(Dimens.Spacing12)
             .size(24.dp),
         imageVector = Icons.X,
         tint = MaterialTheme.colorScheme.onSurface,
-        contentDescription = stringResource(Res.string.cd_clear_text)
+        contentDescription = stringResource(Res.string.cd_clear_text),
+        onClick = onTextCleared
     )
 }
 

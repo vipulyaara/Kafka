@@ -24,31 +24,46 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.getContext
+import com.kafka.common.simpleClickable
+import com.kafka.reader.epub.components.SettingsSheet
+import com.kafka.reader.epub.components.SettingsState
 import com.kafka.reader.epub.components.TocSheet
+import com.kafka.reader.epub.components.TocState
 import com.kafka.reader.epub.components.rememberSettingsState
 import com.kafka.reader.epub.components.rememberTocState
 import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.ProvideScaffoldPadding
+import com.kafka.ui.components.material.BottomBackdropScaffold
+import com.kafka.ui.components.material.rememberBottomBackdropState
 import com.kafka.ui.components.progress.InfiniteProgressBar
 import kafka.reader.core.models.ContentElement
 import kafka.reader.core.models.EpubBook
 import kotlinx.coroutines.launch
+import ui.common.theme.theme.AppTheme
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val coroutineScope = rememberCoroutineScope()
-    val settingsState = rememberSettingsState()
     val tocState = rememberTocState()
+    val settingsState = rememberSettingsState()
     val context = getContext()
 
+    val backdropScaffoldState = rememberBottomBackdropState { true }
+
+    LaunchedEffect(backdropScaffoldState, settingsState.show) {
+        if (settingsState.show) {
+            backdropScaffoldState.reveal()
+        } else {
+            backdropScaffoldState.conceal()
+        }
+    }
+
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             ReaderTopBar(
                 scrollBehavior = scrollBehavior,
@@ -61,53 +76,86 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
         }
     ) {
         ProvideScaffoldPadding(it) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (state.epubBook != null) {
-                    val pagerState =
-                        rememberPagerState(initialPage = state.epubBook!!.lastSeenPage) { state.epubBook!!.chapters.size }
-                    val pagesListStates =
-                        remember<SnapshotStateMap<Int, LazyListState>> { mutableStateMapOf() }
-
-                    LaunchedEffect(pagerState) {
-                        snapshotFlow { pagerState.currentPage }.collect { page ->
-                            viewModel.onPageChanged(page)
-                        }
+            BottomBackdropScaffold(
+                scaffoldState = backdropScaffoldState,
+                backLayerBackgroundColor = Color((0xFF101113)),
+                peekHeight = Dimens.Spacing12,
+                backLayerContent = {
+                    AppTheme(isDarkTheme = true) {
+                        SettingsSheet(
+                            settings = state.settings,
+                            language = state.language ?: state.epubBook?.language.orEmpty(),
+                            changeSettings = viewModel::updateSettings
+                        )
                     }
-
-                    ReaderContent(
-                        readerState = state,
+                },
+                frontLayerContent = {
+                    ScreenContent(
+                        state = state,
+                        viewModel = viewModel,
                         settingsState = settingsState,
-                        pagerState = pagerState,
-                        highlights = state.highlights,
-                        onPageScrolled = viewModel::onPageScrolled,
-                        onHighlight = viewModel::addHighlight,
-                        navigate = viewModel::navigate,
-                        changeSettings = viewModel::updateSettings,
-                        pagesListStates = pagesListStates
-                    )
-
-                    TocSheet(
                         tocState = tocState,
-                        navPoints = state.epubBook!!.navPoints,
-                        onNavPointClicked = { navPointSrc ->
-                            coroutineScope.launch {
-                                navigateToPageAndAnchor(
-                                    epubBook = state.epubBook!!,
-                                    navPointSrc = navPointSrc,
-                                    pagerState = pagerState,
-                                    pagesListStates = pagesListStates
-                                )
-                            }
-                        }
+                        modifier = Modifier.simpleClickable { settingsState.toggle() }
                     )
-                } else {
-                    if (state.loading) {
-                        LoadingWithProgress(
-                            progress = state.progress,
-                            modifier = Modifier.align(Alignment.Center)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScreenContent(
+    state: ReaderState,
+    viewModel: ReaderViewModel,
+    settingsState: SettingsState,
+    tocState: TocState,
+    modifier: Modifier = Modifier
+) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Box(modifier = modifier.fillMaxSize()) {
+        if (state.epubBook != null) {
+            val pagerState = rememberPagerState(state.epubBook.lastSeenPage) { state.epubBook.chapters.size }
+            val pagesListStates = remember<SnapshotStateMap<Int, LazyListState>> { mutableStateMapOf() }
+
+            LaunchedEffect(pagerState) {
+                snapshotFlow { pagerState.currentPage }.collect { page ->
+                    viewModel.onPageChanged(page)
+                }
+            }
+
+            ReaderContent(
+                readerState = state,
+                settingsState = settingsState,
+                pagerState = pagerState,
+                highlights = state.highlights,
+                onPageScrolled = viewModel::onPageScrolled,
+                onHighlight = viewModel::addHighlight,
+                navigate = viewModel::navigate,
+                changeSettings = viewModel::updateSettings,
+                pagesListStates = pagesListStates
+            )
+
+            TocSheet(
+                tocState = tocState,
+                navPoints = state.epubBook.navPoints,
+                onNavPointClicked = { navPointSrc ->
+                    coroutineScope.launch {
+                        navigateToPageAndAnchor(
+                            epubBook = state.epubBook,
+                            navPointSrc = navPointSrc,
+                            pagerState = pagerState,
+                            pagesListStates = pagesListStates
                         )
                     }
                 }
+            )
+        } else {
+            if (state.loading) {
+                LoadingWithProgress(
+                    progress = state.progress,
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }

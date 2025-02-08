@@ -42,6 +42,7 @@ import com.kafka.ui.components.item.GridItem
 import com.kafka.ui.components.item.Item
 import com.kafka.ui.components.item.LayoutType
 import com.kafka.ui.components.progress.InfiniteProgressBar
+import com.kafka.ui.components.scaffoldPadding
 import kafka.ui.library.generated.resources.Res
 import kafka.ui.library.generated.resources.log_in_to_sync_favorite
 import kafka.ui.library.generated.resources.no_favorites_items_message
@@ -85,7 +86,6 @@ internal fun BookshelfItems(
     }
 }
 
-
 @Composable
 internal fun BookshelfItems(
     state: BookshelfDetailState,
@@ -95,18 +95,12 @@ internal fun BookshelfItems(
     if (state.items.isEmpty() && !state.loading) {
         FullScreenMessage(UiMessage(stringResource(Res.string.no_favorites_items_message)))
     } else {
-        BookshelfItemList(favoriteItems = state.items,
+        BookshelfItemList(
+            favoriteItems = state.items,
+            isUserLoggedIn = state.isUserLoggedIn,
+            openLogin = openLogin,
             openItemDetail = openItemDetail,
-            header = {
-                if (!state.isUserLoggedIn) {
-                    MessageBox(
-                        text = stringResource(Res.string.log_in_to_sync_favorite),
-                        trailingIcon = Icons.ArrowForward,
-                        modifier = Modifier.padding(vertical = Dimens.Spacing16),
-                        onClick = openLogin
-                    )
-                }
-            })
+        )
     }
 }
 
@@ -114,13 +108,14 @@ internal fun BookshelfItems(
 private fun BookshelfItemList(
     favoriteItems: List<BookshelfItem>,
     layoutType: LayoutType = LayoutType.Grid,
+    isUserLoggedIn: Boolean,
+    openLogin: () -> Unit,
     openItemDetail: (String) -> Unit,
-    header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val useWideLayout = windowWidthSizeClass().useWideLayout()
     val columns = if (windowWidthSizeClass().useWideLayout()) 4 else 2
-    val padding = PaddingValues(Dimens.Spacing12) + PaddingValues(bottom = bottomScaffoldPadding())
+    val padding = PaddingValues(Dimens.Spacing12) + scaffoldPadding()
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
@@ -129,7 +124,16 @@ private fun BookshelfItemList(
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
         contentPadding = padding,
     ) {
-        fullSpanItem { header() }
+        fullSpanItem {
+            if (!isUserLoggedIn) {
+                MessageBox(
+                    text = stringResource(Res.string.log_in_to_sync_favorite),
+                    trailingIcon = Icons.ArrowForward,
+                    modifier = Modifier.padding(vertical = Dimens.Spacing16),
+                    onClick = openLogin
+                )
+            }
+        }
 
         if (layoutType == LayoutType.List) {
             if (useWideLayout) {
@@ -144,7 +148,8 @@ private fun BookshelfItemList(
         } else {
             items(items = favoriteItems, key = { it.itemId }) { item ->
                 with(LocalSharedTransitionScope.current) {
-                    GridItem(mediaType = item.mediaType,
+                    GridItem(
+                        mediaType = item.mediaType,
                         coverImage = item.coverImage,
                         modifier = Modifier
                             .clickable { openItemDetail(item.itemId) }
@@ -163,7 +168,8 @@ private fun BookshelfItemList(
 
 @Composable
 private fun FavoriteItem(item: BookshelfItem, openItemDetail: (String) -> Unit) {
-    Item(item = item,
+    Item(
+        item = item,
         modifier = Modifier.clickable { openItemDetail(item.itemId) }
             .padding(horizontal = Dimens.Gutter))
 }

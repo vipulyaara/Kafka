@@ -1,4 +1,4 @@
-package com.kafka.ui.components.material
+package com.kafka.ui.components.material.pagers
 
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.foundation.background
@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.kafka.ui.components.material.offsetForPage
 import kotlin.math.absoluteValue
 import kotlin.math.min
 
@@ -30,6 +31,7 @@ import kotlin.math.min
 fun HorizontalCubePager(
     state: PagerState,
     modifier: Modifier = Modifier,
+    beyondViewportPageCount: Int = 0,
     pageContent: @Composable (Int) -> Unit,
 ) {
     val scale by remember {
@@ -57,6 +59,7 @@ fun HorizontalCubePager(
 
         HorizontalPager(
             state = state,
+            beyondViewportPageCount = beyondViewportPageCount,
             modifier = Modifier.scale(1f, scaleY = scale),
         ) { page ->
             Box(
@@ -77,7 +80,7 @@ fun HorizontalCubePager(
                         val pageOffset = state.offsetForPage(page)
 
                         this.drawContent()
-//                        drawRect(Color.Black.copy((pageOffset.absoluteValue * .7f)))
+                        drawRect(Color.Black.copy((pageOffset.absoluteValue * .7f)))
                     }
                     .background(Color.LightGray),
                 contentAlignment = Alignment.Center
@@ -87,3 +90,4 @@ fun HorizontalCubePager(
         }
     }
 }
+

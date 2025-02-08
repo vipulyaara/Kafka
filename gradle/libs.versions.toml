@@ -1,10 +1,10 @@
 [versions]
 accompanist = "0.37.0"
 appupdate = "2.1.0"
-agp = "8.7.3"
-androidxlifecycle = "2.9.0-alpha08"
+agp = "8.8.0"
+androidxlifecycle = "2.9.0-alpha09"
 coil3 = "3.0.0"
-compose-material-navigation = "1.7.6"
+compose-material-navigation = "1.7.7"
 compose-multiplatform = "1.7.3"
 coroutines = "1.9.0"
 firebase = "2.1.0"
@@ -24,8 +24,8 @@ mixpanel = "8.0.1"
 purchase = "1.1.2+13.5.0"
 okhttp = "4.12.0"
 richeditor = "1.0.0-rc10"
-room = "2.7.0-alpha12"
-sqlite = "2.5.0-alpha12"
+room = "2.7.0-alpha13"
+sqlite = "2.5.0-alpha13"
 serialization = "1.7.3"
 spotless = "6.25.0"
 supabase = "3.0.1"
@@ -195,6 +195,8 @@ richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", versio
 purchase-core = { module = "com.revenuecat.purchases:purchases-kmp-core", version.ref = "purchase" }
 purchase-datetime = { module = "com.revenuecat.purchases:purchases-kmp-datetime", version.ref = "purchase" }
 purchase-result = { module = "com.revenuecat.purchases:purchases-kmp-result", version.ref = "purchase" }
+
+splashscreen = "androidx.core:core-splashscreen:1.0.1"
 
 supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
 supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt" }

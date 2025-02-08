@@ -3,6 +3,7 @@
 package com.kafka.auth
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.extensions.alignCenter
 import com.kafka.common.extensions.getContext
 import com.kafka.common.extensions.rememberSavableMutableState
 import com.kafka.common.image.Icons
@@ -131,11 +137,15 @@ private fun Login(
 
         Spacer(modifier = Modifier.weight(0.2f))
 
-        SignupPrompt(loginState) {
+        SignupPrompt(loginState = loginState) {
             loginState = if (loginState.isLogin) LoginState.Signup else LoginState.Login
         }
 
-        Spacer(modifier = Modifier.weight(0.1f))
+        Spacer(modifier = Modifier.weight(0.2f))
+
+        PrivacyPolicy({}, {})
+
+        Spacer(modifier = Modifier.weight(0.05f))
     }
 }
 
@@ -180,5 +190,46 @@ private fun SignupPrompt(loginState: LoginState, toggleLoginState: () -> Unit) {
         textDecoration = TextDecoration.Underline,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.secondary
+    )
+}
+
+@Composable
+private fun PrivacyPolicy(goToTerms: () -> Unit, goToPrivacyPolicy: () -> Unit) {
+    val annotatedString = buildAnnotatedString {
+        append("By signing in, I agree to the ")
+
+        pushStringAnnotation("URL", "terms")
+        withStyle(SpanStyle(textDecoration = TextDecoration.Underline, color = MaterialTheme.colorScheme.primary)) {
+            append("terms of service")
+        }
+        pop()
+
+        append(" and ")
+
+        pushStringAnnotation("URL", "privacy")
+        withStyle(SpanStyle(textDecoration = TextDecoration.Underline, color = MaterialTheme.colorScheme.primary)) {
+            append("privacy policy")
+        }
+        pop()
+    }
+
+    Text(
+        text = annotatedString,
+        style = MaterialTheme.typography.labelSmall
+            .copy(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+            .alignCenter(),
+        modifier = Modifier
+            .padding(horizontal = Dimens.Spacing48)
+            .pointerInput(Unit) {
+                detectTapGestures { offset ->
+                    annotatedString.getStringAnnotations("URL", offset.x.toInt(), offset.x.toInt())
+                        .firstOrNull()?.let { annotation ->
+                            when (annotation.item) {
+                                "terms" -> goToTerms()
+                                "privacy" -> goToPrivacyPolicy()
+                            }
+                        }
+                }
+            }
     )
 }

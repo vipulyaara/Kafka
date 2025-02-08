@@ -193,6 +193,11 @@ class ItemDetailViewModel(
         navigator.navigate(Screen.ItemDetail(itemId))
     }
 
+    fun openItemPreview(itemId: String) {
+        analytics.log { this.openItemPreview(itemId = itemId, origin = origin.name) }
+        navigator.navigate(Screen.ItemPreview(itemId = itemId, origin = origin))
+    }
+
     fun goToSubjectSubject(keyword: String) {
         analytics.log { this.openSubject(keyword, "item_detail") }
         navigator.navigate(Search(keyword), RootScreen.Search)
@@ -210,11 +215,16 @@ class ItemDetailViewModel(
     fun shareItemText(context: Any?) {
         analytics.log { this.shareItem(itemId, "item_detail") }
         val itemTitle = state.value.itemDetail!!.title
+        val coverImage = state.value.itemDetail!!.coverImage
 
         val link = DeepLinks.find(Screen.ItemDetail(itemId))
         val text = "\nCheck out $itemTitle on Kafka\n\n$link\n"
 
-        shareUtils.shareText(text = text, context = context)
+        shareUtils.shareImageWithText(
+            photoUrl = coverImage.orEmpty(),
+            text = text,
+            context = context
+        )
     }
 
     fun openSummary(itemId: String) {
