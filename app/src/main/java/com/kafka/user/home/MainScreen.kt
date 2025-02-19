@@ -97,7 +97,7 @@ private fun CompositionHosts(
         NavigatorHost(navigator) {
             DownloaderHost(downloader) {
                 PlaybackHost(playbackConnection) {
-                    AudioActionHost {
+                    AudioActionHost(showMessage = {}) {
                         SnackbarMessagesHost(snackbarManager = snackbarManager)
                         content()
                     }

@@ -227,7 +227,6 @@ private fun HomeNavigationBar(
                     .padding(Dimens.Spacing08)
                     .zIndex(2f),
                 openPlaybackSheet = openPlaybackSheet,
-                playerTheme = playerTheme,
             )
         }
 

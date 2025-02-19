@@ -249,6 +249,7 @@ internal fun NavGraphBuilder.addPlayer(
             resizableViewModelFactory = resizableViewModelFactory,
             sleepTimerViewModelFactory = sleepTimerViewModelFactory,
             playbackSpeedViewModelFactory = playbackSpeedViewModelFactory,
+            showMessage = { }
         )
     }
 }
