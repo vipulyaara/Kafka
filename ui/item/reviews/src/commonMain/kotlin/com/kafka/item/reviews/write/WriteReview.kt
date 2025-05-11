@@ -5,6 +5,7 @@ package com.kafka.item.reviews.write
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,6 +38,7 @@ fun WriteReviewScreen(viewModel: WriteReviewViewModel) {
                     FloatingButton(
                         text = "POST",
                         modifier = Modifier.padding(horizontal = Dimens.Spacing08),
+                        shape = RoundedCornerShape(Dimens.Spacing08),
                         contentPadding = PaddingValues(horizontal = Dimens.Spacing16, vertical = Dimens.Spacing08),
                         elevation = Dimens.Elevation04,
                         textStyle = MaterialTheme.typography.labelMedium,

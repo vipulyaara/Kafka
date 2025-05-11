@@ -16,7 +16,7 @@ object OutlinedTextFieldDefaults {
         unfocusedContainerColor = MaterialTheme.colorScheme.background,
         focusedContainerColor = MaterialTheme.colorScheme.background,
         focusedBorderColor = MaterialTheme.colorScheme.primary,
-        unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
+        unfocusedBorderColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         cursorColor = MaterialTheme.colorScheme.primary
     )
 }

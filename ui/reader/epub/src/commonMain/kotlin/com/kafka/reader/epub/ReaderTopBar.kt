@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.kafka.common.image.Icons
 import com.kafka.common.widgets.IconResource
 import com.kafka.common.widgets.shadowMaterial
+import com.kafka.data.entities.ItemDetail
 import com.kafka.navigation.LocalNavigator
 import com.kafka.reader.epub.components.SettingsState
 import com.kafka.reader.epub.components.TocState
@@ -22,6 +23,7 @@ import ui.common.theme.theme.Dimens
 
 @Composable
 fun ReaderTopBar(
+    itemDetail: ItemDetail?,
     scrollBehavior: TopAppBarScrollBehavior,
     settingsState: SettingsState,
     tocState: TocState,
@@ -36,7 +38,9 @@ fun ReaderTopBar(
             .fillMaxWidth()
             .shadowMaterial(Dimens.Elevation12),
         containerColor = theme.backgroundColor,
+        contentColor = theme.contentColor,
         scrollBehavior = scrollBehavior,
+        title = itemDetail?.title.orEmpty(),
         navigationIcon = {
             ActionIcon(
                 icon = Icons.Back,

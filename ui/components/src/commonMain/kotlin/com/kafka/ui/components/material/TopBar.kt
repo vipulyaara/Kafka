@@ -25,6 +25,7 @@ fun TopBar(
     title: String = "",
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.background,
+    contentColor: Color = MaterialTheme.colorScheme.onBackground,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
@@ -34,6 +35,7 @@ fun TopBar(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
+                color = contentColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -41,7 +43,13 @@ fun TopBar(
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
-        colors = TopAppBarDefaults.topAppBarColors(containerColor, containerColor),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = containerColor,
+            scrolledContainerColor = containerColor,
+            titleContentColor = contentColor,
+            actionIconContentColor = contentColor,
+            navigationIconContentColor = contentColor
+        ),
         scrollBehavior = scrollBehavior
     )
 }

@@ -15,6 +15,8 @@ kotlin {
                 api(compose.components.resources)
                 api(compose.components.uiToolingPreview)
 
+                api(libs.jetbrains.lifecycle.runtime.compose)
+
                 api(compose.animation)
                 api(compose.foundation)
                 api(compose.material3)

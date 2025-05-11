@@ -269,48 +269,54 @@ private fun VerticalLayout(
                 }
             }
 
-            Reviews(reviews = state.reviews, openWriteReview = writeReview)
+            Reviews(reviews = state.reviews, coverImage = itemPlaceholder?.coverImage, openWriteReview = writeReview)
         }
     }
 }
 
 @Composable
-private fun Reviews(reviews: List<Review>, openWriteReview: () -> Unit) {
+private fun Reviews(reviews: List<Review>, coverImage: String?, openWriteReview: () -> Unit) {
     val navigator = LocalNavigator.current
 
     Column(modifier = Modifier.padding(Dimens.Spacing24)) {
-        WriteReviewButton(modifier = Modifier.fillMaxWidth(), writeReview = openWriteReview)
+        ItemDetailTheme(coverImage) {
+            if (reviews.isNotEmpty()) {
+                val itemId = reviews.first().itemId
+                Spacer(Modifier.height(Dimens.Spacing24))
 
-        if (reviews.isNotEmpty()) {
-            val itemId = reviews.first().itemId
-            Spacer(Modifier.height(Dimens.Spacing24))
+                Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
+                    reviews.forEachIndexed { index, review ->
+                        ReviewItem(
+                            review = review,
+                            expand = false,
+                            maxLines = 4,
+                            modifier = Modifier
+                                .simpleClickable { navigator.navigate(Screen.Reviews(review.itemId)) })
 
-            Column(verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)) {
-                reviews.forEachIndexed { index, review ->
-                    ReviewItem(
-                        review = review,
-                        modifier = Modifier
-                            .simpleClickable { navigator.navigate(Screen.Reviews(review.itemId)) })
-
-                    if (index != reviews.lastIndex) {
-                        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+                        if (index != reviews.lastIndex) {
+                            HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 2.dp)
+                        }
                     }
                 }
+
+                TextButton(
+                    text = stringResource(Res.string.see_all_reviews),
+                    modifier = Modifier.align(Alignment.End),
+                    onClick = { navigator.navigate(Screen.Reviews(itemId)) }
+                )
             }
 
-            TextButton(
-                text = stringResource(Res.string.see_all_reviews),
-                modifier = Modifier.align(Alignment.End),
-                onClick = { navigator.navigate(Screen.Reviews(itemId)) }
-            )
+            Spacer(Modifier.height(Dimens.Spacing16))
+
+            WriteReviewButton(modifier = Modifier.fillMaxWidth(), writeReview = openWriteReview)
         }
     }
 }
 
 @Composable
 private fun ItemDetailTheme(
-    isDynamicThemeEnabled: Boolean,
     model: Any?,
+    isDynamicThemeEnabled: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     if (isDynamicThemeEnabled) {

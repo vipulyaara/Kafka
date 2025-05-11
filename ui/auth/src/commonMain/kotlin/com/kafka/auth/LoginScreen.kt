@@ -199,7 +199,13 @@ private fun PrivacyPolicy(goToTerms: () -> Unit, goToPrivacyPolicy: () -> Unit) 
         append("By signing in, I agree to the ")
 
         pushStringAnnotation("URL", "terms")
-        withStyle(SpanStyle(textDecoration = TextDecoration.Underline, color = MaterialTheme.colorScheme.primary)) {
+
+        val linkStyle = SpanStyle(
+            textDecoration = TextDecoration.Underline,
+            color = MaterialTheme.colorScheme.primary.copy(0.8f)
+        )
+
+        withStyle(linkStyle) {
             append("terms of service")
         }
         pop()
@@ -207,7 +213,7 @@ private fun PrivacyPolicy(goToTerms: () -> Unit, goToPrivacyPolicy: () -> Unit) 
         append(" and ")
 
         pushStringAnnotation("URL", "privacy")
-        withStyle(SpanStyle(textDecoration = TextDecoration.Underline, color = MaterialTheme.colorScheme.primary)) {
+        withStyle(linkStyle) {
             append("privacy policy")
         }
         pop()

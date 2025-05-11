@@ -62,20 +62,6 @@ typealias addItemDetail = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addItemDetail(
     viewModelFactory: (SavedStateHandle) -> ItemDetailViewModel,
 ) {
-    val originNavType = object : NavType<Origin>(isNullableAllowed = false) {
-        override fun get(bundle: Bundle, key: String): Origin? {
-            return bundle.getString(key)?.let { Origin.valueOf(it) }
-        }
-
-        override fun parseValue(value: String): Origin {
-            return Origin.valueOf(value)
-        }
-
-        override fun put(bundle: Bundle, key: String, value: Origin) {
-            bundle.putString(key, value.name)
-        }
-    }
-
     composable<Screen.ItemDetail>(
         typeMap = mapOf(typeOf<Origin>() to originNavType),
         deepLinks = listOf(
@@ -152,7 +138,7 @@ typealias addItemPreview = NavGraphBuilder.() -> Unit
 
 @Inject
 fun NavGraphBuilder.addItemPreview(viewModelFactory: (SavedStateHandle) -> ItemPreviewViewModel) {
-    composable<Screen.ItemPreview> {
+    composable<Screen.ItemPreview>(typeMap = mapOf(typeOf<Origin>() to originNavType)) {
         ProvideLocalAnimatedContentScope(this@composable) {
             val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
             ItemPreviewScreen(viewModel)
@@ -169,5 +155,19 @@ fun NavGraphBuilder.addToBookshelf(
     bottomSheet(Screen.AddToBookshelf.route) {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
         AddToBookshelf(viewModel)
+    }
+}
+
+private val originNavType = object : NavType<Origin>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): Origin? {
+        return bundle.getString(key)?.let { Origin.valueOf(it) }
+    }
+
+    override fun parseValue(value: String): Origin {
+        return Origin.valueOf(value)
+    }
+
+    override fun put(bundle: Bundle, key: String, value: Origin) {
+        bundle.putString(key, value.name)
     }
 }

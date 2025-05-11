@@ -71,7 +71,6 @@ sealed class Screen {
         }
 
         data class SharedElementCoverKey(val cover: String?, val origin: Origin)
-
     }
 
     @Serializable

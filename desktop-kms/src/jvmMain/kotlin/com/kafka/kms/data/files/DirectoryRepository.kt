@@ -102,11 +102,11 @@ object DirectoryPaths {
 
     fun repoPath(repoId: String) = createDirectory(ebooksPath, repoId)
     fun srcPath(repoId: String) = createDirectory(repoPath(repoId), "src")
-    fun epubPath(repoId: String) = createDirectory(srcPath(repoId), "epub")
+    fun epubPath(repoId: String) = createDirectory(srcPath(repoId), "OEBPS")
     fun imagesPath(repoId: String) = createDirectory(epubPath(repoId), "images")
     fun cssPath(repoId: String) = createDirectory(epubPath(repoId), "css")
     fun textPath(repoId: String) = createDirectory(epubPath(repoId), "text")
-    fun metaPath(repoId: String) = createDirectory(repoPath(repoId), "META-INF")
+    fun metaPath(repoId: String) = createDirectory(srcPath(repoId), "META-INF")
 
     // Audiobooks paths
     val audiobooksPath = createDirectory(baseDir, *projectPath.toTypedArray(), "audiobooks")

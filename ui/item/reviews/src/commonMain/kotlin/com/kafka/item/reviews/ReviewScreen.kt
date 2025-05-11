@@ -4,6 +4,7 @@ package com.kafka.item.reviews
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,17 +24,17 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.adaptive.WindowWidth
-import com.kafka.common.adaptive.fullSpanItem
 import com.kafka.common.adaptive.gridColumns
 import com.kafka.common.elevation
 import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.plus
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.Reaction
 import com.kafka.data.entities.Review
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.review.Reactions
 import com.kafka.ui.components.item.review.ReviewItem
-import com.kafka.ui.components.item.review.WriteReviewButton
+import com.kafka.ui.components.item.review.WriteReviewFloatingActionButton
 import com.kafka.ui.components.material.BackButton
 import com.kafka.ui.components.material.TopBar
 import com.kafka.ui.components.progress.InfiniteProgressBar
@@ -56,6 +57,14 @@ fun ReviewScreen(reviewViewModel: ReviewViewModel) {
                 navigationIcon = { BackButton { reviewViewModel.goBack() } },
                 modifier = Modifier.shadowMaterial(lazyGridState.elevation)
             )
+        },
+        floatingActionButton = {
+            WriteReviewFloatingActionButton(
+                writeReview = reviewViewModel::goToWriteReview,
+                modifier = Modifier
+                    .padding(scaffoldPadding())
+                    .padding(Dimens.Gutter)
+            )
         }
     ) { padding ->
         ProvideScaffoldPadding(padding) {
@@ -63,7 +72,6 @@ fun ReviewScreen(reviewViewModel: ReviewViewModel) {
                 reviews = state.reviews,
                 loading = state.loading,
                 lazyGridState = lazyGridState,
-                writeReview = reviewViewModel::goToWriteReview,
                 updateReaction = reviewViewModel::updateReaction,
                 copyReview = { text ->
                     clipboardManager.setText(AnnotatedString(text))
@@ -81,7 +89,6 @@ private fun Reviews(
     reviews: List<Review>,
     loading: Boolean,
     lazyGridState: LazyGridState,
-    writeReview: () -> Unit,
     updateReaction: (String, Reaction) -> Unit,
     copyReview: (String) -> Unit,
     editReview: (String) -> Unit,
@@ -89,13 +96,13 @@ private fun Reviews(
 ) {
     val columns = gridColumns(fixedColumns = 1, adaptiveWidth = WindowWidth.Large)
 
-    LazyVerticalGrid(state = lazyGridState, columns = columns, contentPadding = scaffoldPadding()) {
-        fullSpanItem {
-            WriteReviewButton(modifier = Modifier.padding(Dimens.Gutter), writeReview = writeReview)
-        }
-
+    LazyVerticalGrid(
+        state = lazyGridState,
+        columns = columns,
+        contentPadding = scaffoldPadding() + PaddingValues(bottom = Dimens.Spacing96)
+    ) {
         itemsIndexed(reviews) { index, review ->
-            Column {
+            Column(modifier = Modifier.animateItem()) {
                 ReviewItem(
                     review = review,
                     modifier = Modifier.padding(Dimens.Spacing12),
@@ -127,7 +134,7 @@ private fun Reviews(
 
         item {
             AnimatedVisibilityFade(loading) {
-                Box(modifier = Modifier.fillMaxSize().padding(Dimens.Spacing24)) {
+                Box(modifier = Modifier.fillMaxSize().padding(Dimens.Spacing24).animateItem()) {
                     InfiniteProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
             }

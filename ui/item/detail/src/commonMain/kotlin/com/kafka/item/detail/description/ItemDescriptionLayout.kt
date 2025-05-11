@@ -46,8 +46,8 @@ internal fun DescriptionText(
             .testTagUi("item_detail_description")
             .simpleClickable { showDescription(itemDetail.itemId) }
             .padding(horizontal = Dimens.Spacing24, vertical = Dimens.Spacing12),
-        style = MaterialTheme.typography.bodySmall
-            .alignCenter().copy(textAlign = TextAlign.Justify),
+        style = MaterialTheme.typography.labelSmall.alignCenter(),
+        color = MaterialTheme.colorScheme.secondary,
         maxLines = if (useWideLayout) 6 else 4,
         overflow = TextOverflow.Ellipsis,
     )
@@ -77,14 +77,14 @@ internal fun ItemDescriptionAndCover(
                 modifier = Modifier
                     .simpleClickable { openItemPreview(itemDetail?.itemId ?: itemPlaceholder.itemId) }
                     .sharedElement(
-                    state = rememberSharedContentState(
-                        key = SharedElementCoverKey(
-                            cover = itemPlaceholder.coverImage,
-                            origin = itemPlaceholder.origin
-                        )
-                    ),
-                    animatedVisibilityScope = LocalAnimatedContentScope.current
-                )
+                        state = rememberSharedContentState(
+                            key = SharedElementCoverKey(
+                                cover = itemPlaceholder.coverImage,
+                                origin = itemPlaceholder.origin
+                            )
+                        ),
+                        animatedVisibilityScope = LocalAnimatedContentScope.current
+                    )
             )
         }
 

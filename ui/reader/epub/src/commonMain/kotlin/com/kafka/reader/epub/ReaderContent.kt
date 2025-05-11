@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,19 +12,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
@@ -34,7 +37,8 @@ import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kafka.base.debug
-import com.kafka.common.image.Icons
+import com.kafka.common.extensions.AnimatedVisibilityFade
+import com.kafka.common.extensions.rememberSavableMutableState
 import com.kafka.common.plus
 import com.kafka.reader.epub.components.CodeBlockElement
 import com.kafka.reader.epub.components.HeadingElement
@@ -43,7 +47,7 @@ import com.kafka.reader.epub.components.QuoteElement
 import com.kafka.reader.epub.components.SettingsState
 import com.kafka.reader.epub.components.TableComponent
 import com.kafka.reader.epub.components.TextElement
-import com.kafka.reader.epub.selection.CustomSelectionContainer
+import com.kafka.reader.epub.context.ContextActions
 import com.kafka.reader.epub.settings.ReaderSettings
 import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.scaffoldPadding
@@ -66,19 +70,12 @@ fun ReaderContent(
     onPageScrolled: (Int) -> Unit,
     onHighlight: (TextHighlight) -> Unit,
     navigate: (String) -> Unit,
-    changeSettings: (ReaderSettings) -> Unit,
     pagesListStates: SnapshotStateMap<Int, LazyListState>
 ) {
     val book = readerState.epubBook!!
     val chapters = book.chapters
     val settings = readerState.settings
-
-//    SettingsSheet(
-//        settingsState = settingsState,
-//        settings = settings,
-//        language = readerState.language ?: book.language,
-//        changeSettings = changeSettings
-//    )
+    var selectedText by rememberSavableMutableState<String?> { null }
 
     HorizontalPager(pagerState) { page ->
         val chapter = remember(chapters, page) { chapters[page] }
@@ -101,32 +98,10 @@ fun ReaderContent(
                 .collect { index -> onPageScrolled(index) }
         }
 
-        CustomSelectionContainer(
-            toolbarActions = {
-                IconButton(
-                    onClick = {
-                        onHighlight(
-                            createHighlight(
-                                bookId = readerState.itemId,
-                                chapterId = chapter.chapterId,
-                                element = chapter.contentElements
-                                    .first { it is ContentElement.Text } as ContentElement.Text,
-                                startOffset = 0,
-                                endOffset = 10
-                            )
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Translate,
-                        contentDescription = "Copy"
-                    )
-                }
-            }
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
                 state = lazyListState,
-                contentPadding = scaffoldPadding() + PaddingValues(vertical = Dimens.Gutter),
+                contentPadding = scaffoldPadding() + PaddingValues(vertical = Dimens.Gutter) + PaddingValues(top = 100.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .background(settings.theme.backgroundColor)
@@ -145,22 +120,33 @@ fun ReaderContent(
                     debug { "Element: $it" }
                 }
                 items(chapter.contentElements) { element ->
-                    SelectionContainer(
-                        bookId = readerState.itemId,
-                        chapterId = chapter.chapterId,
-                        lazyListState = lazyListState,
+                    ReaderContent(
                         element = element,
-                        onHighlightCreated = onHighlight
-                    ) {
-                        ReaderContent(
-                            element = element,
-                            settings = settings,
-                            navigate = navigate,
-                            ebook = book,
-                            highlights = chapterHighlights
-                        )
-                    }
+                        settings = settings,
+                        navigate = navigate,
+                        ebook = book,
+                        highlights = chapterHighlights,
+                        toggleContextMenu = { text -> selectedText = text }
+                    )
                 }
+            }
+
+            AnimatedVisibilityFade(
+                visible = selectedText != null,
+                modifier = Modifier
+                    .systemBarsPadding()
+                    .padding(Dimens.Gutter)
+                    .align(Alignment.BottomCenter),
+            ) {
+                ContextActions(
+                    text = selectedText.orEmpty(),
+                    isDarkTheme = settings.theme.isDarkTheme,
+                    onHighlight = {},
+                    onCopy = {},
+                    onTranslate = {},
+                    onAiExplain = {},
+                    dismiss = { selectedText = null }
+                )
             }
         }
     }
@@ -191,37 +177,13 @@ private fun createHighlight(
 }
 
 @Composable
-private fun SelectionContainer(
-    bookId: String,
-    chapterId: String,
-    element: ContentElement,
-    lazyListState: LazyListState,
-    onHighlightCreated: (TextHighlight) -> Unit,
-    content: @Composable () -> Unit
-) {
-    if (element is ContentElement.Text) {
-//        CustomSelectionContainer() {
-        content()
-//        }
-//        ReaderSelectionContainer(
-//            bookId = bookId,
-//            chapterId = chapterId,
-//            element = element,
-//            onHighlightCreated = onHighlightCreated,
-//            content = content
-//        )
-    } else {
-        content()
-    }
-}
-
-@Composable
 internal fun ReaderContent(
     element: ContentElement,
     settings: ReaderSettings,
     navigate: (String) -> Unit,
     ebook: EpubBook,
-    highlights: List<TextHighlight>
+    highlights: List<TextHighlight>,
+    toggleContextMenu: (String?) -> Unit,
 ) {
     when (element) {
         is ContentElement.Text -> {
@@ -243,7 +205,8 @@ internal fun ReaderContent(
             TextElement(
                 element = mergedElement,
                 settings = settings,
-                navigate = navigate
+                navigate = navigate,
+                toggleContextMenu = toggleContextMenu
             )
         }
 

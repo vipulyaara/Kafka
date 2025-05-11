@@ -9,11 +9,13 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.semantics.Role
 
 fun Modifier.simpleClickable(
+    enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
     indication: Indication? = null,
     onClick: () -> Unit,
 ) = composed {
     clickable(
+        enabled = enabled,
         onClick = onClick,
         role = Role.Button,
         indication = indication,

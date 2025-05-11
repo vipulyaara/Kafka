@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +35,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.image.Icons
+import com.kafka.reader.epub.settings.ReaderSettings
+import com.kafka.reader.epub.settings.theme
 import com.kafka.ui.components.material.ModalBottomSheet
 import com.kafka.ui.components.search.SearchWidget
 import kafka.reader.core.models.NavPoint
@@ -43,7 +47,12 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (String) -> Unit) {
+fun TocSheet(
+    tocState: TocState,
+    settings: ReaderSettings,
+    navPoints: List<NavPoint>,
+    onNavPointClicked: (String) -> Unit
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
@@ -60,12 +69,17 @@ fun TocSheet(tocState: TocState, navPoints: List<NavPoint>, onNavPointClicked: (
 
     ModalBottomSheet(
         show = tocState.show,
+        containerColor = settings.theme.backgroundColor,
+        contentColor = settings.theme.contentColor,
+        scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.4f),
+        handleColor = settings.theme.contentColor.copy(alpha = 0.32f),
         sheetState = sheetState,
         onDismissRequest = tocState::hide
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxHeight(0.9f)
                 .animateContentSize()
         ) {
             item { Label(filteredNavPoints.size) }
@@ -103,12 +117,12 @@ private fun Label(chapterSize: Int, modifier: Modifier = Modifier) {
         Text(
             text = stringResource(Res.string.chapters),
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = LocalContentColor.current
         )
         Text(
             text = chapterSize.toString(),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            color = LocalContentColor.current.copy(alpha = 0.6f),
             modifier = Modifier.padding(start = Dimens.Spacing04, bottom = Dimens.Spacing02)
         )
     }
@@ -148,7 +162,7 @@ private fun NavPointHeading(
                     Icon(
                         imageVector = if (isExpanded) Icons.ChevronRight else Icons.ChevronDown,
                         contentDescription = if (isExpanded) "Collapse" else "Expand",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = LocalContentColor.current
                     )
                 }
             } else {

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +40,8 @@ import coil3.request.crossfade
 import com.kafka.base.debug
 import com.kafka.common.image.Icons
 import com.kafka.data.model.MediaType
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyGridState
 import java.io.File
 
 @Composable
@@ -52,6 +55,7 @@ fun FileAndMediaSection(
     coverImagePaths: List<String>,
     onCoverImageAdded: (String) -> Unit,
     onCoverImageRemoved: (String) -> Unit,
+    onCoverImageReordered: (Int, Int) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -76,14 +80,14 @@ fun FileAndMediaSection(
                         Icon(
                             imageVector = Icons.Plus,
                             contentDescription = "Select OPF file",
-                            tint = if (contentOpfPath.isEmpty()) 
+                            tint = if (contentOpfPath.isEmpty())
                                 MaterialTheme.colorScheme.onSurfaceVariant
-                            else 
+                            else
                                 MaterialTheme.colorScheme.primary
                         )
                     }
                 )
-                
+
                 FileSelectionButton(
                     label = "EPUB File",
                     value = epubFilePath,
@@ -92,15 +96,15 @@ fun FileAndMediaSection(
                         Icon(
                             Icons.Plus,
                             contentDescription = "Select EPUB file",
-                            tint = if (epubFilePath.isEmpty()) 
+                            tint = if (epubFilePath.isEmpty())
                                 MaterialTheme.colorScheme.onSurfaceVariant
-                            else 
+                            else
                                 MaterialTheme.colorScheme.primary
                         )
                     }
                 )
             }
-            
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -117,6 +121,7 @@ fun FileAndMediaSection(
             images = coverImagePaths,
             onAddImage = onCoverImageAdded,
             onRemoveImage = onCoverImageRemoved,
+            onReorderImage = onCoverImageReordered,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -204,67 +209,74 @@ private fun ImageSelectionGrid(
     images: List<String>,
     onAddImage: (String) -> Unit,
     onRemoveImage: (String) -> Unit,
+    onReorderImage: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     debug { "Image paths: $images" }
 
+    val gridState = rememberLazyGridState()
+    val reorderableLazyListState = rememberReorderableLazyGridState(gridState) { from, to ->
+        onReorderImage(from.index, to.index)
+    }
+
     LazyVerticalGrid(
+        state = gridState,
         columns = GridCells.Adaptive(minSize = 120.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.height(200.dp)
     ) {
-        items(images) { imagePath ->
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .clip(MaterialTheme.shapes.small)
-                    .border(
-                        1.5.dp,
-                        MaterialTheme.colorScheme.outline,
-                        MaterialTheme.shapes.small
-                    )
-            ) {
-                if (imagePath.startsWith("http")) {
-                    // For remote URLs, use AsyncImage
-                    AsyncImage(
-                        model = imagePath,
-                        contentDescription = "Cover image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                } else {
-                    // For local files
-                    val context = LocalPlatformContext.current
-                    val imageFile = remember(imagePath) { File(imagePath) }
-
-                    AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(imageFile)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "Cover image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                // Add a semi-transparent overlay to make the close button more visible
+        items(images, key = { it }) { imagePath ->
+            ReorderableItem(state = reorderableLazyListState, key = imagePath) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
-                )
-
-                IconButton(
-                    onClick = { onRemoveImage(imagePath) },
-                    modifier = Modifier.align(Alignment.TopEnd)
+                        .aspectRatio(1f)
+                        .clip(MaterialTheme.shapes.small)
+                        .draggableHandle()
+                        .border(
+                            1.5.dp,
+                            MaterialTheme.colorScheme.outline,
+                            MaterialTheme.shapes.small
+                        )
                 ) {
-                    Icon(
-                        Icons.XCircle,
-                        contentDescription = "Remove image",
-                        tint = MaterialTheme.colorScheme.onSurface
+                    if (imagePath.startsWith("http")) {
+                        AsyncImage(
+                            model = imagePath,
+                            contentDescription = "Cover image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        val context = LocalPlatformContext.current
+                        val imageFile = remember(imagePath) { File(imagePath) }
+
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(imageFile)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Cover image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
                     )
+
+                    IconButton(
+                        onClick = { onRemoveImage(imagePath) },
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        Icon(
+                            Icons.XCircle,
+                            contentDescription = "Remove image",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
         }

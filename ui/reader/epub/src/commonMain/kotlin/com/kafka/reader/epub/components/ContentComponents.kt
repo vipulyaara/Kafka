@@ -1,6 +1,7 @@
 package com.kafka.reader.epub.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,13 +15,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -45,14 +52,16 @@ import kafka.reader.core.models.InlineElement
 import kafka.reader.core.models.enums.TextAlignment
 import kafka.reader.core.models.enums.TextStyle
 import kafka.reader.core.models.getEffectiveStyle
+import kotlinx.datetime.Clock
 import ui.common.theme.theme.Dimens
 
 @Composable
 fun TextElement(
     element: ContentElement.Text,
     settings: ReaderSettings,
+    modifier: Modifier = Modifier,
+    toggleContextMenu: (String?) -> Unit = { },
     navigate: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val style = element.getEffectiveStyle()
     val isHeading = style in TextStyle.Heading1..TextStyle.Heading6
@@ -73,52 +82,163 @@ fun TextElement(
         )
     }
 
-    Text(
-        text = if (element.inlineElements.isEmpty()) {
-            AnnotatedString(element.content)
-        } else {
-            annotatedString
-        },
+    val textContent = if (element.inlineElements.isEmpty()) {
+        AnnotatedString(element.content)
+    } else {
+        annotatedString
+    }
+
+    var tapCount by remember { mutableStateOf(0) }
+    var lastTapTime by remember { mutableStateOf(0L) }
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+    
+    // Store the selected sentence range
+    var selectedSentenceRange by remember { mutableStateOf<IntRange?>(null) }
+    
+    // Highlight color for the selected sentence
+    val highlightColor = Color(0x330066CC) // Light blue with 20% opacity
+
+    fun findSentenceBoundaries(text: String, position: Int): IntRange {
+        if (position < 0 || position >= text.length) return IntRange(0, 0)
+        
+        var start = position
+        var end = position
+        
+        // Find start of sentence (looking for .!? followed by space)
+        while (start > 0) {
+            if (start < text.length - 1 && 
+                text[start - 1] in listOf('.', '!', '?') && 
+                text[start].isWhitespace()) {
+                break
+            }
+            start--
+        }
+        
+        // Skip leading whitespace
+        while (start < text.length && text[start].isWhitespace()) {
+            start++
+        }
+        
+        // Find end of sentence
+        while (end < text.length) {
+            if (text[end] in listOf('.', '!', '?')) {
+                end++
+                break
+            }
+            end++
+        }
+        
+        return IntRange(start, end)
+    }
+
+    LaunchedEffect(selectedSentenceRange) {
+        val selectedText = selectedSentenceRange?.let { range ->
+            if (range.first < range.last) {
+                textContent.substring(range.first, range.last)
+            } else null
+        }
+        
+        toggleContextMenu(selectedText)
+    }
+
+    LaunchedEffect(Unit) {
+        debug { "TextElement initialized for content: ${element.content.take(50)}..." }
+    }
+
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = settings.horizontalMargin)
-            .padding(
-                vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08,
+            .padding(vertical = if (isHeading) Dimens.Spacing24 else Dimens.Spacing08)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { offset ->
+                        val currentTime = Clock.System.now().toEpochMilliseconds()
+                        debug { "Tap detected at $offset" }
+                        
+                        if (currentTime - lastTapTime < 300) { // Double tap threshold
+                            tapCount++
+                        } else {
+                            tapCount = 1
+                        }
+                        lastTapTime = currentTime
+
+                        // Get the character position from the tap offset
+                        textLayoutResult?.let { result ->
+                            try {
+                                val position = result.getOffsetForPosition(offset)
+                                debug { "Tap detected at position: $position" }
+                                
+                                // Check if we're tapping on an existing selection
+                                val tappedOnSelection = selectedSentenceRange?.contains(position) == true
+                                
+                                if (tappedOnSelection) {
+                                    // Clear the selection if tapping on an existing selection
+                                    selectedSentenceRange = null
+                                    debug { "Cleared selection" }
+                                } else {
+                                    // Get sentence boundaries and set selection
+                                    val sentenceRange = findSentenceBoundaries(textContent.toString(), position)
+                                    debug { "Sentence range: $sentenceRange" }
+                                    
+                                    // Set selection to the sentence
+                                    if (sentenceRange.first < sentenceRange.last) {
+                                        selectedSentenceRange = sentenceRange
+                                        debug { "Selected sentence: ${sentenceRange.first}-${sentenceRange.last}" }
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                debug { "Error getting text position: ${e.message}" }
+                            }
+                        } ?: debug { "TextLayoutResult is null, cannot determine tap position" }
+                    }
+                )
+            }
+    ) {
+        // Use a simple Text composable
+        Text(
+            text = textContent,
+            style = textStyle.copy(
+                color = settings.theme.contentColor,
+                hyphens = Hyphens.Auto,
+                fontFeatureSettings = element.styles
+                    .takeIf { TextStyle.SmallCaps in it }
+                    ?.also { debug { "Annotated string: Small caps found for element: $element" } }
+                    ?.let { "smcp" },
+                fontFamily = if (TextStyle.SmallCaps !in element.styles) settings.font.fontFamily else null,
+                fontWeight = when {
+                    TextStyle.Bold in element.styles -> FontWeight.Bold
+                    style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
+                    else -> settings.font.fontWeight
+                },
+                fontStyle = when {
+                    TextStyle.Italic in element.styles -> FontStyle.Italic
+                    else -> FontStyle.Normal
+                },
+                fontSize = when {
+                    isHeading -> textStyle.fontSize
+                    else -> (settings.fontSize.value * element.sizeFactor).sp
+                },
+                lineHeight = when {
+                    isHeading -> textStyle.lineHeight
+                    element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
+                    else -> settings.lineHeight
+                },
+                textAlign = if (isHeading || element.alignment == TextAlignment.CENTER) {
+                    TextAlign.Center
+                } else {
+                    settings.textAlignment.asAlignment()
+                },
             ),
-        style = textStyle.copy(
-            hyphens = Hyphens.Auto,
-            fontFeatureSettings = element.styles
-                .takeIf { TextStyle.SmallCaps in it }
-                ?.also { debug { "Annotated string: Small caps found for element: $element" } }
-                ?.let { "smcp" }
-        ),
-        // TODO - Find a better way to handle font family
-        fontFamily = if (TextStyle.SmallCaps !in element.styles) settings.font.fontFamily else null,
-        fontWeight = when {
-            TextStyle.Bold in element.styles -> FontWeight.Bold
-            style in TextStyle.Heading1..TextStyle.Heading6 -> FontWeight.Bold
-            else -> settings.font.fontWeight
-        },
-        fontStyle = when {
-            TextStyle.Italic in element.styles -> FontStyle.Italic
-            else -> FontStyle.Normal
-        },
-        fontSize = when {
-            isHeading -> textStyle.fontSize
-            else -> (settings.fontSize.value * element.sizeFactor).sp
-        },
-        lineHeight = when {
-            isHeading -> textStyle.lineHeight
-            element.lineHeight != null -> element.lineHeight?.sp ?: settings.lineHeight
-            else -> settings.lineHeight
-        },
-        textAlign = if (isHeading || element.alignment == TextAlignment.CENTER) {
-            TextAlign.Center
-        } else {
-            settings.textAlignment.asAlignment()
-        },
-        color = settings.theme.contentColor,
-    )
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(settings.theme.backgroundColor),
+            onTextLayout = { result -> 
+                textLayoutResult = result
+                debug { "Text layout updated, line count: ${result.lineCount}" }
+            }
+        )
+    }
 }
 
 private fun buildTextAnnotatedString(
@@ -200,6 +320,7 @@ private fun buildTextAnnotatedString(
                                 TextStyle.SmallCaps in inline.styles -> "smcp".also {
                                     debug { "Small caps applied" }
                                 }
+
                                 else -> null
                             },
                             background = when {

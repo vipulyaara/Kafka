@@ -77,6 +77,7 @@ import compose.icons.tablericons.Umbrella
 import compose.icons.tablericons.Underline
 import compose.icons.tablericons.Upload
 import compose.icons.tablericons.X
+import compose.icons.tablericons.GripVertical
 
 object Icons {
     val Home: ImageVector = TablerIcons.Home
@@ -156,4 +157,6 @@ object Icons {
     val StrikeThrough = TablerIcons.Strikethrough
     val OrderedList = TablerIcons.LayoutList
     val UnorderedList = TablerIcons.List
+    val Assistant = TablerIcons.Message
+    val DragHandle = TablerIcons.GripVertical
 }

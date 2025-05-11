@@ -26,7 +26,7 @@ fun RemoteConfig.isItemDetailDynamicThemeEnabled() = getBoolean(ITEM_DETAIL_DYNA
 
 fun RemoteConfig.isTrueContrastEnabled() = getBoolean(TRUE_CONTRAST_ENABLED)
 
-fun RemoteConfig.isSummaryEnabled() = getBoolean(SUMMARY_ENABLED)
+fun RemoteConfig.isSummaryEnabled() = true
 
 fun RemoteConfig.getOpenAiApiKey() = get(OPEN_AI_API_KEY)
 

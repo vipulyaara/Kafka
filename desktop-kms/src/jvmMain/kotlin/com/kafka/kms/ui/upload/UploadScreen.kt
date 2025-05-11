@@ -131,6 +131,7 @@ fun UploadScreen(uploadViewModel: UploadViewModel, modifier: Modifier = Modifier
                     onCoverImageRemoved = { 
                         state.coverImagePaths = state.coverImagePaths.filter { path -> path != it }
                     },
+                    onCoverImageReordered = state::reorderCoverImages,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

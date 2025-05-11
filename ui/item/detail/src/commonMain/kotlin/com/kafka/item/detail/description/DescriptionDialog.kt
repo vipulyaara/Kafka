@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -46,16 +47,16 @@ fun DescriptionDialog(viewModel: ItemDetailViewModel) {
                 .padding(horizontal = Dimens.Spacing24)
         ) {
             Column(
-                modifier = Modifier.navigationBarsPadding(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.Spacing16)
+                modifier = Modifier.navigationBarsPadding().padding(bottom = Dimens.Spacing36),
+                verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
             ) {
                 BottomSheetDefaults.DragHandle(Modifier.align(Alignment.CenterHorizontally))
 
                 viewState.itemDetail?.let { itemDetail ->
                     DescriptionText(
                         itemDetail = itemDetail,
-                        style = MaterialTheme.typography.bodyMedium
-                            .copy(textAlign = TextAlign.Justify),
+                        style = MaterialTheme.typography.titleSmall,
+                        selectable = false,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .verticalScroll(rememberScrollState())
@@ -81,21 +82,29 @@ internal fun DescriptionText(
     itemDetail: ItemDetail,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
+    color: Color = MaterialTheme.colorScheme.primary,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
+    selectable: Boolean = true,
+    text: @Composable (AnnotatedString) -> Unit = { description ->
+        Text(
+            text = description,
+            style = style,
+            color = color,
+            maxLines = maxLines,
+            overflow = overflow,
+            textAlign = TextAlign.Justify,
+            modifier = modifier
+        )
+    }
 ) {
     val formattedDescription = remember(itemDetail.description) {
         AnnotatedString(itemDetail.formattedDescription)
     }
 
-    SelectionContainer {
-        Text(
-            text = formattedDescription,
-            style = style,
-            maxLines = maxLines,
-            overflow = overflow,
-            modifier = modifier
-        )
+    if (selectable) {
+        SelectionContainer { text(formattedDescription) }
+    } else {
+        text(formattedDescription)
     }
 }
-

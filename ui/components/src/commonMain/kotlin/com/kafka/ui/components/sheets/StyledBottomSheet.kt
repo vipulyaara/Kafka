@@ -20,6 +20,7 @@ fun StyledBottomSheet(onDismiss: () -> Unit, content: @Composable ColumnScope.()
         shape = MaterialTheme.shapes.large,
         containerColor = MaterialTheme.colorScheme.background,
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.tertiary) },
+        scrimColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.32f),
         content = content
     )
 }

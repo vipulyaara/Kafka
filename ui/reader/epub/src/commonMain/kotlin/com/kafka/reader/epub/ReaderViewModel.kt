@@ -15,6 +15,7 @@ import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
 import com.kafka.data.entities.Download
+import com.kafka.data.entities.ItemDetail
 import com.kafka.domain.interactors.GetLastPageOffset
 import com.kafka.domain.interactors.GetLastSeenPage
 import com.kafka.domain.interactors.UpdateCurrentPage
@@ -81,7 +82,7 @@ class ReaderViewModel(
             itemId = itemId,
             loading = loading,
             epubBook = ebook,
-            language = itemDetail?.language,
+            itemDetail = itemDetail,
             download = download,
             highlights = highlights,
             settings = settings
@@ -184,7 +185,7 @@ class ReaderViewModel(
 
 data class ReaderState(
     val itemId: String = "",
-    val language: String? = null,
+    val itemDetail: ItemDetail? = null,
     val loading: Boolean = false,
     val epubBook: EpubBook? = null,
     val download: Download? = null,

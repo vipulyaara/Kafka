@@ -60,6 +60,8 @@ kotlin {
                 implementation(libs.icons.tabler)
                 implementation(libs.icons.feather)
                 implementation(libs.icons.font.awesome)
+
+                implementation(libs.reorderable)
             }
         }
     }

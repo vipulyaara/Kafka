@@ -1,5 +1,6 @@
 package com.kafka.reader.epub.settings
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -106,9 +107,16 @@ val ReaderSettings.theme: ReaderTheme
 data class ReaderTheme(
     val key: ReaderSettings.ThemeKey,
     val backgroundColor: Color = Color.Transparent,
-    val contentColor: Color = Color.Transparent
+    val contentColor: Color = Color.Transparent,
+    val scrimColor: Color = Color.Transparent,
 ) {
     val isSystemTheme get() = key == ReaderSettings.ThemeKey.System
+
+    val isDarkTheme
+        @Composable get() = key in setOf(
+            ReaderSettings.ThemeKey.Dark,
+            ReaderSettings.ThemeKey.Night
+        ) || isSystemTheme && isSystemInDarkTheme()
 
     val prominentColor
         @Composable get() = MaterialTheme.colorScheme.primary

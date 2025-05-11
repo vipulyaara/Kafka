@@ -91,6 +91,7 @@ private fun Reaction(
 ) {
     Surface(
         modifier = modifier,
+        color = if (count == 0) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(Dimens.Radius08),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick

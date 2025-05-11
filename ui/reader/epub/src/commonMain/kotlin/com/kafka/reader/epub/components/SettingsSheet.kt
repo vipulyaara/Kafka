@@ -66,7 +66,9 @@ fun SettingsSheet(
     changeSettings: (ReaderSettings) -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(vertical = Dimens.Spacing48),
+        modifier = Modifier
+            .background(colorScheme.surface)
+            .padding(vertical = Dimens.Spacing48),
         verticalArrangement = Arrangement.spacedBy(Dimens.Spacing36)
     ) {
         TextControls(
@@ -89,7 +91,7 @@ fun SettingsSheet(
             verticalAlignment = Alignment.CenterVertically
         ) {
             FontStyle(
-                readerFont = settings.font,
+                selectedFont = settings.font,
                 language = language,
                 onClick = { changeSettings(settings.copy(fontStyleKey = it.key)) }
             )
@@ -264,7 +266,7 @@ private fun FontMarginSize(
 }
 
 @Composable
-private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (ReaderFont) -> Unit) {
+private fun FontStyle(selectedFont: ReaderFont, language: String, onClick: (ReaderFont) -> Unit) {
     var showFontSelection by remember { mutableStateOf(false) }
 
     Surface(
@@ -278,9 +280,9 @@ private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (Reader
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = readerFont.name,
+                text = selectedFont.name,
                 style = MaterialTheme.typography.labelMedium,
-                fontFamily = readerFont.fontFamily,
+                fontFamily = selectedFont.fontFamily,
             )
 
             Icon(imageVector = Icons.ChevronDown, contentDescription = null, tint = colorScheme.surfaceTint)
@@ -294,8 +296,8 @@ private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (Reader
                     modifier = Modifier.padding(Dimens.Spacing24),
                     verticalArrangement = Arrangement.spacedBy(Dimens.Spacing24)
                 ) {
-                    ReaderFont.options(language).forEach {
-                        val alpha by animateFloatAsState(if (it == readerFont) 1f else 0.7f)
+                    ReaderFont.options(language).forEach { font ->
+                        val alpha by animateFloatAsState(if (font == selectedFont) 1f else 0.7f)
 
                         Column(
                             modifier = Modifier
@@ -303,14 +305,17 @@ private fun FontStyle(readerFont: ReaderFont, language: String, onClick: (Reader
                                 .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing08)
                                 .clip(RoundedCornerShape(Dimens.Radius04))
                                 .background(colorScheme.surfaceContainer.copy(alpha = 0.2f))
-                                .simpleClickable { onClick(it) },
+                                .simpleClickable {
+                                    onClick(font)
+                                    showFontSelection = false
+                                },
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = it.name,
+                                text = font.name,
                                 style = MaterialTheme.typography.titleMedium,
-                                fontFamily = it.fontFamily,
+                                fontFamily = font.fontFamily,
                                 color = sheetContentColor.copy(alpha = alpha)
                             )
                         }

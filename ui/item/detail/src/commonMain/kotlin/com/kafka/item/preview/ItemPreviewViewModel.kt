@@ -17,7 +17,7 @@ class ItemPreviewViewModel(
     @Assisted savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     val itemId = savedStateHandle.get<String>("itemId")!!
-    private val origin = savedStateHandle.get<Origin>("origin") ?: Origin.Unknown
+    private val origin = Origin.find(savedStateHandle.get<String>("origin"))
 
     val state = observeItem.flow
         .map { item -> ItemPreviewState(item = item, origin = origin) }

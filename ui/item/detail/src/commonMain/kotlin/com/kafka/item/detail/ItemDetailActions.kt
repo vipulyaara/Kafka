@@ -47,7 +47,7 @@ fun ItemDetailActionsRow(
                 .widthIn(max = WIDE_LAYOUT_MIN_WIDTH)
                 .align(Alignment.Center)
                 .padding(horizontal = Dimens.Gutter, vertical = Dimens.Spacing12),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Gutter),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.weight(0.2f)) {

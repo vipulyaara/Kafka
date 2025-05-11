@@ -10,11 +10,13 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -24,7 +26,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.getContext
 import com.kafka.common.simpleClickable
@@ -66,6 +67,7 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
     Scaffold(
         topBar = {
             ReaderTopBar(
+                itemDetail = state.itemDetail,
                 scrollBehavior = scrollBehavior,
                 settingsState = settingsState,
                 tocState = tocState,
@@ -74,17 +76,17 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
                 shareItem = { viewModel.shareItemText(context) }
             )
         }
-    ) {
-        ProvideScaffoldPadding(it) {
+    ) { padding ->
+        ProvideScaffoldPadding(padding) {
             BottomBackdropScaffold(
                 scaffoldState = backdropScaffoldState,
-                backLayerBackgroundColor = Color((0xFF101113)),
+                backLayerBackgroundColor = MaterialTheme.colorScheme.surface,
                 peekHeight = Dimens.Spacing12,
                 backLayerContent = {
                     AppTheme(isDarkTheme = true) {
                         SettingsSheet(
                             settings = state.settings,
-                            language = state.language ?: state.epubBook?.language.orEmpty(),
+                            language = state.itemDetail?.language ?: state.epubBook?.language.orEmpty(),
                             changeSettings = viewModel::updateSettings
                         )
                     }
@@ -132,24 +134,26 @@ private fun ScreenContent(
                 onPageScrolled = viewModel::onPageScrolled,
                 onHighlight = viewModel::addHighlight,
                 navigate = viewModel::navigate,
-                changeSettings = viewModel::updateSettings,
                 pagesListStates = pagesListStates
             )
 
-            TocSheet(
-                tocState = tocState,
-                navPoints = state.epubBook.navPoints,
-                onNavPointClicked = { navPointSrc ->
-                    coroutineScope.launch {
-                        navigateToPageAndAnchor(
-                            epubBook = state.epubBook,
-                            navPointSrc = navPointSrc,
-                            pagerState = pagerState,
-                            pagesListStates = pagesListStates
-                        )
+            CompositionLocalProvider(LocalContentColor provides state.settings.theme.contentColor) {
+                TocSheet(
+                    tocState = tocState,
+                    settings = state.settings,
+                    navPoints = state.epubBook.navPoints,
+                    onNavPointClicked = { navPointSrc ->
+                        coroutineScope.launch {
+                            navigateToPageAndAnchor(
+                                epubBook = state.epubBook,
+                                navPointSrc = navPointSrc,
+                                pagerState = pagerState,
+                                pagesListStates = pagesListStates
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         } else {
             if (state.loading) {
                 LoadingWithProgress(
@@ -168,16 +172,10 @@ private suspend fun navigateToPageAndAnchor(
     pagesListStates: SnapshotStateMap<Int, LazyListState>
 ) {
     val pageIndex = epubBook.chapters
-        .indexOfFirst {
-            it.absPath.endsWith(
-                navPointSrc.substringBefore("#")
-            )
-        }
+        .indexOfFirst { it.absPath.endsWith(navPointSrc.substringBefore("#")) }
 
     val fragmentIndex = epubBook.chapters[pageIndex].contentElements
-        .indexOfFirst {
-            (it as? ContentElement.Anchor)?.id == navPointSrc.substringAfter("#")
-        }
+        .indexOfFirst { (it as? ContentElement.Anchor)?.id == navPointSrc.substringAfter("#") }
         .coerceAtLeast(0)
 
     pagerState.animateScrollToPage(pageIndex)

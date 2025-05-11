@@ -28,4 +28,4 @@ data class LibrivoxSection(
 data class Reader(
     val readerId: String,
     val displayName: String
-) 
+)

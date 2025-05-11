@@ -60,6 +60,8 @@ android {
             initWith(buildTypes["release"])
             signingConfig = signingConfigs["debug"]
             matchingFallbacks += "release"
+            isShrinkResources = false
+            isMinifyEnabled = false
             versionNameSuffix = "-rc"
             applicationIdSuffix = ".rc"
         }

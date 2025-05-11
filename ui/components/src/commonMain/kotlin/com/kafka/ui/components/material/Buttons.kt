@@ -41,8 +41,7 @@ fun FloatingButton(
 ) {
     val alpha = if (enabled) 1f else 0.38f
     val buttonColor = if (enabled) containerColor else containerColor.copy(alpha = 0.12f)
-    val textColor = contentColor
-    
+
     Surface(
         modifier = modifier
             .alpha(alpha)
@@ -58,7 +57,7 @@ fun FloatingButton(
         Text(
             text = text,
             style = textStyle.alignCenter(),
-            color = textColor,
+            color = contentColor,
             modifier = Modifier.padding(contentPadding)
         )
     }

@@ -5,8 +5,8 @@ package com.kafka.root.home.navigation
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Down
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Up
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -342,7 +342,7 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(): EnterTransition {
         return fadeIn()
     }
 
-    return slideIntoContainer(Start) { (it / 1.5).toInt() } + fadeIn()
+    return slideIntoContainer(Up) { (it / 1.5).toInt() } + fadeIn()
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(): ExitTransition {
@@ -353,7 +353,7 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(): ExitTransition {
         return fadeOut()
     }
 
-    return slideOutOfContainer(End) { (it / 1.5).toInt() } + fadeOut()
+    return slideOutOfContainer(Down) { (it / 1.5).toInt() } + fadeOut()
 }
 
 @Composable

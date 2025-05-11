@@ -4,6 +4,7 @@ package com.kafka.root.home.bottombar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
@@ -179,7 +180,7 @@ private fun HomeNavigationBar(
     openPlaybackSheet: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.animateContentSize(), verticalArrangement = Arrangement.Bottom) {
         if (navigationType.shouldShowMiniPlayer()) {
             MiniPlayer(
                 modifier = Modifier
@@ -337,8 +338,8 @@ private fun shouldShowBottomBar(navController: NavController): Boolean {
     val blackLabelledDestinations = listOf(
         Screen.EpubReader,
         Screen.Web,
+        Screen.ItemPreview,
         Screen.WriteReview,
-        Screen.ItemPreview
     )
 
     return !blackLabelledDestinations.map { it.navigationRoute }.contains(destination)

@@ -39,30 +39,34 @@ import ui.common.theme.theme.Dimens
 fun ReviewItem(
     review: Review,
     modifier: Modifier = Modifier,
-    maxLines: Int = 4,
+    maxLines: Int = Int.MAX_VALUE,
+    expand: Boolean = true,
     reactions: @Composable () -> Unit = {}
 ) {
-    Box(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(Dimens.Spacing08),
-            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
-        ) {
-            UserHeader(
-                name = review.userName,
-                rating = review.rating,
-                image = review.userAvatar,
-                createdAt = review.createdAt
-            )
+    Column(
+        modifier = modifier.fillMaxWidth().padding(Dimens.Spacing08),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12)
+    ) {
+        UserHeader(
+            name = review.userName,
+            rating = review.rating,
+            image = review.userAvatar,
+            createdAt = review.createdAt
+        )
 
-            ReviewText(reviewId = review.reviewId, text = review.text, maxLines = maxLines)
+        ReviewText(
+            reviewId = review.reviewId,
+            text = review.text,
+            maxLines = maxLines,
+            expand = expand
+        )
 
-            reactions()
-        }
+        reactions()
     }
 }
 
 @Composable
-private fun ReviewText(reviewId: String, text: String, maxLines: Int) {
+private fun ReviewText(reviewId: String, text: String, maxLines: Int, expand: Boolean) {
     val textState = rememberRichTextState().apply { setMarkdown(text) }
     var isExpanded by rememberSavableMutableState(reviewId) { false }
 
@@ -75,7 +79,7 @@ private fun ReviewText(reviewId: String, text: String, maxLines: Int) {
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .animateContentSize()
-                .simpleClickable { isExpanded = !isExpanded }
+                .then(if (expand) Modifier.simpleClickable { isExpanded = !isExpanded } else Modifier)
         )
     }
 }

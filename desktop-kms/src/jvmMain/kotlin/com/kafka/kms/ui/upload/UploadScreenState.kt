@@ -109,4 +109,13 @@ class UploadScreenState {
             }
         }
     }
+
+    fun reorderCoverImages(fromIndex: Int, toIndex: Int) {
+        if (fromIndex in coverImagePaths.indices && toIndex in coverImagePaths.indices && fromIndex != toIndex) {
+            val newList = coverImagePaths.toMutableList()
+            val item = newList.removeAt(fromIndex)
+            newList.add(toIndex, item)
+            coverImagePaths = newList
+        }
+    }
 }

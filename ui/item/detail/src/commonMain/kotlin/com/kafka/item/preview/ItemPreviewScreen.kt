@@ -44,7 +44,9 @@ fun ItemPreviewScreen(viewModel: ItemPreviewViewModel) {
 
 @Composable
 fun ItemPreview(item: Item, origin: Screen.ItemDetail.Origin) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    val navigator = LocalNavigator.current
+
+    Box(modifier = Modifier.fillMaxSize().simpleClickable { navigator.goBack() }) {
         DynamicTheme(model = item.coverImage, useDarkTheme = LocalTheme.current.isDark()) {
             InfiniteGradient(modifier = Modifier.fillMaxSize())
         }

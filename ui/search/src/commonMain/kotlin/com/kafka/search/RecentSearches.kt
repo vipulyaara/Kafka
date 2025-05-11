@@ -76,7 +76,7 @@ fun RecentSearchItem(
 ) {
     Surface(
         modifier = Modifier,
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.surfaceContainer,
         onClick = { onSearchClicked(recentSearch) }
     ) {
