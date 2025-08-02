@@ -1,7 +1,5 @@
 package com.kafka.common.image
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -50,6 +48,7 @@ import compose.icons.tablericons.Eye
 import compose.icons.tablericons.EyeOff
 import compose.icons.tablericons.FileText
 import compose.icons.tablericons.Gift
+import compose.icons.tablericons.GripVertical
 import compose.icons.tablericons.Heart
 import compose.icons.tablericons.Home
 import compose.icons.tablericons.Home2
@@ -77,7 +76,6 @@ import compose.icons.tablericons.Umbrella
 import compose.icons.tablericons.Underline
 import compose.icons.tablericons.Upload
 import compose.icons.tablericons.X
-import compose.icons.tablericons.GripVertical
 
 object Icons {
     val Home: ImageVector = TablerIcons.Home
@@ -100,7 +98,6 @@ object Icons {
     val Play = TablerIcons.PlayerPlay
     val Queue = TablerIcons.Clock
     val Retry = TablerIcons.Download
-    val HeartFilled = Icons.Default.Favorite
     val X = TablerIcons.X
     val XCircle = TablerIcons.CircleX
     val Mic = TablerIcons.Microphone

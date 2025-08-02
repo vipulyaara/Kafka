@@ -382,7 +382,7 @@ private fun LazyGridScope.gridItems(
                             onLongClick = { openItemPreview(item.itemId) }
                         )
                         .sharedElement(
-                            state = rememberSharedContentState(
+                            sharedContentState = rememberSharedContentState(
                                 key = SharedElementCoverKey(
                                     cover = item.coverImage.orEmpty(),
                                     origin = Origin.Grid

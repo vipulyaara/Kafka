@@ -80,10 +80,6 @@ class HomepageViewModel(
         }
     }
 
-    fun openProfile() {
-        navigator.navigate(Screen.Profile)
-    }
-
     fun openItemDetail(
         itemId: String,
         origin: Origin = Origin.Unknown,
@@ -131,14 +127,5 @@ class HomepageViewModel(
     fun shareApp(text: String, context: Any?) {
         analytics.log { this.shareApp() }
         shareUtils.shareText(text = text, context = context)
-    }
-
-    private fun preloadImages(collection: List<HomepageCollection>) {
-//        viewModelScope.launch {
-//            preloadImages(context = platformContext, images = collection
-//                .filterIsInstance<HomepageCollection.FeaturedItem>()
-//                .flatMap { it.items }
-//                .mapNotNull { it.coverImage })
-//        }
     }
 }

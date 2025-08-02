@@ -1,37 +1,37 @@
 [versions]
 accompanist = "0.37.0"
 appupdate = "2.1.0"
-agp = "8.8.0"
-androidxlifecycle = "2.9.0-alpha11"
-coil3 = "3.0.0"
-compose-material-navigation = "1.7.8"
-compose-multiplatform = "1.7.3"
-coroutines = "1.9.0"
+agp = "8.11.1"
+androidxlifecycle = "2.9.2"
+coil3 = "3.3.0"
+compose-material-navigation = "1.8.3"
+compose-multiplatform = "1.9.0-beta01"
+coroutines = "1.10.2"
 firebase = "2.1.0"
 icons = "1.1.1"
-filekit = "0.8.7"
-haze = "0.9.0-rc03"
-jbadaptive = "1.0.0-rc01"
-jblifecycle = "2.8.4"
-jbnavigation = "2.8.0-alpha10"
+filekit = "0.8.8"
+haze = "1.6.9"
+jbadaptive = "1.1.2"
+jblifecycle = "2.9.1"
+jbnavigation = "2.8.0-alpha13"
 jb-material-navigation = "1.7.0-beta02"
-kotlin = "2.1.10"
-kotlin-immutable = "0.3.8"
+kotlin = "2.2.0"
+kotlin-immutable = "0.4.0"
 kotlininject = "0.7.2"
-ktor = "3.0.0"
-media3 = "1.5.1"
-mixpanel = "8.0.2"
-purchase = "1.1.2+13.5.0"
-okhttp = "4.12.0"
-reorderable = "2.4.3"
-richeditor = "1.0.0-rc10"
-room = "2.7.1"
-sqlite = "2.5.0"
-serialization = "1.7.3"
-spotless = "6.25.0"
-supabase = "3.0.1"
+ktor = "3.2.2"
+media3 = "1.6.1"
+mixpanel = "8.2.0"
+purchase = "2.0.1+16.0.2"
+okhttp = "5.1.0"
+reorderable = "2.5.1"
+richeditor = "1.0.0-rc13"
+room = "2.7.2"
+sqlite = "2.5.2"
+serialization = "1.9.0"
+spotless = "7.2.1"
+supabase = "3.2.2"
 
-compileSdk = "35"
+compileSdk = "36"
 minSdk = "24"
 targetSdk = "34"
 androidx-test-ext-junit = "1.2.1"
@@ -42,14 +42,14 @@ androidx-baselineprofile = "1.3.4"
 profileinstaller = "1.4.1"
 review = "2.0.2"
 junit = "4.13.2"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 material = "1.12.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
-buildConfig = "com.github.gmazzo.buildconfig:5.5.0"
+buildConfig = "com.github.gmazzo.buildconfig:5.6.7"
 cacheFixPlugin = { id = "org.gradle.android.cache-fix", version = "3.0.1" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
@@ -58,10 +58,10 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.0.21-1.0.27"
-gms-googleServices = "com.google.gms.google-services:4.4.2"
-firebase-crashlytics = "com.google.firebase.crashlytics:3.0.3"
-spotless = "com.diffplug.spotless:6.25.0"
+ksp = "com.google.devtools.ksp:2.2.0-2.0.2"
+gms-googleServices = "com.google.gms.google-services:4.4.3"
+firebase-crashlytics = "com.google.firebase.crashlytics:3.0.5"
+spotless = "com.diffplug.spotless:7.2.1"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
@@ -73,7 +73,7 @@ media = "androidx.media:media:1.7.0"
 
 androidx-activity-compose = "androidx.activity:activity-compose:1.10.1"
 androidx-core = "androidx.core:core-ktx:1.16.0"
-androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
+androidx-documentfile = "androidx.documentfile:documentfile:1.1.0"
 
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxlifecycle" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidxlifecycle" }
@@ -83,8 +83,8 @@ jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifec
 jetbrains-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jbnavigation" }
 jetbrains-material-navigation = { module = "org.jetbrains.compose.material:material-navigation", version.ref = "jb-material-navigation" }
 
-lottie-core = "com.airbnb.android:lottie:6.5.2"
-lottie-compose = "com.airbnb.android:lottie-compose:6.5.2"
+lottie-core = "com.airbnb.android:lottie:6.6.7"
+lottie-compose = "com.airbnb.android:lottie-compose:6.6.7"
 
 androidx-collection = "androidx.collection:collection:1.5.0"
 androidx-palette = "androidx.palette:palette:1.0.0"
@@ -108,9 +108,9 @@ google-bom = "com.google.firebase:firebase-bom:33.13.0"
 google-analytics = { module = "com.google.firebase:firebase-analytics" }
 google-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
-google-admob = "com.google.android.gms:play-services-ads:24.2.0"
+google-admob = "com.google.android.gms:play-services-ads:24.5.0"
 google-messaging = { module = "com.google.firebase:firebase-messaging" }
-google-playservices-auth = "com.google.android.gms:play-services-auth:21.3.0"
+google-playservices-auth = "com.google.android.gms:play-services-auth:21.4.0"
 google-remoteConfig = { module = "com.google.firebase:firebase-config" }
 
 google-credentials = "androidx.credentials:credentials:1.5.0"
@@ -132,11 +132,11 @@ firebase-remote-config = { module = "dev.gitlive:firebase-config", version.ref =
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
-jsoup = "org.jsoup:jsoup:1.17.2"
-ksoup = "com.fleeksoft.ksoup:ksoup-lite:0.1.9"
+jsoup = "org.jsoup:jsoup:1.21.1"
+ksoup = "com.fleeksoft.ksoup:ksoup-lite:0.2.0"
 
-kermit = "co.touchlab:kermit:2.0.4"
-kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.4"
+kermit = "co.touchlab:kermit:2.0.6"
+kermit-crashlytics = "co.touchlab:kermit-crashlytics:2.0.6"
 
 kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlininject" }
 kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlininject" }
@@ -149,8 +149,8 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 kotlin-serialization-proto = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable" }
 
-kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.26.0"
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.2"
+kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.29.0"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -172,8 +172,8 @@ icons-line = { module = "br.com.devsrsouza.compose.icons:line-awesome", version.
 
 leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
 
-markdown-commonmark = { module = "org.commonmark:commonmark", version = "0.23.0" }
-markdown-compose = "com.mikepenz:multiplatform-markdown-renderer-m3:0.26.0"
+markdown-commonmark = { module = "org.commonmark:commonmark", version = "0.25.0" }
+markdown-compose = "com.mikepenz:multiplatform-markdown-renderer-m3:0.35.0"
 markdown-core = "org.jetbrains:markdown:0.7.3"
 
 media3-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media3" }
@@ -182,12 +182,12 @@ media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", vers
 
 okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
-okio = "com.squareup.okio:okio:3.10.2"
+okio = "com.squareup.okio:okio:3.15.0"
 
-openai-kotlin-bom = "com.aallam.openai:openai-client-bom:4.0.0-beta01"
+openai-kotlin-bom = "com.aallam.openai:openai-client-bom:4.0.1"
 openai-client = { module = "com.aallam.openai:openai-client" }
 
-material-kolor = "com.materialkolor:material-kolor:2.0.0"
+material-kolor = "com.materialkolor:material-kolor:3.0.1"
 
 mixpanel = { module = "com.mixpanel.android:mixpanel-android", version.ref = "mixpanel" }
 
@@ -208,10 +208,10 @@ supabase-auth-compose = { module = "io.github.jan-tennert.supabase:compose-auth-
 supabase-realtime = { module = "io.github.jan-tennert.supabase:realtime-kt" }
 supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt" }
 
-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.40"
+webview = "io.github.kevinnzou:compose-webview-multiplatform:2.0.1"
 
-threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.4"
-dataStore = "androidx.datastore:datastore-preferences:1.1.2"
+threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.4.9"
+dataStore = "androidx.datastore:datastore-preferences:1.1.7"
 #todo: remove this. required by remote config kmp
 tools-desugarjdklibs = "com.android.tools:desugar_jdk_libs:2.1.5"
 

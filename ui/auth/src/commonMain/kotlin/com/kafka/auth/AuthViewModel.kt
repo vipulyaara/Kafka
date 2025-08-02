@@ -33,7 +33,7 @@ class AuthViewModel(
     private val snackbarManager: SnackbarManager,
     private val remoteConfig: RemoteConfig,
     private val navigator: Navigator,
-    observeUser: ObserveUser,
+    observeUser: ObserveUser
 ) : ViewModel() {
     private val loadingCounter = ObservableLoadingCounter()
 
@@ -76,7 +76,7 @@ class AuthViewModel(
         }
     }
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, onLogin: () -> Unit) {
         when {
             !email.isValidEmail() ->
                 snackbarManager.add(invalidEmailMessage)
@@ -87,14 +87,17 @@ class AuthViewModel(
             else -> {
                 viewModelScope.launch {
                     signInUser(SignInUser.Params(email, password))
-                        .onSuccess { navigator.goBack() }
+                        .onSuccess {
+                            navigator.goBack()
+                            onLogin()
+                        }
                         .onException { snackbarManager.add(it.message ?: loginErrorMessage) }
                 }
             }
         }
     }
 
-    fun signup(email: String, password: String, name: String) {
+    fun signup(email: String, password: String, name: String, onLogin: () -> Unit) {
         viewModelScope.launch {
             when {
                 !email.isValidEmail() ->
@@ -105,7 +108,10 @@ class AuthViewModel(
 
                 else -> {
                     signUpUser(SignUpUser.Params(email, password, name))
-                        .onSuccess { navigator.goBack() }
+                        .onSuccess {
+                            navigator.goBack()
+                            onLogin()
+                        }
                         .onException { snackbarManager.add(it.message ?: signUpErrorMessage) }
                 }
             }

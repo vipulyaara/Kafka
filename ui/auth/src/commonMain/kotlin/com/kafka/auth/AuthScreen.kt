@@ -33,6 +33,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.AnimatedVisibilityFade
 import com.kafka.common.extensions.alignCenter
@@ -61,7 +62,7 @@ internal enum class LoginState {
 }
 
 @Composable
-fun LoginScreen(authViewModel: AuthViewModel) {
+fun AuthScreen(authViewModel: AuthViewModel, onLogin: () -> Unit) {
     val authViewState by authViewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     val context = getContext()
@@ -79,8 +80,12 @@ fun LoginScreen(authViewModel: AuthViewModel) {
                 Login(
                     modifier = Modifier,
                     isGoogleLoginEnabled = authViewState.isGoogleLoginEnabled,
-                    login = authViewModel::login,
-                    signup = authViewModel::signup,
+                    login = { email, password ->
+                        authViewModel.login(email, password, onLogin)
+                    },
+                    signup = { email, password, name ->
+                        authViewModel.signup(email, password, name, onLogin)
+                    },
                     forgotPassword = authViewModel::forgotPassword,
                     signInWithGoogle = { authViewModel.signInWithGoogle(context) }
                 )
@@ -222,6 +227,7 @@ private fun PrivacyPolicy(goToTerms: () -> Unit, goToPrivacyPolicy: () -> Unit) 
     Text(
         text = annotatedString,
         style = MaterialTheme.typography.labelSmall
+            .copy(fontSize = 10.sp)
             .copy(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
             .alignCenter(),
         modifier = Modifier

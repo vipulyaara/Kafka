@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
 
 package com.kafka.domain.interactors.reviews
 
@@ -8,8 +8,9 @@ import com.kafka.data.entities.Review
 import com.kafka.data.feature.Supabase
 import com.kafka.data.feature.auth.AccountRepository
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

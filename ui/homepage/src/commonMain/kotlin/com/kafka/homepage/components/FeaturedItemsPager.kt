@@ -118,7 +118,7 @@ private fun CoverImage(image: String?, title: String? = null) {
                 .aspectRatio(0.66f)
                 .sharedElement(
                     animatedVisibilityScope = LocalAnimatedContentScope.current,
-                    state = rememberSharedContentState(
+                    sharedContentState = rememberSharedContentState(
                         key = SharedElementCoverKey(cover = image, origin = Origin.Carousel)
                     )
                 )

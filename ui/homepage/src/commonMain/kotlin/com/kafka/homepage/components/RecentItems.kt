@@ -276,7 +276,7 @@ private fun RecentItemCoverImage(item: RecentItem) {
                 contentScale = ContentScale.Crop,
                 placeholder = null,
                 modifier = Modifier.sharedElement(
-                    state = rememberSharedContentState(
+                    sharedContentState = rememberSharedContentState(
                         key = SharedElementCoverKey(
                             cover = item.coverUrl.orEmpty(),
                             origin = Origin.ReadingList

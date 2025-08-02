@@ -1,12 +1,16 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.kafka.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kafka.data.model.InstantAsStringSerializer
 import com.kafka.data.model.MediaType
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Serializable
 data class CurrentlyReading(
@@ -15,6 +19,7 @@ data class CurrentlyReading(
     @SerialName("item_id") val itemId: String,
     @SerialName("current_page") val currentPage: Long,
     @SerialName("current_page_offset") val currentPageOffset: Long,
+    @Serializable(with = InstantAsStringSerializer::class)
     @SerialName("updated_at") val updatedAt: Instant = Clock.System.now(),
 )
 
@@ -41,6 +46,7 @@ data class RecentItem(
     @SerialName("cover_image") val coverUrl: String?,
     @SerialName("creators") val creators: List<String>,
     @SerialName("media_type") val mediaType: MediaType,
+    @Serializable(with = InstantAsStringSerializer::class)
     @SerialName("updated_at") val updatedAt: Instant,
     @SerialName("progress") val progress: Float = 0f,
 ) {

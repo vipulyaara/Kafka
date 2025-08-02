@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package kafka.reader.core.models
 
 import kafka.reader.core.parser.EpubCFIParser
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock.System
+import kotlin.time.ExperimentalTime
 
 @Serializable
 data class TextHighlight(
@@ -12,7 +15,7 @@ data class TextHighlight(
     val cfiRange: String,
     val color: String,
     val note: String? = null,
-    val createdAt: Long = Clock.System.now().toEpochMilliseconds()
+    val createdAt: Long = System.now().toEpochMilliseconds()
 ) {
     val id: String
         get() = "$bookId-$chapterId-${cfiRange.hashCode()}"

@@ -11,7 +11,6 @@ import com.kafka.common.extensions.getActivity
 import com.kafka.common.platform.ShareUtils
 import com.kafka.common.snackbar.SnackbarManager
 import com.kafka.common.snackbar.UiMessage
-import com.kafka.data.entities.BookshelfDefaults.default
 import com.kafka.data.entities.ItemDetail
 import com.kafka.data.prefs.ItemReadCounter
 import com.kafka.domain.interactors.GetPrimaryFile
@@ -168,7 +167,8 @@ class ItemDetailViewModel(
 
     fun updateBookshelfStatus() {
         viewModelScope.launch {
-            addToBookshelf(AddToBookshelf.Params(itemId, default, !state.value.isFavorite))
+            navigator.navigate(Screen.AddToBookshelf(itemId))
+//            addToBookshelf(AddToBookshelf.Params(itemId, default, !state.value.isFavorite))
         }
     }
 
@@ -243,7 +243,7 @@ class ItemDetailViewModel(
             navigator.navigate(Screen.WriteReview(itemId))
         } else {
             analytics.log { this.openLogin("write_review") }
-            navigator.navigate(Screen.Login)
+            navigator.navigate(Screen.Login())
         }
     }
 

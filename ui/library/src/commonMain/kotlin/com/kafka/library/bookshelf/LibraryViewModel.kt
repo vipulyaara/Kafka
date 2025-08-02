@@ -11,10 +11,6 @@ import me.tatarka.inject.annotations.Inject
 class LibraryViewModel(
     observeBookshelves: ObserveBookshelves,
 ) : ViewModel() {
-
-    val bookshelves = observeBookshelves.flow.stateInDefault(viewModelScope, listOf())
-
-    init {
-        observeBookshelves(ObserveBookshelves.Params(FetchType.Library))
-    }
+    val bookshelves = observeBookshelves(ObserveBookshelves.Params(FetchType.Library))
+        .stateInDefault(viewModelScope, listOf())
 }

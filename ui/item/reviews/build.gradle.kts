@@ -15,6 +15,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
 
+                implementation(libs.jetbrains.navigation.compose)
+
                 implementation(libs.jetbrains.lifecycle.runtime.compose)
                 implementation(libs.jetbrains.lifecycle.viewmodel.compose)
 

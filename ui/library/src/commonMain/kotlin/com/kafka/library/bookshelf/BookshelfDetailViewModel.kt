@@ -63,7 +63,7 @@ class BookshelfDetailViewModel(
     }
 
     fun openLogin() {
-        navigator.navigate(Screen.Login)
+        navigator.navigate(Screen.Login())
     }
 }
 

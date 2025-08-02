@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.kafka.common.animation.ProvideLocalAnimatedContentScope
 import com.kafka.item.detail.ItemDetail
@@ -43,7 +44,7 @@ fun NavGraphBuilder.addItemDetailGroup(
     addSummary: addSummary,
     addReviews: addReviews,
     addWriteReview: addWriteReview,
-    addItemPreview: addItemPreview
+    addItemPreview: addItemPreview,
 ) {
     addItemDetail()
     addItemDescription()
@@ -120,16 +121,19 @@ typealias addReviews = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addReviews(viewModelFactory: (SavedStateHandle) -> ReviewViewModel) {
     composable<Screen.Reviews> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
-        ReviewScreen(viewModel)
+        ReviewScreen(viewModel, rememberNavController())
     }
 }
 
 typealias addWriteReview = NavGraphBuilder.() -> Unit
 
 @Inject
-fun NavGraphBuilder.addWriteReview(viewModelFactory: (SavedStateHandle) -> WriteReviewViewModel) {
+fun NavGraphBuilder.addWriteReview(
+    viewModelFactory: (SavedStateHandle) -> WriteReviewViewModel
+) {
     composable<Screen.WriteReview> {
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
+
         WriteReviewScreen(viewModel)
     }
 }

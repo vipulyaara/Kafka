@@ -1,12 +1,14 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.kafka.data.db
 
 import androidx.room.TypeConverter
 import com.kafka.data.entities.Download
 import com.kafka.data.model.MediaType
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * @author Vipul Kumar; dated 21/01/19.

@@ -3,6 +3,7 @@
 package com.kafka.navigation.graph
 
 import com.kafka.navigation.graph.Screen.ItemDetail.Origin
+import com.kafka.navigation.graph.Screen.ItemDetail.Origin.Unknown
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -33,7 +34,11 @@ sealed class Screen {
     data object Home : Screen()
 
     @Serializable
-    data object Login : Screen()
+    data class Login(val startWithLogin: Boolean = true) : Screen() {
+        companion object {
+            const val result = "login_success"
+        }
+    }
 
     @Serializable
     data object Player : Screen() {
@@ -59,7 +64,7 @@ sealed class Screen {
     @Serializable
     data class ItemDetail(
         @SerialName("itemId") val itemId: String,
-        @SerialName("origin") val origin: Origin = Origin.Unknown
+        @SerialName("origin") val origin: Origin = Unknown
     ) : Screen() {
         @Serializable
         enum class Origin {
@@ -121,7 +126,7 @@ sealed class Screen {
     @Serializable
     data class ItemPreview(
         @SerialName("itemId") val itemId: String,
-        @SerialName("origin") val origin: Origin = Origin.Unknown
+        @SerialName("origin") val origin: Origin = Unknown
     ) : Screen()
 
     @Serializable

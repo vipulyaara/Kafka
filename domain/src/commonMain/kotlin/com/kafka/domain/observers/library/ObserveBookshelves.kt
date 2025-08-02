@@ -3,6 +3,9 @@ package com.kafka.domain.observers.library
 import com.kafka.base.CoroutineDispatchers
 import com.kafka.base.domain.SubjectInteractor
 import com.kafka.data.entities.Bookshelf
+import com.kafka.data.entities.BookshelfDefaults.completed
+import com.kafka.data.entities.BookshelfDefaults.favorites
+import com.kafka.data.entities.BookshelfDefaults.reading
 import com.kafka.data.entities.BookshelfDefaults.uploads
 import com.kafka.data.entities.BookshelfDefaults.wishlist
 import com.kafka.data.feature.auth.AccountRepository
@@ -24,7 +27,7 @@ class ObserveBookshelves(
             .where {
                 val bookshelfTypes = when (params.fetchType) {
                     Params.FetchType.Library -> listOf(wishlist, uploads)
-                    Params.FetchType.AddToBookshelf -> listOf(wishlist)
+                    Params.FetchType.AddToBookshelf -> listOf(wishlist, favorites, reading, completed)
                 }.map { it.type }
 
                 "type" inArray bookshelfTypes

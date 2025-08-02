@@ -81,7 +81,7 @@ class ReviewViewModel(
             navigator.navigate(Screen.WriteReview(itemId))
         } else {
             analytics.log { this.openLogin("write_review") }
-            navigator.navigate(Screen.Login)
+            navigator.navigate(Screen.Login())
         }
     }
 

@@ -73,8 +73,9 @@ class FirebaseAnalytics(
                 if (route != null) "screen_route" to route
                 when {
                     arguments is Bundle -> {
+                        arguments.remove("android-support-nav:controller:deepLinkIntent")
                         for (key in arguments.keySet()) {
-                            val value = arguments.getString(key).toString()
+                            val value = arguments.get(key).toString()
                             // We don't want to include the label or route twice
                             if (value == label || value == route) continue
 

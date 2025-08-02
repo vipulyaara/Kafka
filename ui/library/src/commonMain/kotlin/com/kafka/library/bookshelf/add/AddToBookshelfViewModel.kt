@@ -11,6 +11,7 @@ import com.kafka.domain.interactors.library.AddToBookshelf
 import com.kafka.domain.observers.ObserveItemDetail
 import com.kafka.domain.observers.library.ObserveBookshelves
 import com.kafka.domain.observers.library.ObserveBookshelves.Params.FetchType
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
@@ -26,13 +27,18 @@ class AddToBookshelfViewModel(
 ) : ViewModel() {
     private val itemId = savedStateHandle.get<String>("itemId")!!
 
-    val state = combine(observeBookshelves.flow, observeItemDetail.flow) { shelves, item ->
+    val state = combine(
+        observeBookshelves.flow,
+        observeItemDetail.flow
+    ) { shelves, item ->
         AddToBookshelfState(bookshelves = shelves, itemDetail = item)
     }.stateInDefault(viewModelScope, AddToBookshelfState())
 
     init {
-        observeBookshelves(ObserveBookshelves.Params(FetchType.AddToBookshelf))
-        observeItemDetail(ObserveItemDetail.Param(itemId))
+        viewModelScope.launch {
+            observeBookshelves(ObserveBookshelves.Params(FetchType.AddToBookshelf)).collect()
+            observeItemDetail(ObserveItemDetail.Param(itemId)).collect()
+        }
     }
 
     fun addToBookShelf(bookshelf: Bookshelf) {

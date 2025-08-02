@@ -27,18 +27,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.Autofill
-import androidx.compose.ui.autofill.AutofillNode
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalAutofill
-import androidx.compose.ui.platform.LocalAutofillTree
+import androidx.compose.ui.platform.LocalAutofillManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -69,6 +65,7 @@ internal fun LoginWithEmail(
     modifier: Modifier = Modifier
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
+    val autofillManager = LocalAutofillManager.current
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         var username by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -80,19 +77,6 @@ internal fun LoginWithEmail(
         var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
             mutableStateOf(TextFieldValue("Vipul Kumar"))
         }
-
-        val usernameAutofill = AutofillNode(
-            autofillTypes = listOf(AutofillType.EmailAddress),
-            onFill = { username = TextFieldValue(it, TextRange(it.length)) }
-        )
-        val passwordAutofill = AutofillNode(
-            autofillTypes = listOf(AutofillType.Password),
-            onFill = { password = TextFieldValue(it, TextRange(it.length)) }
-        )
-
-        val autofill = LocalAutofill.current
-        LocalAutofillTree.current += usernameAutofill
-        LocalAutofillTree.current += passwordAutofill
 
         AnimatedVisibility(
             visible = loginState == LoginState.Signup,
@@ -107,7 +91,9 @@ internal fun LoginWithEmail(
         ) {
             Column {
                 LoginTextField(
-                    modifier = Modifier,
+                    modifier = Modifier.semantics {
+                        contentType = ContentType.PersonFullName
+                    },
                     loginTextField = LoginTextField.Name,
                     text = name,
                     onValueChange = { name = it },
@@ -118,7 +104,9 @@ internal fun LoginWithEmail(
         }
 
         LoginTextField(
-            modifier = Modifier.autoFill(autofill, usernameAutofill),
+            modifier = Modifier.semantics {
+                contentType = ContentType.EmailAddress
+            },
             loginTextField = LoginTextField.Username,
             text = username,
             onValueChange = { username = it },
@@ -128,7 +116,9 @@ internal fun LoginWithEmail(
         Spacer(modifier = Modifier.height(Dimens.Spacing12))
 
         LoginTextField(
-            modifier = Modifier.autoFill(autofill, passwordAutofill),
+            modifier = Modifier.semantics {
+                contentType = ContentType.Password
+            },
             loginTextField = LoginTextField.Password,
             text = password,
             onValueChange = { password = it },
@@ -138,6 +128,7 @@ internal fun LoginWithEmail(
         Spacer(modifier = Modifier.height(Dimens.Spacing24))
 
         LoginButton(keyboard = keyboard, loginState = loginState) {
+            autofillManager?.commit()
             if (loginState.isLogin) {
                 login(username.text, password.text)
             } else {
@@ -228,19 +219,6 @@ internal fun LoginTextField(
         shape = RoundedCornerShape(Dimens.Spacing08)
     )
 }
-
-private fun Modifier.autoFill(autofill: Autofill?, autofillNode: AutofillNode) =
-    onFocusChanged { focusState ->
-        autofill?.run {
-            if (focusState.isFocused) {
-                requestAutofillForNode(autofillNode)
-            } else {
-                cancelAutofillForNode(autofillNode)
-            }
-        }
-    }.onGloballyPositioned {
-        autofillNode.boundingBox = it.boundsInWindow()
-    }
 
 internal enum class LoginTextField(
     val hint: String,

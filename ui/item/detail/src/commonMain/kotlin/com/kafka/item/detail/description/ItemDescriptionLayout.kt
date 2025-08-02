@@ -77,7 +77,7 @@ internal fun ItemDescriptionAndCover(
                 modifier = Modifier
                     .simpleClickable { openItemPreview(itemDetail?.itemId ?: itemPlaceholder.itemId) }
                     .sharedElement(
-                        state = rememberSharedContentState(
+                        sharedContentState = rememberSharedContentState(
                             key = SharedElementCoverKey(
                                 cover = itemPlaceholder.coverImage,
                                 origin = itemPlaceholder.origin

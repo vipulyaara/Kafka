@@ -1,12 +1,16 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.kafka.data.entities
 
 import com.kafka.data.entities.Bookshelf.Type
 import com.kafka.data.entities.Bookshelf.Visibility
+import com.kafka.data.model.InstantAsStringSerializer
 import com.kafka.data.model.MediaType
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock.*
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Serializable
 data class Bookshelf(
@@ -14,7 +18,8 @@ data class Bookshelf(
     @SerialName("name") val name: String,
     @SerialName("type") val type: Type,
     @SerialName("visibility") val visibility: Visibility,
-    @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
+    @Serializable(with = InstantAsStringSerializer::class)
+    @SerialName("created_at") val createdAt: Instant = System.now(),
 ) {
     @Serializable
     enum class Type(val value: String) {
@@ -52,7 +57,8 @@ data class BookshelfItem(
     @SerialName("creator") val creator: String,
     @SerialName("media_type") val mediaType: MediaType,
     @SerialName("cover_image") val coverImage: String,
-    @SerialName("created_at") val createdAt: Instant = Clock.System.now(),
+    @Serializable(with = InstantAsStringSerializer::class)
+    @SerialName("created_at") val createdAt: Instant = System.now(),
 ) {
     companion object {
         fun ItemDetail.asBookshelfItem() = BookshelfItem(

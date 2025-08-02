@@ -69,7 +69,7 @@ private fun CoverImage(item: Item, origin: Screen.ItemDetail.Origin) {
                 .simpleClickable { navigator.goBack() }
                 .padding(Dimens.Gutter)
                 .sharedElement(
-                    state = rememberSharedContentState(
+                    sharedContentState = rememberSharedContentState(
                         key = SharedElementCoverKey(cover = item.coverImage, origin = origin)
                     ),
                     animatedVisibilityScope = LocalAnimatedContentScope.current

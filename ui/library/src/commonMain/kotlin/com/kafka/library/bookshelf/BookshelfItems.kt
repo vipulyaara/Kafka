@@ -155,7 +155,7 @@ private fun BookshelfItemList(
                             .clickable { openItemDetail(item.itemId) }
                             .sharedElement(
                                 animatedVisibilityScope = LocalAnimatedContentScope.current,
-                                state = rememberSharedContentState(
+                                sharedContentState = rememberSharedContentState(
                                     key = SharedElementCoverKey(item.coverImage, Origin.Grid)
                                 )
                             )

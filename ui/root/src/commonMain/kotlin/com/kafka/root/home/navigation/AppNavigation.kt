@@ -39,10 +39,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
+import com.kafka.auth.AuthScreen
 import com.kafka.auth.AuthViewModel
-import com.kafka.auth.LoginScreen
 import com.kafka.base.debug
 import com.kafka.common.animation.LocalSharedTransitionScope
 import com.kafka.common.animation.ProvideLocalAnimatedContentScope
@@ -157,7 +158,6 @@ fun AppNavigation(
                 popExitTransition = { exit() }
             ) {
                 navigation<RootScreen.Home>(startDestination = Screen.Home) {
-//                navigation<RootScreen.Home>(startDestination = Screen.WriteReview("book_1731246085889")) {
                     addHome()
                     addItemDetailGroup()
                     addLibrary()
@@ -268,7 +268,12 @@ typealias addLogin = NavGraphBuilder.() -> Unit
 fun NavGraphBuilder.addLogin(viewModelFactory: () -> AuthViewModel) {
     composable<Screen.Login> {
         val viewModel = viewModel { viewModelFactory() }
-        LoginScreen(viewModel)
+        val navController = rememberNavController()
+        AuthScreen(viewModel) {
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(Screen.Login.result, true)
+        }
     }
 }
 

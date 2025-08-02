@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.kafka.ui.components.item.review
 
 import androidx.compose.animation.animateContentSize
@@ -34,6 +36,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ui.common.theme.theme.Dimens
+import kotlin.time.ExperimentalTime
 
 @Composable
 fun ReviewItem(

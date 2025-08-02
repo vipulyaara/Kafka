@@ -115,7 +115,7 @@ private fun CarouselItemScope.CarouselItem(
                 modifier = Modifier
                     .padding(Dimens.Spacing04)
                     .sharedElement(
-                        state = rememberSharedContentState(
+                        sharedContentState = rememberSharedContentState(
                             key = SharedElementCoverKey(
                                 cover = item.coverImage.orEmpty(),
                                 origin = Origin.Carousel

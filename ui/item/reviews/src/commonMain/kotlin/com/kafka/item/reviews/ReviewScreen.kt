@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kafka.common.adaptive.WindowWidth
 import com.kafka.common.adaptive.gridColumns
 import com.kafka.common.elevation
@@ -31,6 +32,7 @@ import com.kafka.common.plus
 import com.kafka.common.widgets.shadowMaterial
 import com.kafka.data.entities.Reaction
 import com.kafka.data.entities.Review
+import com.kafka.navigation.LoginNavigationResult
 import com.kafka.ui.components.ProvideScaffoldPadding
 import com.kafka.ui.components.item.review.Reactions
 import com.kafka.ui.components.item.review.ReviewItem
@@ -45,10 +47,12 @@ import org.jetbrains.compose.resources.stringResource
 import ui.common.theme.theme.Dimens
 
 @Composable
-fun ReviewScreen(reviewViewModel: ReviewViewModel) {
+fun ReviewScreen(reviewViewModel: ReviewViewModel, navController: NavController) {
     val state by reviewViewModel.state.collectAsStateWithLifecycle()
     val lazyGridState = rememberLazyGridState()
     val clipboardManager = LocalClipboardManager.current
+
+    LoginNavigationResult(navController = navController, onLogin = reviewViewModel::goToWriteReview)
 
     Scaffold(
         topBar = {

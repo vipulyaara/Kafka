@@ -94,7 +94,7 @@ class ProfileViewModel(
         analytics.log { openNotificationsSettings() }
     }
 
-    fun logout(context: Any?, onLogout: () -> Unit = { navigator.goBack() }) {
+    fun logout(context: Any?, onLogout: () -> Unit = { }) {
         analytics.log { logoutClicked() }
         viewModelScope.launch {
             logoutUser(context)
@@ -113,7 +113,7 @@ class ProfileViewModel(
 
     fun openLogin() {
         analytics.log { openLogin() }
-        navigator.navigate(Screen.Login)
+        navigator.navigate(Screen.Login())
     }
 }
 

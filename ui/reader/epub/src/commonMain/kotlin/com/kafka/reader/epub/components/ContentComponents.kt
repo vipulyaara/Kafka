@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.kafka.reader.epub.components
 
 import androidx.compose.foundation.background
@@ -54,6 +56,8 @@ import kafka.reader.core.models.enums.TextStyle
 import kafka.reader.core.models.getEffectiveStyle
 import kotlinx.datetime.Clock
 import ui.common.theme.theme.Dimens
+import kotlin.time.Clock.*
+import kotlin.time.ExperimentalTime
 
 @Composable
 fun TextElement(
@@ -153,7 +157,7 @@ fun TextElement(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { offset ->
-                        val currentTime = Clock.System.now().toEpochMilliseconds()
+                        val currentTime = System.now().toEpochMilliseconds()
                         debug { "Tap detected at $offset" }
                         
                         if (currentTime - lastTapTime < 300) { // Double tap threshold

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kafka.common.extensions.ProvideInteractiveEnforcement
@@ -106,6 +107,7 @@ fun MenuItem(
     modifier: Modifier = Modifier,
     description: String? = null,
     contentDescription: String? = null,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit,
     endContent: @Composable (() -> Unit)? = null,
 ) {
@@ -119,7 +121,7 @@ fun MenuItem(
     ) {
         Icon(
             imageVector = icon,
-            tint = MaterialTheme.colorScheme.onSurface,
+            tint = contentColor,
             modifier = Modifier.size(Dimens.Spacing20),
             contentDescription = contentDescription,
         )
@@ -132,7 +134,7 @@ fun MenuItem(
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = contentColor
             )
 
             description?.let {
