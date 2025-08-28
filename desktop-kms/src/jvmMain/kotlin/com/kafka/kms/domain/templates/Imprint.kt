@@ -1,7 +1,7 @@
 package com.kafka.kms.domain.templates
 
 import com.kafka.kms.data.models.CopyrightType
-import kotlinx.datetime.Clock
+import kotlin.time.Clock.System
 
 object Imprint {
 
@@ -30,7 +30,7 @@ object Imprint {
             <p>This ebook is based on carefully curated source material, ensuring the highest standards of accuracy and presentation.</p>
             <p>${copyrightType.copyrightText()}</p>
            
-            <p>Digital Publication Year - ${Clock.System.now().toString().substring(0, 4)}</p>
+            <p>Digital Publication Year - ${System.now().toString().substring(0, 4)}</p>
         </section>
     </body>
 </html>"""
@@ -56,7 +56,7 @@ fun CopyrightType.copyrightText(): String = when (this) {
     """.trimIndent()
 
     CopyrightType.KafkaCopyrightOpen -> """
-        © ${Clock.System.now().toString().substring(0, 4)} <a href="https://www.kafka.studio">Kafka Studio</a>. This digital edition is licensed under a Creative 
+        © ${System.now().toString().substring(0, 4)} <a href="https://www.kafka.studio">Kafka Studio</a>. This digital edition is licensed under a Creative 
         Commons Attribution-NonCommercial 4.0 International License. You are free to share and adapt this work for 
         non-commercial purposes, provided you give appropriate credit to <a href="https://www.kafka.studio">Kafka Studio</a> and indicate if changes were made. 
         For more information about your rights and obligations under this license, visit 
@@ -64,7 +64,7 @@ fun CopyrightType.copyrightText(): String = when (this) {
     """.trimIndent()
     
     CopyrightType.KafkaCopyrightStrict -> """
-        © ${Clock.System.now().toString().substring(0, 4)} <a href="https://www.kafka.studio">Kafka Studio</a>. All rights reserved. This digital edition is 
+        © ${System.now().toString().substring(0, 4)} <a href="https://www.kafka.studio">Kafka Studio</a>. All rights reserved. This digital edition is 
         protected by international copyright laws. No part of this publication may be reproduced, distributed, or transmitted 
         in any form or by any means without the prior written permission of <a href="https://www.kafka.studio">Kafka Studio</a>.
     """.trimIndent()
