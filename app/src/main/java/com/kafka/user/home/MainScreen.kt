@@ -37,8 +37,6 @@ import tm.alashow.datmusic.downloader.Downloader
 import tm.alashow.datmusic.ui.downloader.DownloaderHost
 import ui.common.theme.theme.LocalTheme
 
-typealias MainScreen = @Composable (NavHostController, BottomSheetNavigator, Theme) -> Unit
-
 @Composable
 @Inject
 fun MainScreen(

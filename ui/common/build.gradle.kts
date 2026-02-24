@@ -16,6 +16,7 @@ kotlin {
                 api(compose.animation)
                 api(compose.foundation)
                 api(compose.material3)
+                api(compose.materialIconsExtended)
                 api(compose.components.resources)
                 api(compose.runtime)
                 api(compose.uiTooling)

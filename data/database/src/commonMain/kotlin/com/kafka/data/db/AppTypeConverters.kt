@@ -4,10 +4,9 @@ import androidx.room.TypeConverter
 import com.kafka.data.entities.RecentTextItem
 import com.kafka.data.model.MediaType
 import com.kafka.data.model.SearchFilter
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * @author Vipul Kumar; dated 21/01/19.

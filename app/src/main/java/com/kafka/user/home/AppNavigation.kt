@@ -26,7 +26,6 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -79,113 +78,109 @@ import com.sarahang.playback.ui.playback.timer.SleepTimerViewModel
 import com.sarahang.playback.ui.sheet.PlaybackSheet
 import com.sarahang.playback.ui.sheet.ResizablePlaybackSheetLayoutViewModel
 import kotlinx.coroutines.flow.Flow
-import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import ui.common.theme.theme.LocalTheme
 import ui.common.theme.theme.shouldUseDarkColors
 
-typealias AppNavigation = @Composable (NavHostController) -> Unit
-
-@Composable
 @Inject
-internal fun AppNavigation(
-    @Assisted navController: NavHostController,
-    modifier: Modifier = Modifier,
-    navigator: Navigator = LocalNavigator.current,
-    addHome: addHome,
-    addSearch: addSearch,
-    addItemDetailGroup: addItemDetailGroup,
-    addLibrary: addLibrary,
-    addProfile: addProfile,
-    addFeedback: addFeedback,
-    addLogin: addLogin,
-    addPlayer: addPlayer,
-    addWebView: addWebView,
-    addRecentItems: addRecentItems
+class AppNavigation(
+    private val navigator: Navigator,
+    private val addHome: addHome,
+    private val addSearch: addSearch,
+    private val addItemDetailGroup: addItemDetailGroup,
+    private val addLibrary: addLibrary,
+    private val addProfile: addProfile,
+    private val addFeedback: addFeedback,
+    private val addLogin: addLogin,
+    private val addPlayer: addPlayer,
+    private val addWebView: addWebView,
+    private val addRecentItems: addRecentItems
 ) {
-    CollectEvent(navigator.queue) { event ->
-        when (event) {
-            is NavigationEvent.Destination -> {
-                when (val screen = event.route) {
-                    is Screen.ItemDetail -> {
-                        navController.navigate(Screen.ItemDetail.route(screen.itemId))
-                    }
+    @Composable
+    operator fun invoke(navController: NavHostController, modifier: Modifier = Modifier) {
+        CollectEvent(navigator.queue) { event ->
+            when (event) {
+                is NavigationEvent.Destination -> {
+                    when (val screen = event.route) {
+                        is Screen.ItemDetail -> {
+                            navController.navigate(Screen.ItemDetail.route(screen.itemId))
+                        }
 
-                    is Screen.ItemDescription -> {
-                        navController.navigate(Screen.ItemDescription.route(screen.itemId))
-                    }
+                        is Screen.ItemDescription -> {
+                            navController.navigate(Screen.ItemDescription.route(screen.itemId))
+                        }
 
-                    Screen.Feedback -> {
-                        navController.navigate(Screen.Feedback.route)
-                    }
+                        Screen.Feedback -> {
+                            navController.navigate(Screen.Feedback.route)
+                        }
 
-                    Screen.Player -> {
-                        navController.navigate(Screen.Player.route)
-                    }
+                        Screen.Player -> {
+                            navController.navigate(Screen.Player.route)
+                        }
 
-                    else -> {
-                        navController.navigate(screen)
+                        else -> {
+                            navController.navigate(screen)
+                        }
                     }
                 }
+
+                is NavigationEvent.Back -> {
+                    debug { "Back pressed" }
+                    navController.navigateUp()
+                }
+
+                else -> Unit
+            }
+        }
+
+        SwitchStatusBarsOnPlayer(navController = navController)
+
+        NavHost(
+            modifier = modifier.fillMaxSize(),
+            navController = navController,
+            startDestination = RootScreen.Home,
+            enterTransition = { enter() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { exit() }
+        ) {
+            navigation<RootScreen.Home>(startDestination = Screen.Home) {
+                addHome()
+                addItemDetailGroup()
+                addLibrary()
+                addProfile()
+                addFeedback()
+                addSearch()
+                addLogin()
+                addPlayer()
+                addWebView()
+                addRecentItems()
             }
 
-            is NavigationEvent.Back -> {
-                debug { "Back pressed" }
-                navController.navigateUp()
+            navigation<RootScreen.Search>(startDestination = Screen.Search()) {
+                addSearch()
+                addItemDetailGroup()
+                addPlayer()
+                addWebView()
             }
 
-            else -> Unit
-        }
-    }
-
-    SwitchStatusBarsOnPlayer(navController = navController)
-
-    NavHost(
-        modifier = modifier.fillMaxSize(),
-        navController = navController,
-        startDestination = RootScreen.Home,
-        enterTransition = { enter() },
-        exitTransition = { fadeOut() },
-        popEnterTransition = { fadeIn() },
-        popExitTransition = { exit() }
-    ) {
-        navigation<RootScreen.Home>(startDestination = Screen.Home) {
-            addHome()
-            addItemDetailGroup(navController)
-            addLibrary()
-            addProfile()
-            addFeedback()
-            addSearch()
-            addLogin()
-            addPlayer()
-            addWebView()
-            addRecentItems()
-        }
-
-        navigation<RootScreen.Search>(startDestination = Screen.Search()) {
-            addSearch()
-            addItemDetailGroup(navController)
-            addPlayer()
-            addWebView()
-        }
-
-        navigation<RootScreen.Library>(startDestination = Screen.Library) {
-            addLibrary()
-            addItemDetailGroup(navController)
-            addSearch()
-            addPlayer()
-            addWebView()
-            addLogin()
-            addProfile()
+            navigation<RootScreen.Library>(startDestination = Screen.Library) {
+                addLibrary()
+                addItemDetailGroup()
+                addSearch()
+                addPlayer()
+                addWebView()
+                addLogin()
+                addProfile()
+            }
         }
     }
 }
 
-typealias addItemDetailGroup = NavGraphBuilder.(NavController) -> Unit
+typealias addItemDetailGroup = NavGraphBuilder.() -> Unit
 
 @Inject
 internal fun NavGraphBuilder.addItemDetailGroup(
-    @Assisted navController: NavController,
     addItemDetail: addItemDetail,
     addItemDescription: addItemDescription,
     addFiles: addFiles,
@@ -199,7 +194,7 @@ internal fun NavGraphBuilder.addItemDetailGroup(
     addFiles()
     addReader()
     addEpubReader()
-    addOnlineReader(navController)
+    addOnlineReader()
     addSummary()
 }
 
@@ -385,21 +380,18 @@ internal fun NavGraphBuilder.addWebView() {
     }
 }
 
-typealias addOnlineReader = NavGraphBuilder.(NavController) -> Unit
+typealias addOnlineReader = NavGraphBuilder.() -> Unit
 
 @Inject
 internal fun NavGraphBuilder.addOnlineReader(
-    @Assisted navController: NavController,
     viewModelFactory: (SavedStateHandle) -> OnlineReaderViewModel,
 ) {
     composable<Screen.OnlineReader> {
-        val currentDestination = navController.currentDestination?.route
         val viewModel = viewModel { viewModelFactory(createSavedStateHandle()) }
 
+        val navigator = LocalNavigator.current
         OnlineReader(viewModel) { fileId ->
-            navController.navigate(Screen.Reader(fileId)) {
-                popUpTo(currentDestination.orEmpty()) { inclusive = true }
-            }
+            navigator.navigate(Screen.Reader(fileId))
         }
     }
 }
