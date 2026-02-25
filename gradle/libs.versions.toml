@@ -106,7 +106,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 coil3-coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
-coil3-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil3" }
+coil3-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 #compose-bom = { module = "dev.chrisbanes.compose:compose-bom", version.ref = "compose-alpha" }

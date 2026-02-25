@@ -71,7 +71,6 @@ interface NetworkingComponent {
 
         defaultRequest {
             accept(ContentType.parse("application/json"))
-            header("content-type", "application/json")
         }
     }
 
