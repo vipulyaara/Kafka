@@ -16,8 +16,8 @@ android {
 
     defaultConfig {
         applicationId = "com.kafka.user"
-        versionCode = 88
-        versionName = "0.48.0"
+        versionCode = 90
+        versionName = "0.50.0"
     }
 
     compileOptions {

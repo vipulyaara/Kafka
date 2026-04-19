@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Kafka</string>
+    <string name="app_name" translatable="false">Kafka IA</string>
     <string name="cancel" translatable="false">Cancel</string>
 
     <string name="play" translatable="false">Play</string>
