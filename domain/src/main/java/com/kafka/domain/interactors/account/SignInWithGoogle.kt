@@ -5,6 +5,8 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.kafka.base.CoroutineDispatchers
@@ -19,15 +21,25 @@ actual class SignInWithGoogle @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val secretsProvider: SecretsProvider
 ) {
-     actual suspend operator fun invoke(params: Any?): Result<Unit> {
+    actual suspend operator fun invoke(params: Any?): Result<Unit> {
         return withContext(dispatchers.io) {
             val context = params as Context
+            val credentialManager = CredentialManager.create(context)
             try {
-                val credential = CredentialManager.create(context)
-                    .getCredential(
+                // First try with authorized accounts only (faster, auto-select safe)
+                val credential = try {
+                    credentialManager.getCredential(
                         context = context,
-                        request = getCredentialRequest()
+                        request = getCredentialRequest(filterByAuthorizedAccounts = true)
                     ).credential
+                } catch (e: GetCredentialException) {
+                    if (e is GetCredentialCancellationException) throw e
+                    // No previously authorized accounts, show full account picker
+                    credentialManager.getCredential(
+                        context = context,
+                        request = getCredentialRequest(filterByAuthorizedAccounts = false)
+                    ).credential
+                }
 
                 if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     val googleIdTokenCredential =
@@ -47,10 +59,10 @@ actual class SignInWithGoogle @Inject constructor(
         }
     }
 
-    private fun getCredentialRequest(): GetCredentialRequest {
+    private fun getCredentialRequest(filterByAuthorizedAccounts: Boolean): GetCredentialRequest {
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setAutoSelectEnabled(true)
+            .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts)
+            .setAutoSelectEnabled(filterByAuthorizedAccounts)
             .setServerClientId(secretsProvider.googleServerClientId.orEmpty())
             .build()
 
